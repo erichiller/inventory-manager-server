@@ -1,0 +1,21 @@
+{
+  "name": "inventory-manager-daemon",
+  "version": "0.0.1",
+  "description": "Server for web resources and print handler via IPP",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node main.js"
+  },
+  "author": "Eric D Hiller",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^11.13.7",
+    "ipp": "^2.0.1",
+    "node-thermal-printer": "^4.0.3",
+    "pdfkit": "^0.9.0"
+  },
+  "devDependencies": {
+    "@types/pdfkit": "^0.7.36"
+  }
+}
