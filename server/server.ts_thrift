@@ -1,0 +1,43 @@
+import {
+  Thrift,
+  createWebServer,
+  TBinaryProtocol,
+  TBufferedTransport,
+  TJSONProtocol
+} from 'thrift';
+
+
+import * as hello_svc from "../codegen/hello_svc";
+
+const HelloHandler = {
+  get_message(name:string): string{
+    var msg = "Hello " + name + "!";
+    return msg
+  }
+}
+
+var hello_svc_opt = {
+  transport: TBufferedTransport,
+  protocol: TJSONProtocol,
+  processor: hello_svc,
+  handler: HelloHandler
+};
+
+var server_opt = {
+  staticFilePath: ".",
+  services: {
+    "/hello": hello_svc_opt
+  }
+}
+
+
+var server = createWebServer(server_opt);
+var port = 9099;
+server.listen(port);
+console.log("Http/Thrift Server running on port: " + port);
+
+/**
+ * Build defs
+ * 
+ * npx thrift-typescript --target apache --rootDir . --sourceDir thrift_defs --outDir codegen
+ */

@@ -5,17 +5,47 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "node main.js"
+    "run": "node main.js",
+    "watch-server": "nodemon --watch 'server/**/*' -e ts,tsx --exec ts-node ./server/graphqlServer.ts"
   },
   "author": "Eric D Hiller",
   "license": "ISC",
   "dependencies": {
+    "@creditkarma/thrift-typescript": "^3.6.0",
+    "@types/flatbuffers": "^1.9.1",
     "@types/node": "^11.13.7",
+    "@types/react": "^16.8.14",
+    "@types/thrift": "^0.10.8",
+    "apollo-client": "^2.5.1",
+    "apollo-server-express": "^2.4.8",
+    "apollo-server-koa": "^2.4.8",
+    "apollo-upload-client": "^10.0.0",
+    "bufferutil": "^4.0.1",
+    "flatbuffers": "^1.11.0",
+    "graphql": "^14.2.1",
+    "grpc": "^1.20.0",
     "ipp": "^2.0.1",
     "node-thermal-printer": "^4.0.3",
-    "pdfkit": "^0.9.0"
+    "pdfkit": "^0.9.0",
+    "react": "^16.8.6",
+    "react-apollo": "^2.5.5",
+    "react-dom": "^16.8.6",
+    "thrift": "^0.12.0",
+    "tls": "0.0.1",
+    "utf-8-validate": "^5.0.2"
   },
   "devDependencies": {
-    "@types/pdfkit": "^0.7.36"
+    "@types/graphql": "^14.2.0",
+    "@types/pdfkit": "^0.7.36",
+    "awesome-typescript-loader": "^5.2.1",
+    "child_process": "^1.0.2",
+    "connection": "^1.0.0",
+    "fs": "0.0.1-security",
+    "net": "^1.0.2",
+    "nodemon": "^1.18.11",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^5.4.4",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.5"
   }
 }

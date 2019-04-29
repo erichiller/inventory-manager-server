@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Hello Thrift</title>
+  </head>
+  <body>
+    Name: <input type="text" id="name_in">
+    <input type="button" id="get_msg" value="Get Message" >
+    <div id="output"></div>
+
+    <script src="node_modules/thrift/lib/nodejs/lib/thrift/thrift.js"></script>
+    <script src="codegen/hello_svc.js"></script>
+    <script>
+      (function() {
+        var transport = new Thrift.TXHRTransport("/hello");
+        var protocol  = new Thrift.TJSONProtocol(transport);
+        var client    = new hello_svcClient(protocol);
+        var nameElement = document.getElementById("name_in");
+        var outputElement = document.getElementById("output");
+        document.getElementById("get_msg")
+          .addEventListener("click", function(){
+            client.get_message(nameElement.value, function(result) {
+              outputElement.innerHTML = result;
+            });
+          });
+      })();
+    </script>
+  </body>
+</html>

@@ -2,13 +2,15 @@
 // defs
 
 // let widthInches = 0.75;
-const widthInches = 0.1;
+// const heightInches = 10 / 25.4 / 3 ; // 10mm !!! #note: need a better way to determine height of "line"
+const widthInches = 0.55;
+const heightInches = 0.2
 
-const heightInches = 10 / 25.4; // 10mm
 const dpi = 360;
 
 const widthDots = Math.floor(dpi * widthInches);
 const heightDots = Math.floor(dpi * heightInches);
+
 const pxlPerLine = 6 * 8; // ( 6 bytes, will be packed as 1 pixel = 1 bit in line = 1 dot (in mode73))
 const linesCount = Math.ceil(heightDots / pxlPerLine);
 
@@ -46,11 +48,13 @@ function loadCanvas() {
 
     let ctx = canvas.getContext("2d");
     ctx.fillStyle = "#FF0000";
-    ctx.fillRect(0, 0, 10, 5);
+    ctx.fillRect(0, 0, 3, 5);
     ctx.fillRect(0, 10, 10, 5);
     ctx.fillStyle = "#000000";
     ctx.font = "30px Arial";
-    ctx.fillText("Hello World", 10, 50);
+    ctx.fillText("Hello World", 10, 20);
+    ctx.fillText("Eric Hiller", 10, 45);
+    ctx.fillText("Neilikka Hiller", 10, 70);
 
     // load image from data url
     // var myImg = new Image();
@@ -60,8 +64,7 @@ function loadCanvas() {
     // }
     // ctx.drawImage(myImg, 0, 0);
 
-    const imgData = ctx.getImageData(0, 0, 8, 7);
-    // const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
     // function getImageSize(){
     //   console.log(`imgDataLength is ${imgData.data.length}`)
@@ -80,35 +83,36 @@ function loadCanvas() {
     /** 
     ARGGG Javascript only does Bit math in 32 bits. doing `1 << 33` is the same as `1 << 1`
     */
-    for (i = 0, pxl = 0; i < imgData.data.length; i += 4, pxl++) {
-        let col = pxl % imgData.width;
+    for (i = 0, pxl = 0; i < imgData.data.length && i < (widthDots * heightDots * 4); i += 4, pxl++) {
+        let col = pxl % widthDots;
         let row = Math.floor(pxl / widthDots);
 
         let line = Math.floor(row / pxlPerLine);
         // let linebit = (pxlPerLine - 1) - (row % pxlPerLine);
         let linebit = row % pxlPerLine;
-        let byteBit = linebit % 8;
+        let byteBit = 8 - 1 - (linebit % 8)
         let lineByte = Math.floor(linebit / 8);
-        // if (pxl > 37) {
-        //     break;
-        // }
-        // white = 1 ; black = 0
-        isWhite = 1
-        // Color set to max 3, 4th bit is alpha, and would always trigger it
-        for (colorByte = 0; colorByte < 3; colorByte++) {
+        // white = 0 ; black = 1
+        isBlack = 0
+        // Canvas sets black 00,00,00,FF to black and 00,00,00,00 to white
+        for (colorByte = 0; colorByte < 4; colorByte++) {
             if (imgData.data[i + colorByte] > 200) {
-                isWhite = 0;
+                isBlack = 1;
                 break;
             }
         }
-        console.log(`[{${line}} ${col}, ${row} (${lineByte} + ${byteBit})] = ${isWhite}`)
 
-        buf[line][col][lineByte] = buf[line][col][lineByte] | (isWhite << byteBit)
+        // var {red, green, blue, alpha} = imgData.data.slice(i, i+4);
+        var [red, green, blue, alpha] = imgData.data.slice(i, i+4);
+        console.log(`[{${line}} ${col}, ${row} (${lineByte} + ${byteBit})] = ${isBlack} (red=${red} blue=${blue} green=${green} alpha=${alpha})`)
 
-        console.log(`${(buf[line][col][lineByte] >>> 0).toString(2)} [0x${(buf[line][col][lineByte] >>> 0).toString(16).toUpperCase()}]`)
+        buf[line][col][lineByte] = buf[line][col][lineByte] | (isBlack << byteBit)
+
+        console.log(`${(buf[line][col][lineByte] >>> 0).toString(2).padStart(8, 0)} [0x${(buf[line][col][lineByte] >>> 0).toString(16).toUpperCase().padStart(2, 0)}]`)
         // console.log(buf[line][col] )
     }
     displayConsoleBuf(buf);
+    outputHex(buf);
 }
 
 function displayConsoleBuf(buf) {
@@ -121,6 +125,21 @@ function displayConsoleBuf(buf) {
             }
             console.log(logMsg)
         }
+    }
+}
+
+function outputHex(buf) {
+    for ( line = 0; line < buf.length; line++){
+        // console.log(`{${buf[line]}} length of ${buf[line].length}`)
+        let lineHex = ""
+        for ( col = 0; col < buf[line].length; col++){
+            // console.log(`{${line}} , ${col}`)
+            for ( lineByte = 0; lineByte < buf[line][col].length ; lineByte++ ){
+                lineHex += `0x${(buf[line][col][lineByte] >>> 0).toString(16).toUpperCase().padStart(2, 0)} , `
+            }
+        }
+        lineHex = lineHex.slice(0, -2); // remove trailing comma
+        console.log(lineHex)
     }
 }
 
