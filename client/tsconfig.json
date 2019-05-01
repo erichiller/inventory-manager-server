@@ -1,0 +1,15 @@
+{
+    "extends": "../tsconfig",
+    "compilerOptions": {
+        "outDir": "../dist/client/",
+        "target": "es5",
+        "skipLibCheck": true,
+        "module": "commonjs",
+        "jsx": "react"
+    },
+    "include": [
+        "src/**/*",
+        "../typings/*.d.ts",
+    ]
+}
+

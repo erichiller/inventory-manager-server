@@ -1,0 +1,10 @@
+{
+    "extends": "../tsconfig",
+    "compilerOptions": {
+        "outDir": "../dist/server/"
+    },
+    "include": [
+        "**/*",
+        "../typings/*.d.ts"
+    ],
+}
