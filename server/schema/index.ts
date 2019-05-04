@@ -2,24 +2,27 @@ import { makeExecutableSchema } from 'graphql-tools';
 import resolvers from '../resolvers';
 // import * as typeDefs from './schema.graphql';
 
-import {gql} from "apollo-server"
+import { gql } from "apollo-server"
 
+/** 
+ * GraphQL Schema
+ **/
 export const typeDefs = gql`
-scalar Upload
+  scalar Upload
 
-type File {
-  name: String!
-  path: String!
-  type: String!
-}
+  type File {
+    name: String!
+    path: String!
+    type: String!
+  }
 
-type Query {
-  files: [File]
-}
+  type Query {
+    files: [File]
+  }
 
-type Mutation {
-  uploadFiles(files: [Upload]!): [File]!
-}
+  type Mutation {
+    uploadFiles(files: [Upload]!): [File]!
+  }
 `
 
 

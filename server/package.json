@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "node main.js",
     "watch-server": "nodemon --watch 'server/**/*' -e ts,tsx --exec ts-node ./server/index.ts",
-    "client-start": "webpack-dev-server --config ./webpack.config.js --mode development"
+    "install-run-server": "npm install && npm run watch-server",
+    "client-start": "webpack-dev-server --config ./webpack.config.js --mode development",
+    "install-run-client": "npm install && npm run client-start"
   },
   "author": "Eric D Hiller",
   "license": "ISC",
@@ -18,7 +20,6 @@
     "@types/react": "^16.8.15",
     "@types/react-dom": "^16.8.4",
     "@types/webpack-env": "^1.13.9",
-    "apollo-boost": "^0.3.1",
     "apollo-cache": "^1.2.1",
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-client": "^2.5.1",

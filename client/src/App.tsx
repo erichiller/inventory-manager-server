@@ -1,6 +1,6 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import * as React from 'react';
-import { Mutation } from 'react-apollo';
+import { Mutation,  } from 'react-apollo';
 import Dropzone from 'react-dropzone';
 
 const dropzoneStyle: React.CSSProperties = {

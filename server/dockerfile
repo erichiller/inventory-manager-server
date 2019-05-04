@@ -1,0 +1,5 @@
+FROM node:alpine
+
+RUN npm install
+CMD npm run-scripts run
+EXPOSE 8080
