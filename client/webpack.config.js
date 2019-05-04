@@ -1,13 +1,12 @@
 const webpack = require('webpack');
 const path = require('path');
-// const loaders = require('./webpack.loaders');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 
   entry: [
     // 'react-hot-loader/patch',
-    './client/src/index.tsx' // your app's entry point
+    './src/index.tsx' // your app's entry point
   ],
   devtool: 'inline-source-map',
   mode: "development",
@@ -22,20 +21,19 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
-
     modules: [
-      path.resolve(__dirname, 'client', 'src'),
+      path.resolve(__dirname, 'src'),
       'node_modules'
     ],
   },
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist', 'client')
+    path: path.resolve(__dirname, 'dist')
   },
   devServer: {
     contentBase: "./dist",
     // do not print bundle build stats
-    noInfo: true,
+    // noInfo: true,
     // enable HMR
     hot: true,
     // embed the webpack-dev-server runtime into the bundle
@@ -46,10 +44,10 @@ module.exports = {
     // host: HOST
   },
   plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
+    // new webpack.NoEmitOnErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      template: './dist/index.html'
+      template: './src/index.html'
     }),
   ]
 };

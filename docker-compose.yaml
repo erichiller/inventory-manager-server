@@ -1,0 +1,68 @@
+# docker-compose up -d
+
+version: '2'
+services:
+  webserver:
+    build: ./server
+    working_dir: /app
+    # environment:
+      # - NODE_ENV=production
+    volumes:
+    - .:/app
+    ports:
+    - "8080:8080"
+    command: npm run install-run-server
+  # webclient:
+  #   build: ./client
+  #   working_dir: /app
+  #   environment:
+  #   - NODE_ENV=dev
+  #   volumes:
+  #   - ./src:/app/src
+  #   - ./tsconfig.json:/app/tsconfig.json
+  #   - ./webpack.conifg.js:/app/webpack.config.js
+  #   ports:
+  #   - "8081:80"
+    # command: npm run install-run-client
+  postgres:
+    image: postgres
+    restart: always
+    volumes:
+    - db_data:/var/lib/postgresql/data
+  graphql-engine:
+    image: hasura/graphql-engine:v1.0.0-alpha44
+    ports:
+    - "8090:8080"
+    depends_on:
+    - "postgres"
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+      ## uncomment next line to set an admin secret
+      # HASURA_GRAPHQL_ADMIN_SECRET: password
+volumes:
+  db_data:
+  # timescale:
+  #   image: timescale/timescaledb:latest-pg10
+  #   restart: always
+  #   environment:
+  #     POSTGRES_PASSWORD: postgrespassword
+  #   volumes:
+  #   - db_data:/var/lib/postgresql/data
+#  graphql-engine:
+#    image: hasura/graphql-engine:v1.0.0-alpha38
+#    ports:
+#    - "8080:8080"
+#    depends_on:
+#    - "timescale"
+#    restart: always
+#    environment:
+#      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@timescale:5432/postgres
+#      HASURA_GRAPHQL_ACCESS_KEY: mylongsecretkey
+#    command:
+#      - graphql-engine
+#      - serve
+#      - --enable-console
+#volumes:
+  # db_data:

@@ -26,8 +26,6 @@ function graphiqlExpress(options: GraphiQL.GraphiQLData | ExpressGraphQLOptionsF
   };
 
   return graphiqlHandler;
-
-
 }
 
 export async function startServer(port: number): Promise<Server> {
@@ -39,7 +37,8 @@ export async function startServer(port: number): Promise<Server> {
   app.use('/public', express.static('public'));
 
   const apolloServer = new ApolloServer({
-    playground: false,
+    introspection: true,
+    playground: true,
     schema
   });
 
