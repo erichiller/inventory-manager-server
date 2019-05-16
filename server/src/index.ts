@@ -2,8 +2,9 @@ import { Server } from 'http';
 
 import { startServer } from './server';
 
+import { PORT } from './config';
+
 try {
-  const PORT = 8080;
 
   let server: Server;
 

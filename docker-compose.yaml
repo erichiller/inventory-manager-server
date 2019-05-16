@@ -1,17 +1,19 @@
-# docker-compose up -d
+# docker-compose up --build -d
 
 version: '2'
 services:
   webserver:
+    container_name: webserver
     build: ./server
     working_dir: /app
     # environment:
       # - NODE_ENV=production
     volumes:
-    - .:/app
+    - ./server/src/:/app/src
+    - ./server/public/:/app/public
     ports:
     - "8080:8080"
-    command: npm run install-run-server
+    # command: npm run install-run-server
   # webclient:
   #   build: ./client
   #   working_dir: /app
@@ -25,12 +27,14 @@ services:
   #   - "8081:80"
     # command: npm run install-run-client
   postgres:
+    container_name: postgres
     image: postgres
     restart: always
     volumes:
     - db_data:/var/lib/postgresql/data
   graphql-engine:
-    image: hasura/graphql-engine:v1.0.0-alpha44
+    container_name: pgsql-gql
+    image: hasura/graphql-engine:v1.0.0-alpha45
     ports:
     - "8090:8080"
     depends_on:

@@ -11,7 +11,8 @@ import { CacheResolverMap } from 'apollo-cache-inmemory';
 import App from './App';
 import { ApolloLink } from 'apollo-link';
 
-const GRAPHQL_API_URL = 'http://localhost:8080/graphql';
+// const GRAPHQL_API_URL = 'http://localhost:8080/graphql';
+const GRAPHQL_API_URL = 'http://localhost:8090/v1alpha1/graphql';
 // const GRAPHQL_API_URL = 'http://localhost:8080/graphql';
 // const GRAPHQL_API_URL = 'http://localhost:8090/v1alpha1/graphql';
 
