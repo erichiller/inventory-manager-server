@@ -59,3 +59,14 @@ export default async () => {
     ]
   });
 }
+/**
+ * 
+ * 
+ * Remote schemas
+ * https://github.com/hasura/graphql-engine/blob/5916b97b86fa30c29e35073a923472f84c6782a7/community/boilerplates/custom-resolvers/src/index.js#L27
+ * 
+ * https://www.apollographql.com/docs/graphql-tools/remote-schemas
+ * 
+ * Mutations
+ * https://docs.hasura.io/1.0/graphql/manual/mutations/insert.html
+ */
