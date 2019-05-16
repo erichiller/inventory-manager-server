@@ -3,7 +3,7 @@ import * as GraphiQL from 'apollo-server-module-graphiql';
 import * as cors from 'cors';
 import * as express from "express";
 
-import schema from './schema';
+import getSchema from './schema';
 
 import { execute, subscribe } from 'graphql';
 import { createServer, Server } from 'http';
@@ -29,6 +29,7 @@ function graphiqlExpress(options: GraphiQL.GraphiQLData | ExpressGraphQLOptionsF
 }
 
 export async function startServer(port: number): Promise<Server> {
+  const schema = await getSchema();
   const app = express();
 
   const server: Server = createServer(app);

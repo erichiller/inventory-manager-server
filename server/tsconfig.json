@@ -1,10 +1,33 @@
 {
-    "extends": "../tsconfig",
     "compilerOptions": {
-        "outDir": "../dist/server/"
+      "target": "es2016",
+      "outDir": "../dist/server/",
+      // "lib": [
+      //   "dom",
+      //   "dom.iterable",
+      //   "esnext",
+      //   "es2016",
+      //   "esnext.asynciterable"
+      // ],
+      // "allowJs": true,
+      // "skipLibCheck": true,
+      // "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      // "strict": true,
+      // "forceConsistentCasingInFileNames": true,
+      "module": "commonjs",
+      "moduleResolution": "node",
+      // "resolveJsonModule": true,
+      // "isolatedModules": true,
+      // "noEmit": true,
+      "jsx": "preserve",
+      // "outDir": "/dist",
+      "sourceMap": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true
     },
     "include": [
         "**/*",
         "../typings/*.d.ts"
-    ],
-}
+    ]
+  }

@@ -1,5 +1,14 @@
+# https://medium.com/@andyccs/webpack-and-docker-for-development-and-deployment-ae0e73243db4
 FROM node:alpine
 
-RUN npm install
-CMD npm run-scripts run
+WORKDIR /tmp
+COPY package.json /tmp/
+RUN npm config set registry http://registry.npmjs.org/ && npm install
+
+WORKDIR /app
+RUN cp -a /tmp/node_modules /app/
+COPY package.json /app/
+COPY tsconfig.json /app/
+
+CMD npm run-script run
 EXPOSE 8080
