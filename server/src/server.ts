@@ -1,7 +1,7 @@
 import { ApolloServer } from 'apollo-server-express';
 import * as GraphiQL from 'apollo-server-module-graphiql';
-import * as cors from 'cors';
-import * as express from "express";
+import cors from 'cors';
+import express from "express";
 
 import getSchema from './schema';
 

@@ -1,5 +1,12 @@
-const ThermalPrinter = require("node-thermal-printer").printer;
-const PrinterTypes = require("node-thermal-printer").types;
+// const ThermalPrinter = require("node-thermal-printer").printer;
+// const PrinterTypes = require("node-thermal-printer").types;
+
+// import tprint from '../../deps/node-thermal-printer/lib/core.js';
+
+import { ThermalPrinter , PrinterTypes } from '../deps/node-thermal-printer';
+// import tprint from 'node-thermal-printer';
+
+import * as config from '../config'
 
 /**
  * run with:
@@ -240,14 +247,15 @@ class BrotherLabeler {
 
 }
 
+
 async function example() {
     let printer = new ThermalPrinter({
         type: PrinterTypes.EPSON,  // 'star' or 'epson'
-        interface: 'tcp://192.168.10.41:9100',                       // Printer interface
+        interface: `tcp://${config.PRINTER_HOST}:9100`,                       // Printer interface
         options: {
             timeout: 1000
         },
-        characterSet: 'USA',
+        characterSet: 'PC437_USA',
     });
 
     let labeler = new BrotherLabeler();
@@ -295,7 +303,7 @@ async function example() {
         0b01010101,
         0b10101010]);
     let lenDots = Buffer.byteLength(imageData);
-    console.log(`sending image of size ${lenDots} bytes`);
+    console.log(`sending image of size ${lenDots} bytes to ${printer.Interface}`);
 
 
     let imageBuf = Buffer.concat([
