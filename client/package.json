@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "webpack-dev-server",
     "serve": "node ./bundle.js",
-    "build-types": "yarn run apollo codegen:generate --endpoint=http://graphql.hiller.pro:8080/v1/graphql --header \"x-hasura-admin-secret: achoo\" --target=typescript --includes=src/**/*.ts --includes=src/**/*.tsx --tagName=gql --addTypename --outputFlat ./src/queries/types.d.ts"
+    "build-types": "yarn run apollo codegen:generate --endpoint=http://graphql.hiller.pro:8080/v1/graphql --header \"x-hasura-admin-secret: achoo\" --target=typescript --includes=src/**/*.ts --includes=src/**/*.tsx --tagName=gql --addTypename --outputFlat ./src/queries/types.d.ts",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "author": "Eric D Hiller",
   "license": "ISC",
@@ -37,7 +38,12 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.7.0",
+    "@graphql-codegen/introspection": "1.7.0",
+    "@graphql-codegen/time": "^1.7.0",
     "@graphql-codegen/typescript": "^1.7.0",
+    "@graphql-codegen/typescript-document-nodes": "1.7.0",
+    "@graphql-codegen/typescript-operations": "^1.7.0",
+    "@graphql-codegen/typescript-react-apollo": "^1.7.0",
     "@types/cors": "^2.8.6",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^3.2.0",

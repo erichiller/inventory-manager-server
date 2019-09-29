@@ -1,9 +1,9 @@
 import { Table } from 'antd';
 import React = require('react');
-import gql from 'graphql-tag';
 import { graphql, ChildProps } from '@apollo/react-hoc';
 import { ColumnProps } from 'antd/es/table';
-import { GetItemsHardwareFastenerBolt, GetItemsHardwareFastenerBolt_items } from '../queries/types'
+import { ItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltQueryResult, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltProps } from '../queries/types'
+import { QUERY_ITEMS_HARDWARE_FASTENER_BOLT } from '../queries/queries'
 
 
 // class Item {
@@ -16,21 +16,21 @@ import { GetItemsHardwareFastenerBolt, GetItemsHardwareFastenerBolt_items } from
 //   unit: "usc" | "metric"
 // }
 
-const QUERY_ITEMS = gql`
-# query GetItemsHardwareFastener ( $ProjectStub: String )  {
-#   item(where: {class: { _eq: $ProjectStub }}) {
-query GetItemsHardwareFastenerBolt {
-  items: items_hardware_fastener_bolt {
-    id
-    name
-    description
-    unit
-  }
-}
-`
+// const QUERY_ITEMS = gql`
+// # query GetItemsHardwareFastener ( $ProjectStub: String )  {
+// #   item(where: {class: { _eq: $ProjectStub }}) {
+// query items_hardware_fastener_bolt {
+//   items: items_hardware_fastener_bolt {
+//     id
+//     name
+//     description
+//     unit
+//   }
+// }
+// `
 
 
-const columns: ColumnProps<GetItemsHardwareFastenerBolt_items>[] = [
+const columns: ColumnProps<ItemsHardwareFastenerBolt>[] = [
   {
     key: 'name',
     title: 'Name',
@@ -127,13 +127,13 @@ const columns: ColumnProps<GetItemsHardwareFastenerBolt_items>[] = [
 
 
 
-
 interface ItemTableProps {
+  // data: any
   class?: string
 }
 
 interface ItemTableState {
-  data?: GetItemsHardwareFastenerBolt
+  data?: ItemsHardwareFastenerBolt[]
   pagination: pagination
   loading: boolean
 }
@@ -144,17 +144,9 @@ interface pagination {
   current: number
 }
 
-export default graphql<ItemTableProps, GetItemsHardwareFastenerBolt>(QUERY_ITEMS,
-  {
-    // options:
-    //     props => ({
-    //         variables: {
-    //             class: "HardwareFastener"
-    //             // ProjectStub: props.match.params.project_id
-    //         }
-    //     })
-  })(
-    class ItemTable extends React.Component<ChildProps<ItemTableProps, GetItemsHardwareFastenerBolt>, ItemTableState> {
+export default withItemsHardwareFastenerBolt()(
+  class ItemTable extends React.Component<ItemsHardwareFastenerBoltProps<ItemTableProps>, ItemTableState> {
+    // class ItemTable extends React.Component<ChildProps<ItemTableProps, ItemsHardwareFastenerBoltQueryResult>, ItemTableState> {
       state: ItemTableState = {
         data: undefined,
         pagination: {total: 0, pageSize: 100, current:0},

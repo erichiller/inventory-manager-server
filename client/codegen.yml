@@ -1,11 +1,41 @@
+# schema: "http://graphql.hiller.pro:8080/v1/graphql"
 schema:
-  - ${HASURA_GRAPHQL_ENGINE_URL:http://graphql.hiller.pro:8080/v1/graphql}:
-    headers:
-      X-HASURA-ACCESS-KEY: achoo
-# documents: ./src/**/*.graphql
+    - ${HASURA_GRAPHQL_ENGINE_URL:http://graphql.hiller.pro:8080/v1/graphql}:
+          headers:
+              X-HASURA-ACCESS-KEY: achoo
+config:
+    transformUnderscore: true
+    namingConvention:
+        typeNames: change-case#pascalCase
+        enumValues: change-case#upperCase
+    # globalNamespace: true
+    # operationResultSuffix: "xxx"
+    dedupeOperationSuffix: true
+    withComponent: false
+    reactApolloVersion: 3
 generates:
-  ./queries/types.ts:
-    plugins:
-      - typescript
-      - typescript-operations
-      - time
+    ./src/queries/types.tsx:
+        # documents: ./src/**/*.tsx
+        documents: ./src/queries/*.ts
+        plugins:
+            - "typescript"
+            - "typescript-operations"
+            - "typescript-react-apollo"
+            # - "typescript-document-nodes"
+            - time:
+                message: "graphql typescript defs generated on "
+                format: YYYY-MM-DDTHH:mm:ssZ
+
+overwrite: true
+# schema: "http://graphql.hiller.pro:8080/v1/graphql"
+# documents: "src/**/**.tsx?"
+# generates:
+#   src/queries/types.d.ts:
+#     plugins:
+#       - "typescript"
+#       - "typescript-operations"
+#       - "typescript-react-apollo"
+#       - "typescript-document-nodes"
+#   ./graphql.schema.json:
+#     plugins:
+#       - "introspection"
