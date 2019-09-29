@@ -1,0 +1,11 @@
+schema:
+  - ${HASURA_GRAPHQL_ENGINE_URL:http://graphql.hiller.pro:8080/v1/graphql}:
+    headers:
+      X-HASURA-ACCESS-KEY: achoo
+# documents: ./src/**/*.graphql
+generates:
+  ./queries/types.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - time

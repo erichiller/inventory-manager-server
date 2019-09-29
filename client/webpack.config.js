@@ -1,22 +1,27 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const dev = require('webpack-dev-server');
 
 module.exports = {
-
+  mode: "development",
   entry: [
     // 'react-hot-loader/patch',
     './src/index.tsx' // your app's entry point
   ],
   devtool: 'inline-source-map',
-  mode: "development",
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/
-      }
+      },
+
+      {
+        test: /\.s?(a|c)ss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
     ]
   },
   resolve: {
