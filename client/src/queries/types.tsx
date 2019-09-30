@@ -3140,7 +3140,7 @@ export type ItemsHardwareFastenerBoltQuery = (
   { __typename?: 'query_root' }
   & { items: Array<(
     { __typename?: 'items_hardware_fastener_bolt' }
-    & Pick<ItemsHardwareFastenerBolt, 'id' | 'name' | 'description' | 'unit'>
+    & Pick<ItemsHardwareFastenerBolt, 'id' | 'name' | 'description' | 'unit' | 'thread_length'>
   )> }
 );
 
@@ -3151,6 +3151,7 @@ export const ItemsHardwareFastenerBoltDocument = gql`
     name
     description
     unit
+    thread_length
   }
 }
     `;
@@ -3165,4 +3166,4 @@ export function withItemsHardwareFastenerBolt<TProps, TChildProps = {}>(operatio
       ...operationOptions
     });
 };
-export type ItemsHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables>;// graphql typescript defs generated on 2019-09-29T16:41:35-06:00
+export type ItemsHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables>;// graphql typescript defs generated on 2019-09-29T17:51:34-06:00

@@ -9,6 +9,7 @@ query items_hardware_fastener_bolt {
     name
     description
     unit
+    thread_length
   }
 }
 `
