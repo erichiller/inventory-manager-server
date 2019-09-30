@@ -31,10 +31,12 @@
     "graphql": "^14.5.7",
     "graphql-tag": "^2.10.1",
     "graphql-tools": "^4.0.5",
+    "konva": "^4.0.12",
     "react": "^16.9.0",
     "react-apollo": "^2.5.8",
     "react-dom": "^16.9.0",
-    "react-dropzone": "^10.1.9"
+    "react-dropzone": "^10.1.9",
+    "react-konva": "^16.9.0-1"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.7.0",

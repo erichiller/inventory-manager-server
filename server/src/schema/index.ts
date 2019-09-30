@@ -7,7 +7,7 @@ import fetch from 'node-fetch';
 import resolvers from '../resolvers';
 // import * as typeDefs from './schema.graphql';
 
-import { HASURA_GRAPHQL_API_URL , ACCESS_KEY } from '../config';
+import { HASURA_GRAPHQL_API_URL , HASURA_ACCESS_KEY } from '../config';
 
 /** 
  * GraphQL Schema

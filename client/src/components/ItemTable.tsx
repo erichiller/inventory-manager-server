@@ -1,131 +1,95 @@
-import { Table } from 'antd';
+import { Table, Divider } from 'antd';
 import React = require('react');
 import { graphql, ChildProps } from '@apollo/react-hoc';
 import { ColumnProps } from 'antd/es/table';
-import { ItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltQueryResult, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltProps } from '../queries/types'
-import { QUERY_ITEMS_HARDWARE_FASTENER_BOLT } from '../queries/queries'
+import { ItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltQueryResult, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltProps, ItemsHardwareFastenerBoltDocument, ItemsHardwareFastenerBoltSelectColumn } from '../queries/types'
+
+import { LabelDrawModal } from './ItemPrint';
+
+function toTitleCase(s: string) {
+  return s.replace('_', ' ').split(' ').map(function (word) {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  }).join(' ');
+}
 
 
-// class Item {
-//   id: number
-//   name: string
-//   description: string
-//   class: string
-// }
-// class HardwareFastenerBolt extends Item {
-//   unit: "usc" | "metric"
-// }
-
-// const QUERY_ITEMS = gql`
-// # query GetItemsHardwareFastener ( $ProjectStub: String )  {
-// #   item(where: {class: { _eq: $ProjectStub }}) {
-// query items_hardware_fastener_bolt {
-//   items: items_hardware_fastener_bolt {
-//     id
-//     name
-//     description
-//     unit
+// const columns: ColumnProps<ItemsHardwareFastenerBolt>[] = Object.keys(ItemsHardwareFastenerBoltSelectColumn).filter(key => ["ID"].includes(key) ? false : key).map(key => {
+//   return {
+//     key: key,
+//     title: toCamelCase(key),
+//     dataIndex: key.toLowerCase(),
 //   }
-// }
-// `
+// });
 
-
-const columns: ColumnProps<ItemsHardwareFastenerBolt>[] = [
-  {
-    key: 'name',
-    title: 'Name',
-    dataIndex: 'name',
-    // filters: [
-    //   {
-    //     text: 'Joe',
-    //     value: 'Joe',
-    //   },
-    //   {
-    //     text: 'Jim',
-    //     value: 'Jim',
-    //   },
-    //   {
-    //     text: 'Submenu',
-    //     value: 'Submenu',
-    //     children: [
-    //       {
-    //         text: 'Green',
-    //         value: 'Green',
-    //       },
-    //       {
-    //         text: 'Black',
-    //         value: 'Black',
-    //       },
-    //     ],
-    //   },
-    // ],
-    // specify the condition of filtering result
-    // here is that finding the name started with `value`
-    // onFilter: (value, record) => record.name.indexOf(value) === 0,
-    // sorter: (a, b) => a.name.length - b.name.length,
-    sorter: (a, b) => a.name.localeCompare(b.name),
-    sortDirections: ['descend', 'ascend'],
-  },
-  {
-    key: 'description',
-    title: 'Description',
-    dataIndex: 'description',
-    defaultSortOrder: 'descend',
-    // sortDirections: ['descend'],
-    // sorter: (a, b) => a.age - b.age,
-  },
-  {
-    title: 'Unit',
-    dataIndex: 'unit',
-    filters: [
-      {
-        text: 'Metric',
-        value: 'metric',
-      },
-      {
-        text: 'USC/Imperial/US',
-        value: 'usc',
-      },
-    ],
-    filterMultiple: true,
-    onFilter: (value, item) => item.unit == value,
-    sorter: (a, b) => a.name.localeCompare(b.name),
-    sortDirections: ['descend', 'ascend'],
-  },
-];
-
-// const data = [
+// console.log(columns)
+// [
 //   {
-//     key: '1',
-//     name: 'John Brown',
-//     age: 32,
-//     address: 'New York No. 1 Lake Park',
+//     key: 'name',
+//     title: 'Name',
+//     dataIndex: 'name',
+//     // filters: [
+//     //   {
+//     //     text: 'Joe',
+//     //     value: 'Joe',
+//     //   },
+//     //   {
+//     //     text: 'Jim',
+//     //     value: 'Jim',
+//     //   },
+//     //   {
+//     //     text: 'Submenu',
+//     //     value: 'Submenu',
+//     //     children: [
+//     //       {
+//     //         text: 'Green',
+//     //         value: 'Green',
+//     //       },
+//     //       {
+//     //         text: 'Black',
+//     //         value: 'Black',
+//     //       },
+//     //     ],
+//     //   },
+//     // ],
+//     // specify the condition of filtering result
+//     // here is that finding the name started with `value`
+//     // onFilter: (value, record) => record.name.indexOf(value) === 0,
+//     // sorter: (a, b) => a.name.length - b.name.length,
+//     sorter: (a, b) => a.name.localeCompare(b.name),
+//     sortDirections: ['descend', 'ascend'],
 //   },
 //   {
-//     key: '2',
-//     name: 'Jim Green',
-//     age: 42,
-//     address: 'London No. 1 Lake Park',
+//     key: 'description',
+//     title: 'Description',
+//     dataIndex: 'description',
+//     defaultSortOrder: 'descend',
+//     // sortDirections: ['descend'],
+//     // sorter: (a, b) => a.age - b.age,
 //   },
 //   {
-//     key: '3',
-//     name: 'Joe Black',
-//     age: 32,
-//     address: 'Sidney No. 1 Lake Park',
-//   },
-//   {
-//     key: '4',
-//     name: 'Jim Red',
-//     age: 32,
-//     address: 'London No. 2 Lake Park',
+//     title: 'Unit',
+//     dataIndex: 'unit',
+//     filters: [
+//       {
+//         text: 'Metric',
+//         value: 'metric',
+//       },
+//       {
+//         text: 'USC/Imperial/US',
+//         value: 'usc',
+//       },
+//     ],
+//     filterMultiple: true,
+//     onFilter: (value, item) => item.unit == value,
+//     sorter: (a, b) => a.name.localeCompare(b.name),
+//     sortDirections: ['descend', 'ascend'],
 //   },
 // ];
 
-
-
-
-
-
+export enum display {
+  VISIBLE = 1,
+  HIDDEN = 0
+}
 
 interface ItemTableProps {
   // data: any
@@ -136,6 +100,8 @@ interface ItemTableState {
   data?: ItemsHardwareFastenerBolt[]
   pagination: pagination
   loading: boolean
+  clickedItem: ItemsHardwareFastenerBolt
+  printModal: display
 }
 
 interface pagination {
@@ -146,107 +112,110 @@ interface pagination {
 
 export default withItemsHardwareFastenerBolt()(
   class ItemTable extends React.Component<ItemsHardwareFastenerBoltProps<ItemTableProps>, ItemTableState> {
-    // class ItemTable extends React.Component<ChildProps<ItemTableProps, ItemsHardwareFastenerBoltQueryResult>, ItemTableState> {
-      state: ItemTableState = {
-        data: undefined,
-        pagination: {total: 0, pageSize: 100, current:0},
-        loading: false,
-      };
+    state: ItemTableState = {
+      data: undefined,
+      pagination: { total: 0, pageSize: 100, current: 0 },
+      loading: false,
+      clickedItem: undefined,
+      printModal: display.HIDDEN
+    };
 
-      componentDidMount() {
-        this.loadData();
-      }
-
-      loadData() {
-
-      }
-
-      handleTableChange = (pagination, filters, sorter) => {
-        const pager = { ...this.state.pagination };
-        pager.current = pagination.current;
-        this.setState({
-          pagination: pager,
-        });
-        // this.fetch({
-        //   results: pagination.pageSize,
-        //   page: pagination.current,
-        //   sortField: sorter.field,
-        //   sortOrder: sorter.order,
-        //   ...filters,
-        // });
-      };
-
-      // fetch = (params = {}) => {
-      //   console.log('params:', params);
-      //   this.setState({ loading: true });
-      //   reqwest({
-      //     url: 'https://randomuser.me/api',
-      //     method: 'get',
-      //     data: {
-      //       results: 10,
-      //       ...params,
-      //     },
-      //     type: 'json',
-      //   }).then(data => {
-      //     const pagination = { ...this.state.pagination };
-      //     // Read total count from server
-      //     // pagination.total = data.totalCount;
-      //     pagination.total = 200;
-      //     this.setState({
-      //       loading: false,
-      //       data: data.results,
-      //       pagination,
-      //     });
-      //   });
-      // };
-
-
-
-      onChange(pagination, filters, sorter) {
-        console.log('params', pagination, filters, sorter);
-      }
-
-      render() {
-
-        const { data } = this.props;
-        let { loading, error } = this.props.data!;
-
-
-        // if (data && (data.loading || !data.items)) return <span>Loading</span>
-        if (error) return <span>Error</span> 
-        // if (data && data.items && data.items.length != 1) {
-          // return <span> Error </span>
-        // }
-        // let  = data!.project![0]
-        console.log("data is", data)
-        // this.setState({data: data.items})
-        // return 
-
-
-
-        // return (
-        //     <div>
-
-
-        //         <span> Match project_id : {match.params.project_id}</span>
-        //         <br />
-        //         <span>{project.stub}</span>
-        //         <br />
-        //         <span>{project.description}</span>
-        //     </div>
-        // )
-        console.log('returning Table')
-        return (
-          <Table
-            columns={columns}
-            dataSource={data.items}
-            rowKey={item => item.id.toString()}
-            pagination={this.state.pagination}
-            loading={loading}
-            onChange={this.onChange}
-          />
-        )
-      }
+    componentDidMount() {
+      // this.loadData()
 
     }
-    )
+
+
+    get Columns(): ColumnProps<ItemsHardwareFastenerBolt>[] {
+      return [
+        ...(Object.keys(ItemsHardwareFastenerBoltSelectColumn).filter(
+          key => ["ID"].includes(key) ? false : key).map(
+            key => {
+              return {
+                key: key,
+                title: toTitleCase(key),
+                dataIndex: ItemsHardwareFastenerBoltSelectColumn[key],
+              }
+            })),
+        ...[
+          {
+            title: 'Action',
+            key: 'action',
+            // dataIndex: '',
+            render: (text, record) => (
+              <span>
+                <a onClick={ (obj) => {
+                  // this.setState({
+                  //   clickedItem: record,
+                  //   // printModal: display.VISIBLE
+                  // })
+                  this.viewPrintModal(display.VISIBLE, record)
+                }
+                }> Print</a>
+                <Divider type="vertical" />
+                <a>Edit</a>
+                <Divider type="vertical" />
+                <a>Delete</a>
+              </span >
+            ),
+          }
+        ]
+      ];
+    }
+
+    viewPrintModal = (change?: display, clickedItem?: ItemsHardwareFastenerBolt) => {
+      console.log("viewPrintModal () ? received", change)
+      if ( change !== undefined && change != this.state.printModal ){
+        this.setState({
+          printModal: change,
+          clickedItem: clickedItem
+        })
+        console.log("viewPrintModal () ? change detected; returning:", change == display.VISIBLE)
+        return change == display.VISIBLE
+      }
+      console.log("viewPrintModal () ? NO change detected; returning:", this.state.printModal == display.VISIBLE)
+      return this.state.printModal == display.VISIBLE
+    }
+
+    handleTableChange = (pagination, filters, sorter) => {
+      const pager = { ...this.state.pagination };
+      pager.current = pagination.current;
+      this.setState({
+        pagination: pager,
+      });
+    };
+
+    onChange(pagination, filters, sorter) {
+      console.log('params', pagination, filters, sorter);
+    }
+
+    render() {
+
+      const { data } = this.props;
+      let { loading, error } = this.props.data!;
+      if (error) return <span>Error</span>
+      console.log("data is", data)
+      return (
+        <div>
+          { this.state.printModal ? 
+          <LabelDrawModal 
+            item={this.state.clickedItem} 
+            visible={this.state.printModal}
+            visibleHandler={this.viewPrintModal} />
+          : null }
+          
+        <Table
+          columns={this.Columns}
+          dataSource={data.items}
+          rowKey={item => item.id.toString()}
+          pagination={this.state.pagination}
+          loading={loading}
+          onChange={this.onChange}
+        >
+          </Table>
+        </div>
+      )
+    }
+
+  }
+)
