@@ -73,7 +73,7 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
                         let value = item[key];
                         if ( !["__typename"].includes(key) && value) {
                             console.log(`property of item ${key} = ${value}`);
-                            return <Descriptions.Item label={key}>{value}</Descriptions.Item>
+                            return <Descriptions.Item key={key} label={key}>{value}</Descriptions.Item>
                             // <p>1</p>
                         }
                     })}
