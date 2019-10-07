@@ -11,7 +11,7 @@ config:
     # globalNamespace: true
     # operationResultSuffix: "xxx"
     dedupeOperationSuffix: true
-    withComponent: false
+    # withComponent: false
     reactApolloVersion: 3
 generates:
     ./src/queries/types.tsx:

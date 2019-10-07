@@ -1,7 +1,10 @@
 import gql from 'graphql-tag';
+import * as React from 'react';
 import * as ApolloReactCommon from '@apollo/react-common';
+import * as ApolloReactComponents from '@apollo/react-components';
 import * as ApolloReactHoc from '@apollo/react-hoc';
 export type Maybe<T> = T | null;
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string,
@@ -3155,7 +3158,14 @@ export const ItemsHardwareFastenerBoltDocument = gql`
   }
 }
     `;
+export type ItemsHardwareFastenerBoltComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables>, 'query'>;
+
+    export const ItemsHardwareFastenerBoltComponent = (props: ItemsHardwareFastenerBoltComponentProps) => (
+      <ApolloReactComponents.Query<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables> query={ItemsHardwareFastenerBoltDocument} {...props} />
+    );
+    
 export type ItemsHardwareFastenerBoltProps<TChildProps = {}> = ApolloReactHoc.DataProps<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables> & TChildProps;
+
 export function withItemsHardwareFastenerBolt<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   ItemsHardwareFastenerBoltQuery,
@@ -3166,4 +3176,5 @@ export function withItemsHardwareFastenerBolt<TProps, TChildProps = {}>(operatio
       ...operationOptions
     });
 };
-export type ItemsHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables>;// graphql typescript defs generated on 2019-09-29T17:51:34-06:00
+
+export type ItemsHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables>;// graphql typescript defs generated on 2019-10-05T16:44:25-06:00
