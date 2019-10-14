@@ -346,6 +346,13 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/bwip-js@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@types/bwip-js/-/bwip-js-1.7.0.tgz#fa34fbb567487eea862a34366dc1478ee88869fe"
+  integrity sha512-WJpXV9BctE+lYVnI/k2iRRp/onEKY3krxT53wFq1F2VGgd7vcB9KMckgMXEf5+y6NRcr7SLNHCr77oinvJBLcA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/connect@*":
   version "3.4.32"
   resolved "https://registry.yarnpkg.com/@types/connect/-/connect-3.4.32.tgz#aa0e9616b9435ccad02bc52b5b454ffc2c70ba28"
@@ -972,6 +979,11 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
+argv@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/argv/-/argv-0.0.2.tgz#ecbd16f8949b157183711b1bda334f37840185ab"
+  integrity sha1-7L0W+JSbFXGDcRsb2jNPN4QBhas=
+
 arr-diff@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/arr-diff/-/arr-diff-4.0.0.tgz#d6461074febfec71e7e15235761a329a5dc7c520"
@@ -1409,6 +1421,13 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
   integrity sha1-hZgoeOIbmOHGZCXgPQF0eI9Wnug=
+
+bwip-js@^1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/bwip-js/-/bwip-js-1.7.3.tgz#ba1c05d84937ae7ad61a08623230c126129a94a0"
+  integrity sha512-KyXcXueGiNioK0osHs/de0E5H/cx95sUhePDAFPQbpbAXchA05VBD22l1/Fq3AglPFsXUnFLiND9gQK46alFCQ==
+  dependencies:
+    argv "0.0.2"
 
 bytes@3.0.0:
   version "3.0.0"

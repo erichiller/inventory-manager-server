@@ -12,7 +12,9 @@ import { DrawContextMenu } from './draw/DrawContextMenu';
 import { KonvaEventObject } from 'konva/types/Node';
 import { Button } from 'antd';
 import DrawEditText from './draw/DrawEditText';
+import DrawAddImage from './draw/DrawAddImage';
 import useImage from 'use-image';
+import bwipjs from 'bwip-js';
 
 interface ItemPrintProps { }
 interface ItemPrintState { }
@@ -103,6 +105,7 @@ type UUIDStringT = string;
 export type FormatOptionsT = "bold" | "italic" | "underline";
 
 import { v4 as UUIDv4 } from 'uuid';
+import QREditModal from './draw/QREditModal';
 
 export class LabelText extends LabelConstituent {
     text: string
@@ -142,13 +145,17 @@ export class LabelImage extends LabelConstituent {
     url: string
     width: number
     height: number
+}
 
 
+export class LabelQR extends LabelConstituent {
+    canvasElement: HTMLCanvasElement
+    dataURL: string
 }
 
 
 
-interface ChangedValueVariantsI {
+interface ChangedValueTextI {
     text?: ChangedValueI
     format_options?: ChangedValueI
     text_size?: ChangedValueI
@@ -169,6 +176,7 @@ interface LabelDrawProps {
     item: ItemsHardwareFastenerBolt
 }
 
+
 type IKonvaEventHandler = (d: boolean | KonvaEventObject<PointerEvent>) => void;
 type IHtmlEventHandler = (d: boolean | display | React.MouseEvent<HTMLElement, MouseEvent>) => void;
 
@@ -180,14 +188,21 @@ interface LabelDrawState {
     displayEditTextModalStatus: display
     displayImageSelectModal: IHtmlEventHandler | display
     displayImageSelectModalStatus: display
+    displayQREditModal: IHtmlEventHandler | display
+    displayQREditModalStatus: display
     contextMenuLabelText: LabelText
     item: ItemsHardwareFastenerBolt
     texts: LabelText[]
     images: LabelImage[]
+    qrs: LabelQR[]
     uncommittedText: LabelText
     uncommittedImage: LabelImage
+    uncommittedQR: LabelQR
     commitLabelText: (labelText: LabelText) => void;
-    deleteLabelText: (labelText: LabelText) => void;
+    deleteLabelText: ( labelText: LabelText ) => void;
+    commitLabelImage: ( labelImage: LabelImage ) => void;
+    commitLabelQR: ( labelQR: LabelQR ) => void;
+    stageRef: Stage
 }
 interface DrawContext extends Omit<LabelDrawState, "item"> {
     item?: ItemsHardwareFastenerBolt
@@ -199,18 +214,25 @@ const DrawContextStateDefault: LabelDrawState = {
     displayContextMenuPosition: undefined,
     displayEditTextModal: () => { },
     displayEditTextModalStatus: null,
+    displayQREditModal: () => { },
+    displayQREditModalStatus: null,
     contextMenuLabelText: null,
     displayImageSelectModal: () => { },
-    displayImageSelectModalStatus: display.HIDDEN,
+    displayImageSelectModalStatus: null,
     // displayEditTextModalStatus: display.HIDDEN,
     // displayEditTextModalStatus: display.HIDDEN,
     item: null,
     texts: [],
     images: [],
+    qrs: [],
     uncommittedText: null,
     uncommittedImage: null,
+    uncommittedQR: null,
+    commitLabelImage: () => { },
     commitLabelText: () => { },
     deleteLabelText: () => { },
+    commitLabelQR: () => { },
+    stageRef: null
 }
 export const DrawContext = React.createContext<DrawContext>(DrawContextStateDefault);
 
@@ -244,7 +266,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             return display.HIDDEN;
         }
         if (!d){
-            return this.state.displayContextMenuStatus ? display.VISIBLE : display.HIDDEN;
+            return this.state.displayEditTextModalStatus ? display.VISIBLE : display.HIDDEN;
         }
         console.log("displayEditTextModal()", display);
         (d as React.MouseEvent<HTMLElement, MouseEvent>).preventDefault();
@@ -258,30 +280,52 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         }
     }
 
-    displayImageSelectModal = (d: React.MouseEvent<HTMLElement, MouseEvent> | display): display => {
-        if ((d as display) === display.HIDDEN) {
-            this.setState({
+    displayImageSelectModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | display ): display => {
+        if ( ( d as display ) === display.HIDDEN ) {
+            this.setState( {
                 displayImageSelectModalStatus: display.HIDDEN
-            })
+            } )
             // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
             return display.HIDDEN;
         }
-        if (!d) {
-            return this.state.displayContextMenuStatus ? display.VISIBLE : display.HIDDEN;
+        if ( !d ) {
+            return this.state.displayImageSelectModalStatus ? display.VISIBLE : display.HIDDEN;
         }
-        console.log("displayEditTextModal()", display);
-        (d as React.MouseEvent<HTMLElement, MouseEvent>).preventDefault();
-        if (d) {
-            this.setState({
+        console.log( "displayImageSelectModal()", display );
+        ( d as React.MouseEvent<HTMLElement, MouseEvent> ).preventDefault();
+        if ( d ) {
+            this.setState( {
                 item: this.props.item,
-                displayEditTextModalStatus: display.VISIBLE
-            })
+                displayImageSelectModalStatus: display.VISIBLE
+            } )
         } else {
-            this.setState({ displayEditTextModalStatus: display.HIDDEN });
+            this.setState( { displayImageSelectModalStatus: display.HIDDEN } );
+        }
+    }
+    displayQREditModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | display ): display => {
+        if ( ( d as display ) === display.HIDDEN ) {
+            this.setState( {
+                displayQREditModalStatus: display.HIDDEN
+            } )
+            // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
+            return display.HIDDEN;
+        }
+        if ( !d ) {
+            return this.state.displayQREditModalStatus ? display.VISIBLE : display.HIDDEN;
+        }
+        console.log( "displayQREditModal()", display );
+        ( d as React.MouseEvent<HTMLElement, MouseEvent> ).preventDefault();
+        if ( d ) {
+            this.setState( {
+                item: this.props.item,
+                displayQREditModalStatus: display.VISIBLE
+            } )
+        } else {
+            this.setState( { displayQREditModalStatus: display.HIDDEN } );
         }
     }
 
-    updateLabelTexts = (changedValue: ChangedValueVariantsI, labelText: LabelText) => {
+    updateLabelTexts = (changedValue: ChangedValueTextI, labelText: LabelText) => {
         console.log("input for updateLabelTexts", changedValue, labelText)
         // let texts = this.state.texts;
         let updatedText = false;
@@ -334,24 +378,81 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
 
 
 
-    updateLabelImages = (changedValue: ChangedValueVariantsI, labelImage: LabelImage) => {
+    updateLabelImages = ( changedValue: ChangedValueTextI, labelImage: LabelImage ) => {
         let updatedImage = false;
-        this.state.images.forEach((image => {
-            if (image.uuid == labelImage.uuid) {
-                console.log("updating existing labelImage with uuid", labelImage.uuid)
+        this.state.images.forEach( ( image => {
+            if ( image.uuid == labelImage.uuid ) {
+                console.log( "updating existing labelImage with uuid", labelImage.uuid )
                 image = labelImage;
                 updatedImage = true;
                 return;
             }
-        }));
-        if (!updatedImage) {
-            this.setState({
-                images: [...this.state.images, labelImage]
-            });
+        } ) );
+        if ( !updatedImage ) {
+            this.setState( {
+                images: [ ...this.state.images, labelImage ]
+            } );
         }
-        console.log("this.state.images is now", this.state.images, "pending", [...this.state.texts, labelImage])
+        console.log( "this.state.images is now", this.state.images, "pending", [ ...this.state.images, labelImage ] )
     }
 
+    commitLabelImage = ( labelImage: LabelImage ) => {
+        this.setState( { uncommittedImage: new LabelImage() } )
+    }
+
+
+    updateLabelQR = ( changedValue: Partial<LabelQR>, labelQR: LabelQR ) => {
+        let updatedQR = false;
+        if ( changedValue.dataURL ) {
+            console.log( "setting labelQR to", changedValue.dataURL );
+            labelQR.dataURL = changedValue.dataURL;
+        }
+        this.state.qrs.forEach( ( qr => {
+            if ( qr.uuid == labelQR.uuid ) {
+                console.log( "updating existing labelQR with uuid", labelQR.uuid )
+                qr = labelQR;
+                updatedQR = true;
+                return;
+            }
+        } ) );
+        if ( !updatedQR ) {
+            console.log( "adding uncommitted labelQR with uuid", labelQR.uuid )
+            this.setState( {
+                qrs: [ ...this.state.qrs, labelQR ]
+            } );
+        }
+        console.log( "this.state.qrs is now", this.state.qrs, "pending", [ ...this.state.qrs, labelQR ] )
+    }
+
+
+    commitLableQR = ( labelQR: LabelQR ) => {
+        this.setState( { uncommittedQR: new LabelQR() } )
+    }
+
+
+
+
+
+    // componentDidMount () {
+    //     console.log( " componentDidMount rendering bwip into ", this.state.stageRef!.getStage().getContent().childNodes.item( 0 ))
+    //     bwipjs( "kanvas", {
+    //     // bwipjs( this.state.stageRef!.getStage().getContent().childNodes.item(0), {
+    //         bcid: 'code128',       // Barcode type
+    //         text: '0123456789',    // Text to encode
+    //         scale: 3,               // 3x scaling factor
+    //         height: 10,              // Bar height, in millimeters
+    //         // includetext: true,            // Show human-readable text
+    //         // textxalign: 'center',        // Always good to set this
+    //     }, function ( err, cvs ) {
+    //         if ( err ) {
+    //             console.error(err, cvs)
+    //             // Decide how to handle the error
+    //             // `err` may be a string or Error object
+    //         } else {
+    //             // Nothing else to do in this example...
+    //         }
+    //     } );
+    // }
 
 
     state: LabelDrawState = {
@@ -362,14 +463,32 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         displayEditTextModalStatus: display.HIDDEN,
         displayImageSelectModal: this.displayImageSelectModal,
         displayImageSelectModalStatus: display.HIDDEN,
+        displayQREditModal: this.displayQREditModal,
+        displayQREditModalStatus: display.HIDDEN,
         contextMenuLabelText: null,
         item: null,
         texts: [], // NOTE: for pre-existing deserialize here.
         images: [],
+        qrs: [],
         uncommittedText: new LabelText(),
         uncommittedImage: new LabelImage(),
+        uncommittedQR: new LabelQR(),
         commitLabelText: this.commitLabelText,
-        deleteLabelText: this.deleteLabelText
+        commitLabelImage: this.commitLabelImage,
+        commitLabelQR: this.commitLableQR,
+        deleteLabelText: this.deleteLabelText,
+        stageRef: null
+    }
+
+
+    /*
+     * type React.Ref<T> = ((instance: T) => void) | React.RefObject<T>
+    **/
+    setRef = ( ref: Stage ): void => {
+        console.log( "SET REF FOR canvas", ref );
+        if ( ! this.state.stageRef ){
+            this.setState( { stageRef: ref });
+        }
     }
 
     render() {
@@ -385,7 +504,10 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                         <DrawEditText visibleHandler={this.displayEditTextModal} changeHandler={this.updateLabelTexts} item={item} labelText={this.state.uncommittedText} />
                         : null}
                     {this.state.displayImageSelectModalStatus ?
-                        <DrawEditText visibleHandler={this.displayImageSelectModal} changeHandler={this.updateLabelImages} item={item} labelImage={this.state.uncommittedImage} />
+                        <DrawAddImage visibleHandler={this.displayImageSelectModal} changeHandler={this.updateLabelImages} item={item} labelImage={this.state.uncommittedImage} />
+                        : null}
+                    {this.state.displayQREditModalStatus ?
+                        <QREditModal visibleHandler={this.displayQREditModal} changeHandler={this.updateLabelQR} item={item} labelQR={this.state.uncommittedQR} />
                         : null}
                     <Stage
                         onMouseEnter={() => this.setState({displayContextMenuStatus: false})} 
@@ -393,6 +515,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                         style={{
                             border: '1px solid #D3D3D3'
                         }}
+                        ref={this.setRef}
                         height={height}>
                         <Layer>
                             {this.state.texts.map(labelText => {
@@ -425,12 +548,30 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                                 //     });
                                 //     layer.add(darthNode);
                                 //     layer.batchDraw();
-                            })}
+                            } )}
+                            {this.state.qrs.map( labelQR => {
+                                console.log( "drawing labelQR", labelQR );
+                                // const [ image ] = useImage( labelQR.dataURL );
+                                // return Image.fromURL("https://img1.fastenal.com/thumbnails/CapScrewsHexBolts_600003_CatImg.jpg" )
+                                return <Image
+                                    key={labelQR.uuid}
+                                    image={labelQR.canvasElement}
+                                    draggable />
+                                // return <Image.fromURL('/assets/darth-vader.jpg', function (darthNode) {
+                                //     darthNode.setAttrs({
+                                //         x: 200,
+                                //         y: 50,
+                                //         scaleX: 0.5,
+                                //         scaleY: 0.5
+                                //     });
+                                //     layer.add(darthNode);
+                                //     layer.batchDraw();
+                            } )}
                         </Layer>
                     </Stage>
                     <div style={{paddingTop: 5, margin: 5}}>
                         <Button icon="font-size" onClick={this.displayEditTextModal} id="ADD_TEXT">Add Text</Button>
-                        <Button icon="qrcode" onClick={this.displayImageSelectModal} id="ADD_QR">Add QR</Button>
+                        <Button icon="qrcode" onClick={this.displayQREditModal} id="ADD_QR">Add QR</Button>
                         <Button icon="picture" onClick={this.displayImageSelectModal} id="ADD_IMAGE">Add Image</Button>
                     </div>
                 </div>
