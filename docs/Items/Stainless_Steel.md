@@ -37,6 +37,16 @@ Tri-Wing
 
 
 Type 304
+Type 316
+Type 317
+Type 317L
+Type 317LM
+Type 317LMN
+Type 321
+Type 347
+
+
+Type 304
 
 The most common of austenitic grades, containing approximately 18% chromium and 8% nickel. It is used for chemical processing equipment, for food, dairy, and beverage industries, for heat exchangers, and for the milder chemicals.
 
@@ -62,6 +72,9 @@ Requires molybdenum content of 4.00% min. and nitrogen of .15% min.
 
 Type 321
 Type 347
+
+
+
 
 These types have been developed for corrosive resistance for repeated intermittent exposure to temperature above 800 degrees F. Type 321 is made by the addition of titanium and Type 347 is made by the addition of tantalum/columbium. These grades are primarily used in the aircraft industry.
 
@@ -128,3 +141,4 @@ Has increased chromium to improve scaling resistance. Typical applications inclu
 Type 446
 
 Contains even more chromium added to further improve corrosion and scaling resistance at high temperatures. Especially good for oxidation resistance in sulfuric atmospheres.
+

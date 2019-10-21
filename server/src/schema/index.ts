@@ -5,6 +5,7 @@ import { HttpLink } from 'apollo-link-http';
 import fetch from 'node-fetch';
 
 import resolvers from '../resolvers';
+import uint8 from './type_uint8'
 // import * as typeDefs from './schema.graphql';
 
 import { HASURA_GRAPHQL_API_URL , HASURA_ACCESS_KEY } from '../config';
@@ -14,8 +15,10 @@ import { HASURA_GRAPHQL_API_URL , HASURA_ACCESS_KEY } from '../config';
  **/
 export const typeDefs = gql`
   scalar Upload
+  scalar uint8
 
   type File {
+    # __typename: String
     name: String!
     path: String!
     type: String!
@@ -25,9 +28,17 @@ export const typeDefs = gql`
     files: [File]
   }
 
+  type LabelMonochromeBuffer {
+    # __typename: String
+    imageBuffer: [[[uint8]]]
+  }
+
   type Mutation {
     uploadFiles(files: [Upload]!): [File]!
+    putLabelMonochromeBuffer(imageBuffer: [[[uint8]]]!): LabelMonochromeBuffer
   }
+
+  # type LabelMonochromeBuffer: [Int]
 `
 
 
@@ -41,21 +52,27 @@ const fileSchema = makeExecutableSchema({
 
 
 
-const link = new HttpLink({ uri: HASURA_GRAPHQL_API_URL, fetch });
+// const link = new HttpLink({ 
+//   uri: HASURA_GRAPHQL_API_URL,
+//   headers: {
+//     "x-hasura-admin-secret": HASURA_ACCESS_KEY
+//   },
+//   fetch 
+// });
 
 export default async () => {
-  const schema = await introspectSchema(link);
+  // const schema = await introspectSchema(link);
 
-  const executableRemoteSchema = makeRemoteExecutableSchema({
-    schema,
-    link,
-  });
+  // const executableRemoteSchema = makeRemoteExecutableSchema({
+  //   schema,
+  //   link,
+  // });
 
   // merge custom resolvers with Hasura schema
   return mergeSchemas({
     schemas: [
       fileSchema,
-      executableRemoteSchema,
+      // executableRemoteSchema,
     ]
   });
 }

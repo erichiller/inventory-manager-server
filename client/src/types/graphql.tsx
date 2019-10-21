@@ -15,6 +15,9 @@ export type Scalars = {
   date: any,
   money: any,
   numeric: any,
+  /** uint8 (unsigned int between 0 and 255) scalar type for Apollo GraphQL */
+  uint8: any,
+  Upload: any,
 };
 
 /** conflict action */
@@ -940,6 +943,13 @@ export enum EnumUnitUpdateColumn {
   /** column name */
   ID = 'id'
 }
+
+export type File = {
+   __typename?: 'File',
+  name: Scalars['String'],
+  path: Scalars['String'],
+  type: Scalars['String'],
+};
 
 /** expression to compare columns of type Int. All fields are combined with logical 'AND'. */
 export type IntComparisonExp = {
@@ -1911,6 +1921,11 @@ export type ItemsVarianceOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
+export type LabelMonochromeBuffer = {
+   __typename?: 'LabelMonochromeBuffer',
+  imageBuffer?: Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>,
+};
+
 
 /** expression to compare columns of type money. All fields are combined with logical 'AND'. */
 export type MoneyComparisonExp = {
@@ -1923,6 +1938,22 @@ export type MoneyComparisonExp = {
   _lte?: Maybe<Scalars['money']>,
   _neq?: Maybe<Scalars['money']>,
   _nin?: Maybe<Array<Scalars['money']>>,
+};
+
+export type Mutation = {
+   __typename?: 'Mutation',
+  putLabelMonochromeBuffer?: Maybe<LabelMonochromeBuffer>,
+  uploadFiles: Array<Maybe<File>>,
+};
+
+
+export type MutationPutLabelMonochromeBufferArgs = {
+  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
+};
+
+
+export type MutationUploadFilesArgs = {
+  files: Array<Maybe<Scalars['Upload']>>
 };
 
 /** mutation root */
@@ -1960,6 +1991,7 @@ export type MutationRoot = {
   insert_items_hardware_nut?: Maybe<ItemsHardwareNutMutationResponse>,
   /** insert data into the table: "purchases" */
   insert_purchases?: Maybe<PurchasesMutationResponse>,
+  putLabelMonochromeBuffer?: Maybe<LabelMonochromeBuffer>,
   /** update data of the table: "entity" */
   update_entity?: Maybe<EntityMutationResponse>,
   /** update data of the table: "enum.hardware_fastener_material" */
@@ -1976,6 +2008,7 @@ export type MutationRoot = {
   update_items_hardware_nut?: Maybe<ItemsHardwareNutMutationResponse>,
   /** update data of the table: "purchases" */
   update_purchases?: Maybe<PurchasesMutationResponse>,
+  uploadFiles: Array<Maybe<File>>,
 };
 
 
@@ -2083,6 +2116,12 @@ export type MutationRootInsertPurchasesArgs = {
 
 
 /** mutation root */
+export type MutationRootPutLabelMonochromeBufferArgs = {
+  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
+};
+
+
+/** mutation root */
 export type MutationRootUpdateEntityArgs = {
   _inc?: Maybe<EntityIncInput>,
   _set?: Maybe<EntitySetInput>,
@@ -2139,6 +2178,12 @@ export type MutationRootUpdatePurchasesArgs = {
   _inc?: Maybe<PurchasesIncInput>,
   _set?: Maybe<PurchasesSetInput>,
   where: PurchasesBoolExp
+};
+
+
+/** mutation root */
+export type MutationRootUploadFilesArgs = {
+  files: Array<Maybe<Scalars['Upload']>>
 };
 
 
@@ -2562,6 +2607,11 @@ export type PurchasesVarianceOrderBy = {
   vendor_id?: Maybe<OrderBy>,
 };
 
+export type Query = {
+   __typename?: 'Query',
+  files?: Maybe<Array<Maybe<File>>>,
+};
+
 /** query root */
 export type QueryRoot = {
    __typename?: 'query_root',
@@ -2595,6 +2645,7 @@ export type QueryRoot = {
   enum_unit_aggregate: EnumUnitAggregate,
   /** fetch data from the table: "enum.unit" using primary key columns */
   enum_unit_by_pk?: Maybe<EnumUnit>,
+  files?: Maybe<Array<Maybe<File>>>,
   /** fetch data from the table: "items" */
   items: Array<Items>,
   /** fetch aggregated fields from the table: "items" */
@@ -3136,6 +3187,9 @@ export type SubscriptionRootPurchasesByPkArgs = {
   item_id: Scalars['Int'],
   order_no: Scalars['String']
 };
+
+
+
 export type ItemsHardwareFastenerBoltQueryVariables = {};
 
 
@@ -3146,6 +3200,20 @@ export type ItemsHardwareFastenerBoltQuery = (
     & Pick<ItemsHardwareFastenerBolt, 'id' | 'name' | 'description' | 'unit' | 'thread_length'>
   )> }
 );
+
+export type SendBufferMutationVariables = {
+  buffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
+};
+
+
+export type SendBufferMutation = (
+  { __typename?: 'mutation_root' }
+  & { putLabelMonochromeBuffer: Maybe<(
+    { __typename?: 'LabelMonochromeBuffer' }
+    & Pick<LabelMonochromeBuffer, 'imageBuffer'>
+  )> }
+);
+
 
 export const ItemsHardwareFastenerBoltDocument = gql`
     query items_hardware_fastener_bolt {
@@ -3165,7 +3233,6 @@ export type ItemsHardwareFastenerBoltComponentProps = Omit<ApolloReactComponents
     );
     
 export type ItemsHardwareFastenerBoltProps<TChildProps = {}> = ApolloReactHoc.DataProps<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables> & TChildProps;
-
 export function withItemsHardwareFastenerBolt<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
   ItemsHardwareFastenerBoltQuery,
@@ -3176,5 +3243,32 @@ export function withItemsHardwareFastenerBolt<TProps, TChildProps = {}>(operatio
       ...operationOptions
     });
 };
+export type ItemsHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables>;
+export const SendBufferDocument = gql`
+    mutation SendBuffer($buffer: [[[uint8]]]!) {
+  putLabelMonochromeBuffer(imageBuffer: $buffer) {
+    imageBuffer
+  }
+}
+    `;
+export type SendBufferMutationFn = ApolloReactCommon.MutationFunction<SendBufferMutation, SendBufferMutationVariables>;
+export type SendBufferComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<SendBufferMutation, SendBufferMutationVariables>, 'mutation'>;
 
-export type ItemsHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables>;// graphql typescript defs generated on 2019-10-05T16:44:25-06:00
+    export const SendBufferComponent = (props: SendBufferComponentProps) => (
+      <ApolloReactComponents.Mutation<SendBufferMutation, SendBufferMutationVariables> mutation={SendBufferDocument} {...props} />
+    );
+    
+export type SendBufferProps<TChildProps = {}> = ApolloReactHoc.MutateProps<SendBufferMutation, SendBufferMutationVariables> & TChildProps;
+export function withSendBuffer<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  SendBufferMutation,
+  SendBufferMutationVariables,
+  SendBufferProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, SendBufferMutation, SendBufferMutationVariables, SendBufferProps<TChildProps>>(SendBufferDocument, {
+      alias: 'sendBuffer',
+      ...operationOptions
+    });
+};
+export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
+export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
+// graphql typescript defs generated on 2019-10-20T15:06:10-06:00

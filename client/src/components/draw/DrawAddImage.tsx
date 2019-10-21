@@ -5,7 +5,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import { display } from '../ItemTable';
 import React from 'react';
 import { Modal } from 'antd';
-import { ItemsHardwareFastenerBolt, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltComponent } from '../../queries/types';
+import { ItemsHardwareFastenerBolt, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltComponent } from '../../types/graphql';
 import { useQuery } from '@apollo/react-hooks';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
 import { LabelText, DrawContext, FormatOptionsT, LabelImage } from '../ItemPrint';

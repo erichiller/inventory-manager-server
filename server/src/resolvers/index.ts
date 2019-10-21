@@ -1,8 +1,12 @@
 import * as fs from 'fs';
 import * as mkdirp from 'mkdirp';
 import * as shortid from 'shortid';
+import uint8_resolver from '../schema/type_uint8'
+import {uint8} from '../schema/type_uint8'
+import {print as printLabel} from '../lib/epson';
 
 export default {
+  uint8: uint8_resolver,
   Mutation: {
     async uploadFiles(obj: any, { files }: any) {
       try {
@@ -16,6 +20,17 @@ export default {
         console.log('error', e);
         throw new Error('upload:fileNotLoaded');
       }
+    },
+    putLabelMonochromeBuffer(obj: any, { imageBuffer }: {
+      // __typename: "LabelMonochromeBuffer",
+      imageBuffer: uint8[][][]
+    }){
+      console.log("received imageBuffer", imageBuffer, "\n received ", new Date().toISOString() );
+      printLabel( imageBuffer );
+      return {
+        // __typename: "LabelMonochromeBuffer",
+        imageBuffer: imageBuffer,
+      };
     }
   }
 };

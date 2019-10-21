@@ -5,7 +5,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import { display } from '../ItemTable';
 import React from 'react';
 import { Modal } from 'antd';
-import { ItemsHardwareFastenerBolt, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltComponent } from '../../queries/types';
+import { ItemsHardwareFastenerBolt, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltComponent } from '../../types/graphql';
 import { useQuery } from '@apollo/react-hooks';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
 import { LabelText, DrawContext, FormatOptionsT, LabelImage, LabelQR } from '../ItemPrint';
@@ -100,24 +100,10 @@ interface QRCanvasProps {
     changeHandler: UpdateLabelQR
 }
 
-interface QRCanvasState {
-    canvasElement: HTMLCanvasElement
-    canvasDataURL: any
-    commitLabelQR: CommitLabelQR
-}
-
 type UpdateLabelQR = ( newValue: Partial<LabelQR>, labelQR: LabelQR ) => void;
 type CommitLabelQR = ( labelQR: LabelQR ) => void;
 
-class QRCanvas extends Component<QRCanvasProps, QRCanvasState> {
-
-    state = {
-        canvasElement: null,
-        canvasDataURL: null,
-        commitLabelQR: null
-    }
-
-    commitLabelQR: CommitLabelQR = null;
+class QRCanvas extends Component<QRCanvasProps> {
 
     componentDidMount () {
         console.log( "QREditModal componentDidMount" )
@@ -165,11 +151,6 @@ class QRCanvas extends Component<QRCanvasProps, QRCanvasState> {
         return (
             <DrawContext.Consumer>
                 {( { commitLabelQR } ) => {
-                    // if ( this.state.commitLabelQR != commitLabelQR ){
-                        console.log("setting state")
-                        // this.setState({commitLabelQR: commitLabelQR})
-                        this.commitLabelQR = commitLabelQR;
-                    // }
                     return <canvas
                         ref={this.setCanvasRef}
                         style={{ 

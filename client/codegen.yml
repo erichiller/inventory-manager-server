@@ -10,13 +10,18 @@ config:
         enumValues: change-case#upperCase
     # globalNamespace: true
     # operationResultSuffix: "xxx"
+    withComponent: true
+    withResultType: true
     dedupeOperationSuffix: true
     # withComponent: false
     reactApolloVersion: 3
 generates:
-    ./src/queries/types.tsx:
+    ./src/types/graphql.tsx:
         # documents: ./src/**/*.tsx
-        documents: ./src/queries/*.ts
+        documents:
+            - ./src/types/*.ts
+            - ./src/**/*.graphql
+            - ./src/**/*.gql
         plugins:
             - "typescript"
             - "typescript-operations"
