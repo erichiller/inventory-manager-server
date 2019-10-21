@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltProps } from '../queries/types';
+import { withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltProps } from '../types/graphql';
 
 
 

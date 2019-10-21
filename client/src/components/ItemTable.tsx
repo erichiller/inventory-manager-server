@@ -2,7 +2,7 @@ import { Table, Divider } from 'antd';
 import React = require('react');
 import { graphql, ChildProps } from '@apollo/react-hoc';
 import { ColumnProps } from 'antd/es/table';
-import { ItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltQueryResult, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltProps, ItemsHardwareFastenerBoltDocument, ItemsHardwareFastenerBoltSelectColumn } from '../queries/types'
+import { ItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltQueryResult, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltProps, ItemsHardwareFastenerBoltDocument, ItemsHardwareFastenerBoltSelectColumn } from '../types/graphql'
 
 import { LabelDrawModal } from './ItemPrint';
 

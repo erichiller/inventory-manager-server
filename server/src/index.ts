@@ -32,6 +32,9 @@ try {
     }
 
     server = serverInstance;
+  })
+  .catch(e => {
+    console.error(e)
   });
 } catch (e) {
   console.error(e);

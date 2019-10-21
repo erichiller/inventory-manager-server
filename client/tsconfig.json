@@ -1,11 +1,16 @@
 {
-    "extends": "../tsconfig",
     "compilerOptions": {
         "outDir": "../dist/client/",
         "target": "es5",
         "skipLibCheck": true,
         "module": "commonjs",
-        "jsx": "react"
+        "jsx": "react",
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "esModuleInterop": true
     },
     "include": [
         "src/**/*",

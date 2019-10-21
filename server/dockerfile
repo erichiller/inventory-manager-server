@@ -1,14 +1,19 @@
-# https://medium.com/@andyccs/webpack-and-docker-for-development-and-deployment-ae0e73243db4
-FROM node:alpine
+# escape=`
+
+FROM stefanscherer/node-windows:10.16.3-windowsservercore-2019
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 WORKDIR /tmp
 COPY package.json /tmp/
-RUN npm config set registry http://registry.npmjs.org/ && npm install
+RUN npm config set registry http://registry.npmjs.org/ ; `
+    npm install
 
 WORKDIR /app
-RUN cp -a /tmp/node_modules /app/
+RUN Copy-Item -Recurse /tmp/node_modules /app/
 COPY package.json /app/
 COPY tsconfig.json /app/
+COPY src /app/src
 
 CMD npm run-script run
 EXPOSE 8080

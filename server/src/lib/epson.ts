@@ -6,7 +6,18 @@
 import { ThermalPrinter , PrinterTypes } from '../deps/node-thermal-printer';
 // import tprint from 'node-thermal-printer';
 
+
+import {uint8} from '../schema/type_uint8'
+
 import * as config from '../config'
+
+
+
+
+function buf2hex ( buffer ) { // buffer is an ArrayBuffer
+    return Array.prototype.map.call( new Uint8Array( buffer ), x => ( '00' + x.toString( 16 ) ).slice( -2 ) ).join( '' );
+}
+
 
 /**
  * run with:
@@ -208,27 +219,35 @@ class BrotherLabeler {
      * @remarks
      * 1 dot = 1 "pixel"
      */
-    imageMode73Density(imageLinesBuf: Buffer[]): Buffer {
+    // imageMode73Density ( imageLinesBuf: Buffer[] ): Buffer {
+    imageMode73Density(imageLinesBuf: uint8[][][] | Array<Buffer>): Buffer {
         let outputLinesBuf: Buffer = Buffer.from([]);
         imageLinesBuf.forEach(buf => {
-            let dotPositions = buf.byteLength / ImageBitMode.mode73.bytesMultiple;
-            let n1 = (dotPositions % 256);
-            let n2 = (Math.floor(dotPositions / 256));
-            console.log(`sending image line of size ${buf.byteLength} bytes , ${dotPositions} positions [ ${n1} , ${n2} ]`);
-            outputLinesBuf = Buffer.concat([
-                outputLinesBuf,
-                Buffer.from([
-                    0x1b,
-                    0x2a,
-                    73,
-                    n1,
-                    n2,
-                ]),
-                buf,
-                this.newline
-            ])
+            if ( ! Buffer.isBuffer(buf) ){
+                buf = Buffer.from((Array.isArray(buf) ? buf.flat() : buf) );
+            }
+            if ( Buffer.isBuffer( buf ) ) {
+                let dotPositions = buf.byteLength / ImageBitMode.mode73.bytesMultiple;
+                let n1 = ( dotPositions % 256 );
+                let n2 = ( Math.floor( dotPositions / 256 ) );
+                console.log( `sending image line of size ${ buf.byteLength } bytes , ${ dotPositions } positions [ ${ n1 } , ${ n2 } ]` );
+                outputLinesBuf = Buffer.concat( [
+                    outputLinesBuf,
+                    Buffer.from( [
+                        0x1b,
+                        0x2a,
+                        73,
+                        n1,
+                        n2,
+                    ] ),
+                    buf,
+                    this.newline
+                ] )
+            } else {
+                throw `Invalid buffer ${buf}`;
+            }
         });
-
+        console.log( "imageMode73Density is returning:", buf2hex(outputLinesBuf) );
         return outputLinesBuf;
     }
 
@@ -248,7 +267,12 @@ class BrotherLabeler {
 }
 
 
-async function example() {
+
+/**
+ * 
+ * @param inputBuffer Array of Buffers or Array of uint8[][][]
+ */
+export async function print ( inputBuffer: Array<Array<Array<uint8>>> | Array<Buffer>) {
     let printer = new ThermalPrinter({
         type: PrinterTypes.EPSON,  // 'star' or 'epson'
         interface: `tcp://${config.PRINTER_HOST}:9100`,                       // Printer interface
@@ -316,7 +340,8 @@ async function example() {
         imageData
     ]);
 
-    let imageBuf73 = labeler.imageMode73Density(labeler.imageMode73DensityTestData());
+    let imageBuf73 = labeler.imageMode73Density( inputBuffer );
+    // let imageBuf73 = labeler.imageMode73Density(labeler.imageMode73DensityTestData());
     console.log(`imageBuf73 is ${imageBuf73.byteLength} bytes in length`)
 
     try {
@@ -347,8 +372,8 @@ async function example() {
 
                     0x1b, 0x24, 0, 0,                // specify horizontal position
                 ]),
-                imageBuf,
-                labeler.newline,
+                // imageBuf,
+                // labeler.newline,
                 imageBuf73,
 
                 // labeler.newline,
@@ -512,4 +537,7 @@ async function example() {
 //   } catch (error) {
 //     console.error("Print error:", error);
 //   }
-example();
+
+
+// example
+// print( new BrotherLabeler().imageMode73DensityTestData() );
