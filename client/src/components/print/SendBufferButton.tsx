@@ -5,18 +5,19 @@ import { PixelMap } from "../ItemPrint";
 
 
 
-interface SendBufferProps {
+interface SendBufferButtonProps {
+    value: string
     buffer: PixelMap
     onClick: (boolean) => void
 }
 
 
 
-export class SendBuffer extends React.Component<SendBufferProps> {
+export default class SendBufferButton extends React.Component<SendBufferButtonProps> {
 
 
     render () {
-        const { buffer, onClick } = this.props;
+        const { buffer, value , onClick } = this.props;
 
 
         return (
@@ -47,7 +48,7 @@ export class SendBuffer extends React.Component<SendBufferProps> {
                     if ( data ) {
                         console.log( "SendBuffer data received", data )
                     }
-                    return < Button icon="printer" onClick={() => onClick(true)} id="PRINT2" > Print2</Button>
+                    return < Button icon="printer" onClick={() => onClick(true)} id={value} >{value}</Button>
                 }}
             </SendBufferComponent >
 

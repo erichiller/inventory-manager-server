@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 
 import Konva from 'konva';
-import { Stage, Layer, Star, Text, Image } from 'react-konva';
+import { Stage, Layer, Star, Text, Image, Rect } from 'react-konva';
 
 import { withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltProps, Items, ItemsHardwareFastenerBolt } from '../types/graphql';
 import { Modal, Descriptions } from 'antd';
@@ -17,7 +17,7 @@ import useImage from 'use-image';
 
 import { v4 as UUIDv4 } from 'uuid';
 import QREditModal from './draw/QREditModal';
-import { SendBuffer } from './print/SendBuffer';
+import SendBufferButton from './print/SendBufferButton';
 import { uint8 } from '../types/uint8';
 import Spin from 'antd/es/spin';
 import {buf2hex} from '../lib/helpers';
@@ -31,6 +31,11 @@ export default withItemsHardwareFastenerBolt()(
     }
 )
 
+interface LabelExport {
+    texts: LabelText[]
+    images: LabelImage[]
+    qrs: LabelQR[]
+}
 
 interface LabelDrawModalProps {
     visibleHandler: ( d?: display ) => boolean
@@ -61,8 +66,8 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
         console.log( 'item keys', Object.keys( item ) )
         // let drawWidth = 725;
         // let drawHeight = 225;
-        let drawWidth = 10;
-        let drawHeight = 10;
+        let drawWidth = 48;
+        let drawHeight = 48;
         return (
             <Modal
                 visible={visible == display.VISIBLE}
@@ -70,7 +75,7 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
                 okText="Create"
                 onCancel={this.onCancel}
                 onOk={this.onCreate}
-                width={drawWidth > 300 ? drawWidth + 25 : 350 }
+                width={drawWidth > 500 ? drawWidth + 25 : 525 }
             >
                 {item.name}
                 <Descriptions title="Properties" column={1} bordered={true}>
@@ -508,8 +513,8 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
 
     toBuffer = (): PixelMap => {
         // const widthInches = 0.55;
-        const widthInches = 10/360;
-        const heightInches = 10/360;
+        const widthInches = 48/360;
+        const heightInches = 48/360;
         // const heightInches = 0.2
 
         const dpi = 360;
@@ -518,23 +523,58 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         const heightDots = Math.floor( dpi * heightInches );
 
         const pxlPerLine = 6 * 8; // ( 6 bytes, will be packed as 1 pixel = 1 bit in line = 1 dot (in mode73))
+        const bytesPerLine = pxlPerLine / 8;
         const linesCount = Math.ceil( heightDots / pxlPerLine );
 
         if ( pxlPerLine % 8 != 0 ) {
             throw Error( "There can not be a non 8 multiple amount of pxlPerLine" )
         }
-        const bytesPerLine = pxlPerLine / 8;
 
         const canvasContext = this.state.stageRef.getStage().toCanvas( {} ).getContext( "2d" );
         const imgData = canvasContext.getImageData( 0, 0, this.state.stageRef.getStage().toCanvas( {} ).width, this.state.stageRef.getStage().toCanvas( {} ).height );
 
         // let buf: PixelMap = new Array( new Array( new Uint8ClampedArray( bytesPerLine ) ) );
-        let buf: PixelMap = new Array( 
-            linesCount).fill( 
-                new Array( widthDots).fill(
-                    new Array( bytesPerLine ).fill(0 as uint8, 0, bytesPerLine)
-                , 0, widthDots )
-            , 0, linesCount );
+        // let buf: PixelMap = new Array( 
+        //     linesCount).fill( 
+        //         new Array( widthDots ).fill(
+        //             new Array( bytesPerLine ).fill(0 as uint8, 0, bytesPerLine)
+        //         , 0, widthDots )
+        //     , 0, linesCount );
+
+
+
+        // let buf: PixelMap = new Array( linesCount ).fill().map( line => {
+        //     new Array( widthDots ).map( col => {
+
+        //         new Array( bytesPerLine ).fill( 0 as uint8, 0, bytesPerLine )
+
+        //     } )
+        // });
+
+        let buf: PixelMap = [];
+        for ( let line = 0; line < linesCount; line++){
+            buf[line] = [];
+            for (let col = 0; col < widthDots; col++){
+                buf[line][col] = [];
+                for (let byte = 0; byte < bytesPerLine; byte ++){
+                    buf[line][col][byte] = 0;
+                }
+            }
+
+        }
+
+        console.log("0 buffer", buf);
+
+        let str = "";
+        buf.forEach( line => {
+            line.forEach( col => {
+                col.forEach( byte => {
+                    str += byte.toString( 2 ).padStart( 8, "0" );
+                } )
+                str += "\n";
+            } )
+        } )
+        console.log( "buffer: buf, str", buf, str );
 
         // const BUF_LENGTH = bytesPerLine * widthDots * linesCount;
         // let buf: Uint8ClampedArray = new Uint8ClampedArray( BUF_LENGTH );
@@ -563,8 +603,12 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             imageData.length/4                  = ${imgData.data.length/4}
             imageData.length/4/imgData.width    = ${ ( imgData.data.length / 4 / imgData.width ) }
             widthDots                           = ${ widthDots }
+            heightDots                          = ${ heightDots }
+            pxlPerLine                          = ${ pxlPerLine }
+            bytesPerLine                        = ${ bytesPerLine }
+            linesCount                          = ${ linesCount }
             `);
-
+        
         // const setBufByte = (buf: Uint8ClampedArray, value: uint8, line: number, col: number, lineByte: number): Uint8ClampedArray {
         //     if ( line >= linesCount ) { throw `line number (${ line }) cannot be equal to or greater than ${ linesCount }`; }
         //     if ( col >= widthDots ) { throw `col number (${ col }) cannot be equal to or greater than ${ widthDots }`; }
@@ -579,8 +623,10 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         ARGGG Javascript only does Bit math in 32 bits. doing `1 << 33` is the same as `1 << 1`
         */
         for ( let i = 0, pxl = 0; i < imgData.data.length && i < ( widthDots * heightDots * 4 ); i += 4, pxl++ ) {
-            let col = pxl % widthDots;
+        // for ( let i = 0, pxl = 0; i < imgData.data.length && i < ( widthDots * heightDots * 4 ) && i < 104*4; i += 4, pxl++ ) {
             let row = Math.floor( pxl / widthDots );
+            let col = pxl % widthDots;
+            // console.log( "col=", col )
 
             let line = Math.floor( row / pxlPerLine );
             // let linebit = (pxlPerLine - 1) - (row % pxlPerLine);
@@ -608,7 +654,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             //     "\n", `line=${ line } col=${ col } lineByte=${ lineByte }`, buf[ line ][ col ][ lineByte ] ? true : false, buf[ line ][ col ].length, buf[ line ][ col ][ lineByte ],
             //     "\n", "set to:", [ ( buf[ line ][ col ][ lineByte ] ? buf[ line ][ col ][ lineByte ] : 0 ) | ( isBlack << byteBit ) ],
             //     "\n", ( isBlack << byteBit ) )
-            // console.log( buf[ line ][ col ][ lineByte ] )
+            // console.log( `${ pxl.toString().padStart( 4, "0" ) } ( ${ Math.floor( pxl / widthDots ).toString().padStart( 4, "0" ) } ) ${ ( pxl % widthDots ).toString().padStart( 4, "0" ) } : buf[${ line.toString().padStart( 2, "0" ) }][${ col.toString().padStart( 2, "0" ) }][${ lineByte.toString().padStart( 2, "0" ) }] = (${ i }) = ${ isBlack } from byte ${ i.toString().padStart( 4, "0" ) }+${ byteBit } ${ imgData.data[ i ] },${ imgData.data[ i + 1 ] },${ imgData.data[ i + 2 ] },${ imgData.data[ i + 3 ] } [ ${ Math.floor( pxl / imgData.width ) }, ${ pxl % imgData.width } ] → [ ${ col }, ${ row } ] ; ${ ( buf[ line ][ col ][ lineByte ] ).toString( 2 ).padStart( 8, "0" )} (${  buf[ line ][ col ][ lineByte ]  ? true : false }) | ${ (isBlack << byteBit).toString( 2 ).padStart( 8, "0")}` )
             // buf[ line ][ col ][ lineByte ] = ( buf[ line ][ col ][ lineByte ] ? buf[ line ][ col ][ lineByte ] : 0 ) | ( isBlack << byteBit )
             buf[ line ][ col ][ lineByte ] = ( ( buf[ line ][ col ][ lineByte ] ? buf[ line ][ col ][ lineByte ] : 0 ) | ( isBlack << byteBit ) ) as uint8;
             
@@ -621,15 +667,29 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         console.log(imgData.data);
         console.log( "buf2hex (imgData):", buf2hex( imgData.data ) );
         // console.log( "buf2hex ( buf ):", Buffer.from( ( Array.isArray( buf ) ? buf[0]. : buf ) ); );
-        buf.forEach( line => (
-            line.forEach(col => {
-                console.log( buf2hex( Buffer.from( col ) ) );
+        // buf.forEach( bufLine => (
+        //     bufLine.forEach(bufCol => {
+        //         console.log( buf2hex( Buffer.from( bufCol ) ) );
 
-                // row.forEach( byte => {
-                //     console.log( buf2hex( Buffer.from( byte ) ) );
-                // })
-            })
-        ));
+        //         // row.forEach( byte => {
+        //         //     console.log( buf2hex( Buffer.from( byte ) ) );
+        //         // })
+        //     })
+        // ));
+
+
+        let binstr = "";
+        let hexstr = "";
+        buf.forEach( line => {
+            line.forEach( col => {
+                col.forEach( byte => {
+                    binstr += byte.toString( 2 ).padStart( 8, "0" );
+                    hexstr += byte.toString(16).padStart( 2, "0");
+                } )
+                binstr += "\n";
+            } )
+        } )
+        console.log( "buffer", buf, "\n" + binstr + "\n" + hexstr );
 
         // console.log(buf.)
 
@@ -638,6 +698,16 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
 
     startSendBuffer = (shouldSendBuffer: boolean) => {
         this.setState( { shouldSendBuffer: shouldSendBuffer } );
+    }
+
+    exportLabel = (): LabelExport =>  {
+        return {
+            texts: this.state.texts,
+            images: this.state.images,
+            qrs: this.state.qrs
+        }
+        // this.state.texts.forEach( textObj => )
+
     }
 
     render () {
@@ -668,6 +738,18 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                         ref={this.setRef}
                         height={height}>
                         <Layer>
+
+                            {/* Debug Rectangle 
+                            <Rect
+                                x={1}
+                                y={1}
+                                width={1}
+                                height={3}
+                                fill='black'
+                                ></Rect>
+                    
+                            {/* END DEBUG */}
+
                             {this.state.texts.map( labelText => {
                                 console.log( "drawing new labelText", labelText )
                                 return <Text
@@ -724,9 +806,14 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                         <Button icon="qrcode" onClick={this.displayQREditModal} id="ADD_QR">Add QR</Button>
                         <Button icon="picture" onClick={this.displayImageSelectModal} id="ADD_IMAGE">Add Image</Button>
                         {/* <Button icon="printer" onClick={this.startSendBuffer} id="PRINT">Print</Button> */}
-                        <Spin spinning={this.state.shouldSendBuffer}><SendBuffer onClick={this.startSendBuffer} buffer={this.state.shouldSendBuffer ? this.toBuffer() : null} /></Spin>
+                        <Spin spinning={this.state.shouldSendBuffer}>
+                            <SendBufferButton value="Print" onClick={this.startSendBuffer} buffer={this.state.shouldSendBuffer ? this.toBuffer() : null} />
+                        </Spin>
 
-                        <Button icon="medicine-box" onClick={() => console.log(this.toBuffer())} id="DEBUG">DEBUG</Button>
+                        <Button icon="medicine-box" onClick={() => {
+                            console.log(this.toBuffer());
+                            console.log( JSON.stringify(this.exportLabel()));
+                        }} id="DEBUG">DEBUG</Button>
                     </div>
                     {/* {this.state.shouldSendBuffer ?
                         <SendBuffer buffer={this.toBuffer()} />

@@ -226,6 +226,15 @@ $top_align: 20px;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+
+/** INVENTORY **/
+.ant-spin-nested-loading {
+  display: inline;
+  & .ant-spin-container {
+    display: inline;
+  }
+}
+
 /*
 See
   ant-tag
@@ -234,3 +243,5 @@ See
   ant-page-header-heading-sub-title
   ant-page-header-heading-title
 */
+
+
