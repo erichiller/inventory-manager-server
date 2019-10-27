@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
-import * as React from 'react';
 import * as ApolloReactCommon from '@apollo/react-common';
+import * as React from 'react';
 import * as ApolloReactComponents from '@apollo/react-components';
 import * as ApolloReactHoc from '@apollo/react-hoc';
 export type Maybe<T> = T | null;
@@ -14,6 +14,8 @@ export type Scalars = {
   Float: number,
   date: any,
   money: any,
+  timestamptz: any,
+  uuid: any,
   numeric: any,
   /** uint8 (unsigned int between 0 and 255) scalar type for Apollo GraphQL */
   uint8: any,
@@ -791,6 +793,159 @@ export enum EnumHardwareFinishUpdateColumn {
   ID = 'id'
 }
 
+/** columns and relationships of "enum.icon_category" */
+export type EnumIconCategory = {
+   __typename?: 'enum_icon_category',
+  description?: Maybe<Scalars['String']>,
+  id: Scalars['String'],
+};
+
+/** aggregated selection of "enum.icon_category" */
+export type EnumIconCategoryAggregate = {
+   __typename?: 'enum_icon_category_aggregate',
+  aggregate?: Maybe<EnumIconCategoryAggregateFields>,
+  nodes: Array<EnumIconCategory>,
+};
+
+/** aggregate fields of "enum.icon_category" */
+export type EnumIconCategoryAggregateFields = {
+   __typename?: 'enum_icon_category_aggregate_fields',
+  count?: Maybe<Scalars['Int']>,
+  max?: Maybe<EnumIconCategoryMaxFields>,
+  min?: Maybe<EnumIconCategoryMinFields>,
+};
+
+
+/** aggregate fields of "enum.icon_category" */
+export type EnumIconCategoryAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<EnumIconCategorySelectColumn>>,
+  distinct?: Maybe<Scalars['Boolean']>
+};
+
+/** order by aggregate values of table "enum.icon_category" */
+export type EnumIconCategoryAggregateOrderBy = {
+  count?: Maybe<OrderBy>,
+  max?: Maybe<EnumIconCategoryMaxOrderBy>,
+  min?: Maybe<EnumIconCategoryMinOrderBy>,
+};
+
+/** input type for inserting array relation for remote table "enum.icon_category" */
+export type EnumIconCategoryArrRelInsertInput = {
+  data: Array<EnumIconCategoryInsertInput>,
+  on_conflict?: Maybe<EnumIconCategoryOnConflict>,
+};
+
+/** Boolean expression to filter rows from the table "enum.icon_category". All fields are combined with a logical 'AND'. */
+export type EnumIconCategoryBoolExp = {
+  _and?: Maybe<Array<Maybe<EnumIconCategoryBoolExp>>>,
+  _not?: Maybe<EnumIconCategoryBoolExp>,
+  _or?: Maybe<Array<Maybe<EnumIconCategoryBoolExp>>>,
+  description?: Maybe<StringComparisonExp>,
+  id?: Maybe<StringComparisonExp>,
+};
+
+/** unique or primary key constraints on table "enum.icon_category" */
+export enum EnumIconCategoryConstraint {
+  /** unique or primary key constraint */
+  ICON_CATEGORY_ID_KEY = 'icon_category_id_key',
+  /** unique or primary key constraint */
+  ICON_CATEGORY_PKEY = 'icon_category_pkey'
+}
+
+export enum EnumIconCategoryEnum {
+  HARDWAREFASTENER = 'HardwareFastener'
+}
+
+/** expression to compare columns of type enum_icon_category_enum. All fields are combined with logical 'AND'. */
+export type EnumIconCategoryEnumComparisonExp = {
+  _eq?: Maybe<EnumIconCategoryEnum>,
+  _in?: Maybe<Array<EnumIconCategoryEnum>>,
+  _is_null?: Maybe<Scalars['Boolean']>,
+  _neq?: Maybe<EnumIconCategoryEnum>,
+  _nin?: Maybe<Array<EnumIconCategoryEnum>>,
+};
+
+/** input type for inserting data into table "enum.icon_category" */
+export type EnumIconCategoryInsertInput = {
+  description?: Maybe<Scalars['String']>,
+  id?: Maybe<Scalars['String']>,
+};
+
+/** aggregate max on columns */
+export type EnumIconCategoryMaxFields = {
+   __typename?: 'enum_icon_category_max_fields',
+  description?: Maybe<Scalars['String']>,
+  id?: Maybe<Scalars['String']>,
+};
+
+/** order by max() on columns of table "enum.icon_category" */
+export type EnumIconCategoryMaxOrderBy = {
+  description?: Maybe<OrderBy>,
+  id?: Maybe<OrderBy>,
+};
+
+/** aggregate min on columns */
+export type EnumIconCategoryMinFields = {
+   __typename?: 'enum_icon_category_min_fields',
+  description?: Maybe<Scalars['String']>,
+  id?: Maybe<Scalars['String']>,
+};
+
+/** order by min() on columns of table "enum.icon_category" */
+export type EnumIconCategoryMinOrderBy = {
+  description?: Maybe<OrderBy>,
+  id?: Maybe<OrderBy>,
+};
+
+/** response of any mutation on the table "enum.icon_category" */
+export type EnumIconCategoryMutationResponse = {
+   __typename?: 'enum_icon_category_mutation_response',
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'],
+  /** data of the affected rows by the mutation */
+  returning: Array<EnumIconCategory>,
+};
+
+/** input type for inserting object relation for remote table "enum.icon_category" */
+export type EnumIconCategoryObjRelInsertInput = {
+  data: EnumIconCategoryInsertInput,
+  on_conflict?: Maybe<EnumIconCategoryOnConflict>,
+};
+
+/** on conflict condition type for table "enum.icon_category" */
+export type EnumIconCategoryOnConflict = {
+  constraint: EnumIconCategoryConstraint,
+  update_columns: Array<EnumIconCategoryUpdateColumn>,
+};
+
+/** ordering options when selecting data from "enum.icon_category" */
+export type EnumIconCategoryOrderBy = {
+  description?: Maybe<OrderBy>,
+  id?: Maybe<OrderBy>,
+};
+
+/** select columns of table "enum.icon_category" */
+export enum EnumIconCategorySelectColumn {
+  /** column name */
+  DESCRIPTION = 'description',
+  /** column name */
+  ID = 'id'
+}
+
+/** input type for updating data in table "enum.icon_category" */
+export type EnumIconCategorySetInput = {
+  description?: Maybe<Scalars['String']>,
+  id?: Maybe<Scalars['String']>,
+};
+
+/** update columns of table "enum.icon_category" */
+export enum EnumIconCategoryUpdateColumn {
+  /** column name */
+  DESCRIPTION = 'description',
+  /** column name */
+  ID = 'id'
+}
+
 /** columns and relationships of "enum.unit" */
 export type EnumUnit = {
    __typename?: 'enum_unit',
@@ -946,10 +1101,195 @@ export enum EnumUnitUpdateColumn {
 
 export type File = {
    __typename?: 'File',
+  base64: Scalars['String'],
   name: Scalars['String'],
   path: Scalars['String'],
   type: Scalars['String'],
 };
+
+/** columns and relationships of "icons" */
+export type Icons = {
+   __typename?: 'icons',
+  category: EnumIconCategoryEnum,
+  created_at: Scalars['timestamptz'],
+  data: Scalars['String'],
+  description?: Maybe<Scalars['String']>,
+  id: Scalars['uuid'],
+  label?: Maybe<Scalars['String']>,
+};
+
+/** aggregated selection of "icons" */
+export type IconsAggregate = {
+   __typename?: 'icons_aggregate',
+  aggregate?: Maybe<IconsAggregateFields>,
+  nodes: Array<Icons>,
+};
+
+/** aggregate fields of "icons" */
+export type IconsAggregateFields = {
+   __typename?: 'icons_aggregate_fields',
+  count?: Maybe<Scalars['Int']>,
+  max?: Maybe<IconsMaxFields>,
+  min?: Maybe<IconsMinFields>,
+};
+
+
+/** aggregate fields of "icons" */
+export type IconsAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<IconsSelectColumn>>,
+  distinct?: Maybe<Scalars['Boolean']>
+};
+
+/** order by aggregate values of table "icons" */
+export type IconsAggregateOrderBy = {
+  count?: Maybe<OrderBy>,
+  max?: Maybe<IconsMaxOrderBy>,
+  min?: Maybe<IconsMinOrderBy>,
+};
+
+/** input type for inserting array relation for remote table "icons" */
+export type IconsArrRelInsertInput = {
+  data: Array<IconsInsertInput>,
+  on_conflict?: Maybe<IconsOnConflict>,
+};
+
+/** Boolean expression to filter rows from the table "icons". All fields are combined with a logical 'AND'. */
+export type IconsBoolExp = {
+  _and?: Maybe<Array<Maybe<IconsBoolExp>>>,
+  _not?: Maybe<IconsBoolExp>,
+  _or?: Maybe<Array<Maybe<IconsBoolExp>>>,
+  category?: Maybe<EnumIconCategoryEnumComparisonExp>,
+  created_at?: Maybe<TimestamptzComparisonExp>,
+  data?: Maybe<StringComparisonExp>,
+  description?: Maybe<StringComparisonExp>,
+  id?: Maybe<UuidComparisonExp>,
+  label?: Maybe<StringComparisonExp>,
+};
+
+/** unique or primary key constraints on table "icons" */
+export enum IconsConstraint {
+  /** unique or primary key constraint */
+  ICONS_ID_KEY = 'icons_id_key',
+  /** unique or primary key constraint */
+  ICONS_PKEY = 'icons_pkey'
+}
+
+/** input type for inserting data into table "icons" */
+export type IconsInsertInput = {
+  category?: Maybe<EnumIconCategoryEnum>,
+  created_at?: Maybe<Scalars['timestamptz']>,
+  data?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
+  id?: Maybe<Scalars['uuid']>,
+  label?: Maybe<Scalars['String']>,
+};
+
+/** aggregate max on columns */
+export type IconsMaxFields = {
+   __typename?: 'icons_max_fields',
+  created_at?: Maybe<Scalars['timestamptz']>,
+  data?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+};
+
+/** order by max() on columns of table "icons" */
+export type IconsMaxOrderBy = {
+  created_at?: Maybe<OrderBy>,
+  data?: Maybe<OrderBy>,
+  description?: Maybe<OrderBy>,
+  label?: Maybe<OrderBy>,
+};
+
+/** aggregate min on columns */
+export type IconsMinFields = {
+   __typename?: 'icons_min_fields',
+  created_at?: Maybe<Scalars['timestamptz']>,
+  data?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
+  label?: Maybe<Scalars['String']>,
+};
+
+/** order by min() on columns of table "icons" */
+export type IconsMinOrderBy = {
+  created_at?: Maybe<OrderBy>,
+  data?: Maybe<OrderBy>,
+  description?: Maybe<OrderBy>,
+  label?: Maybe<OrderBy>,
+};
+
+/** response of any mutation on the table "icons" */
+export type IconsMutationResponse = {
+   __typename?: 'icons_mutation_response',
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'],
+  /** data of the affected rows by the mutation */
+  returning: Array<Icons>,
+};
+
+/** input type for inserting object relation for remote table "icons" */
+export type IconsObjRelInsertInput = {
+  data: IconsInsertInput,
+  on_conflict?: Maybe<IconsOnConflict>,
+};
+
+/** on conflict condition type for table "icons" */
+export type IconsOnConflict = {
+  constraint: IconsConstraint,
+  update_columns: Array<IconsUpdateColumn>,
+};
+
+/** ordering options when selecting data from "icons" */
+export type IconsOrderBy = {
+  category?: Maybe<OrderBy>,
+  created_at?: Maybe<OrderBy>,
+  data?: Maybe<OrderBy>,
+  description?: Maybe<OrderBy>,
+  id?: Maybe<OrderBy>,
+  label?: Maybe<OrderBy>,
+};
+
+/** select columns of table "icons" */
+export enum IconsSelectColumn {
+  /** column name */
+  CATEGORY = 'category',
+  /** column name */
+  CREATED_AT = 'created_at',
+  /** column name */
+  DATA = 'data',
+  /** column name */
+  DESCRIPTION = 'description',
+  /** column name */
+  ID = 'id',
+  /** column name */
+  LABEL = 'label'
+}
+
+/** input type for updating data in table "icons" */
+export type IconsSetInput = {
+  category?: Maybe<EnumIconCategoryEnum>,
+  created_at?: Maybe<Scalars['timestamptz']>,
+  data?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
+  id?: Maybe<Scalars['uuid']>,
+  label?: Maybe<Scalars['String']>,
+};
+
+/** update columns of table "icons" */
+export enum IconsUpdateColumn {
+  /** column name */
+  CATEGORY = 'category',
+  /** column name */
+  CREATED_AT = 'created_at',
+  /** column name */
+  DATA = 'data',
+  /** column name */
+  DESCRIPTION = 'description',
+  /** column name */
+  ID = 'id',
+  /** column name */
+  LABEL = 'label'
+}
 
 /** expression to compare columns of type Int. All fields are combined with logical 'AND'. */
 export type IntComparisonExp = {
@@ -1967,8 +2307,12 @@ export type MutationRoot = {
   delete_enum_hardware_fastener_screw_point?: Maybe<EnumHardwareFastenerScrewPointMutationResponse>,
   /** delete data from the table: "enum.hardware_finish" */
   delete_enum_hardware_finish?: Maybe<EnumHardwareFinishMutationResponse>,
+  /** delete data from the table: "enum.icon_category" */
+  delete_enum_icon_category?: Maybe<EnumIconCategoryMutationResponse>,
   /** delete data from the table: "enum.unit" */
   delete_enum_unit?: Maybe<EnumUnitMutationResponse>,
+  /** delete data from the table: "icons" */
+  delete_icons?: Maybe<IconsMutationResponse>,
   /** delete data from the table: "items_hardware_fastener_bolt" */
   delete_items_hardware_fastener_bolt?: Maybe<ItemsHardwareFastenerBoltMutationResponse>,
   /** delete data from the table: "items_hardware_nut" */
@@ -1983,8 +2327,12 @@ export type MutationRoot = {
   insert_enum_hardware_fastener_screw_point?: Maybe<EnumHardwareFastenerScrewPointMutationResponse>,
   /** insert data into the table: "enum.hardware_finish" */
   insert_enum_hardware_finish?: Maybe<EnumHardwareFinishMutationResponse>,
+  /** insert data into the table: "enum.icon_category" */
+  insert_enum_icon_category?: Maybe<EnumIconCategoryMutationResponse>,
   /** insert data into the table: "enum.unit" */
   insert_enum_unit?: Maybe<EnumUnitMutationResponse>,
+  /** insert data into the table: "icons" */
+  insert_icons?: Maybe<IconsMutationResponse>,
   /** insert data into the table: "items_hardware_fastener_bolt" */
   insert_items_hardware_fastener_bolt?: Maybe<ItemsHardwareFastenerBoltMutationResponse>,
   /** insert data into the table: "items_hardware_nut" */
@@ -2000,8 +2348,12 @@ export type MutationRoot = {
   update_enum_hardware_fastener_screw_point?: Maybe<EnumHardwareFastenerScrewPointMutationResponse>,
   /** update data of the table: "enum.hardware_finish" */
   update_enum_hardware_finish?: Maybe<EnumHardwareFinishMutationResponse>,
+  /** update data of the table: "enum.icon_category" */
+  update_enum_icon_category?: Maybe<EnumIconCategoryMutationResponse>,
   /** update data of the table: "enum.unit" */
   update_enum_unit?: Maybe<EnumUnitMutationResponse>,
+  /** update data of the table: "icons" */
+  update_icons?: Maybe<IconsMutationResponse>,
   /** update data of the table: "items_hardware_fastener_bolt" */
   update_items_hardware_fastener_bolt?: Maybe<ItemsHardwareFastenerBoltMutationResponse>,
   /** update data of the table: "items_hardware_nut" */
@@ -2037,8 +2389,20 @@ export type MutationRootDeleteEnumHardwareFinishArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteEnumIconCategoryArgs = {
+  where: EnumIconCategoryBoolExp
+};
+
+
+/** mutation root */
 export type MutationRootDeleteEnumUnitArgs = {
   where: EnumUnitBoolExp
+};
+
+
+/** mutation root */
+export type MutationRootDeleteIconsArgs = {
+  where: IconsBoolExp
 };
 
 
@@ -2089,9 +2453,23 @@ export type MutationRootInsertEnumHardwareFinishArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertEnumIconCategoryArgs = {
+  objects: Array<EnumIconCategoryInsertInput>,
+  on_conflict?: Maybe<EnumIconCategoryOnConflict>
+};
+
+
+/** mutation root */
 export type MutationRootInsertEnumUnitArgs = {
   objects: Array<EnumUnitInsertInput>,
   on_conflict?: Maybe<EnumUnitOnConflict>
+};
+
+
+/** mutation root */
+export type MutationRootInsertIconsArgs = {
+  objects: Array<IconsInsertInput>,
+  on_conflict?: Maybe<IconsOnConflict>
 };
 
 
@@ -2151,9 +2529,23 @@ export type MutationRootUpdateEnumHardwareFinishArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateEnumIconCategoryArgs = {
+  _set?: Maybe<EnumIconCategorySetInput>,
+  where: EnumIconCategoryBoolExp
+};
+
+
+/** mutation root */
 export type MutationRootUpdateEnumUnitArgs = {
   _set?: Maybe<EnumUnitSetInput>,
   where: EnumUnitBoolExp
+};
+
+
+/** mutation root */
+export type MutationRootUpdateIconsArgs = {
+  _set?: Maybe<IconsSetInput>,
+  where: IconsBoolExp
 };
 
 
@@ -2639,6 +3031,12 @@ export type QueryRoot = {
   enum_hardware_finish_aggregate: EnumHardwareFinishAggregate,
   /** fetch data from the table: "enum.hardware_finish" using primary key columns */
   enum_hardware_finish_by_pk?: Maybe<EnumHardwareFinish>,
+  /** fetch data from the table: "enum.icon_category" */
+  enum_icon_category: Array<EnumIconCategory>,
+  /** fetch aggregated fields from the table: "enum.icon_category" */
+  enum_icon_category_aggregate: EnumIconCategoryAggregate,
+  /** fetch data from the table: "enum.icon_category" using primary key columns */
+  enum_icon_category_by_pk?: Maybe<EnumIconCategory>,
   /** fetch data from the table: "enum.unit" */
   enum_unit: Array<EnumUnit>,
   /** fetch aggregated fields from the table: "enum.unit" */
@@ -2646,6 +3044,12 @@ export type QueryRoot = {
   /** fetch data from the table: "enum.unit" using primary key columns */
   enum_unit_by_pk?: Maybe<EnumUnit>,
   files?: Maybe<Array<Maybe<File>>>,
+  /** fetch data from the table: "icons" */
+  icons: Array<Icons>,
+  /** fetch aggregated fields from the table: "icons" */
+  icons_aggregate: IconsAggregate,
+  /** fetch data from the table: "icons" using primary key columns */
+  icons_by_pk?: Maybe<Icons>,
   /** fetch data from the table: "items" */
   items: Array<Items>,
   /** fetch aggregated fields from the table: "items" */
@@ -2774,6 +3178,32 @@ export type QueryRootEnumHardwareFinishByPkArgs = {
 
 
 /** query root */
+export type QueryRootEnumIconCategoryArgs = {
+  distinct_on?: Maybe<Array<EnumIconCategorySelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<EnumIconCategoryOrderBy>>,
+  where?: Maybe<EnumIconCategoryBoolExp>
+};
+
+
+/** query root */
+export type QueryRootEnumIconCategoryAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumIconCategorySelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<EnumIconCategoryOrderBy>>,
+  where?: Maybe<EnumIconCategoryBoolExp>
+};
+
+
+/** query root */
+export type QueryRootEnumIconCategoryByPkArgs = {
+  id: Scalars['String']
+};
+
+
+/** query root */
 export type QueryRootEnumUnitArgs = {
   distinct_on?: Maybe<Array<EnumUnitSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
@@ -2796,6 +3226,32 @@ export type QueryRootEnumUnitAggregateArgs = {
 /** query root */
 export type QueryRootEnumUnitByPkArgs = {
   id: Scalars['String']
+};
+
+
+/** query root */
+export type QueryRootIconsArgs = {
+  distinct_on?: Maybe<Array<IconsSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<IconsOrderBy>>,
+  where?: Maybe<IconsBoolExp>
+};
+
+
+/** query root */
+export type QueryRootIconsAggregateArgs = {
+  distinct_on?: Maybe<Array<IconsSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<IconsOrderBy>>,
+  where?: Maybe<IconsBoolExp>
+};
+
+
+/** query root */
+export type QueryRootIconsByPkArgs = {
+  id: Scalars['uuid']
 };
 
 
@@ -2937,12 +3393,24 @@ export type SubscriptionRoot = {
   enum_hardware_finish_aggregate: EnumHardwareFinishAggregate,
   /** fetch data from the table: "enum.hardware_finish" using primary key columns */
   enum_hardware_finish_by_pk?: Maybe<EnumHardwareFinish>,
+  /** fetch data from the table: "enum.icon_category" */
+  enum_icon_category: Array<EnumIconCategory>,
+  /** fetch aggregated fields from the table: "enum.icon_category" */
+  enum_icon_category_aggregate: EnumIconCategoryAggregate,
+  /** fetch data from the table: "enum.icon_category" using primary key columns */
+  enum_icon_category_by_pk?: Maybe<EnumIconCategory>,
   /** fetch data from the table: "enum.unit" */
   enum_unit: Array<EnumUnit>,
   /** fetch aggregated fields from the table: "enum.unit" */
   enum_unit_aggregate: EnumUnitAggregate,
   /** fetch data from the table: "enum.unit" using primary key columns */
   enum_unit_by_pk?: Maybe<EnumUnit>,
+  /** fetch data from the table: "icons" */
+  icons: Array<Icons>,
+  /** fetch aggregated fields from the table: "icons" */
+  icons_aggregate: IconsAggregate,
+  /** fetch data from the table: "icons" using primary key columns */
+  icons_by_pk?: Maybe<Icons>,
   /** fetch data from the table: "items" */
   items: Array<Items>,
   /** fetch aggregated fields from the table: "items" */
@@ -3071,6 +3539,32 @@ export type SubscriptionRootEnumHardwareFinishByPkArgs = {
 
 
 /** subscription root */
+export type SubscriptionRootEnumIconCategoryArgs = {
+  distinct_on?: Maybe<Array<EnumIconCategorySelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<EnumIconCategoryOrderBy>>,
+  where?: Maybe<EnumIconCategoryBoolExp>
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumIconCategoryAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumIconCategorySelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<EnumIconCategoryOrderBy>>,
+  where?: Maybe<EnumIconCategoryBoolExp>
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumIconCategoryByPkArgs = {
+  id: Scalars['String']
+};
+
+
+/** subscription root */
 export type SubscriptionRootEnumUnitArgs = {
   distinct_on?: Maybe<Array<EnumUnitSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
@@ -3093,6 +3587,32 @@ export type SubscriptionRootEnumUnitAggregateArgs = {
 /** subscription root */
 export type SubscriptionRootEnumUnitByPkArgs = {
   id: Scalars['String']
+};
+
+
+/** subscription root */
+export type SubscriptionRootIconsArgs = {
+  distinct_on?: Maybe<Array<IconsSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<IconsOrderBy>>,
+  where?: Maybe<IconsBoolExp>
+};
+
+
+/** subscription root */
+export type SubscriptionRootIconsAggregateArgs = {
+  distinct_on?: Maybe<Array<IconsSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<IconsOrderBy>>,
+  where?: Maybe<IconsBoolExp>
+};
+
+
+/** subscription root */
+export type SubscriptionRootIconsByPkArgs = {
+  id: Scalars['uuid']
 };
 
 
@@ -3189,6 +3709,62 @@ export type SubscriptionRootPurchasesByPkArgs = {
 };
 
 
+/** expression to compare columns of type timestamptz. All fields are combined with logical 'AND'. */
+export type TimestamptzComparisonExp = {
+  _eq?: Maybe<Scalars['timestamptz']>,
+  _gt?: Maybe<Scalars['timestamptz']>,
+  _gte?: Maybe<Scalars['timestamptz']>,
+  _in?: Maybe<Array<Scalars['timestamptz']>>,
+  _is_null?: Maybe<Scalars['Boolean']>,
+  _lt?: Maybe<Scalars['timestamptz']>,
+  _lte?: Maybe<Scalars['timestamptz']>,
+  _neq?: Maybe<Scalars['timestamptz']>,
+  _nin?: Maybe<Array<Scalars['timestamptz']>>,
+};
+
+
+
+
+/** expression to compare columns of type uuid. All fields are combined with logical 'AND'. */
+export type UuidComparisonExp = {
+  _eq?: Maybe<Scalars['uuid']>,
+  _gt?: Maybe<Scalars['uuid']>,
+  _gte?: Maybe<Scalars['uuid']>,
+  _in?: Maybe<Array<Scalars['uuid']>>,
+  _is_null?: Maybe<Scalars['Boolean']>,
+  _lt?: Maybe<Scalars['uuid']>,
+  _lte?: Maybe<Scalars['uuid']>,
+  _neq?: Maybe<Scalars['uuid']>,
+  _nin?: Maybe<Array<Scalars['uuid']>>,
+};
+
+export type InsertIconMutationVariables = {
+  mimeData?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
+  id?: Maybe<Scalars['uuid']>,
+  label?: Maybe<Scalars['String']>,
+  category?: Maybe<EnumIconCategoryEnum>
+};
+
+
+export type InsertIconMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_icons: Maybe<(
+    { __typename?: 'icons_mutation_response' }
+    & Pick<IconsMutationResponse, 'affected_rows'>
+  )> }
+);
+
+export type GetIconsQueryVariables = {};
+
+
+export type GetIconsQuery = (
+  { __typename?: 'query_root' }
+  & { icons: Array<(
+    { __typename?: 'icons' }
+    & Pick<Icons, 'data' | 'description' | 'id' | 'label' | 'category'>
+  )> }
+);
 
 export type ItemsHardwareFastenerBoltQueryVariables = {};
 
@@ -3215,6 +3791,62 @@ export type SendBufferMutation = (
 );
 
 
+export const InsertIconDocument = gql`
+    mutation InsertIcon($mimeData: String, $description: String, $id: uuid, $label: String, $category: enum_icon_category_enum) {
+  insert_icons(objects: {data: $mimeData, description: $description, id: $id, label: $label, category: $category}) {
+    affected_rows
+  }
+}
+    `;
+export type InsertIconMutationFn = ApolloReactCommon.MutationFunction<InsertIconMutation, InsertIconMutationVariables>;
+export type InsertIconComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<InsertIconMutation, InsertIconMutationVariables>, 'mutation'>;
+
+    export const InsertIconComponent = (props: InsertIconComponentProps) => (
+      <ApolloReactComponents.Mutation<InsertIconMutation, InsertIconMutationVariables> mutation={InsertIconDocument} {...props} />
+    );
+    
+export type InsertIconProps<TChildProps = {}> = ApolloReactHoc.MutateProps<InsertIconMutation, InsertIconMutationVariables> & TChildProps;
+export function withInsertIcon<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  InsertIconMutation,
+  InsertIconMutationVariables,
+  InsertIconProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, InsertIconMutation, InsertIconMutationVariables, InsertIconProps<TChildProps>>(InsertIconDocument, {
+      alias: 'insertIcon',
+      ...operationOptions
+    });
+};
+export type InsertIconMutationResult = ApolloReactCommon.MutationResult<InsertIconMutation>;
+export type InsertIconMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertIconMutation, InsertIconMutationVariables>;
+export const GetIconsDocument = gql`
+    query GetIcons {
+  icons {
+    data
+    description
+    id
+    label
+    category
+  }
+}
+    `;
+export type GetIconsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetIconsQuery, GetIconsQueryVariables>, 'query'>;
+
+    export const GetIconsComponent = (props: GetIconsComponentProps) => (
+      <ApolloReactComponents.Query<GetIconsQuery, GetIconsQueryVariables> query={GetIconsDocument} {...props} />
+    );
+    
+export type GetIconsProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetIconsQuery, GetIconsQueryVariables> & TChildProps;
+export function withGetIcons<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetIconsQuery,
+  GetIconsQueryVariables,
+  GetIconsProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetIconsQuery, GetIconsQueryVariables, GetIconsProps<TChildProps>>(GetIconsDocument, {
+      alias: 'getIcons',
+      ...operationOptions
+    });
+};
+export type GetIconsQueryResult = ApolloReactCommon.QueryResult<GetIconsQuery, GetIconsQueryVariables>;
 export const ItemsHardwareFastenerBoltDocument = gql`
     query items_hardware_fastener_bolt {
   items: items_hardware_fastener_bolt {
@@ -3271,4 +3903,4 @@ export function withSendBuffer<TProps, TChildProps = {}>(operationOptions?: Apol
 };
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2019-10-20T15:06:10-06:00
+// graphql typescript defs generated on 2019-10-26T17:55:26-06:00

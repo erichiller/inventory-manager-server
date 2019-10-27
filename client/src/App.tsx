@@ -44,7 +44,7 @@ const App = () => {
     //     </Dropzone>
     //   )}
     // </Mutation>
-  )
+  );
 };
 
 export default App;

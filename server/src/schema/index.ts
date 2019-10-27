@@ -1,8 +1,5 @@
 import { makeRemoteExecutableSchema , makeExecutableSchema , introspectSchema , mergeSchemas } from 'graphql-tools';
 import { gql } from "apollo-server"
-import { HttpLink } from 'apollo-link-http';
-
-import fetch from 'node-fetch';
 
 import resolvers from '../resolvers';
 import uint8 from './type_uint8'
@@ -15,18 +12,20 @@ import { HASURA_GRAPHQL_API_URL , HASURA_ACCESS_KEY } from '../config';
  **/
 export const typeDefs = gql`
   scalar Upload
-  scalar uint8
 
   type File {
     # __typename: String
     name: String!
     path: String!
     type: String!
+    base64: String!
   }
 
   type Query {
     files: [File]
   }
+  
+  scalar uint8
 
   type LabelMonochromeBuffer {
     # __typename: String
@@ -59,6 +58,8 @@ const fileSchema = makeExecutableSchema({
 //   },
 //   fetch 
 // });
+
+// link.
 
 export default async () => {
   // const schema = await introspectSchema(link);

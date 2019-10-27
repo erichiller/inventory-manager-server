@@ -1,7 +1,7 @@
 import * as React from 'react';
 // import { ApolloProvider } from 'react-apollo';
 import { render } from 'react-dom';
-// import { createUploadLink } from 'apollo-upload-client';
+import { createUploadLink } from 'apollo-upload-client';
 // import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 
 // import { ApolloClient } from "apollo-client";
@@ -16,10 +16,14 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { HASURA_GRAPHQL_API_URL, HASURA_ACCESS_KEY } from '../../server/src/config';
 
-
-
 import './styles/index.css';
-// const link = createUploadLink({ uri: HASURA_GRAPHQL_API_URL }) as ApolloLink;
+
+// const link = createUploadLink({ 
+//   uri: HASURA_GRAPHQL_API_URL,
+//   headers: {
+//     "x-hasura-admin-secret": HASURA_ACCESS_KEY
+//   }
+// }) as ApolloLink;
 
 // const cache = new InMemoryCache() as ApolloCache<NormalizedCacheObject>;
 
