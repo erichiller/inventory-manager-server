@@ -1,0 +1,43 @@
+
+
+mutation InsertIcon (
+    $mimeData: String, 
+    $description: String, 
+    $id: uuid, 
+    $label: String,
+    $category: enum_icon_category_enum
+    ) {
+  insert_icons(
+      objects: {
+          data: $mimeData, 
+          description: $description, 
+          id: $id, 
+          label: $label, 
+          category: $category
+        }
+    ){
+        affected_rows
+  }
+}
+
+# mutation UploadImageFile (
+#   $files: [ Upload! ]!
+# ) {
+#   uploadFiles(files: $files) {
+#     name
+#     path
+#     type
+#     base64
+#   }
+# }
+
+
+query GetIcons {
+  icons {
+    data
+    description
+    id
+    label
+    category
+  }
+}

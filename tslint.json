@@ -1,13 +1,14 @@
 {
     "defaultSeverity": "error",
     "extends": [
-        "tslint:recommended"
+        // "tslint:recommended"
     ],
     "jsRules": {},
     "rules": {
         "type-literal-delimiter": {
             "severity": "warning"
-        }
+        },
+        "semicolon": true
     },
     "rulesDirectory": [
     ]

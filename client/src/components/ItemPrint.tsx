@@ -29,21 +29,21 @@ interface ItemPrintState { }
 export default withItemsHardwareFastenerBolt()(
     class ItemTable extends React.Component<ItemsHardwareFastenerBoltProps<ItemPrintProps>, ItemPrintState> {
     }
-)
+);
 
 interface LabelExport {
-    texts: LabelText[]
-    images: LabelImage[]
-    qrs: LabelQR[]
+    texts: LabelText[];
+    images: LabelImage[];
+    qrs: LabelQR[];
 }
 
 interface LabelDrawModalProps {
-    visibleHandler: ( d?: display ) => boolean
-    item: ItemsHardwareFastenerBolt
-    visible: display
+    visibleHandler: ( d?: display ) => boolean;
+    item: ItemsHardwareFastenerBolt;
+    visible: display;
 }
 interface LabelDrawModalState {
-    visible: display
+    visible: display;
 }
 
 export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModalState> {
@@ -53,17 +53,17 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
     }
     onCreate: () => {
 
-    }
+    };
 
 
     render () {
-        const { visible, visibleHandler, item } = this.props
+        const { visible, visibleHandler, item } = this.props;
 
-        console.log( 'this.state.visible', visibleHandler() )
+        console.log( 'this.state.visible', visibleHandler() );
         // console.log('this.state.visible', visibleHandler(), this.state.visible == display.VISIBLE ? true : false)
-        console.log( 'this.state.item', item )
+        console.log( 'this.state.item', item );
         // if ( visible)
-        console.log( 'item keys', Object.keys( item ) )
+        console.log( 'item keys', Object.keys( item ) );
         // let drawWidth = 725;
         // let drawHeight = 225;
         let drawWidth = 48;
@@ -83,7 +83,7 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
                         let value = item[ key ];
                         if ( ![ "__typename" ].includes( key ) && value ) {
                             console.log( `property of item ${ key } = ${ value }` );
-                            return <Descriptions.Item key={key} label={key}>{value}</Descriptions.Item>
+                            return <Descriptions.Item key={key} label={key}>{value}</Descriptions.Item>;
                             // <p>1</p>
                         }
                     } )}
@@ -91,7 +91,7 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
                 <br />
                 <LabelDraw width={drawWidth} height={drawHeight} item={item} />
             </Modal>
-        )
+        );
     }
 }
 
@@ -100,14 +100,15 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
 
 
 
-
-
 class LabelConstituent {
-    uuid: UUIDStringT
-    x: number
-    y: number
-    constructor () {
-        this.uuid = UUIDv4();
+    id: UUIDStringT;
+    x: number;
+    y: number;
+    constructor (options?: Partial<LabelConstituent>) {
+        if ( options && options.id ){
+            this.id = options.id;
+        }
+        this.id = UUIDv4();
         this.x = 0;
         this.y = 0;
     }
@@ -119,11 +120,11 @@ type UUIDStringT = string;
 export type FormatOptionsT = "bold" | "italic" | "underline";
 
 export class LabelText extends LabelConstituent {
-    text: string
-    _fontSize: number
-    bold: boolean
-    italic: boolean
-    underline: boolean
+    text: string;
+    _fontSize: number;
+    bold: boolean;
+    italic: boolean;
+    underline: boolean;
 
 
     get fontSize (): number {
@@ -131,60 +132,68 @@ export class LabelText extends LabelConstituent {
     }
     set fontSize ( value: number ) {
         if ( typeof value == "string" ) {
-            value = parseInt( value )
+            value = parseInt( value );
         }
         this._fontSize = value;
     }
 
     get position () {
-        return [ this.x, this.y ]
+        return [ this.x, this.y ];
     }
     get signature () {
-        return `${ this.text }-${ this.fontSize }-${ this.bold }-${ this.italic }-${ this.underline }-${ this.x }-${ this.y }`
+        return `${ this.text }-${ this.fontSize }-${ this.bold }-${ this.italic }-${ this.underline }-${ this.x }-${ this.y }`;
     }
     get formatOptions (): FormatOptionsT[] {
-        let opts: FormatOptionsT[] = []
-        if ( this.bold ) { opts.push( "bold" ) };
-        if ( this.italic ) { opts.push( "italic" ) };
-        if ( this.underline ) { opts.push( "underline" ) };
+        let opts: FormatOptionsT[] = [];
+        if ( this.bold ) { opts.push( "bold" ); }
+        if ( this.italic ) { opts.push( "italic" ); }
+        if ( this.underline ) { opts.push( "underline" ); }
 
         return opts;
     }
 }
 
 export class LabelImage extends LabelConstituent {
-    url: string
-    width: number
-    height: number
+    data: string;
+    width?: number;
+    height?: number;
+
+    constructor ( options?: Partial<LabelImage>){
+        super(options);
+
+        if ( options ){
+            Object.getOwnPropertyNames(options).forEach( propName => this[propName] = options[propName]);
+        }
+    }
 }
 
 
 export class LabelQR extends LabelConstituent {
-    canvasElement: HTMLCanvasElement
-    dataURL: string
+    canvasElement: HTMLCanvasElement;
+    dataURL: string;
 }
 
 
 
 interface ChangedValueTextI {
-    text?: ChangedValueI
-    format_options?: ChangedValueI
-    text_size?: ChangedValueI
+    text?: ChangedValueI;
+    format_options?: ChangedValueI;
+    text_size?: ChangedValueI;
 }
 
 interface ChangedValueI {
-    dirty: boolean
-    errors?: any
-    name: string
-    touched: boolean
-    validating: boolean
-    value: any
+    dirty: boolean;
+    errors?: any;
+    name: string;
+    touched: boolean;
+    validating: boolean;
+    value: any;
 }
 
 interface LabelDrawProps {
     height?: number;
     width?: number;
-    item: ItemsHardwareFastenerBolt
+    item: ItemsHardwareFastenerBolt;
 }
 
 
@@ -192,23 +201,23 @@ type IKonvaEventHandler = ( d: boolean | KonvaEventObject<PointerEvent> ) => voi
 type IHtmlEventHandler = ( d: boolean | display | React.MouseEvent<HTMLElement, MouseEvent> ) => void;
 
 interface LabelDrawState {
-    displayContextMenu: IKonvaEventHandler
-    displayContextMenuStatus: boolean
-    displayContextMenuPosition?: [ number, number ]
-    displayEditTextModal: IHtmlEventHandler | display
-    displayEditTextModalStatus: display
-    displayImageSelectModal: IHtmlEventHandler | display
-    displayImageSelectModalStatus: display
-    displayQREditModal: IHtmlEventHandler | display
-    displayQREditModalStatus: display
-    contextMenuLabelText: LabelText
-    item: ItemsHardwareFastenerBolt
-    texts: LabelText[]
-    images: LabelImage[]
-    qrs: LabelQR[]
-    uncommittedText: LabelText
-    uncommittedImage: LabelImage
-    uncommittedQR: LabelQR
+    displayContextMenu: IKonvaEventHandler;
+    displayContextMenuStatus: boolean;
+    displayContextMenuPosition?: [ number, number ];
+    displayEditTextModal: IHtmlEventHandler | display;
+    displayEditTextModalStatus: display;
+    displayImageSelectModal: IHtmlEventHandler | display;
+    displayImageSelectModalStatus: display;
+    displayQREditModal: IHtmlEventHandler | display;
+    displayQREditModalStatus: display;
+    contextMenuLabelText: LabelText;
+    item: ItemsHardwareFastenerBolt;
+    texts: LabelText[];
+    images: LabelImage[];
+    qrs: LabelQR[];
+    uncommittedText: LabelText;
+    uncommittedImage: LabelImage;
+    uncommittedQR: LabelQR;
     commitLabelText: ( labelText: LabelText ) => void;
     deleteLabelText: ( labelText: LabelText ) => void;
     commitLabelImage: ( labelImage: LabelImage ) => void;
@@ -217,7 +226,7 @@ interface LabelDrawState {
     shouldSendBuffer: boolean;
 }
 interface DrawContext extends Omit<LabelDrawState, "item"> {
-    item?: ItemsHardwareFastenerBolt
+    item?: ItemsHardwareFastenerBolt;
 }
 
 const DrawContextStateDefault: LabelDrawState = {
@@ -246,7 +255,7 @@ const DrawContextStateDefault: LabelDrawState = {
     commitLabelQR: () => { },
     stageRef: null,
     shouldSendBuffer: null
-}
+};
 export const DrawContext = React.createContext<DrawContext>( DrawContextStateDefault );
 
 export type PixelMap = Array<Array<Array<uint8>>>;
@@ -266,7 +275,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                     display.evt.clientX,
                     display.evt.clientY
                 ]
-            } )
+            } );
         } else {
             this.setState( { displayContextMenuStatus: false } );
         }
@@ -276,7 +285,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         if ( ( d as display ) === display.HIDDEN ) {
             this.setState( {
                 displayEditTextModalStatus: display.HIDDEN
-            } )
+            } );
             // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
             return display.HIDDEN;
         }
@@ -289,7 +298,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             this.setState( {
                 item: this.props.item,
                 displayEditTextModalStatus: display.VISIBLE
-            } )
+            } );
         } else {
             this.setState( { displayEditTextModalStatus: display.HIDDEN } );
         }
@@ -299,7 +308,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         if ( ( d as display ) === display.HIDDEN ) {
             this.setState( {
                 displayImageSelectModalStatus: display.HIDDEN
-            } )
+            } );
             // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
             return display.HIDDEN;
         }
@@ -312,7 +321,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             this.setState( {
                 item: this.props.item,
                 displayImageSelectModalStatus: display.VISIBLE
-            } )
+            } );
         } else {
             this.setState( { displayImageSelectModalStatus: display.HIDDEN } );
         }
@@ -321,7 +330,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         if ( ( d as display ) === display.HIDDEN ) {
             this.setState( {
                 displayQREditModalStatus: display.HIDDEN
-            } )
+            } );
             // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
             return display.HIDDEN;
         }
@@ -334,14 +343,14 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             this.setState( {
                 item: this.props.item,
                 displayQREditModalStatus: display.VISIBLE
-            } )
+            } );
         } else {
             this.setState( { displayQREditModalStatus: display.HIDDEN } );
         }
     }
 
     updateLabelTexts = ( changedValue: ChangedValueTextI, labelText: LabelText ) => {
-        console.log( "input for updateLabelTexts", changedValue, labelText )
+        console.log( "input for updateLabelTexts", changedValue, labelText );
         // let texts = this.state.texts;
         let updatedText = false;
         // if ( ! labelText ){
@@ -359,12 +368,12 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         } else if ( changedValue.text_size ) {
             labelText.fontSize = changedValue.text_size.value;
         } else {
-            console.warn( "no match found for field", changedValue )
+            console.warn( "no match found for field", changedValue );
         }
 
         this.state.texts.forEach( ( text => {
-            if ( text.uuid == labelText.uuid ) {
-                console.log( "updating existing labelText with uuid", text.uuid )
+            if ( text.id == labelText.id ) {
+                console.log( "updating existing labelText with id", text.id );
                 text = labelText;
                 updatedText = true;
                 return;
@@ -375,29 +384,39 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                 texts: [ ...this.state.texts, labelText ]
             } );
         }
-        console.log( "this.state.texts is now", this.state.texts, "pending", [ ...this.state.texts, labelText ] )
+        console.log( "this.state.texts is now", this.state.texts, "pending", [ ...this.state.texts, labelText ] );
     }
 
     deleteLabelText = ( labelText: LabelText ): void => {
         this.state.texts.filter( ( text ) => {
-            if ( text.uuid == labelText.uuid ) {
+            if ( text.id == labelText.id ) {
                 return;
             }
             return text;
-        } )
+        } );
     }
 
     commitLabelText = ( labelText: LabelText ) => {
-        this.setState( { uncommittedText: new LabelText() } )
+        this.setState( { uncommittedText: new LabelText() } );
     }
 
 
 
-    updateLabelImages = ( changedValue: ChangedValueTextI, labelImage: LabelImage ) => {
+    updateLabelImages = ( changedValue: Partial<LabelImage>, labelImage: LabelImage ) => {
         let updatedImage = false;
+        
+        if ( changedValue.id && changedValue.id != labelImage.id ) {
+            console.log( "uncommitted image is now set to selected id", { "was": labelImage.id, "now": changedValue.id} );
+            labelImage = changedValue as LabelImage;
+            // labelImage.id = changedValue.id;
+        }
+        // if ( changedValue.url ) {
+        //     console.log( "setting image's url to", changedValue.url );
+        //     labelImage.url = changedValue.url;
+        // }
         this.state.images.forEach( ( image => {
-            if ( image.uuid == labelImage.uuid ) {
-                console.log( "updating existing labelImage with uuid", labelImage.uuid )
+            if ( image.id == labelImage.id ) {
+                console.log( "updating existing labelImage with id", labelImage.id );
                 image = labelImage;
                 updatedImage = true;
                 return;
@@ -408,11 +427,11 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                 images: [ ...this.state.images, labelImage ]
             } );
         }
-        console.log( "this.state.images is now", this.state.images, "pending", [ ...this.state.images, labelImage ] )
+        console.log( "this.state.images is now", this.state.images, "pending", [ ...this.state.images, labelImage ] );
     }
 
     commitLabelImage = ( labelImage: LabelImage ) => {
-        this.setState( { uncommittedImage: new LabelImage() } )
+        this.setState( { uncommittedImage: new LabelImage() } );
     }
 
 
@@ -424,28 +443,28 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         }
         if ( changedValue.canvasElement ) {
             console.log( "setting canvasElement on LabelQR to", changedValue.canvasElement );
-            labelQR.canvasElement = changedValue.canvasElement
+            labelQR.canvasElement = changedValue.canvasElement;
         }
         this.state.qrs.forEach( ( qr => {
-            if ( qr.uuid == labelQR.uuid ) {
-                console.log( "updating existing labelQR with uuid", labelQR.uuid )
+            if ( qr.id == labelQR.id ) {
+                console.log( "updating existing labelQR with id", labelQR.id );
                 qr = labelQR;
                 updatedQR = true;
                 return;
             }
         } ) );
         if ( !updatedQR ) {
-            console.log( "adding uncommitted labelQR with uuid", labelQR.uuid )
+            console.log( "adding uncommitted labelQR with id", labelQR.id );
             this.setState( {
                 qrs: [ ...this.state.qrs, labelQR ]
             } );
         }
-        console.log( "this.state.qrs is now", this.state.qrs, "pending", [ ...this.state.qrs, labelQR ] )
+        console.log( "this.state.qrs is now", this.state.qrs, "pending", [ ...this.state.qrs, labelQR ] );
     }
 
 
     commitLableQR = ( labelQR: LabelQR ) => {
-        this.setState( { uncommittedQR: new LabelQR() } )
+        this.setState( { uncommittedQR: new LabelQR() } );
     }
 
 
@@ -498,7 +517,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         deleteLabelText: this.deleteLabelText,
         stageRef: null,
         shouldSendBuffer: null
-    }
+    };
 
 
     /*
@@ -527,7 +546,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         const linesCount = Math.ceil( heightDots / pxlPerLine );
 
         if ( pxlPerLine % 8 != 0 ) {
-            throw Error( "There can not be a non 8 multiple amount of pxlPerLine" )
+            throw Error( "There can not be a non 8 multiple amount of pxlPerLine" );
         }
 
         const canvasContext = this.state.stageRef.getStage().toCanvas( {} ).getContext( "2d" );
@@ -570,10 +589,10 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             line.forEach( col => {
                 col.forEach( byte => {
                     str += byte.toString( 2 ).padStart( 8, "0" );
-                } )
+                } );
                 str += "\n";
-            } )
-        } )
+            } );
+        } );
         console.log( "buffer: buf, str", buf, str );
 
         // const BUF_LENGTH = bytesPerLine * widthDots * linesCount;
@@ -631,10 +650,10 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             let line = Math.floor( row / pxlPerLine );
             // let linebit = (pxlPerLine - 1) - (row % pxlPerLine);
             let linebit = row % pxlPerLine;
-            let byteBit = 8 - 1 - ( linebit % 8 )
+            let byteBit = 8 - 1 - ( linebit % 8 );
             let lineByte = Math.floor( linebit / 8 );
             // white = 0 ; black = 1
-            let isBlack = 0
+            let isBlack = 0;
             // Canvas sets black 00,00,00,FF to black and 00,00,00,00 to white
             for ( let colorByte = 0; colorByte < 4; colorByte++ ) {
                 if ( imgData.data[ i + colorByte ] > 200 ) {
@@ -685,10 +704,10 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                 col.forEach( byte => {
                     binstr += byte.toString( 2 ).padStart( 8, "0" );
                     hexstr += byte.toString(16).padStart( 2, "0");
-                } )
+                } );
                 binstr += "\n";
-            } )
-        } )
+            } );
+        } );
         console.log( "buffer", buf, "\n" + binstr + "\n" + hexstr );
 
         // console.log(buf.)
@@ -705,7 +724,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             texts: this.state.texts,
             images: this.state.images,
             qrs: this.state.qrs
-        }
+        };
         // this.state.texts.forEach( textObj => )
 
     }
@@ -751,26 +770,30 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                             {/* END DEBUG */}
 
                             {this.state.texts.map( labelText => {
-                                console.log( "drawing new labelText", labelText )
+                                console.log( "drawing new labelText", labelText );
                                 return <Text
                                     textObject={labelText}
-                                    key={labelText.uuid}
+                                    key={labelText.id}
                                     text={labelText.text}
                                     fontStyle={labelText.bold ? "bold" : labelText.italic ? "italic" : "normal"}
                                     textDecoration={labelText.underline ? "underlined" : ""}
                                     fontSize={labelText.fontSize}
                                     onContextMenu={this.state.displayContextMenu}
-                                    draggable />
+                                    draggable />;
 
                             } )}
                             {this.state.images.map( labelImage => {
                                 console.log( "drawing image", labelImage );
-                                const [ image ] = useImage( 'https://konvajs.org/assets/lion.png' );
+                                // const [ image ] = labelImage.url
+                                const image = document.createElement('img');
+                                image.src = labelImage.data;
+                                image.width = labelImage.width;
+                                image.height = labelImage.height;
                                 // return Image.fromURL("https://img1.fastenal.com/thumbnails/CapScrewsHexBolts_600003_CatImg.jpg" )
                                 return <Image
-                                    key={labelImage.uuid}
+                                    key={labelImage.id}
                                     image={image}
-                                    draggable />
+                                    draggable />;
                                 // return <Image.fromURL('/assets/darth-vader.jpg', function (darthNode) {
                                 //     darthNode.setAttrs({
                                 //         x: 200,
@@ -786,9 +809,9 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                                 // const [ image ] = useImage( labelQR.dataURL );
                                 // return Image.fromURL("https://img1.fastenal.com/thumbnails/CapScrewsHexBolts_600003_CatImg.jpg" )
                                 return <Image
-                                    key={labelQR.uuid}
+                                    key={labelQR.id}
                                     image={labelQR.canvasElement}
-                                    draggable />
+                                    draggable />;
                                 // return <Image.fromURL('/assets/darth-vader.jpg', function (darthNode) {
                                 //     darthNode.setAttrs({
                                 //         x: 200,
