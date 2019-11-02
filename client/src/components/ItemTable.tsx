@@ -1,10 +1,9 @@
 import { Table, Divider } from 'antd';
 import React = require('react');
-import { graphql, ChildProps } from '@apollo/react-hoc';
 import { ColumnProps } from 'antd/es/table';
-import { ItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltQueryResult, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltProps, ItemsHardwareFastenerBoltDocument, ItemsHardwareFastenerBoltSelectColumn } from '../types/graphql'
+import { ItemsHardwareFastenerBolt, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltProps, ItemsHardwareFastenerBoltSelectColumn } from '../types/graphql';
+import { LabelDrawModal } from './draw/LabelDrawModal';
 
-import { LabelDrawModal } from './ItemPrint';
 
 function toTitleCase(s: string) {
   return s.replace('_', ' ').split(' ').map(function (word) {
@@ -93,21 +92,21 @@ export enum display {
 
 interface ItemTableProps {
   // data: any
-  class?: string
+  class?: string;
 }
 
 interface ItemTableState {
-  data?: ItemsHardwareFastenerBolt[]
-  pagination: pagination
-  loading: boolean
-  clickedItem: ItemsHardwareFastenerBolt
-  printModal: display
+  data?: ItemsHardwareFastenerBolt[];
+  pagination: pagination;
+  loading: boolean;
+  clickedItem: ItemsHardwareFastenerBolt;
+  printModal: display;
 }
 
 interface pagination {
-  total: number
-  pageSize: number
-  current: number
+  total: number;
+  pageSize: number;
+  current: number;
 }
 
 export default withItemsHardwareFastenerBolt()(
@@ -135,7 +134,7 @@ export default withItemsHardwareFastenerBolt()(
                 key: key,
                 title: toTitleCase(key),
                 dataIndex: ItemsHardwareFastenerBoltSelectColumn[key],
-              }
+              };
             })),
         ...[
           {
@@ -149,7 +148,7 @@ export default withItemsHardwareFastenerBolt()(
                   //   clickedItem: record,
                   //   // printModal: display.VISIBLE
                   // })
-                  this.viewPrintModal(display.VISIBLE, record)
+                  this.viewPrintModal(display.VISIBLE, record);
                 }
                 }> Print</a>
                 <Divider type="vertical" />
@@ -164,17 +163,17 @@ export default withItemsHardwareFastenerBolt()(
     }
 
     viewPrintModal = (change?: display, clickedItem?: ItemsHardwareFastenerBolt) => {
-      console.log("viewPrintModal () ? received", change)
+      console.log("viewPrintModal () ? received", change);
       if ( change !== undefined && change != this.state.printModal ){
         this.setState({
           printModal: change,
           clickedItem: clickedItem
-        })
-        console.log("viewPrintModal () ? change detected; returning:", change == display.VISIBLE)
-        return change == display.VISIBLE
+        });
+        console.log("viewPrintModal () ? change detected; returning:", change == display.VISIBLE);
+        return change == display.VISIBLE;
       }
-      console.log("viewPrintModal () ? NO change detected; returning:", this.state.printModal == display.VISIBLE)
-      return this.state.printModal == display.VISIBLE
+      console.log("viewPrintModal () ? NO change detected; returning:", this.state.printModal == display.VISIBLE);
+      return this.state.printModal == display.VISIBLE;
     }
 
     handleTableChange = (pagination, filters, sorter) => {
@@ -183,7 +182,7 @@ export default withItemsHardwareFastenerBolt()(
       this.setState({
         pagination: pager,
       });
-    };
+    }
 
     onChange(pagination, filters, sorter) {
       console.log('params', pagination, filters, sorter);
@@ -193,8 +192,8 @@ export default withItemsHardwareFastenerBolt()(
 
       const { data } = this.props;
       let { loading, error } = this.props.data!;
-      if (error) return <span>Error</span>
-      console.log("data is", data)
+      if (error) return <span>Error</span>;
+      console.log("data is", data);
       return (
         <div>
           { this.state.printModal ? 
@@ -214,8 +213,8 @@ export default withItemsHardwareFastenerBolt()(
         >
           </Table>
         </div>
-      )
+      );
     }
 
   }
-)
+);

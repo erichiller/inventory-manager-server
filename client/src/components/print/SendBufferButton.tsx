@@ -1,14 +1,14 @@
 import { message, Spin, Button } from "antd";
 import React from "react";
 import { SendBufferComponent } from "../../types/graphql";
-import { PixelMap } from "../ItemPrint";
+import { PixelMap } from "../draw/LabelDraw";
 
 
 
 interface SendBufferButtonProps {
-    value: string
-    buffer: PixelMap
-    onClick: (boolean) => void
+    value: string;
+    buffer: PixelMap;
+    onClick: (boolean) => void;
 }
 
 
@@ -24,9 +24,9 @@ export default class SendBufferButton extends React.Component<SendBufferButtonPr
             <SendBufferComponent onCompleted={() => onClick(false)} >
                 {( sendData, { loading, called, data, error } ) => {
                     console.log( "init", { loading, data, error, called} );
-                    console.log( "buffer", this.props.buffer)
+                    console.log( "buffer", this.props.buffer);
                     if ( called != true && this.props.buffer != null) {
-                        console.log( "PointEditModal Component sendData()" )
+                        console.log( "PointEditModal Component sendData()" );
                         sendData(
                             {
                                 variables:
@@ -43,15 +43,15 @@ export default class SendBufferButton extends React.Component<SendBufferButtonPr
 
                     }
                     if ( loading ) {
-                        console.log( "SendBuffer data loading" )
+                        console.log( "SendBuffer data loading" );
                     }
                     if ( data ) {
-                        console.log( "SendBuffer data received", data )
+                        console.log( "SendBuffer data received", data );
                     }
-                    return < Button icon="printer" onClick={() => onClick(true)} id={value} >{value}</Button>
+                    return < Button icon="printer" onClick={() => onClick(true)} id={value} >{value}</Button>;
                 }}
             </SendBufferComponent >
 
-        )
+        );
     }
 }

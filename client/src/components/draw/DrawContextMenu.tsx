@@ -5,7 +5,7 @@ import { Menu, Icon, message } from 'antd';
 import Animate from 'rc-animate';
 
 import './DrawContextMenu.scss';
-import { DrawContext } from "../ItemPrint";
+import { DrawContext } from "./LabelDraw";
 
 
 

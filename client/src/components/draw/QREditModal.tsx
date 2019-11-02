@@ -1,24 +1,19 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
-import { Form, Input, Radio, AutoComplete } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
 import { display } from '../ItemTable';
 import React from 'react';
 import { Modal } from 'antd';
 import { ItemsHardwareFastenerBolt, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltComponent } from '../../types/graphql';
-import { useQuery } from '@apollo/react-hooks';
-import CheckboxGroup from 'antd/lib/checkbox/Group';
-import { LabelText, DrawContext, FormatOptionsT, LabelImage, LabelQR } from '../ItemPrint';
 import bwipjs from 'bwip-js';
-import { Canvas } from 'konva/types/Canvas';
-import e from 'express';
+import { LabelQR } from './LabelConstituent';
+import { DrawContext } from './LabelDraw';
 
 interface QREditModalProps {
-    event?: KonvaEventObject<MouseEvent>
-    item?: ItemsHardwareFastenerBolt
-    labelQR: LabelQR
-    visibleHandler: ( display?: display ) => void
-    changeHandler: ( newValue: any, labelQR: LabelQR ) => void
+    event?: KonvaEventObject<MouseEvent>;
+    item?: ItemsHardwareFastenerBolt;
+    labelQR: LabelQR;
+    visibleHandler: ( display?: display ) => void;
+    changeHandler: ( newValue: any, labelQR: LabelQR ) => void;
 }
 
 export default class QREditModal extends Component<QREditModalProps> {
@@ -54,11 +49,11 @@ export default class QREditModal extends Component<QREditModalProps> {
 
 
     render () {
-        const { event, visibleHandler, item, changeHandler, labelQR } = this.props
+        const { event, visibleHandler, item, changeHandler, labelQR } = this.props;
 
-        console.log( 'this.props.visible', visibleHandler() )
+        console.log( 'this.props.visible', visibleHandler() );
         // console.log('this.state.visible', visibleHandler(), this.state.visible == display.VISIBLE ? true : false)
-        console.log( 'this.props.item', item )
+        console.log( 'this.props.item', item );
         let drawWidth = 725;
         return (
             
@@ -73,7 +68,7 @@ export default class QREditModal extends Component<QREditModalProps> {
             {/* <canvas id="tempCanvas"></canvas> */}
                 <QRCanvas width={drawWidth} labelQR={labelQR} changeHandler={changeHandler} />
         </Modal>
-        )
+        );
         return (
             <DrawContext.Consumer>
                 {( { commitLabelQR, stageRef } ) => {
@@ -86,18 +81,18 @@ export default class QREditModal extends Component<QREditModalProps> {
                         width={drawWidth + 25}
                     >
                         <canvas id="tempCanvas"></canvas>
-                    </Modal>
+                    </Modal>;
                 }}
             </DrawContext.Consumer>
-        )
+        );
     }
 }
 
 
 interface QRCanvasProps {
-    width: number
-    labelQR: LabelQR
-    changeHandler: UpdateLabelQR
+    width: number;
+    labelQR: LabelQR;
+    changeHandler: UpdateLabelQR;
 }
 
 type UpdateLabelQR = ( newValue: Partial<LabelQR>, labelQR: LabelQR ) => void;
@@ -106,7 +101,7 @@ type CommitLabelQR = ( labelQR: LabelQR ) => void;
 class QRCanvas extends Component<QRCanvasProps> {
 
     componentDidMount () {
-        console.log( "QREditModal componentDidMount" )
+        console.log( "QREditModal componentDidMount" );
         bwipjs( 'tempCanvas', {
             bcid: 'datamatrix',       // Barcode type
             text: '0123456789\nabcdefghi',    // Text to encode
@@ -118,7 +113,7 @@ class QRCanvas extends Component<QRCanvasProps> {
             // textxalign: 'center',        // Always good to set this
         }, ( err, cvs ) => {
             if ( err ) {
-                console.error( err, cvs )
+                console.error( err, cvs );
                 // Decide how to handle the error
                 // `err` may be a string or Error object
             } else {
@@ -131,13 +126,13 @@ class QRCanvas extends Component<QRCanvasProps> {
     }
 
     setCanvasRef = ( el: HTMLCanvasElement): void => {
-        console.log("setCanvasRef", el)
+        console.log("setCanvasRef", el);
         if ( el ) {
-            el.toBlob
+            el.toBlob;
             this.setState( {
                 canvasElement: el,
                 canvasDataURL: el.toDataURL( 'image/png' )
-            } )
+            } );
             // this.props.labelQR.dataURL = el.toDataURL( 'image/png' );
             this.props.changeHandler( {
                 dataURL: el.toDataURL( 'image/png' ),
@@ -156,9 +151,9 @@ class QRCanvas extends Component<QRCanvasProps> {
                         style={{ 
                             // border: '1px solid black', 
                             // width: '750px' 
-                        }} id="tempCanvas"></canvas>
+                        }} id="tempCanvas"></canvas>;
                 }}
             </DrawContext.Consumer>
-        )
+        );
     }
 }

@@ -2608,6 +2608,12 @@ export enum OrderBy {
   DESC_NULLS_LAST = 'desc_nulls_last'
 }
 
+export type PrinterStatus = {
+   __typename?: 'PrinterStatus',
+  labelType: Scalars['String'],
+  uptime?: Maybe<Scalars['Int']>,
+};
+
 /** columns and relationships of "purchases" */
 export type Purchases = {
    __typename?: 'purchases',
@@ -3001,12 +3007,14 @@ export type PurchasesVarianceOrderBy = {
 
 export type Query = {
    __typename?: 'Query',
+  PrinterStatus?: Maybe<PrinterStatus>,
   files?: Maybe<Array<Maybe<File>>>,
 };
 
 /** query root */
 export type QueryRoot = {
    __typename?: 'query_root',
+  PrinterStatus?: Maybe<PrinterStatus>,
   /** fetch data from the table: "entity" */
   entity: Array<Entity>,
   /** fetch aggregated fields from the table: "entity" */
@@ -3766,6 +3774,17 @@ export type GetIconsQuery = (
   )> }
 );
 
+export type GetPrinterStatusQueryVariables = {};
+
+
+export type GetPrinterStatusQuery = (
+  { __typename?: 'query_root' }
+  & { PrinterStatus: Maybe<(
+    { __typename?: 'PrinterStatus' }
+    & Pick<PrinterStatus, 'labelType'>
+  )> }
+);
+
 export type ItemsHardwareFastenerBoltQueryVariables = {};
 
 
@@ -3847,6 +3866,31 @@ export function withGetIcons<TProps, TChildProps = {}>(operationOptions?: Apollo
     });
 };
 export type GetIconsQueryResult = ApolloReactCommon.QueryResult<GetIconsQuery, GetIconsQueryVariables>;
+export const GetPrinterStatusDocument = gql`
+    query GetPrinterStatus {
+  PrinterStatus {
+    labelType
+  }
+}
+    `;
+export type GetPrinterStatusComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>, 'query'>;
+
+    export const GetPrinterStatusComponent = (props: GetPrinterStatusComponentProps) => (
+      <ApolloReactComponents.Query<GetPrinterStatusQuery, GetPrinterStatusQueryVariables> query={GetPrinterStatusDocument} {...props} />
+    );
+    
+export type GetPrinterStatusProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetPrinterStatusQuery, GetPrinterStatusQueryVariables> & TChildProps;
+export function withGetPrinterStatus<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetPrinterStatusQuery,
+  GetPrinterStatusQueryVariables,
+  GetPrinterStatusProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetPrinterStatusQuery, GetPrinterStatusQueryVariables, GetPrinterStatusProps<TChildProps>>(GetPrinterStatusDocument, {
+      alias: 'getPrinterStatus',
+      ...operationOptions
+    });
+};
+export type GetPrinterStatusQueryResult = ApolloReactCommon.QueryResult<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>;
 export const ItemsHardwareFastenerBoltDocument = gql`
     query items_hardware_fastener_bolt {
   items: items_hardware_fastener_bolt {
@@ -3903,4 +3947,4 @@ export function withSendBuffer<TProps, TChildProps = {}>(operationOptions?: Apol
 };
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2019-10-26T17:55:26-06:00
+// graphql typescript defs generated on 2019-10-27T16:07:37-06:00

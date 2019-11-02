@@ -30,6 +30,7 @@
     "graphql-tools": "^4.0.5",
     "ipp": "^2.0.1",
     "mkdirp": "^0.5.1",
+    "net-snmp": "^1.2.4",
     "node-thermal-printer": "^4.1.0",
     "pdfkit": "^0.10.0",
     "react": "^16.10.0",

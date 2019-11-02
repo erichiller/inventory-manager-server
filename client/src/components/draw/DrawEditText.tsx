@@ -1,26 +1,25 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
-import { Form, Input, Radio, AutoComplete } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
+import Form, { FormComponentProps } from 'antd/lib/form';
 import { display } from '../ItemTable';
 import React from 'react';
-import { Modal } from 'antd';
-import { ItemsHardwareFastenerBolt, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltComponent } from '../../types/graphql';
-import { useQuery } from '@apollo/react-hooks';
+import { Modal, AutoComplete } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
-import { LabelText, DrawContext, FormatOptionsT } from '../ItemPrint';
+import { ItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltSelectColumn } from '../../types/graphql';
+import { LabelText, FormatOptionsT } from './LabelConstituent';
+import { DrawContext } from './LabelDraw';
 
 interface LabelDrawEditTextProps extends FormComponentProps {
-    event?: KonvaEventObject<MouseEvent>
-    item?: ItemsHardwareFastenerBolt
-    labelText: LabelText
-    visibleHandler: (display?: display) => void
-    changeHandler: (newValue: any, labelText: LabelText) => void
+    event?: KonvaEventObject<MouseEvent>;
+    item?: ItemsHardwareFastenerBolt;
+    labelText: LabelText;
+    visibleHandler: (display?: display) => void;
+    changeHandler: (newValue: any, labelText: LabelText) => void;
 }
 
 interface LabelDrawEditTextFormState {
-    currentFormatOptions: CheckedFormatOptionsT
-    currentLabelText: LabelText
+    currentFormatOptions: CheckedFormatOptionsT;
+    currentLabelText: LabelText;
 }
 
 
@@ -50,7 +49,7 @@ export default Form.create<LabelDrawEditTextProps>(
         state: LabelDrawEditTextFormState = {
             currentFormatOptions: [],
             currentLabelText: null
-        }
+        };
 
         // constructor(props: LabelDrawEditTextProps) {
         //     super(props);
@@ -83,19 +82,19 @@ export default Form.create<LabelDrawEditTextProps>(
         // }
 
         get autocompleteFieldValues(): string[] {
-            return ["eric1", "eric2"]
+            return Object.keys( ItemsHardwareFastenerBoltSelectColumn ).map( col => `{{${col.toLowerCase()}}}`);
         }
         get formatOptions(): CheckedFormatOptionsT {
             return [
                 "bold",
                 "italic",
                 "underline"
-            ]
+            ];
         }
         get textSizeOptions(): string[] {
             return [
                 "4", "5", "6", "8", "9", "10", "11", "12", "14", "18", "24", "30"
-            ]
+            ];
         }
 
         onChangeFormatOptions = (checked: CheckedFormatOptionsT) => {
@@ -115,13 +114,13 @@ export default Form.create<LabelDrawEditTextProps>(
 
 
         render() {
-            const { event, visibleHandler, form, item, changeHandler , labelText} = this.props
+            const { event, visibleHandler, form, item, changeHandler , labelText} = this.props;
             const { getFieldDecorator, setFieldsValue } = form;
             const { currentLabelText } = this.state;
 
-            console.log('this.props.visible', visibleHandler())
+            console.log('this.props.visible', visibleHandler());
             // console.log('this.state.visible', visibleHandler(), this.state.visible == display.VISIBLE ? true : false)
-            console.log('this.props.item', item)
+            console.log('this.props.item', item);
             // if ( visible)
             // console.log('item keys', Object.keys(item))
 
@@ -183,13 +182,13 @@ export default Form.create<LabelDrawEditTextProps>(
                                     {/* {setFieldsValue(this.)} */}
                                 </Form.Item>
                             </Form>
-                        </Modal>
+                        </Modal>;
                     }}
                 </DrawContext.Consumer>
-            )
+            );
         }
     }
 
 
 
-)
+);

@@ -1,15 +1,14 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
-import { Form, Input, Radio, AutoComplete, Select, Divider, Icon, Button, Spin, Upload, message } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
+import { Select, Icon, Spin, Button } from 'antd';
 import { display } from '../ItemTable';
 import React from 'react';
 import { Modal } from 'antd';
-import { ItemsHardwareFastenerBolt, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltComponent, InsertIconComponent, GetIconsComponent, withGetIcons, GetIconsComponentProps, GetIconsProps, EnumIconCategoryEnum } from '../../types/graphql';
-import { useQuery } from '@apollo/react-hooks';
-import CheckboxGroup from 'antd/lib/checkbox/Group';
-import { LabelText, DrawContext, FormatOptionsT, LabelImage } from '../ItemPrint';
-import Dropzone from 'react-dropzone';
+import { ItemsHardwareFastenerBolt, InsertIconComponent, withGetIcons, GetIconsProps, EnumIconCategoryEnum, InsertIconDocument, GetIconsDocument } from '../../types/graphql';
+import { LabelImage } from './LabelConstituent';
+import { DrawContext } from './LabelDraw';
+
+import '../../styles/fileInput.scss';
 
 interface LabelAddImageProps {
     event?: KonvaEventObject<MouseEvent>;
@@ -36,20 +35,20 @@ export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
             this.props.visibleHandler( display.HIDDEN );
         }
 
-        getLabelImageSelectedObj(id: string): LabelImage {
-            if ( this.props.data.icons ){
-                for ( let i = 0; i < this.props.data.icons.length ; i++){
-                    let icon = this.props.data.icons[i];
+        getLabelImageSelectedObj ( id: string ): LabelImage {
+            if ( this.props.data.icons ) {
+                for ( let i = 0; i < this.props.data.icons.length; i++ ) {
+                    let icon = this.props.data.icons[ i ];
                     console.log( "checking labelImage uuid: ", icon.id );
 
                     if ( icon.id == id ) {
                         console.log( "returning labelImage by uuid: ", icon.id );
 
-                        return new LabelImage({
+                        return new LabelImage( {
                             ...icon,
                             width: 50,
                             height: 50
-                        });
+                        } );
                     }
                 }
                 // this.props.data.icons.forEach( icon => {
@@ -62,16 +61,16 @@ export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
                 //     }
                 // });
             }
-            console.log( "!! RETURNING NULL !!");
+            console.log( "!! RETURNING NULL !!" );
             return null;
 
         }
 
         onChange = ( value: string ) => {
 
-            console.log("looking up labelImage by value: " , value);
+            console.log( "looking up labelImage by value: ", value );
             this.props.changeHandler(
-                this.getLabelImageSelectedObj(value),
+                this.getLabelImageSelectedObj( value ),
                 this.props.labelImage
             );
         }
@@ -125,9 +124,9 @@ export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
                                 {this.props.data.icons ? this.props.data.icons.map( icon => (
                                     <Select.Option
                                         value={icon.id}
-                                        // key={icon.id}
-                                        // value={`${ icon.id }.${icon.category }.${ icon.label } ${ icon.description }`}
-                                        >{icon.label ? icon.label : icon.id}</Select.Option>
+                                        key={icon.id}
+                                    // value={`${ icon.id }.${icon.category }.${ icon.label } ${ icon.description }`}
+                                    >{icon.label ? icon.label : icon.id}</Select.Option>
                                 ) ) : null}
                             </Select>
 
@@ -249,6 +248,9 @@ export class NewImageButton extends React.Component<NewImageButtonProps, NewImag
 
         return (
             <InsertIconComponent
+                refetchQueries={[ {
+                    query: GetIconsDocument
+                } ]}
             // onCompleted={() => this.setState({loading})} 
             >
                 {( sendData, { loading, called, data, error } ) => {
@@ -281,18 +283,36 @@ export class NewImageButton extends React.Component<NewImageButtonProps, NewImag
                     }
                     return (
                         <Spin spinning={loading}>
-
+                            {/* <div className="ant-upload ant-upload-select ant-upload-select-text"> */}
+                            {/* <span className="ant-upload" role="button"> */}
+                            {/* <input type="file" accept="" style={{display: 'none'}} /> */}
                             <input
+                                name="file" id="file"
+                                className="inputfile"
                                 type="file"
                                 multiple
                                 required
-                                onChange={() => this.previewFile()
-                                }
+                                style={{ display: 'none' }}
+                                onChange={() => this.previewFile()}
                             />
-                            <div>
-                                <Icon type={this.state.loading ? 'loading' : 'plus'} />
+                            <label htmlFor="file">
+                                <strong>Choose a file</strong>
+                                {/* <button type="button" className="ant-btn"> */}
+                                    {/* <i aria-label="icon: upload" className="anticon anticon-upload"> */}
+                                        <svg viewBox="64 64 896 896" focusable="false" className="" data-icon="upload" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                            <path d="M400 317.7h73.9V656c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V317.7H624c6.7 0 10.4-7.7 6.3-12.9L518.3 163a8 8 0 0 0-12.6 0l-112 141.7c-4.1 5.3-.4 13 6.3 13zM878 626h-60c-4.4 0-8 3.6-8 8v154H214V634c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v198c0 17.7 14.3 32 32 32h684c17.7 0 32-14.3 32-32V634c0-4.4-3.6-8-8-8z">
+                                            </path>
+                                        </svg>
+                                    {/* </i> */}
+                                    {/* <span> Click to Upload</span> */}
+                                {/* </button> */}
+                            </label>
+                            {/* </span> */}
+                            {/* </div> */}
+                            {/* <Button loading={this.state.loading}>
+                                <Icon type='plus' />
                                 <div className="ant-upload-text">{buttonLabel}</div>
-                            </div>
+                            </Button> */}
                         </Spin>
                     );
                     // < Button icon="picture" onClick={() => onClick( true )} id={buttonLabel} >{buttonLabel}</Button>

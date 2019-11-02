@@ -3,7 +3,7 @@ import * as mkdirp from 'mkdirp';
 import * as shortid from 'shortid';
 import uint8_resolver from '../schema/type_uint8'
 import {uint8} from '../schema/type_uint8'
-import {print as printLabel} from '../lib/epson';
+import { BrotherLabeler, PrinterStatus } from '../lib/epson';
 import { HttpLink } from 'apollo-link-http/lib/httpLink';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
@@ -31,11 +31,16 @@ export default {
       imageBuffer: uint8[][][]
     }){
       console.log("received imageBuffer", imageBuffer, "\n received ", new Date().toISOString() );
-      printLabel( imageBuffer );
+      new BrotherLabeler().print( imageBuffer );
       return {
         // __typename: "LabelMonochromeBuffer",
         imageBuffer: imageBuffer,
       };
+    }
+  },
+  Query: {
+    async PrinterStatus ( obj: any ): Promise<PrinterStatus> {
+      return await new BrotherLabeler().getPrinterStatus();
     }
   }
 };
