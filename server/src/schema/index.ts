@@ -23,6 +23,12 @@ export const typeDefs = gql`
 
   type Query {
     files: [File]
+    PrinterStatus: PrinterStatus
+  }
+
+  type PrinterStatus {
+    labelType: String!
+    uptime: Int
   }
   
   scalar uint8

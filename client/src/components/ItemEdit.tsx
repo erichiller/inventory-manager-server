@@ -9,4 +9,4 @@ interface ItemEditState {}
 export default withItemsHardwareFastenerBolt()(
     class ItemTable extends React.Component<ItemsHardwareFastenerBoltProps<ItemEditProps>, ItemEditState> {
     }
-)
+);

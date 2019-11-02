@@ -41,3 +41,9 @@ query GetIcons {
     category
   }
 }
+
+query GetPrinterStatus {
+  PrinterStatus {
+    labelType
+  }
+}

@@ -1,51 +1,54 @@
+import {BrotherLabeler} from './epson';
 
 
-class foo {
+let printer = new BrotherLabeler();
 
-    public foo(){
-        console.log("this");
-    }
-}
+let x = printer.getPrinterStatus();
 
-let f = new foo();
+x.then( result => console.log("result is", result))
 
-
-console.log(f);
-console.log("done");
+// console.log(x);
 
 
+// ( async function () {
+//     let res = await printer.getPrinterStatus();
+//     console.log( res );
+// } )();
 
-// let printerUrl = "http://hp//";
-// let printerUrl = "http://deepthought:80/printers/BMP41/.printer";
-// let printerUsername = "eric@hiller.pro"
-let printerUrl = "http://deepthought:80//printers/Brother PT-P950NW/.printer";
+// uptime
+// iso.3.6.1.2.1.25.1.1.0
 
-import * as ipp from "ipp";
-// import * as PDFDocument from 'pdfkit';
+// // let printerUrl = "http://hp//";
+// // let printerUrl = "http://deepthought:80/printers/BMP41/.printer";
+// // let printerUsername = "eric@hiller.pro"
+// let printerUrl = "http://deepthought:80//printers/Brother PT-P950NW/.printer";
 
-var PDFDocument = require("pdfkit");
+// import * as ipp from "ipp";
+// // import * as PDFDocument from 'pdfkit';
+
+// var PDFDocument = require("pdfkit");
 
 
 
-var printer = ipp.Printer(printerUrl, {version: "1.0"});
+// var printer = ipp.Printer(printerUrl, {version: "1.0"});
 
-// var msg = {
-// 	"operation-attributes-tag": {
-// 		"requesting-user-name": "eric",
-// 		"message": "These are not the droids you are looking for"
-// 	}
-// };
-// printer.execute("Identify-Printer", msg, function(err, res){
-//     console.log(err);
+// // var msg = {
+// // 	"operation-attributes-tag": {
+// // 		"requesting-user-name": "eric",
+// // 		"message": "These are not the droids you are looking for"
+// // 	}
+// // };
+// // printer.execute("Identify-Printer", msg, function(err, res){
+// //     console.log(err);
+// // 	console.log(res);
+// // });
+
+
+
+// printer.execute("Get-Printer-Attributes", null, function(err, res){
+// 	console.log(err);
 // 	console.log(res);
 // });
-
-
-
-printer.execute("Get-Printer-Attributes", null, function(err, res){
-	console.log(err);
-	console.log(res);
-});
 
 
 // const buf = Buffer.from('eric');
