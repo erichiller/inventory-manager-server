@@ -3,20 +3,20 @@ import { Component } from 'react';
 import { display } from '../ItemTable';
 import React from 'react';
 import { Modal } from 'antd';
-import { ItemsHardwareFastenerBolt, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltComponent } from '../../types/graphql';
+import { ItemsHardwareFastenerBolt, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltComponent, Items } from '../../types/graphql';
 import bwipjs from 'bwip-js';
 import { LabelQR } from './LabelConstituent';
 import { DrawContext } from './LabelDraw';
 
-interface QREditModalProps {
+interface QREditModalProps<T> {
     event?: KonvaEventObject<MouseEvent>;
-    item?: ItemsHardwareFastenerBolt;
-    labelQR: LabelQR;
+    item?: Items;
+    labelQR: LabelQR<T>;
     visibleHandler: ( display?: display ) => void;
-    changeHandler: ( newValue: any, labelQR: LabelQR ) => void;
+    changeHandler: ( newValue: any, labelQR: LabelQR<T> ) => void;
 }
 
-export default class QREditModal extends Component<QREditModalProps> {
+export default class QREditModal<T> extends Component<QREditModalProps<T>> {
 
     onCancel = () => {
         /// REMOVE ELEMENT /// REVERT ///
@@ -88,23 +88,22 @@ export default class QREditModal extends Component<QREditModalProps> {
     }
 }
 
-
-interface QRCanvasProps {
+interface QRCanvasProps<T> {
     width: number;
-    labelQR: LabelQR;
+    labelQR: LabelQR<T>;
     changeHandler: UpdateLabelQR;
 }
 
-type UpdateLabelQR = ( newValue: Partial<LabelQR>, labelQR: LabelQR ) => void;
-type CommitLabelQR = ( labelQR: LabelQR ) => void;
+type UpdateLabelQR = ( newValue: Partial<LabelQR<any>>, labelQR: LabelQR<any> ) => void;
+type CommitLabelQR<T> = ( labelQR: LabelQR<T> ) => void;
 
-class QRCanvas extends Component<QRCanvasProps> {
+class QRCanvas<T> extends Component<QRCanvasProps<T>> {
 
     componentDidMount () {
         console.log( "QREditModal componentDidMount" );
         bwipjs( 'tempCanvas', {
             bcid: 'datamatrix',       // Barcode type
-            text: '0123456789\nabcdefghi',    // Text to encode
+            text: this.props.labelQR.properties.map( p => `${ p }` ).join('\n') ,    // Text to encode
             scale: 1,               // 3x scaling factor
             // width: this.props.width,
             height: 10,              // Bar height, in millimeters

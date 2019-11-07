@@ -1,6 +1,7 @@
 
 
 import { v4 as UUIDv4 } from 'uuid';
+import { EnumIconCategoryEnum } from '../../types/graphql';
 
 
 class LabelConstituent {
@@ -21,6 +22,8 @@ class LabelConstituent {
 
 type UUIDStringT = string;
 export type FormatOptionsT = "bold" | "italic" | "underline";
+
+
 
 export class LabelText extends LabelConstituent {
     text: string;
@@ -56,13 +59,21 @@ export class LabelText extends LabelConstituent {
     }
 }
 
+
+
 export class LabelImage extends LabelConstituent {
     data: string;
     width?: number;
     height?: number;
+    label?: string;
+    category?: EnumIconCategoryEnum;
+    description?: string;
 
     constructor ( options?: Partial<LabelImage> ) {
         super( options );
+        // defaults
+        this.width = 50;
+        this.height = 50;
 
         if ( options ) {
             Object.getOwnPropertyNames( options ).forEach( propName => this[ propName ] = options[ propName ] );
@@ -71,7 +82,9 @@ export class LabelImage extends LabelConstituent {
 }
 
 
-export class LabelQR extends LabelConstituent {
+
+export class LabelQR<T> extends LabelConstituent {
+    properties: [ Partial<keyof T> ];
     canvasElement: HTMLCanvasElement;
     dataURL: string;
 }
