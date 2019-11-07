@@ -34,7 +34,7 @@ services:
     - db_data:/var/lib/postgresql/data
   graphql-engine:
     container_name: pgsql-gql
-    image: hasura/graphql-engine:v1.0.0-alpha45
+    image: hasura/graphql-engine:v1.0.0-beta9
     ports:
     - "8090:8080"
     depends_on:
@@ -43,6 +43,10 @@ services:
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+    healthcheck:
+      # https://docs.hasura.io/1.0/graphql/manual/api-reference/index.html#health-check-api
+      # to /healthz ; 200 OK
+
       ## uncomment next line to set an admin secret
       # HASURA_GRAPHQL_ADMIN_SECRET: password
 volumes:

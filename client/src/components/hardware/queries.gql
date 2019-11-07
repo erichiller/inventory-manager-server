@@ -1,5 +1,5 @@
-query items_hardware_fastener_bolt {
-  items: items_hardware_fastener_bolt {
+query item_hardware_fastener_bolt {
+  items: item_hardware_fastener_bolt {
     id
     name
     description

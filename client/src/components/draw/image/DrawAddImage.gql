@@ -7,7 +7,7 @@ mutation InsertIcon (
     $label: String,
     $category: enum_icon_category_enum
     ) {
-  insert_icons(
+  insert_icon(
       objects: {
           data: $mimeData, 
           description: $description, 
@@ -33,7 +33,7 @@ mutation InsertIcon (
 
 
 query GetIcons {
-  icons {
+  icon {
     data
     description
     id

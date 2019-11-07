@@ -5,13 +5,13 @@ import { display } from '../ItemTable';
 import React from 'react';
 import { Modal, AutoComplete } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
-import { ItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltSelectColumn } from '../../types/graphql';
+import { ItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltSelectColumn, Items } from '../../types/graphql';
 import { LabelText, FormatOptionsT } from './LabelConstituent';
 import { DrawContext } from './LabelDraw';
 
 interface LabelDrawEditTextProps extends FormComponentProps {
     event?: KonvaEventObject<MouseEvent>;
-    item?: ItemsHardwareFastenerBolt;
+    item?: Items;
     labelText: LabelText;
     visibleHandler: (display?: display) => void;
     changeHandler: (newValue: any, labelText: LabelText) => void;
@@ -21,16 +21,6 @@ interface LabelDrawEditTextFormState {
     currentFormatOptions: CheckedFormatOptionsT;
     currentLabelText: LabelText;
 }
-
-
-// class ItemHardware implements Partial<ItemsHardwareFastenerBolt> {
-
-//     // get defaultName() {
-//     //     return ""
-//     // }
-
-// }
-
 
 type CheckedFormatOptionsT = FormatOptionsT[];
 
@@ -55,8 +45,6 @@ export default Form.create<LabelDrawEditTextProps>(
         //     super(props);
         // }
         onCancel = () => {
-
-            /// REMOVE ELEMENT /// REVERT ///
             this.props.visibleHandler(display.HIDDEN);
         }
         // onFormChange = (value: any): void => {
@@ -101,42 +89,13 @@ export default Form.create<LabelDrawEditTextProps>(
 
         }
 
-        // _labelTextArray: LabelText[] = [];
-        // get labelTextArray(): LabelText[] {
-        //     return this._labelTextArray;
-        // }
-        // set labelTextArray(labelText: LabelText[]){
-        //     this._labelTextArray = labelText;
-        // }
-        // updateLabelTextArray(labelText: LabelText){
-        //     this._labelTextArray
-        // }
-
-
         render() {
             const { event, visibleHandler, form, item, changeHandler , labelText} = this.props;
             const { getFieldDecorator, setFieldsValue } = form;
             const { currentLabelText } = this.state;
 
             console.log('this.props.visible', visibleHandler());
-            // console.log('this.state.visible', visibleHandler(), this.state.visible == display.VISIBLE ? true : false)
             console.log('this.props.item', item);
-            // if ( visible)
-            // console.log('item keys', Object.keys(item))
-
-            // if (!createnew) {
-            //     <ItemsHardwareFastenerBoltComponent
-            //         variables={{ first: '10' }} // Throws an error!
-            //     >
-            //         {({ data }) => {
-            //             item_data = 
-            //         }}
-            //     </ItemsHardwareFastenerBoltComponent>
-
-            // }
-            // if (!createnew && !item) {
-            //     console.error(" this is not a newly created LabelText, nor has an item been passed in for attachment to a new LabelText")
-            // }
             let drawWidth = 725;
             return (
                 <DrawContext.Consumer>

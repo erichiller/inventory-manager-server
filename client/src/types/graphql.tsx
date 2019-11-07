@@ -12,23 +12,15 @@ export type Scalars = {
   Boolean: boolean,
   Int: number,
   Float: number,
-  date: any,
-  money: any,
   timestamptz: any,
   uuid: any,
   numeric: any,
+  date: any,
+  money: any,
   /** uint8 (unsigned int between 0 and 255) scalar type for Apollo GraphQL */
   uint8: any,
   Upload: any,
 };
-
-/** conflict action */
-export enum ConflictAction {
-  /** ignore the insert on this row */
-  IGNORE = 'ignore',
-  /** update the row with the given values */
-  UPDATE = 'update'
-}
 
 
 /** expression to compare columns of type date. All fields are combined with logical 'AND'. */
@@ -50,55 +42,7 @@ export type Entity = {
   description?: Maybe<Scalars['String']>,
   id: Scalars['Int'],
   name: Scalars['String'],
-  /** An array relationship */
-  purchaseAsManufacturer: Array<Purchases>,
-  /** An aggregated array relationship */
-  purchaseAsManufacturer_aggregate: PurchasesAggregate,
-  /** An array relationship */
-  purchaseAsVendor: Array<Purchases>,
-  /** An aggregated array relationship */
-  purchaseAsVendor_aggregate: PurchasesAggregate,
   url?: Maybe<Scalars['String']>,
-};
-
-
-/** columns and relationships of "entity" */
-export type EntityPurchaseAsManufacturerArgs = {
-  distinct_on?: Maybe<Array<PurchasesSelectColumn>>,
-  limit?: Maybe<Scalars['Int']>,
-  offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<PurchasesOrderBy>>,
-  where?: Maybe<PurchasesBoolExp>
-};
-
-
-/** columns and relationships of "entity" */
-export type EntityPurchaseAsManufacturerAggregateArgs = {
-  distinct_on?: Maybe<Array<PurchasesSelectColumn>>,
-  limit?: Maybe<Scalars['Int']>,
-  offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<PurchasesOrderBy>>,
-  where?: Maybe<PurchasesBoolExp>
-};
-
-
-/** columns and relationships of "entity" */
-export type EntityPurchaseAsVendorArgs = {
-  distinct_on?: Maybe<Array<PurchasesSelectColumn>>,
-  limit?: Maybe<Scalars['Int']>,
-  offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<PurchasesOrderBy>>,
-  where?: Maybe<PurchasesBoolExp>
-};
-
-
-/** columns and relationships of "entity" */
-export type EntityPurchaseAsVendorAggregateArgs = {
-  distinct_on?: Maybe<Array<PurchasesSelectColumn>>,
-  limit?: Maybe<Scalars['Int']>,
-  offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<PurchasesOrderBy>>,
-  where?: Maybe<PurchasesBoolExp>
 };
 
 /** aggregated selection of "entity" */
@@ -171,8 +115,6 @@ export type EntityBoolExp = {
   description?: Maybe<StringComparisonExp>,
   id?: Maybe<IntComparisonExp>,
   name?: Maybe<StringComparisonExp>,
-  purchaseAsManufacturer?: Maybe<PurchasesBoolExp>,
-  purchaseAsVendor?: Maybe<PurchasesBoolExp>,
   url?: Maybe<StringComparisonExp>,
 };
 
@@ -194,8 +136,6 @@ export type EntityInsertInput = {
   description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['Int']>,
   name?: Maybe<Scalars['String']>,
-  purchaseAsManufacturer?: Maybe<PurchasesArrRelInsertInput>,
-  purchaseAsVendor?: Maybe<PurchasesArrRelInsertInput>,
   url?: Maybe<Scalars['String']>,
 };
 
@@ -252,6 +192,7 @@ export type EntityObjRelInsertInput = {
 export type EntityOnConflict = {
   constraint: EntityConstraint,
   update_columns: Array<EntityUpdateColumn>,
+  where?: Maybe<EntityBoolExp>,
 };
 
 /** ordering options when selecting data from "entity" */
@@ -259,8 +200,6 @@ export type EntityOrderBy = {
   description?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   name?: Maybe<OrderBy>,
-  purchaseAsManufacturer_aggregate?: Maybe<PurchasesAggregateOrderBy>,
-  purchaseAsVendor_aggregate?: Maybe<PurchasesAggregateOrderBy>,
   url?: Maybe<OrderBy>,
 };
 
@@ -373,7 +312,12 @@ export type EntityVarianceOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
-/** columns and relationships of "enum.hardware_fastener_material" */
+/** 
+ * https://www.sppusa.com/stainlesssteel_overview.php
+ * 
+ * 
+ * columns and relationships of "enum.hardware_fastener_material"
+ **/
 export type EnumHardwareFastenerMaterial = {
    __typename?: 'enum_hardware_fastener_material',
   description?: Maybe<Scalars['String']>,
@@ -484,6 +428,7 @@ export type EnumHardwareFastenerMaterialObjRelInsertInput = {
 export type EnumHardwareFastenerMaterialOnConflict = {
   constraint: EnumHardwareFastenerMaterialConstraint,
   update_columns: Array<EnumHardwareFastenerMaterialUpdateColumn>,
+  where?: Maybe<EnumHardwareFastenerMaterialBoolExp>,
 };
 
 /** ordering options when selecting data from "enum.hardware_fastener_material" */
@@ -625,6 +570,7 @@ export type EnumHardwareFastenerScrewPointObjRelInsertInput = {
 export type EnumHardwareFastenerScrewPointOnConflict = {
   constraint: EnumHardwareFastenerScrewPointConstraint,
   update_columns: Array<EnumHardwareFastenerScrewPointUpdateColumn>,
+  where?: Maybe<EnumHardwareFastenerScrewPointBoolExp>,
 };
 
 /** ordering options when selecting data from "enum.hardware_fastener_screw_point" */
@@ -763,6 +709,7 @@ export type EnumHardwareFinishObjRelInsertInput = {
 export type EnumHardwareFinishOnConflict = {
   constraint: EnumHardwareFinishConstraint,
   update_columns: Array<EnumHardwareFinishUpdateColumn>,
+  where?: Maybe<EnumHardwareFinishBoolExp>,
 };
 
 /** ordering options when selecting data from "enum.hardware_finish" */
@@ -916,6 +863,7 @@ export type EnumIconCategoryObjRelInsertInput = {
 export type EnumIconCategoryOnConflict = {
   constraint: EnumIconCategoryConstraint,
   update_columns: Array<EnumIconCategoryUpdateColumn>,
+  where?: Maybe<EnumIconCategoryBoolExp>,
 };
 
 /** ordering options when selecting data from "enum.icon_category" */
@@ -1069,6 +1017,7 @@ export type EnumUnitObjRelInsertInput = {
 export type EnumUnitOnConflict = {
   constraint: EnumUnitConstraint,
   update_columns: Array<EnumUnitUpdateColumn>,
+  where?: Maybe<EnumUnitBoolExp>,
 };
 
 /** ordering options when selecting data from "enum.unit" */
@@ -1107,57 +1056,63 @@ export type File = {
   type: Scalars['String'],
 };
 
-/** columns and relationships of "icons" */
-export type Icons = {
-   __typename?: 'icons',
+/** 
+ * Image / icon data for labels
+ * 
+ * 
+ * columns and relationships of "icon"
+ **/
+export type Icon = {
+   __typename?: 'icon',
   category: EnumIconCategoryEnum,
   created_at: Scalars['timestamptz'],
+  /** Store image data in Base64 */
   data: Scalars['String'],
   description?: Maybe<Scalars['String']>,
   id: Scalars['uuid'],
   label?: Maybe<Scalars['String']>,
 };
 
-/** aggregated selection of "icons" */
-export type IconsAggregate = {
-   __typename?: 'icons_aggregate',
-  aggregate?: Maybe<IconsAggregateFields>,
-  nodes: Array<Icons>,
+/** aggregated selection of "icon" */
+export type IconAggregate = {
+   __typename?: 'icon_aggregate',
+  aggregate?: Maybe<IconAggregateFields>,
+  nodes: Array<Icon>,
 };
 
-/** aggregate fields of "icons" */
-export type IconsAggregateFields = {
-   __typename?: 'icons_aggregate_fields',
+/** aggregate fields of "icon" */
+export type IconAggregateFields = {
+   __typename?: 'icon_aggregate_fields',
   count?: Maybe<Scalars['Int']>,
-  max?: Maybe<IconsMaxFields>,
-  min?: Maybe<IconsMinFields>,
+  max?: Maybe<IconMaxFields>,
+  min?: Maybe<IconMinFields>,
 };
 
 
-/** aggregate fields of "icons" */
-export type IconsAggregateFieldsCountArgs = {
-  columns?: Maybe<Array<IconsSelectColumn>>,
+/** aggregate fields of "icon" */
+export type IconAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<IconSelectColumn>>,
   distinct?: Maybe<Scalars['Boolean']>
 };
 
-/** order by aggregate values of table "icons" */
-export type IconsAggregateOrderBy = {
+/** order by aggregate values of table "icon" */
+export type IconAggregateOrderBy = {
   count?: Maybe<OrderBy>,
-  max?: Maybe<IconsMaxOrderBy>,
-  min?: Maybe<IconsMinOrderBy>,
+  max?: Maybe<IconMaxOrderBy>,
+  min?: Maybe<IconMinOrderBy>,
 };
 
-/** input type for inserting array relation for remote table "icons" */
-export type IconsArrRelInsertInput = {
-  data: Array<IconsInsertInput>,
-  on_conflict?: Maybe<IconsOnConflict>,
+/** input type for inserting array relation for remote table "icon" */
+export type IconArrRelInsertInput = {
+  data: Array<IconInsertInput>,
+  on_conflict?: Maybe<IconOnConflict>,
 };
 
-/** Boolean expression to filter rows from the table "icons". All fields are combined with a logical 'AND'. */
-export type IconsBoolExp = {
-  _and?: Maybe<Array<Maybe<IconsBoolExp>>>,
-  _not?: Maybe<IconsBoolExp>,
-  _or?: Maybe<Array<Maybe<IconsBoolExp>>>,
+/** Boolean expression to filter rows from the table "icon". All fields are combined with a logical 'AND'. */
+export type IconBoolExp = {
+  _and?: Maybe<Array<Maybe<IconBoolExp>>>,
+  _not?: Maybe<IconBoolExp>,
+  _or?: Maybe<Array<Maybe<IconBoolExp>>>,
   category?: Maybe<EnumIconCategoryEnumComparisonExp>,
   created_at?: Maybe<TimestamptzComparisonExp>,
   data?: Maybe<StringComparisonExp>,
@@ -1166,16 +1121,16 @@ export type IconsBoolExp = {
   label?: Maybe<StringComparisonExp>,
 };
 
-/** unique or primary key constraints on table "icons" */
-export enum IconsConstraint {
+/** unique or primary key constraints on table "icon" */
+export enum IconConstraint {
   /** unique or primary key constraint */
   ICONS_ID_KEY = 'icons_id_key',
   /** unique or primary key constraint */
   ICONS_PKEY = 'icons_pkey'
 }
 
-/** input type for inserting data into table "icons" */
-export type IconsInsertInput = {
+/** input type for inserting data into table "icon" */
+export type IconInsertInput = {
   category?: Maybe<EnumIconCategoryEnum>,
   created_at?: Maybe<Scalars['timestamptz']>,
   data?: Maybe<Scalars['String']>,
@@ -1185,16 +1140,16 @@ export type IconsInsertInput = {
 };
 
 /** aggregate max on columns */
-export type IconsMaxFields = {
-   __typename?: 'icons_max_fields',
+export type IconMaxFields = {
+   __typename?: 'icon_max_fields',
   created_at?: Maybe<Scalars['timestamptz']>,
   data?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
   label?: Maybe<Scalars['String']>,
 };
 
-/** order by max() on columns of table "icons" */
-export type IconsMaxOrderBy = {
+/** order by max() on columns of table "icon" */
+export type IconMaxOrderBy = {
   created_at?: Maybe<OrderBy>,
   data?: Maybe<OrderBy>,
   description?: Maybe<OrderBy>,
@@ -1202,45 +1157,46 @@ export type IconsMaxOrderBy = {
 };
 
 /** aggregate min on columns */
-export type IconsMinFields = {
-   __typename?: 'icons_min_fields',
+export type IconMinFields = {
+   __typename?: 'icon_min_fields',
   created_at?: Maybe<Scalars['timestamptz']>,
   data?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
   label?: Maybe<Scalars['String']>,
 };
 
-/** order by min() on columns of table "icons" */
-export type IconsMinOrderBy = {
+/** order by min() on columns of table "icon" */
+export type IconMinOrderBy = {
   created_at?: Maybe<OrderBy>,
   data?: Maybe<OrderBy>,
   description?: Maybe<OrderBy>,
   label?: Maybe<OrderBy>,
 };
 
-/** response of any mutation on the table "icons" */
-export type IconsMutationResponse = {
-   __typename?: 'icons_mutation_response',
+/** response of any mutation on the table "icon" */
+export type IconMutationResponse = {
+   __typename?: 'icon_mutation_response',
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'],
   /** data of the affected rows by the mutation */
-  returning: Array<Icons>,
+  returning: Array<Icon>,
 };
 
-/** input type for inserting object relation for remote table "icons" */
-export type IconsObjRelInsertInput = {
-  data: IconsInsertInput,
-  on_conflict?: Maybe<IconsOnConflict>,
+/** input type for inserting object relation for remote table "icon" */
+export type IconObjRelInsertInput = {
+  data: IconInsertInput,
+  on_conflict?: Maybe<IconOnConflict>,
 };
 
-/** on conflict condition type for table "icons" */
-export type IconsOnConflict = {
-  constraint: IconsConstraint,
-  update_columns: Array<IconsUpdateColumn>,
+/** on conflict condition type for table "icon" */
+export type IconOnConflict = {
+  constraint: IconConstraint,
+  update_columns: Array<IconUpdateColumn>,
+  where?: Maybe<IconBoolExp>,
 };
 
-/** ordering options when selecting data from "icons" */
-export type IconsOrderBy = {
+/** ordering options when selecting data from "icon" */
+export type IconOrderBy = {
   category?: Maybe<OrderBy>,
   created_at?: Maybe<OrderBy>,
   data?: Maybe<OrderBy>,
@@ -1249,8 +1205,8 @@ export type IconsOrderBy = {
   label?: Maybe<OrderBy>,
 };
 
-/** select columns of table "icons" */
-export enum IconsSelectColumn {
+/** select columns of table "icon" */
+export enum IconSelectColumn {
   /** column name */
   CATEGORY = 'category',
   /** column name */
@@ -1265,8 +1221,8 @@ export enum IconsSelectColumn {
   LABEL = 'label'
 }
 
-/** input type for updating data in table "icons" */
-export type IconsSetInput = {
+/** input type for updating data in table "icon" */
+export type IconSetInput = {
   category?: Maybe<EnumIconCategoryEnum>,
   created_at?: Maybe<Scalars['timestamptz']>,
   data?: Maybe<Scalars['String']>,
@@ -1275,8 +1231,8 @@ export type IconsSetInput = {
   label?: Maybe<Scalars['String']>,
 };
 
-/** update columns of table "icons" */
-export enum IconsUpdateColumn {
+/** update columns of table "icon" */
+export enum IconUpdateColumn {
   /** column name */
   CATEGORY = 'category',
   /** column name */
@@ -1304,85 +1260,85 @@ export type IntComparisonExp = {
   _nin?: Maybe<Array<Scalars['Int']>>,
 };
 
-/** columns and relationships of "items" */
-export type Items = {
-   __typename?: 'items',
+/** columns and relationships of "item" */
+export type Item = {
+   __typename?: 'item',
   class?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['Int']>,
   name?: Maybe<Scalars['String']>,
 };
 
-/** aggregated selection of "items" */
-export type ItemsAggregate = {
-   __typename?: 'items_aggregate',
-  aggregate?: Maybe<ItemsAggregateFields>,
-  nodes: Array<Items>,
+/** aggregated selection of "item" */
+export type ItemAggregate = {
+   __typename?: 'item_aggregate',
+  aggregate?: Maybe<ItemAggregateFields>,
+  nodes: Array<Item>,
 };
 
-/** aggregate fields of "items" */
-export type ItemsAggregateFields = {
-   __typename?: 'items_aggregate_fields',
-  avg?: Maybe<ItemsAvgFields>,
+/** aggregate fields of "item" */
+export type ItemAggregateFields = {
+   __typename?: 'item_aggregate_fields',
+  avg?: Maybe<ItemAvgFields>,
   count?: Maybe<Scalars['Int']>,
-  max?: Maybe<ItemsMaxFields>,
-  min?: Maybe<ItemsMinFields>,
-  stddev?: Maybe<ItemsStddevFields>,
-  stddev_pop?: Maybe<ItemsStddevPopFields>,
-  stddev_samp?: Maybe<ItemsStddevSampFields>,
-  sum?: Maybe<ItemsSumFields>,
-  var_pop?: Maybe<ItemsVarPopFields>,
-  var_samp?: Maybe<ItemsVarSampFields>,
-  variance?: Maybe<ItemsVarianceFields>,
+  max?: Maybe<ItemMaxFields>,
+  min?: Maybe<ItemMinFields>,
+  stddev?: Maybe<ItemStddevFields>,
+  stddev_pop?: Maybe<ItemStddevPopFields>,
+  stddev_samp?: Maybe<ItemStddevSampFields>,
+  sum?: Maybe<ItemSumFields>,
+  var_pop?: Maybe<ItemVarPopFields>,
+  var_samp?: Maybe<ItemVarSampFields>,
+  variance?: Maybe<ItemVarianceFields>,
 };
 
 
-/** aggregate fields of "items" */
-export type ItemsAggregateFieldsCountArgs = {
-  columns?: Maybe<Array<ItemsSelectColumn>>,
+/** aggregate fields of "item" */
+export type ItemAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<ItemSelectColumn>>,
   distinct?: Maybe<Scalars['Boolean']>
 };
 
-/** order by aggregate values of table "items" */
-export type ItemsAggregateOrderBy = {
-  avg?: Maybe<ItemsAvgOrderBy>,
+/** order by aggregate values of table "item" */
+export type ItemAggregateOrderBy = {
+  avg?: Maybe<ItemAvgOrderBy>,
   count?: Maybe<OrderBy>,
-  max?: Maybe<ItemsMaxOrderBy>,
-  min?: Maybe<ItemsMinOrderBy>,
-  stddev?: Maybe<ItemsStddevOrderBy>,
-  stddev_pop?: Maybe<ItemsStddevPopOrderBy>,
-  stddev_samp?: Maybe<ItemsStddevSampOrderBy>,
-  sum?: Maybe<ItemsSumOrderBy>,
-  var_pop?: Maybe<ItemsVarPopOrderBy>,
-  var_samp?: Maybe<ItemsVarSampOrderBy>,
-  variance?: Maybe<ItemsVarianceOrderBy>,
+  max?: Maybe<ItemMaxOrderBy>,
+  min?: Maybe<ItemMinOrderBy>,
+  stddev?: Maybe<ItemStddevOrderBy>,
+  stddev_pop?: Maybe<ItemStddevPopOrderBy>,
+  stddev_samp?: Maybe<ItemStddevSampOrderBy>,
+  sum?: Maybe<ItemSumOrderBy>,
+  var_pop?: Maybe<ItemVarPopOrderBy>,
+  var_samp?: Maybe<ItemVarSampOrderBy>,
+  variance?: Maybe<ItemVarianceOrderBy>,
 };
 
 /** aggregate avg on columns */
-export type ItemsAvgFields = {
-   __typename?: 'items_avg_fields',
+export type ItemAvgFields = {
+   __typename?: 'item_avg_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by avg() on columns of table "items" */
-export type ItemsAvgOrderBy = {
+/** order by avg() on columns of table "item" */
+export type ItemAvgOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
-/** Boolean expression to filter rows from the table "items". All fields are combined with a logical 'AND'. */
-export type ItemsBoolExp = {
-  _and?: Maybe<Array<Maybe<ItemsBoolExp>>>,
-  _not?: Maybe<ItemsBoolExp>,
-  _or?: Maybe<Array<Maybe<ItemsBoolExp>>>,
+/** Boolean expression to filter rows from the table "item". All fields are combined with a logical 'AND'. */
+export type ItemBoolExp = {
+  _and?: Maybe<Array<Maybe<ItemBoolExp>>>,
+  _not?: Maybe<ItemBoolExp>,
+  _or?: Maybe<Array<Maybe<ItemBoolExp>>>,
   class?: Maybe<StringComparisonExp>,
   description?: Maybe<StringComparisonExp>,
   id?: Maybe<IntComparisonExp>,
   name?: Maybe<StringComparisonExp>,
 };
 
-/** columns and relationships of "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBolt = {
-   __typename?: 'items_hardware_fastener_bolt',
+/** columns and relationships of "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBolt = {
+   __typename?: 'item_hardware_fastener_bolt',
   countersunk?: Maybe<Scalars['numeric']>,
   description?: Maybe<Scalars['String']>,
   drive_size: Scalars['String'],
@@ -1401,59 +1357,59 @@ export type ItemsHardwareFastenerBolt = {
   unit: EnumUnitEnum,
 };
 
-/** aggregated selection of "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltAggregate = {
-   __typename?: 'items_hardware_fastener_bolt_aggregate',
-  aggregate?: Maybe<ItemsHardwareFastenerBoltAggregateFields>,
-  nodes: Array<ItemsHardwareFastenerBolt>,
+/** aggregated selection of "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltAggregate = {
+   __typename?: 'item_hardware_fastener_bolt_aggregate',
+  aggregate?: Maybe<ItemHardwareFastenerBoltAggregateFields>,
+  nodes: Array<ItemHardwareFastenerBolt>,
 };
 
-/** aggregate fields of "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltAggregateFields = {
-   __typename?: 'items_hardware_fastener_bolt_aggregate_fields',
-  avg?: Maybe<ItemsHardwareFastenerBoltAvgFields>,
+/** aggregate fields of "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltAggregateFields = {
+   __typename?: 'item_hardware_fastener_bolt_aggregate_fields',
+  avg?: Maybe<ItemHardwareFastenerBoltAvgFields>,
   count?: Maybe<Scalars['Int']>,
-  max?: Maybe<ItemsHardwareFastenerBoltMaxFields>,
-  min?: Maybe<ItemsHardwareFastenerBoltMinFields>,
-  stddev?: Maybe<ItemsHardwareFastenerBoltStddevFields>,
-  stddev_pop?: Maybe<ItemsHardwareFastenerBoltStddevPopFields>,
-  stddev_samp?: Maybe<ItemsHardwareFastenerBoltStddevSampFields>,
-  sum?: Maybe<ItemsHardwareFastenerBoltSumFields>,
-  var_pop?: Maybe<ItemsHardwareFastenerBoltVarPopFields>,
-  var_samp?: Maybe<ItemsHardwareFastenerBoltVarSampFields>,
-  variance?: Maybe<ItemsHardwareFastenerBoltVarianceFields>,
+  max?: Maybe<ItemHardwareFastenerBoltMaxFields>,
+  min?: Maybe<ItemHardwareFastenerBoltMinFields>,
+  stddev?: Maybe<ItemHardwareFastenerBoltStddevFields>,
+  stddev_pop?: Maybe<ItemHardwareFastenerBoltStddevPopFields>,
+  stddev_samp?: Maybe<ItemHardwareFastenerBoltStddevSampFields>,
+  sum?: Maybe<ItemHardwareFastenerBoltSumFields>,
+  var_pop?: Maybe<ItemHardwareFastenerBoltVarPopFields>,
+  var_samp?: Maybe<ItemHardwareFastenerBoltVarSampFields>,
+  variance?: Maybe<ItemHardwareFastenerBoltVarianceFields>,
 };
 
 
-/** aggregate fields of "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltAggregateFieldsCountArgs = {
-  columns?: Maybe<Array<ItemsHardwareFastenerBoltSelectColumn>>,
+/** aggregate fields of "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<ItemHardwareFastenerBoltSelectColumn>>,
   distinct?: Maybe<Scalars['Boolean']>
 };
 
-/** order by aggregate values of table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltAggregateOrderBy = {
-  avg?: Maybe<ItemsHardwareFastenerBoltAvgOrderBy>,
+/** order by aggregate values of table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltAggregateOrderBy = {
+  avg?: Maybe<ItemHardwareFastenerBoltAvgOrderBy>,
   count?: Maybe<OrderBy>,
-  max?: Maybe<ItemsHardwareFastenerBoltMaxOrderBy>,
-  min?: Maybe<ItemsHardwareFastenerBoltMinOrderBy>,
-  stddev?: Maybe<ItemsHardwareFastenerBoltStddevOrderBy>,
-  stddev_pop?: Maybe<ItemsHardwareFastenerBoltStddevPopOrderBy>,
-  stddev_samp?: Maybe<ItemsHardwareFastenerBoltStddevSampOrderBy>,
-  sum?: Maybe<ItemsHardwareFastenerBoltSumOrderBy>,
-  var_pop?: Maybe<ItemsHardwareFastenerBoltVarPopOrderBy>,
-  var_samp?: Maybe<ItemsHardwareFastenerBoltVarSampOrderBy>,
-  variance?: Maybe<ItemsHardwareFastenerBoltVarianceOrderBy>,
+  max?: Maybe<ItemHardwareFastenerBoltMaxOrderBy>,
+  min?: Maybe<ItemHardwareFastenerBoltMinOrderBy>,
+  stddev?: Maybe<ItemHardwareFastenerBoltStddevOrderBy>,
+  stddev_pop?: Maybe<ItemHardwareFastenerBoltStddevPopOrderBy>,
+  stddev_samp?: Maybe<ItemHardwareFastenerBoltStddevSampOrderBy>,
+  sum?: Maybe<ItemHardwareFastenerBoltSumOrderBy>,
+  var_pop?: Maybe<ItemHardwareFastenerBoltVarPopOrderBy>,
+  var_samp?: Maybe<ItemHardwareFastenerBoltVarSampOrderBy>,
+  variance?: Maybe<ItemHardwareFastenerBoltVarianceOrderBy>,
 };
 
-/** input type for inserting array relation for remote table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltArrRelInsertInput = {
-  data: Array<ItemsHardwareFastenerBoltInsertInput>,
+/** input type for inserting array relation for remote table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltArrRelInsertInput = {
+  data: Array<ItemHardwareFastenerBoltInsertInput>,
 };
 
 /** aggregate avg on columns */
-export type ItemsHardwareFastenerBoltAvgFields = {
-   __typename?: 'items_hardware_fastener_bolt_avg_fields',
+export type ItemHardwareFastenerBoltAvgFields = {
+   __typename?: 'item_hardware_fastener_bolt_avg_fields',
   countersunk?: Maybe<Scalars['Float']>,
   head_diameter?: Maybe<Scalars['Float']>,
   head_height?: Maybe<Scalars['Float']>,
@@ -1464,8 +1420,8 @@ export type ItemsHardwareFastenerBoltAvgFields = {
   thread_length?: Maybe<Scalars['Float']>,
 };
 
-/** order by avg() on columns of table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltAvgOrderBy = {
+/** order by avg() on columns of table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltAvgOrderBy = {
   countersunk?: Maybe<OrderBy>,
   head_diameter?: Maybe<OrderBy>,
   head_height?: Maybe<OrderBy>,
@@ -1477,13 +1433,13 @@ export type ItemsHardwareFastenerBoltAvgOrderBy = {
 };
 
 /** 
- * Boolean expression to filter rows from the table "items_hardware_fastener_bolt".
+ * Boolean expression to filter rows from the table "item_hardware_fastener_bolt".
  * All fields are combined with a logical 'AND'.
  **/
-export type ItemsHardwareFastenerBoltBoolExp = {
-  _and?: Maybe<Array<Maybe<ItemsHardwareFastenerBoltBoolExp>>>,
-  _not?: Maybe<ItemsHardwareFastenerBoltBoolExp>,
-  _or?: Maybe<Array<Maybe<ItemsHardwareFastenerBoltBoolExp>>>,
+export type ItemHardwareFastenerBoltBoolExp = {
+  _and?: Maybe<Array<Maybe<ItemHardwareFastenerBoltBoolExp>>>,
+  _not?: Maybe<ItemHardwareFastenerBoltBoolExp>,
+  _or?: Maybe<Array<Maybe<ItemHardwareFastenerBoltBoolExp>>>,
   countersunk?: Maybe<NumericComparisonExp>,
   description?: Maybe<StringComparisonExp>,
   drive_size?: Maybe<StringComparisonExp>,
@@ -1502,13 +1458,13 @@ export type ItemsHardwareFastenerBoltBoolExp = {
   unit?: Maybe<EnumUnitEnumComparisonExp>,
 };
 
-/** input type for incrementing integer columne in table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltIncInput = {
+/** input type for incrementing integer columne in table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltIncInput = {
   id?: Maybe<Scalars['Int']>,
 };
 
-/** input type for inserting data into table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltInsertInput = {
+/** input type for inserting data into table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltInsertInput = {
   countersunk?: Maybe<Scalars['numeric']>,
   description?: Maybe<Scalars['String']>,
   drive_size?: Maybe<Scalars['String']>,
@@ -1528,8 +1484,8 @@ export type ItemsHardwareFastenerBoltInsertInput = {
 };
 
 /** aggregate max on columns */
-export type ItemsHardwareFastenerBoltMaxFields = {
-   __typename?: 'items_hardware_fastener_bolt_max_fields',
+export type ItemHardwareFastenerBoltMaxFields = {
+   __typename?: 'item_hardware_fastener_bolt_max_fields',
   countersunk?: Maybe<Scalars['numeric']>,
   description?: Maybe<Scalars['String']>,
   drive_size?: Maybe<Scalars['String']>,
@@ -1547,8 +1503,8 @@ export type ItemsHardwareFastenerBoltMaxFields = {
   thread_length?: Maybe<Scalars['numeric']>,
 };
 
-/** order by max() on columns of table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltMaxOrderBy = {
+/** order by max() on columns of table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltMaxOrderBy = {
   countersunk?: Maybe<OrderBy>,
   description?: Maybe<OrderBy>,
   drive_size?: Maybe<OrderBy>,
@@ -1567,8 +1523,8 @@ export type ItemsHardwareFastenerBoltMaxOrderBy = {
 };
 
 /** aggregate min on columns */
-export type ItemsHardwareFastenerBoltMinFields = {
-   __typename?: 'items_hardware_fastener_bolt_min_fields',
+export type ItemHardwareFastenerBoltMinFields = {
+   __typename?: 'item_hardware_fastener_bolt_min_fields',
   countersunk?: Maybe<Scalars['numeric']>,
   description?: Maybe<Scalars['String']>,
   drive_size?: Maybe<Scalars['String']>,
@@ -1586,8 +1542,8 @@ export type ItemsHardwareFastenerBoltMinFields = {
   thread_length?: Maybe<Scalars['numeric']>,
 };
 
-/** order by min() on columns of table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltMinOrderBy = {
+/** order by min() on columns of table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltMinOrderBy = {
   countersunk?: Maybe<OrderBy>,
   description?: Maybe<OrderBy>,
   drive_size?: Maybe<OrderBy>,
@@ -1605,22 +1561,22 @@ export type ItemsHardwareFastenerBoltMinOrderBy = {
   thread_length?: Maybe<OrderBy>,
 };
 
-/** response of any mutation on the table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltMutationResponse = {
-   __typename?: 'items_hardware_fastener_bolt_mutation_response',
+/** response of any mutation on the table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltMutationResponse = {
+   __typename?: 'item_hardware_fastener_bolt_mutation_response',
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'],
   /** data of the affected rows by the mutation */
-  returning: Array<ItemsHardwareFastenerBolt>,
+  returning: Array<ItemHardwareFastenerBolt>,
 };
 
-/** input type for inserting object relation for remote table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltObjRelInsertInput = {
-  data: ItemsHardwareFastenerBoltInsertInput,
+/** input type for inserting object relation for remote table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltObjRelInsertInput = {
+  data: ItemHardwareFastenerBoltInsertInput,
 };
 
-/** ordering options when selecting data from "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltOrderBy = {
+/** ordering options when selecting data from "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltOrderBy = {
   countersunk?: Maybe<OrderBy>,
   description?: Maybe<OrderBy>,
   drive_size?: Maybe<OrderBy>,
@@ -1639,8 +1595,8 @@ export type ItemsHardwareFastenerBoltOrderBy = {
   unit?: Maybe<OrderBy>,
 };
 
-/** select columns of table "items_hardware_fastener_bolt" */
-export enum ItemsHardwareFastenerBoltSelectColumn {
+/** select columns of table "item_hardware_fastener_bolt" */
+export enum ItemHardwareFastenerBoltSelectColumn {
   /** column name */
   COUNTERSUNK = 'countersunk',
   /** column name */
@@ -1675,8 +1631,8 @@ export enum ItemsHardwareFastenerBoltSelectColumn {
   UNIT = 'unit'
 }
 
-/** input type for updating data in table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltSetInput = {
+/** input type for updating data in table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltSetInput = {
   countersunk?: Maybe<Scalars['numeric']>,
   description?: Maybe<Scalars['String']>,
   drive_size?: Maybe<Scalars['String']>,
@@ -1696,8 +1652,8 @@ export type ItemsHardwareFastenerBoltSetInput = {
 };
 
 /** aggregate stddev on columns */
-export type ItemsHardwareFastenerBoltStddevFields = {
-   __typename?: 'items_hardware_fastener_bolt_stddev_fields',
+export type ItemHardwareFastenerBoltStddevFields = {
+   __typename?: 'item_hardware_fastener_bolt_stddev_fields',
   countersunk?: Maybe<Scalars['Float']>,
   head_diameter?: Maybe<Scalars['Float']>,
   head_height?: Maybe<Scalars['Float']>,
@@ -1708,8 +1664,8 @@ export type ItemsHardwareFastenerBoltStddevFields = {
   thread_length?: Maybe<Scalars['Float']>,
 };
 
-/** order by stddev() on columns of table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltStddevOrderBy = {
+/** order by stddev() on columns of table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltStddevOrderBy = {
   countersunk?: Maybe<OrderBy>,
   head_diameter?: Maybe<OrderBy>,
   head_height?: Maybe<OrderBy>,
@@ -1721,8 +1677,8 @@ export type ItemsHardwareFastenerBoltStddevOrderBy = {
 };
 
 /** aggregate stddev_pop on columns */
-export type ItemsHardwareFastenerBoltStddevPopFields = {
-   __typename?: 'items_hardware_fastener_bolt_stddev_pop_fields',
+export type ItemHardwareFastenerBoltStddevPopFields = {
+   __typename?: 'item_hardware_fastener_bolt_stddev_pop_fields',
   countersunk?: Maybe<Scalars['Float']>,
   head_diameter?: Maybe<Scalars['Float']>,
   head_height?: Maybe<Scalars['Float']>,
@@ -1733,8 +1689,8 @@ export type ItemsHardwareFastenerBoltStddevPopFields = {
   thread_length?: Maybe<Scalars['Float']>,
 };
 
-/** order by stddev_pop() on columns of table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltStddevPopOrderBy = {
+/** order by stddev_pop() on columns of table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltStddevPopOrderBy = {
   countersunk?: Maybe<OrderBy>,
   head_diameter?: Maybe<OrderBy>,
   head_height?: Maybe<OrderBy>,
@@ -1746,8 +1702,8 @@ export type ItemsHardwareFastenerBoltStddevPopOrderBy = {
 };
 
 /** aggregate stddev_samp on columns */
-export type ItemsHardwareFastenerBoltStddevSampFields = {
-   __typename?: 'items_hardware_fastener_bolt_stddev_samp_fields',
+export type ItemHardwareFastenerBoltStddevSampFields = {
+   __typename?: 'item_hardware_fastener_bolt_stddev_samp_fields',
   countersunk?: Maybe<Scalars['Float']>,
   head_diameter?: Maybe<Scalars['Float']>,
   head_height?: Maybe<Scalars['Float']>,
@@ -1758,8 +1714,8 @@ export type ItemsHardwareFastenerBoltStddevSampFields = {
   thread_length?: Maybe<Scalars['Float']>,
 };
 
-/** order by stddev_samp() on columns of table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltStddevSampOrderBy = {
+/** order by stddev_samp() on columns of table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltStddevSampOrderBy = {
   countersunk?: Maybe<OrderBy>,
   head_diameter?: Maybe<OrderBy>,
   head_height?: Maybe<OrderBy>,
@@ -1771,8 +1727,8 @@ export type ItemsHardwareFastenerBoltStddevSampOrderBy = {
 };
 
 /** aggregate sum on columns */
-export type ItemsHardwareFastenerBoltSumFields = {
-   __typename?: 'items_hardware_fastener_bolt_sum_fields',
+export type ItemHardwareFastenerBoltSumFields = {
+   __typename?: 'item_hardware_fastener_bolt_sum_fields',
   countersunk?: Maybe<Scalars['numeric']>,
   head_diameter?: Maybe<Scalars['numeric']>,
   head_height?: Maybe<Scalars['numeric']>,
@@ -1783,8 +1739,8 @@ export type ItemsHardwareFastenerBoltSumFields = {
   thread_length?: Maybe<Scalars['numeric']>,
 };
 
-/** order by sum() on columns of table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltSumOrderBy = {
+/** order by sum() on columns of table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltSumOrderBy = {
   countersunk?: Maybe<OrderBy>,
   head_diameter?: Maybe<OrderBy>,
   head_height?: Maybe<OrderBy>,
@@ -1796,8 +1752,8 @@ export type ItemsHardwareFastenerBoltSumOrderBy = {
 };
 
 /** aggregate var_pop on columns */
-export type ItemsHardwareFastenerBoltVarPopFields = {
-   __typename?: 'items_hardware_fastener_bolt_var_pop_fields',
+export type ItemHardwareFastenerBoltVarPopFields = {
+   __typename?: 'item_hardware_fastener_bolt_var_pop_fields',
   countersunk?: Maybe<Scalars['Float']>,
   head_diameter?: Maybe<Scalars['Float']>,
   head_height?: Maybe<Scalars['Float']>,
@@ -1808,8 +1764,8 @@ export type ItemsHardwareFastenerBoltVarPopFields = {
   thread_length?: Maybe<Scalars['Float']>,
 };
 
-/** order by var_pop() on columns of table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltVarPopOrderBy = {
+/** order by var_pop() on columns of table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltVarPopOrderBy = {
   countersunk?: Maybe<OrderBy>,
   head_diameter?: Maybe<OrderBy>,
   head_height?: Maybe<OrderBy>,
@@ -1821,8 +1777,8 @@ export type ItemsHardwareFastenerBoltVarPopOrderBy = {
 };
 
 /** aggregate var_samp on columns */
-export type ItemsHardwareFastenerBoltVarSampFields = {
-   __typename?: 'items_hardware_fastener_bolt_var_samp_fields',
+export type ItemHardwareFastenerBoltVarSampFields = {
+   __typename?: 'item_hardware_fastener_bolt_var_samp_fields',
   countersunk?: Maybe<Scalars['Float']>,
   head_diameter?: Maybe<Scalars['Float']>,
   head_height?: Maybe<Scalars['Float']>,
@@ -1833,8 +1789,8 @@ export type ItemsHardwareFastenerBoltVarSampFields = {
   thread_length?: Maybe<Scalars['Float']>,
 };
 
-/** order by var_samp() on columns of table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltVarSampOrderBy = {
+/** order by var_samp() on columns of table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltVarSampOrderBy = {
   countersunk?: Maybe<OrderBy>,
   head_diameter?: Maybe<OrderBy>,
   head_height?: Maybe<OrderBy>,
@@ -1846,8 +1802,8 @@ export type ItemsHardwareFastenerBoltVarSampOrderBy = {
 };
 
 /** aggregate variance on columns */
-export type ItemsHardwareFastenerBoltVarianceFields = {
-   __typename?: 'items_hardware_fastener_bolt_variance_fields',
+export type ItemHardwareFastenerBoltVarianceFields = {
+   __typename?: 'item_hardware_fastener_bolt_variance_fields',
   countersunk?: Maybe<Scalars['Float']>,
   head_diameter?: Maybe<Scalars['Float']>,
   head_height?: Maybe<Scalars['Float']>,
@@ -1858,8 +1814,8 @@ export type ItemsHardwareFastenerBoltVarianceFields = {
   thread_length?: Maybe<Scalars['Float']>,
 };
 
-/** order by variance() on columns of table "items_hardware_fastener_bolt" */
-export type ItemsHardwareFastenerBoltVarianceOrderBy = {
+/** order by variance() on columns of table "item_hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltVarianceOrderBy = {
   countersunk?: Maybe<OrderBy>,
   head_diameter?: Maybe<OrderBy>,
   head_height?: Maybe<OrderBy>,
@@ -1870,164 +1826,165 @@ export type ItemsHardwareFastenerBoltVarianceOrderBy = {
   thread_length?: Maybe<OrderBy>,
 };
 
-/** columns and relationships of "items_hardware_nut" */
-export type ItemsHardwareNut = {
-   __typename?: 'items_hardware_nut',
+/** columns and relationships of "item_hardware_nut" */
+export type ItemHardwareNut = {
+   __typename?: 'item_hardware_nut',
   description: Scalars['String'],
   id: Scalars['Int'],
   name: Scalars['String'],
 };
 
-/** aggregated selection of "items_hardware_nut" */
-export type ItemsHardwareNutAggregate = {
-   __typename?: 'items_hardware_nut_aggregate',
-  aggregate?: Maybe<ItemsHardwareNutAggregateFields>,
-  nodes: Array<ItemsHardwareNut>,
+/** aggregated selection of "item_hardware_nut" */
+export type ItemHardwareNutAggregate = {
+   __typename?: 'item_hardware_nut_aggregate',
+  aggregate?: Maybe<ItemHardwareNutAggregateFields>,
+  nodes: Array<ItemHardwareNut>,
 };
 
-/** aggregate fields of "items_hardware_nut" */
-export type ItemsHardwareNutAggregateFields = {
-   __typename?: 'items_hardware_nut_aggregate_fields',
-  avg?: Maybe<ItemsHardwareNutAvgFields>,
+/** aggregate fields of "item_hardware_nut" */
+export type ItemHardwareNutAggregateFields = {
+   __typename?: 'item_hardware_nut_aggregate_fields',
+  avg?: Maybe<ItemHardwareNutAvgFields>,
   count?: Maybe<Scalars['Int']>,
-  max?: Maybe<ItemsHardwareNutMaxFields>,
-  min?: Maybe<ItemsHardwareNutMinFields>,
-  stddev?: Maybe<ItemsHardwareNutStddevFields>,
-  stddev_pop?: Maybe<ItemsHardwareNutStddevPopFields>,
-  stddev_samp?: Maybe<ItemsHardwareNutStddevSampFields>,
-  sum?: Maybe<ItemsHardwareNutSumFields>,
-  var_pop?: Maybe<ItemsHardwareNutVarPopFields>,
-  var_samp?: Maybe<ItemsHardwareNutVarSampFields>,
-  variance?: Maybe<ItemsHardwareNutVarianceFields>,
+  max?: Maybe<ItemHardwareNutMaxFields>,
+  min?: Maybe<ItemHardwareNutMinFields>,
+  stddev?: Maybe<ItemHardwareNutStddevFields>,
+  stddev_pop?: Maybe<ItemHardwareNutStddevPopFields>,
+  stddev_samp?: Maybe<ItemHardwareNutStddevSampFields>,
+  sum?: Maybe<ItemHardwareNutSumFields>,
+  var_pop?: Maybe<ItemHardwareNutVarPopFields>,
+  var_samp?: Maybe<ItemHardwareNutVarSampFields>,
+  variance?: Maybe<ItemHardwareNutVarianceFields>,
 };
 
 
-/** aggregate fields of "items_hardware_nut" */
-export type ItemsHardwareNutAggregateFieldsCountArgs = {
-  columns?: Maybe<Array<ItemsHardwareNutSelectColumn>>,
+/** aggregate fields of "item_hardware_nut" */
+export type ItemHardwareNutAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<ItemHardwareNutSelectColumn>>,
   distinct?: Maybe<Scalars['Boolean']>
 };
 
-/** order by aggregate values of table "items_hardware_nut" */
-export type ItemsHardwareNutAggregateOrderBy = {
-  avg?: Maybe<ItemsHardwareNutAvgOrderBy>,
+/** order by aggregate values of table "item_hardware_nut" */
+export type ItemHardwareNutAggregateOrderBy = {
+  avg?: Maybe<ItemHardwareNutAvgOrderBy>,
   count?: Maybe<OrderBy>,
-  max?: Maybe<ItemsHardwareNutMaxOrderBy>,
-  min?: Maybe<ItemsHardwareNutMinOrderBy>,
-  stddev?: Maybe<ItemsHardwareNutStddevOrderBy>,
-  stddev_pop?: Maybe<ItemsHardwareNutStddevPopOrderBy>,
-  stddev_samp?: Maybe<ItemsHardwareNutStddevSampOrderBy>,
-  sum?: Maybe<ItemsHardwareNutSumOrderBy>,
-  var_pop?: Maybe<ItemsHardwareNutVarPopOrderBy>,
-  var_samp?: Maybe<ItemsHardwareNutVarSampOrderBy>,
-  variance?: Maybe<ItemsHardwareNutVarianceOrderBy>,
+  max?: Maybe<ItemHardwareNutMaxOrderBy>,
+  min?: Maybe<ItemHardwareNutMinOrderBy>,
+  stddev?: Maybe<ItemHardwareNutStddevOrderBy>,
+  stddev_pop?: Maybe<ItemHardwareNutStddevPopOrderBy>,
+  stddev_samp?: Maybe<ItemHardwareNutStddevSampOrderBy>,
+  sum?: Maybe<ItemHardwareNutSumOrderBy>,
+  var_pop?: Maybe<ItemHardwareNutVarPopOrderBy>,
+  var_samp?: Maybe<ItemHardwareNutVarSampOrderBy>,
+  variance?: Maybe<ItemHardwareNutVarianceOrderBy>,
 };
 
-/** input type for inserting array relation for remote table "items_hardware_nut" */
-export type ItemsHardwareNutArrRelInsertInput = {
-  data: Array<ItemsHardwareNutInsertInput>,
-  on_conflict?: Maybe<ItemsHardwareNutOnConflict>,
+/** input type for inserting array relation for remote table "item_hardware_nut" */
+export type ItemHardwareNutArrRelInsertInput = {
+  data: Array<ItemHardwareNutInsertInput>,
+  on_conflict?: Maybe<ItemHardwareNutOnConflict>,
 };
 
 /** aggregate avg on columns */
-export type ItemsHardwareNutAvgFields = {
-   __typename?: 'items_hardware_nut_avg_fields',
+export type ItemHardwareNutAvgFields = {
+   __typename?: 'item_hardware_nut_avg_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by avg() on columns of table "items_hardware_nut" */
-export type ItemsHardwareNutAvgOrderBy = {
+/** order by avg() on columns of table "item_hardware_nut" */
+export type ItemHardwareNutAvgOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
-/** Boolean expression to filter rows from the table "items_hardware_nut". All fields are combined with a logical 'AND'. */
-export type ItemsHardwareNutBoolExp = {
-  _and?: Maybe<Array<Maybe<ItemsHardwareNutBoolExp>>>,
-  _not?: Maybe<ItemsHardwareNutBoolExp>,
-  _or?: Maybe<Array<Maybe<ItemsHardwareNutBoolExp>>>,
+/** Boolean expression to filter rows from the table "item_hardware_nut". All fields are combined with a logical 'AND'. */
+export type ItemHardwareNutBoolExp = {
+  _and?: Maybe<Array<Maybe<ItemHardwareNutBoolExp>>>,
+  _not?: Maybe<ItemHardwareNutBoolExp>,
+  _or?: Maybe<Array<Maybe<ItemHardwareNutBoolExp>>>,
   description?: Maybe<StringComparisonExp>,
   id?: Maybe<IntComparisonExp>,
   name?: Maybe<StringComparisonExp>,
 };
 
-/** unique or primary key constraints on table "items_hardware_nut" */
-export enum ItemsHardwareNutConstraint {
+/** unique or primary key constraints on table "item_hardware_nut" */
+export enum ItemHardwareNutConstraint {
   /** unique or primary key constraint */
   ITEMS_HARDWARE_NUT_PKEY = 'items_hardware_nut_pkey'
 }
 
-/** input type for incrementing integer columne in table "items_hardware_nut" */
-export type ItemsHardwareNutIncInput = {
+/** input type for incrementing integer columne in table "item_hardware_nut" */
+export type ItemHardwareNutIncInput = {
   id?: Maybe<Scalars['Int']>,
 };
 
-/** input type for inserting data into table "items_hardware_nut" */
-export type ItemsHardwareNutInsertInput = {
+/** input type for inserting data into table "item_hardware_nut" */
+export type ItemHardwareNutInsertInput = {
   description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['Int']>,
   name?: Maybe<Scalars['String']>,
 };
 
 /** aggregate max on columns */
-export type ItemsHardwareNutMaxFields = {
-   __typename?: 'items_hardware_nut_max_fields',
+export type ItemHardwareNutMaxFields = {
+   __typename?: 'item_hardware_nut_max_fields',
   description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['Int']>,
   name?: Maybe<Scalars['String']>,
 };
 
-/** order by max() on columns of table "items_hardware_nut" */
-export type ItemsHardwareNutMaxOrderBy = {
+/** order by max() on columns of table "item_hardware_nut" */
+export type ItemHardwareNutMaxOrderBy = {
   description?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   name?: Maybe<OrderBy>,
 };
 
 /** aggregate min on columns */
-export type ItemsHardwareNutMinFields = {
-   __typename?: 'items_hardware_nut_min_fields',
+export type ItemHardwareNutMinFields = {
+   __typename?: 'item_hardware_nut_min_fields',
   description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['Int']>,
   name?: Maybe<Scalars['String']>,
 };
 
-/** order by min() on columns of table "items_hardware_nut" */
-export type ItemsHardwareNutMinOrderBy = {
+/** order by min() on columns of table "item_hardware_nut" */
+export type ItemHardwareNutMinOrderBy = {
   description?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   name?: Maybe<OrderBy>,
 };
 
-/** response of any mutation on the table "items_hardware_nut" */
-export type ItemsHardwareNutMutationResponse = {
-   __typename?: 'items_hardware_nut_mutation_response',
+/** response of any mutation on the table "item_hardware_nut" */
+export type ItemHardwareNutMutationResponse = {
+   __typename?: 'item_hardware_nut_mutation_response',
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'],
   /** data of the affected rows by the mutation */
-  returning: Array<ItemsHardwareNut>,
+  returning: Array<ItemHardwareNut>,
 };
 
-/** input type for inserting object relation for remote table "items_hardware_nut" */
-export type ItemsHardwareNutObjRelInsertInput = {
-  data: ItemsHardwareNutInsertInput,
-  on_conflict?: Maybe<ItemsHardwareNutOnConflict>,
+/** input type for inserting object relation for remote table "item_hardware_nut" */
+export type ItemHardwareNutObjRelInsertInput = {
+  data: ItemHardwareNutInsertInput,
+  on_conflict?: Maybe<ItemHardwareNutOnConflict>,
 };
 
-/** on conflict condition type for table "items_hardware_nut" */
-export type ItemsHardwareNutOnConflict = {
-  constraint: ItemsHardwareNutConstraint,
-  update_columns: Array<ItemsHardwareNutUpdateColumn>,
+/** on conflict condition type for table "item_hardware_nut" */
+export type ItemHardwareNutOnConflict = {
+  constraint: ItemHardwareNutConstraint,
+  update_columns: Array<ItemHardwareNutUpdateColumn>,
+  where?: Maybe<ItemHardwareNutBoolExp>,
 };
 
-/** ordering options when selecting data from "items_hardware_nut" */
-export type ItemsHardwareNutOrderBy = {
+/** ordering options when selecting data from "item_hardware_nut" */
+export type ItemHardwareNutOrderBy = {
   description?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   name?: Maybe<OrderBy>,
 };
 
-/** select columns of table "items_hardware_nut" */
-export enum ItemsHardwareNutSelectColumn {
+/** select columns of table "item_hardware_nut" */
+export enum ItemHardwareNutSelectColumn {
   /** column name */
   DESCRIPTION = 'description',
   /** column name */
@@ -2036,59 +1993,59 @@ export enum ItemsHardwareNutSelectColumn {
   NAME = 'name'
 }
 
-/** input type for updating data in table "items_hardware_nut" */
-export type ItemsHardwareNutSetInput = {
+/** input type for updating data in table "item_hardware_nut" */
+export type ItemHardwareNutSetInput = {
   description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['Int']>,
   name?: Maybe<Scalars['String']>,
 };
 
 /** aggregate stddev on columns */
-export type ItemsHardwareNutStddevFields = {
-   __typename?: 'items_hardware_nut_stddev_fields',
+export type ItemHardwareNutStddevFields = {
+   __typename?: 'item_hardware_nut_stddev_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by stddev() on columns of table "items_hardware_nut" */
-export type ItemsHardwareNutStddevOrderBy = {
+/** order by stddev() on columns of table "item_hardware_nut" */
+export type ItemHardwareNutStddevOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate stddev_pop on columns */
-export type ItemsHardwareNutStddevPopFields = {
-   __typename?: 'items_hardware_nut_stddev_pop_fields',
+export type ItemHardwareNutStddevPopFields = {
+   __typename?: 'item_hardware_nut_stddev_pop_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by stddev_pop() on columns of table "items_hardware_nut" */
-export type ItemsHardwareNutStddevPopOrderBy = {
+/** order by stddev_pop() on columns of table "item_hardware_nut" */
+export type ItemHardwareNutStddevPopOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate stddev_samp on columns */
-export type ItemsHardwareNutStddevSampFields = {
-   __typename?: 'items_hardware_nut_stddev_samp_fields',
+export type ItemHardwareNutStddevSampFields = {
+   __typename?: 'item_hardware_nut_stddev_samp_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by stddev_samp() on columns of table "items_hardware_nut" */
-export type ItemsHardwareNutStddevSampOrderBy = {
+/** order by stddev_samp() on columns of table "item_hardware_nut" */
+export type ItemHardwareNutStddevSampOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate sum on columns */
-export type ItemsHardwareNutSumFields = {
-   __typename?: 'items_hardware_nut_sum_fields',
+export type ItemHardwareNutSumFields = {
+   __typename?: 'item_hardware_nut_sum_fields',
   id?: Maybe<Scalars['Int']>,
 };
 
-/** order by sum() on columns of table "items_hardware_nut" */
-export type ItemsHardwareNutSumOrderBy = {
+/** order by sum() on columns of table "item_hardware_nut" */
+export type ItemHardwareNutSumOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
-/** update columns of table "items_hardware_nut" */
-export enum ItemsHardwareNutUpdateColumn {
+/** update columns of table "item_hardware_nut" */
+export enum ItemHardwareNutUpdateColumn {
   /** column name */
   DESCRIPTION = 'description',
   /** column name */
@@ -2098,49 +2055,49 @@ export enum ItemsHardwareNutUpdateColumn {
 }
 
 /** aggregate var_pop on columns */
-export type ItemsHardwareNutVarPopFields = {
-   __typename?: 'items_hardware_nut_var_pop_fields',
+export type ItemHardwareNutVarPopFields = {
+   __typename?: 'item_hardware_nut_var_pop_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by var_pop() on columns of table "items_hardware_nut" */
-export type ItemsHardwareNutVarPopOrderBy = {
+/** order by var_pop() on columns of table "item_hardware_nut" */
+export type ItemHardwareNutVarPopOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate var_samp on columns */
-export type ItemsHardwareNutVarSampFields = {
-   __typename?: 'items_hardware_nut_var_samp_fields',
+export type ItemHardwareNutVarSampFields = {
+   __typename?: 'item_hardware_nut_var_samp_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by var_samp() on columns of table "items_hardware_nut" */
-export type ItemsHardwareNutVarSampOrderBy = {
+/** order by var_samp() on columns of table "item_hardware_nut" */
+export type ItemHardwareNutVarSampOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate variance on columns */
-export type ItemsHardwareNutVarianceFields = {
-   __typename?: 'items_hardware_nut_variance_fields',
+export type ItemHardwareNutVarianceFields = {
+   __typename?: 'item_hardware_nut_variance_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by variance() on columns of table "items_hardware_nut" */
-export type ItemsHardwareNutVarianceOrderBy = {
+/** order by variance() on columns of table "item_hardware_nut" */
+export type ItemHardwareNutVarianceOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate max on columns */
-export type ItemsMaxFields = {
-   __typename?: 'items_max_fields',
+export type ItemMaxFields = {
+   __typename?: 'item_max_fields',
   class?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['Int']>,
   name?: Maybe<Scalars['String']>,
 };
 
-/** order by max() on columns of table "items" */
-export type ItemsMaxOrderBy = {
+/** order by max() on columns of table "item" */
+export type ItemMaxOrderBy = {
   class?: Maybe<OrderBy>,
   description?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
@@ -2148,32 +2105,32 @@ export type ItemsMaxOrderBy = {
 };
 
 /** aggregate min on columns */
-export type ItemsMinFields = {
-   __typename?: 'items_min_fields',
+export type ItemMinFields = {
+   __typename?: 'item_min_fields',
   class?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['Int']>,
   name?: Maybe<Scalars['String']>,
 };
 
-/** order by min() on columns of table "items" */
-export type ItemsMinOrderBy = {
+/** order by min() on columns of table "item" */
+export type ItemMinOrderBy = {
   class?: Maybe<OrderBy>,
   description?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   name?: Maybe<OrderBy>,
 };
 
-/** ordering options when selecting data from "items" */
-export type ItemsOrderBy = {
+/** ordering options when selecting data from "item" */
+export type ItemOrderBy = {
   class?: Maybe<OrderBy>,
   description?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   name?: Maybe<OrderBy>,
 };
 
-/** select columns of table "items" */
-export enum ItemsSelectColumn {
+/** select columns of table "item" */
+export enum ItemSelectColumn {
   /** column name */
   CLASS = 'class',
   /** column name */
@@ -2185,79 +2142,79 @@ export enum ItemsSelectColumn {
 }
 
 /** aggregate stddev on columns */
-export type ItemsStddevFields = {
-   __typename?: 'items_stddev_fields',
+export type ItemStddevFields = {
+   __typename?: 'item_stddev_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by stddev() on columns of table "items" */
-export type ItemsStddevOrderBy = {
+/** order by stddev() on columns of table "item" */
+export type ItemStddevOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate stddev_pop on columns */
-export type ItemsStddevPopFields = {
-   __typename?: 'items_stddev_pop_fields',
+export type ItemStddevPopFields = {
+   __typename?: 'item_stddev_pop_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by stddev_pop() on columns of table "items" */
-export type ItemsStddevPopOrderBy = {
+/** order by stddev_pop() on columns of table "item" */
+export type ItemStddevPopOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate stddev_samp on columns */
-export type ItemsStddevSampFields = {
-   __typename?: 'items_stddev_samp_fields',
+export type ItemStddevSampFields = {
+   __typename?: 'item_stddev_samp_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by stddev_samp() on columns of table "items" */
-export type ItemsStddevSampOrderBy = {
+/** order by stddev_samp() on columns of table "item" */
+export type ItemStddevSampOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate sum on columns */
-export type ItemsSumFields = {
-   __typename?: 'items_sum_fields',
+export type ItemSumFields = {
+   __typename?: 'item_sum_fields',
   id?: Maybe<Scalars['Int']>,
 };
 
-/** order by sum() on columns of table "items" */
-export type ItemsSumOrderBy = {
+/** order by sum() on columns of table "item" */
+export type ItemSumOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate var_pop on columns */
-export type ItemsVarPopFields = {
-   __typename?: 'items_var_pop_fields',
+export type ItemVarPopFields = {
+   __typename?: 'item_var_pop_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by var_pop() on columns of table "items" */
-export type ItemsVarPopOrderBy = {
+/** order by var_pop() on columns of table "item" */
+export type ItemVarPopOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate var_samp on columns */
-export type ItemsVarSampFields = {
-   __typename?: 'items_var_samp_fields',
+export type ItemVarSampFields = {
+   __typename?: 'item_var_samp_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by var_samp() on columns of table "items" */
-export type ItemsVarSampOrderBy = {
+/** order by var_samp() on columns of table "item" */
+export type ItemVarSampOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate variance on columns */
-export type ItemsVarianceFields = {
-   __typename?: 'items_variance_fields',
+export type ItemVarianceFields = {
+   __typename?: 'item_variance_fields',
   id?: Maybe<Scalars['Float']>,
 };
 
-/** order by variance() on columns of table "items" */
-export type ItemsVarianceOrderBy = {
+/** order by variance() on columns of table "item" */
+export type ItemVarianceOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
@@ -2311,14 +2268,14 @@ export type MutationRoot = {
   delete_enum_icon_category?: Maybe<EnumIconCategoryMutationResponse>,
   /** delete data from the table: "enum.unit" */
   delete_enum_unit?: Maybe<EnumUnitMutationResponse>,
-  /** delete data from the table: "icons" */
-  delete_icons?: Maybe<IconsMutationResponse>,
-  /** delete data from the table: "items_hardware_fastener_bolt" */
-  delete_items_hardware_fastener_bolt?: Maybe<ItemsHardwareFastenerBoltMutationResponse>,
-  /** delete data from the table: "items_hardware_nut" */
-  delete_items_hardware_nut?: Maybe<ItemsHardwareNutMutationResponse>,
-  /** delete data from the table: "purchases" */
-  delete_purchases?: Maybe<PurchasesMutationResponse>,
+  /** delete data from the table: "icon" */
+  delete_icon?: Maybe<IconMutationResponse>,
+  /** delete data from the table: "item_hardware_fastener_bolt" */
+  delete_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>,
+  /** delete data from the table: "item_hardware_nut" */
+  delete_item_hardware_nut?: Maybe<ItemHardwareNutMutationResponse>,
+  /** delete data from the table: "purchase" */
+  delete_purchase?: Maybe<PurchaseMutationResponse>,
   /** insert data into the table: "entity" */
   insert_entity?: Maybe<EntityMutationResponse>,
   /** insert data into the table: "enum.hardware_fastener_material" */
@@ -2331,14 +2288,14 @@ export type MutationRoot = {
   insert_enum_icon_category?: Maybe<EnumIconCategoryMutationResponse>,
   /** insert data into the table: "enum.unit" */
   insert_enum_unit?: Maybe<EnumUnitMutationResponse>,
-  /** insert data into the table: "icons" */
-  insert_icons?: Maybe<IconsMutationResponse>,
-  /** insert data into the table: "items_hardware_fastener_bolt" */
-  insert_items_hardware_fastener_bolt?: Maybe<ItemsHardwareFastenerBoltMutationResponse>,
-  /** insert data into the table: "items_hardware_nut" */
-  insert_items_hardware_nut?: Maybe<ItemsHardwareNutMutationResponse>,
-  /** insert data into the table: "purchases" */
-  insert_purchases?: Maybe<PurchasesMutationResponse>,
+  /** insert data into the table: "icon" */
+  insert_icon?: Maybe<IconMutationResponse>,
+  /** insert data into the table: "item_hardware_fastener_bolt" */
+  insert_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>,
+  /** insert data into the table: "item_hardware_nut" */
+  insert_item_hardware_nut?: Maybe<ItemHardwareNutMutationResponse>,
+  /** insert data into the table: "purchase" */
+  insert_purchase?: Maybe<PurchaseMutationResponse>,
   putLabelMonochromeBuffer?: Maybe<LabelMonochromeBuffer>,
   /** update data of the table: "entity" */
   update_entity?: Maybe<EntityMutationResponse>,
@@ -2352,14 +2309,14 @@ export type MutationRoot = {
   update_enum_icon_category?: Maybe<EnumIconCategoryMutationResponse>,
   /** update data of the table: "enum.unit" */
   update_enum_unit?: Maybe<EnumUnitMutationResponse>,
-  /** update data of the table: "icons" */
-  update_icons?: Maybe<IconsMutationResponse>,
-  /** update data of the table: "items_hardware_fastener_bolt" */
-  update_items_hardware_fastener_bolt?: Maybe<ItemsHardwareFastenerBoltMutationResponse>,
-  /** update data of the table: "items_hardware_nut" */
-  update_items_hardware_nut?: Maybe<ItemsHardwareNutMutationResponse>,
-  /** update data of the table: "purchases" */
-  update_purchases?: Maybe<PurchasesMutationResponse>,
+  /** update data of the table: "icon" */
+  update_icon?: Maybe<IconMutationResponse>,
+  /** update data of the table: "item_hardware_fastener_bolt" */
+  update_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>,
+  /** update data of the table: "item_hardware_nut" */
+  update_item_hardware_nut?: Maybe<ItemHardwareNutMutationResponse>,
+  /** update data of the table: "purchase" */
+  update_purchase?: Maybe<PurchaseMutationResponse>,
   uploadFiles: Array<Maybe<File>>,
 };
 
@@ -2401,26 +2358,26 @@ export type MutationRootDeleteEnumUnitArgs = {
 
 
 /** mutation root */
-export type MutationRootDeleteIconsArgs = {
-  where: IconsBoolExp
+export type MutationRootDeleteIconArgs = {
+  where: IconBoolExp
 };
 
 
 /** mutation root */
-export type MutationRootDeleteItemsHardwareFastenerBoltArgs = {
-  where: ItemsHardwareFastenerBoltBoolExp
+export type MutationRootDeleteItemHardwareFastenerBoltArgs = {
+  where: ItemHardwareFastenerBoltBoolExp
 };
 
 
 /** mutation root */
-export type MutationRootDeleteItemsHardwareNutArgs = {
-  where: ItemsHardwareNutBoolExp
+export type MutationRootDeleteItemHardwareNutArgs = {
+  where: ItemHardwareNutBoolExp
 };
 
 
 /** mutation root */
-export type MutationRootDeletePurchasesArgs = {
-  where: PurchasesBoolExp
+export type MutationRootDeletePurchaseArgs = {
+  where: PurchaseBoolExp
 };
 
 
@@ -2467,29 +2424,29 @@ export type MutationRootInsertEnumUnitArgs = {
 
 
 /** mutation root */
-export type MutationRootInsertIconsArgs = {
-  objects: Array<IconsInsertInput>,
-  on_conflict?: Maybe<IconsOnConflict>
+export type MutationRootInsertIconArgs = {
+  objects: Array<IconInsertInput>,
+  on_conflict?: Maybe<IconOnConflict>
 };
 
 
 /** mutation root */
-export type MutationRootInsertItemsHardwareFastenerBoltArgs = {
-  objects: Array<ItemsHardwareFastenerBoltInsertInput>
+export type MutationRootInsertItemHardwareFastenerBoltArgs = {
+  objects: Array<ItemHardwareFastenerBoltInsertInput>
 };
 
 
 /** mutation root */
-export type MutationRootInsertItemsHardwareNutArgs = {
-  objects: Array<ItemsHardwareNutInsertInput>,
-  on_conflict?: Maybe<ItemsHardwareNutOnConflict>
+export type MutationRootInsertItemHardwareNutArgs = {
+  objects: Array<ItemHardwareNutInsertInput>,
+  on_conflict?: Maybe<ItemHardwareNutOnConflict>
 };
 
 
 /** mutation root */
-export type MutationRootInsertPurchasesArgs = {
-  objects: Array<PurchasesInsertInput>,
-  on_conflict?: Maybe<PurchasesOnConflict>
+export type MutationRootInsertPurchaseArgs = {
+  objects: Array<PurchaseInsertInput>,
+  on_conflict?: Maybe<PurchaseOnConflict>
 };
 
 
@@ -2543,33 +2500,33 @@ export type MutationRootUpdateEnumUnitArgs = {
 
 
 /** mutation root */
-export type MutationRootUpdateIconsArgs = {
-  _set?: Maybe<IconsSetInput>,
-  where: IconsBoolExp
+export type MutationRootUpdateIconArgs = {
+  _set?: Maybe<IconSetInput>,
+  where: IconBoolExp
 };
 
 
 /** mutation root */
-export type MutationRootUpdateItemsHardwareFastenerBoltArgs = {
-  _inc?: Maybe<ItemsHardwareFastenerBoltIncInput>,
-  _set?: Maybe<ItemsHardwareFastenerBoltSetInput>,
-  where: ItemsHardwareFastenerBoltBoolExp
+export type MutationRootUpdateItemHardwareFastenerBoltArgs = {
+  _inc?: Maybe<ItemHardwareFastenerBoltIncInput>,
+  _set?: Maybe<ItemHardwareFastenerBoltSetInput>,
+  where: ItemHardwareFastenerBoltBoolExp
 };
 
 
 /** mutation root */
-export type MutationRootUpdateItemsHardwareNutArgs = {
-  _inc?: Maybe<ItemsHardwareNutIncInput>,
-  _set?: Maybe<ItemsHardwareNutSetInput>,
-  where: ItemsHardwareNutBoolExp
+export type MutationRootUpdateItemHardwareNutArgs = {
+  _inc?: Maybe<ItemHardwareNutIncInput>,
+  _set?: Maybe<ItemHardwareNutSetInput>,
+  where: ItemHardwareNutBoolExp
 };
 
 
 /** mutation root */
-export type MutationRootUpdatePurchasesArgs = {
-  _inc?: Maybe<PurchasesIncInput>,
-  _set?: Maybe<PurchasesSetInput>,
-  where: PurchasesBoolExp
+export type MutationRootUpdatePurchaseArgs = {
+  _inc?: Maybe<PurchaseIncInput>,
+  _set?: Maybe<PurchaseSetInput>,
+  where: PurchaseBoolExp
 };
 
 
@@ -2614,13 +2571,9 @@ export type PrinterStatus = {
   uptime?: Maybe<Scalars['Int']>,
 };
 
-/** columns and relationships of "purchases" */
-export type Purchases = {
-   __typename?: 'purchases',
-  /** An object relationship */
-  entity: Entity,
-  /** An object relationship */
-  entityByVendorId?: Maybe<Entity>,
+/** columns and relationships of "purchase" */
+export type Purchase = {
+   __typename?: 'purchase',
   item_id: Scalars['Int'],
   manufacturer_id: Scalars['Int'],
   manufacturer_part_no: Scalars['String'],
@@ -2633,79 +2586,77 @@ export type Purchases = {
   vendor_part_no: Scalars['String'],
 };
 
-/** aggregated selection of "purchases" */
-export type PurchasesAggregate = {
-   __typename?: 'purchases_aggregate',
-  aggregate?: Maybe<PurchasesAggregateFields>,
-  nodes: Array<Purchases>,
+/** aggregated selection of "purchase" */
+export type PurchaseAggregate = {
+   __typename?: 'purchase_aggregate',
+  aggregate?: Maybe<PurchaseAggregateFields>,
+  nodes: Array<Purchase>,
 };
 
-/** aggregate fields of "purchases" */
-export type PurchasesAggregateFields = {
-   __typename?: 'purchases_aggregate_fields',
-  avg?: Maybe<PurchasesAvgFields>,
+/** aggregate fields of "purchase" */
+export type PurchaseAggregateFields = {
+   __typename?: 'purchase_aggregate_fields',
+  avg?: Maybe<PurchaseAvgFields>,
   count?: Maybe<Scalars['Int']>,
-  max?: Maybe<PurchasesMaxFields>,
-  min?: Maybe<PurchasesMinFields>,
-  stddev?: Maybe<PurchasesStddevFields>,
-  stddev_pop?: Maybe<PurchasesStddevPopFields>,
-  stddev_samp?: Maybe<PurchasesStddevSampFields>,
-  sum?: Maybe<PurchasesSumFields>,
-  var_pop?: Maybe<PurchasesVarPopFields>,
-  var_samp?: Maybe<PurchasesVarSampFields>,
-  variance?: Maybe<PurchasesVarianceFields>,
+  max?: Maybe<PurchaseMaxFields>,
+  min?: Maybe<PurchaseMinFields>,
+  stddev?: Maybe<PurchaseStddevFields>,
+  stddev_pop?: Maybe<PurchaseStddevPopFields>,
+  stddev_samp?: Maybe<PurchaseStddevSampFields>,
+  sum?: Maybe<PurchaseSumFields>,
+  var_pop?: Maybe<PurchaseVarPopFields>,
+  var_samp?: Maybe<PurchaseVarSampFields>,
+  variance?: Maybe<PurchaseVarianceFields>,
 };
 
 
-/** aggregate fields of "purchases" */
-export type PurchasesAggregateFieldsCountArgs = {
-  columns?: Maybe<Array<PurchasesSelectColumn>>,
+/** aggregate fields of "purchase" */
+export type PurchaseAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<PurchaseSelectColumn>>,
   distinct?: Maybe<Scalars['Boolean']>
 };
 
-/** order by aggregate values of table "purchases" */
-export type PurchasesAggregateOrderBy = {
-  avg?: Maybe<PurchasesAvgOrderBy>,
+/** order by aggregate values of table "purchase" */
+export type PurchaseAggregateOrderBy = {
+  avg?: Maybe<PurchaseAvgOrderBy>,
   count?: Maybe<OrderBy>,
-  max?: Maybe<PurchasesMaxOrderBy>,
-  min?: Maybe<PurchasesMinOrderBy>,
-  stddev?: Maybe<PurchasesStddevOrderBy>,
-  stddev_pop?: Maybe<PurchasesStddevPopOrderBy>,
-  stddev_samp?: Maybe<PurchasesStddevSampOrderBy>,
-  sum?: Maybe<PurchasesSumOrderBy>,
-  var_pop?: Maybe<PurchasesVarPopOrderBy>,
-  var_samp?: Maybe<PurchasesVarSampOrderBy>,
-  variance?: Maybe<PurchasesVarianceOrderBy>,
+  max?: Maybe<PurchaseMaxOrderBy>,
+  min?: Maybe<PurchaseMinOrderBy>,
+  stddev?: Maybe<PurchaseStddevOrderBy>,
+  stddev_pop?: Maybe<PurchaseStddevPopOrderBy>,
+  stddev_samp?: Maybe<PurchaseStddevSampOrderBy>,
+  sum?: Maybe<PurchaseSumOrderBy>,
+  var_pop?: Maybe<PurchaseVarPopOrderBy>,
+  var_samp?: Maybe<PurchaseVarSampOrderBy>,
+  variance?: Maybe<PurchaseVarianceOrderBy>,
 };
 
-/** input type for inserting array relation for remote table "purchases" */
-export type PurchasesArrRelInsertInput = {
-  data: Array<PurchasesInsertInput>,
-  on_conflict?: Maybe<PurchasesOnConflict>,
+/** input type for inserting array relation for remote table "purchase" */
+export type PurchaseArrRelInsertInput = {
+  data: Array<PurchaseInsertInput>,
+  on_conflict?: Maybe<PurchaseOnConflict>,
 };
 
 /** aggregate avg on columns */
-export type PurchasesAvgFields = {
-   __typename?: 'purchases_avg_fields',
+export type PurchaseAvgFields = {
+   __typename?: 'purchase_avg_fields',
   item_id?: Maybe<Scalars['Float']>,
   manufacturer_id?: Maybe<Scalars['Float']>,
   vendor_id?: Maybe<Scalars['Float']>,
 };
 
-/** order by avg() on columns of table "purchases" */
-export type PurchasesAvgOrderBy = {
+/** order by avg() on columns of table "purchase" */
+export type PurchaseAvgOrderBy = {
   item_id?: Maybe<OrderBy>,
   manufacturer_id?: Maybe<OrderBy>,
   vendor_id?: Maybe<OrderBy>,
 };
 
-/** Boolean expression to filter rows from the table "purchases". All fields are combined with a logical 'AND'. */
-export type PurchasesBoolExp = {
-  _and?: Maybe<Array<Maybe<PurchasesBoolExp>>>,
-  _not?: Maybe<PurchasesBoolExp>,
-  _or?: Maybe<Array<Maybe<PurchasesBoolExp>>>,
-  entity?: Maybe<EntityBoolExp>,
-  entityByVendorId?: Maybe<EntityBoolExp>,
+/** Boolean expression to filter rows from the table "purchase". All fields are combined with a logical 'AND'. */
+export type PurchaseBoolExp = {
+  _and?: Maybe<Array<Maybe<PurchaseBoolExp>>>,
+  _not?: Maybe<PurchaseBoolExp>,
+  _or?: Maybe<Array<Maybe<PurchaseBoolExp>>>,
   item_id?: Maybe<IntComparisonExp>,
   manufacturer_id?: Maybe<IntComparisonExp>,
   manufacturer_part_no?: Maybe<StringComparisonExp>,
@@ -2718,23 +2669,21 @@ export type PurchasesBoolExp = {
   vendor_part_no?: Maybe<StringComparisonExp>,
 };
 
-/** unique or primary key constraints on table "purchases" */
-export enum PurchasesConstraint {
+/** unique or primary key constraints on table "purchase" */
+export enum PurchaseConstraint {
   /** unique or primary key constraint */
   PURCHASES_PKEY = 'purchases_pkey'
 }
 
-/** input type for incrementing integer columne in table "purchases" */
-export type PurchasesIncInput = {
+/** input type for incrementing integer columne in table "purchase" */
+export type PurchaseIncInput = {
   item_id?: Maybe<Scalars['Int']>,
   manufacturer_id?: Maybe<Scalars['Int']>,
   vendor_id?: Maybe<Scalars['Int']>,
 };
 
-/** input type for inserting data into table "purchases" */
-export type PurchasesInsertInput = {
-  entity?: Maybe<EntityObjRelInsertInput>,
-  entityByVendorId?: Maybe<EntityObjRelInsertInput>,
+/** input type for inserting data into table "purchase" */
+export type PurchaseInsertInput = {
   item_id?: Maybe<Scalars['Int']>,
   manufacturer_id?: Maybe<Scalars['Int']>,
   manufacturer_part_no?: Maybe<Scalars['String']>,
@@ -2748,8 +2697,8 @@ export type PurchasesInsertInput = {
 };
 
 /** aggregate max on columns */
-export type PurchasesMaxFields = {
-   __typename?: 'purchases_max_fields',
+export type PurchaseMaxFields = {
+   __typename?: 'purchase_max_fields',
   item_id?: Maybe<Scalars['Int']>,
   manufacturer_id?: Maybe<Scalars['Int']>,
   manufacturer_part_no?: Maybe<Scalars['String']>,
@@ -2761,8 +2710,8 @@ export type PurchasesMaxFields = {
   vendor_part_no?: Maybe<Scalars['String']>,
 };
 
-/** order by max() on columns of table "purchases" */
-export type PurchasesMaxOrderBy = {
+/** order by max() on columns of table "purchase" */
+export type PurchaseMaxOrderBy = {
   item_id?: Maybe<OrderBy>,
   manufacturer_id?: Maybe<OrderBy>,
   manufacturer_part_no?: Maybe<OrderBy>,
@@ -2775,8 +2724,8 @@ export type PurchasesMaxOrderBy = {
 };
 
 /** aggregate min on columns */
-export type PurchasesMinFields = {
-   __typename?: 'purchases_min_fields',
+export type PurchaseMinFields = {
+   __typename?: 'purchase_min_fields',
   item_id?: Maybe<Scalars['Int']>,
   manufacturer_id?: Maybe<Scalars['Int']>,
   manufacturer_part_no?: Maybe<Scalars['String']>,
@@ -2788,8 +2737,8 @@ export type PurchasesMinFields = {
   vendor_part_no?: Maybe<Scalars['String']>,
 };
 
-/** order by min() on columns of table "purchases" */
-export type PurchasesMinOrderBy = {
+/** order by min() on columns of table "purchase" */
+export type PurchaseMinOrderBy = {
   item_id?: Maybe<OrderBy>,
   manufacturer_id?: Maybe<OrderBy>,
   manufacturer_part_no?: Maybe<OrderBy>,
@@ -2801,31 +2750,30 @@ export type PurchasesMinOrderBy = {
   vendor_part_no?: Maybe<OrderBy>,
 };
 
-/** response of any mutation on the table "purchases" */
-export type PurchasesMutationResponse = {
-   __typename?: 'purchases_mutation_response',
+/** response of any mutation on the table "purchase" */
+export type PurchaseMutationResponse = {
+   __typename?: 'purchase_mutation_response',
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'],
   /** data of the affected rows by the mutation */
-  returning: Array<Purchases>,
+  returning: Array<Purchase>,
 };
 
-/** input type for inserting object relation for remote table "purchases" */
-export type PurchasesObjRelInsertInput = {
-  data: PurchasesInsertInput,
-  on_conflict?: Maybe<PurchasesOnConflict>,
+/** input type for inserting object relation for remote table "purchase" */
+export type PurchaseObjRelInsertInput = {
+  data: PurchaseInsertInput,
+  on_conflict?: Maybe<PurchaseOnConflict>,
 };
 
-/** on conflict condition type for table "purchases" */
-export type PurchasesOnConflict = {
-  constraint: PurchasesConstraint,
-  update_columns: Array<PurchasesUpdateColumn>,
+/** on conflict condition type for table "purchase" */
+export type PurchaseOnConflict = {
+  constraint: PurchaseConstraint,
+  update_columns: Array<PurchaseUpdateColumn>,
+  where?: Maybe<PurchaseBoolExp>,
 };
 
-/** ordering options when selecting data from "purchases" */
-export type PurchasesOrderBy = {
-  entity?: Maybe<EntityOrderBy>,
-  entityByVendorId?: Maybe<EntityOrderBy>,
+/** ordering options when selecting data from "purchase" */
+export type PurchaseOrderBy = {
   item_id?: Maybe<OrderBy>,
   manufacturer_id?: Maybe<OrderBy>,
   manufacturer_part_no?: Maybe<OrderBy>,
@@ -2838,8 +2786,8 @@ export type PurchasesOrderBy = {
   vendor_part_no?: Maybe<OrderBy>,
 };
 
-/** select columns of table "purchases" */
-export enum PurchasesSelectColumn {
+/** select columns of table "purchase" */
+export enum PurchaseSelectColumn {
   /** column name */
   ITEM_ID = 'item_id',
   /** column name */
@@ -2862,8 +2810,8 @@ export enum PurchasesSelectColumn {
   VENDOR_PART_NO = 'vendor_part_no'
 }
 
-/** input type for updating data in table "purchases" */
-export type PurchasesSetInput = {
+/** input type for updating data in table "purchase" */
+export type PurchaseSetInput = {
   item_id?: Maybe<Scalars['Int']>,
   manufacturer_id?: Maybe<Scalars['Int']>,
   manufacturer_part_no?: Maybe<Scalars['String']>,
@@ -2877,67 +2825,67 @@ export type PurchasesSetInput = {
 };
 
 /** aggregate stddev on columns */
-export type PurchasesStddevFields = {
-   __typename?: 'purchases_stddev_fields',
+export type PurchaseStddevFields = {
+   __typename?: 'purchase_stddev_fields',
   item_id?: Maybe<Scalars['Float']>,
   manufacturer_id?: Maybe<Scalars['Float']>,
   vendor_id?: Maybe<Scalars['Float']>,
 };
 
-/** order by stddev() on columns of table "purchases" */
-export type PurchasesStddevOrderBy = {
+/** order by stddev() on columns of table "purchase" */
+export type PurchaseStddevOrderBy = {
   item_id?: Maybe<OrderBy>,
   manufacturer_id?: Maybe<OrderBy>,
   vendor_id?: Maybe<OrderBy>,
 };
 
 /** aggregate stddev_pop on columns */
-export type PurchasesStddevPopFields = {
-   __typename?: 'purchases_stddev_pop_fields',
+export type PurchaseStddevPopFields = {
+   __typename?: 'purchase_stddev_pop_fields',
   item_id?: Maybe<Scalars['Float']>,
   manufacturer_id?: Maybe<Scalars['Float']>,
   vendor_id?: Maybe<Scalars['Float']>,
 };
 
-/** order by stddev_pop() on columns of table "purchases" */
-export type PurchasesStddevPopOrderBy = {
+/** order by stddev_pop() on columns of table "purchase" */
+export type PurchaseStddevPopOrderBy = {
   item_id?: Maybe<OrderBy>,
   manufacturer_id?: Maybe<OrderBy>,
   vendor_id?: Maybe<OrderBy>,
 };
 
 /** aggregate stddev_samp on columns */
-export type PurchasesStddevSampFields = {
-   __typename?: 'purchases_stddev_samp_fields',
+export type PurchaseStddevSampFields = {
+   __typename?: 'purchase_stddev_samp_fields',
   item_id?: Maybe<Scalars['Float']>,
   manufacturer_id?: Maybe<Scalars['Float']>,
   vendor_id?: Maybe<Scalars['Float']>,
 };
 
-/** order by stddev_samp() on columns of table "purchases" */
-export type PurchasesStddevSampOrderBy = {
+/** order by stddev_samp() on columns of table "purchase" */
+export type PurchaseStddevSampOrderBy = {
   item_id?: Maybe<OrderBy>,
   manufacturer_id?: Maybe<OrderBy>,
   vendor_id?: Maybe<OrderBy>,
 };
 
 /** aggregate sum on columns */
-export type PurchasesSumFields = {
-   __typename?: 'purchases_sum_fields',
+export type PurchaseSumFields = {
+   __typename?: 'purchase_sum_fields',
   item_id?: Maybe<Scalars['Int']>,
   manufacturer_id?: Maybe<Scalars['Int']>,
   vendor_id?: Maybe<Scalars['Int']>,
 };
 
-/** order by sum() on columns of table "purchases" */
-export type PurchasesSumOrderBy = {
+/** order by sum() on columns of table "purchase" */
+export type PurchaseSumOrderBy = {
   item_id?: Maybe<OrderBy>,
   manufacturer_id?: Maybe<OrderBy>,
   vendor_id?: Maybe<OrderBy>,
 };
 
-/** update columns of table "purchases" */
-export enum PurchasesUpdateColumn {
+/** update columns of table "purchase" */
+export enum PurchaseUpdateColumn {
   /** column name */
   ITEM_ID = 'item_id',
   /** column name */
@@ -2961,45 +2909,45 @@ export enum PurchasesUpdateColumn {
 }
 
 /** aggregate var_pop on columns */
-export type PurchasesVarPopFields = {
-   __typename?: 'purchases_var_pop_fields',
+export type PurchaseVarPopFields = {
+   __typename?: 'purchase_var_pop_fields',
   item_id?: Maybe<Scalars['Float']>,
   manufacturer_id?: Maybe<Scalars['Float']>,
   vendor_id?: Maybe<Scalars['Float']>,
 };
 
-/** order by var_pop() on columns of table "purchases" */
-export type PurchasesVarPopOrderBy = {
+/** order by var_pop() on columns of table "purchase" */
+export type PurchaseVarPopOrderBy = {
   item_id?: Maybe<OrderBy>,
   manufacturer_id?: Maybe<OrderBy>,
   vendor_id?: Maybe<OrderBy>,
 };
 
 /** aggregate var_samp on columns */
-export type PurchasesVarSampFields = {
-   __typename?: 'purchases_var_samp_fields',
+export type PurchaseVarSampFields = {
+   __typename?: 'purchase_var_samp_fields',
   item_id?: Maybe<Scalars['Float']>,
   manufacturer_id?: Maybe<Scalars['Float']>,
   vendor_id?: Maybe<Scalars['Float']>,
 };
 
-/** order by var_samp() on columns of table "purchases" */
-export type PurchasesVarSampOrderBy = {
+/** order by var_samp() on columns of table "purchase" */
+export type PurchaseVarSampOrderBy = {
   item_id?: Maybe<OrderBy>,
   manufacturer_id?: Maybe<OrderBy>,
   vendor_id?: Maybe<OrderBy>,
 };
 
 /** aggregate variance on columns */
-export type PurchasesVarianceFields = {
-   __typename?: 'purchases_variance_fields',
+export type PurchaseVarianceFields = {
+   __typename?: 'purchase_variance_fields',
   item_id?: Maybe<Scalars['Float']>,
   manufacturer_id?: Maybe<Scalars['Float']>,
   vendor_id?: Maybe<Scalars['Float']>,
 };
 
-/** order by variance() on columns of table "purchases" */
-export type PurchasesVarianceOrderBy = {
+/** order by variance() on columns of table "purchase" */
+export type PurchaseVarianceOrderBy = {
   item_id?: Maybe<OrderBy>,
   manufacturer_id?: Maybe<OrderBy>,
   vendor_id?: Maybe<OrderBy>,
@@ -3052,32 +3000,32 @@ export type QueryRoot = {
   /** fetch data from the table: "enum.unit" using primary key columns */
   enum_unit_by_pk?: Maybe<EnumUnit>,
   files?: Maybe<Array<Maybe<File>>>,
-  /** fetch data from the table: "icons" */
-  icons: Array<Icons>,
-  /** fetch aggregated fields from the table: "icons" */
-  icons_aggregate: IconsAggregate,
-  /** fetch data from the table: "icons" using primary key columns */
-  icons_by_pk?: Maybe<Icons>,
-  /** fetch data from the table: "items" */
-  items: Array<Items>,
-  /** fetch aggregated fields from the table: "items" */
-  items_aggregate: ItemsAggregate,
-  /** fetch data from the table: "items_hardware_fastener_bolt" */
-  items_hardware_fastener_bolt: Array<ItemsHardwareFastenerBolt>,
-  /** fetch aggregated fields from the table: "items_hardware_fastener_bolt" */
-  items_hardware_fastener_bolt_aggregate: ItemsHardwareFastenerBoltAggregate,
-  /** fetch data from the table: "items_hardware_nut" */
-  items_hardware_nut: Array<ItemsHardwareNut>,
-  /** fetch aggregated fields from the table: "items_hardware_nut" */
-  items_hardware_nut_aggregate: ItemsHardwareNutAggregate,
-  /** fetch data from the table: "items_hardware_nut" using primary key columns */
-  items_hardware_nut_by_pk?: Maybe<ItemsHardwareNut>,
-  /** fetch data from the table: "purchases" */
-  purchases: Array<Purchases>,
-  /** fetch aggregated fields from the table: "purchases" */
-  purchases_aggregate: PurchasesAggregate,
-  /** fetch data from the table: "purchases" using primary key columns */
-  purchases_by_pk?: Maybe<Purchases>,
+  /** fetch data from the table: "icon" */
+  icon: Array<Icon>,
+  /** fetch aggregated fields from the table: "icon" */
+  icon_aggregate: IconAggregate,
+  /** fetch data from the table: "icon" using primary key columns */
+  icon_by_pk?: Maybe<Icon>,
+  /** fetch data from the table: "item" */
+  item: Array<Item>,
+  /** fetch aggregated fields from the table: "item" */
+  item_aggregate: ItemAggregate,
+  /** fetch data from the table: "item_hardware_fastener_bolt" */
+  item_hardware_fastener_bolt: Array<ItemHardwareFastenerBolt>,
+  /** fetch aggregated fields from the table: "item_hardware_fastener_bolt" */
+  item_hardware_fastener_bolt_aggregate: ItemHardwareFastenerBoltAggregate,
+  /** fetch data from the table: "item_hardware_nut" */
+  item_hardware_nut: Array<ItemHardwareNut>,
+  /** fetch aggregated fields from the table: "item_hardware_nut" */
+  item_hardware_nut_aggregate: ItemHardwareNutAggregate,
+  /** fetch data from the table: "item_hardware_nut" using primary key columns */
+  item_hardware_nut_by_pk?: Maybe<ItemHardwareNut>,
+  /** fetch data from the table: "purchase" */
+  purchase: Array<Purchase>,
+  /** fetch aggregated fields from the table: "purchase" */
+  purchase_aggregate: PurchaseAggregate,
+  /** fetch data from the table: "purchase" using primary key columns */
+  purchase_by_pk?: Maybe<Purchase>,
 };
 
 
@@ -3238,119 +3186,119 @@ export type QueryRootEnumUnitByPkArgs = {
 
 
 /** query root */
-export type QueryRootIconsArgs = {
-  distinct_on?: Maybe<Array<IconsSelectColumn>>,
+export type QueryRootIconArgs = {
+  distinct_on?: Maybe<Array<IconSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<IconsOrderBy>>,
-  where?: Maybe<IconsBoolExp>
+  order_by?: Maybe<Array<IconOrderBy>>,
+  where?: Maybe<IconBoolExp>
 };
 
 
 /** query root */
-export type QueryRootIconsAggregateArgs = {
-  distinct_on?: Maybe<Array<IconsSelectColumn>>,
+export type QueryRootIconAggregateArgs = {
+  distinct_on?: Maybe<Array<IconSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<IconsOrderBy>>,
-  where?: Maybe<IconsBoolExp>
+  order_by?: Maybe<Array<IconOrderBy>>,
+  where?: Maybe<IconBoolExp>
 };
 
 
 /** query root */
-export type QueryRootIconsByPkArgs = {
+export type QueryRootIconByPkArgs = {
   id: Scalars['uuid']
 };
 
 
 /** query root */
-export type QueryRootItemsArgs = {
-  distinct_on?: Maybe<Array<ItemsSelectColumn>>,
+export type QueryRootItemArgs = {
+  distinct_on?: Maybe<Array<ItemSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<ItemsOrderBy>>,
-  where?: Maybe<ItemsBoolExp>
+  order_by?: Maybe<Array<ItemOrderBy>>,
+  where?: Maybe<ItemBoolExp>
 };
 
 
 /** query root */
-export type QueryRootItemsAggregateArgs = {
-  distinct_on?: Maybe<Array<ItemsSelectColumn>>,
+export type QueryRootItemAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<ItemsOrderBy>>,
-  where?: Maybe<ItemsBoolExp>
+  order_by?: Maybe<Array<ItemOrderBy>>,
+  where?: Maybe<ItemBoolExp>
 };
 
 
 /** query root */
-export type QueryRootItemsHardwareFastenerBoltArgs = {
-  distinct_on?: Maybe<Array<ItemsHardwareFastenerBoltSelectColumn>>,
+export type QueryRootItemHardwareFastenerBoltArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareFastenerBoltSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<ItemsHardwareFastenerBoltOrderBy>>,
-  where?: Maybe<ItemsHardwareFastenerBoltBoolExp>
+  order_by?: Maybe<Array<ItemHardwareFastenerBoltOrderBy>>,
+  where?: Maybe<ItemHardwareFastenerBoltBoolExp>
 };
 
 
 /** query root */
-export type QueryRootItemsHardwareFastenerBoltAggregateArgs = {
-  distinct_on?: Maybe<Array<ItemsHardwareFastenerBoltSelectColumn>>,
+export type QueryRootItemHardwareFastenerBoltAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareFastenerBoltSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<ItemsHardwareFastenerBoltOrderBy>>,
-  where?: Maybe<ItemsHardwareFastenerBoltBoolExp>
+  order_by?: Maybe<Array<ItemHardwareFastenerBoltOrderBy>>,
+  where?: Maybe<ItemHardwareFastenerBoltBoolExp>
 };
 
 
 /** query root */
-export type QueryRootItemsHardwareNutArgs = {
-  distinct_on?: Maybe<Array<ItemsHardwareNutSelectColumn>>,
+export type QueryRootItemHardwareNutArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareNutSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<ItemsHardwareNutOrderBy>>,
-  where?: Maybe<ItemsHardwareNutBoolExp>
+  order_by?: Maybe<Array<ItemHardwareNutOrderBy>>,
+  where?: Maybe<ItemHardwareNutBoolExp>
 };
 
 
 /** query root */
-export type QueryRootItemsHardwareNutAggregateArgs = {
-  distinct_on?: Maybe<Array<ItemsHardwareNutSelectColumn>>,
+export type QueryRootItemHardwareNutAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareNutSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<ItemsHardwareNutOrderBy>>,
-  where?: Maybe<ItemsHardwareNutBoolExp>
+  order_by?: Maybe<Array<ItemHardwareNutOrderBy>>,
+  where?: Maybe<ItemHardwareNutBoolExp>
 };
 
 
 /** query root */
-export type QueryRootItemsHardwareNutByPkArgs = {
+export type QueryRootItemHardwareNutByPkArgs = {
   id: Scalars['Int']
 };
 
 
 /** query root */
-export type QueryRootPurchasesArgs = {
-  distinct_on?: Maybe<Array<PurchasesSelectColumn>>,
+export type QueryRootPurchaseArgs = {
+  distinct_on?: Maybe<Array<PurchaseSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<PurchasesOrderBy>>,
-  where?: Maybe<PurchasesBoolExp>
+  order_by?: Maybe<Array<PurchaseOrderBy>>,
+  where?: Maybe<PurchaseBoolExp>
 };
 
 
 /** query root */
-export type QueryRootPurchasesAggregateArgs = {
-  distinct_on?: Maybe<Array<PurchasesSelectColumn>>,
+export type QueryRootPurchaseAggregateArgs = {
+  distinct_on?: Maybe<Array<PurchaseSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<PurchasesOrderBy>>,
-  where?: Maybe<PurchasesBoolExp>
+  order_by?: Maybe<Array<PurchaseOrderBy>>,
+  where?: Maybe<PurchaseBoolExp>
 };
 
 
 /** query root */
-export type QueryRootPurchasesByPkArgs = {
+export type QueryRootPurchaseByPkArgs = {
   item_id: Scalars['Int'],
   order_no: Scalars['String']
 };
@@ -3413,32 +3361,32 @@ export type SubscriptionRoot = {
   enum_unit_aggregate: EnumUnitAggregate,
   /** fetch data from the table: "enum.unit" using primary key columns */
   enum_unit_by_pk?: Maybe<EnumUnit>,
-  /** fetch data from the table: "icons" */
-  icons: Array<Icons>,
-  /** fetch aggregated fields from the table: "icons" */
-  icons_aggregate: IconsAggregate,
-  /** fetch data from the table: "icons" using primary key columns */
-  icons_by_pk?: Maybe<Icons>,
-  /** fetch data from the table: "items" */
-  items: Array<Items>,
-  /** fetch aggregated fields from the table: "items" */
-  items_aggregate: ItemsAggregate,
-  /** fetch data from the table: "items_hardware_fastener_bolt" */
-  items_hardware_fastener_bolt: Array<ItemsHardwareFastenerBolt>,
-  /** fetch aggregated fields from the table: "items_hardware_fastener_bolt" */
-  items_hardware_fastener_bolt_aggregate: ItemsHardwareFastenerBoltAggregate,
-  /** fetch data from the table: "items_hardware_nut" */
-  items_hardware_nut: Array<ItemsHardwareNut>,
-  /** fetch aggregated fields from the table: "items_hardware_nut" */
-  items_hardware_nut_aggregate: ItemsHardwareNutAggregate,
-  /** fetch data from the table: "items_hardware_nut" using primary key columns */
-  items_hardware_nut_by_pk?: Maybe<ItemsHardwareNut>,
-  /** fetch data from the table: "purchases" */
-  purchases: Array<Purchases>,
-  /** fetch aggregated fields from the table: "purchases" */
-  purchases_aggregate: PurchasesAggregate,
-  /** fetch data from the table: "purchases" using primary key columns */
-  purchases_by_pk?: Maybe<Purchases>,
+  /** fetch data from the table: "icon" */
+  icon: Array<Icon>,
+  /** fetch aggregated fields from the table: "icon" */
+  icon_aggregate: IconAggregate,
+  /** fetch data from the table: "icon" using primary key columns */
+  icon_by_pk?: Maybe<Icon>,
+  /** fetch data from the table: "item" */
+  item: Array<Item>,
+  /** fetch aggregated fields from the table: "item" */
+  item_aggregate: ItemAggregate,
+  /** fetch data from the table: "item_hardware_fastener_bolt" */
+  item_hardware_fastener_bolt: Array<ItemHardwareFastenerBolt>,
+  /** fetch aggregated fields from the table: "item_hardware_fastener_bolt" */
+  item_hardware_fastener_bolt_aggregate: ItemHardwareFastenerBoltAggregate,
+  /** fetch data from the table: "item_hardware_nut" */
+  item_hardware_nut: Array<ItemHardwareNut>,
+  /** fetch aggregated fields from the table: "item_hardware_nut" */
+  item_hardware_nut_aggregate: ItemHardwareNutAggregate,
+  /** fetch data from the table: "item_hardware_nut" using primary key columns */
+  item_hardware_nut_by_pk?: Maybe<ItemHardwareNut>,
+  /** fetch data from the table: "purchase" */
+  purchase: Array<Purchase>,
+  /** fetch aggregated fields from the table: "purchase" */
+  purchase_aggregate: PurchaseAggregate,
+  /** fetch data from the table: "purchase" using primary key columns */
+  purchase_by_pk?: Maybe<Purchase>,
 };
 
 
@@ -3599,119 +3547,119 @@ export type SubscriptionRootEnumUnitByPkArgs = {
 
 
 /** subscription root */
-export type SubscriptionRootIconsArgs = {
-  distinct_on?: Maybe<Array<IconsSelectColumn>>,
+export type SubscriptionRootIconArgs = {
+  distinct_on?: Maybe<Array<IconSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<IconsOrderBy>>,
-  where?: Maybe<IconsBoolExp>
+  order_by?: Maybe<Array<IconOrderBy>>,
+  where?: Maybe<IconBoolExp>
 };
 
 
 /** subscription root */
-export type SubscriptionRootIconsAggregateArgs = {
-  distinct_on?: Maybe<Array<IconsSelectColumn>>,
+export type SubscriptionRootIconAggregateArgs = {
+  distinct_on?: Maybe<Array<IconSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<IconsOrderBy>>,
-  where?: Maybe<IconsBoolExp>
+  order_by?: Maybe<Array<IconOrderBy>>,
+  where?: Maybe<IconBoolExp>
 };
 
 
 /** subscription root */
-export type SubscriptionRootIconsByPkArgs = {
+export type SubscriptionRootIconByPkArgs = {
   id: Scalars['uuid']
 };
 
 
 /** subscription root */
-export type SubscriptionRootItemsArgs = {
-  distinct_on?: Maybe<Array<ItemsSelectColumn>>,
+export type SubscriptionRootItemArgs = {
+  distinct_on?: Maybe<Array<ItemSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<ItemsOrderBy>>,
-  where?: Maybe<ItemsBoolExp>
+  order_by?: Maybe<Array<ItemOrderBy>>,
+  where?: Maybe<ItemBoolExp>
 };
 
 
 /** subscription root */
-export type SubscriptionRootItemsAggregateArgs = {
-  distinct_on?: Maybe<Array<ItemsSelectColumn>>,
+export type SubscriptionRootItemAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<ItemsOrderBy>>,
-  where?: Maybe<ItemsBoolExp>
+  order_by?: Maybe<Array<ItemOrderBy>>,
+  where?: Maybe<ItemBoolExp>
 };
 
 
 /** subscription root */
-export type SubscriptionRootItemsHardwareFastenerBoltArgs = {
-  distinct_on?: Maybe<Array<ItemsHardwareFastenerBoltSelectColumn>>,
+export type SubscriptionRootItemHardwareFastenerBoltArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareFastenerBoltSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<ItemsHardwareFastenerBoltOrderBy>>,
-  where?: Maybe<ItemsHardwareFastenerBoltBoolExp>
+  order_by?: Maybe<Array<ItemHardwareFastenerBoltOrderBy>>,
+  where?: Maybe<ItemHardwareFastenerBoltBoolExp>
 };
 
 
 /** subscription root */
-export type SubscriptionRootItemsHardwareFastenerBoltAggregateArgs = {
-  distinct_on?: Maybe<Array<ItemsHardwareFastenerBoltSelectColumn>>,
+export type SubscriptionRootItemHardwareFastenerBoltAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareFastenerBoltSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<ItemsHardwareFastenerBoltOrderBy>>,
-  where?: Maybe<ItemsHardwareFastenerBoltBoolExp>
+  order_by?: Maybe<Array<ItemHardwareFastenerBoltOrderBy>>,
+  where?: Maybe<ItemHardwareFastenerBoltBoolExp>
 };
 
 
 /** subscription root */
-export type SubscriptionRootItemsHardwareNutArgs = {
-  distinct_on?: Maybe<Array<ItemsHardwareNutSelectColumn>>,
+export type SubscriptionRootItemHardwareNutArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareNutSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<ItemsHardwareNutOrderBy>>,
-  where?: Maybe<ItemsHardwareNutBoolExp>
+  order_by?: Maybe<Array<ItemHardwareNutOrderBy>>,
+  where?: Maybe<ItemHardwareNutBoolExp>
 };
 
 
 /** subscription root */
-export type SubscriptionRootItemsHardwareNutAggregateArgs = {
-  distinct_on?: Maybe<Array<ItemsHardwareNutSelectColumn>>,
+export type SubscriptionRootItemHardwareNutAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareNutSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<ItemsHardwareNutOrderBy>>,
-  where?: Maybe<ItemsHardwareNutBoolExp>
+  order_by?: Maybe<Array<ItemHardwareNutOrderBy>>,
+  where?: Maybe<ItemHardwareNutBoolExp>
 };
 
 
 /** subscription root */
-export type SubscriptionRootItemsHardwareNutByPkArgs = {
+export type SubscriptionRootItemHardwareNutByPkArgs = {
   id: Scalars['Int']
 };
 
 
 /** subscription root */
-export type SubscriptionRootPurchasesArgs = {
-  distinct_on?: Maybe<Array<PurchasesSelectColumn>>,
+export type SubscriptionRootPurchaseArgs = {
+  distinct_on?: Maybe<Array<PurchaseSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<PurchasesOrderBy>>,
-  where?: Maybe<PurchasesBoolExp>
+  order_by?: Maybe<Array<PurchaseOrderBy>>,
+  where?: Maybe<PurchaseBoolExp>
 };
 
 
 /** subscription root */
-export type SubscriptionRootPurchasesAggregateArgs = {
-  distinct_on?: Maybe<Array<PurchasesSelectColumn>>,
+export type SubscriptionRootPurchaseAggregateArgs = {
+  distinct_on?: Maybe<Array<PurchaseSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<PurchasesOrderBy>>,
-  where?: Maybe<PurchasesBoolExp>
+  order_by?: Maybe<Array<PurchaseOrderBy>>,
+  where?: Maybe<PurchaseBoolExp>
 };
 
 
 /** subscription root */
-export type SubscriptionRootPurchasesByPkArgs = {
+export type SubscriptionRootPurchaseByPkArgs = {
   item_id: Scalars['Int'],
   order_no: Scalars['String']
 };
@@ -3757,9 +3705,9 @@ export type InsertIconMutationVariables = {
 
 export type InsertIconMutation = (
   { __typename?: 'mutation_root' }
-  & { insert_icons: Maybe<(
-    { __typename?: 'icons_mutation_response' }
-    & Pick<IconsMutationResponse, 'affected_rows'>
+  & { insert_icon: Maybe<(
+    { __typename?: 'icon_mutation_response' }
+    & Pick<IconMutationResponse, 'affected_rows'>
   )> }
 );
 
@@ -3768,9 +3716,9 @@ export type GetIconsQueryVariables = {};
 
 export type GetIconsQuery = (
   { __typename?: 'query_root' }
-  & { icons: Array<(
-    { __typename?: 'icons' }
-    & Pick<Icons, 'data' | 'description' | 'id' | 'label' | 'category'>
+  & { icon: Array<(
+    { __typename?: 'icon' }
+    & Pick<Icon, 'data' | 'description' | 'id' | 'label' | 'category'>
   )> }
 );
 
@@ -3785,14 +3733,14 @@ export type GetPrinterStatusQuery = (
   )> }
 );
 
-export type ItemsHardwareFastenerBoltQueryVariables = {};
+export type ItemHardwareFastenerBoltQueryVariables = {};
 
 
-export type ItemsHardwareFastenerBoltQuery = (
+export type ItemHardwareFastenerBoltQuery = (
   { __typename?: 'query_root' }
   & { items: Array<(
-    { __typename?: 'items_hardware_fastener_bolt' }
-    & Pick<ItemsHardwareFastenerBolt, 'id' | 'name' | 'description' | 'unit' | 'thread_length'>
+    { __typename?: 'item_hardware_fastener_bolt' }
+    & Pick<ItemHardwareFastenerBolt, 'id' | 'name' | 'description' | 'unit' | 'thread_length'>
   )> }
 );
 
@@ -3812,7 +3760,7 @@ export type SendBufferMutation = (
 
 export const InsertIconDocument = gql`
     mutation InsertIcon($mimeData: String, $description: String, $id: uuid, $label: String, $category: enum_icon_category_enum) {
-  insert_icons(objects: {data: $mimeData, description: $description, id: $id, label: $label, category: $category}) {
+  insert_icon(objects: {data: $mimeData, description: $description, id: $id, label: $label, category: $category}) {
     affected_rows
   }
 }
@@ -3839,7 +3787,7 @@ export type InsertIconMutationResult = ApolloReactCommon.MutationResult<InsertIc
 export type InsertIconMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertIconMutation, InsertIconMutationVariables>;
 export const GetIconsDocument = gql`
     query GetIcons {
-  icons {
+  icon {
     data
     description
     id
@@ -3891,9 +3839,9 @@ export function withGetPrinterStatus<TProps, TChildProps = {}>(operationOptions?
     });
 };
 export type GetPrinterStatusQueryResult = ApolloReactCommon.QueryResult<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>;
-export const ItemsHardwareFastenerBoltDocument = gql`
-    query items_hardware_fastener_bolt {
-  items: items_hardware_fastener_bolt {
+export const ItemHardwareFastenerBoltDocument = gql`
+    query item_hardware_fastener_bolt {
+  items: item_hardware_fastener_bolt {
     id
     name
     description
@@ -3902,24 +3850,24 @@ export const ItemsHardwareFastenerBoltDocument = gql`
   }
 }
     `;
-export type ItemsHardwareFastenerBoltComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables>, 'query'>;
+export type ItemHardwareFastenerBoltComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>, 'query'>;
 
-    export const ItemsHardwareFastenerBoltComponent = (props: ItemsHardwareFastenerBoltComponentProps) => (
-      <ApolloReactComponents.Query<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables> query={ItemsHardwareFastenerBoltDocument} {...props} />
+    export const ItemHardwareFastenerBoltComponent = (props: ItemHardwareFastenerBoltComponentProps) => (
+      <ApolloReactComponents.Query<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables> query={ItemHardwareFastenerBoltDocument} {...props} />
     );
     
-export type ItemsHardwareFastenerBoltProps<TChildProps = {}> = ApolloReactHoc.DataProps<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables> & TChildProps;
-export function withItemsHardwareFastenerBolt<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+export type ItemHardwareFastenerBoltProps<TChildProps = {}> = ApolloReactHoc.DataProps<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables> & TChildProps;
+export function withItemHardwareFastenerBolt<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
-  ItemsHardwareFastenerBoltQuery,
-  ItemsHardwareFastenerBoltQueryVariables,
-  ItemsHardwareFastenerBoltProps<TChildProps>>) {
-    return ApolloReactHoc.withQuery<TProps, ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables, ItemsHardwareFastenerBoltProps<TChildProps>>(ItemsHardwareFastenerBoltDocument, {
-      alias: 'itemsHardwareFastenerBolt',
+  ItemHardwareFastenerBoltQuery,
+  ItemHardwareFastenerBoltQueryVariables,
+  ItemHardwareFastenerBoltProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables, ItemHardwareFastenerBoltProps<TChildProps>>(ItemHardwareFastenerBoltDocument, {
+      alias: 'itemHardwareFastenerBolt',
       ...operationOptions
     });
 };
-export type ItemsHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemsHardwareFastenerBoltQuery, ItemsHardwareFastenerBoltQueryVariables>;
+export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
 export const SendBufferDocument = gql`
     mutation SendBuffer($buffer: [[[uint8]]]!) {
   putLabelMonochromeBuffer(imageBuffer: $buffer) {
@@ -3947,4 +3895,4 @@ export function withSendBuffer<TProps, TChildProps = {}>(operationOptions?: Apol
 };
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2019-10-27T16:07:37-06:00
+// graphql typescript defs generated on 2019-11-06T12:23:07-07:00
