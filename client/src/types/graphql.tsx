@@ -3711,10 +3711,10 @@ export type InsertIconMutation = (
   )> }
 );
 
-export type GetIconsQueryVariables = {};
+export type GeticonQueryVariables = {};
 
 
-export type GetIconsQuery = (
+export type GeticonQuery = (
   { __typename?: 'query_root' }
   & { icon: Array<(
     { __typename?: 'icon' }
@@ -3785,8 +3785,8 @@ export function withInsertIcon<TProps, TChildProps = {}>(operationOptions?: Apol
 };
 export type InsertIconMutationResult = ApolloReactCommon.MutationResult<InsertIconMutation>;
 export type InsertIconMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertIconMutation, InsertIconMutationVariables>;
-export const GetIconsDocument = gql`
-    query GetIcons {
+export const GeticonDocument = gql`
+    query Geticon {
   icon {
     data
     description
@@ -3796,24 +3796,24 @@ export const GetIconsDocument = gql`
   }
 }
     `;
-export type GetIconsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetIconsQuery, GetIconsQueryVariables>, 'query'>;
+export type GeticonComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GeticonQuery, GeticonQueryVariables>, 'query'>;
 
-    export const GetIconsComponent = (props: GetIconsComponentProps) => (
-      <ApolloReactComponents.Query<GetIconsQuery, GetIconsQueryVariables> query={GetIconsDocument} {...props} />
+    export const GeticonComponent = (props: GeticonComponentProps) => (
+      <ApolloReactComponents.Query<GeticonQuery, GeticonQueryVariables> query={GeticonDocument} {...props} />
     );
     
-export type GetIconsProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetIconsQuery, GetIconsQueryVariables> & TChildProps;
-export function withGetIcons<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+export type GeticonProps<TChildProps = {}> = ApolloReactHoc.DataProps<GeticonQuery, GeticonQueryVariables> & TChildProps;
+export function withGeticon<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
-  GetIconsQuery,
-  GetIconsQueryVariables,
-  GetIconsProps<TChildProps>>) {
-    return ApolloReactHoc.withQuery<TProps, GetIconsQuery, GetIconsQueryVariables, GetIconsProps<TChildProps>>(GetIconsDocument, {
-      alias: 'getIcons',
+  GeticonQuery,
+  GeticonQueryVariables,
+  GeticonProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GeticonQuery, GeticonQueryVariables, GeticonProps<TChildProps>>(GeticonDocument, {
+      alias: 'geticon',
       ...operationOptions
     });
 };
-export type GetIconsQueryResult = ApolloReactCommon.QueryResult<GetIconsQuery, GetIconsQueryVariables>;
+export type GeticonQueryResult = ApolloReactCommon.QueryResult<GeticonQuery, GeticonQueryVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
   PrinterStatus {
@@ -3895,4 +3895,4 @@ export function withSendBuffer<TProps, TChildProps = {}>(operationOptions?: Apol
 };
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2019-11-06T12:23:07-07:00
+// graphql typescript defs generated on 2019-11-06T18:17:35-07:00

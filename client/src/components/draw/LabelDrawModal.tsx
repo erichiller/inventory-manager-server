@@ -1,13 +1,13 @@
 import { Component } from "react";
 import { display } from "../ItemTable";
-import { ItemsHardwareFastenerBolt } from "../../types/graphql";
+import { Item } from "../../types/graphql";
 import { Modal, Descriptions, Button, Icon, Tooltip } from "antd";
 import React from "react";
 import { LabelDraw } from "./LabelDraw";
 
 interface LabelDrawModalProps {
     visibleHandler: ( d?: display ) => boolean;
-    item: ItemsHardwareFastenerBolt;
+    item: Item;
     visible: display;
 }
 interface LabelDrawModalState {

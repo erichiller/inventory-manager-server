@@ -3,7 +3,7 @@ import React, { Component, ComponentProps, PropsWithChildren } from 'react';
 
 import { Stage, Layer, Text, Image } from 'react-konva';
 
-import { ItemsHardwareFastenerBolt, GetPrinterStatusDocument, PrinterStatus, GetPrinterStatusQuery, Items } from '../../types/graphql';
+import { ItemHardwareFastenerBolt, GetPrinterStatusDocument, PrinterStatus, GetPrinterStatusQuery, Item } from '../../types/graphql';
 import { display } from '../ItemTable';
 import { DrawContextMenu } from './DrawContextMenu';
 import { KonvaEventObject } from 'konva/types/Node';
@@ -139,8 +139,8 @@ interface ChangedValueI {
 interface LabelDrawProps {
     height?: number;
     width?: number;
-    // item: ItemsHardwareFastenerBolt;
-    item: Items;
+    // item: ItemHardwareFastenerBolt;
+    item: Item;
 }
 
 
@@ -179,7 +179,7 @@ interface DrawContext<T> extends Omit<LabelDrawState<T>, "item"> {
     item?: T;
 }
 
-const DrawContextStateDefault: LabelDrawState<Items> = {
+const DrawContextStateDefault: LabelDrawState<Item> = {
     displayContextMenu: () => { },
     displayContextMenuStatus: false,
     displayContextMenuPosition: undefined,
@@ -209,12 +209,12 @@ const DrawContextStateDefault: LabelDrawState<Items> = {
     shouldSendBuffer: null,
     setRef: null
 };
-export const DrawContext = React.createContext<DrawContext<Items>>( DrawContextStateDefault );
+export const DrawContext = React.createContext<DrawContext<Item>>( DrawContextStateDefault );
 
 export type PixelMap = Array<Array<Array<uint8>>>;
 
 
-export class LabelDraw extends Component<LabelDrawProps, LabelDrawState<Items>> {
+export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDrawState<Item>> {
 
     displayContextMenu = ( display: KonvaEventObject<PointerEvent> ) => {
         console.log( "displayContextMenu()", display );
@@ -426,7 +426,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState<Items>> 
     }
 
 
-    updateLabelQR = <T extends Items> ( changedValue: Partial<LabelQR<T>>, labelQR: LabelQR<T> ) => {
+    updateLabelQR = <T extends Item> ( changedValue: Partial<LabelQR<T>>, labelQR: LabelQR<T> ) => {
         let updatedQR = false;
         if ( changedValue.dataURL ) {
             console.log( "setting labelQR<T> to", changedValue.dataURL );
@@ -439,7 +439,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState<Items>> 
         this.state.qrs.forEach( ( qr => {
             if ( qr.id == labelQR.id ) {
                 console.log( "updating existing labelQR<T> with id", labelQR.id );
-                qr = labelQR as LabelQR<Items>;
+                qr = labelQR as LabelQR<Item>;
                 updatedQR = true;
                 return;
             }
@@ -447,7 +447,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState<Items>> 
         if ( !updatedQR ) {
             console.log( "adding uncommitted labelQR<T> with id", labelQR.id );
             this.setState( {
-                qrs: [ ...this.state.qrs, labelQR as LabelQR<Items> ]
+                qrs: [ ...this.state.qrs, labelQR as LabelQR<Item> ]
             } );
         }
         console.log( "this.state.qrs is now", this.state.qrs, "pending", [ ...this.state.qrs, labelQR ] );
@@ -495,7 +495,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState<Items>> 
     }
 
 
-    state: LabelDrawState<Items> = {
+    state: LabelDrawState<Item> = {
         displayContextMenu: this.displayContextMenu,
         displayContextMenuStatus: DrawContextStateDefault.displayContextMenuStatus,
         displayContextMenuPosition: undefined,
@@ -715,7 +715,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState<Items>> 
         this.setState( { shouldSendBuffer: shouldSendBuffer } );
     }
 
-    exportLabel = (): LabelExport => {
+    exportLabel = (): LabelExport<T> => {
         return {
             texts: this.state.texts,
             images: this.state.images,
@@ -796,11 +796,11 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState<Items>> 
                                 image={image}
                                 draggable />;
                         } )}
-                        {this.state.qrs.map( LabelQR<T> => {
-                            console.log( "drawing LabelQR<T>", LabelQR<T> );
+                        {this.state.qrs.map( LabelQR => {
+                            console.log( "drawing LabelQR<T>", LabelQR );
                             return <Image
-                                key={LabelQR<T>.id}
-                                image={LabelQR<T>.canvasElement}
+                                key={LabelQR.id}
+                                image={LabelQR.canvasElement}
                                 draggable />;
                         } )}
                     </LabelComponent>

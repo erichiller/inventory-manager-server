@@ -5,13 +5,14 @@ import { display } from '../ItemTable';
 import React from 'react';
 import { Modal, AutoComplete } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
-import { ItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltSelectColumn, Items } from '../../types/graphql';
+import { ItemHardwareFastenerBolt, ItemHardwareFastenerBoltSelectColumn } from '../../types/graphql';
 import { LabelText, FormatOptionsT } from './LabelConstituent';
 import { DrawContext } from './LabelDraw';
+import { GenericItem } from '../../types/Generics';
 
 interface LabelDrawEditTextProps extends FormComponentProps {
     event?: KonvaEventObject<MouseEvent>;
-    item?: Items;
+    item?: GenericItem;
     labelText: LabelText;
     visibleHandler: (display?: display) => void;
     changeHandler: (newValue: any, labelText: LabelText) => void;
@@ -70,7 +71,7 @@ export default Form.create<LabelDrawEditTextProps>(
         // }
 
         get autocompleteFieldValues(): string[] {
-            return Object.keys( ItemsHardwareFastenerBoltSelectColumn ).map( col => `{{${col.toLowerCase()}}}`);
+            return Object.keys( ItemHardwareFastenerBoltSelectColumn ).map( col => `{{${col.toLowerCase()}}}`);
         }
         get formatOptions(): CheckedFormatOptionsT {
             return [

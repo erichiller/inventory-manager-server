@@ -4,14 +4,14 @@ import { Select, Icon, Spin, Typography, Divider, Form, AutoComplete, Tooltip, B
 import { display } from '../../ItemTable';
 import React from 'react';
 import { Modal } from 'antd';
-import { ItemsHardwareFastenerBolt, InsertIconComponent, withGetIcons, GetIconsProps, EnumIconCategoryEnum, InsertIconDocument, GetIconsDocument, ItemsHardwareFastenerBoltSelectColumn } from '../../../types/graphql';
+import { ItemHardwareFastenerBolt, InsertIconComponent, withGeticon, GeticonProps, EnumIconCategoryEnum, InsertIconDocument, GeticonDocument, ItemHardwareFastenerBoltSelectColumn, Item, Icon as CustomIcon } from '../../../types/graphql';
 import { LabelImage } from '../LabelConstituent';
 import { DrawContext } from '../LabelDraw';
 
 
 interface LabelAddImageProps {
     event?: KonvaEventObject<MouseEvent>;
-    item?: Items;
+    item?: Item;
     labelImage: LabelImage;
     visibleHandler: ( display?: display ) => void;
     changeHandler: ( newValue: any, labelImage: LabelImage ) => void;
@@ -22,8 +22,8 @@ interface LabelAddImageState {
 }
 
 
-export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
-    class LabelAddImageModal extends Component<GetIconsProps<LabelAddImageProps>, LabelAddImageState> {
+export default withGeticon<LabelAddImageProps, LabelAddImageState>()(
+    class LabelAddImageModal extends Component<GeticonProps<LabelAddImageProps>, LabelAddImageState> {
 
         handleCancel = () => {
             /// REMOVE ELEMENT /// REVERT ///
@@ -35,9 +35,9 @@ export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
         }
 
         getLabelImageSelectedObj ( id: string ): LabelImage {
-            if ( this.props.data.icons ) {
-                for ( let i = 0; i < this.props.data.icons.length; i++ ) {
-                    let icon = this.props.data.icons[ i ];
+            if ( this.props.data.icon ) {
+                for ( let i = 0; i < this.props.data.icon.length; i++ ) {
+                    let icon = this.props.data.icon[ i ];
                     console.log( "checking labelImage uuid: ", icon.id );
 
                     if ( icon.id == id ) {
@@ -50,7 +50,7 @@ export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
                         } );
                     }
                 }
-                // this.props.data.icons.forEach( icon => {
+                // this.props.data.icon.forEach( icon => {
                 //     console.log( "checking labelImage uuid: ", icon.id );
 
                 //     if ( icon.id == id ){
@@ -74,6 +74,13 @@ export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
             );
         }
 
+        makeSvgElement = ( icon: Partial<CustomIcon> ) => {
+            let image: HTMLImageElement = document.createElement('img');
+            image.src = icon.data;
+            return <img width={50} src={icon.data} />;
+
+        }
+
         render () {
             const {
                 event,
@@ -83,6 +90,7 @@ export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
                 labelImage } = this.props;
 
             let { loading, error } = this.props.data!;
+
 
             console.log( 'this.props.visible', visibleHandler() );
             // console.log('this.state.visible', visibleHandler(), this.state.visible == display.VISIBLE ? true : false)
@@ -104,10 +112,10 @@ export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
                                     </Button>
                                 </Tooltip >,
                                 <Tooltip placement="top" title="Add to list for bulk printing later">
-                                    <Button key="Upload Image" type="primary" onClick={() => { 
+                                    <Button key="Upload Image" type="primary" onClick={() => {
                                         displayImageUploadModal( display.VISIBLE );
                                         visibleHandler( display.HIDDEN );
-                                        }} >
+                                    }} >
                                         {/* <Icon type="plus-circle" /> */}
                                         <Icon type="upload" />
                                         Upload New Image
@@ -143,12 +151,18 @@ export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
                             //                     )}
                             >
                                 {console.log( "DrawAddImage", this.props.data )}
-                                {this.props.data.icons ? this.props.data.icons.map( icon => (
+                                {this.props.data.icon ? this.props.data.icon.map( icon => (
                                     <Select.Option
                                         value={icon.id}
                                         key={icon.id}
                                     // value={`${ icon.id }.${icon.category }.${ icon.label } ${ icon.description }`}
-                                    >{icon.label ? icon.label : icon.id}</Select.Option>
+                                    >
+                                        {/* <Icon type="file-image" /> */}
+                                        {/* <Icon component={icon.data as any} /> */}
+                                        {/* <Icon component={this.makeSvgElement( icon ) as any} /> */}
+                                        {this.makeSvgElement( icon ) }
+                                        {icon.label ? icon.label : icon.id}
+                                    </Select.Option>
                                 ) ) : null}
                             </Select>
 
