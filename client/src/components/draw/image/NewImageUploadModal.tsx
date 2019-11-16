@@ -2,7 +2,7 @@ import { FormComponentProps } from "antd/lib/form";
 import React from 'react';
 import { LabelImage } from "../LabelConstituent";
 import { Form, Spin, AutoComplete, Icon, Select, Input, message, Modal } from "antd";
-import { ItemsHardwareFastenerBoltSelectColumn, InsertIconComponent, GetIconsDocument, EnumIconCategoryEnum, EnumIconCategorySelectColumn, Items } from "../../../types/graphql";
+import { ItemHardwareFastenerBoltSelectColumn, InsertIconComponent, GeticonDocument, EnumIconCategoryEnum, EnumIconCategorySelectColumn, Item } from "../../../types/graphql";
 import { display } from "../../ItemTable";
 import { DrawContext } from "../LabelDraw";
 
@@ -13,7 +13,7 @@ import { DrawContext } from "../LabelDraw";
 interface NewImageUploadModalProps extends FormComponentProps {
     labelImage: LabelImage;
     width?: number;
-    item?: Pick<Items, 'id' | 'name' >;
+    item?: Pick<NonNullable<Item>, 'id' | 'name' >;
     visibleHandler: ( display?: display ) => void;
     changeHandler: ( newValue: any, labelText: LabelImage ) => void;
 }
@@ -111,7 +111,7 @@ export const NewImageUploadModal = Form.create<NewImageUploadModalProps>(
                     >
                         <InsertIconComponent
                             refetchQueries={[ {
-                                query: GetIconsDocument
+                                query: GeticonDocument
                             } ]}
                             onCompleted={() => message.success( "Successfully added image." )}
                         >

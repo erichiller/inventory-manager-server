@@ -32,7 +32,7 @@ mutation InsertIcon (
 # }
 
 
-query GetIcons {
+query Geticon {
   icon {
     data
     description

@@ -3,14 +3,14 @@ import { Component } from 'react';
 import { display } from '../ItemTable';
 import React from 'react';
 import { Modal } from 'antd';
-import { ItemsHardwareFastenerBolt, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltComponent, Items } from '../../types/graphql';
+import { ItemHardwareFastenerBolt, withItemHardwareFastenerBolt, ItemHardwareFastenerBoltComponent, Item } from '../../types/graphql';
 import bwipjs from 'bwip-js';
 import { LabelQR } from './LabelConstituent';
 import { DrawContext } from './LabelDraw';
 
 interface QREditModalProps<T> {
     event?: KonvaEventObject<MouseEvent>;
-    item?: Items;
+    item?: Item;
     labelQR: LabelQR<T>;
     visibleHandler: ( display?: display ) => void;
     changeHandler: ( newValue: any, labelQR: LabelQR<T> ) => void;
@@ -69,22 +69,22 @@ export default class QREditModal<T> extends Component<QREditModalProps<T>> {
                 <QRCanvas width={drawWidth} labelQR={labelQR} changeHandler={changeHandler} />
         </Modal>
         );
-        return (
-            <DrawContext.Consumer>
-                {( { commitLabelQR, stageRef } ) => {
-                    return <Modal
-                        visible
-                        title={"QR"}
-                        okText="Do"
-                        onCancel={this.onCancel}
-                        onOk={() => { commitLabelQR( labelQR ); this.onClose(); }}
-                        width={drawWidth + 25}
-                    >
-                        <canvas id="tempCanvas"></canvas>
-                    </Modal>;
-                }}
-            </DrawContext.Consumer>
-        );
+        // return (
+        //     <DrawContext.Consumer>
+        //         {( { commitLabelQR, stageRef } ) => {
+        //             return <Modal
+        //                 visible
+        //                 title={"QR"}
+        //                 okText="Do"
+        //                 onCancel={this.onCancel}
+        //                 onOk={() => { commitLabelQR( labelQR ); this.onClose(); }}
+        //                 width={drawWidth + 25}
+        //             >
+        //                 <canvas id="tempCanvas"></canvas>
+        //             </Modal>;
+        //         }}
+        //     </DrawContext.Consumer>
+        // );
     }
 }
 

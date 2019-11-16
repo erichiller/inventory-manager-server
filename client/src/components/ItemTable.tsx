@@ -1,8 +1,9 @@
 import { Table, Divider } from 'antd';
 import React = require('react');
 import { ColumnProps } from 'antd/es/table';
-import { ItemsHardwareFastenerBolt, withItemsHardwareFastenerBolt, ItemsHardwareFastenerBoltProps, ItemsHardwareFastenerBoltSelectColumn } from '../types/graphql';
+import { ItemHardwareFastenerBolt, withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, ItemHardwareFastenerBoltSelectColumn } from '../types/graphql';
 import { LabelDrawModal } from './draw/LabelDrawModal';
+import { GenericItem } from '../types/Generics';
 
 
 function toTitleCase(s: string) {
@@ -12,7 +13,7 @@ function toTitleCase(s: string) {
 }
 
 
-// const columns: ColumnProps<ItemsHardwareFastenerBolt>[] = Object.keys(ItemsHardwareFastenerBoltSelectColumn).filter(key => ["ID"].includes(key) ? false : key).map(key => {
+// const columns: ColumnProps<ItemHardwareFastenerBolt>[] = Object.keys(ItemHardwareFastenerBoltSelectColumn).filter(key => ["ID"].includes(key) ? false : key).map(key => {
 //   return {
 //     key: key,
 //     title: toCamelCase(key),
@@ -96,10 +97,10 @@ interface ItemTableProps {
 }
 
 interface ItemTableState {
-  data?: ItemsHardwareFastenerBolt[];
+  data?: GenericItem[];
   pagination: pagination;
   loading: boolean;
-  clickedItem: ItemsHardwareFastenerBolt;
+  clickedItem: GenericItem;
   printModal: display;
 }
 
@@ -109,8 +110,8 @@ interface pagination {
   current: number;
 }
 
-export default withItemsHardwareFastenerBolt()(
-  class ItemTable extends React.Component<ItemsHardwareFastenerBoltProps<ItemTableProps>, ItemTableState> {
+export default withItemHardwareFastenerBolt()(
+  class ItemTable extends React.Component<ItemHardwareFastenerBoltProps<ItemTableProps>, ItemTableState> {
     state: ItemTableState = {
       data: undefined,
       pagination: { total: 0, pageSize: 100, current: 0 },
@@ -125,15 +126,15 @@ export default withItemsHardwareFastenerBolt()(
     }
 
 
-    get Columns(): ColumnProps<ItemsHardwareFastenerBolt>[] {
+    get Columns(): ColumnProps<ItemHardwareFastenerBolt>[] {
       return [
-        ...(Object.keys(ItemsHardwareFastenerBoltSelectColumn).filter(
+        ...(Object.keys(ItemHardwareFastenerBoltSelectColumn).filter(
           key => ["ID"].includes(key) ? false : key).map(
             key => {
               return {
                 key: key,
                 title: toTitleCase(key),
-                dataIndex: ItemsHardwareFastenerBoltSelectColumn[key],
+                dataIndex: ItemHardwareFastenerBoltSelectColumn[key],
               };
             })),
         ...[
@@ -162,7 +163,7 @@ export default withItemsHardwareFastenerBolt()(
       ];
     }
 
-    viewPrintModal = (change?: display, clickedItem?: ItemsHardwareFastenerBolt) => {
+    viewPrintModal = (change?: display, clickedItem?: ItemHardwareFastenerBolt) => {
       console.log("viewPrintModal () ? received", change);
       if ( change !== undefined && change != this.state.printModal ){
         this.setState({
