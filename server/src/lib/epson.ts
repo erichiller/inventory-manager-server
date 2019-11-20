@@ -98,7 +98,7 @@ class ImageBitMode {
 
 
 /**
- * 
+ *
  * @param remarks
  * ```text
  Type | Width | Vert. area | Top/bot margin | Vert. range |  Max
@@ -107,7 +107,7 @@ class ImageBitMode {
  18   | 18    | 16.5 / 234 | 0.75           | 156-389     | 9
  ```
  _See page 10 in ESC/P Guide_
- * 
+ *
  */
 export class BrotherLabeler {
 
@@ -134,17 +134,17 @@ export class BrotherLabeler {
 
     /**
      * Returns byte array of command required for Brother Labeler in ESC/P
-     * 
+     *
      * @param len -
      *  Provide length in mm or inches as length object
-     * 
+     *
      * @remarks
      *  - Brother output Specifies length in 1/180th of an inch
      *  - Range can be from 0.2 to 40 inches
      *  - length of 0 specifies AUTO
-     * 
+     *
      * @returns byte array of command required
-     * 
+     *
      */
     setLength ( len: Length ): ArrayBuffer {
         let lengthBytes = Buffer.from( [
@@ -156,7 +156,7 @@ export class BrotherLabeler {
     }
 
     /**
-     * 
+     *
      * @param len - can not have a margin less than 0.04 inches ( 7 dots )
      *              nor greater than 4 inchess ( 720 dots )
      */
@@ -171,7 +171,7 @@ export class BrotherLabeler {
 
     /**
      * _See page 40 in ESC/P guide for meanings of Modes, etc._
-     * 
+     *
      */
     selectBitImage ( mode = ImageBitMode.mode73 ): ArrayBuffer {
         throw Error( "not implemented yet" );
@@ -189,7 +189,7 @@ export class BrotherLabeler {
     }
 
     /** getPrinterStatus
-     * 
+     *
      */
     async getPrinterStatus (): Promise<PrinterStatus>{
         try {
@@ -230,10 +230,10 @@ export class BrotherLabeler {
 
 
     /** imageSingleDensity
-     * 
+     *
      * Each dot is 6 / 360th of an inch
      * One bit is expanded to 6 x 6 dots
-     * 
+     *
      */
     static imageSingleDensity (): ArrayBuffer {
 
@@ -273,7 +273,7 @@ export class BrotherLabeler {
     }
 
     /**
-     * 
+     *
      * @param imageHex - this should be an array of Buffers, where each array entry is one output "line".
      * @remarks
      * 1 dot = 1 "pixel"
@@ -312,7 +312,7 @@ export class BrotherLabeler {
 
 
     /**
-     * 
+     *
      * @param inputBuffer Array of Buffers or Array of uint8[][][]
      */
     async print ( inputBuffer: Array<Array<Array<uint8>>> | Array<Buffer> ) {
@@ -331,25 +331,30 @@ export class BrotherLabeler {
 
                     Buffer.from( [
                         0x1b, 0x69, 0x61, 0x00,          // select ESC/P mode
-                        0x1b, 0x40,                   // initialize ESC/P mode
+                        0x1b, 0x40,                      // initialize ESC/P mode
 
-                        0x1b, 0x33, 0,                 // line feed = 48 / 180th of an inch
+                        0x1b, 0x33, 0,                   // line feed = 48 / 180th of an inch
 
 
                         // , 0x1b, 0x52, 0x0 // char set = USA
 
-                        // set label length
+                        /**
+                         * Set label length
+                         * set to 0 for AUTO
+                        **/
                         0x1b, 0x69, 0x6c,
-                        ( labelLen.dots % 256 ),
-                        ( Math.floor( labelLen.dots / 256 ) ),
+                        // ( labelLen.dots % 256 ),
+                        // ( Math.floor( labelLen.dots / 256 ) ),
+                        0, 0, // trying auto
 
-                        // set margin width
+                        /**
+                         * Set margin width
+                         * this is measured in 1/180th of an inch, with the smallest being 0.04"
+                         * 7/180 = .0355, so I'm thinking this is the end.
+                        **/
                         0x1b, 0x69, 0x6d, 7, 0,          // set margin to smallest possible (7)
 
                         // 0x1b, 0x69, 0x43, 0b00000100,    // specify cut setting = chain print
-
-
-
 
                         0x1b, 0x24, 0, 0,                // specify horizontal position
                     ] ),
@@ -367,7 +372,7 @@ export class BrotherLabeler {
                 ] ) );
             // console.log()
         } catch ( error ) {
-            console.error( error );
+            console.error("ERROR", error );
         }
     }
 

@@ -1,10 +1,10 @@
 
 import React, { Component, ComponentProps, PropsWithChildren } from 'react';
 
-import { Stage, Layer, Text, Image } from 'react-konva';
+import { Stage, Layer, Text, Image, Rect } from 'react-konva';
 
 import { ItemHardwareFastenerBolt, GetPrinterStatusDocument, PrinterStatus, GetPrinterStatusQuery, Item } from '../../types/graphql';
-import { display } from '../ItemTable';
+import { DISPLAY } from '../../types/enums';
 import { DrawContextMenu } from './DrawContextMenu';
 import { KonvaEventObject } from 'konva/types/Node';
 import { Button, message } from 'antd';
@@ -28,6 +28,7 @@ import { relative } from 'path';
 
 const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
     const { data, loading, error } = useQuery<GetPrinterStatusQuery>( GetPrinterStatusDocument );
+    const dpi = 360;
     // if ( loading ) return <Loading />;
     // if ( error ) return <p>ERROR</p>;
     if ( data ) {
@@ -37,19 +38,31 @@ const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
         console.log( "PrinterStatus:", data );
         // height is inches * 360
         let labelInchesHeight = parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType )[ 0 ] );
-        let height = Math.floor( labelInchesHeight * 360 );
+        let height = Math.floor( labelInchesHeight * dpi );
+
+        
         console.log( "height",
             {
                 height: height,
                 found: /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType ),
                 found0: /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType )[ 0 ],
                 asInt: parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType )[ 0 ] ),
-                asPixels: Math.floor( parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType )[ 0 ] ) * 360 )
+                asPixels: Math.floor( parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType )[ 0 ] ) * dpi )
             } );
 
         // TODO: allow the user to set the width
         let widthInches = 0.75;
-        let width = widthInches * 360;
+        let width = widthInches * dpi;
+
+        // DEBUG OVERRIDES
+        // 242      | works         | GOOD
+        // 192      | works         | GOOD
+        // 144      | works
+        // 150      | works
+        // 175      | works         | GOOD
+        // 185      | works         | FIXED
+        width=Math.floor(0.75 * dpi);
+        height=48;
 
         return < DrawContext.Consumer >
             {( { displayContextMenu, setRef } ) => {
@@ -68,7 +81,7 @@ const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
 
                         // transform: 'rotate( 90deg )',
                         // transformOrigin: 'left top 0'
-                    }}>{widthInches}"</div>
+                    }}>{widthInches}", { width/ dpi}</div>
                     <Stage
                         onMouseEnter={() => displayContextMenu( false )}
                         width={width}
@@ -79,11 +92,11 @@ const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
                             width: width,
                             height: height
                         }}
-
                         context
                         ref={setRef}
                         height={height}>
                         <Layer>
+                            {/* <Rect width={4} height={4} x={2}  y={6} fill="red" /> */}
                             {children}
                         </Layer>
                     </Stage>
@@ -95,7 +108,7 @@ const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
 
                             transform: 'rotate( 270deg )',
                             transformOrigin: 'left top 0'
-                    }}>{labelInchesHeight}"</div>
+                    }}>{labelInchesHeight}", {height/dpi}</div>
                     </div>
                     
             }}
@@ -145,20 +158,20 @@ interface LabelDrawProps {
 
 
 type IKonvaEventHandler = ( d: boolean | KonvaEventObject<PointerEvent> ) => void;
-type IHtmlEventHandler = ( d: boolean | display | React.MouseEvent<HTMLElement, MouseEvent> ) => void;
+type IHtmlEventHandler = ( d: boolean | DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => void;
 
 interface LabelDrawState<T> {
     displayContextMenu: IKonvaEventHandler;
     displayContextMenuStatus: boolean;
     displayContextMenuPosition?: [ number, number ];
-    displayEditTextModal: ( d: display | React.MouseEvent<HTMLElement, MouseEvent> ) => display;
-    displayEditTextModalStatus: display;
-    displayImageSelectModal: ( d: display | React.MouseEvent<HTMLElement, MouseEvent> ) => display;
-    displayImageSelectModalStatus: display;
-    displayImageUploadModal: ( d: display | React.MouseEvent<HTMLElement, MouseEvent> ) => display;
-    displayImageUploadModalStatus: display;
-    displayQREditModal: ( d: display | React.MouseEvent<HTMLElement, MouseEvent> ) => display;
-    displayQREditModalStatus: display;
+    displayEditTextModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
+    displayEditTextModalStatus: DISPLAY;
+    displayImageSelectModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
+    displayImageSelectModalStatus: DISPLAY;
+    displayImageUploadModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
+    displayImageUploadModalStatus: DISPLAY;
+    displayQREditModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
+    displayQREditModalStatus: DISPLAY;
     contextMenuLabelText: LabelText;
     item: T;
     texts: LabelText[];
@@ -183,14 +196,14 @@ const DrawContextStateDefault: LabelDrawState<Item> = {
     displayContextMenu: () => { },
     displayContextMenuStatus: false,
     displayContextMenuPosition: undefined,
-    displayEditTextModal: () => display.HIDDEN,
+    displayEditTextModal: () => DISPLAY.HIDDEN,
     displayEditTextModalStatus: null,
     contextMenuLabelText: null,
-    displayQREditModal: () => display.HIDDEN,
+    displayQREditModal: () => DISPLAY.HIDDEN,
     displayQREditModalStatus: null,
-    displayImageSelectModal: () => display.HIDDEN,
+    displayImageSelectModal: () => DISPLAY.HIDDEN,
     displayImageSelectModalStatus: null,
-    displayImageUploadModal: () => display.HIDDEN,
+    displayImageUploadModal: () => DISPLAY.HIDDEN,
     displayImageUploadModalStatus: null,
     // displayEditTextModalStatus: display.HIDDEN,
     // displayEditTextModalStatus: display.HIDDEN,
@@ -234,94 +247,94 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDr
         }
     }
 
-    displayEditTextModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | display ): display => {
-        if ( ( d as display ) === display.HIDDEN ) {
+    displayEditTextModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
+        if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
             this.setState( {
-                displayEditTextModalStatus: display.HIDDEN
+                displayEditTextModalStatus: DISPLAY.HIDDEN
             } );
             // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
-            return display.HIDDEN;
+            return DISPLAY.HIDDEN;
         }
         if ( !d ) {
-            return this.state.displayEditTextModalStatus ? display.VISIBLE : display.HIDDEN;
+            return this.state.displayEditTextModalStatus ? DISPLAY.VISIBLE : DISPLAY.HIDDEN;
         }
-        console.log( "displayEditTextModal()", display );
+        console.log( "displayEditTextModal()", DISPLAY );
         ( d as React.MouseEvent<HTMLElement, MouseEvent> ).preventDefault();
         if ( d ) {
             this.setState( {
                 item: this.props.item,
-                displayEditTextModalStatus: display.VISIBLE
+                displayEditTextModalStatus: DISPLAY.VISIBLE
             } );
         } else {
-            this.setState( { displayEditTextModalStatus: display.HIDDEN } );
+            this.setState( { displayEditTextModalStatus: DISPLAY.HIDDEN } );
         }
     }
 
-    displayImageSelectModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | display ): display => {
+    displayImageSelectModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
         console.log( "displayImageSelectModal()", d );
-        if ( ( d as display ) === display.HIDDEN ) {
+        if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
             this.setState( {
-                displayImageSelectModalStatus: display.HIDDEN
+                displayImageSelectModalStatus: DISPLAY.HIDDEN
             } );
             // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
-            return display.HIDDEN;
+            return DISPLAY.HIDDEN;
         }
         if ( !d ) {
-            return this.state.displayImageSelectModalStatus ? display.VISIBLE : display.HIDDEN;
+            return this.state.displayImageSelectModalStatus ? DISPLAY.VISIBLE : DISPLAY.HIDDEN;
         }
         ( d as React.MouseEvent<HTMLElement, MouseEvent> ).preventDefault();
         if ( d ) {
             this.setState( {
                 item: this.props.item,
-                displayImageSelectModalStatus: display.VISIBLE
+                displayImageSelectModalStatus: DISPLAY.VISIBLE
             } );
         } else {
-            this.setState( { displayImageSelectModalStatus: display.HIDDEN } );
+            this.setState( { displayImageSelectModalStatus: DISPLAY.HIDDEN } );
         }
     }
-    displayImageUploadModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | display ): display => {
+    displayImageUploadModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
         console.log( "displayImageUploadModalStatus()", d );
-        if ( ( d as display ) === display.HIDDEN ) {
+        if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
             this.setState( {
-                displayImageUploadModalStatus: display.HIDDEN
+                displayImageUploadModalStatus: DISPLAY.HIDDEN
             } );
             // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
-            return display.HIDDEN;
+            return DISPLAY.HIDDEN;
         }
-        if ( ( d as display ) === display.VISIBLE ) { this.setState( { displayImageUploadModalStatus: display.VISIBLE } ); return display.VISIBLE; }
+        if ( ( d as DISPLAY ) === DISPLAY.VISIBLE ) { this.setState( { displayImageUploadModalStatus: DISPLAY.VISIBLE } ); return DISPLAY.VISIBLE; }
         if ( !d ) {
-            return this.state.displayImageUploadModalStatus ? display.VISIBLE : display.HIDDEN;
+            return this.state.displayImageUploadModalStatus ? DISPLAY.VISIBLE : DISPLAY.HIDDEN;
         }
         ( d as React.MouseEvent<HTMLElement, MouseEvent> ).preventDefault();
         if ( d ) {
             this.setState( {
                 item: this.props.item,
-                displayImageUploadModalStatus: display.VISIBLE
+                displayImageUploadModalStatus: DISPLAY.VISIBLE
             } );
         } else {
-            this.setState( { displayImageUploadModalStatus: display.HIDDEN } );
+            this.setState( { displayImageUploadModalStatus: DISPLAY.HIDDEN } );
         }
     }
-    displayQREditModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | display ): display => {
-        if ( ( d as display ) === display.HIDDEN ) {
+    displayQREditModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
+        if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
             this.setState( {
-                displayQREditModalStatus: display.HIDDEN
+                displayQREditModalStatus: DISPLAY.HIDDEN
             } );
             // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
-            return display.HIDDEN;
+            return DISPLAY.HIDDEN;
         }
         if ( !d ) {
-            return this.state.displayQREditModalStatus ? display.VISIBLE : display.HIDDEN;
+            return this.state.displayQREditModalStatus ? DISPLAY.VISIBLE : DISPLAY.HIDDEN;
         }
-        console.log( "displayQREditModal()", display );
+        console.log( "displayQREditModal()", DISPLAY );
         ( d as React.MouseEvent<HTMLElement, MouseEvent> ).preventDefault();
         if ( d ) {
             this.setState( {
                 item: this.props.item,
-                displayQREditModalStatus: display.VISIBLE
+                displayQREditModalStatus: DISPLAY.VISIBLE
             } );
         } else {
-            this.setState( { displayQREditModalStatus: display.HIDDEN } );
+            this.setState( { displayQREditModalStatus: DISPLAY.HIDDEN } );
         }
     }
 
@@ -488,8 +501,9 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDr
      * type React.Ref<T> = ((instance: T) => void) | React.RefObject<T>
     **/
     setRef = ( ref: Stage ): void => {
-        console.log( "SET REF FOR canvas", ref );
+        console.log( "SETTING REF FOR canvas", ref );
         if ( !this.state.stageRef ) {
+            console.log("SETTING REF FOR CANVAS -- SAVED TO STATE")
             this.setState( { stageRef: ref } );
         }
     }
@@ -500,13 +514,13 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDr
         displayContextMenuStatus: DrawContextStateDefault.displayContextMenuStatus,
         displayContextMenuPosition: undefined,
         displayEditTextModal: this.displayEditTextModal,
-        displayEditTextModalStatus: display.HIDDEN,
+        displayEditTextModalStatus: DISPLAY.HIDDEN,
         displayImageSelectModal: this.displayImageSelectModal,
-        displayImageSelectModalStatus: display.HIDDEN,
+        displayImageSelectModalStatus: DISPLAY.HIDDEN,
         displayImageUploadModal: this.displayImageUploadModal,
-        displayImageUploadModalStatus: display.HIDDEN,
+        displayImageUploadModalStatus: DISPLAY.HIDDEN,
         displayQREditModal: this.displayQREditModal,
-        displayQREditModalStatus: display.HIDDEN,
+        displayQREditModalStatus: DISPLAY.HIDDEN,
         contextMenuLabelText: null,
         item: null,
         texts: [], // NOTE: for pre-existing deserialize here.
@@ -526,16 +540,30 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDr
 
 
 
+    /**
+     *
+        size is
+        ```
+        [linesCount][widthDots][bytesPerLine]
+        ```
+     */
     toBuffer = (): PixelMap => {
-        // const widthInches = 0.55;
-        const widthInches = 48 / 360;
-        const heightInches = 48 / 360;
-        // const heightInches = 0.2
-
         const dpi = 360;
 
-        const widthDots = Math.floor( dpi * widthInches );
-        const heightDots = Math.floor( dpi * heightInches );
+        // const widthInches  = 48 / dpi;
+        // const heightInches = 48 / dpi;
+
+        const canvasContext = this.state.stageRef.getStage().toCanvas( {} ).getContext( "2d" );
+        const canvasWidth = this.state.stageRef.getStage().toCanvas( {} ).width;
+        const canvasHeight = this.state.stageRef.getStage().toCanvas( {} ).height;
+
+        // const widthInches = canvasWidth / dpi;
+        // const heightInches = canvasHeight / dpi;
+        // const widthDots = Math.floor( dpi * widthInches );
+        // const heightDots = Math.floor( dpi * heightInches );
+
+        const widthDots = canvasWidth;
+        const heightDots = canvasHeight;
 
         const pxlPerLine = 6 * 8; // ( 6 bytes, will be packed as 1 pixel = 1 bit in line = 1 dot (in mode73))
         const bytesPerLine = pxlPerLine / 8;
@@ -545,26 +573,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDr
             throw Error( "There can not be a non 8 multiple amount of pxlPerLine" );
         }
 
-        const canvasContext = this.state.stageRef.getStage().toCanvas( {} ).getContext( "2d" );
-        const imgData = canvasContext.getImageData( 0, 0, this.state.stageRef.getStage().toCanvas( {} ).width, this.state.stageRef.getStage().toCanvas( {} ).height );
-
-        // let buf: PixelMap = new Array( new Array( new Uint8ClampedArray( bytesPerLine ) ) );
-        // let buf: PixelMap = new Array( 
-        //     linesCount).fill( 
-        //         new Array( widthDots ).fill(
-        //             new Array( bytesPerLine ).fill(0 as uint8, 0, bytesPerLine)
-        //         , 0, widthDots )
-        //     , 0, linesCount );
-
-
-
-        // let buf: PixelMap = new Array( linesCount ).fill().map( line => {
-        //     new Array( widthDots ).map( col => {
-
-        //         new Array( bytesPerLine ).fill( 0 as uint8, 0, bytesPerLine )
-
-        //     } )
-        // });
+        const imgData = canvasContext.getImageData( 0, 0, canvasWidth, canvasHeight );
 
         let buf: PixelMap = [];
         for ( let line = 0; line < linesCount; line++ ) {
@@ -578,35 +587,6 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDr
 
         }
 
-        // console.log("0 buffer", buf);
-
-        // let str = "";
-        // buf.forEach( line => {
-        //     line.forEach( col => {
-        //         col.forEach( byte => {
-        //             str += byte.toString( 2 ).padStart( 8, "0" );
-        //         } );
-        //         str += "\n";
-        //     } );
-        // } );
-        // console.log( "buffer: buf, str", buf, str );
-
-        // const BUF_LENGTH = bytesPerLine * widthDots * linesCount;
-        // let buf: Uint8ClampedArray = new Uint8ClampedArray( BUF_LENGTH );
-
-
-        /** size is
-         * ```
-         * [linesCount][widthDots][bytesPerLine]
-         * ```
-         */
-
-        // function getImageSize(){
-        //   console.log(`imgDataLength is ${imgData.data.length}`)
-        //   console.log(`imgDataLength pixels ${Math.floor(imgData.data.length/4)}`)
-        //   console.log(`imgDataLength pixels ${Math.floor(imgData.data.length/4 / 300)}`)
-        // }
-
         if ( pxlPerLine == 0 ) {
             throw Error( "There can not be 0 pixels per line output" );
         }
@@ -614,8 +594,8 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDr
         console.log( `
             imageData.width                     = ${ imgData.width }
             imageData.height                    = ${ imgData.height }
-            imageData.length                    = ${imgData.data.length }
-            imageData.length/4                  = ${imgData.data.length / 4 }
+            imageData.length                    = ${ imgData.data.length }
+            imageData.length/4                  = ${ imgData.data.length / 4 }
             imageData.length/4/imgData.width    = ${ ( imgData.data.length / 4 / imgData.width ) }
             widthDots                           = ${ widthDots }
             heightDots                          = ${ heightDots }
@@ -706,12 +686,20 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDr
         } );
         console.log( "buffer", buf, "\n" + binstr + "\n" + hexstr );
 
-        // console.log(buf.)
+
+
+        const bufDebugImageSize = () => {
+            console.log( `imgDataLength is ${ imgData.data.length }` )
+            console.log( `imgDataLength pixels ${ Math.floor( imgData.data.length / 4 ) }` )
+            console.log( `imgDataLength pixels ${ Math.floor( imgData.data.length / 4 / 300 ) }` )
+        }
+
 
         return buf;
     }
 
     startSendBuffer = ( shouldSendBuffer: boolean ) => {
+        console.log("startSendBuffer received", shouldSendBuffer);
         this.setState( { shouldSendBuffer: shouldSendBuffer } );
     }
 
@@ -756,18 +744,18 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDr
                         <NewImageUploadModal visibleHandler={this.displayImageUploadModal} changeHandler={this.updateLabelImages} item={item} labelImage={this.state.uncommittedImage} />
                         : null}
 
-
-                    {/* Debug Rectangle 
-                            <Rect
-                                x={1}
-                                y={1}
-                                width={1}
-                                height={3}
-                                fill='black'
-                                ></Rect>
-                    
-                            {/* END DEBUG */}
                     <LabelComponent>
+
+
+                        {/* Debug Rectangle  */}
+                        <Rect
+                            x={1}
+                            y={1}
+                            width={1}
+                            height={3}
+                            fill='black'
+                        ></Rect>
+                        {/* END DEBUG */}
                         {this.state.texts.map( labelText => {
                             console.log( "drawing new labelText", labelText );
                             return <Text
@@ -810,9 +798,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDr
                         <Button icon="qrcode" onClick={this.displayQREditModal} id="ADD_QR">Add QR</Button>
                         <Button icon="picture" onClick={this.displayImageSelectModal} id="ADD_IMAGE">Add Image</Button>
                         {/* <Button icon="printer" onClick={this.startSendBuffer} id="PRINT">Print</Button> */}
-                        <Spin spinning={this.state.shouldSendBuffer}>
-                            <SendBufferButton value="Print" onClick={this.startSendBuffer} buffer={this.state.shouldSendBuffer ? this.toBuffer() : null} />
-                        </Spin>
+                        <SendBufferButton value="Print" onClick={this.startSendBuffer} buffer={this.state.shouldSendBuffer ? this.toBuffer() : null} />
 
                         <Button icon="medicine-box" onClick={() => {
                             console.log( this.toBuffer() );

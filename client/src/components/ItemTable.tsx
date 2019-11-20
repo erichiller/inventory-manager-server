@@ -4,92 +4,8 @@ import { ColumnProps } from 'antd/es/table';
 import { ItemHardwareFastenerBolt, withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, ItemHardwareFastenerBoltSelectColumn } from '../types/graphql';
 import { LabelDrawModal } from './draw/LabelDrawModal';
 import { GenericItem } from '../types/Generics';
-
-
-function toTitleCase(s: string) {
-  return s.replace('_', ' ').split(' ').map(function (word) {
-    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-  }).join(' ');
-}
-
-
-// const columns: ColumnProps<ItemHardwareFastenerBolt>[] = Object.keys(ItemHardwareFastenerBoltSelectColumn).filter(key => ["ID"].includes(key) ? false : key).map(key => {
-//   return {
-//     key: key,
-//     title: toCamelCase(key),
-//     dataIndex: key.toLowerCase(),
-//   }
-// });
-
-// console.log(columns)
-// [
-//   {
-//     key: 'name',
-//     title: 'Name',
-//     dataIndex: 'name',
-//     // filters: [
-//     //   {
-//     //     text: 'Joe',
-//     //     value: 'Joe',
-//     //   },
-//     //   {
-//     //     text: 'Jim',
-//     //     value: 'Jim',
-//     //   },
-//     //   {
-//     //     text: 'Submenu',
-//     //     value: 'Submenu',
-//     //     children: [
-//     //       {
-//     //         text: 'Green',
-//     //         value: 'Green',
-//     //       },
-//     //       {
-//     //         text: 'Black',
-//     //         value: 'Black',
-//     //       },
-//     //     ],
-//     //   },
-//     // ],
-//     // specify the condition of filtering result
-//     // here is that finding the name started with `value`
-//     // onFilter: (value, record) => record.name.indexOf(value) === 0,
-//     // sorter: (a, b) => a.name.length - b.name.length,
-//     sorter: (a, b) => a.name.localeCompare(b.name),
-//     sortDirections: ['descend', 'ascend'],
-//   },
-//   {
-//     key: 'description',
-//     title: 'Description',
-//     dataIndex: 'description',
-//     defaultSortOrder: 'descend',
-//     // sortDirections: ['descend'],
-//     // sorter: (a, b) => a.age - b.age,
-//   },
-//   {
-//     title: 'Unit',
-//     dataIndex: 'unit',
-//     filters: [
-//       {
-//         text: 'Metric',
-//         value: 'metric',
-//       },
-//       {
-//         text: 'USC/Imperial/US',
-//         value: 'usc',
-//       },
-//     ],
-//     filterMultiple: true,
-//     onFilter: (value, item) => item.unit == value,
-//     sorter: (a, b) => a.name.localeCompare(b.name),
-//     sortDirections: ['descend', 'ascend'],
-//   },
-// ];
-
-export enum display {
-  VISIBLE = 1,
-  HIDDEN = 0
-}
+import { DISPLAY } from '../types/enums';
+import { toTitleCase } from '../lib/helpers';
 
 interface ItemTableProps {
   // data: any
@@ -101,7 +17,7 @@ interface ItemTableState {
   pagination: pagination;
   loading: boolean;
   clickedItem: GenericItem;
-  printModal: display;
+  printModal: DISPLAY;
 }
 
 interface pagination {
@@ -117,7 +33,7 @@ export default withItemHardwareFastenerBolt()(
       pagination: { total: 0, pageSize: 100, current: 0 },
       loading: false,
       clickedItem: undefined,
-      printModal: display.HIDDEN
+      printModal: DISPLAY.HIDDEN
     };
 
     componentDidMount() {
@@ -149,7 +65,7 @@ export default withItemHardwareFastenerBolt()(
                   //   clickedItem: record,
                   //   // printModal: display.VISIBLE
                   // })
-                  this.viewPrintModal(display.VISIBLE, record);
+                  this.viewPrintModal(DISPLAY.VISIBLE, record);
                 }
                 }> Print</a>
                 <Divider type="vertical" />
@@ -163,18 +79,18 @@ export default withItemHardwareFastenerBolt()(
       ];
     }
 
-    viewPrintModal = (change?: display, clickedItem?: ItemHardwareFastenerBolt) => {
+    viewPrintModal = (change?: DISPLAY, clickedItem?: ItemHardwareFastenerBolt) => {
       console.log("viewPrintModal () ? received", change);
       if ( change !== undefined && change != this.state.printModal ){
         this.setState({
           printModal: change,
           clickedItem: clickedItem
         });
-        console.log("viewPrintModal () ? change detected; returning:", change == display.VISIBLE);
-        return change == display.VISIBLE;
+        console.log("viewPrintModal () ? change detected; returning:", change == DISPLAY.VISIBLE);
+        return change == DISPLAY.VISIBLE;
       }
-      console.log("viewPrintModal () ? NO change detected; returning:", this.state.printModal == display.VISIBLE);
-      return this.state.printModal == display.VISIBLE;
+      console.log("viewPrintModal () ? NO change detected; returning:", this.state.printModal == DISPLAY.VISIBLE);
+      return this.state.printModal == DISPLAY.VISIBLE;
     }
 
     handleTableChange = (pagination, filters, sorter) => {

@@ -1,49 +1,65 @@
 import * as React from 'react';
-import ItemTable from './components/ItemTable';
+import {
+  Router,
+  Route,
+  // BrowserRouter as Router, 
+  Link,
+  withRouter
+} from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import './styles/app.scss';
 import 'antd/dist/antd.css';
+import { Menu, Icon } from 'antd';
+import { flatRoutes, singularFullPath } from './config/routes';
+
+export const history = createBrowserHistory( {
+  basename: '', // The base URL of the app (see below)
+  forceRefresh: false, // Set true to force full page refreshes
+  keyLength: 6, // The length of location.key
+  // A function to use to confirm navigation with the user (see below)
+  getUserConfirmation: ( message, callback ) => callback( window.confirm( message ) )
+} );
 
 
-// import gql from 'graphql-tag';
-// import { Mutation,  } from 'react-apollo';
-// import Dropzone from 'react-dropzone';
-// const dropzoneStyle: React.CSSProperties = {
-//   width: 200,
-//   height: 250,
-//   border: '3px dashed #000000',
-//   textAlign: 'center'
-// };
+export const _history: string[] = [];
 
-// const UPLOAD_FILES = gql`
-//   mutation uploadFiles($files: [Upload]!) {
-//     uploadFiles(files: $files) {
-//       name
-//       path
-//       type
-//     }
-//   }
-// `
+history.listen( ( location, action ) => {
+  console.log(
+    `The current URL is ${ location.pathname }${ location.search }${ location.hash }`
+  );
+  console.log( `The last navigation action was ${ action }` );
+  _history.push( "eric was here" );
+} );
 
 const App = () => {
   return (
-    <ItemTable />
-    // <Mutation mutation={UPLOAD_FILES}>
-    //   {uploadFiles => (
-    //     <Dropzone onDrop={async files => {
-    //       const { data : { uploadFiles: uploads }} = await uploadFiles({ variables: { files } });
-    //       console.log(uploads);
-    //     }}>
-    //       {({ getRootProps, getInputProps, isDragActive }) => (
-    //         <section>
-    //           <div {...getRootProps()} style={dropzoneStyle}>
-    //             <input {...getInputProps()} />
-    //             <p>{isDragActive ? "Drop it like it's hot!" : 'Click me or drag a file to upload!'}</p>
-    //           </div>
-    //         </section>
-    //       )}
-    //     </Dropzone>
-    //   )}
-    // </Mutation>
+
+    <Router history={history} >
+      <Menu mode="horizontal" >
+        <Menu.Item><Link to="/"><Icon type="dashboard" />Summary</Link></Menu.Item>
+        <Menu.Item><Link to="/items"><Icon type="container" />Items</Link></Menu.Item>
+        <Menu.Item><Link to="/networks"><Icon type="share-alt" />Network</Link></Menu.Item>
+        <Menu.Item><Link to="/labels"><Icon type="tag" />Labels</Link></Menu.Item>
+        <Menu.Item><Link to="/purchases"><Icon type="shopping-cart" />Purchases</Link></Menu.Item>
+        <Menu.Item style={{float: 'right'}}><Icon type="printer" />Print</Menu.Item>
+      </Menu>
+      <div style={{
+        width: '95%',
+        margin: '0 auto'
+      }} >
+        {flatRoutes.map( ( route ) => {
+          console.log( `flatmap; ${ route.path }`, route, singularFullPath( route ) );
+          // return <Route path="/news2"><div>ERIC2</div></Route>
+          return <Route
+            key={singularFullPath( route )}
+            path={route.path}
+            exact={route.exact}
+            component={route.main}
+          // children={<div>{route.path}{console.log("this and that")}</div>}
+          />;
+        } )}
+      </div>
+    </Router>
   );
 };
 

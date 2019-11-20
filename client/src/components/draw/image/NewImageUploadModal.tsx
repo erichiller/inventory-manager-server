@@ -2,8 +2,8 @@ import { FormComponentProps } from "antd/lib/form";
 import React from 'react';
 import { LabelImage } from "../LabelConstituent";
 import { Form, Spin, AutoComplete, Icon, Select, Input, message, Modal } from "antd";
-import { ItemHardwareFastenerBoltSelectColumn, InsertIconComponent, GeticonDocument, EnumIconCategoryEnum, EnumIconCategorySelectColumn, Item } from "../../../types/graphql";
-import { display } from "../../ItemTable";
+import { ItemHardwareFastenerBoltSelectColumn, InsertIconComponent, GetIconDocument, EnumIconCategoryEnum, EnumIconCategorySelectColumn, Item } from "../../../types/graphql";
+import { DISPLAY } from '../../../types/enums';
 import { DrawContext } from "../LabelDraw";
 
 
@@ -14,7 +14,7 @@ interface NewImageUploadModalProps extends FormComponentProps {
     labelImage: LabelImage;
     width?: number;
     item?: Pick<NonNullable<Item>, 'id' | 'name' >;
-    visibleHandler: ( display?: display ) => void;
+    visibleHandler: ( display?: DISPLAY ) => void;
     changeHandler: ( newValue: any, labelText: LabelImage ) => void;
 }
 
@@ -31,11 +31,11 @@ interface NewImageUploadModalState {
                              );
                         console.log( "uploads", uploads );
                     }}>
-                        {( { getRootProps, getInputProps, isDragActive } ) => (
+                        {( { getRootProps, GetInputProps, isDragActive } ) => (
                             <Spin spinning={loading} >
                                 <section>
                                     <div {...getRootProps()} style={dropzoneStyle}>
-                                        <input {...getInputProps()} />
+                                        <input {...GetInputProps()} />
                                         <p>{isDragActive ? "Dropzone" : 'Click me or drag a file to upload!'}</p>
                                     </div>
                                 </section>
@@ -86,7 +86,7 @@ export const NewImageUploadModal = Form.create<NewImageUploadModalProps>(
             return Object.values( EnumIconCategoryEnum );
         }
         onCancel = () => {
-            this.props.visibleHandler( display.HIDDEN );
+            this.props.visibleHandler( DISPLAY.HIDDEN );
         }
 
         render () {
@@ -111,7 +111,7 @@ export const NewImageUploadModal = Form.create<NewImageUploadModalProps>(
                     >
                         <InsertIconComponent
                             refetchQueries={[ {
-                                query: GeticonDocument
+                                query: GetIconDocument
                             } ]}
                             onCompleted={() => message.success( "Successfully added image." )}
                         >

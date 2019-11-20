@@ -41,6 +41,7 @@
     "react-dom": "^16.9.0",
     "react-dropzone": "^10.1.9",
     "react-konva": "^16.9.0-1",
+    "react-router-dom": "^5.1.2",
     "use-image": "^1.0.5",
     "uuid": "^3.3.3"
   },

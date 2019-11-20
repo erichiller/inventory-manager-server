@@ -26,12 +26,11 @@ export type FormatOptionsT = "bold" | "italic" | "underline";
 
 
 export class LabelText extends LabelConstituent {
-    text: string;
+    text: string        = "";
     _fontSize: number;
     bold: boolean;
     italic: boolean;
     underline: boolean;
-
 
     get fontSize (): number {
         return this._fontSize;
