@@ -1,7 +1,7 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
 import Form, { FormComponentProps } from 'antd/lib/form';
-import { display } from '../ItemTable';
+import { DISPLAY } from '../../types/enums';
 import React from 'react';
 import { Modal, AutoComplete } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
@@ -14,7 +14,7 @@ interface LabelDrawEditTextProps extends FormComponentProps {
     event?: KonvaEventObject<MouseEvent>;
     item?: GenericItem;
     labelText: LabelText;
-    visibleHandler: (display?: display) => void;
+    visibleHandler: (display?: DISPLAY) => void;
     changeHandler: (newValue: any, labelText: LabelText) => void;
 }
 
@@ -46,7 +46,7 @@ export default Form.create<LabelDrawEditTextProps>(
         //     super(props);
         // }
         onCancel = () => {
-            this.props.visibleHandler(display.HIDDEN);
+            this.props.visibleHandler(DISPLAY.HIDDEN);
         }
         // onFormChange = (value: any): void => {
         //     console.log("onFormChange in DrawEditText", value, this.props.form.getFieldsValue());

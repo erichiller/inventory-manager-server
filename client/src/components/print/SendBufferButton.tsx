@@ -12,13 +12,10 @@ interface SendBufferButtonProps {
 }
 
 
-
 export default class SendBufferButton extends React.Component<SendBufferButtonProps> {
-
 
     render () {
         const { buffer, value , onClick } = this.props;
-
 
         return (
             <SendBufferComponent onCompleted={() => onClick(false)} >
@@ -48,7 +45,7 @@ export default class SendBufferButton extends React.Component<SendBufferButtonPr
                     if ( data ) {
                         console.log( "SendBuffer data received", data );
                     }
-                    return < Button icon="printer" onClick={() => onClick(true)} id={value} >{value}</Button>;
+                    return <Spin spinning={this.props.buffer != null}>< Button icon="printer" onClick={() => onClick( true )} id={value} >{value}</Button></Spin>;
                 }}
             </SendBufferComponent >
 

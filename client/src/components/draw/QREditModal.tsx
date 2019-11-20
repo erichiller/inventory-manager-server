@@ -1,8 +1,8 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
-import { display } from '../ItemTable';
+import { DISPLAY } from '../../types/enums';
 import React from 'react';
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 import { ItemHardwareFastenerBolt, withItemHardwareFastenerBolt, ItemHardwareFastenerBoltComponent, Item } from '../../types/graphql';
 import bwipjs from 'bwip-js';
 import { LabelQR } from './LabelConstituent';
@@ -12,7 +12,7 @@ interface QREditModalProps<T> {
     event?: KonvaEventObject<MouseEvent>;
     item?: Item;
     labelQR: LabelQR<T>;
-    visibleHandler: ( display?: display ) => void;
+    visibleHandler: ( display?: DISPLAY ) => void;
     changeHandler: ( newValue: any, labelQR: LabelQR<T> ) => void;
 }
 
@@ -24,7 +24,7 @@ export default class QREditModal<T> extends Component<QREditModalProps<T>> {
     }
 
     onClose = () => {
-        this.props.visibleHandler( display.HIDDEN );
+        this.props.visibleHandler( DISPLAY.HIDDEN );
     }
 
     // componentDidMount() { 
@@ -99,11 +99,20 @@ type CommitLabelQR<T> = ( labelQR: LabelQR<T> ) => void;
 
 class QRCanvas<T> extends Component<QRCanvasProps<T>> {
 
+    textToEncode = (): string => {
+        if (this.props.labelQR.properties){
+            return this.props.labelQR.properties.map( p => `${ p }` ).join( '\n' );
+        }
+        message.warn("QR code without item is currently not supported.")
+        return "";
+
+    }
+
     componentDidMount () {
         console.log( "QREditModal componentDidMount" );
         bwipjs( 'tempCanvas', {
             bcid: 'datamatrix',       // Barcode type
-            text: this.props.labelQR.properties.map( p => `${ p }` ).join('\n') ,    // Text to encode
+            text: this.textToEncode() ,    // Text to encode
             scale: 1,               // 3x scaling factor
             // width: this.props.width,
             height: 10,              // Bar height, in millimeters

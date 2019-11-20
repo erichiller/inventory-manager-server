@@ -1,10 +1,10 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
 import { Select, Icon, Spin, Typography, Divider, Form, AutoComplete, Tooltip, Button } from 'antd';
-import { display } from '../../ItemTable';
+import { DISPLAY } from '../../../types/enums';
 import React from 'react';
 import { Modal } from 'antd';
-import { ItemHardwareFastenerBolt, InsertIconComponent, withGeticon, GeticonProps, EnumIconCategoryEnum, InsertIconDocument, GeticonDocument, ItemHardwareFastenerBoltSelectColumn, Item, Icon as CustomIcon } from '../../../types/graphql';
+import { ItemHardwareFastenerBolt, InsertIconComponent, withGetIcon, GetIconProps, EnumIconCategoryEnum, InsertIconDocument, GetIconDocument, ItemHardwareFastenerBoltSelectColumn, Item, Icon as CustomIcon } from '../../../types/graphql';
 import { LabelImage } from '../LabelConstituent';
 import { DrawContext } from '../LabelDraw';
 
@@ -13,7 +13,7 @@ interface LabelAddImageProps {
     event?: KonvaEventObject<MouseEvent>;
     item?: Item;
     labelImage: LabelImage;
-    visibleHandler: ( display?: display ) => void;
+    visibleHandler: ( display?: DISPLAY ) => void;
     changeHandler: ( newValue: any, labelImage: LabelImage ) => void;
 }
 
@@ -22,8 +22,8 @@ interface LabelAddImageState {
 }
 
 
-export default withGeticon<LabelAddImageProps, LabelAddImageState>()(
-    class LabelAddImageModal extends Component<GeticonProps<LabelAddImageProps>, LabelAddImageState> {
+export default withGetIcon<LabelAddImageProps, LabelAddImageState>()(
+    class LabelAddImageModal extends Component<GetIconProps<LabelAddImageProps>, LabelAddImageState> {
 
         handleCancel = () => {
             /// REMOVE ELEMENT /// REVERT ///
@@ -31,7 +31,7 @@ export default withGeticon<LabelAddImageProps, LabelAddImageState>()(
         }
 
         onClose = () => {
-            this.props.visibleHandler( display.HIDDEN );
+            this.props.visibleHandler( DISPLAY.HIDDEN );
         }
 
         getLabelImageSelectedObj ( id: string ): LabelImage {
@@ -113,8 +113,8 @@ export default withGeticon<LabelAddImageProps, LabelAddImageState>()(
                                 </Tooltip >,
                                 <Tooltip placement="top" title="Add to list for bulk printing later">
                                     <Button key="Upload Image" type="primary" onClick={() => {
-                                        displayImageUploadModal( display.VISIBLE );
-                                        visibleHandler( display.HIDDEN );
+                                        displayImageUploadModal( DISPLAY.VISIBLE );
+                                        visibleHandler( DISPLAY.HIDDEN );
                                     }} >
                                         {/* <Icon type="plus-circle" /> */}
                                         <Icon type="upload" />

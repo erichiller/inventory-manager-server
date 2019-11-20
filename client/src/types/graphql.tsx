@@ -15,11 +15,25 @@ export type Scalars = {
   timestamptz: any,
   uuid: any,
   numeric: any,
+  jsonb: any,
   date: any,
   money: any,
   /** uint8 (unsigned int between 0 and 255) scalar type for Apollo GraphQL */
   uint8: any,
   Upload: any,
+};
+
+/** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
+export type BooleanComparisonExp = {
+  _eq?: Maybe<Scalars['Boolean']>,
+  _gt?: Maybe<Scalars['Boolean']>,
+  _gte?: Maybe<Scalars['Boolean']>,
+  _in?: Maybe<Array<Scalars['Boolean']>>,
+  _is_null?: Maybe<Scalars['Boolean']>,
+  _lt?: Maybe<Scalars['Boolean']>,
+  _lte?: Maybe<Scalars['Boolean']>,
+  _neq?: Maybe<Scalars['Boolean']>,
+  _nin?: Maybe<Array<Scalars['Boolean']>>,
 };
 
 
@@ -2218,6 +2232,387 @@ export type ItemVarianceOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
+
+/** expression to compare columns of type jsonb. All fields are combined with logical 'AND'. */
+export type JsonbComparisonExp = {
+  /** is the column contained in the given json value */
+  _contained_in?: Maybe<Scalars['jsonb']>,
+  /** does the column contain the given json value at the top level */
+  _contains?: Maybe<Scalars['jsonb']>,
+  _eq?: Maybe<Scalars['jsonb']>,
+  _gt?: Maybe<Scalars['jsonb']>,
+  _gte?: Maybe<Scalars['jsonb']>,
+  /** does the string exist as a top-level key in the column */
+  _has_key?: Maybe<Scalars['String']>,
+  /** do all of these strings exist as top-level keys in the column */
+  _has_keys_all?: Maybe<Array<Scalars['String']>>,
+  /** do any of these strings exist as top-level keys in the column */
+  _has_keys_any?: Maybe<Array<Scalars['String']>>,
+  _in?: Maybe<Array<Scalars['jsonb']>>,
+  _is_null?: Maybe<Scalars['Boolean']>,
+  _lt?: Maybe<Scalars['jsonb']>,
+  _lte?: Maybe<Scalars['jsonb']>,
+  _neq?: Maybe<Scalars['jsonb']>,
+  _nin?: Maybe<Array<Scalars['jsonb']>>,
+};
+
+/** 
+ * For saved labels, use to reprint or template
+ * 
+ * 
+ * columns and relationships of "label"
+ **/
+export type Label = {
+   __typename?: 'label',
+  content: Scalars['jsonb'],
+  created_at: Scalars['timestamptz'],
+  id: Scalars['Int'],
+  is_template: Scalars['Boolean'],
+  /** An object relationship */
+  item?: Maybe<Item>,
+  item_id?: Maybe<Scalars['Int']>,
+  title?: Maybe<Scalars['String']>,
+};
+
+
+/** 
+ * For saved labels, use to reprint or template
+ * 
+ * 
+ * columns and relationships of "label"
+ **/
+export type LabelContentArgs = {
+  path?: Maybe<Scalars['String']>
+};
+
+/** aggregated selection of "label" */
+export type LabelAggregate = {
+   __typename?: 'label_aggregate',
+  aggregate?: Maybe<LabelAggregateFields>,
+  nodes: Array<Label>,
+};
+
+/** aggregate fields of "label" */
+export type LabelAggregateFields = {
+   __typename?: 'label_aggregate_fields',
+  avg?: Maybe<LabelAvgFields>,
+  count?: Maybe<Scalars['Int']>,
+  max?: Maybe<LabelMaxFields>,
+  min?: Maybe<LabelMinFields>,
+  stddev?: Maybe<LabelStddevFields>,
+  stddev_pop?: Maybe<LabelStddevPopFields>,
+  stddev_samp?: Maybe<LabelStddevSampFields>,
+  sum?: Maybe<LabelSumFields>,
+  var_pop?: Maybe<LabelVarPopFields>,
+  var_samp?: Maybe<LabelVarSampFields>,
+  variance?: Maybe<LabelVarianceFields>,
+};
+
+
+/** aggregate fields of "label" */
+export type LabelAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<LabelSelectColumn>>,
+  distinct?: Maybe<Scalars['Boolean']>
+};
+
+/** order by aggregate values of table "label" */
+export type LabelAggregateOrderBy = {
+  avg?: Maybe<LabelAvgOrderBy>,
+  count?: Maybe<OrderBy>,
+  max?: Maybe<LabelMaxOrderBy>,
+  min?: Maybe<LabelMinOrderBy>,
+  stddev?: Maybe<LabelStddevOrderBy>,
+  stddev_pop?: Maybe<LabelStddevPopOrderBy>,
+  stddev_samp?: Maybe<LabelStddevSampOrderBy>,
+  sum?: Maybe<LabelSumOrderBy>,
+  var_pop?: Maybe<LabelVarPopOrderBy>,
+  var_samp?: Maybe<LabelVarSampOrderBy>,
+  variance?: Maybe<LabelVarianceOrderBy>,
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type LabelAppendInput = {
+  content?: Maybe<Scalars['jsonb']>,
+};
+
+/** input type for inserting array relation for remote table "label" */
+export type LabelArrRelInsertInput = {
+  data: Array<LabelInsertInput>,
+  on_conflict?: Maybe<LabelOnConflict>,
+};
+
+/** aggregate avg on columns */
+export type LabelAvgFields = {
+   __typename?: 'label_avg_fields',
+  id?: Maybe<Scalars['Float']>,
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by avg() on columns of table "label" */
+export type LabelAvgOrderBy = {
+  id?: Maybe<OrderBy>,
+  item_id?: Maybe<OrderBy>,
+};
+
+/** Boolean expression to filter rows from the table "label". All fields are combined with a logical 'AND'. */
+export type LabelBoolExp = {
+  _and?: Maybe<Array<Maybe<LabelBoolExp>>>,
+  _not?: Maybe<LabelBoolExp>,
+  _or?: Maybe<Array<Maybe<LabelBoolExp>>>,
+  content?: Maybe<JsonbComparisonExp>,
+  created_at?: Maybe<TimestamptzComparisonExp>,
+  id?: Maybe<IntComparisonExp>,
+  is_template?: Maybe<BooleanComparisonExp>,
+  item?: Maybe<ItemBoolExp>,
+  item_id?: Maybe<IntComparisonExp>,
+  title?: Maybe<StringComparisonExp>,
+};
+
+/** unique or primary key constraints on table "label" */
+export enum LabelConstraint {
+  /** unique or primary key constraint */
+  LABEL_PKEY = 'label_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type LabelDeleteAtPathInput = {
+  content?: Maybe<Array<Maybe<Scalars['String']>>>,
+};
+
+/** 
+ * delete the array element with specified index (negative integers count from the
+ * end). throws an error if top level container is not an array
+ **/
+export type LabelDeleteElemInput = {
+  content?: Maybe<Scalars['Int']>,
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type LabelDeleteKeyInput = {
+  content?: Maybe<Scalars['String']>,
+};
+
+/** input type for incrementing integer columne in table "label" */
+export type LabelIncInput = {
+  id?: Maybe<Scalars['Int']>,
+  item_id?: Maybe<Scalars['Int']>,
+};
+
+/** input type for inserting data into table "label" */
+export type LabelInsertInput = {
+  content?: Maybe<Scalars['jsonb']>,
+  created_at?: Maybe<Scalars['timestamptz']>,
+  id?: Maybe<Scalars['Int']>,
+  is_template?: Maybe<Scalars['Boolean']>,
+  item_id?: Maybe<Scalars['Int']>,
+  title?: Maybe<Scalars['String']>,
+};
+
+/** aggregate max on columns */
+export type LabelMaxFields = {
+   __typename?: 'label_max_fields',
+  created_at?: Maybe<Scalars['timestamptz']>,
+  id?: Maybe<Scalars['Int']>,
+  item_id?: Maybe<Scalars['Int']>,
+  title?: Maybe<Scalars['String']>,
+};
+
+/** order by max() on columns of table "label" */
+export type LabelMaxOrderBy = {
+  created_at?: Maybe<OrderBy>,
+  id?: Maybe<OrderBy>,
+  item_id?: Maybe<OrderBy>,
+  title?: Maybe<OrderBy>,
+};
+
+/** aggregate min on columns */
+export type LabelMinFields = {
+   __typename?: 'label_min_fields',
+  created_at?: Maybe<Scalars['timestamptz']>,
+  id?: Maybe<Scalars['Int']>,
+  item_id?: Maybe<Scalars['Int']>,
+  title?: Maybe<Scalars['String']>,
+};
+
+/** order by min() on columns of table "label" */
+export type LabelMinOrderBy = {
+  created_at?: Maybe<OrderBy>,
+  id?: Maybe<OrderBy>,
+  item_id?: Maybe<OrderBy>,
+  title?: Maybe<OrderBy>,
+};
+
+/** response of any mutation on the table "label" */
+export type LabelMutationResponse = {
+   __typename?: 'label_mutation_response',
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'],
+  /** data of the affected rows by the mutation */
+  returning: Array<Label>,
+};
+
+/** input type for inserting object relation for remote table "label" */
+export type LabelObjRelInsertInput = {
+  data: LabelInsertInput,
+  on_conflict?: Maybe<LabelOnConflict>,
+};
+
+/** on conflict condition type for table "label" */
+export type LabelOnConflict = {
+  constraint: LabelConstraint,
+  update_columns: Array<LabelUpdateColumn>,
+  where?: Maybe<LabelBoolExp>,
+};
+
+/** ordering options when selecting data from "label" */
+export type LabelOrderBy = {
+  content?: Maybe<OrderBy>,
+  created_at?: Maybe<OrderBy>,
+  id?: Maybe<OrderBy>,
+  is_template?: Maybe<OrderBy>,
+  item?: Maybe<ItemOrderBy>,
+  item_id?: Maybe<OrderBy>,
+  title?: Maybe<OrderBy>,
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type LabelPrependInput = {
+  content?: Maybe<Scalars['jsonb']>,
+};
+
+/** select columns of table "label" */
+export enum LabelSelectColumn {
+  /** column name */
+  CONTENT = 'content',
+  /** column name */
+  CREATED_AT = 'created_at',
+  /** column name */
+  ID = 'id',
+  /** column name */
+  IS_TEMPLATE = 'is_template',
+  /** column name */
+  ITEM_ID = 'item_id',
+  /** column name */
+  TITLE = 'title'
+}
+
+/** input type for updating data in table "label" */
+export type LabelSetInput = {
+  content?: Maybe<Scalars['jsonb']>,
+  created_at?: Maybe<Scalars['timestamptz']>,
+  id?: Maybe<Scalars['Int']>,
+  is_template?: Maybe<Scalars['Boolean']>,
+  item_id?: Maybe<Scalars['Int']>,
+  title?: Maybe<Scalars['String']>,
+};
+
+/** aggregate stddev on columns */
+export type LabelStddevFields = {
+   __typename?: 'label_stddev_fields',
+  id?: Maybe<Scalars['Float']>,
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by stddev() on columns of table "label" */
+export type LabelStddevOrderBy = {
+  id?: Maybe<OrderBy>,
+  item_id?: Maybe<OrderBy>,
+};
+
+/** aggregate stddev_pop on columns */
+export type LabelStddevPopFields = {
+   __typename?: 'label_stddev_pop_fields',
+  id?: Maybe<Scalars['Float']>,
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by stddev_pop() on columns of table "label" */
+export type LabelStddevPopOrderBy = {
+  id?: Maybe<OrderBy>,
+  item_id?: Maybe<OrderBy>,
+};
+
+/** aggregate stddev_samp on columns */
+export type LabelStddevSampFields = {
+   __typename?: 'label_stddev_samp_fields',
+  id?: Maybe<Scalars['Float']>,
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by stddev_samp() on columns of table "label" */
+export type LabelStddevSampOrderBy = {
+  id?: Maybe<OrderBy>,
+  item_id?: Maybe<OrderBy>,
+};
+
+/** aggregate sum on columns */
+export type LabelSumFields = {
+   __typename?: 'label_sum_fields',
+  id?: Maybe<Scalars['Int']>,
+  item_id?: Maybe<Scalars['Int']>,
+};
+
+/** order by sum() on columns of table "label" */
+export type LabelSumOrderBy = {
+  id?: Maybe<OrderBy>,
+  item_id?: Maybe<OrderBy>,
+};
+
+/** update columns of table "label" */
+export enum LabelUpdateColumn {
+  /** column name */
+  CONTENT = 'content',
+  /** column name */
+  CREATED_AT = 'created_at',
+  /** column name */
+  ID = 'id',
+  /** column name */
+  IS_TEMPLATE = 'is_template',
+  /** column name */
+  ITEM_ID = 'item_id',
+  /** column name */
+  TITLE = 'title'
+}
+
+/** aggregate var_pop on columns */
+export type LabelVarPopFields = {
+   __typename?: 'label_var_pop_fields',
+  id?: Maybe<Scalars['Float']>,
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by var_pop() on columns of table "label" */
+export type LabelVarPopOrderBy = {
+  id?: Maybe<OrderBy>,
+  item_id?: Maybe<OrderBy>,
+};
+
+/** aggregate var_samp on columns */
+export type LabelVarSampFields = {
+   __typename?: 'label_var_samp_fields',
+  id?: Maybe<Scalars['Float']>,
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by var_samp() on columns of table "label" */
+export type LabelVarSampOrderBy = {
+  id?: Maybe<OrderBy>,
+  item_id?: Maybe<OrderBy>,
+};
+
+/** aggregate variance on columns */
+export type LabelVarianceFields = {
+   __typename?: 'label_variance_fields',
+  id?: Maybe<Scalars['Float']>,
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by variance() on columns of table "label" */
+export type LabelVarianceOrderBy = {
+  id?: Maybe<OrderBy>,
+  item_id?: Maybe<OrderBy>,
+};
+
 export type LabelMonochromeBuffer = {
    __typename?: 'LabelMonochromeBuffer',
   imageBuffer?: Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>,
@@ -2274,6 +2669,8 @@ export type MutationRoot = {
   delete_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>,
   /** delete data from the table: "item_hardware_nut" */
   delete_item_hardware_nut?: Maybe<ItemHardwareNutMutationResponse>,
+  /** delete data from the table: "label" */
+  delete_label?: Maybe<LabelMutationResponse>,
   /** delete data from the table: "purchase" */
   delete_purchase?: Maybe<PurchaseMutationResponse>,
   /** insert data into the table: "entity" */
@@ -2294,6 +2691,8 @@ export type MutationRoot = {
   insert_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>,
   /** insert data into the table: "item_hardware_nut" */
   insert_item_hardware_nut?: Maybe<ItemHardwareNutMutationResponse>,
+  /** insert data into the table: "label" */
+  insert_label?: Maybe<LabelMutationResponse>,
   /** insert data into the table: "purchase" */
   insert_purchase?: Maybe<PurchaseMutationResponse>,
   putLabelMonochromeBuffer?: Maybe<LabelMonochromeBuffer>,
@@ -2315,6 +2714,8 @@ export type MutationRoot = {
   update_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>,
   /** update data of the table: "item_hardware_nut" */
   update_item_hardware_nut?: Maybe<ItemHardwareNutMutationResponse>,
+  /** update data of the table: "label" */
+  update_label?: Maybe<LabelMutationResponse>,
   /** update data of the table: "purchase" */
   update_purchase?: Maybe<PurchaseMutationResponse>,
   uploadFiles: Array<Maybe<File>>,
@@ -2372,6 +2773,12 @@ export type MutationRootDeleteItemHardwareFastenerBoltArgs = {
 /** mutation root */
 export type MutationRootDeleteItemHardwareNutArgs = {
   where: ItemHardwareNutBoolExp
+};
+
+
+/** mutation root */
+export type MutationRootDeleteLabelArgs = {
+  where: LabelBoolExp
 };
 
 
@@ -2440,6 +2847,13 @@ export type MutationRootInsertItemHardwareFastenerBoltArgs = {
 export type MutationRootInsertItemHardwareNutArgs = {
   objects: Array<ItemHardwareNutInsertInput>,
   on_conflict?: Maybe<ItemHardwareNutOnConflict>
+};
+
+
+/** mutation root */
+export type MutationRootInsertLabelArgs = {
+  objects: Array<LabelInsertInput>,
+  on_conflict?: Maybe<LabelOnConflict>
 };
 
 
@@ -2519,6 +2933,19 @@ export type MutationRootUpdateItemHardwareNutArgs = {
   _inc?: Maybe<ItemHardwareNutIncInput>,
   _set?: Maybe<ItemHardwareNutSetInput>,
   where: ItemHardwareNutBoolExp
+};
+
+
+/** mutation root */
+export type MutationRootUpdateLabelArgs = {
+  _append?: Maybe<LabelAppendInput>,
+  _delete_at_path?: Maybe<LabelDeleteAtPathInput>,
+  _delete_elem?: Maybe<LabelDeleteElemInput>,
+  _delete_key?: Maybe<LabelDeleteKeyInput>,
+  _inc?: Maybe<LabelIncInput>,
+  _prepend?: Maybe<LabelPrependInput>,
+  _set?: Maybe<LabelSetInput>,
+  where: LabelBoolExp
 };
 
 
@@ -3020,6 +3447,12 @@ export type QueryRoot = {
   item_hardware_nut_aggregate: ItemHardwareNutAggregate,
   /** fetch data from the table: "item_hardware_nut" using primary key columns */
   item_hardware_nut_by_pk?: Maybe<ItemHardwareNut>,
+  /** fetch data from the table: "label" */
+  label: Array<Label>,
+  /** fetch aggregated fields from the table: "label" */
+  label_aggregate: LabelAggregate,
+  /** fetch data from the table: "label" using primary key columns */
+  label_by_pk?: Maybe<Label>,
   /** fetch data from the table: "purchase" */
   purchase: Array<Purchase>,
   /** fetch aggregated fields from the table: "purchase" */
@@ -3278,6 +3711,32 @@ export type QueryRootItemHardwareNutByPkArgs = {
 
 
 /** query root */
+export type QueryRootLabelArgs = {
+  distinct_on?: Maybe<Array<LabelSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<LabelOrderBy>>,
+  where?: Maybe<LabelBoolExp>
+};
+
+
+/** query root */
+export type QueryRootLabelAggregateArgs = {
+  distinct_on?: Maybe<Array<LabelSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<LabelOrderBy>>,
+  where?: Maybe<LabelBoolExp>
+};
+
+
+/** query root */
+export type QueryRootLabelByPkArgs = {
+  id: Scalars['Int']
+};
+
+
+/** query root */
 export type QueryRootPurchaseArgs = {
   distinct_on?: Maybe<Array<PurchaseSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
@@ -3381,6 +3840,12 @@ export type SubscriptionRoot = {
   item_hardware_nut_aggregate: ItemHardwareNutAggregate,
   /** fetch data from the table: "item_hardware_nut" using primary key columns */
   item_hardware_nut_by_pk?: Maybe<ItemHardwareNut>,
+  /** fetch data from the table: "label" */
+  label: Array<Label>,
+  /** fetch aggregated fields from the table: "label" */
+  label_aggregate: LabelAggregate,
+  /** fetch data from the table: "label" using primary key columns */
+  label_by_pk?: Maybe<Label>,
   /** fetch data from the table: "purchase" */
   purchase: Array<Purchase>,
   /** fetch aggregated fields from the table: "purchase" */
@@ -3639,6 +4104,32 @@ export type SubscriptionRootItemHardwareNutByPkArgs = {
 
 
 /** subscription root */
+export type SubscriptionRootLabelArgs = {
+  distinct_on?: Maybe<Array<LabelSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<LabelOrderBy>>,
+  where?: Maybe<LabelBoolExp>
+};
+
+
+/** subscription root */
+export type SubscriptionRootLabelAggregateArgs = {
+  distinct_on?: Maybe<Array<LabelSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<LabelOrderBy>>,
+  where?: Maybe<LabelBoolExp>
+};
+
+
+/** subscription root */
+export type SubscriptionRootLabelByPkArgs = {
+  id: Scalars['Int']
+};
+
+
+/** subscription root */
 export type SubscriptionRootPurchaseArgs = {
   distinct_on?: Maybe<Array<PurchaseSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
@@ -3711,10 +4202,10 @@ export type InsertIconMutation = (
   )> }
 );
 
-export type GeticonQueryVariables = {};
+export type GetIconQueryVariables = {};
 
 
-export type GeticonQuery = (
+export type GetIconQuery = (
   { __typename?: 'query_root' }
   & { icon: Array<(
     { __typename?: 'icon' }
@@ -3741,6 +4232,70 @@ export type ItemHardwareFastenerBoltQuery = (
   & { items: Array<(
     { __typename?: 'item_hardware_fastener_bolt' }
     & Pick<ItemHardwareFastenerBolt, 'id' | 'name' | 'description' | 'unit' | 'thread_length'>
+  )> }
+);
+
+export type GetLabelsQueryVariables = {};
+
+
+export type GetLabelsQuery = (
+  { __typename?: 'query_root' }
+  & { label: Array<(
+    { __typename?: 'label' }
+    & Pick<Label, 'id' | 'created_at' | 'content' | 'is_template' | 'title'>
+    & { item: Maybe<(
+      { __typename?: 'item' }
+      & Pick<Item, 'id' | 'class' | 'name'>
+    )> }
+  )> }
+);
+
+export type GetLabelByIdQueryVariables = {
+  label_id?: Maybe<Scalars['Int']>
+};
+
+
+export type GetLabelByIdQuery = (
+  { __typename?: 'query_root' }
+  & { label: Array<(
+    { __typename?: 'label' }
+    & Pick<Label, 'id' | 'created_at' | 'content' | 'is_template' | 'title'>
+    & { item: Maybe<(
+      { __typename?: 'item' }
+      & Pick<Item, 'id' | 'class' | 'name'>
+    )> }
+  )> }
+);
+
+export type GetLabelByItemIdQueryVariables = {
+  item_id?: Maybe<Scalars['Int']>
+};
+
+
+export type GetLabelByItemIdQuery = (
+  { __typename?: 'query_root' }
+  & { label: Array<(
+    { __typename?: 'label' }
+    & Pick<Label, 'id' | 'created_at' | 'content' | 'is_template' | 'title'>
+    & { item: Maybe<(
+      { __typename?: 'item' }
+      & Pick<Item, 'id' | 'class' | 'name'>
+    )> }
+  )> }
+);
+
+export type GetTemplatesQueryVariables = {};
+
+
+export type GetTemplatesQuery = (
+  { __typename?: 'query_root' }
+  & { label: Array<(
+    { __typename?: 'label' }
+    & Pick<Label, 'id' | 'created_at' | 'content' | 'is_template' | 'title'>
+    & { item: Maybe<(
+      { __typename?: 'item' }
+      & Pick<Item, 'id' | 'class' | 'name'>
+    )> }
   )> }
 );
 
@@ -3785,8 +4340,8 @@ export function withInsertIcon<TProps, TChildProps = {}>(operationOptions?: Apol
 };
 export type InsertIconMutationResult = ApolloReactCommon.MutationResult<InsertIconMutation>;
 export type InsertIconMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertIconMutation, InsertIconMutationVariables>;
-export const GeticonDocument = gql`
-    query Geticon {
+export const GetIconDocument = gql`
+    query GetIcon {
   icon {
     data
     description
@@ -3796,24 +4351,24 @@ export const GeticonDocument = gql`
   }
 }
     `;
-export type GeticonComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GeticonQuery, GeticonQueryVariables>, 'query'>;
+export type GetIconComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetIconQuery, GetIconQueryVariables>, 'query'>;
 
-    export const GeticonComponent = (props: GeticonComponentProps) => (
-      <ApolloReactComponents.Query<GeticonQuery, GeticonQueryVariables> query={GeticonDocument} {...props} />
+    export const GetIconComponent = (props: GetIconComponentProps) => (
+      <ApolloReactComponents.Query<GetIconQuery, GetIconQueryVariables> query={GetIconDocument} {...props} />
     );
     
-export type GeticonProps<TChildProps = {}> = ApolloReactHoc.DataProps<GeticonQuery, GeticonQueryVariables> & TChildProps;
-export function withGeticon<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+export type GetIconProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetIconQuery, GetIconQueryVariables> & TChildProps;
+export function withGetIcon<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
-  GeticonQuery,
-  GeticonQueryVariables,
-  GeticonProps<TChildProps>>) {
-    return ApolloReactHoc.withQuery<TProps, GeticonQuery, GeticonQueryVariables, GeticonProps<TChildProps>>(GeticonDocument, {
-      alias: 'geticon',
+  GetIconQuery,
+  GetIconQueryVariables,
+  GetIconProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetIconQuery, GetIconQueryVariables, GetIconProps<TChildProps>>(GetIconDocument, {
+      alias: 'getIcon',
       ...operationOptions
     });
 };
-export type GeticonQueryResult = ApolloReactCommon.QueryResult<GeticonQuery, GeticonQueryVariables>;
+export type GetIconQueryResult = ApolloReactCommon.QueryResult<GetIconQuery, GetIconQueryVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
   PrinterStatus {
@@ -3868,6 +4423,142 @@ export function withItemHardwareFastenerBolt<TProps, TChildProps = {}>(operation
     });
 };
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
+export const GetLabelsDocument = gql`
+    query GetLabels {
+  label(order_by: {created_at: asc}) {
+    id
+    created_at
+    content
+    is_template
+    title
+    item {
+      id
+      class
+      name
+    }
+  }
+}
+    `;
+export type GetLabelsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetLabelsQuery, GetLabelsQueryVariables>, 'query'>;
+
+    export const GetLabelsComponent = (props: GetLabelsComponentProps) => (
+      <ApolloReactComponents.Query<GetLabelsQuery, GetLabelsQueryVariables> query={GetLabelsDocument} {...props} />
+    );
+    
+export type GetLabelsProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetLabelsQuery, GetLabelsQueryVariables> & TChildProps;
+export function withGetLabels<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetLabelsQuery,
+  GetLabelsQueryVariables,
+  GetLabelsProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetLabelsQuery, GetLabelsQueryVariables, GetLabelsProps<TChildProps>>(GetLabelsDocument, {
+      alias: 'getLabels',
+      ...operationOptions
+    });
+};
+export type GetLabelsQueryResult = ApolloReactCommon.QueryResult<GetLabelsQuery, GetLabelsQueryVariables>;
+export const GetLabelByIdDocument = gql`
+    query GetLabelById($label_id: Int) {
+  label(order_by: {created_at: asc}, where: {id: {_eq: $label_id}}) {
+    id
+    created_at
+    content
+    is_template
+    title
+    item {
+      id
+      class
+      name
+    }
+  }
+}
+    `;
+export type GetLabelByIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetLabelByIdQuery, GetLabelByIdQueryVariables>, 'query'>;
+
+    export const GetLabelByIdComponent = (props: GetLabelByIdComponentProps) => (
+      <ApolloReactComponents.Query<GetLabelByIdQuery, GetLabelByIdQueryVariables> query={GetLabelByIdDocument} {...props} />
+    );
+    
+export type GetLabelByIdProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetLabelByIdQuery, GetLabelByIdQueryVariables> & TChildProps;
+export function withGetLabelById<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetLabelByIdQuery,
+  GetLabelByIdQueryVariables,
+  GetLabelByIdProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetLabelByIdQuery, GetLabelByIdQueryVariables, GetLabelByIdProps<TChildProps>>(GetLabelByIdDocument, {
+      alias: 'getLabelById',
+      ...operationOptions
+    });
+};
+export type GetLabelByIdQueryResult = ApolloReactCommon.QueryResult<GetLabelByIdQuery, GetLabelByIdQueryVariables>;
+export const GetLabelByItemIdDocument = gql`
+    query GetLabelByItemId($item_id: Int) {
+  label(order_by: {created_at: asc}, where: {item_id: {_eq: $item_id}}) {
+    id
+    created_at
+    content
+    is_template
+    title
+    item {
+      id
+      class
+      name
+    }
+  }
+}
+    `;
+export type GetLabelByItemIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>, 'query'>;
+
+    export const GetLabelByItemIdComponent = (props: GetLabelByItemIdComponentProps) => (
+      <ApolloReactComponents.Query<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables> query={GetLabelByItemIdDocument} {...props} />
+    );
+    
+export type GetLabelByItemIdProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables> & TChildProps;
+export function withGetLabelByItemId<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetLabelByItemIdQuery,
+  GetLabelByItemIdQueryVariables,
+  GetLabelByItemIdProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables, GetLabelByItemIdProps<TChildProps>>(GetLabelByItemIdDocument, {
+      alias: 'getLabelByItemId',
+      ...operationOptions
+    });
+};
+export type GetLabelByItemIdQueryResult = ApolloReactCommon.QueryResult<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>;
+export const GetTemplatesDocument = gql`
+    query GetTemplates {
+  label(order_by: {created_at: asc}, where: {is_template: {_eq: true}}) {
+    id
+    created_at
+    content
+    is_template
+    title
+    item {
+      id
+      class
+      name
+    }
+  }
+}
+    `;
+export type GetTemplatesComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetTemplatesQuery, GetTemplatesQueryVariables>, 'query'>;
+
+    export const GetTemplatesComponent = (props: GetTemplatesComponentProps) => (
+      <ApolloReactComponents.Query<GetTemplatesQuery, GetTemplatesQueryVariables> query={GetTemplatesDocument} {...props} />
+    );
+    
+export type GetTemplatesProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetTemplatesQuery, GetTemplatesQueryVariables> & TChildProps;
+export function withGetTemplates<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetTemplatesQuery,
+  GetTemplatesQueryVariables,
+  GetTemplatesProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetTemplatesQuery, GetTemplatesQueryVariables, GetTemplatesProps<TChildProps>>(GetTemplatesDocument, {
+      alias: 'getTemplates',
+      ...operationOptions
+    });
+};
+export type GetTemplatesQueryResult = ApolloReactCommon.QueryResult<GetTemplatesQuery, GetTemplatesQueryVariables>;
 export const SendBufferDocument = gql`
     mutation SendBuffer($buffer: [[[uint8]]]!) {
   putLabelMonochromeBuffer(imageBuffer: $buffer) {
@@ -3895,4 +4586,4 @@ export function withSendBuffer<TProps, TChildProps = {}>(operationOptions?: Apol
 };
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2019-11-06T18:17:35-07:00
+// graphql typescript defs generated on 2019-11-17T08:34:21-07:00
