@@ -1,7 +1,7 @@
 import * as React from 'react';
 // import { ApolloProvider } from 'react-apollo';
 import { render } from 'react-dom';
-import { createUploadLink } from 'apollo-upload-client';
+// import { createUploadLink } from 'apollo-upload-client';
 // import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 
 // import { ApolloClient } from "apollo-client";
