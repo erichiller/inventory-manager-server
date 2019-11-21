@@ -62,7 +62,7 @@ const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
         // 175      | works         | GOOD
         // 185      | works         | FIXED
         width=Math.floor(0.75 * dpi);
-        height=48;
+        // height=48;
 
         return < DrawContext.Consumer >
             {( { displayContextMenu, setRef } ) => {
@@ -71,17 +71,18 @@ const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
                         margin: '0 auto',
                         position: 'relative',
                             width: width,
-                            height: height}}>
+                            height: height+25}}>
                     {/* <div style={{ justifyContent: 'center' }}> */}
                     <div style={{
-                        position: 'relative',
+                        // position: 'relative',
                         // bottom: '10%',
-                        left: '45%',
+                        // left: '45%',
+                        textAlign: 'center',
                         // left: width,
 
                         // transform: 'rotate( 90deg )',
                         // transformOrigin: 'left top 0'
-                    }}>{widthInches}", { width/ dpi}</div>
+                    }}>{widthInches}"</div>
                     <Stage
                         onMouseEnter={() => displayContextMenu( false )}
                         width={width}
@@ -102,13 +103,24 @@ const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
                     </Stage>
                         <div style={{
                             position: 'relative',
-                            bottom: '45%',
+                            // bottom: '45%'
+                            textAlign: 'center',
+                            width: height,
                             right: 20,
                             // left: width,
 
                             transform: 'rotate( 270deg )',
                             transformOrigin: 'left top 0'
-                    }}>{labelInchesHeight}", {height/dpi}</div>
+                    }}>{labelInchesHeight}"</div>
+                    <div style={{
+                        position: 'relative',
+                        textAlign: 'center',
+                        top: '-13px',
+                        // left: width,
+
+                        // transform: 'rotate( 90deg )',
+                        // transformOrigin: 'left top 0'
+                    }}><i>Current Label Maker Tape Width: </i>{widthInches}"</div>
                     </div>
                     
             }}
@@ -748,13 +760,13 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDr
 
 
                         {/* Debug Rectangle  */}
-                        <Rect
+                        {/* <Rect
                             x={1}
                             y={1}
                             width={1}
                             height={3}
                             fill='black'
-                        ></Rect>
+                        ></Rect> */}
                         {/* END DEBUG */}
                         {this.state.texts.map( labelText => {
                             console.log( "drawing new labelText", labelText );

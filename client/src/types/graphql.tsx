@@ -2264,8 +2264,11 @@ export type JsonbComparisonExp = {
  **/
 export type Label = {
    __typename?: 'label',
+  /** An object relationship */
+  ParentLabel?: Maybe<Label>,
   content: Scalars['jsonb'],
   created_at: Scalars['timestamptz'],
+  edit_of?: Maybe<Scalars['Int']>,
   id: Scalars['Int'],
   is_template: Scalars['Boolean'],
   /** An object relationship */
@@ -2344,23 +2347,27 @@ export type LabelArrRelInsertInput = {
 /** aggregate avg on columns */
 export type LabelAvgFields = {
    __typename?: 'label_avg_fields',
+  edit_of?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
   item_id?: Maybe<Scalars['Float']>,
 };
 
 /** order by avg() on columns of table "label" */
 export type LabelAvgOrderBy = {
+  edit_of?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   item_id?: Maybe<OrderBy>,
 };
 
 /** Boolean expression to filter rows from the table "label". All fields are combined with a logical 'AND'. */
 export type LabelBoolExp = {
+  ParentLabel?: Maybe<LabelBoolExp>,
   _and?: Maybe<Array<Maybe<LabelBoolExp>>>,
   _not?: Maybe<LabelBoolExp>,
   _or?: Maybe<Array<Maybe<LabelBoolExp>>>,
   content?: Maybe<JsonbComparisonExp>,
   created_at?: Maybe<TimestamptzComparisonExp>,
+  edit_of?: Maybe<IntComparisonExp>,
   id?: Maybe<IntComparisonExp>,
   is_template?: Maybe<BooleanComparisonExp>,
   item?: Maybe<ItemBoolExp>,
@@ -2394,14 +2401,17 @@ export type LabelDeleteKeyInput = {
 
 /** input type for incrementing integer columne in table "label" */
 export type LabelIncInput = {
+  edit_of?: Maybe<Scalars['Int']>,
   id?: Maybe<Scalars['Int']>,
   item_id?: Maybe<Scalars['Int']>,
 };
 
 /** input type for inserting data into table "label" */
 export type LabelInsertInput = {
+  ParentLabel?: Maybe<LabelObjRelInsertInput>,
   content?: Maybe<Scalars['jsonb']>,
   created_at?: Maybe<Scalars['timestamptz']>,
+  edit_of?: Maybe<Scalars['Int']>,
   id?: Maybe<Scalars['Int']>,
   is_template?: Maybe<Scalars['Boolean']>,
   item_id?: Maybe<Scalars['Int']>,
@@ -2412,6 +2422,7 @@ export type LabelInsertInput = {
 export type LabelMaxFields = {
    __typename?: 'label_max_fields',
   created_at?: Maybe<Scalars['timestamptz']>,
+  edit_of?: Maybe<Scalars['Int']>,
   id?: Maybe<Scalars['Int']>,
   item_id?: Maybe<Scalars['Int']>,
   title?: Maybe<Scalars['String']>,
@@ -2420,6 +2431,7 @@ export type LabelMaxFields = {
 /** order by max() on columns of table "label" */
 export type LabelMaxOrderBy = {
   created_at?: Maybe<OrderBy>,
+  edit_of?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   item_id?: Maybe<OrderBy>,
   title?: Maybe<OrderBy>,
@@ -2429,6 +2441,7 @@ export type LabelMaxOrderBy = {
 export type LabelMinFields = {
    __typename?: 'label_min_fields',
   created_at?: Maybe<Scalars['timestamptz']>,
+  edit_of?: Maybe<Scalars['Int']>,
   id?: Maybe<Scalars['Int']>,
   item_id?: Maybe<Scalars['Int']>,
   title?: Maybe<Scalars['String']>,
@@ -2437,6 +2450,7 @@ export type LabelMinFields = {
 /** order by min() on columns of table "label" */
 export type LabelMinOrderBy = {
   created_at?: Maybe<OrderBy>,
+  edit_of?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   item_id?: Maybe<OrderBy>,
   title?: Maybe<OrderBy>,
@@ -2466,8 +2480,10 @@ export type LabelOnConflict = {
 
 /** ordering options when selecting data from "label" */
 export type LabelOrderBy = {
+  ParentLabel?: Maybe<LabelOrderBy>,
   content?: Maybe<OrderBy>,
   created_at?: Maybe<OrderBy>,
+  edit_of?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   is_template?: Maybe<OrderBy>,
   item?: Maybe<ItemOrderBy>,
@@ -2487,6 +2503,8 @@ export enum LabelSelectColumn {
   /** column name */
   CREATED_AT = 'created_at',
   /** column name */
+  EDIT_OF = 'edit_of',
+  /** column name */
   ID = 'id',
   /** column name */
   IS_TEMPLATE = 'is_template',
@@ -2500,6 +2518,7 @@ export enum LabelSelectColumn {
 export type LabelSetInput = {
   content?: Maybe<Scalars['jsonb']>,
   created_at?: Maybe<Scalars['timestamptz']>,
+  edit_of?: Maybe<Scalars['Int']>,
   id?: Maybe<Scalars['Int']>,
   is_template?: Maybe<Scalars['Boolean']>,
   item_id?: Maybe<Scalars['Int']>,
@@ -2509,12 +2528,14 @@ export type LabelSetInput = {
 /** aggregate stddev on columns */
 export type LabelStddevFields = {
    __typename?: 'label_stddev_fields',
+  edit_of?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
   item_id?: Maybe<Scalars['Float']>,
 };
 
 /** order by stddev() on columns of table "label" */
 export type LabelStddevOrderBy = {
+  edit_of?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   item_id?: Maybe<OrderBy>,
 };
@@ -2522,12 +2543,14 @@ export type LabelStddevOrderBy = {
 /** aggregate stddev_pop on columns */
 export type LabelStddevPopFields = {
    __typename?: 'label_stddev_pop_fields',
+  edit_of?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
   item_id?: Maybe<Scalars['Float']>,
 };
 
 /** order by stddev_pop() on columns of table "label" */
 export type LabelStddevPopOrderBy = {
+  edit_of?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   item_id?: Maybe<OrderBy>,
 };
@@ -2535,12 +2558,14 @@ export type LabelStddevPopOrderBy = {
 /** aggregate stddev_samp on columns */
 export type LabelStddevSampFields = {
    __typename?: 'label_stddev_samp_fields',
+  edit_of?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
   item_id?: Maybe<Scalars['Float']>,
 };
 
 /** order by stddev_samp() on columns of table "label" */
 export type LabelStddevSampOrderBy = {
+  edit_of?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   item_id?: Maybe<OrderBy>,
 };
@@ -2548,12 +2573,14 @@ export type LabelStddevSampOrderBy = {
 /** aggregate sum on columns */
 export type LabelSumFields = {
    __typename?: 'label_sum_fields',
+  edit_of?: Maybe<Scalars['Int']>,
   id?: Maybe<Scalars['Int']>,
   item_id?: Maybe<Scalars['Int']>,
 };
 
 /** order by sum() on columns of table "label" */
 export type LabelSumOrderBy = {
+  edit_of?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   item_id?: Maybe<OrderBy>,
 };
@@ -2564,6 +2591,8 @@ export enum LabelUpdateColumn {
   CONTENT = 'content',
   /** column name */
   CREATED_AT = 'created_at',
+  /** column name */
+  EDIT_OF = 'edit_of',
   /** column name */
   ID = 'id',
   /** column name */
@@ -2577,12 +2606,14 @@ export enum LabelUpdateColumn {
 /** aggregate var_pop on columns */
 export type LabelVarPopFields = {
    __typename?: 'label_var_pop_fields',
+  edit_of?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
   item_id?: Maybe<Scalars['Float']>,
 };
 
 /** order by var_pop() on columns of table "label" */
 export type LabelVarPopOrderBy = {
+  edit_of?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   item_id?: Maybe<OrderBy>,
 };
@@ -2590,12 +2621,14 @@ export type LabelVarPopOrderBy = {
 /** aggregate var_samp on columns */
 export type LabelVarSampFields = {
    __typename?: 'label_var_samp_fields',
+  edit_of?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
   item_id?: Maybe<Scalars['Float']>,
 };
 
 /** order by var_samp() on columns of table "label" */
 export type LabelVarSampOrderBy = {
+  edit_of?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   item_id?: Maybe<OrderBy>,
 };
@@ -2603,12 +2636,14 @@ export type LabelVarSampOrderBy = {
 /** aggregate variance on columns */
 export type LabelVarianceFields = {
    __typename?: 'label_variance_fields',
+  edit_of?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
   item_id?: Maybe<Scalars['Float']>,
 };
 
 /** order by variance() on columns of table "label" */
 export type LabelVarianceOrderBy = {
+  edit_of?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
   item_id?: Maybe<OrderBy>,
 };
@@ -4586,4 +4621,4 @@ export function withSendBuffer<TProps, TChildProps = {}>(operationOptions?: Apol
 };
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2019-11-17T08:34:21-07:00
+// graphql typescript defs generated on 2019-11-21T13:05:20-07:00

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, Item, ItemHardwareFastenerBolt } from '../../types/graphql';
 import Form, { FormComponentProps } from 'antd/lib/form';
 import { DISPLAY } from '../../types/enums';
-import { Modal, Spin, AutoComplete } from 'antd';
+import { Modal, Spin, AutoComplete, Input } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
 
 
@@ -49,32 +49,47 @@ export const EditHardwareFastenerBolt = Form.create<ItemEditProps<ItemHardwareFa
                 title={"Text"}
                 okText="Edit"
                 onCancel={this.onCancel}
-                onOk={() => { commit( ); this.onCancel(); }}
+                // onOk={() => { commit( ); this.onCancel(); }}
                 width={drawWidth + 25}
             >
                 <Spin spinning={this.props.data.loading} >
                 <Form
                     layout="inline"
-                >
-                    <Form.Item label="Text">
-                        {getFieldDecorator( 'text', {
-                            rules: [ { required: true, message: 'Please enter text' } ],
-                        } )( <AutoComplete
-                            style={{ width: 400 }}
-                            // onChange={this.onFormChange}
-                            dataSource={this.autocompleteFieldValues}
-                        /> )}
-                    </Form.Item>
-                    <Form.Item label="Text Size">
-                        {getFieldDecorator( 'text_size' )(
-                            <AutoComplete
-                                style={{ width: 100 }}
+                    >
+                        <Form.Item label="Name">
+                            {getFieldDecorator( 'name', {
+                                rules: [ { required: true, message: 'Please enter text' } ],
+                            } )( <Input
+                                style={{ width: 400 }}
                                 // onChange={this.onFormChange}
-                                dataSource={this.textSizeOptions}
                             /> )}
-                    </Form.Item>
-                    <Form.Item label="Format Options">
-                        {getFieldDecorator( 'format_options', {
+                        </Form.Item>
+                        <Form.Item label="Description">
+                            {getFieldDecorator( 'description' )(
+                                <Input.TextArea
+                                    rows={4}
+                                    style={{ width: 600 }}
+                                /> )}
+                        </Form.Item>
+                        {/* <Form.Item label="Name">
+                            {getFieldDecorator( 'name', {
+                                rules: [ { required: true, message: 'Please enter text' } ],
+                            } )( <AutoComplete
+                                style={{ width: 400 }}
+                                // onChange={this.onFormChange}
+                                dataSource={this.autocompleteFieldValues}
+                            /> )}
+                        </Form.Item>
+                        <Form.Item label="Description">
+                            {getFieldDecorator( 'description' )(
+                                <AutoComplete
+                                    style={{ width: 100 }}
+                                    // onChange={this.onFormChange}
+                                    dataSource={this.textSizeOptions}
+                                /> )}
+                        </Form.Item> */}
+                    {/* <Form.Item label="Product URL">
+                        {getFieldDecorator( 'product_url', {
                             initialValue: this.state.currentFormatOptions
                         } )(
                             <CheckboxGroup
@@ -82,8 +97,8 @@ export const EditHardwareFastenerBolt = Form.create<ItemEditProps<ItemHardwareFa
                             // onChange={this.onChangeFormatOptions}
                             />,
                         )}
-                        {/* {setFieldsValue(this.)} */}
-                    </Form.Item>
+                        {setFieldsValue(this.)}
+                    </Form.Item> */}
                 </Form>
                 </Spin>
             </Modal>
