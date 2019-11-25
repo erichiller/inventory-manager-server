@@ -17,6 +17,10 @@
 * [ ] **FIX** `x` and `y` are not saved when the label constituents are serialized.
 * [x] **FIX** italic output on some prints; RESULT= was a rounding error
 * [x] Ensure multiple "rows" print properly.
+* [ ] Finish Add to Print List and Print List submenu
+  * [x] Ability to add labels to PrintList
+  * [ ] Print List Submenu should show thumbnail
+  * [ ] Change the icon / color in the PrintModal once the image is added.
 * [ ] Ensure multiple labels (Chain Printing) print properly.
 * [ ] Ensure setting label length statically will also work. (Or calculate & display in UI)
 * [ ] Remove extraneous `Print` button in `LabelDraw.tsx` (this should be in `LabelDrawModal`)

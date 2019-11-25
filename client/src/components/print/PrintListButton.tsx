@@ -19,7 +19,7 @@ export class PrintListButton extends React.Component<PrintListButtonProps> {
     declare context: React.ContextType<typeof PrintContext>;
 
     render() {
-        if ( ! this.context.printLabels ){
+        if ( ! this.context.getPrintLabels() ){
             return <Menu.Item>
                     <span>
                         <Icon type="printer" />
@@ -27,7 +27,7 @@ export class PrintListButton extends React.Component<PrintListButtonProps> {
                     </span>
                 </Menu.Item>
         }
-        console.log("PrintListButton", this.context.printLabels);
+        console.log( "PrintListButton", this.context.getPrintLabels());
         return (
         <Menu.SubMenu
             title={
@@ -40,10 +40,11 @@ export class PrintListButton extends React.Component<PrintListButtonProps> {
             {...this.props}
             >
                 {
-                this.context.printLabels.map( label => {
+                    this.context.getPrintLabels().map( label => {
                     return (
-                    <Menu.Item>
-                        {label.thumbnail}
+                    <Menu.Item key={label.uuid}>
+                            {/* {label.thumbnail} */}
+                            {label.uuid}
                     </Menu.Item>
                     );
                 })
