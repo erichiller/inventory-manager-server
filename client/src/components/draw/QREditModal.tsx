@@ -5,7 +5,7 @@ import React from 'react';
 import { Modal, message } from 'antd';
 import { ItemHardwareFastenerBolt, withItemHardwareFastenerBolt, ItemHardwareFastenerBoltComponent, Item } from '../../types/graphql';
 import bwipjs from 'bwip-js';
-import { LabelQR } from './LabelConstituent';
+import { LabelQR } from '../../lib/LabelConstituent';
 import { DrawContext } from './LabelDraw';
 
 interface QREditModalProps<T> {

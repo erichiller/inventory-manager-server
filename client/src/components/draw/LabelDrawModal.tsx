@@ -5,6 +5,7 @@ import { Modal, Descriptions, Button, Icon, Tooltip } from "antd";
 import React from "react";
 import { LabelDraw } from "./LabelDraw";
 import { GenericItem } from "../../types/Generics";
+import { PrintContext } from "../print/PrintContextHandler";
 
 type LabelDrawModalProps = {
     visibleHandler: ( d?: DISPLAY ) => boolean;
@@ -23,6 +24,8 @@ interface LabelDrawModalState {
 }
 
 export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModalState> {
+    static contextType = PrintContext;
+    declare context: React.ContextType<typeof PrintContext>
 
     handleCancel = () => {
         this.props.visibleHandler( DISPLAY.HIDDEN );
@@ -55,7 +58,7 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
             </div>;
         }
         if ( label ) {
-            return <span>{label.title}</span>
+            return <span>{label.title}</span> ;
         }
     }
 
@@ -80,28 +83,28 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
                 onOk={this.handleSave}
                 width={drawWidth > 500 ? drawWidth + 25 : 525}
                 footer={[
-                    <Tooltip placement="top" title="Return to Items">
+                    <Tooltip key="cancel" placement="top" title="Return to Items">
                         <Button key="cancel" type="danger" onClick={this.handleCancel}>
                             <Icon type="stop" />
                             Cancel
                         </Button>
                     </Tooltip >,
 
-                    <Tooltip placement="top" title="Send to Label Maker">
+                    <Tooltip key="print" placement="top" title="Send to Label Maker">
                         <Button key="print" type="primary" onClick={this.handlePrint}>
                             <Icon type="printer" />
                             Print
                         </Button>
                     </Tooltip>,
 
-                    <Tooltip placement="top" title="Add to list for bulk printing later">
-                        <Button key="addToPrintList" type="primary" onClick={this.handleAddToPrintList}>
+                    <Tooltip key="addToPrintList" placement="top" title="Add to list for bulk printing later">
+                        <Button key="addToPrintList" type="primary" onClick={this.context.handleAddToPrintList}>
                             <Icon type="database" />
                             Add to Print List
                         </Button>
                     </Tooltip>,
 
-                    <Tooltip placement="top" title="Save label for future printing">
+                    <Tooltip key="save" placement="top" title="Save label for future printing">
                         <Button key="save" type="primary" onClick={this.handleSave}>
                             <Icon type="save" />
                             Save
@@ -116,3 +119,9 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
         );
     }
 }
+/** 
+    80 chars
+01234567890123456789012345678901234567890123456789012345678901234567890123456789
+    120 chars
+012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+ */

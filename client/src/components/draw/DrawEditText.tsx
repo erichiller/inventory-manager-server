@@ -6,7 +6,7 @@ import React from 'react';
 import { Modal, AutoComplete } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
 import { ItemHardwareFastenerBolt, ItemHardwareFastenerBoltSelectColumn } from '../../types/graphql';
-import { LabelText, FormatOptionsT } from './LabelConstituent';
+import { LabelText, FormatOptionsT } from '../../lib/LabelConstituent';
 import { DrawContext } from './LabelDraw';
 import { GenericItem } from '../../types/Generics';
 
