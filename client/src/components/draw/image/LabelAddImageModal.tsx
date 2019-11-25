@@ -5,7 +5,7 @@ import { DISPLAY } from '../../../types/enums';
 import React from 'react';
 import { Modal } from 'antd';
 import { ItemHardwareFastenerBolt, InsertIconComponent, withGetIcon, GetIconProps, EnumIconCategoryEnum, InsertIconDocument, GetIconDocument, ItemHardwareFastenerBoltSelectColumn, Item, Icon as CustomIcon } from '../../../types/graphql';
-import { LabelImage } from '../LabelConstituent';
+import { LabelImage } from '../../../lib/LabelConstituent';
 import { DrawContext } from '../LabelDraw';
 
 
@@ -78,7 +78,6 @@ export default withGetIcon<LabelAddImageProps, LabelAddImageState>()(
             let image: HTMLImageElement = document.createElement('img');
             image.src = icon.data;
             return <img width={50} src={icon.data} />;
-
         }
 
         render () {

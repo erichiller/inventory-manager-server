@@ -1,21 +1,114 @@
+<#
+.Description
+Manage docker containers and images
+.Parameter Build
+#>
+[CmdletBinding()]
+param (
+    # [Parameter(Mandatory = $true)]
+    # [Alias("CN", "MachineName")]
+    [Alias("b")]
+    [switch]
+    $Build
+    ,
+    [Alias("r", "Start")]
+    [switch]
+    $Run
+    ,
+    [Alias("rm")]
+    [switch]
+    $Remove
+    ,
+    [Alias("c")]
+    [switch]
+    $Console
+    ,
+    [Alias("l", "Log")]
+    [switch]
+    $Logs
+    ,
+    # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_parameters?view=powershell-6
+    
+    [Parameter(Mandatory = $true)]
+    [ValidateSet('Hasura', 'inventory-manager-api')]
+    $container
+    
+    # [Parameter(Mandatory=$true)]
+    # [ArgumentCompleter( {
+    #         param ( $commandName,
+    #             $parameterName,
+    #             $wordToComplete,
+    #             $commandAst,
+    #             $fakeBoundParameters )
+    #         # Perform calculation of tab completed values here.
+    #     })]
 
+)
+
+$DOCKER_USER = "ehiller";
+# $
+
+$Containers = @{
+    "inventory-manager-api" = @{
+        MAC             = "4E:00:00:00:04:01"
+        Hostname        = "inventory-api"
+        ContainerHost   = "WINSERV1"
+        Ports           = @( "3000:3000" )
+        Shell           = "powershell"
+        # Image    = "inventory-manager-api"
+    }
+    hasura = @{
+        MAC             = "4E:00:00:00:04:02"
+        Hostname        = "hasura"
+        ContainerHost   = "ubntv"
+        Shell           = "/bin.bash"
+    }
+}
+
+$ContainerParams = $Containers[$container];
+
+$ContainerParams
+
+$TPorts           = @( "3000:3000", "222:2222" )
+
+$TPortsString = $TPorts | ForEach-Object {
+    "-p ${_}"
+}
+
+# "foo".
+
+# $TPortsString = $TPorts.
+
+# echo $TPortsString
 
 # Server
 
-docker image build .\server\ -t ehiller/inventory-manager-api:latest
+if ( $Build ){
+    docker image build $PSScriptRoot\server\ -t $DOCKER_USER/${container}:latest -t $DOCKER_USER/${container}:$(Get-Date -format "yyMMdd_HHmmss" )
+}
 
-docker container rm -f inventory-manager-api
+if ( $Remove ){
+    docker container rm -f $container
+}
 
+if ( $Run ){
 docker run -d `
--p 3000:3000 `
---name inventory-manager-api `
---restart always `
---network "Mellanox ConnectX-3 Pro Ethernet Adapter #2 - Virtual Switch" `
---mac-address="4E:00:00:00:04:01" `
---hostname="inventory-api" `
-ehiller/inventory-manager-api 
+    -p $ContainerParams.Ports `
+    --name $container `
+    --restart always `
+    --network "Mellanox ConnectX-3 Pro Ethernet Adapter #2 - Virtual Switch" `
+    --mac-address=$ContainerParams.MAC `
+    --hostname=$ContainerParams.Hostname `
+    $container
+}
 
-docker logs inventory-manager-api -f
+if ( $Logs ){
+    docker -H $ContainerParams.ContainerHost logs $container -f
+}
+
+if ( $Console ){
+    docker -H $ContainerParams.ContainerHost exec -it $container $ContainerParams.Shell
+}
 
 
 

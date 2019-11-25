@@ -281,7 +281,7 @@ export class BrotherLabeler {
     // imageMode73Density ( imageLinesBuf: Buffer[] ): Buffer {
     imageMode73Density ( imageLinesBuf: uint8[][][] | Array<Buffer> ): Buffer {
         let outputLinesBuf: Buffer = Buffer.from( [] );
-        imageLinesBuf.forEach( buf => {
+        imageLinesBuf.forEach( ( buf, index ) => {
             if ( !Buffer.isBuffer( buf ) ) {
                 buf = Buffer.from( ( Array.isArray( buf ) ? ( buf as Array<any>).flat() : buf ) );
             }
@@ -289,7 +289,7 @@ export class BrotherLabeler {
                 let dotPositions = buf.byteLength / ImageBitMode.mode73.bytesMultiple;
                 let n1 = ( dotPositions % 256 );
                 let n2 = ( Math.floor( dotPositions / 256 ) );
-                console.log( `creating imageMode73Density image line of size ${ buf.byteLength } bytes , ${ dotPositions } positions [ ${ n1 } , ${ n2 } ]` );
+                console.log( `Line # ${index}: creating imageMode73Density image line of size ${ buf.byteLength } bytes , ${ dotPositions } positions [ ${ n1 } , ${ n2 } ]` );
                 outputLinesBuf = Buffer.concat( [
                     outputLinesBuf,
                     Buffer.from( [
@@ -299,9 +299,16 @@ export class BrotherLabeler {
                         n1,
                         n2,
                     ] ),
-                    buf,
-                    this.newline
+                    buf
                 ] );
+                // add a newline if NOT the last line
+                if ( index < ( imageLinesBuf.length - 1 ) ) {
+                    console.log( `Line # ${ index}: adding newline as ${index} is less than ${imageLinesBuf.length}`)
+                    outputLinesBuf = Buffer.concat( [
+                        outputLinesBuf,
+                        this.newline
+                    ] );
+                }
             } else {
                 throw `Invalid buffer ${ buf }`;
             }

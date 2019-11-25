@@ -13,8 +13,10 @@
 * [ ] Show images / icons previews in `<Select>` for images / icons.
   * [x] In `<Select>` during dropdown
   * [ ] In `<Select>` when image is selected ; most likely just need to style it to a larger size.
-* [ ] **FIX** printer buffer is now all zeroes
+* [x] **FIX** printer buffer is now all zeroes
 * [ ] **FIX** `x` and `y` are not saved when the label constituents are serialized.
 * [x] **FIX** italic output on some prints; RESULT= was a rounding error
-* [ ] Ensure multiple "rows" print properly.
+* [x] Ensure multiple "rows" print properly.
+* [ ] Ensure multiple labels (Chain Printing) print properly.
 * [ ] Ensure setting label length statically will also work. (Or calculate & display in UI)
+* [ ] Remove extraneous `Print` button in `LabelDraw.tsx` (this should be in `LabelDrawModal`)
