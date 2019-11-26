@@ -1,6 +1,7 @@
-
+import * as React from 'react';
 
 import { v4 as UUIDv4 } from 'uuid';
+
 import { EnumIconCategoryEnum } from '../types/graphql';
 import { Integer } from '../types/uint8';
 
@@ -32,19 +33,19 @@ export class LabelExport<T> extends LabelExportConstituents<T> {
     // images: LabelImage[];
     // qrs: LabelQR<T>[];
 
-    constructor( constituents: LabelExportConstituents<T>)
+    constructor ( constituents: LabelExportConstituents<T> );
     constructor ( uuid?: UUIDStringT );
-    constructor (props?: UUIDStringT | LabelExportConstituents<T> ){
+    constructor ( props?: UUIDStringT | LabelExportConstituents<T> ) {
         super();
         if ( typeof props === "string" ) {
             this.uuid = props;
         } else {
             this.uuid = UUIDv4();
-            if ( props ){
-                this.texts      = props.texts;
-                this.images     = props.images;
-                this.qrs        = props.qrs;
-                this.imgData    = props.imgData;
+            if ( props ) {
+                this.texts = props.texts;
+                this.images = props.images;
+                this.qrs = props.qrs;
+                this.imgData = props.imgData;
             }
         }
     }
@@ -53,24 +54,28 @@ export class LabelExport<T> extends LabelExportConstituents<T> {
      * see HTMLCanvasElement
      *  https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas
      */
-    get canvas(): HTMLCanvasElement {
+    get canvas (): HTMLCanvasElement {
         let canvas = document.createElement( 'canvas' );
-        let ctx    = canvas.getContext( '2d' );
-        ctx.putImageData(this.imgData, 0, 0);
+        let ctx = canvas.getContext( '2d' );
+        ctx.putImageData( this.imgData, 0, 0 );
         return canvas;
     }
 
-    get thumbnail(): HTMLImageElement {
+    get thumbnail (): React.ReactElement {
         let image: HTMLImageElement = document.createElement( 'img' );
         image.width = 50;
         // image.
         image.src = this.canvas.toDataURL();
         // return <img width={ 50; } src = { icon.data } />;
-        return image;
+        return <img width={50} style={{
+            border: '1px solid #cacaca',
+            marginRight: '16px',
+            display: 'inline-block'
+        }} src={this.canvas.toDataURL()} />;
     }
 
-    public isEqual(comparisonLabel: LabelExport<any>): boolean {
-        return this.qrs &&this.texts === comparisonLabel.texts && this.qrs === comparisonLabel.qrs && this.images === comparisonLabel.images && this.imgData === comparisonLabel.imgData ;
+    public isEqual ( comparisonLabel: LabelExport<any> ): boolean {
+        return this.qrs && this.texts === comparisonLabel.texts && this.qrs === comparisonLabel.qrs && this.images === comparisonLabel.images && this.imgData === comparisonLabel.imgData;
     }
 }
 

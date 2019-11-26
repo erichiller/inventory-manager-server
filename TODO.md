@@ -19,7 +19,7 @@
 * [x] Ensure multiple "rows" print properly.
 * [ ] Finish Add to Print List and Print List submenu
   * [x] Ability to add labels to PrintList
-  * [ ] Print List Submenu should show thumbnail
+  * [x] Print List Submenu should show thumbnail
   * [ ] Change the icon / color in the PrintModal once the image is added.
 * [ ] Ensure multiple labels (Chain Printing) print properly.
 * [ ] Ensure setting label length statically will also work. (Or calculate & display in UI)

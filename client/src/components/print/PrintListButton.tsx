@@ -43,7 +43,7 @@ export class PrintListButton extends React.Component<PrintListButtonProps> {
                     this.context.getPrintLabels().map( label => {
                     return (
                     <Menu.Item key={label.uuid}>
-                            {/* {label.thumbnail} */}
+                            {label.thumbnail}
                             {label.uuid}
                     </Menu.Item>
                     );
