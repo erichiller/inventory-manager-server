@@ -1,7 +1,7 @@
 import { Table, Divider } from 'antd';
 import React = require( 'react' );
 import { ColumnProps } from 'antd/es/table';
-import { ItemHardwareFastenerBolt, withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, ItemHardwareFastenerBoltSelectColumn, withGetLabels, GetLabelsProps, LabelSelectColumn, Label } from '../../types/graphql';
+import { withGetLabels, GetLabelsProps, LabelSelectColumn, Label, GetLabelsQueryResult, GetLabelsQuery } from '../../types/graphql';
 import { LabelDrawModal } from './../draw/LabelDrawModal';
 import { GenericItem } from '../../types/Generics';
 import { DISPLAY } from '../../types/enums';
@@ -44,7 +44,8 @@ export const LabelTable = withGetLabels()(
         }
 
 
-        get Columns (): ColumnProps<Label>[] {
+        // get Columns (): ColumnProps<Omit<GetLabelsQuery, '__typename'>>[] {
+            get Columns(): ColumnProps<Extract<GetLabelsQuery, 'label'>>[] {
             return [
                 ...( Object.keys( LabelSelectColumn ).filter(
                     key => [ "ID" ].includes( key ) ? false : key ).map(
@@ -108,7 +109,6 @@ export const LabelTable = withGetLabels()(
         }
 
         render () {
-
             const { data } = this.props;
             let { loading, error } = this.props.data!;
             if ( error ) return <span>Error</span>;

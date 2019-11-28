@@ -1,8 +1,8 @@
 import { FormComponentProps } from "antd/lib/form";
 import React from 'react';
 import { LabelImage } from "../../../lib/LabelConstituent";
-import { Form, Spin, AutoComplete, Icon, Select, Input, message, Modal } from "antd";
-import { ItemHardwareFastenerBoltSelectColumn, InsertIconComponent, GetIconDocument, EnumIconCategoryEnum, EnumIconCategorySelectColumn, Item } from "../../../types/graphql";
+import { Form, Spin, Icon, Select, Input, message, Modal } from "antd";
+import { InsertIconComponent, GetIconDocument, EnumIconCategoryEnum, Item } from "../../../types/graphql";
 import { DISPLAY } from '../../../types/enums';
 import { DrawContext } from "../LabelDraw";
 

@@ -2,8 +2,9 @@ import * as React from 'react';
 
 import { v4 as UUIDv4 } from 'uuid';
 
-import { EnumIconCategoryEnum } from '../types/graphql';
+import { EnumIconCategoryEnum, Scalars, LabelAggregate } from '../types/graphql';
 import { Integer } from '../types/uint8';
+import { Item, Label } from "../types/graphql";
 
 
 
@@ -17,37 +18,83 @@ class LabelExportConstituents<T> {
     texts: LabelText[];
     images: LabelImage[];
     qrs: LabelQR<T>[];
-    // buffer: PixelMap;
+}
+
+interface LabelExportConstructorProps<T> extends LabelExportConstituents<T> {
     imgData: ImageData;
-    // dataURL: string;
     width: Integer;
     height: Integer;
 }
 
 
-
-export class LabelExport<T> extends LabelExportConstituents<T> {
-    uuid: UUIDStringT;
+export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
+    id: UUIDStringT;
 
     // texts: LabelText[];
     // images: LabelImage[];
     // qrs: LabelQR<T>[];
 
-    constructor ( constituents: LabelExportConstituents<T> );
-    constructor ( uuid?: UUIDStringT );
-    constructor ( props?: UUIDStringT | LabelExportConstituents<T> ) {
-        super();
+    // buffer: PixelMap;
+    imgData: ImageData;
+    // dataURL: string;
+    width: Integer;
+    height: Integer;
+
+    created_at: Scalars['timestamptz'];
+    is_template: boolean;
+    edit_of_id?: Scalars['uuid'];
+    parent_of: Label[] = [];
+    item_id?: Integer;
+    title: string;
+
+
+    content: LabelExportConstituents<T>;
+
+    // private static isLabel( label: any ): is Label {
+
+    // }
+
+    /** 
+     * () ; generatures uuid 
+     * (Label) : uses imported Label from GraphQL
+     * (id)
+     */
+    constructor ();
+    constructor ( label: Label );
+    constructor ( constituents: LabelExportConstructorProps<T> );
+    constructor ( id?: UUIDStringT );
+    constructor ( props?: UUIDStringT | LabelExportConstructorProps<T> | Label ) {
         if ( typeof props === "string" ) {
-            this.uuid = props;
+            this.id = props;
+        } else if ( 'id' in props){
+            Object.getOwnPropertyNames(this).forEach( propName => {
+                this[propName] = props[propName];
+            });
         } else {
-            this.uuid = UUIDv4();
+            this.id = UUIDv4();
             if ( props ) {
-                this.texts = props.texts;
-                this.images = props.images;
-                this.qrs = props.qrs;
-                this.imgData = props.imgData;
+                if ( props.texts ){
+                    this.content = {
+                        texts: props.texts,
+                        images: props.images,
+                        qrs: props.qrs
+                    }
+                }
             }
+            this.imgData = props.imgData;
         }
+    }
+
+    setValues ( values: LabelExportConstructorProps<T>){
+        this.content = {
+
+            texts: values.texts,
+            images: values.images,
+            qrs: values.qrs
+        }
+        this.imgData = values.imgData;
+        this.width = values.width;
+        this.height = values.height;
     }
 
     /**
@@ -75,7 +122,7 @@ export class LabelExport<T> extends LabelExportConstituents<T> {
     }
 
     public isEqual ( comparisonLabel: LabelExport<any> ): boolean {
-        return this.qrs && this.texts === comparisonLabel.texts && this.qrs === comparisonLabel.qrs && this.images === comparisonLabel.images && this.imgData === comparisonLabel.imgData;
+        return this.content.qrs && this.content.texts === comparisonLabel.content.texts && this.content.qrs === comparisonLabel.content.qrs && this.content.images === comparisonLabel.content.images && this.imgData === comparisonLabel.imgData;
     }
 }
 
@@ -156,7 +203,7 @@ export class LabelImage extends LabelConstituent {
 
 
 
-export class LabelQR<T> extends LabelConstituent {
+export class LabelQR<T extends Item> extends LabelConstituent {
     properties: [ Partial<keyof T> ];
     canvasElement: HTMLCanvasElement;
     dataURL: string;

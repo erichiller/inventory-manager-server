@@ -4,8 +4,8 @@ import { Item, Label } from "../../types/graphql";
 import { Modal, Descriptions, Button, Icon, Tooltip } from "antd";
 import React from "react";
 import { LabelDraw } from "./LabelDraw";
-import { GenericItem } from "../../types/Generics";
 import { PrintContext } from "../print/PrintContextHandler";
+import { LabelExport } from "../../lib/LabelConstituent";
 
 type LabelDrawModalProps = {
     visibleHandler: ( d?: DISPLAY ) => boolean;
@@ -16,7 +16,7 @@ type LabelDrawModalProps = {
 } | {
     item?: undefined;
     label: Label;
-} )
+} );
 
 
 interface LabelDrawModalState {
@@ -25,7 +25,17 @@ interface LabelDrawModalState {
 
 export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModalState> {
     static contextType = PrintContext;
-    declare context: React.ContextType<typeof PrintContext>
+    declare context: React.ContextType<typeof PrintContext>;
+
+    private _label: LabelExport<any>;
+    get label (): LabelExport<any> {
+        if ( ! this._label ) {
+            this._label = this.props.label ? new LabelExport(this.props.label) : new LabelExport();
+        }
+        return this._label;
+    }
+
+
 
     handleCancel = () => {
         this.props.visibleHandler( DISPLAY.HIDDEN );
@@ -114,7 +124,7 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
             >
                 {this.description()}
                 <br />
-                <LabelDraw width={drawWidth} height={drawHeight} item={item} />
+                <LabelDraw width={drawWidth} height={drawHeight} item={item} label={this.label} />
             </Modal>
         );
     }

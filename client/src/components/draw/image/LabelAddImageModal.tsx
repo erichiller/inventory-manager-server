@@ -1,10 +1,10 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
-import { Select, Icon, Spin, Typography, Divider, Form, AutoComplete, Tooltip, Button } from 'antd';
+import { Select, Icon, Tooltip, Button } from 'antd';
 import { DISPLAY } from '../../../types/enums';
 import React from 'react';
 import { Modal } from 'antd';
-import { ItemHardwareFastenerBolt, InsertIconComponent, withGetIcon, GetIconProps, EnumIconCategoryEnum, InsertIconDocument, GetIconDocument, ItemHardwareFastenerBoltSelectColumn, Item, Icon as CustomIcon } from '../../../types/graphql';
+import { withGetIcon, GetIconProps, Item, Icon as CustomIcon } from '../../../types/graphql';
 import { LabelImage } from '../../../lib/LabelConstituent';
 import { DrawContext } from '../LabelDraw';
 

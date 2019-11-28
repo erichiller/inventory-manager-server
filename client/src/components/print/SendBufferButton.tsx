@@ -1,4 +1,4 @@
-import { message, Spin, Button } from "antd";
+import { Spin, Button } from "antd";
 import React from "react";
 import { SendBufferComponent } from "../../types/graphql";
 import { PixelMap } from "../../lib/canvasToBuffer";
