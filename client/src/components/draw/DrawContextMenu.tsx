@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Icon, message } from 'antd';
+import { Menu, message } from 'antd';
 
 // import { CSSTransition } from 'react-transition-group';
 import Animate from 'rc-animate';

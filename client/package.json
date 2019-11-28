@@ -10,7 +10,8 @@
     "codegen": "graphql-codegen --config codegen.yml",
     "check-outdated": "yarn outdated",
     "example-install": "yarn add --latest --exact apollo-link-http",
-    "example-upgrade": "yarn upgrade --latest --exact apollo-link-http"
+    "example-upgrade": "yarn upgrade --latest --exact apollo-link-http",
+    "clean-imports": "tslint --config tslint-imports.json --fix --project ."
   },
   "author": "Eric D Hiller",
   "license": "ISC",

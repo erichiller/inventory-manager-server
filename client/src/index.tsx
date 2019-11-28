@@ -9,7 +9,6 @@ import { render } from 'react-dom';
 // import { CacheResolverMap } from 'apollo-cache-inmemory';
 
 import App from './App';
-import { ApolloLink } from 'apollo-link';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';

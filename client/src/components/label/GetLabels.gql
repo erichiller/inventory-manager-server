@@ -13,7 +13,7 @@ query GetLabels {
   }
 }
 
-query GetLabelById($label_id: Int) {
+query GetLabelById($label_id: uuid) {
   label(order_by: {created_at: asc}, where: {id: {_eq: $label_id}}) {
     id
     created_at

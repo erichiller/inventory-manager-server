@@ -1,6 +1,5 @@
 import React from 'react';
 import { matchPath } from 'react-router-dom';
-import { Icon } from 'antd';
 import ItemTable from '../components/ItemTable';
 import { LabelTable } from '../components/label/LabelTable';
 

@@ -3,8 +3,7 @@ import {
     Router,
     Route,
     // BrowserRouter as Router, 
-    Link,
-    withRouter
+    Link
 } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import './styles/app.scss';
@@ -12,7 +11,6 @@ import 'antd/dist/antd.css';
 import { Menu, Icon } from 'antd';
 import { flatRoutes, singularFullPath } from './config/routes';
 import { PrintListButton } from './components/print/PrintListButton';
-import { LabelExport } from './lib/LabelConstituent';
 import { PrintContextHandler } from './components/print/PrintContextHandler';
 
 export const history = createBrowserHistory( {

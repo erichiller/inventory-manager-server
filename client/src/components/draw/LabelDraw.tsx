@@ -1,28 +1,26 @@
 
-import React, { Component, ComponentProps, PropsWithChildren } from 'react';
+import React, { Component } from 'react';
 
 
-import { ItemHardwareFastenerBolt, GetPrinterStatusDocument, PrinterStatus, GetPrinterStatusQuery, Item } from '../../types/graphql';
+import { Item } from '../../types/graphql';
 import { DISPLAY } from '../../types/enums';
 import { DrawContextMenu } from './DrawContextMenu';
 import { KonvaEventObject } from 'konva/types/Node';
-import { Button, message } from 'antd';
+import { Button } from 'antd';
 import DrawEditText from './DrawEditText';
 import DrawAddImage from './image/LabelAddImageModal';
 
 import QREditModal from './QREditModal';
 import SendBufferButton from '../print/SendBufferButton';
-import { uint8, Integer } from '../../types/uint8';
-import { buf2hex } from '../../lib/helpers';
+import { Integer } from '../../types/uint8';
 import { LabelText, LabelImage, LabelQR, FormatOptionsT, LabelExport } from '../../lib/LabelConstituent';
 
 import nunjucks from 'nunjucks';
 import { NewImageUploadModal } from './image/NewImageUploadModal';
 import { PrintContext } from '../print/PrintContextHandler';
 import { LabelComponent } from '../label/LabelComponent';
-import { Stage, Layer, Text, Image, Rect } from 'react-konva';
+import { Stage, Text, Image, Rect } from 'react-konva';
 import { canvasToBuffer, PixelMap } from '../../lib/canvasToBuffer';
-import { Canvas } from 'konva/types/Canvas';
 
 
 
@@ -53,18 +51,19 @@ interface ChangedValueI {
     value: any;
 }
 
-interface LabelDrawProps {
+interface LabelDrawProps<T extends Item> {
     height?: number;
     width?: number;
     // item: ItemHardwareFastenerBolt;
-    item: Item;
+    item?: T;
+    label: LabelExport<T>;
 }
 
 
 type IKonvaEventHandler = ( d: boolean | KonvaEventObject<PointerEvent> ) => void;
 type IHtmlEventHandler = ( d: boolean | DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => void;
 
-interface LabelDrawState<T> {
+interface LabelDrawState<T extends Item> {
     displayContextMenu: IKonvaEventHandler;
     displayContextMenuStatus: boolean;
     displayContextMenuPosition?: [ number, number ];
@@ -92,7 +91,7 @@ interface LabelDrawState<T> {
     shouldSendBuffer: boolean;
     setRef: ( stageRef: Stage ) => void;
 }
-interface DrawContext<T> extends Omit<LabelDrawState<T>, "item"> {
+interface DrawContext<T extends Item> extends Omit<LabelDrawState<T>, "item"> {
     item?: T;
 }
 
@@ -111,7 +110,7 @@ const DrawContextStateDefault: LabelDrawState<Item> = {
     displayImageUploadModalStatus: null,
     // displayEditTextModalStatus: display.HIDDEN,
     // displayEditTextModalStatus: display.HIDDEN,
-    item: null,
+    item: undefined,
     texts: [],
     images: [],
     qrs: [],
@@ -126,11 +125,12 @@ const DrawContextStateDefault: LabelDrawState<Item> = {
     shouldSendBuffer: null,
     setRef: null
 };
-export const DrawContext = React.createContext<DrawContext<Item>>( DrawContextStateDefault );
+
+export const DrawContext = React.createContext<DrawContext<any>>( DrawContextStateDefault );
 
 
 
-export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDrawState<Item>> {
+export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, LabelDrawState<T>> {
 
     displayContextMenu = ( display: KonvaEventObject<PointerEvent> ) => {
         console.log( "displayContextMenu()", display );
@@ -389,7 +389,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps, LabelDr
         }
     }
 
-    state: LabelDrawState<Item> = {
+    state: LabelDrawState<T> = {
         displayContextMenu: this.displayContextMenu,
         displayContextMenuStatus: DrawContextStateDefault.displayContextMenuStatus,
         displayContextMenuPosition: undefined,

@@ -2,8 +2,7 @@ import * as React from 'react';
 import { withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, Item, ItemHardwareFastenerBolt } from '../../types/graphql';
 import Form, { FormComponentProps } from 'antd/lib/form';
 import { DISPLAY } from '../../types/enums';
-import { Modal, Spin, AutoComplete, Input } from 'antd';
-import CheckboxGroup from 'antd/lib/checkbox/Group';
+import { Modal, Spin, Input } from 'antd';
 
 
 

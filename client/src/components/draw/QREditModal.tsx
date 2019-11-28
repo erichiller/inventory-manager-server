@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { DISPLAY } from '../../types/enums';
 import React from 'react';
 import { Modal, message } from 'antd';
-import { ItemHardwareFastenerBolt, withItemHardwareFastenerBolt, ItemHardwareFastenerBoltComponent, Item } from '../../types/graphql';
+import { Item } from '../../types/graphql';
 import bwipjs from 'bwip-js';
 import { LabelQR } from '../../lib/LabelConstituent';
 import { DrawContext } from './LabelDraw';
