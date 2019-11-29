@@ -25,7 +25,7 @@ export class PrintListButton extends React.Component<PrintListButtonProps> {
                         <Icon type="printer" />
                         Print
                     </span>
-                </Menu.Item>
+                </Menu.Item> ;
         }
         console.log( "PrintListButton", this.context.getPrintLabels());
         return (

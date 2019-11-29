@@ -33,19 +33,42 @@ export class PrintContextHandler extends React.Component<{},PrintContextHandlerS
     //     return this._currentLabel;
     // }
     setCurrentLabel = ( currentLabel: LabelExport<any> ) => {
-        console.log( `PrintContextHandler printLabels set currentLabel ( ${currentLabel} );`);
+        if ( !currentLabel ){
+            console.group("setCurrentLabel")
+            console.warn("! currentLabel parameter received.");
+            console.trace();
+            console.groupEnd();
+            return;
+        }
+        console.log( `PrintContextHandler printLabels set currentLabel`, currentLabel);
         if ( this.state.currentLabel === currentLabel ){ return ; }
         this.setState({
             currentLabel: currentLabel
         });
-    };
+    }
 
     getCurrentLabel = (): LabelExport<any> => {
         return this.state.currentLabel;
-    };
+    }
 
     getPrintLabels = (): LabelExport<any>[] => {
         return this.state.printLabels;
+    }
+    /**
+     * return `true` if the label was added. else `false`
+     */
+    addPrintLabel = (label: LabelExport<any>): boolean => {
+        if ( ! label ){
+            console.warn("Attempt to add null object as label via context addPrintLabel()");
+            return false;
+        }
+        if ( this.getPrintLabels().includes(label) ){
+            return false;
+        }
+        this.setState({
+            printLabels: this.getPrintLabels().concat([label])
+        });
+        return true;
     }
 
     state = {

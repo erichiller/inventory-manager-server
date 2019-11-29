@@ -110,7 +110,8 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
                     <Tooltip key="addToPrintList" placement="top" title="Add to list for bulk printing later">
                         <Button key="addToPrintList" type="primary" onClick={this.context.handleAddToPrintList}>
                             <Icon type="database" />
-                            Add to Print List
+                            {console.log( "label comparison", this.label, this.context.getCurrentLabel())}
+                            {this.context.getPrintLabels().includes(this.label) ? "Remove from" : "Add to"} Print List
                         </Button>
                     </Tooltip>,
 

@@ -9,7 +9,7 @@ import { Item, Label } from "../types/graphql";
 
 
 
-export type UUIDStringT = string;
+export type UUIDStringT = Scalars['uuid'];
 export type FormatOptionsT = "bold" | "italic" | "underline";
 
 
@@ -64,30 +64,59 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
     constructor ( constituents: LabelExportConstructorProps<T> );
     constructor ( id?: UUIDStringT );
     constructor ( props?: UUIDStringT | LabelExportConstructorProps<T> | Label ) {
-        if ( typeof props === "string" ) {
-            this.id = props;
-        } else if ( 'id' in props){
-            Object.getOwnPropertyNames(this).forEach( propName => {
-                this[propName] = props[propName];
-            });
-        } else {
+        console.group( "LabelExport constructor" );
+        console.log("Props Received:", {props})
+        if ( ! props ){
             this.id = UUIDv4();
+            console.warn( `LabelExport - no props received, generating UUIDv4 = ${this.id}` );
+            console.trace();
+        } else if ( typeof props === "string" ) {
+            this.id = props;
+            console.log( `LabelExport - props as id '${props}' received, setting as id: UUIDv4 = '${this.id}'` );
+        } else {
+            if ( 'id' in props){
+                console.log( `LabelExport - 'id' in props: ${ props.id }` );
+                // console.log( "Object.getOwnPropertyNames(this)", Object.getOwnPropertyNames( this ) );
+                // console.log( "Object.getOwnPropertyNames(props)", Object.getOwnPropertyNames( this ) );
+                // console.log( "Object.keys(this)", Object.keys( this ) );
+                console.log( "Object.keys(props)", Object.keys( props ) );
+                Object.keys(props).forEach( propName => {
+                    this[ propName ] = props[ propName ];
+                    console.log( `    LabelExport - 'id' in props, ${propName}` );
+                });
+            } else {
+                this.id = UUIDv4();
+                console.trace();
+                console.warn( `LabelExport - props.id not received, creating new uuid as id: UUIDv4 ${this.id}` );
+            }
             if ( props ) {
-                if ( props.texts ){
+                if ( 'content' in props){
+                    this.content = props.content;
+                    console.log( "LabelExport - 'content' in props" );
+                } else if ( props.texts ) {
+                    console.log( "LabelExport - 'texts' in props" );
                     this.content = {
                         texts: props.texts,
                         images: props.images,
                         qrs: props.qrs
-                    }
+                    };
+                }
+                if ( 'imgData' in props ) {
+                    console.log( "LabelExport - 'imgData' in props" );
+                    this.imgData = props.imgData;
                 }
             }
-            this.imgData = props.imgData;
         }
+        console.groupEnd();
     }
 
-    setValues ( values: LabelExportConstructorProps<T>){
+    /**
+     * 
+     * @param values update values
+     * @returns self
+     */
+    setValues ( values: LabelExportConstructorProps<T>): LabelExport<T> {
         this.content = {
-
             texts: values.texts,
             images: values.images,
             qrs: values.qrs
@@ -95,6 +124,7 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
         this.imgData = values.imgData;
         this.width = values.width;
         this.height = values.height;
+        return this;
     }
 
     /**
@@ -104,7 +134,9 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
     get canvas (): HTMLCanvasElement {
         let canvas = document.createElement( 'canvas' );
         let ctx = canvas.getContext( '2d' );
-        ctx.putImageData( this.imgData, 0, 0 );
+        if ( this.imgData instanceof ImageData ){
+            ctx.putImageData( this.imgData, 0, 0 );
+        } else { console.warn("can not create canvas without image data"); console.trace(); }
         return canvas;
     }
 
