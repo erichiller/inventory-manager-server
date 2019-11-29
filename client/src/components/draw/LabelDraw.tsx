@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 
-import { Item } from '../../types/graphql';
+import { Item, Label } from '../../types/graphql';
 import { DISPLAY } from '../../types/enums';
 import { DrawContextMenu } from './DrawContextMenu';
 import { KonvaEventObject } from 'konva/types/Node';
@@ -13,7 +13,7 @@ import DrawAddImage from './image/LabelAddImageModal';
 import QREditModal from './QREditModal';
 import SendBufferButton from '../print/SendBufferButton';
 import { Integer } from '../../types/uint8';
-import { LabelText, LabelImage, LabelQR, FormatOptionsT, LabelExport } from '../../lib/LabelConstituent';
+import { LabelText, LabelImage, LabelQR, FormatOptionsT, LabelExport, UUIDStringT } from '../../lib/LabelConstituent';
 
 import nunjucks from 'nunjucks';
 import { NewImageUploadModal } from './image/NewImageUploadModal';
@@ -132,6 +132,9 @@ export const DrawContext = React.createContext<DrawContext<any>>( DrawContextSta
 
 export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, LabelDrawState<T>> {
 
+    static contextType = PrintContext;
+    declare context: React.ContextType<typeof PrintContext>;
+
     displayContextMenu = ( display: KonvaEventObject<PointerEvent> ) => {
         console.log( "displayContextMenu()", display );
         if ( display ) {
@@ -148,7 +151,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } else {
             this.setState( { displayContextMenuStatus: false } );
         }
-    }
+    };
 
     displayEditTextModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
         if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
@@ -171,7 +174,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } else {
             this.setState( { displayEditTextModalStatus: DISPLAY.HIDDEN } );
         }
-    }
+    };
 
     displayImageSelectModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
         console.log( "displayImageSelectModal()", d );
@@ -194,7 +197,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } else {
             this.setState( { displayImageSelectModalStatus: DISPLAY.HIDDEN } );
         }
-    }
+    };
     displayImageUploadModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
         console.log( "displayImageUploadModalStatus()", d );
         if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
@@ -217,7 +220,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } else {
             this.setState( { displayImageUploadModalStatus: DISPLAY.HIDDEN } );
         }
-    }
+    };
     displayQREditModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
         if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
             this.setState( {
@@ -239,7 +242,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } else {
             this.setState( { displayQREditModalStatus: DISPLAY.HIDDEN } );
         }
-    }
+    };
 
     updateLabelTexts = ( changedValue: ChangedValueTextI, labelText: LabelText ) => {
         console.log( "input for updateLabelTexts", changedValue, labelText );
@@ -277,7 +280,27 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             } );
         }
         console.log( "this.state.texts is now", this.state.texts, "pending", [ ...this.state.texts, labelText ] );
+        // this.updateContext();
+    };
+
+    shouldComponentUpdate (): boolean {
+        if ( !this.context.getCurrentLabel() ) {
+            this.context.setCurrentLabel( this.exportLabel() );
+        }
+        return this.updateContext();
     }
+
+    /**
+     * return value of `false` if the label was not exported.
+     */
+    updateContext = (): boolean => {
+        if ( this.exportLabel() !== this.context.getCurrentLabel() ) {
+            console.warn( "updateContext" );
+            this.context.setCurrentLabel( this.exportLabel() );
+            return true;
+        }
+        return false;
+    };
 
     deleteLabelText = ( labelText: LabelText ): void => {
         this.state.texts.filter( ( text ) => {
@@ -286,11 +309,11 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             }
             return text;
         } );
-    }
+    };
 
     commitLabelText = ( labelText: LabelText ) => {
         this.setState( { uncommittedText: new LabelText() } );
-    }
+    };
 
 
     /**
@@ -335,11 +358,11 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             } );
         }
         console.log( "this.state.images is now", this.state.images, "pending", [ ...this.state.images, labelImage ] );
-    }
+    };
 
     commitLabelImage = ( labelImage: LabelImage ) => {
         this.setState( { uncommittedImage: new LabelImage() } );
-    }
+    };
 
 
     updateLabelQR = <T extends Item> ( changedValue: Partial<LabelQR<T>>, labelQR: LabelQR<T> ) => {
@@ -367,16 +390,16 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             } );
         }
         console.log( "this.state.qrs is now", this.state.qrs, "pending", [ ...this.state.qrs, labelQR ] );
-    }
+    };
 
 
-    commitLableQR = <T extends {}>( labelQR: LabelQR<T> ) => {
+    commitLableQR = <T extends {}> ( labelQR: LabelQR<T> ) => {
         this.setState( { uncommittedQR: new LabelQR() } );
-    }
+    };
 
     toBuffer = (): PixelMap => {
-        return canvasToBuffer( this.state.stageRef.getStage().toCanvas( {} ));
-    }
+        return canvasToBuffer( this.state.stageRef.getStage().toCanvas( {} ) );
+    };
 
     /*
      * type React.Ref<T> = ((instance: T) => void) | React.RefObject<T>
@@ -384,10 +407,10 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
     setRef = ( ref: Stage ): void => {
         console.log( "SETTING REF FOR canvas", ref );
         if ( !this.state.stageRef ) {
-            console.log("SETTING REF FOR CANVAS -- SAVED TO STATE")
-            this.setState( { stageRef: ref } );
+            console.log( "SETTING REF FOR CANVAS -- SAVED TO STATE" );
+            this.setState( { stageRef: ref }, this.updateContext );
         }
-    }
+    };
 
     state: LabelDrawState<T> = {
         displayContextMenu: this.displayContextMenu,
@@ -419,49 +442,64 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
     };
 
     startSendBuffer = ( shouldSendBuffer: boolean ) => {
-        console.log("startSendBuffer received", shouldSendBuffer);
+        console.log( "startSendBuffer received", shouldSendBuffer );
         this.setState( { shouldSendBuffer: shouldSendBuffer } );
-    }
+    };
 
     get width (): Integer | null {
         return this.canvas ? this.canvas.width : null;
     }
     get height (): Integer | null {
-        return this.canvas ? this.canvas.height : null ;
+        return this.canvas ? this.canvas.height : null;
     }
     get canvas (): HTMLCanvasElement | null {
-        if (this.state.stageRef){
-            return this.state.stageRef.getStage().toCanvas( { } );
+        if ( this.state.stageRef ) {
+            return this.state.stageRef.getStage().toCanvas( {} );
         }
         return null;
     }
     get dataURL (): string | null {
-        return this.canvas ? this.canvas.toDataURL() : null ;
+        return this.canvas ? this.canvas.toDataURL() : null;
     }
     get imgData (): ImageData | null {
         return this.canvas && this.width && this.height ? this.canvas.getContext( '2d' ).getImageData( 0, 0, this.width, this.height ) : null;
     }
 
-    exportLabel = (): LabelExport<T> | null => {
-        console.log("LabelDraw, exporting Label verification values", {
+    exportLabel = (): LabelExport<T> => {
+        console.group( "LabelDraw.exportLabel()" );
+        console.log( "LabelDraw, exporting Label verification values", {
             "canvas": this.canvas,
             "width": this.width,
             "height": this.height,
-            "imgData": this.imgData
-        })
-        return this.canvas && this.width && this.height && this.imgData ? new LabelExport({
-            texts: this.state.texts,
-            images: this.state.images,
-            qrs: this.state.qrs,
-            imgData: this.imgData,
-            // dataURL: this.dataURL,
-            width: this.width,
-            height: this.height
-        })
-        : null;
-    }
-
-    currentLabelType: string;
+            "imgData": this.imgData,
+            "this.props.label": this.props.label
+        } );
+        // console.trace();
+        if ( this.canvas && this.width && this.height && this.imgData ) {
+            console.log( "exportLabel() setValues" );
+            console.groupEnd();
+            // if ( ! this.context.getCurrentLabel() ){
+            //     this.context.setCurrentLabel(this.props.label);
+            // }
+            this.context.setCurrentLabel(
+                this.props.label.setValues( {
+                    ...( this.props.label ? { id: this.props.label.id } : {} ),
+                    ...{
+                        texts: this.state.texts,
+                        images: this.state.images,
+                        qrs: this.state.qrs,
+                        imgData: this.imgData,
+                        // dataURL: this.dataURL,
+                        width: this.width,
+                        height: this.height
+                    }
+                } ) )
+                ;
+        }
+        console.warn( "exportLabel could not update values, failed value existance check." );
+        console.groupEnd();
+        return this.props.label;
+    };
 
     render () {
         const { width, height, item } = this.props;
@@ -589,7 +627,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                             image.src = labelImage.data;
                             image.width = labelImage.width;
                             image.height = labelImage.height;
-                            console.log( "proceeding with draw image", { src: image.src, width: image.width, height: image.height } )
+                            console.log( "proceeding with draw image", { src: image.src, width: image.width, height: image.height } );
                             return <Image
                                 key={labelImage.id}
                                 image={image}
@@ -616,10 +654,10 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                             console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
                         }} id="DEBUG">DEBUG</Button>
                     </div>
-                    <PrintContext.Consumer>
+                    {/* <PrintContext.Consumer>
                         {( { setCurrentLabel } ) => {
                             if ( ! this.currentLabel ){ 
-                                this.currentLabel = this.exportLabel();
+                                this.currentLabel = this.exportLabel(this.props.label);
                                 console.log( "LabelDraw, setting this.currentLabel", this.currentLabel );
                             }
                             if( this.canvas && this.currentLabel && ( ! this.context.currentLabel || this.context.currentLabel.isEqual(this.currentLabel) ) ){
@@ -628,7 +666,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                             }
                             return null;
                         }}
-                    </PrintContext.Consumer>
+                    </PrintContext.Consumer> */}
                     {/* {this.state.shouldSendBuffer ?
                         <SendBuffer buffer={this.toBuffer()} />
                         : null} */}
@@ -636,7 +674,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             </DrawContext.Provider>
         );
     }
-    private currentLabel: LabelExport<any>;
+    // private currentLabel: LabelExport<any>;
     // get currentLabel(): LabelExport<any> {
     //     if ( ! this._currentLabel ) { 
     //         this._currentLabel 
