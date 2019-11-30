@@ -46,9 +46,7 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
     handlePrint = () => {
 
     }
-    handleAddToPrintList = () => {
-
-    }
+    handleAddToPrintList = this.context.handleAddToPrintList;
 
     description = () => {
         const { item, label } = this.props;
@@ -108,7 +106,7 @@ export class LabelDrawModal extends Component<LabelDrawModalProps, LabelDrawModa
                     </Tooltip>,
 
                     <Tooltip key="addToPrintList" placement="top" title="Add to list for bulk printing later">
-                        <Button key="addToPrintList" type="primary" onClick={this.context.handleAddToPrintList}>
+                        <Button key="addToPrintList" type="primary" onClick={this.handleAddToPrintList}>
                             <Icon type="database" />
                             {console.log( "label comparison", this.label, this.context.getCurrentLabel())}
                             {this.context.getPrintLabels().includes(this.label) ? "Remove from" : "Add to"} Print List

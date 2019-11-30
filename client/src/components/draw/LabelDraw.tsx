@@ -21,6 +21,7 @@ import { PrintContext } from '../print/PrintContextHandler';
 import { LabelComponent } from '../label/LabelComponent';
 import { Stage, Text, Image, Rect } from 'react-konva';
 import { canvasToBuffer, PixelMap } from '../../lib/canvasToBuffer';
+import { DebugRectangles } from './DebugRectangles';
 
 
 
@@ -151,10 +152,12 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } else {
             this.setState( { displayContextMenuStatus: false } );
         }
-    };
+    }
 
     displayEditTextModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
+        console.log( "displayEditTextModal() d=", d );
         if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
+            console.debug("d = HIDDEN");
             this.setState( {
                 displayEditTextModalStatus: DISPLAY.HIDDEN
             } );
@@ -162,19 +165,22 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             return DISPLAY.HIDDEN;
         }
         if ( !d ) {
+            console.debug( "!d" );
             return this.state.displayEditTextModalStatus ? DISPLAY.VISIBLE : DISPLAY.HIDDEN;
         }
-        console.log( "displayEditTextModal()", DISPLAY );
         ( d as React.MouseEvent<HTMLElement, MouseEvent> ).preventDefault();
         if ( d ) {
+            console.debug( "d = VISIBLE" );
             this.setState( {
                 item: this.props.item,
                 displayEditTextModalStatus: DISPLAY.VISIBLE
             } );
         } else {
+
+            console.debug( "d = (default) HIDDEN" );
             this.setState( { displayEditTextModalStatus: DISPLAY.HIDDEN } );
         }
-    };
+    }
 
     displayImageSelectModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
         console.log( "displayImageSelectModal()", d );
@@ -197,7 +203,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } else {
             this.setState( { displayImageSelectModalStatus: DISPLAY.HIDDEN } );
         }
-    };
+    }
     displayImageUploadModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
         console.log( "displayImageUploadModalStatus()", d );
         if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
@@ -220,7 +226,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } else {
             this.setState( { displayImageUploadModalStatus: DISPLAY.HIDDEN } );
         }
-    };
+    }
     displayQREditModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
         if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
             this.setState( {
@@ -242,7 +248,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } else {
             this.setState( { displayQREditModalStatus: DISPLAY.HIDDEN } );
         }
-    };
+    }
 
     updateLabelTexts = ( changedValue: ChangedValueTextI, labelText: LabelText ) => {
         console.log( "input for updateLabelTexts", changedValue, labelText );
@@ -281,26 +287,34 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         }
         console.log( "this.state.texts is now", this.state.texts, "pending", [ ...this.state.texts, labelText ] );
         // this.updateContext();
-    };
+    }
 
-    shouldComponentUpdate (): boolean {
+    
+    shouldComponentUpdate (nextProps: LabelDrawProps<T>, nextState: LabelDrawState<T>): boolean {
         if ( !this.context.getCurrentLabel() ) {
             this.context.setCurrentLabel( this.exportLabel() );
         }
-        return this.updateContext();
+
+
+        let updateContextResult = this.updateContext() ;
+        let shouldUpdate = updateContextResult || nextState != this.state;
+        console.log( "shouldComponentUpdate",{ shouldUpdate } , { shouldUpdate }, { updateContextResult },  (nextState != this.state )  ); 
+        return shouldUpdate;
+        // return this.updateContext();
     }
 
     /**
      * return value of `false` if the label was not exported.
      */
     updateContext = (): boolean => {
-        if ( this.exportLabel() !== this.context.getCurrentLabel() ) {
+        if ( ! this.context.getCurrentLabel() || this.exportLabel() !== this.context.getCurrentLabel() ) {
             console.warn( "updateContext" );
             this.context.setCurrentLabel( this.exportLabel() );
             return true;
         }
+        console.log('do NOT updateContext');
         return false;
-    };
+    }
 
     deleteLabelText = ( labelText: LabelText ): void => {
         this.state.texts.filter( ( text ) => {
@@ -309,11 +323,11 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             }
             return text;
         } );
-    };
+    }
 
     commitLabelText = ( labelText: LabelText ) => {
         this.setState( { uncommittedText: new LabelText() } );
-    };
+    }
 
 
     /**
@@ -358,11 +372,11 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             } );
         }
         console.log( "this.state.images is now", this.state.images, "pending", [ ...this.state.images, labelImage ] );
-    };
+    }
 
     commitLabelImage = ( labelImage: LabelImage ) => {
         this.setState( { uncommittedImage: new LabelImage() } );
-    };
+    }
 
 
     updateLabelQR = <T extends Item> ( changedValue: Partial<LabelQR<T>>, labelQR: LabelQR<T> ) => {
@@ -390,16 +404,16 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             } );
         }
         console.log( "this.state.qrs is now", this.state.qrs, "pending", [ ...this.state.qrs, labelQR ] );
-    };
+    }
 
 
     commitLableQR = <T extends {}> ( labelQR: LabelQR<T> ) => {
         this.setState( { uncommittedQR: new LabelQR() } );
-    };
+    }
 
     toBuffer = (): PixelMap => {
         return canvasToBuffer( this.state.stageRef.getStage().toCanvas( {} ) );
-    };
+    }
 
     /*
      * type React.Ref<T> = ((instance: T) => void) | React.RefObject<T>
@@ -410,7 +424,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             console.log( "SETTING REF FOR CANVAS -- SAVED TO STATE" );
             this.setState( { stageRef: ref }, this.updateContext );
         }
-    };
+    }
 
     state: LabelDrawState<T> = {
         displayContextMenu: this.displayContextMenu,
@@ -444,7 +458,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
     startSendBuffer = ( shouldSendBuffer: boolean ) => {
         console.log( "startSendBuffer received", shouldSendBuffer );
         this.setState( { shouldSendBuffer: shouldSendBuffer } );
-    };
+    }
 
     get width (): Integer | null {
         return this.canvas ? this.canvas.width : null;
@@ -467,6 +481,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
 
     exportLabel = (): LabelExport<T> => {
         console.group( "LabelDraw.exportLabel()" );
+        // console.trace();
         console.log( "LabelDraw, exporting Label verification values", {
             "canvas": this.canvas,
             "width": this.width,
@@ -477,11 +492,6 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         // console.trace();
         if ( this.canvas && this.width && this.height && this.imgData ) {
             console.log( "exportLabel() setValues" );
-            console.groupEnd();
-            // if ( ! this.context.getCurrentLabel() ){
-            //     this.context.setCurrentLabel(this.props.label);
-            // }
-            this.context.setCurrentLabel(
                 this.props.label.setValues( {
                     ...( this.props.label ? { id: this.props.label.id } : {} ),
                     ...{
@@ -493,16 +503,17 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                         width: this.width,
                         height: this.height
                     }
-                } ) )
-                ;
+                } );
+        } else {
+            console.warn( "exportLabel could not update values, failed value existance check." );
         }
-        console.warn( "exportLabel could not update values, failed value existance check." );
         console.groupEnd();
         return this.props.label;
-    };
+    }
 
     render () {
         const { width, height, item } = this.props;
+        console.log("LabelDraw.render()");
         return (
             <DrawContext.Provider
                 value={this.state}>
@@ -527,83 +538,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
 
 
                         {/* Debug Rectangle  */}
-                        <Rect
-                            x={0}
-                            y={10}
-                            width={10}
-                            height={10}
-                            fill='black'
-                        />
-                        <Rect
-                            x={0}
-                            y={30}
-                            width={10}
-                            height={10}
-                            fill='black'
-                        />
-                        <Rect
-                            x={0}
-                            y={50}
-                            width={10}
-                            height={10}
-                            fill='black'
-                        />
-                        <Rect
-                            x={0}
-                            y={70}
-                            width={10}
-                            height={10}
-                            fill='black'
-                        />
-                        <Rect
-                            x={0}
-                            y={90}
-                            width={10}
-                            height={10}
-                            fill='black'
-                        />
-                        <Rect
-                            x={0}
-                            y={110}
-                            width={10}
-                            height={10}
-                            fill='black'
-                        />
-                        <Rect
-                            x={0}
-                            y={130}
-                            width={10}
-                            height={5}
-                            fill='black'
-                        />
-                        <Rect
-                            x={30}
-                            y={140}
-                            width={30}
-                            height={1}
-                            fill='black'
-                        />
-                        <Rect
-                            x={0}
-                            y={141}
-                            width={30}
-                            height={1}
-                            fill='black'
-                        />
-                        {/* <Rect
-                            x={0}
-                            y={150}
-                            width={10}
-                            height={10}
-                            fill='black'
-                        />
-                        <Rect
-                            x={0}
-                            y={167}
-                            width={30}
-                            height={1}
-                            fill='black'
-                        // /> */}
+                        {/* <DebugRectangles /> */}
                         {/* END DEBUG */}
                         {this.state.texts.map( labelText => {
                             console.log( "drawing new labelText", labelText );
