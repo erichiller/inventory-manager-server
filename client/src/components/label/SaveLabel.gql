@@ -1,0 +1,26 @@
+mutation SaveLabel (
+    $content: jsonb,
+    $height: Int,
+    $id: uuid,
+    $is_template: Boolean,
+    $item_id: Int,
+    $title: String,
+    $width: Int
+) {
+    insert_label(
+      objects: {
+          content: $content, 
+          height: $height, 
+          id: $id, 
+          is_template: $is_template, 
+          item_id: $item_id, 
+          title: $title, 
+          width: $width
+        }
+    ) {
+        affected_rows
+        returning {
+            id
+        }
+  }
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { LabelExport } from '../../lib/LabelConstituent';
+import { PixelMap, canvasToBuffer } from '../../lib/canvasToBuffer';
 
 export const PrintContext = React.createContext( {
 } as {
@@ -7,11 +8,15 @@ export const PrintContext = React.createContext( {
     setCurrentLabel: ( currentLabel: LabelExport<any> ) => void;
     getCurrentLabel: () => LabelExport<any>;
     getPrintLabels: () => LabelExport<any>[];
+    startSendBuffer: (shouldSendBuffer: boolean) => void;
+    currentLabelToBuffer: () => PixelMap;
+    shouldSendBuffer: boolean;
 } );
 
 interface PrintContextHandlerState {
     printLabels: LabelExport < any > [];
     currentLabel: LabelExport<any>;
+    shouldSendBuffer: boolean;
 }
 
 export class PrintContextHandler extends React.Component<{},PrintContextHandlerState> {
@@ -25,6 +30,11 @@ export class PrintContextHandler extends React.Component<{},PrintContextHandlerS
             this.setState( {
                 printLabels: this.state.printLabels.concat( this.state.currentLabel )
             } );
+        } else {
+            console.log( "PrintContextHandler.handleAddToPrintList removing" );
+            this.setState({
+                printLabels: this.state.printLabels.filter( (label) => label === this.state.currentLabel ? false : true)
+            });
         }
     }
 
@@ -69,11 +79,21 @@ export class PrintContextHandler extends React.Component<{},PrintContextHandlerS
             printLabels: this.getPrintLabels().concat([label])
         });
         return true;
+    };
+
+    startSendBuffer = ( shouldSendBuffer: boolean ) => {
+        console.log( "startSendBuffer received", shouldSendBuffer );
+        this.setState( { shouldSendBuffer: shouldSendBuffer } );
+    }
+
+    currentLabelToBuffer = (): PixelMap => {
+        return canvasToBuffer( this.state.currentLabel.canvas );
     }
 
     state = {
         printLabels: [],
-        currentLabel: null
+        currentLabel: null,
+        shouldSendBuffer: false
     };
 
     render (){
@@ -82,7 +102,10 @@ export class PrintContextHandler extends React.Component<{},PrintContextHandlerS
                 setCurrentLabel: this.setCurrentLabel,
                 getCurrentLabel: this.getCurrentLabel,
                 handleAddToPrintList: this.handleAddToPrintList,
-                getPrintLabels: this.getPrintLabels
+                getPrintLabels: this.getPrintLabels,
+                startSendBuffer: this.startSendBuffer,
+                currentLabelToBuffer: this.currentLabelToBuffer,
+                shouldSendBuffer: this.state.shouldSendBuffer
             }}><div>
                 {console.log("PrintContextHandler", {
                     printLabels: this.state.printLabels,

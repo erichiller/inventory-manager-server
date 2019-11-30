@@ -41,14 +41,18 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
     height: Integer;
 
     created_at: Scalars['timestamptz'];
-    is_template: boolean;
+    is_template: boolean = false;
     edit_of_id?: Scalars['uuid'];
     parent_of: Label[] = [];
     item_id?: Integer;
-    title: string;
+    title?: string;
 
 
-    content: LabelExportConstituents<T>;
+    content: LabelExportConstituents<T> = {
+        texts: [],
+        images: [],
+        qrs: []
+    };
 
     // private static isLabel( label: any ): is Label {
 
@@ -82,7 +86,7 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
                 console.log( "Object.keys(props)", Object.keys( props ) );
                 Object.keys(props).forEach( propName => {
                     this[ propName ] = props[ propName ];
-                    console.log( `    LabelExport - 'id' in props, ${propName}` );
+                    console.log( `    LabelExport - 'id' in props, ${ propName } = `, this[ propName ], "\n set to", props[ propName ]);
                 });
             } else {
                 this.id = UUIDv4();
@@ -92,7 +96,7 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
             if ( props ) {
                 if ( 'content' in props){
                     this.content = props.content;
-                    console.log( "LabelExport - 'content' in props" );
+                    console.log( "LabelExport - 'content' in props", this.content );
                 } else if ( props.texts ) {
                     console.log( "LabelExport - 'texts' in props" );
                     this.content = {
@@ -107,6 +111,7 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
                 }
             }
         }
+        console.log("LabelExport constructor result=", this, this.content);
         console.groupEnd();
     }
 

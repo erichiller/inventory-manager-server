@@ -93,13 +93,23 @@ export function canvasToBuffer ( canvas: HTMLCanvasElement ): PixelMap {
         let lineByte = Math.floor( linebit / 8 );
         // white = 0 ; black = 1
         let isBlack = 0;
-        // Canvas sets black 00,00,00,FF to black and 00,00,00,00 to white
-        for ( let colorByte = 0; colorByte < 4; colorByte++ ) {
-            if ( imgData.data[ i + colorByte ] > 200 ) {
-                isBlack = 1;
-                break;
-            }
+        /**
+         * Canvas sets 
+         *  black to: 00,00,00,FF
+         *  white (default) : 00,00,00,00
+         *  white (user-written) : ff,ff,ff,ff
+         */ 
+
+        if ( (! imgData.data.slice(i,i+3).every( value => value === 0xff)) && (imgData.data[i+3] >= 0x27)){
+            isBlack = 1;
         }
+
+        // for ( let colorByte = 0; colorByte < 4; colorByte++ ) {
+        //     if ( imgData.data[ i + colorByte ] > 200 ) {
+        //         isBlack = 1;
+        //         break;
+        //     }
+        // }
 
         // var {red, green, blue, alpha} = imgData.data.slice(i, i+4);
         // let [ red, green, blue, alpha ] = Array.from( imgData.data.slice( i, i + 4 ) );
@@ -124,6 +134,7 @@ export function canvasToBuffer ( canvas: HTMLCanvasElement ): PixelMap {
 
     console.log( imgData.data );
     console.log( "buf2hex (imgData):", buf2hex( imgData.data ) );
+    console.log( "buf2hex (imgData 48x48):", buf2hex( canvasContext.getImageData( 0, 0, 48, 48 ).data ) );
     // console.log( "buf2hex ( buf ):", Buffer.from( ( Array.isArray( buf ) ? buf[0]. : buf ) ); );
     // buf.forEach( bufLine => (
     //     bufLine.forEach(bufCol => {
