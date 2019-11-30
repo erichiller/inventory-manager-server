@@ -6,7 +6,7 @@ import { Item, Label } from '../../types/graphql';
 import { DISPLAY } from '../../types/enums';
 import { DrawContextMenu } from './DrawContextMenu';
 import { KonvaEventObject } from 'konva/types/Node';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import DrawEditText from './DrawEditText';
 import DrawAddImage from './image/LabelAddImageModal';
 
@@ -89,7 +89,6 @@ interface LabelDrawState<T extends Item> {
     commitLabelImage: ( labelImage: LabelImage ) => void;
     commitLabelQR: ( LabelQR: LabelQR<T> ) => void;
     stageRef: Stage;
-    shouldSendBuffer: boolean;
     setRef: ( stageRef: Stage ) => void;
 }
 interface DrawContext<T extends Item> extends Omit<LabelDrawState<T>, "item"> {
@@ -123,7 +122,6 @@ const DrawContextStateDefault: LabelDrawState<Item> = {
     deleteLabelText: () => { },
     commitLabelQR: () => { },
     stageRef: null,
-    shouldSendBuffer: null,
     setRef: null
 };
 
@@ -135,6 +133,16 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
 
     static contextType = PrintContext;
     declare context: React.ContextType<typeof PrintContext>;
+
+
+    constructor ( props: LabelDrawProps<T>) {
+        super(props);
+
+        this.state.texts = this.props.label.content.texts;
+        this.state.qrs = this.props.label.content.qrs;
+        this.state.images = this.props.label.content.images;
+        // this.state.item = this.props.label.
+    }
 
     displayContextMenu = ( display: KonvaEventObject<PointerEvent> ) => {
         console.log( "displayContextMenu()", display );
@@ -411,10 +419,6 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         this.setState( { uncommittedQR: new LabelQR() } );
     }
 
-    toBuffer = (): PixelMap => {
-        return canvasToBuffer( this.state.stageRef.getStage().toCanvas( {} ) );
-    }
-
     /*
      * type React.Ref<T> = ((instance: T) => void) | React.RefObject<T>
     **/
@@ -451,14 +455,8 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         commitLabelQR: this.commitLableQR,
         deleteLabelText: this.deleteLabelText,
         stageRef: null,
-        shouldSendBuffer: null,
         setRef: this.setRef
     };
-
-    startSendBuffer = ( shouldSendBuffer: boolean ) => {
-        console.log( "startSendBuffer received", shouldSendBuffer );
-        this.setState( { shouldSendBuffer: shouldSendBuffer } );
-    }
 
     get width (): Integer | null {
         return this.canvas ? this.canvas.width : null;
@@ -534,11 +532,43 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                         <NewImageUploadModal visibleHandler={this.displayImageUploadModal} changeHandler={this.updateLabelImages} item={item} labelImage={this.state.uncommittedImage} />
                         : null}
 
+                    <Tooltip key="save" placement="top" title="Send debug information to the console">
+                    <Button icon="medicine-box" style={{
+                        padding: 0,
+                        width: '24px',
+                        height: '24px',
+                        float: 'right',
+                        border: 0
+                    }} onClick={() => {
+                        console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
+                        console.log( this.context.currentLabelToBuffer() );
+                    }} id="DEBUG" />
+                    </Tooltip>
+
                     <LabelComponent>
-
-
                         {/* Debug Rectangle  */}
                         {/* <DebugRectangles /> */}
+                        {[ 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160 ].map( i => {
+                            return (
+                                <React.Fragment>
+                                <Rect
+                                    x={30}
+                                    y={i}
+                                    width={10}
+                                    height={10}
+                                    fill={i % 20 == 0 || i === 0 ? "black" : "white"}
+                                />
+                                <Text
+                                    // textObject="1"
+                                    key={"test"+i}
+                                    text={i.toString()}
+                                        fontSize={10}
+                                        x={0}
+                                        y={i}
+                                    fill="black"
+                                />
+                                </React.Fragment>
+                        )})}
                         {/* END DEBUG */}
                         {this.state.texts.map( labelText => {
                             console.log( "drawing new labelText", labelText );
@@ -577,45 +607,18 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                         } )}
                     </LabelComponent>
                     <br />
-                    <div style={{ paddingTop: 5, margin: 5 }}>
-                        <Button icon="font-size" onClick={this.displayEditTextModal} id="ADD_TEXT">Add Text</Button>
-                        <Button icon="qrcode" onClick={this.displayQREditModal} id="ADD_QR">Add QR</Button>
-                        <Button icon="picture" onClick={this.displayImageSelectModal} id="ADD_IMAGE">Add Image</Button>
-                        {/* <Button icon="printer" onClick={this.startSendBuffer} id="PRINT">Print</Button> */}
-                        <SendBufferButton value="Print" onClick={this.startSendBuffer} buffer={this.state.shouldSendBuffer ? this.toBuffer() : null} />
-
-                        <Button icon="medicine-box" onClick={() => {
-                            // console.log( this.toBuffer() );
-                            console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
-                        }} id="DEBUG">DEBUG</Button>
+                    <div style={{ 
+                        paddingTop: 10,
+                        textAlign: 'center',
+                        }}>
+                        <Button style={{margin: 5}} icon="font-size" onClick={this.displayEditTextModal} id="ADD_TEXT">Add Text</Button>
+                        <Button style={{margin: 5}} icon="qrcode" onClick={this.displayQREditModal} id="ADD_QR">Add QR</Button>
+                        <Button style={{ margin: 5 }} icon="picture" onClick={this.displayImageSelectModal} id="ADD_IMAGE">Add Image</Button>
                     </div>
-                    {/* <PrintContext.Consumer>
-                        {( { setCurrentLabel } ) => {
-                            if ( ! this.currentLabel ){ 
-                                this.currentLabel = this.exportLabel(this.props.label);
-                                console.log( "LabelDraw, setting this.currentLabel", this.currentLabel );
-                            }
-                            if( this.canvas && this.currentLabel && ( ! this.context.currentLabel || this.context.currentLabel.isEqual(this.currentLabel) ) ){
-                                console.log("PrintContext adding currentLabel")
-                                setCurrentLabel(this.currentLabel);
-                            }
-                            return null;
-                        }}
-                    </PrintContext.Consumer> */}
-                    {/* {this.state.shouldSendBuffer ?
-                        <SendBuffer buffer={this.toBuffer()} />
-                        : null} */}
                 </div>
             </DrawContext.Provider>
         );
     }
-    // private currentLabel: LabelExport<any>;
-    // get currentLabel(): LabelExport<any> {
-    //     if ( ! this._currentLabel ) { 
-    //         this._currentLabel 
-    //     } 
-    //     return this._currentLabel
-    // }
 }
 
 /** EDITORS                                         Stars       Last Update             Live Preview        Drag & Drop Text ?

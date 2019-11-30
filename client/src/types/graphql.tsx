@@ -4391,6 +4391,29 @@ export type GetTemplatesQuery = (
   )> }
 );
 
+export type SaveLabelMutationVariables = {
+  content?: Maybe<Scalars['jsonb']>,
+  height?: Maybe<Scalars['Int']>,
+  id?: Maybe<Scalars['uuid']>,
+  is_template?: Maybe<Scalars['Boolean']>,
+  item_id?: Maybe<Scalars['Int']>,
+  title?: Maybe<Scalars['String']>,
+  width?: Maybe<Scalars['Int']>
+};
+
+
+export type SaveLabelMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_label: Maybe<(
+    { __typename?: 'label_mutation_response' }
+    & Pick<LabelMutationResponse, 'affected_rows'>
+    & { returning: Array<(
+      { __typename?: 'label' }
+      & Pick<Label, 'id'>
+    )> }
+  )> }
+);
+
 export type SendBufferMutationVariables = {
   buffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
 };
@@ -4651,6 +4674,36 @@ export function withGetTemplates<TProps, TChildProps = {}>(operationOptions?: Ap
     });
 };
 export type GetTemplatesQueryResult = ApolloReactCommon.QueryResult<GetTemplatesQuery, GetTemplatesQueryVariables>;
+export const SaveLabelDocument = gql`
+    mutation SaveLabel($content: jsonb, $height: Int, $id: uuid, $is_template: Boolean, $item_id: Int, $title: String, $width: Int) {
+  insert_label(objects: {content: $content, height: $height, id: $id, is_template: $is_template, item_id: $item_id, title: $title, width: $width}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export type SaveLabelMutationFn = ApolloReactCommon.MutationFunction<SaveLabelMutation, SaveLabelMutationVariables>;
+export type SaveLabelComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<SaveLabelMutation, SaveLabelMutationVariables>, 'mutation'>;
+
+    export const SaveLabelComponent = (props: SaveLabelComponentProps) => (
+      <ApolloReactComponents.Mutation<SaveLabelMutation, SaveLabelMutationVariables> mutation={SaveLabelDocument} {...props} />
+    );
+    
+export type SaveLabelProps<TChildProps = {}> = ApolloReactHoc.MutateProps<SaveLabelMutation, SaveLabelMutationVariables> & TChildProps;
+export function withSaveLabel<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  SaveLabelMutation,
+  SaveLabelMutationVariables,
+  SaveLabelProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, SaveLabelMutation, SaveLabelMutationVariables, SaveLabelProps<TChildProps>>(SaveLabelDocument, {
+      alias: 'saveLabel',
+      ...operationOptions
+    });
+};
+export type SaveLabelMutationResult = ApolloReactCommon.MutationResult<SaveLabelMutation>;
+export type SaveLabelMutationOptions = ApolloReactCommon.BaseMutationOptions<SaveLabelMutation, SaveLabelMutationVariables>;
 export const SendBufferDocument = gql`
     mutation SendBuffer($buffer: [[[uint8]]]!) {
   putLabelMonochromeBuffer(imageBuffer: $buffer) {
@@ -4678,4 +4731,4 @@ export function withSendBuffer<TProps, TChildProps = {}>(operationOptions?: Apol
 };
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2019-11-28T06:58:09-07:00
+// graphql typescript defs generated on 2019-11-29T18:38:56-07:00

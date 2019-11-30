@@ -10,7 +10,8 @@ const PageSpinStyle: React.CSSProperties = {
     borderRadius: '4px',
     marginBottom: '20px',
     padding: '30px 50px',
-    margin: '20px 0'
+    margin: '20px 0',
+    position: 'absolute'
 };
 
 // ------------------------------------------------------------------------

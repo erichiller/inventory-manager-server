@@ -82,7 +82,7 @@ export default Form.create<LabelDrawEditTextProps>(
         }
         get textSizeOptions(): string[] {
             return [
-                "4", "5", "6", "8", "9", "10", "11", "12", "14", "18", "24", "30"
+                "12", "14", "18", "20", "22", "24", "28", "36", "48"
             ];
         }
 

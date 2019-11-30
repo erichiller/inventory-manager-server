@@ -35,7 +35,7 @@ export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
 
         // TODO: allow the user to set the width
         let widthInches = 0.75;
-        let width = widthInches * dpi;
+        let width = Math.floor(widthInches * dpi);
 
         // DEBUG OVERRIDES
         // 242      | works         | GOOD
@@ -44,7 +44,7 @@ export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
         // 150      | works
         // 175      | works         | GOOD
         // 185      | works         | FIXED
-        width = Math.floor( 0.75 * dpi );
+        // width = Math.floor( 0.75 * dpi );
         // height=48;
 
         return < DrawContext.Consumer >
@@ -66,7 +66,7 @@ export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
 
                         // transform: 'rotate( 90deg )',
                         // transformOrigin: 'left top 0'
-                    }}>{widthInches}"</div>
+                    }}>{widthInches}" ({width}px)</div>
                     <Stage
                         onMouseEnter={() => displayContextMenu( false )}
                         width={width}
