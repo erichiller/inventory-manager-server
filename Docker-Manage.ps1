@@ -84,6 +84,7 @@ $TPortsString = $TPorts | ForEach-Object {
 # Server
 
 if ( $Build ){
+    Write-Output "Building $container";
     docker image build $PSScriptRoot\server\ -t $DOCKER_USER/${container}:latest -t $DOCKER_USER/${container}:$(Get-Date -format "yyMMdd_HHmmss" )
 }
 
@@ -92,14 +93,16 @@ if ( $Remove ){
 }
 
 if ( $Run ){
+    $mac = $ContainerParams.MAC.toString();
+    $hostname = $ContainerParams.Hostname.toString();
 docker run -d `
     -p $ContainerParams.Ports `
     --name $container `
     --restart always `
     --network "Mellanox ConnectX-3 Pro Ethernet Adapter #2 - Virtual Switch" `
-    --mac-address=$ContainerParams.MAC `
-    --hostname=$ContainerParams.Hostname `
-    $container
+    --mac-address=$mac `
+    --hostname=$hostname `
+        $DOCKER_USER/${container}
 }
 
 if ( $Logs ){

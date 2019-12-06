@@ -9,7 +9,7 @@ import { PageSpin } from "../shared/PageSpin";
 
 interface SendBufferButtonProps extends BaseButtonProps {
     value: string;
-    buffer: PixelMap;
+    buffer: PixelMap[];
     onClick: (boolean) => void;
 }
 

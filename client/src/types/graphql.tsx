@@ -2726,13 +2726,13 @@ export type MoneyComparisonExp = {
 
 export type Mutation = {
    __typename?: 'Mutation',
-  putLabelMonochromeBuffer?: Maybe<LabelMonochromeBuffer>,
+  putLabelMonochromeBuffer?: Maybe<Array<Maybe<LabelMonochromeBuffer>>>,
   uploadFiles: Array<Maybe<File>>,
 };
 
 
 export type MutationPutLabelMonochromeBufferArgs = {
-  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
+  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>>
 };
 
 
@@ -2787,7 +2787,7 @@ export type MutationRoot = {
   insert_label?: Maybe<LabelMutationResponse>,
   /** insert data into the table: "purchase" */
   insert_purchase?: Maybe<PurchaseMutationResponse>,
-  putLabelMonochromeBuffer?: Maybe<LabelMonochromeBuffer>,
+  putLabelMonochromeBuffer?: Maybe<Array<Maybe<LabelMonochromeBuffer>>>,
   /** update data of the table: "entity" */
   update_entity?: Maybe<EntityMutationResponse>,
   /** update data of the table: "enum.hardware_fastener_material" */
@@ -2958,7 +2958,7 @@ export type MutationRootInsertPurchaseArgs = {
 
 /** mutation root */
 export type MutationRootPutLabelMonochromeBufferArgs = {
-  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
+  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>>
 };
 
 
@@ -4415,16 +4415,16 @@ export type SaveLabelMutation = (
 );
 
 export type SendBufferMutationVariables = {
-  buffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
+  buffer: Array<Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>>
 };
 
 
 export type SendBufferMutation = (
   { __typename?: 'mutation_root' }
-  & { putLabelMonochromeBuffer: Maybe<(
+  & { putLabelMonochromeBuffer: Maybe<Array<Maybe<(
     { __typename?: 'LabelMonochromeBuffer' }
     & Pick<LabelMonochromeBuffer, 'imageBuffer'>
-  )> }
+  )>>> }
 );
 
 
@@ -4705,7 +4705,7 @@ export function withSaveLabel<TProps, TChildProps = {}>(operationOptions?: Apoll
 export type SaveLabelMutationResult = ApolloReactCommon.MutationResult<SaveLabelMutation>;
 export type SaveLabelMutationOptions = ApolloReactCommon.BaseMutationOptions<SaveLabelMutation, SaveLabelMutationVariables>;
 export const SendBufferDocument = gql`
-    mutation SendBuffer($buffer: [[[uint8]]]!) {
+    mutation SendBuffer($buffer: [[[[uint8]]]]!) {
   putLabelMonochromeBuffer(imageBuffer: $buffer) {
     imageBuffer
   }
@@ -4731,4 +4731,4 @@ export function withSendBuffer<TProps, TChildProps = {}>(operationOptions?: Apol
 };
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2019-11-29T18:38:56-07:00
+// graphql typescript defs generated on 2019-12-01T07:50:00-07:00
