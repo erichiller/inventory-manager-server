@@ -61,10 +61,6 @@ export default withItemHardwareFastenerBolt()(
             render: (text, record) => (
               <span>
                 <a onClick={ (obj) => {
-                  // this.setState({
-                  //   clickedItem: record,
-                  //   // printModal: display.VISIBLE
-                  // })
                   this.viewPrintModal(DISPLAY.VISIBLE, record);
                 }
                 }> Print</a>

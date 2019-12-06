@@ -8,3 +8,19 @@ export function toTitleCase ( s: string ) {
         return word.charAt( 0 ).toUpperCase() + word.slice( 1 ).toLowerCase();
     } ).join( ' ' );
 }
+
+export function filterObject( o: Object, allow: undefined | null | string[], exclude: undefined | null | string[]){
+
+    let f: (key) => boolean = allow 
+        ? (key) => allow.includes(key) 
+        : exclude 
+            ? (key) => ! exclude.includes(key)
+            : (key) => true;
+
+    return Object.keys( o )
+        .filter( f )
+        .reduce( ( obj, key ) => {
+            obj[ key ] = o[ key ];
+            return obj;
+        }, {} );
+}

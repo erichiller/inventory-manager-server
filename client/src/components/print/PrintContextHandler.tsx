@@ -8,8 +8,9 @@ export const PrintContext = React.createContext( {
     setCurrentLabel: ( currentLabel: LabelExport<any> ) => void;
     getCurrentLabel: () => LabelExport<any>;
     getPrintLabels: () => LabelExport<any>[];
-    startSendBuffer: (shouldSendBuffer: boolean) => void;
+    startSendBuffer: ( shouldSendBuffer: boolean ) => void;
     currentLabelToBuffer: () => PixelMap;
+    printLabelsToBuffer: () => PixelMap[];
     shouldSendBuffer: boolean;
 } );
 
@@ -89,6 +90,9 @@ export class PrintContextHandler extends React.Component<{},PrintContextHandlerS
     currentLabelToBuffer = (): PixelMap => {
         return canvasToBuffer( this.state.currentLabel.canvas );
     }
+    printLabelsToBuffer = (): PixelMap[] => {
+        return this.state.printLabels.map( label => canvasToBuffer(label.canvas));
+    }
 
     state = {
         printLabels: [],
@@ -105,7 +109,8 @@ export class PrintContextHandler extends React.Component<{},PrintContextHandlerS
                 getPrintLabels: this.getPrintLabels,
                 startSendBuffer: this.startSendBuffer,
                 currentLabelToBuffer: this.currentLabelToBuffer,
-                shouldSendBuffer: this.state.shouldSendBuffer
+                shouldSendBuffer: this.state.shouldSendBuffer,
+                printLabelsToBuffer: this.printLabelsToBuffer
             }}><div>
                 {console.log("PrintContextHandler", {
                     printLabels: this.state.printLabels,

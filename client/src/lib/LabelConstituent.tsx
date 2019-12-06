@@ -9,7 +9,7 @@ import { Item, Label } from "../types/graphql";
 
 
 
-export type UUIDStringT = Scalars['uuid'];
+export type UUIDStringT = Scalars[ 'uuid' ];
 export type FormatOptionsT = "bold" | "italic" | "underline";
 
 
@@ -40,9 +40,9 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
     width: Integer;
     height: Integer;
 
-    created_at: Scalars['timestamptz'];
+    created_at: Scalars[ 'timestamptz' ];
     is_template: boolean = false;
-    edit_of_id?: Scalars['uuid'];
+    edit_of_id?: Scalars[ 'uuid' ];
     parent_of: Label[] = [];
     item_id?: Integer;
     title?: string;
@@ -69,32 +69,32 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
     constructor ( id?: UUIDStringT );
     constructor ( props?: UUIDStringT | LabelExportConstructorProps<T> | Label ) {
         console.group( "LabelExport constructor" );
-        console.log("Props Received:", {props})
-        if ( ! props ){
+        console.log( "Props Received:", { props } );
+        if ( !props ) {
             this.id = UUIDv4();
-            console.warn( `LabelExport - no props received, generating UUIDv4 = ${this.id}` );
+            console.warn( `LabelExport - no props received, generating UUIDv4 = ${ this.id }` );
             console.trace();
         } else if ( typeof props === "string" ) {
             this.id = props;
-            console.log( `LabelExport - props as id '${props}' received, setting as id: UUIDv4 = '${this.id}'` );
+            console.log( `LabelExport - props as id '${ props }' received, setting as id: UUIDv4 = '${ this.id }'` );
         } else {
-            if ( 'id' in props){
+            if ( 'id' in props ) {
                 console.log( `LabelExport - 'id' in props: ${ props.id }` );
                 // console.log( "Object.getOwnPropertyNames(this)", Object.getOwnPropertyNames( this ) );
                 // console.log( "Object.getOwnPropertyNames(props)", Object.getOwnPropertyNames( this ) );
                 // console.log( "Object.keys(this)", Object.keys( this ) );
                 console.log( "Object.keys(props)", Object.keys( props ) );
-                Object.keys(props).forEach( propName => {
+                Object.keys( props ).forEach( propName => {
                     this[ propName ] = props[ propName ];
-                    console.log( `    LabelExport - 'id' in props, ${ propName } = `, this[ propName ], "\n set to", props[ propName ]);
-                });
+                    console.log( `    LabelExport - 'id' in props, ${ propName } = `, this[ propName ], "\n set to", props[ propName ] );
+                } );
             } else {
                 this.id = UUIDv4();
                 console.trace();
-                console.warn( `LabelExport - props.id not received, creating new uuid as id: UUIDv4 ${this.id}` );
+                console.warn( `LabelExport - props.id not received, creating new uuid as id: UUIDv4 ${ this.id }` );
             }
             if ( props ) {
-                if ( 'content' in props){
+                if ( 'content' in props ) {
                     this.content = props.content;
                     console.log( "LabelExport - 'content' in props", this.content );
                 } else if ( props.texts ) {
@@ -111,7 +111,7 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
                 }
             }
         }
-        console.log("LabelExport constructor result=", this, this.content);
+        console.log( "LabelExport constructor result=", this, this.content );
         console.groupEnd();
     }
 
@@ -120,12 +120,12 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
      * @param values update values
      * @returns self
      */
-    setValues ( values: LabelExportConstructorProps<T>): LabelExport<T> {
+    setValues ( values: LabelExportConstructorProps<T> ): LabelExport<T> {
         this.content = {
             texts: values.texts,
             images: values.images,
             qrs: values.qrs
-        }
+        };
         this.imgData = values.imgData;
         this.width = values.width;
         this.height = values.height;
@@ -139,9 +139,9 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
     get canvas (): HTMLCanvasElement {
         let canvas = document.createElement( 'canvas' );
         let ctx = canvas.getContext( '2d' );
-        if ( this.imgData instanceof ImageData ){
+        if ( this.imgData instanceof ImageData ) {
             ctx.putImageData( this.imgData, 0, 0 );
-        } else { console.warn("can not create canvas without image data"); console.trace(); }
+        } else { console.warn( "can not create canvas without image data" ); console.trace(); }
         return canvas;
     }
 
@@ -212,7 +212,30 @@ export class LabelText extends LabelConstituent {
 
         return opts;
     }
+
+    /**
+     *
+     * @param key empty - called directly on this object
+     *            - if this object is a property value, the property name
+     *            - if it is in an array, the index in the array, as a string
+     *            - an empty string if JSON.stringify() was directly called on this object  
+     *            <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#toJSON_behavior>
+     */
+    toJSON ( key?: string ) {
+        // no op for key
+        let ret: Object = {};
+        console.log(`LabelText.toJSON(${key}) being called`);
+        console.log(
+            [
+                ...Object.keys( this ).filter( element => element === "_fontSize" ? false : true )
+                , "fontSize"
+            ].forEach( k => ret[ k ] = this[ k ] )
+        );
+        console.log("LabelText.toJSON() returns", ret);
+        return ret;
+    }
 }
+
 
 /**
  * -----------------------------------------------------------------------------

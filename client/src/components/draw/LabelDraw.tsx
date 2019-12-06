@@ -489,6 +489,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } );
         // console.trace();
         if ( this.canvas && this.width && this.height && this.imgData ) {
+            JSON.stringify(this.state.texts);
             console.log( "exportLabel() setValues" );
                 this.props.label.setValues( {
                     ...( this.props.label ? { id: this.props.label.id } : {} ),
@@ -532,7 +533,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                         <NewImageUploadModal visibleHandler={this.displayImageUploadModal} changeHandler={this.updateLabelImages} item={item} labelImage={this.state.uncommittedImage} />
                         : null}
 
-                    <Tooltip key="save" placement="top" title="Send debug information to the console">
+                    <Tooltip key="debug" placement="top" title="Send debug information to the console">
                     <Button icon="medicine-box" style={{
                         padding: 0,
                         width: '24px',
@@ -552,6 +553,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                             return (
                                 <React.Fragment>
                                 <Rect
+                                    key={"rect"+i}
                                     x={30}
                                     y={i}
                                     width={10}

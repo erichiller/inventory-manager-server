@@ -1,6 +1,6 @@
 
 
-mutation SendBuffer ($buffer: [[[uint8]]]!) {
+mutation SendBuffer ($buffer: [[[[uint8]]]]!) {
   putLabelMonochromeBuffer(imageBuffer: $buffer) {
     imageBuffer
   }

@@ -112,9 +112,12 @@ class ImageBitMode {
 export class BrotherLabeler {
 
     /**
-     * Command resets all parameters to their default settings
+     * Command resets all parameters to their default settings  
+     * `0x1b` `0x40`
      */
     public readonly init = Buffer.from( [ 0x1b, 0x40 ] );
+    /** Newline, aka LF (Line Feed)  
+     * `0x0a` */
     public readonly newline = Buffer.from( [ 0x0a ] );
 
     public printer: ThermalPrinter;
@@ -179,7 +182,6 @@ export class BrotherLabeler {
         let len = new Length( 0 );
         // let mode = 73;
 
-
         let imageBytes = Buffer.from( [
             0x1b, 0x2a,
             ( len.dots % 256 ),
@@ -226,50 +228,6 @@ export class BrotherLabeler {
         } catch ( error ) {
             console.error( error );
         }
-    }
-
-
-    /** imageSingleDensity
-     *
-     * Each dot is 6 / 360th of an inch
-     * One bit is expanded to 6 x 6 dots
-     *
-     */
-    static imageSingleDensity (): ArrayBuffer {
-
-        let lenDots = 32;
-
-        let imageBytes = Buffer.from( [
-            0x1b, 0x2a,
-            ( lenDots % 256 ),
-            ( Math.floor( lenDots / 256 ) ),
-            0xFF, 0xF0,
-            0xFF, 0xF0,
-            0xFF, 0xF0,
-            0xFF, 0xF0,
-            0xFF, 0xFF,
-            0xFF, 0xFF,
-            0xFF, 0xFF,
-            0xFF, 0xFF,
-            0xFF, 0xFF,
-            0xFF, 0xFF,
-            0xFF, 0xFF,
-            0xFF, 0xFF,
-            0x0F, 0xFF,
-            0x0F, 0xFF,
-            0x0F, 0xFF,
-            0x0F, 0xFF,
-        ] );
-        return imageBytes;
-    }
-
-    /**
-     * same as mode39
-     */
-    imageQuadDensity () {
-        /** max length is 256*256 + 256 ; around 64k */
-        let len = 0;
-
     }
 
     /**
@@ -320,17 +278,15 @@ export class BrotherLabeler {
 
     /**
      *
-     * @param inputBuffer Array of Buffers or Array of uint8[][][]
+     * @param inputBuffer Array of Buffers or Array of uint8[][][] ; 4th (outer / wrapping) array is for multiple labels.
      */
-    async print ( inputBuffer: Array<Array<Array<uint8>>> | Array<Buffer> ) {
+    async print ( inputBuffer: Array<Array<Array<Array<uint8>>>> ) {
+        // async print( inputBuffer: Array<Array<Array<Array<uint8>>>> | Array<Buffer> ) {
 
         let labeler = new BrotherLabeler();
 
         let labelLen = new Length( 0.75 );
 
-        let imageBuf73 = labeler.imageMode73Density( inputBuffer );
-        // let imageBuf73 = labeler.imageMode73Density(labeler.imageMode73DensityTestData());
-        console.log( `imageBuf73 is ${ imageBuf73.byteLength } bytes in length` );
 
         try {
             await this.printer.raw(
@@ -356,26 +312,48 @@ export class BrotherLabeler {
 
                         /**
                          * Set margin width
-                         * this is measured in 1/180th of an inch, with the smallest being 0.04"
+                         * default is 2mm (see page 38)
+                         * this is measured in 1/180th of an inch, with the smallest being 0.04" (~1mm)
                          * 7/180 = .0355, so I'm thinking this is the end.
                         **/
                         0x1b, 0x69, 0x6d, 7, 0,          // set margin to smallest possible (7)
 
-                        // 0x1b, 0x69, 0x43, 0b00000100,    // specify cut setting = chain print
+                        /** 
+                         * Specify cut
+                         *  see page 82
+                         * 
+                         * 0 = full cut
+                         * 1 = half cut
+                         * 2 = chain print
+                         * 3 = special tape
+                         * 4+  unused
+                         */
+                        0x1b, 0x69, 0x43, 0b00000100,    // specify cut setting = chain print
 
                         0x1b, 0x24, 0, 0,                // specify horizontal position
                     ] ),
                     // imageBuf,
                     // labeler.newline,
-                    imageBuf73,
+                        ...inputBuffer.map( (page, idx) => {
+                            let imageBuf73 = labeler.imageMode73Density( page );
+                            // let imageBuf73 = labeler.imageMode73Density(labeler.imageMode73DensityTestData());
+                            console.log( `Page # ${ idx } of ${ inputBuffer.length }: \n\timageBuf73 is ${ imageBuf73.byteLength } bytes in length\n\tTerminating with ${ idx === inputBuffer.length - 1 ? 'lastpage, cut: 0x0c' : 'intermediary page, new page: 0xff' }` );
+
+                            return Buffer.concat([
+                                imageBuf73,
+                                Buffer.from( [ 
+                                    // 0xFF if a new page is desired. This can auto-cut.
+                                    0x0c,
+                                    // also try with 0x0c only last
+                                    // idx === inputBuffer.length -1 ? 0x0c : 0xff
+                                ] )
+                            ]);
+                        })
 
                     // labeler.newline,
 
                     // imageBuf,
 
-                    Buffer.from( [
-                        // 0xFF if a new page is desired. This can auto-cut.
-                        0x0c ] )
                 ] ) );
             // console.log()
         } catch ( error ) {

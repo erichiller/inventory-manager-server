@@ -37,11 +37,9 @@ export const LabelDrawModal = withSaveLabel<LabelDrawModalProps>()(
             return this._label;
         }
 
-
-
         handleCancel = () => {
             this.props.visibleHandler( DISPLAY.HIDDEN );
-        };
+        }
         handleSave = () => {
             let label = this.context.getCurrentLabel();
 
@@ -63,7 +61,7 @@ export const LabelDrawModal = withSaveLabel<LabelDrawModalProps>()(
             } ).finally( () => {
                 this.props.visibleHandler( DISPLAY.HIDDEN );
             } );
-        };
+        }
 
         description = () => {
             const { item, label } = this.props;
@@ -84,7 +82,7 @@ export const LabelDrawModal = withSaveLabel<LabelDrawModalProps>()(
             if ( label ) {
                 return <span>{label.title}</span>;
             }
-        };
+        }
 
 
         render () {
@@ -115,7 +113,7 @@ export const LabelDrawModal = withSaveLabel<LabelDrawModalProps>()(
                         </Tooltip >,
 
                         <Tooltip key="print" placement="top" title="Send to Label Maker">
-                            <SendBufferButton type="primary" value="Print" onClick={this.context.startSendBuffer} buffer={this.context.shouldSendBuffer ? this.context.currentLabelToBuffer() : null} />
+                            <SendBufferButton type="primary" value="Print" onClick={this.context.startSendBuffer} buffer={this.context.shouldSendBuffer ? [ this.context.currentLabelToBuffer() ] : null} />
                         </Tooltip>,
 
                         <Tooltip key="addToPrintList" placement="top" title="Add to list for bulk printing later">

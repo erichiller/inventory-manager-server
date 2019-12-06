@@ -40,7 +40,7 @@ export const typeDefs = gql`
 
   type Mutation {
     uploadFiles(files: [Upload]!): [File]!
-    putLabelMonochromeBuffer(imageBuffer: [[[uint8]]]!): LabelMonochromeBuffer
+    putLabelMonochromeBuffer(imageBuffer: [[[[uint8]]]]!): [LabelMonochromeBuffer]
   }
 
   # type LabelMonochromeBuffer: [Int]

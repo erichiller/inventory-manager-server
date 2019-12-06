@@ -27,8 +27,7 @@ export default {
       }
     },
     putLabelMonochromeBuffer(obj: any, { imageBuffer }: {
-      // __typename: "LabelMonochromeBuffer",
-      imageBuffer: uint8[][][]
+      imageBuffer: uint8[][][][];
     }){
       console.log("received imageBuffer", imageBuffer, "\n received ", new Date().toISOString() );
       new BrotherLabeler().print( imageBuffer );
