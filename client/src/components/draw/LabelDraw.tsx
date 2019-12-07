@@ -135,12 +135,12 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
     declare context: React.ContextType<typeof PrintContext>;
 
 
-    constructor ( props: LabelDrawProps<T>) {
-        super(props);
+    constructor ( props: LabelDrawProps<T> ) {
+        super( props );
 
-        this.state.texts = this.props.label.content.texts;
-        this.state.qrs = this.props.label.content.qrs;
-        this.state.images = this.props.label.content.images;
+        this.state.texts = this.props.label.content.texts ?? [];
+        this.state.qrs = this.props.label.content.qrs ?? [];
+        this.state.images = this.props.label.content.images ?? [];
         // this.state.item = this.props.label.
     }
 
@@ -160,12 +160,12 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } else {
             this.setState( { displayContextMenuStatus: false } );
         }
-    }
+    };
 
     displayEditTextModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
         console.log( "displayEditTextModal() d=", d );
         if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
-            console.debug("d = HIDDEN");
+            console.debug( "d = HIDDEN" );
             this.setState( {
                 displayEditTextModalStatus: DISPLAY.HIDDEN
             } );
@@ -188,7 +188,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             console.debug( "d = (default) HIDDEN" );
             this.setState( { displayEditTextModalStatus: DISPLAY.HIDDEN } );
         }
-    }
+    };
 
     displayImageSelectModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
         console.log( "displayImageSelectModal()", d );
@@ -211,7 +211,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } else {
             this.setState( { displayImageSelectModalStatus: DISPLAY.HIDDEN } );
         }
-    }
+    };
     displayImageUploadModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
         console.log( "displayImageUploadModalStatus()", d );
         if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
@@ -234,7 +234,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } else {
             this.setState( { displayImageUploadModalStatus: DISPLAY.HIDDEN } );
         }
-    }
+    };
     displayQREditModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
         if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
             this.setState( {
@@ -256,7 +256,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } else {
             this.setState( { displayQREditModalStatus: DISPLAY.HIDDEN } );
         }
-    }
+    };
 
     updateLabelTexts = ( changedValue: ChangedValueTextI, labelText: LabelText ) => {
         console.log( "input for updateLabelTexts", changedValue, labelText );
@@ -295,18 +295,18 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         }
         console.log( "this.state.texts is now", this.state.texts, "pending", [ ...this.state.texts, labelText ] );
         // this.updateContext();
-    }
+    };
 
-    
-    shouldComponentUpdate (nextProps: LabelDrawProps<T>, nextState: LabelDrawState<T>): boolean {
+
+    shouldComponentUpdate ( nextProps: LabelDrawProps<T>, nextState: LabelDrawState<T> ): boolean {
         if ( !this.context.getCurrentLabel() ) {
             this.context.setCurrentLabel( this.exportLabel() );
         }
 
 
-        let updateContextResult = this.updateContext() ;
+        let updateContextResult = this.updateContext();
         let shouldUpdate = updateContextResult || nextState != this.state;
-        console.log( "shouldComponentUpdate",{ shouldUpdate } , { shouldUpdate }, { updateContextResult },  (nextState != this.state )  ); 
+        console.log( "shouldComponentUpdate", { shouldUpdate }, { shouldUpdate }, { updateContextResult }, ( nextState != this.state ) );
         return shouldUpdate;
         // return this.updateContext();
     }
@@ -315,14 +315,14 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
      * return value of `false` if the label was not exported.
      */
     updateContext = (): boolean => {
-        if ( ! this.context.getCurrentLabel() || this.exportLabel() !== this.context.getCurrentLabel() ) {
+        if ( !this.context.getCurrentLabel() || this.exportLabel() !== this.context.getCurrentLabel() ) {
             console.warn( "updateContext" );
             this.context.setCurrentLabel( this.exportLabel() );
             return true;
         }
-        console.log('do NOT updateContext');
+        console.log( 'do NOT updateContext' );
         return false;
-    }
+    };
 
     deleteLabelText = ( labelText: LabelText ): void => {
         this.state.texts.filter( ( text ) => {
@@ -331,11 +331,11 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             }
             return text;
         } );
-    }
+    };
 
     commitLabelText = ( labelText: LabelText ) => {
         this.setState( { uncommittedText: new LabelText() } );
-    }
+    };
 
 
     /**
@@ -380,11 +380,11 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             } );
         }
         console.log( "this.state.images is now", this.state.images, "pending", [ ...this.state.images, labelImage ] );
-    }
+    };
 
     commitLabelImage = ( labelImage: LabelImage ) => {
         this.setState( { uncommittedImage: new LabelImage() } );
-    }
+    };
 
 
     updateLabelQR = <T extends Item> ( changedValue: Partial<LabelQR<T>>, labelQR: LabelQR<T> ) => {
@@ -412,12 +412,12 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             } );
         }
         console.log( "this.state.qrs is now", this.state.qrs, "pending", [ ...this.state.qrs, labelQR ] );
-    }
+    };
 
 
     commitLableQR = <T extends {}> ( labelQR: LabelQR<T> ) => {
         this.setState( { uncommittedQR: new LabelQR() } );
-    }
+    };
 
     /*
      * type React.Ref<T> = ((instance: T) => void) | React.RefObject<T>
@@ -428,7 +428,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             console.log( "SETTING REF FOR CANVAS -- SAVED TO STATE" );
             this.setState( { stageRef: ref }, this.updateContext );
         }
-    }
+    };
 
     state: LabelDrawState<T> = {
         displayContextMenu: this.displayContextMenu,
@@ -489,20 +489,20 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         } );
         // console.trace();
         if ( this.canvas && this.width && this.height && this.imgData ) {
-            JSON.stringify(this.state.texts);
+            JSON.stringify( this.state.texts );
             console.log( "exportLabel() setValues" );
-                this.props.label.setValues( {
-                    ...( this.props.label ? { id: this.props.label.id } : {} ),
-                    ...{
-                        texts: this.state.texts,
-                        images: this.state.images,
-                        qrs: this.state.qrs,
-                        imgData: this.imgData,
-                        // dataURL: this.dataURL,
-                        width: this.width,
-                        height: this.height
-                    }
-                } );
+            this.props.label.setValues( {
+                ...( this.props.label ? { id: this.props.label.id } : {} ),
+                ...{
+                    texts: this.state.texts,
+                    images: this.state.images,
+                    qrs: this.state.qrs,
+                    imgData: this.imgData,
+                    // dataURL: this.dataURL,
+                    width: this.width,
+                    height: this.height
+                }
+            } );
         } else {
             console.warn( "exportLabel could not update values, failed value existance check." );
         }
@@ -512,7 +512,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
 
     render () {
         const { width, height, item } = this.props;
-        console.log("LabelDraw.render()");
+        console.log( "LabelDraw.render()" );
         return (
             <DrawContext.Provider
                 value={this.state}>
@@ -534,16 +534,16 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                         : null}
 
                     <Tooltip key="debug" placement="top" title="Send debug information to the console">
-                    <Button icon="medicine-box" style={{
-                        padding: 0,
-                        width: '24px',
-                        height: '24px',
-                        float: 'right',
-                        border: 0
-                    }} onClick={() => {
-                        console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
-                        console.log( this.context.currentLabelToBuffer() );
-                    }} id="DEBUG" />
+                        <Button icon="medicine-box" style={{
+                            padding: 0,
+                            width: '24px',
+                            height: '24px',
+                            float: 'right',
+                            border: 0
+                        }} onClick={() => {
+                            console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
+                            console.log( this.context.currentLabelToBuffer() );
+                        }} id="DEBUG" />
                     </Tooltip>
 
                     <LabelComponent>
@@ -552,39 +552,65 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                         {[ 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160 ].map( i => {
                             return (
                                 <React.Fragment>
-                                <Rect
-                                    key={"rect"+i}
-                                    x={30}
-                                    y={i}
-                                    width={10}
-                                    height={10}
-                                    fill={i % 20 == 0 || i === 0 ? "black" : "white"}
-                                />
-                                <Text
-                                    // textObject="1"
-                                    key={"test"+i}
-                                    text={i.toString()}
+                                    <Rect
+                                        key={"rect" + i}
+                                        x={30}
+                                        y={i}
+                                        width={10}
+                                        height={10}
+                                        fill={i % 20 == 0 || i === 0 ? "black" : "white"}
+                                    />
+                                    <Text
+                                        // textObject="1"
+                                        key={"test" + i}
+                                        text={i.toString()}
                                         fontSize={10}
                                         x={0}
                                         y={i}
-                                    fill="black"
-                                />
+                                        fill="black"
+                                    />
                                 </React.Fragment>
-                        )})}
+                            );
+                        } )}
                         {/* END DEBUG */}
                         {this.state.texts.map( labelText => {
                             console.log( "drawing new labelText", labelText );
                             return <Text
                                 textObject={labelText}
                                 key={labelText.id}
+                                name={labelText.id}
                                 text={nunjucks.renderString( labelText.text, item )}
                                 fontStyle={labelText.bold ? "bold" : labelText.italic ? "italic" : "normal"}
                                 textDecoration={labelText.underline ? "underlined" : ""}
                                 fontSize={labelText.fontSize}
                                 fill={labelText.text.includes( "{{" ) ? 'red' : 'black'}
                                 onContextMenu={this.state.displayContextMenu}
+                                x={labelText.x}
+                                y={labelText.y}
+                                scaleX={labelText.scaleX}
+                                scaleY={labelText.scaleY}
+                                rotation={labelText.rotation}
+                                onTransformEnd={( evt: KonvaEventObject<Event> ) => {
+                                    console.log( "(Text) TransformEnd:\n", evt );
+                                    ( evt.currentTarget.attrs.textObject as LabelText ).drawAttrs = {
+                                        x: evt.currentTarget.attrs.x,
+                                        y: evt.currentTarget.attrs.y,
+                                        scaleX: evt.currentTarget.attrs.scaleX,
+                                        scaleY: evt.currentTarget.attrs.scaleY,
+                                        rotation: evt.currentTarget.attrs.rotation
+                                    };
+                                }}
+                                onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
+                                    console.log( "(Text) DragEnd:", evt, "to:", [ evt.currentTarget.attrs.x, evt.currentTarget.attrs.y ] );
+                                    ( evt.currentTarget.attrs.textObject as LabelText ).drawAttrs = {
+                                        x: evt.currentTarget.attrs.x,
+                                        y: evt.currentTarget.attrs.y,
+                                        scaleX: evt.currentTarget.attrs.scaleX,
+                                        scaleY: evt.currentTarget.attrs.scaleY,
+                                        rotation: evt.currentTarget.attrs.rotation
+                                    };
+                                }}
                                 draggable />;
-
                         } )}
                         {this.state.images.map( labelImage => {
                             console.log( "drawing image", labelImage );
@@ -596,25 +622,79 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                             image.height = labelImage.height;
                             console.log( "proceeding with draw image", { src: image.src, width: image.width, height: image.height } );
                             return <Image
+                                imageObject={labelImage}
                                 key={labelImage.id}
+                                name={labelImage.id}
                                 image={image}
+                                x={labelImage.x}
+                                y={labelImage.y}
+                                scaleX={labelImage.scaleX}
+                                scaleY={labelImage.scaleY}
+                                rotation={labelImage.rotation}
+                                onTransformEnd={( evt: KonvaEventObject<Event> ) => {
+                                    console.log( "(Image) TransformEnd:\n", evt );
+                                    ( evt.currentTarget.attrs.imageObject as LabelImage ).drawAttrs = {
+                                        x: evt.currentTarget.attrs.x,
+                                        y: evt.currentTarget.attrs.y,
+                                        scaleX: evt.currentTarget.attrs.scaleX,
+                                        scaleY: evt.currentTarget.attrs.scaleY,
+                                        rotation: evt.currentTarget.attrs.rotation
+                                    };
+                                }}
+                                onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
+                                    console.log( "(Image) DragEnd:\n", evt );
+                                    ( evt.currentTarget.attrs.imageObject as LabelImage ).drawAttrs = {
+                                        x: evt.currentTarget.attrs.x,
+                                        y: evt.currentTarget.attrs.y,
+                                        scaleX: evt.currentTarget.attrs.scaleX,
+                                        scaleY: evt.currentTarget.attrs.scaleY,
+                                        rotation: evt.currentTarget.attrs.rotation
+                                    };
+                                }}
                                 draggable />;
                         } )}
-                        {this.state.qrs.map( LabelQR => {
-                            console.log( "drawing LabelQR<T>", LabelQR );
+                        {this.state.qrs.map( labelQR => {
+                            console.log( "drawing LabelQR<T>", labelQR );
                             return <Image
-                                key={LabelQR.id}
-                                image={LabelQR.canvasElement}
+                                qrObject={labelQR}
+                                key={labelQR.id}
+                                name={labelQR.id}
+                                x={labelQR.x}
+                                y={labelQR.y}
+                                scaleX={labelQR.scaleX}
+                                scaleY={labelQR.scaleY}
+                                rotation={labelQR.rotation}
+                                onTransformEnd={( evt: KonvaEventObject<Event> ) => {
+                                    console.log( "(QR) TransformEnd:\n", evt );
+                                    ( evt.currentTarget.attrs.qrObject as LabelQR<T> ).drawAttrs = {
+                                        x: evt.currentTarget.attrs.x,
+                                        y: evt.currentTarget.attrs.y,
+                                        scaleX: evt.currentTarget.attrs.scaleX,
+                                        scaleY: evt.currentTarget.attrs.scaleY,
+                                        rotation: evt.currentTarget.attrs.rotation
+                                    };
+                                }}
+                                onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
+                                    console.log( "(QR) DragEnd:\n", evt );
+                                    ( evt.currentTarget.attrs.qrObject as LabelQR<T> ).drawAttrs = {
+                                        x: evt.currentTarget.attrs.x,
+                                        y: evt.currentTarget.attrs.y,
+                                        scaleX: evt.currentTarget.attrs.scaleX,
+                                        scaleY: evt.currentTarget.attrs.scaleY,
+                                        rotation: evt.currentTarget.attrs.rotation
+                                    };
+                                }}
+                                image={labelQR.canvasElement}
                                 draggable />;
                         } )}
                     </LabelComponent>
                     <br />
-                    <div style={{ 
+                    <div style={{
                         paddingTop: 10,
                         textAlign: 'center',
-                        }}>
-                        <Button style={{margin: 5}} icon="font-size" onClick={this.displayEditTextModal} id="ADD_TEXT">Add Text</Button>
-                        <Button style={{margin: 5}} icon="qrcode" onClick={this.displayQREditModal} id="ADD_QR">Add QR</Button>
+                    }}>
+                        <Button style={{ margin: 5 }} icon="font-size" onClick={this.displayEditTextModal} id="ADD_TEXT">Add Text</Button>
+                        <Button style={{ margin: 5 }} icon="qrcode" onClick={this.displayQREditModal} id="ADD_QR">Add QR</Button>
                         <Button style={{ margin: 5 }} icon="picture" onClick={this.displayImageSelectModal} id="ADD_IMAGE">Add Image</Button>
                     </div>
                 </div>

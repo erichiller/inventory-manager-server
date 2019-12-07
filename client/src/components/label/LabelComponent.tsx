@@ -1,14 +1,24 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Stage, Layer } from 'react-konva';
 import { Spin } from "antd";
 
 import { GetPrinterStatusQuery, GetPrinterStatusDocument } from "../../types/graphql";
 import { DrawContext } from "../draw/LabelDraw";
+import e from 'cors';
+import { KonvaEventObject } from 'konva/types/Node';
+import { DrawTransformHandler } from '../draw/DrawTransformHandler';
+
+interface LabelComponentState {
+    selectedShapeName: string;
+}
 
 export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
     const { data } = useQuery<GetPrinterStatusQuery>( GetPrinterStatusDocument );
+    const [ state, setState ] = useState<LabelComponentState>({
+        selectedShapeName: ""
+    });
     const dpi = 360;
     const margin = Math.floor( ( 14 / 180 ) * dpi ); // inches of margin to subtract
     // if ( loading ) return <Loading />;
@@ -69,6 +79,11 @@ export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
                     }}>{widthInches}" ({width}px)</div>
                     <Stage
                         onMouseEnter={() => displayContextMenu( false )}
+                        onClick={ (e: KonvaEventObject<MouseEvent>) => {
+                            setState( {
+                                selectedShapeName: e.target.name()
+                            });
+                        }}
                         width={width}
                         style={{
                             border: '1px solid #D3D3D3',
@@ -83,6 +98,7 @@ export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
                         <Layer>
                             {/* <Rect width={4} height={4} x={2}  y={6} fill="red" /> */}
                             {children}
+                            <DrawTransformHandler selectedShapeName={state.selectedShapeName} />
                         </Layer>
                     </Stage>
                     <div style={{

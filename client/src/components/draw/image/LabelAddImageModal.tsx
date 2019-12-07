@@ -130,10 +130,11 @@ export default withGetIcon<LabelAddImageProps, LabelAddImageState>()(
                             width={420}
                         >
                             <Select
-                                style={{ width: 370 }}
+                                style={{ width: 370, height: 50 }}
                                 placeholder="Select an Existing Image"
                                 loading={loading}
                                 onChange={this.onChange}
+                                id="image-select"
                             //                     dropdownRender={menu => (
                             //                         <div>
                             //                             {menu}
