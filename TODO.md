@@ -7,7 +7,7 @@
   * [ ] button to directly add label to *Print List*
 * [ ] Filter / search on table
 * [ ] Generalize code (not fixed to `HardwareFasteners`)
-* [ ] Save Labels
+* [x] Save Labels
 * [x] Refetch Query
 * [x] Fix image upload button
 * [x] Templating of label draw text
@@ -16,7 +16,7 @@
   * [x] In `<Select>` during dropdown
   * [x] In `<Select>` when image is selected ; most likely just need to style it to a larger size.
 * [x] **FIX** printer buffer is now all zeroes
-* [ ] **FIX** `x` and `y` are not saved when the label constituents are serialized.
+* [x] **FIX** `x` and `y` are not saved when the label constituents are serialized.
 * [x] **FIX** italic output on some prints; RESULT= was a rounding error
 * [x] Ensure multiple "rows" print properly.
 * [x] Finish Add to Print List and Print List submenu
@@ -26,3 +26,7 @@
 * [ ] Ensure multiple labels (Chain Printing) print properly.
 * [ ] Ensure setting label length statically will also work. (Or calculate & display in UI)
 * [x] Remove extraneous `Print` button in `LabelDraw.tsx` (this should be in `LabelDrawModal`)
+* [ ] Saved Labels ; editing
+* [x] Transforms , resize especially 
+  * [x] Save Transforms
+* [ ] **FIX** QR Code adding _"QR code without item is currently not supported."_

@@ -163,18 +163,36 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
     }
 }
 
-
-class LabelConstituent {
+class DrawAttrs {
     id: UUIDStringT;
     x: Integer;
     y: Integer;
+    /** from Transform - default 1.0 */
+    scaleX: number;
+    /** from Transform - default 1.0 */
+    scaleY: number;
+    /** from Transform - in decimal degrees, default 0.0 */
+    rotation: number;
+
+}
+
+
+class LabelConstituent extends DrawAttrs {
     constructor ( options?: Partial<LabelConstituent> ) {
+        super();
         if ( options && options.id ) {
             this.id = options.id;
         }
         this.id = UUIDv4();
         this.x = 0;
         this.y = 0;
+        this.scaleX     = 1.0; 
+        this.scaleY     = 1.0;
+        this.rotation   = 0.0;
+    }
+
+    set drawAttrs(newAttrs: Partial<DrawAttrs>){
+        Object.entries(newAttrs).forEach( ([k, v]) => this[k] = v );
     }
 
 }
