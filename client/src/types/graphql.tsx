@@ -3,6 +3,7 @@ import * as ApolloReactCommon from '@apollo/react-common';
 import * as React from 'react';
 import * as ApolloReactComponents from '@apollo/react-components';
 import * as ApolloReactHoc from '@apollo/react-hoc';
+import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
@@ -4414,6 +4415,29 @@ export type SaveLabelMutation = (
   )> }
 );
 
+export type EditLabelMutationVariables = {
+  content?: Maybe<Scalars['jsonb']>,
+  height?: Maybe<Scalars['Int']>,
+  id?: Maybe<Scalars['uuid']>,
+  is_template?: Maybe<Scalars['Boolean']>,
+  item_id?: Maybe<Scalars['Int']>,
+  title?: Maybe<Scalars['String']>,
+  width?: Maybe<Scalars['Int']>
+};
+
+
+export type EditLabelMutation = (
+  { __typename: 'mutation_root' }
+  & { update_label: Maybe<(
+    { __typename?: 'label_mutation_response' }
+    & Pick<LabelMutationResponse, 'affected_rows'>
+    & { returning: Array<(
+      { __typename?: 'label' }
+      & Pick<Label, 'id'>
+    )> }
+  )> }
+);
+
 export type SendBufferMutationVariables = {
   buffer: Array<Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>>
 };
@@ -4453,6 +4477,32 @@ export function withInsertIcon<TProps, TChildProps = {}>(operationOptions?: Apol
       ...operationOptions
     });
 };
+
+/**
+ * __useInsertIconMutation__
+ *
+ * To run a mutation, you first call `useInsertIconMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertIconMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertIconMutation, { data, loading, error }] = useInsertIconMutation({
+ *   variables: {
+ *      mimeData: // value for 'mimeData'
+ *      description: // value for 'description'
+ *      id: // value for 'id'
+ *      label: // value for 'label'
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function useInsertIconMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertIconMutation, InsertIconMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertIconMutation, InsertIconMutationVariables>(InsertIconDocument, baseOptions);
+      }
+export type InsertIconMutationHookResult = ReturnType<typeof useInsertIconMutation>;
 export type InsertIconMutationResult = ApolloReactCommon.MutationResult<InsertIconMutation>;
 export type InsertIconMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertIconMutation, InsertIconMutationVariables>;
 export const GetIconDocument = gql`
@@ -4483,6 +4533,30 @@ export function withGetIcon<TProps, TChildProps = {}>(operationOptions?: ApolloR
       ...operationOptions
     });
 };
+
+/**
+ * __useGetIconQuery__
+ *
+ * To run a query within a React component, call `useGetIconQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIconQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIconQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetIconQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
+      }
+export function useGetIconLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
+        }
+export type GetIconQueryHookResult = ReturnType<typeof useGetIconQuery>;
+export type GetIconLazyQueryHookResult = ReturnType<typeof useGetIconLazyQuery>;
 export type GetIconQueryResult = ApolloReactCommon.QueryResult<GetIconQuery, GetIconQueryVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
@@ -4508,6 +4582,30 @@ export function withGetPrinterStatus<TProps, TChildProps = {}>(operationOptions?
       ...operationOptions
     });
 };
+
+/**
+ * __useGetPrinterStatusQuery__
+ *
+ * To run a query within a React component, call `useGetPrinterStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPrinterStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPrinterStatusQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPrinterStatusQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>(GetPrinterStatusDocument, baseOptions);
+      }
+export function useGetPrinterStatusLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>(GetPrinterStatusDocument, baseOptions);
+        }
+export type GetPrinterStatusQueryHookResult = ReturnType<typeof useGetPrinterStatusQuery>;
+export type GetPrinterStatusLazyQueryHookResult = ReturnType<typeof useGetPrinterStatusLazyQuery>;
 export type GetPrinterStatusQueryResult = ApolloReactCommon.QueryResult<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>;
 export const ItemHardwareFastenerBoltDocument = gql`
     query item_hardware_fastener_bolt {
@@ -4537,6 +4635,30 @@ export function withItemHardwareFastenerBolt<TProps, TChildProps = {}>(operation
       ...operationOptions
     });
 };
+
+/**
+ * __useItemHardwareFastenerBoltQuery__
+ *
+ * To run a query within a React component, call `useItemHardwareFastenerBoltQuery` and pass it any options that fit your needs.
+ * When your component renders, `useItemHardwareFastenerBoltQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useItemHardwareFastenerBoltQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useItemHardwareFastenerBoltQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>) {
+        return ApolloReactHooks.useQuery<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>(ItemHardwareFastenerBoltDocument, baseOptions);
+      }
+export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>(ItemHardwareFastenerBoltDocument, baseOptions);
+        }
+export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
+export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
 export const GetLabelsDocument = gql`
     query GetLabels {
@@ -4571,6 +4693,30 @@ export function withGetLabels<TProps, TChildProps = {}>(operationOptions?: Apoll
       ...operationOptions
     });
 };
+
+/**
+ * __useGetLabelsQuery__
+ *
+ * To run a query within a React component, call `useGetLabelsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLabelsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLabelsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetLabelsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLabelsQuery, GetLabelsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLabelsQuery, GetLabelsQueryVariables>(GetLabelsDocument, baseOptions);
+      }
+export function useGetLabelsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLabelsQuery, GetLabelsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLabelsQuery, GetLabelsQueryVariables>(GetLabelsDocument, baseOptions);
+        }
+export type GetLabelsQueryHookResult = ReturnType<typeof useGetLabelsQuery>;
+export type GetLabelsLazyQueryHookResult = ReturnType<typeof useGetLabelsLazyQuery>;
 export type GetLabelsQueryResult = ApolloReactCommon.QueryResult<GetLabelsQuery, GetLabelsQueryVariables>;
 export const GetLabelByIdDocument = gql`
     query GetLabelById($label_id: uuid) {
@@ -4605,6 +4751,31 @@ export function withGetLabelById<TProps, TChildProps = {}>(operationOptions?: Ap
       ...operationOptions
     });
 };
+
+/**
+ * __useGetLabelByIdQuery__
+ *
+ * To run a query within a React component, call `useGetLabelByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLabelByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLabelByIdQuery({
+ *   variables: {
+ *      label_id: // value for 'label_id'
+ *   },
+ * });
+ */
+export function useGetLabelByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLabelByIdQuery, GetLabelByIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLabelByIdQuery, GetLabelByIdQueryVariables>(GetLabelByIdDocument, baseOptions);
+      }
+export function useGetLabelByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLabelByIdQuery, GetLabelByIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLabelByIdQuery, GetLabelByIdQueryVariables>(GetLabelByIdDocument, baseOptions);
+        }
+export type GetLabelByIdQueryHookResult = ReturnType<typeof useGetLabelByIdQuery>;
+export type GetLabelByIdLazyQueryHookResult = ReturnType<typeof useGetLabelByIdLazyQuery>;
 export type GetLabelByIdQueryResult = ApolloReactCommon.QueryResult<GetLabelByIdQuery, GetLabelByIdQueryVariables>;
 export const GetLabelByItemIdDocument = gql`
     query GetLabelByItemId($item_id: Int) {
@@ -4639,6 +4810,31 @@ export function withGetLabelByItemId<TProps, TChildProps = {}>(operationOptions?
       ...operationOptions
     });
 };
+
+/**
+ * __useGetLabelByItemIdQuery__
+ *
+ * To run a query within a React component, call `useGetLabelByItemIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLabelByItemIdQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLabelByItemIdQuery({
+ *   variables: {
+ *      item_id: // value for 'item_id'
+ *   },
+ * });
+ */
+export function useGetLabelByItemIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>(GetLabelByItemIdDocument, baseOptions);
+      }
+export function useGetLabelByItemIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>(GetLabelByItemIdDocument, baseOptions);
+        }
+export type GetLabelByItemIdQueryHookResult = ReturnType<typeof useGetLabelByItemIdQuery>;
+export type GetLabelByItemIdLazyQueryHookResult = ReturnType<typeof useGetLabelByItemIdLazyQuery>;
 export type GetLabelByItemIdQueryResult = ApolloReactCommon.QueryResult<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>;
 export const GetTemplatesDocument = gql`
     query GetTemplates {
@@ -4673,6 +4869,30 @@ export function withGetTemplates<TProps, TChildProps = {}>(operationOptions?: Ap
       ...operationOptions
     });
 };
+
+/**
+ * __useGetTemplatesQuery__
+ *
+ * To run a query within a React component, call `useGetTemplatesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTemplatesQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTemplatesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTemplatesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetTemplatesQuery, GetTemplatesQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetTemplatesQuery, GetTemplatesQueryVariables>(GetTemplatesDocument, baseOptions);
+      }
+export function useGetTemplatesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetTemplatesQuery, GetTemplatesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetTemplatesQuery, GetTemplatesQueryVariables>(GetTemplatesDocument, baseOptions);
+        }
+export type GetTemplatesQueryHookResult = ReturnType<typeof useGetTemplatesQuery>;
+export type GetTemplatesLazyQueryHookResult = ReturnType<typeof useGetTemplatesLazyQuery>;
 export type GetTemplatesQueryResult = ApolloReactCommon.QueryResult<GetTemplatesQuery, GetTemplatesQueryVariables>;
 export const SaveLabelDocument = gql`
     mutation SaveLabel($content: jsonb, $height: Int, $id: uuid, $is_template: Boolean, $item_id: Int, $title: String, $width: Int) {
@@ -4702,8 +4922,95 @@ export function withSaveLabel<TProps, TChildProps = {}>(operationOptions?: Apoll
       ...operationOptions
     });
 };
+
+/**
+ * __useSaveLabelMutation__
+ *
+ * To run a mutation, you first call `useSaveLabelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSaveLabelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [saveLabelMutation, { data, loading, error }] = useSaveLabelMutation({
+ *   variables: {
+ *      content: // value for 'content'
+ *      height: // value for 'height'
+ *      id: // value for 'id'
+ *      is_template: // value for 'is_template'
+ *      item_id: // value for 'item_id'
+ *      title: // value for 'title'
+ *      width: // value for 'width'
+ *   },
+ * });
+ */
+export function useSaveLabelMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SaveLabelMutation, SaveLabelMutationVariables>) {
+        return ApolloReactHooks.useMutation<SaveLabelMutation, SaveLabelMutationVariables>(SaveLabelDocument, baseOptions);
+      }
+export type SaveLabelMutationHookResult = ReturnType<typeof useSaveLabelMutation>;
 export type SaveLabelMutationResult = ApolloReactCommon.MutationResult<SaveLabelMutation>;
 export type SaveLabelMutationOptions = ApolloReactCommon.BaseMutationOptions<SaveLabelMutation, SaveLabelMutationVariables>;
+export const EditLabelDocument = gql`
+    mutation EditLabel($content: jsonb, $height: Int, $id: uuid, $is_template: Boolean, $item_id: Int, $title: String, $width: Int) {
+  __typename
+  update_label(where: {id: {_eq: $id}}, _set: {content: $content, height: $height, is_template: $is_template, item_id: $item_id, title: $title, width: $width}) {
+    returning {
+      id
+    }
+    affected_rows
+  }
+}
+    `;
+export type EditLabelMutationFn = ApolloReactCommon.MutationFunction<EditLabelMutation, EditLabelMutationVariables>;
+export type EditLabelComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<EditLabelMutation, EditLabelMutationVariables>, 'mutation'>;
+
+    export const EditLabelComponent = (props: EditLabelComponentProps) => (
+      <ApolloReactComponents.Mutation<EditLabelMutation, EditLabelMutationVariables> mutation={EditLabelDocument} {...props} />
+    );
+    
+export type EditLabelProps<TChildProps = {}> = ApolloReactHoc.MutateProps<EditLabelMutation, EditLabelMutationVariables> & TChildProps;
+export function withEditLabel<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  EditLabelMutation,
+  EditLabelMutationVariables,
+  EditLabelProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, EditLabelMutation, EditLabelMutationVariables, EditLabelProps<TChildProps>>(EditLabelDocument, {
+      alias: 'editLabel',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useEditLabelMutation__
+ *
+ * To run a mutation, you first call `useEditLabelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditLabelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editLabelMutation, { data, loading, error }] = useEditLabelMutation({
+ *   variables: {
+ *      content: // value for 'content'
+ *      height: // value for 'height'
+ *      id: // value for 'id'
+ *      is_template: // value for 'is_template'
+ *      item_id: // value for 'item_id'
+ *      title: // value for 'title'
+ *      width: // value for 'width'
+ *   },
+ * });
+ */
+export function useEditLabelMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditLabelMutation, EditLabelMutationVariables>) {
+        return ApolloReactHooks.useMutation<EditLabelMutation, EditLabelMutationVariables>(EditLabelDocument, baseOptions);
+      }
+export type EditLabelMutationHookResult = ReturnType<typeof useEditLabelMutation>;
+export type EditLabelMutationResult = ApolloReactCommon.MutationResult<EditLabelMutation>;
+export type EditLabelMutationOptions = ApolloReactCommon.BaseMutationOptions<EditLabelMutation, EditLabelMutationVariables>;
 export const SendBufferDocument = gql`
     mutation SendBuffer($buffer: [[[[uint8]]]]!) {
   putLabelMonochromeBuffer(imageBuffer: $buffer) {
@@ -4729,6 +5036,28 @@ export function withSendBuffer<TProps, TChildProps = {}>(operationOptions?: Apol
       ...operationOptions
     });
 };
+
+/**
+ * __useSendBufferMutation__
+ *
+ * To run a mutation, you first call `useSendBufferMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendBufferMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendBufferMutation, { data, loading, error }] = useSendBufferMutation({
+ *   variables: {
+ *      buffer: // value for 'buffer'
+ *   },
+ * });
+ */
+export function useSendBufferMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SendBufferMutation, SendBufferMutationVariables>) {
+        return ApolloReactHooks.useMutation<SendBufferMutation, SendBufferMutationVariables>(SendBufferDocument, baseOptions);
+      }
+export type SendBufferMutationHookResult = ReturnType<typeof useSendBufferMutation>;
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2019-12-01T07:50:00-07:00
+// graphql typescript defs generated on 2019-12-08T18:09:06-07:00

@@ -96,11 +96,11 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
             if ( props ) {
                 if ( 'content' in props ) {
                     this.content = props.content;
-                    console.log( "LabelExport - 'content' in props", this.content );
+                    console.log( "LabelExport - 'content' in props", this.content );  /*******   HERE !!!!!!!!!!!!!!!!!!! *****/
                 } else if ( props.texts ) {
                     console.log( "LabelExport - 'texts' in props" );
                     this.content = {
-                        texts: props.texts,
+                        texts: props.texts.map(text => new LabelText(text)),
                         images: props.images,
                         qrs: props.qrs
                     };
@@ -191,8 +191,20 @@ class LabelConstituent extends DrawAttrs {
         this.rotation   = 0.0;
     }
 
+    get drawAttrs(){ return undefined; }
     set drawAttrs(newAttrs: Partial<DrawAttrs>){
-        Object.entries(newAttrs).forEach( ([k, v]) => this[k] = v );
+        Object.entries(newAttrs).forEach( ([k, v]) => {
+            console.log(`drawAttrs ${k} = ${v}`);
+            this[k] = v;
+        });
+    }
+
+    setDrawAttrs ( newAttrs: Partial<DrawAttrs> ) {
+        console.log("in setDrawAttrs()", newAttrs);
+        Object.entries( newAttrs ).forEach( ( [ k, v ] ) => {
+            console.log( `drawAttrs ${ k } = ${ v }` );
+            this[ k ] = v;
+        } );
     }
 
 }

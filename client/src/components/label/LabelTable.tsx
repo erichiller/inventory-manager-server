@@ -1,5 +1,5 @@
 import { Table, Divider } from 'antd';
-import React = require( 'react' );
+import * as React from 'react';
 import { ColumnProps } from 'antd/es/table';
 import { withGetLabels, GetLabelsProps, LabelSelectColumn, Label, GetLabelsQueryResult, GetLabelsQuery } from '../../types/graphql';
 import { LabelDrawModal } from './../draw/LabelDrawModal';
