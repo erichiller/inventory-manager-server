@@ -4,6 +4,15 @@ schema:
           headers:
               X-HASURA-ACCESS-KEY: achoo
 config:
+    # gqlImport: "@apollo/client#gql"
+    # apolloReactCommonImportFrom: "@apollo/client"
+    # apolloReactComponentsImportFrom: "@apollo/react-components"
+    # apolloReactHocImportFrom: "@apollo/react-hoc"
+    # apolloReactHooksImportFrom: "@apollo/client"
+    apolloReactCommonImportFrom: "@apollo/react-common"
+    apolloReactComponentsImportFrom: "@apollo/react-components"
+    apolloReactHocImportFrom: "@apollo/react-hoc"
+    apolloReactHooksImportFrom: "@apollo/react-hooks"
     transformUnderscore: true
     namingConvention:
         typeNames: change-case#pascalCase
@@ -13,8 +22,10 @@ config:
     withComponent: true
     withResultType: true
     dedupeOperationSuffix: true
-    # withComponent: false
+    withHooks: true
+    # withMutationFn: true
     reactApolloVersion: 3
+    # reactApolloVersion: 2
 generates:
     ./src/types/graphql.tsx:
         # documents: ./src/**/*.tsx

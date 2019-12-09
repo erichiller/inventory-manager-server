@@ -30,3 +30,6 @@
 * [x] Transforms , resize especially 
   * [x] Save Transforms
 * [ ] **FIX** QR Code adding _"QR code without item is currently not supported."_
+* [ ] _maybe:_ Undo / Redo → <https://konvajs.org/docs/react/Undo-Redo.html>
+* [ ] Ability to **DELETE** components from context menu
+* [ ] Add `LICENSE.md`

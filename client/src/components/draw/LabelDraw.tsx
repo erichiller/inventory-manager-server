@@ -20,8 +20,6 @@ import { NewImageUploadModal } from './image/NewImageUploadModal';
 import { PrintContext } from '../print/PrintContextHandler';
 import { LabelComponent } from '../label/LabelComponent';
 import { Stage, Text, Image, Rect } from 'react-konva';
-import { canvasToBuffer, PixelMap } from '../../lib/canvasToBuffer';
-import { DebugRectangles } from './DebugRectangles';
 
 
 
@@ -591,24 +589,24 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                                 scaleY={labelText.scaleY}
                                 rotation={labelText.rotation}
                                 onTransformEnd={( evt: KonvaEventObject<Event> ) => {
-                                    console.log( "(Text) TransformEnd:\n", evt );
-                                    ( evt.currentTarget.attrs.textObject as LabelText ).drawAttrs = {
+                                    console.log( "(Text) TransformEnd:\n", evt, "attrs", evt.currentTarget.attrs );
+                                    ( evt.currentTarget.attrs.textObject as LabelText ).setDrawAttrs({
                                         x: evt.currentTarget.attrs.x,
                                         y: evt.currentTarget.attrs.y,
                                         scaleX: evt.currentTarget.attrs.scaleX,
                                         scaleY: evt.currentTarget.attrs.scaleY,
                                         rotation: evt.currentTarget.attrs.rotation
-                                    };
+                                    });
                                 }}
                                 onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
                                     console.log( "(Text) DragEnd:", evt, "to:", [ evt.currentTarget.attrs.x, evt.currentTarget.attrs.y ] );
-                                    ( evt.currentTarget.attrs.textObject as LabelText ).drawAttrs = {
+                                    ( evt.currentTarget.attrs.textObject as LabelText ).setDrawAttrs({
                                         x: evt.currentTarget.attrs.x,
                                         y: evt.currentTarget.attrs.y,
                                         scaleX: evt.currentTarget.attrs.scaleX,
                                         scaleY: evt.currentTarget.attrs.scaleY,
                                         rotation: evt.currentTarget.attrs.rotation
-                                    };
+                                    });
                                 }}
                                 draggable />;
                         } )}
@@ -632,24 +630,25 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                                 scaleY={labelImage.scaleY}
                                 rotation={labelImage.rotation}
                                 onTransformEnd={( evt: KonvaEventObject<Event> ) => {
-                                    console.log( "(Image) TransformEnd:\n", evt );
-                                    ( evt.currentTarget.attrs.imageObject as LabelImage ).drawAttrs = {
+                                    console.log( "(Image) TransformEnd:\n", evt, "attrs", evt.currentTarget.attrs );
+
+                                    ( evt.currentTarget.attrs.imageObject as LabelImage ).setDrawAttrs({
                                         x: evt.currentTarget.attrs.x,
                                         y: evt.currentTarget.attrs.y,
                                         scaleX: evt.currentTarget.attrs.scaleX,
                                         scaleY: evt.currentTarget.attrs.scaleY,
                                         rotation: evt.currentTarget.attrs.rotation
-                                    };
+                                    });
                                 }}
                                 onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
-                                    console.log( "(Image) DragEnd:\n", evt );
-                                    ( evt.currentTarget.attrs.imageObject as LabelImage ).drawAttrs = {
+                                    console.log( "(Image) DragEnd:\n", evt, "attrs", evt.currentTarget.attrs );
+                                    ( evt.currentTarget.attrs.imageObject as LabelImage ).setDrawAttrs({
                                         x: evt.currentTarget.attrs.x,
                                         y: evt.currentTarget.attrs.y,
                                         scaleX: evt.currentTarget.attrs.scaleX,
                                         scaleY: evt.currentTarget.attrs.scaleY,
                                         rotation: evt.currentTarget.attrs.rotation
-                                    };
+                                    });
                                 }}
                                 draggable />;
                         } )}
