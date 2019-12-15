@@ -51,7 +51,8 @@ interface DrawContextMenuProps {
 export class DrawContextMenu extends React.Component<DrawContextMenuProps> {
 
     onClick = ({ key }) => {
-        message.info(`Click detected on item ${key}`);
+
+        // message.info(`Click detected on item ${key}`);
     };
 
 
@@ -79,11 +80,11 @@ export class DrawContextMenu extends React.Component<DrawContextMenuProps> {
             // position,
             ...passThroughProps
         } = this.props;
-        console.log("DrawContextMenu render()")
+        console.log("DrawContextMenu render()", this.props)
         return (
             <DrawContext.Consumer>
                 {
-                    ({ displayContextMenuPosition, contextMenuLabelText }) => {
+                    ( { displayContextMenuPosition, deleteLabelConstituent, contextMenuLabelConstituent, displayContextMenu}) => {
                         // { this.state.selectedFeature = selectedFeature }
                         // { this.state.visible = selectedFeature ? true : false }
                         if (!(displayContextMenuPosition instanceof Array)){
@@ -106,9 +107,12 @@ export class DrawContextMenu extends React.Component<DrawContextMenuProps> {
                                     }}
                                 >
 
-                                    <Menu.Item key="1">Delete</Menu.Item>
-                                    <Menu.Item key="2">2nd memu item</Menu.Item>
-                                    <Menu.Item key="3">3rd menu item</Menu.Item>
+                                    <Menu.Item key="delete" onClick={() => {
+                                        message.info(`Click detected on DELETE in context menu`);
+                                        console.log( "DELETING LABEL CONSTITUENT", contextMenuLabelConstituent);
+                                        deleteLabelConstituent( contextMenuLabelConstituent );
+                                        displayContextMenu(false);
+                                    }}>Delete</Menu.Item>
                                 </Menu>
                             </Animate>
                         )
