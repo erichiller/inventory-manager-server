@@ -3,6 +3,11 @@
         "tslint-etc"
     ],
     "rules": {
-        "no-unused-declaration": true
+        "no-unused-declaration": true,
+        // "semicolons": [
+        //     true,
+        //     "always",
+        //     "strict-bound-class-methods"
+        // ]
     }
 }
