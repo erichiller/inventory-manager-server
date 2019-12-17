@@ -47,7 +47,12 @@ export default class SendBufferButton extends React.Component<SendBufferButtonPr
                     if ( data ) {
                         console.log( "SendBuffer data received", data );
                     }
-                    return < Button {...this.props} icon="printer" onClick={() => onClick( true )} id={value} >{value}<PageSpin spinning={this.props.buffer != null} /></Button>;
+                    return < Button {...this.props} 
+                                icon="printer" 
+                                onClick={() => onClick( true )} id={value} >
+                                    {value}
+                                    <PageSpin spinning={this.props.buffer != null} />
+                            </Button>;
                 }}
             </SendBufferComponent >
 

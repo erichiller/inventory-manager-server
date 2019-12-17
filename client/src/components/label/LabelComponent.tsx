@@ -16,9 +16,9 @@ interface LabelComponentState {
 
 export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
     const { data } = useQuery<GetPrinterStatusQuery>( GetPrinterStatusDocument );
-    const [ state, setState ] = useState<LabelComponentState>({
+    const [ state, setState ] = useState<LabelComponentState>( {
         selectedShapeName: ""
-    });
+    } );
     const dpi = 360;
     const margin = Math.floor( ( 14 / 180 ) * dpi ); // inches of margin to subtract
     // if ( loading ) return <Loading />;
@@ -31,7 +31,12 @@ export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
         // height is inches * 360
         let labelInchesHeight = parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType )[ 0 ] );
         let height = Math.floor( ( labelInchesHeight * dpi ) - margin );
-        height = 130;
+        /** DEBUG - KILL 
+         * 150 = 2 pages
+         * 144 = 1 page
+         * 145 = 
+        */
+        height = 145;
 
 
         console.log( "height",
@@ -45,7 +50,7 @@ export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
 
         // TODO: allow the user to set the width
         let widthInches = 0.75;
-        let width = Math.floor(widthInches * dpi);
+        let width = Math.floor( widthInches * dpi );
 
         // DEBUG OVERRIDES
         // 242      | works         | GOOD
@@ -79,10 +84,10 @@ export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
                     }}>{widthInches}" ({width}px)</div>
                     <Stage
                         onMouseEnter={() => displayContextMenu( false )}
-                        onClick={ (e: KonvaEventObject<MouseEvent>) => {
+                        onClick={( e: KonvaEventObject<MouseEvent> ) => {
                             setState( {
                                 selectedShapeName: e.target.name()
-                            });
+                            } );
                         }}
                         width={width}
                         style={{
@@ -108,7 +113,6 @@ export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
                         width: height,
                         right: 20,
                         // left: width,
-
                         transform: 'rotate( 270deg )',
                         transformOrigin: 'left top 0'
                     }}>{labelInchesHeight}" ({height}px)</div>
@@ -121,10 +125,10 @@ export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
                         // transform: 'rotate( 90deg )',
                         // transformOrigin: 'left top 0'
                     }}><i>Current Label Maker Tape Width: </i>{widthInches}"</div>
-                </div>
+                </div>;
 
             }}
         </DrawContext.Consumer>;
     }
     return <Spin spinning={true} />;
-}
+};

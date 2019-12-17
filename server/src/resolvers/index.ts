@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as mkdirp from 'mkdirp';
 import * as shortid from 'shortid';
-import uint8_resolver from '../schema/type_uint8'
-import {uint8} from '../schema/type_uint8'
+import uint8_resolver from '../schema/type_uint8';
+import {uint8} from '../schema/type_uint8';
 import { BrotherLabeler, PrinterStatus } from '../lib/epson';
 import { HttpLink } from 'apollo-link-http/lib/httpLink';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -31,10 +31,11 @@ export default {
     }){
       console.log("received imageBuffer", imageBuffer, "\n received ", new Date().toISOString() );
       new BrotherLabeler().print( imageBuffer );
-      return {
-        // __typename: "LabelMonochromeBuffer",
-        imageBuffer: imageBuffer,
-      };
+    //   return {
+    //     // __typename: "LabelMonochromeBuffer",
+    //     imageBuffer: imageBuffer,
+    //   };
+        return imageBuffer;
     }
   },
   Query: {
@@ -128,4 +129,4 @@ const saveFile = (uploadFileStream: any, location: string): Promise<any> => {
 
       })
   );
-}
+};

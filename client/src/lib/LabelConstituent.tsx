@@ -121,6 +121,7 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
      * @returns self
      */
     setValues ( values: LabelExportConstructorProps<T> ): LabelExport<T> {
+        console.log( "LabelConstituent.setValues ( #LabelComponent )\n********************\n", { ...values, ...{ imgData_width: values.imgData.width, imgData_height: values.imgData.height } }, "\n********************\n");
         this.content = {
             texts: values.texts,
             images: values.images,
@@ -138,10 +139,25 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
      */
     get canvas (): HTMLCanvasElement {
         let canvas = document.createElement( 'canvas' );
+        console.log( `LabelConstituent.canvas (getter) initial canvas create ( #LabelComponent )\n********************\n`,
+                     `\t imgData_width:     ${ this.imgData.width }\n`,
+                     `\t imgData_height:    ${ this.imgData.height }\n`, 
+                     `\t canvas_width:      ${ canvas.width }\n`,
+                     `\t canvas_height:     ${ canvas.height }\n`,
+                     `********************\n` );
+
         let ctx = canvas.getContext( '2d' );
         if ( this.imgData instanceof ImageData ) {
+            canvas.width = this.imgData.width;
+            canvas.height = this.imgData.height;
             ctx.putImageData( this.imgData, 0, 0 );
         } else { console.warn( "can not create canvas without image data" ); console.trace(); }
+        console.log( `LabelConstituent.canvas (getter) after fill canvas create ( #LabelComponent )\n********************\n`,
+            `\t imgData_width:     ${ this.imgData.width }\n`,
+            `\t imgData_height:    ${ this.imgData.height }\n`,
+            `\t canvas_width:      ${ canvas.width }\n`,
+            `\t canvas_height:     ${ canvas.height }\n`,
+            `********************\n` );
         return canvas;
     }
 
@@ -207,6 +223,10 @@ class LabelConstituent extends DrawAttrs {
         } );
     }
 
+    static is ( input: any ): input is LabelConstituent {
+        return ( "x" in input ) && ( "y" in input ) && ( "scaleX" in input ) && ( "scaleY" in input ) && ( "rotation" in input );
+    }
+
 }
 
 
@@ -264,6 +284,10 @@ export class LabelText extends LabelConstituent {
         console.log("LabelText.toJSON() returns", ret);
         return ret;
     }
+
+    static is ( input: any ): input is LabelText {
+        return LabelConstituent.is( input ) && ( "text" in input );
+    }
 }
 
 
@@ -289,6 +313,10 @@ export class LabelImage extends LabelConstituent {
             Object.getOwnPropertyNames( options ).forEach( propName => this[ propName ] = options[ propName ] );
         }
     }
+
+    static is ( input: any ): input is LabelImage {
+        return LabelConstituent.is( input ) && ( "data" in input ) && ( "width" in input ) && ( "height" in input );
+    }
 }
 
 
@@ -297,4 +325,8 @@ export class LabelQR<T extends Item> extends LabelConstituent {
     properties: [ Partial<keyof T> ];
     canvasElement: HTMLCanvasElement;
     dataURL: string;
+
+    static is ( input: any ): input is LabelImage {
+        return LabelConstituent.is( input ) && ( "properties" in input ) && ( "canvasElement" in input ) && ( "dataURL" in input );
+    }
 }

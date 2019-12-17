@@ -55,6 +55,8 @@ export function canvasToBuffer ( canvas: HTMLCanvasElement ): PixelMap {
     }
 
     console.log( `
+            canvasWidth                         = ${ canvasWidth }
+            canvasHeight                        = ${ canvasHeight }
             imageData.width                     = ${ imgData.width }
             imageData.height                    = ${ imgData.height }
             imageData.length                    = ${ imgData.data.length }
@@ -98,9 +100,9 @@ export function canvasToBuffer ( canvas: HTMLCanvasElement ): PixelMap {
          *  black to: 00,00,00,FF
          *  white (default) : 00,00,00,00
          *  white (user-written) : ff,ff,ff,ff
-         */ 
+         */
 
-        if ( (! imgData.data.slice(i,i+3).every( value => value === 0xff)) && (imgData.data[i+3] >= 0x27)){
+        if ( ( !imgData.data.slice( i, i + 3 ).every( value => value === 0xff ) ) && ( imgData.data[ i + 3 ] >= 0x27 ) ) {
             isBlack = 1;
         }
 
@@ -163,9 +165,9 @@ export function canvasToBuffer ( canvas: HTMLCanvasElement ): PixelMap {
 
 
     const bufDebugImageSize = () => {
-        console.log( `imgDataLength is ${ imgData.data.length }` )
-        console.log( `imgDataLength pixels ${ Math.floor( imgData.data.length / 4 ) }` )
-        console.log( `imgDataLength pixels ${ Math.floor( imgData.data.length / 4 / 300 ) }` )
+        console.log( `imgDataLength is ${ imgData.data.length }` );
+        console.log( `imgDataLength pixels ${ Math.floor( imgData.data.length / 4 ) }` );
+        console.log( `imgDataLength pixels ${ Math.floor( imgData.data.length / 4 / 300 ) }` );
     };
 
 
