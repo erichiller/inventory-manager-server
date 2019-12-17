@@ -6,7 +6,7 @@ import { Item, Label } from '../../types/graphql';
 import { DISPLAY } from '../../types/enums';
 import { DrawContextMenu } from './DrawContextMenu';
 import { KonvaEventObject } from 'konva/types/Node';
-import { Button, Tooltip } from 'antd';
+import { Button, Tooltip, message } from 'antd';
 import DrawEditText from './DrawEditText';
 import DrawAddImage from './image/LabelAddImageModal';
 
@@ -61,6 +61,12 @@ interface LabelDrawProps<T extends Item> {
 
 type IKonvaEventHandler = ( d: boolean | KonvaEventObject<PointerEvent> ) => void;
 type IHtmlEventHandler = ( d: boolean | DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => void;
+type LabelConstituentT<T extends Item> = LabelText | LabelImage | LabelQR<T>;
+interface LabelDrawConstituents<T extends Item> {
+    texts: LabelText[];
+    images: LabelImage[];
+    qrs: LabelQR<T>[];
+}
 
 interface LabelDrawState<T extends Item> {
     displayContextMenu: IKonvaEventHandler;
@@ -74,7 +80,7 @@ interface LabelDrawState<T extends Item> {
     displayImageUploadModalStatus: DISPLAY;
     displayQREditModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
     displayQREditModalStatus: DISPLAY;
-    contextMenuLabelText: LabelText;
+    contextMenuLabelConstituent: LabelText | LabelImage | LabelQR<T>;
     item: T;
     texts: LabelText[];
     images: LabelImage[];
@@ -83,11 +89,13 @@ interface LabelDrawState<T extends Item> {
     uncommittedImage: LabelImage;
     uncommittedQR: LabelQR<T>;
     commitLabelText: ( labelText: LabelText ) => void;
-    deleteLabelText: ( labelText: LabelText ) => void;
+    deleteLabelConstituent: ( constituent: LabelConstituentT<T> ) => void;
     commitLabelImage: ( labelImage: LabelImage ) => void;
     commitLabelQR: ( LabelQR: LabelQR<T> ) => void;
     stageRef: Stage;
     setRef: ( stageRef: Stage ) => void;
+    historyPosition: Integer;
+    history: LabelDrawConstituents<T>[];
 }
 interface DrawContext<T extends Item> extends Omit<LabelDrawState<T>, "item"> {
     item?: T;
@@ -99,7 +107,7 @@ const DrawContextStateDefault: LabelDrawState<Item> = {
     displayContextMenuPosition: undefined,
     displayEditTextModal: () => DISPLAY.HIDDEN,
     displayEditTextModalStatus: null,
-    contextMenuLabelText: null,
+    contextMenuLabelConstituent: null,
     displayQREditModal: () => DISPLAY.HIDDEN,
     displayQREditModalStatus: null,
     displayImageSelectModal: () => DISPLAY.HIDDEN,
@@ -117,10 +125,12 @@ const DrawContextStateDefault: LabelDrawState<Item> = {
     uncommittedQR: null,
     commitLabelImage: () => { },
     commitLabelText: () => { },
-    deleteLabelText: () => { },
+    deleteLabelConstituent: () => { },
     commitLabelQR: () => { },
     stageRef: null,
-    setRef: null
+    setRef: null,
+    historyPosition: 0,
+    history: []
 };
 
 export const DrawContext = React.createContext<DrawContext<any>>( DrawContextStateDefault );
@@ -149,7 +159,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
             this.setState( {
                 item: this.props.item,
                 displayContextMenuStatus: true,
-                contextMenuLabelText: display.currentTarget.attrs.textObject,
+                contextMenuLabelConstituent: display.currentTarget.attrs.textObject || display.currentTarget.attrs.imageObject || display.currentTarget.attrs.qrObject,
                 displayContextMenuPosition: [
                     display.evt.clientX,
                     display.evt.clientY
@@ -296,25 +306,66 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
     };
 
 
-    shouldComponentUpdate ( nextProps: LabelDrawProps<T>, nextState: LabelDrawState<T> ): boolean {
+    shouldComponentUpdate = ( nextProps: LabelDrawProps<T>, nextState: LabelDrawState<T> ): boolean => {
         if ( !this.context.getCurrentLabel() ) {
             this.context.setCurrentLabel( this.exportLabel() );
         }
 
-
         let updateContextResult = this.updateContext();
         let shouldUpdate = updateContextResult || nextState != this.state;
-        console.log( "shouldComponentUpdate", { shouldUpdate }, { shouldUpdate }, { updateContextResult }, ( nextState != this.state ) );
+        if ( shouldUpdate ) {
+            this.updateHistory();
+        }
+        console.log( "shouldComponentUpdate", { 'history_length': this.state.history.length }, { shouldUpdate }, { updateContextResult }, ( nextState != this.state ) );
         return shouldUpdate;
-        // return this.updateContext();
-    }
+    };
+
+    handleUndo = () => {
+        if ( this.state.historyPosition === 0 ) {
+            message.warn( "history is already at state #0" );
+            return;
+        }
+        this.setState( {
+            "historyPosition": this.state.historyPosition - 1,
+            ...this.state.history[ this.state.historyPosition ]
+        } );
+    };
+
+    handleRedo = () => {
+        if ( this.state.historyPosition === this.state.history.length - 1 ) {
+            message.warn( "history is already at the most recent state" );
+            return;
+        }
+        this.setState( {
+            "historyPosition": this.state.historyPosition + 1,
+            ...this.state.history[ this.state.historyPosition ]
+        } );
+    };
+
+    /**
+    * updateHistory
+    * 
+    * Records history state and increments history position
+    */
+    updateHistory = () => {
+        this.setState( {
+            historyPosition: this.state.historyPosition + 1,
+            history: [ ...this.state.history,
+            {
+                texts: this.state.texts,
+                images: this.state.images,
+                qrs: this.state.qrs,
+            }
+            ]
+        } );
+    };
 
     /**
      * return value of `false` if the label was not exported.
      */
     updateContext = (): boolean => {
         if ( !this.context.getCurrentLabel() || this.exportLabel() !== this.context.getCurrentLabel() ) {
-            console.warn( "updateContext" );
+            console.log( "will updateContext" );
             this.context.setCurrentLabel( this.exportLabel() );
             return true;
         }
@@ -322,13 +373,53 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         return false;
     };
 
-    deleteLabelText = ( labelText: LabelText ): void => {
-        this.state.texts.filter( ( text ) => {
-            if ( text.id == labelText.id ) {
-                return;
-            }
-            return text;
-        } );
+    deleteLabelConstituent = ( constituent: LabelText | LabelImage | LabelQR<any> ): void => {
+        console.log( "deleteLabelConstituent : constituent <?>", constituent );
+        if ( LabelText.is( constituent ) ) {
+            console.log( "deleteLabelConstituent : constituent <LabelText>", constituent );
+            this.setState( {
+                "texts":
+                    this.state.texts.filter( ( text ) => {
+                        if ( text.id == constituent.id ) {
+                            console.log( `deleteLabelConstituent <texts> : deleting id ${ constituent.id }` );
+                            return;
+                        }
+                        return text;
+                    } )
+            },
+                () => console.log( `deleteLabelConstituent <texts> : is now`, this.state.texts )
+            );
+        }
+        if ( constituent instanceof LabelImage ) {
+            console.log( "deleteLabelConstituent : constituent <LabelImage>", constituent );
+            this.setState( {
+                "images":
+                    this.state.images.filter( ( image ) => {
+                        if ( image.id == constituent.id ) {
+                            console.log( `deleteLabelConstituent <images> : deleting id ${ constituent.id }` );
+                            return;
+                        }
+                        return image;
+                    } )
+            },
+                () => console.log( `deleteLabelConstituent <images> : is now`, this.state.images )
+            );
+        }
+        if ( constituent instanceof LabelQR ) {
+            console.log( "deleteLabelConstituent : constituent <LabelQR>", constituent );
+            this.setState( {
+                "qrs":
+                    this.state.qrs.filter( ( qr ) => {
+                        if ( qr.id == constituent.id ) {
+                            console.log( `deleteLabelConstituent <qrs> : deleting id ${ constituent.id }` );
+                            return;
+                        }
+                        return qr;
+                    } )
+            },
+                () => console.log( `deleteLabelConstituent <qrs> : is now`, this.state.qrs )
+            );
+        }
     };
 
     commitLabelText = ( labelText: LabelText ) => {
@@ -424,6 +515,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         console.log( "SETTING REF FOR canvas", ref );
         if ( !this.state.stageRef ) {
             console.log( "SETTING REF FOR CANVAS -- SAVED TO STATE" );
+            console.log( `LabelComponent Stage Canvas size:`, ref.getStage().toCanvas( {} ).height, ref.getStage().toCanvas( {} ).width );
             this.setState( { stageRef: ref }, this.updateContext );
         }
     };
@@ -440,7 +532,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         displayImageUploadModalStatus: DISPLAY.HIDDEN,
         displayQREditModal: this.displayQREditModal,
         displayQREditModalStatus: DISPLAY.HIDDEN,
-        contextMenuLabelText: null,
+        contextMenuLabelConstituent: null,
         item: null,
         texts: [], // NOTE: for pre-existing deserialize here.
         images: [],
@@ -451,9 +543,11 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         commitLabelText: this.commitLabelText,
         commitLabelImage: this.commitLabelImage,
         commitLabelQR: this.commitLableQR,
-        deleteLabelText: this.deleteLabelText,
+        deleteLabelConstituent: this.deleteLabelConstituent,
         stageRef: null,
-        setRef: this.setRef
+        setRef: this.setRef,
+        historyPosition: 0,
+        history: []
     };
 
     get width (): Integer | null {
@@ -506,7 +600,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         }
         console.groupEnd();
         return this.props.label;
-    }
+    };
 
     render () {
         const { width, height, item } = this.props;
@@ -541,6 +635,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                         }} onClick={() => {
                             console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
                             console.log( this.context.currentLabelToBuffer() );
+                            message.info( "Debug output sent to console" );
                         }} id="DEBUG" />
                     </Tooltip>
 
@@ -552,7 +647,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                                 <React.Fragment>
                                     <Rect
                                         key={"rect" + i}
-                                        x={30}
+                                        x={0}
                                         y={i}
                                         width={10}
                                         height={10}
@@ -563,8 +658,28 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                                         key={"test" + i}
                                         text={i.toString()}
                                         fontSize={10}
-                                        x={0}
+                                        x={20}
                                         y={i}
+                                        fill="black"
+                                    />
+                                    {/* right side below */}
+                                    <Rect
+                                        key={"rect_right_" + i}
+                                        x={0.75 * 360 - 10}
+                                        y={i}
+                                        width={10}
+                                        height={10}
+                                        fill={i % 20 == 0 || i === 0 ? "black" : "white"}
+                                    />
+                                    <Text
+                                        // textObject="1"
+                                        key={"test_right_" + i}
+                                        text={i.toString()}
+                                        fontSize={10}
+                                        x={0.75 * 360 - 40}
+                                        y={i}
+                                        align="right"
+                                        width={20}
                                         fill="black"
                                     />
                                 </React.Fragment>
@@ -590,23 +705,25 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                                 rotation={labelText.rotation}
                                 onTransformEnd={( evt: KonvaEventObject<Event> ) => {
                                     console.log( "(Text) TransformEnd:\n", evt, "attrs", evt.currentTarget.attrs );
-                                    ( evt.currentTarget.attrs.textObject as LabelText ).setDrawAttrs({
+                                    ( evt.currentTarget.attrs.textObject as LabelText ).setDrawAttrs( {
                                         x: evt.currentTarget.attrs.x,
                                         y: evt.currentTarget.attrs.y,
                                         scaleX: evt.currentTarget.attrs.scaleX,
                                         scaleY: evt.currentTarget.attrs.scaleY,
                                         rotation: evt.currentTarget.attrs.rotation
-                                    });
+                                    } );
+                                    this.updateHistory();
                                 }}
                                 onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
                                     console.log( "(Text) DragEnd:", evt, "to:", [ evt.currentTarget.attrs.x, evt.currentTarget.attrs.y ] );
-                                    ( evt.currentTarget.attrs.textObject as LabelText ).setDrawAttrs({
+                                    ( evt.currentTarget.attrs.textObject as LabelText ).setDrawAttrs( {
                                         x: evt.currentTarget.attrs.x,
                                         y: evt.currentTarget.attrs.y,
                                         scaleX: evt.currentTarget.attrs.scaleX,
                                         scaleY: evt.currentTarget.attrs.scaleY,
                                         rotation: evt.currentTarget.attrs.rotation
-                                    });
+                                    } );
+                                    this.updateHistory();
                                 }}
                                 draggable />;
                         } )}
@@ -632,23 +749,25 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                                 onTransformEnd={( evt: KonvaEventObject<Event> ) => {
                                     console.log( "(Image) TransformEnd:\n", evt, "attrs", evt.currentTarget.attrs );
 
-                                    ( evt.currentTarget.attrs.imageObject as LabelImage ).setDrawAttrs({
+                                    ( evt.currentTarget.attrs.imageObject as LabelImage ).setDrawAttrs( {
                                         x: evt.currentTarget.attrs.x,
                                         y: evt.currentTarget.attrs.y,
                                         scaleX: evt.currentTarget.attrs.scaleX,
                                         scaleY: evt.currentTarget.attrs.scaleY,
                                         rotation: evt.currentTarget.attrs.rotation
-                                    });
+                                    } );
+                                    this.updateHistory();
                                 }}
                                 onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
                                     console.log( "(Image) DragEnd:\n", evt, "attrs", evt.currentTarget.attrs );
-                                    ( evt.currentTarget.attrs.imageObject as LabelImage ).setDrawAttrs({
+                                    ( evt.currentTarget.attrs.imageObject as LabelImage ).setDrawAttrs( {
                                         x: evt.currentTarget.attrs.x,
                                         y: evt.currentTarget.attrs.y,
                                         scaleX: evt.currentTarget.attrs.scaleX,
                                         scaleY: evt.currentTarget.attrs.scaleY,
                                         rotation: evt.currentTarget.attrs.rotation
-                                    });
+                                    } );
+                                    this.updateHistory();
                                 }}
                                 draggable />;
                         } )}
@@ -672,6 +791,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                                         scaleY: evt.currentTarget.attrs.scaleY,
                                         rotation: evt.currentTarget.attrs.rotation
                                     };
+                                    this.updateHistory();
                                 }}
                                 onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
                                     console.log( "(QR) DragEnd:\n", evt );
@@ -682,6 +802,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                                         scaleY: evt.currentTarget.attrs.scaleY,
                                         rotation: evt.currentTarget.attrs.rotation
                                     };
+                                    this.updateHistory();
                                 }}
                                 image={labelQR.canvasElement}
                                 draggable />;

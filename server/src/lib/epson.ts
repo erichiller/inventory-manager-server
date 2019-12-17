@@ -23,6 +23,13 @@ function buf2hex ( buffer ) { // buffer is an ArrayBuffer
 export class PrinterStatus {
     labelType: string = null;
     uptime: number = null;
+    model: string = null;
+    /** Float */
+    firmwareVersion: number = null;
+    /** Float */
+    heightInch: number = null;
+    /** Int */
+    heightMillimeter: number = null;
 }
 
 /**
@@ -102,9 +109,10 @@ class ImageBitMode {
  * @param remarks
  * ```text
  Type | Width | Vert. area | Top/bot margin | Vert. range |  Max
-      |  (mm) | (mm/dots)  |      (mm)      |    (dots)   | Lines
+ ...  |  (mm) | (mm/dots)  |      (mm)      |    (dots)   | Lines
  -----|-------|------------|----------------|-------------|------
  18   | 18    | 16.5 / 234 | 0.75           | 156-389     | 9
+ 12   | 12    | 10.6 / 150 | 0.71           | 198-247     | 6
  ```
  _See page 10 in ESC/P Guide_
  *
@@ -191,42 +199,300 @@ export class BrotherLabeler {
     }
 
     /** getPrinterStatus
-     *
+     * 
+     * Query printer via SNMP and return status values
+     * 
+     *  See for SNMP MIB:  
+     *   - <http://www.mibdepot.com/cgi-bin/vendor_index.cgi?r=ietf_rfcs&id=64939>
+     *   - <http://www.mibdepot.com/xsearch_index3.html?id=6955>
+     *   - <http://www.mibdepot.com/cgi-bin/getmib3.cgi?win=mib_a&r=hp&f=jdMibCV5.mib&v=v2&t=tree>
+     *   - <http://www.oidview.com/mibs/2435/BROTHER-MIB.html>
      */
-    async getPrinterStatus (): Promise<PrinterStatus>{
+    async getPrinterStatus (): Promise<PrinterStatus> {
         try {
             var session = snmp.createSession( this.printerHostname, "public" );
 
+            /**
+             * While I don't see any "Label ID" within the SNMP MIB, it is possible it is something non-obvious.
+             * Try changing labels and seeing what values change.
+             * 
+             * Of interest is `1.3.6.1.2.1.43.8.2.1.8` and anything under `1.3.6.1.2.1.43.8.2.1`
+             */
             var oids = {
-                "1.3.6.1.2.1.43.8.2.1.12.1.1": "labelType" ,
-                "1.3.6.1.2.1.1.3.0": "uptime"
+                "1.3.6.1.2.1.43.8.2.1.12.1.1": "labelType",
+                "1.3.6.1.2.1.1.3.0": "uptime",
+                "1.3.6.1.4.1.2435.2.4.3.1240.1.1.0": "model",
+                "1.3.6.1.4.1.2435.2.4.3.1240.1.4.0": "firmwareVersion"
+                // "1.3.6.1.2.1.4.20.1": "ipAddresses"
+                // "1.3.6.1.4.1.2435.2.4.3.1240.5.2.3.0": "ipAddress"
+                // contact, name, location
+                // "1.3.6.1.4.1.2435.2.4.3.100.1.11.11.1.2": "wifiNetworks"
             };
             let retObj: PrinterStatus = new PrinterStatus();
 
-                return await new Promise( ( resolve, reject ) => {
-                    session.get( Object.keys( oids ), function ( error, varbinds ) {
-                        if ( error ) {
-                            console.error( error );
-                        } else {
-                            for ( var i = 0; i < varbinds.length; i++ ) {
-                                if ( snmp.isVarbindError( varbinds[ i ] ) ) {
-                                    console.error( snmp.varbindError( varbinds[ i ] ) )
-                                } else {
-                                    console.log( oids[ varbinds[ i ].oid ], varbinds[ i ].oid + " = " + varbinds[ i ].value );
-                                    let val = varbinds[ i ].value;
-                                    retObj[ oids[ varbinds[ i ].oid ] ] = val instanceof Buffer ? val.toString() : val;
-                                    // console.log( "retObj is now", retObj )
-                                }
+            return await new Promise( ( resolve, reject ) => {
+                session.get( Object.keys( oids ), function ( error, varbinds ) {
+                    if ( error ) {
+                        console.error( error );
+                    } else {
+                        for ( var i = 0; i < varbinds.length; i++ ) {
+                            if ( snmp.isVarbindError( varbinds[ i ] ) ) {
+                                console.error( snmp.varbindError( varbinds[ i ] ) );
+                            } else {
+                                console.log( oids[ varbinds[ i ].oid ], varbinds[ i ].oid + " = " + varbinds[ i ].value );
+                                let val = varbinds[ i ].value;
+                                retObj[ oids[ varbinds[ i ].oid ] ] = val instanceof Buffer ? val.toString() : val;
+                                // console.log( "retObj is now", retObj )
                             }
                         }
-                        resolve( retObj );
-                        // If done, close the session
-                        session.close();
+                    }
+                    retObj[ "heightInch" ] = parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( retObj[ "labelType" ] )[ 0 ] );
+                    retObj[ "heightMillimeter" ] = parseFloat( /[0-9]{1,2}mm/.exec( retObj[ "labelType" ] )[ 0 ] );
+                    resolve( retObj );
+                    // If done, close the session
+                    session.close();
 
-                    } );
                 } );
+            } );
         } catch ( error ) {
             console.error( error );
+        }
+    }
+
+    async imageRaster ( inputBuffer: Array<Array<Array<uint8>>> ) {
+
+        inputBuffer = [ [ [
+            0xff,
+            0x02,
+            0x03,
+            0x04,
+            0x05,
+            0x06,
+            0x07,
+            0x08,
+            0x09,
+            0x10,
+            0xff,
+            0x02,
+            0x03,
+            0x04,
+            0x05,
+            0x06,
+            0x07,
+            0x08,
+            0x09,
+            0x10,
+            0xff,
+            0x02,
+            0x03,
+            0x04,
+            0x05,
+            0x06,
+            0x07,
+            0x08,
+            0x09,
+            0x10,
+            0xff,
+            0x02,
+            0x03,
+            0x04,
+            0x05,
+            0x06,
+            0x07,
+            0x08,
+            0x09,
+            0x10,
+            0xff,
+            0x02,
+            0x03,
+            0x04,
+            0x05,
+            0x06,
+            0x07,
+            0x08,
+            0x09,
+            0x10,
+            0xff,
+            0x02,
+            0x03,
+            0x04,
+            0x05,
+            0x06,
+            0x07,
+            0x08,
+            0x09,
+            0x10,
+            0x01,
+            0x02,
+            0x03,
+            0x04,
+            0x05,
+            0x06,
+            0x07,
+            0x08,
+            0x09,
+            0x10
+        ] ] ];
+        let dotPositions = 20; // 150 / 8 for 12mm
+        for ( let i = 1; i <= dotPositions; i++ ) {
+            inputBuffer[ 0 ][ i ] = inputBuffer[ 0 ][ 0 ];
+        }
+
+
+        let labeler = new BrotherLabeler();
+
+        let labelLen = new Length( 0.75 );
+
+        let invalidateBuf = [];
+        for ( let i = 0; i < 200; i++ ) {
+            invalidateBuf.push( 0x00 );
+        }
+
+        // let dlo = inputBuffer.map( ( page, idx ) => {
+        //     // let imageBuf73 = labeler.imageMode73Density( page );
+        //     // let imageBuf73 = labeler.imageMode73Density(labeler.imageMode73DensityTestData());
+        //     // console.log( `Page # ${ idx } of ${ inputBuffer.length }: \n\timageBuf73 is ${ imageBuf73.byteLength } bytes in length\n\tTerminating with ${ idx === inputBuffer.length - 1 ? 'lastpage, cut: 0x0c' : 'intermediary page, new page: 0xff' }` );
+
+        //     return page.map( ( buf, idx ) => {
+        //         return [
+        //             0x47, 0x46, 0x00,
+        //                 ...buf,
+        //                     0x1a // last page print
+        //         ];
+        //     } );
+
+        // } ).flat(2);
+
+        /**
+         * 0x00 x 200
+         *                         1b 40 1b 69 61 01 1b 69
+         * 55 4a 00 0c c0 7c d1 fd c8 28 00 00 09 00 00 00
+         * 1b 69 7a 84 00 24 00 6e 05 00 00 02 00 1b 69 4D
+         * 40 1b 69 41 01 1b 69 4b 0c 1b 69 6b 63 01 00 1b
+         * 69 64 0e 00 4d 02
+         * 
+         * 1b 40                                                            initialize
+         * 1b 69 61 01                                                      select raster
+         * 1b 69 55 4a 00 0c c0 7c d1 fd c8 28 00 00 09 00 00 00            JOB ID SETTINGS - **NOT NECCESSARY FOR USER TO SET**
+         * 
+         * 1b 69 7a 84 00 24 00 6e 05 00 00 02 00                           Print information command
+         *                                                                      + 6e 05 00 00   raster number
+         *                                                                        110 + ( 1280 ) = 1390
+         * 1b 69 4D 40                                                      Various Mode settings
+         *                                                                      + Automatic Cutting
+         * 1b 69 41 01                                                      Specify the page number in "cut each * labels"
+         *                                                                      + 
+         * 1b 69 4b 0c                                                      Advanced mode settings
+         *                                                                      + 
+         * 1b 69 6b 63 01 00
+         *                                                                      + 
+         * 1b 69 64 0e 00 4d 02                                             Specify margin amount (feed amount)
+         *                                                                      + 
+         * 
+         * 
+         * 27 * 16
+         * - 6
+         * + 10
+         * = 436 * 8 =3488
+         * 
+         * 5A
+         * 19 * 16
+         * - 7
+         * - 7
+         * = 290 * 8 = 2320
+         * 
+         * 30 x 0x47
+         * 30 * 8 = 240
+         * 
+         */
+
+        let printBuffer = Buffer.concat( [
+
+            Buffer.from( [
+                ...invalidateBuf,                            // invalidate
+                0x1b, 0x40,                      // initialize
+                0x1b, 0x69, 0x61, 0x01,          // select Raster mode
+
+                //print information
+                0x1b, 0x69, 0x7a, 
+                0x04,                               // Media width
+                0x00,                               // laminated tape
+                0x0c, 0x00,                         // 12mm
+                dotPositions % 256, 0x00, 0x00, 0x00,             // raster number
+                0x02,                               // last page (always when single page)
+                0x00,                               // N/A
+
+
+
+                0x1b, 0x69, 0x41, 0x01,          // pages ?
+                0x1b, 0x69, 0x64, 0x0e, 0x00,          // set margin 50 1mm
+                0x4d, 0x00,                      // no compression
+
+                // /**
+                //  * Set label length
+                //  * set to 0 for AUTO
+                // **/
+                // 0x1b, 0x69, 0x6c,
+                // // ( labelLen.dots % 256 ),
+                // // ( Math.floor( labelLen.dots / 256 ) ),
+                // 0, 0, // trying auto
+
+                // /**
+                //  * Set margin **width**
+                //  * default is 2mm (see page 38)
+                //  * this is measured in 1/180th of an inch, with the smallest being 0.04" (~1mm)
+                //  * 7/180 = .0355, so I'm thinking this is the end.
+                // **/
+                // 0x1b, 0x69, 0x6d, 7, 0,          // set margin to smallest possible (7)
+
+                // /** 
+                //  * Specify cut
+                //  *  see page 82
+                //  * 
+                //  * 0 = full cut
+                //  * 1 = half cut
+                //  * 2 = chain print
+                //  * 3 = special tape
+                //  * 4+  unused
+                //  */
+                // 0x1b, 0x69, 0x43, 0b00000100,    // specify cut setting = chain print
+
+                // 0x1b, 0x24, 0, 0,                // specify horizontal position
+            ] ),
+            // imageBuf,
+            // labeler.newline,
+            Buffer.from( inputBuffer.map( ( page, idx ) => {
+                // let imageBuf73 = labeler.imageMode73Density( page );
+                // let imageBuf73 = labeler.imageMode73Density(labeler.imageMode73DensityTestData());
+                // console.log( `Page # ${ idx } of ${ inputBuffer.length }: \n\timageBuf73 is ${ imageBuf73.byteLength } bytes in length\n\tTerminating with ${ idx === inputBuffer.length - 1 ? 'lastpage, cut: 0x0c' : 'intermediary page, new page: 0xff' }` );
+
+                return page.map( ( buf, idx ) => {
+                    console.log(buf.length, buf2hex([buf.length]))
+                    return [
+                        0x47, 0x46, 0x00,
+                        ...buf
+                    ];
+                } );
+
+            } ).flat().flat() ),
+            Buffer.from( [0x1a] ) // last page print
+
+
+            // labeler.newline,
+
+            // imageBuf,
+
+        ] );
+
+        console.log( buf2hex( printBuffer ) );
+
+
+
+        try {
+            await this.printer.raw( printBuffer );
+            // console.log()
+        } catch ( error ) {
+            console.error( "ERROR", error );
         }
     }
 
@@ -241,13 +507,13 @@ export class BrotherLabeler {
         let outputLinesBuf: Buffer = Buffer.from( [] );
         imageLinesBuf.forEach( ( buf, index ) => {
             if ( !Buffer.isBuffer( buf ) ) {
-                buf = Buffer.from( ( Array.isArray( buf ) ? ( buf as Array<any>).flat() : buf ) );
+                buf = Buffer.from( ( Array.isArray( buf ) ? ( buf as Array<any> ).flat() : buf ) );
             }
             if ( Buffer.isBuffer( buf ) ) {
                 let dotPositions = buf.byteLength / ImageBitMode.mode73.bytesMultiple;
                 let n1 = ( dotPositions % 256 );
                 let n2 = ( Math.floor( dotPositions / 256 ) );
-                console.log( `Line # ${index}: creating imageMode73Density image line of size ${ buf.byteLength } bytes , ${ dotPositions } positions [ ${ n1 } , ${ n2 } ]` );
+                console.log( `Line # ${ index }: creating imageMode73Density image line of size ${ buf.byteLength } bytes [ ${ n2 } * 256 + ${ n1 } ], ${ dotPositions } positions` );
                 outputLinesBuf = Buffer.concat( [
                     outputLinesBuf,
                     Buffer.from( [
@@ -259,9 +525,12 @@ export class BrotherLabeler {
                     ] ),
                     buf
                 ] );
+                console.log( `imageMode73Density line: ${ index }\n`, buf2hex( buf ) );
+
+                /// DEBUG -- DELETE ME
                 // add a newline if NOT the last line
-                if ( index < ( imageLinesBuf.length - 1 ) ) {
-                    console.log( `Line # ${ index}: adding newline as ${index} is less than ${imageLinesBuf.length}`)
+                if ( index < ( imageLinesBuf.length - 2 ) ) {
+                    console.log( `Line # ${ index }: adding newline as ${ index } is less than ${ imageLinesBuf.length - 1 }` );
                     outputLinesBuf = Buffer.concat( [
                         outputLinesBuf,
                         this.newline
@@ -271,7 +540,7 @@ export class BrotherLabeler {
                 throw `Invalid buffer ${ buf }`;
             }
         } );
-        console.log( "imageMode73Density is returning:", buf2hex( outputLinesBuf ) );
+        console.log( "imageMode73Density is returning:\n", buf2hex( outputLinesBuf ) );
         return outputLinesBuf;
     }
 
@@ -287,7 +556,6 @@ export class BrotherLabeler {
 
         let labelLen = new Length( 0.75 );
 
-
         try {
             await this.printer.raw(
                 Buffer.concat( [
@@ -296,7 +564,7 @@ export class BrotherLabeler {
                         0x1b, 0x69, 0x61, 0x00,          // select ESC/P mode
                         0x1b, 0x40,                      // initialize ESC/P mode
 
-                        0x1b, 0x33, 0,                   // line feed = 48 / 180th of an inch
+                        0x1b, 0x33, 0,                   // line feed = 24 / 180th of an inch
 
 
                         // , 0x1b, 0x52, 0x0 // char set = USA
@@ -311,7 +579,7 @@ export class BrotherLabeler {
                         0, 0, // trying auto
 
                         /**
-                         * Set margin width
+                         * Set margin **width**
                          * default is 2mm (see page 38)
                          * this is measured in 1/180th of an inch, with the smallest being 0.04" (~1mm)
                          * 7/180 = .0355, so I'm thinking this is the end.
@@ -334,21 +602,21 @@ export class BrotherLabeler {
                     ] ),
                     // imageBuf,
                     // labeler.newline,
-                        ...inputBuffer.map( (page, idx) => {
-                            let imageBuf73 = labeler.imageMode73Density( page );
-                            // let imageBuf73 = labeler.imageMode73Density(labeler.imageMode73DensityTestData());
-                            console.log( `Page # ${ idx } of ${ inputBuffer.length }: \n\timageBuf73 is ${ imageBuf73.byteLength } bytes in length\n\tTerminating with ${ idx === inputBuffer.length - 1 ? 'lastpage, cut: 0x0c' : 'intermediary page, new page: 0xff' }` );
+                    ...inputBuffer.map( ( page, idx ) => {
+                        let imageBuf73 = labeler.imageMode73Density( page );
+                        // let imageBuf73 = labeler.imageMode73Density(labeler.imageMode73DensityTestData());
+                        console.log( `Page # ${ idx } of ${ inputBuffer.length }: \n\timageBuf73 is ${ imageBuf73.byteLength } bytes in length\n\tTerminating with ${ idx === inputBuffer.length - 1 ? 'lastpage, cut: 0x0c' : 'intermediary page, new page: 0xff' }` );
 
-                            return Buffer.concat([
-                                imageBuf73,
-                                Buffer.from( [ 
-                                    // 0xFF if a new page is desired. This can auto-cut.
-                                    0x0c,
-                                    // also try with 0x0c only last
-                                    // idx === inputBuffer.length -1 ? 0x0c : 0xff
-                                ] )
-                            ]);
-                        })
+                        return Buffer.concat( [
+                            imageBuf73,
+                            Buffer.from( [
+                                // 0xFF if a new page is desired. This can auto-cut.
+                                0x0c,
+                                // also try with 0x0c only last
+                                // idx === inputBuffer.length -1 ? 0x0c : 0xff
+                            ] )
+                        ] );
+                    } )
 
                     // labeler.newline,
 
@@ -357,7 +625,7 @@ export class BrotherLabeler {
                 ] ) );
             // console.log()
         } catch ( error ) {
-            console.error("ERROR", error );
+            console.error( "ERROR", error );
         }
     }
 
@@ -408,8 +676,8 @@ export class BrotherLabeler {
         return {
             buffer: buf,
             bytes: lenDots
-        }
-    }
+        };
+    };
 
 
 

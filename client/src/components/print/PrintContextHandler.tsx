@@ -37,7 +37,7 @@ export class PrintContextHandler extends React.Component<{},PrintContextHandlerS
                 printLabels: this.state.printLabels.filter( (label) => label === this.state.currentLabel ? false : true)
             });
         }
-    }
+    };
 
     // private _currentLabel: LabelExport<any>;
     // get currentLabel(): LabelExport<any>{
@@ -45,26 +45,26 @@ export class PrintContextHandler extends React.Component<{},PrintContextHandlerS
     // }
     setCurrentLabel = ( currentLabel: LabelExport<any> ) => {
         if ( !currentLabel ){
-            console.group("setCurrentLabel")
+            console.group("setCurrentLabel");
             console.warn("! currentLabel parameter received.");
             console.trace();
             console.groupEnd();
             return;
         }
-        console.log( `PrintContextHandler printLabels set currentLabel`, currentLabel);
+        console.log( `PrintContextHandler printLabels set currentLabel`, currentLabel, {width: currentLabel.width, height: currentLabel.height});
         if ( this.state.currentLabel === currentLabel ){ return ; }
         this.setState({
             currentLabel: currentLabel
         });
-    }
+    };
 
     getCurrentLabel = (): LabelExport<any> => {
         return this.state.currentLabel;
-    }
+    };
 
     getPrintLabels = (): LabelExport<any>[] => {
         return this.state.printLabels;
-    }
+    };
     /**
      * return `true` if the label was added. else `false`
      */
@@ -85,14 +85,20 @@ export class PrintContextHandler extends React.Component<{},PrintContextHandlerS
     startSendBuffer = ( shouldSendBuffer: boolean ) => {
         console.log( "startSendBuffer received", shouldSendBuffer );
         this.setState( { shouldSendBuffer: shouldSendBuffer } );
-    }
+    };
 
     currentLabelToBuffer = (): PixelMap => {
+        console.log( `currentLabelToBuffer printLabels set currentLabel\n`, this.state.currentLabel, '\n', {
+            currentLabelWidth: this.state.currentLabel.width,
+            currentLabelHeight: this.state.currentLabel.height, 
+            canvasWidth: this.state.currentLabel.canvas.width, 
+            canvasHeight: this.state.currentLabel.canvas.height 
+        } );
         return canvasToBuffer( this.state.currentLabel.canvas );
-    }
+    };
     printLabelsToBuffer = (): PixelMap[] => {
         return this.state.printLabels.map( label => canvasToBuffer(label.canvas));
-    }
+    };
 
     state = {
         printLabels: [],

@@ -1,8 +1,8 @@
 import { makeRemoteExecutableSchema , makeExecutableSchema , introspectSchema , mergeSchemas } from 'graphql-tools';
-import { gql } from "apollo-server"
+import { gql } from "apollo-server";
 
 import resolvers from '../resolvers';
-import uint8 from './type_uint8'
+import uint8 from './type_uint8';
 // import * as typeDefs from './schema.graphql';
 
 import { HASURA_GRAPHQL_API_URL , HASURA_ACCESS_KEY } from '../config';
@@ -29,6 +29,10 @@ export const typeDefs = gql`
   type PrinterStatus {
     labelType: String!
     uptime: Int
+    model: String
+    firmwareVersion: Float
+    heightInch: Float
+    heightMillimeter: Float
   }
   
   scalar uint8
@@ -44,7 +48,7 @@ export const typeDefs = gql`
   }
 
   # type LabelMonochromeBuffer: [Int]
-`
+`;
 
 
 
@@ -82,7 +86,7 @@ export default async () => {
       // executableRemoteSchema,
     ]
   });
-}
+};
 /**
  * 
  * 
