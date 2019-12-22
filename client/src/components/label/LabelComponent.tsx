@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Stage, Layer } from 'react-konva';
-import { Spin } from "antd";
+import { Spin, InputNumber, Input } from "antd";
 
 import { GetPrinterStatusQuery, GetPrinterStatusDocument } from "../../types/graphql";
 import { DrawContext } from "../draw/LabelDraw";
@@ -14,7 +14,12 @@ interface LabelComponentState {
     selectedShapeName: string;
 }
 
-export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
+interface LabelComponentProps {
+    width: number;
+    updateWidth: ( newWidthPixels: number ) => void;
+}
+
+export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( { width, updateWidth, children } ) => {
     const { data } = useQuery<GetPrinterStatusQuery>( GetPrinterStatusDocument );
     const [ state, setState ] = useState<LabelComponentState>( {
         selectedShapeName: ""
@@ -49,8 +54,10 @@ export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
             } );
 
         // TODO: allow the user to set the width
-        let widthInches = 0.75;
-        let width = Math.floor( widthInches * dpi );
+        // let widthInches = 0.75;
+        // let width = Math.floor( widthInches * dpi );
+        let widthInches = width ? ( width / dpi ).toFixed( 2 ) : 0;
+
 
         // DEBUG OVERRIDES
         // 242      | works         | GOOD
@@ -81,7 +88,23 @@ export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
 
                         // transform: 'rotate( 90deg )',
                         // transformOrigin: 'left top 0'
-                    }}>{widthInches}" ({width}px)</div>
+                    }}><Input
+                            min={100} max={4000}
+                            // onChange={(el) => console.log("input event", el, el.currentTarget} 
+                            onPressEnter={( ev ) => updateWidth( parseInt( ev.currentTarget.value ) )}
+                            // updateWidth
+                            defaultValue={width} size="small"
+                            step={null}
+                            style={{
+                                border: 'none', overflow: 'none',
+                                width: 40,
+                                textAlign: 'right',
+                                paddingRight: 2,
+                                textDecoration: 'underline'
+                            }}
+                        />px
+                        ({widthInches}")
+                    </div>
                     <Stage
                         onMouseEnter={() => displayContextMenu( false )}
                         onClick={( e: KonvaEventObject<MouseEvent> ) => {
@@ -115,7 +138,7 @@ export const LabelComponent: React.FunctionComponent<{}> = ( { children } ) => {
                         // left: width,
                         transform: 'rotate( 270deg )',
                         transformOrigin: 'left top 0'
-                    }}>{labelInchesHeight}" ({height}px)</div>
+                    }}><InputNumber value={height} /> "{labelInchesHeight}" ({height}px)</div>
                     <div style={{
                         position: 'relative',
                         textAlign: 'center',

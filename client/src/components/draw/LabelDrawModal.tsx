@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DISPLAY } from '../../types/enums';
 import { Item, Label, useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument } from "../../types/graphql";
 import { Modal, Descriptions, Button, Icon, Tooltip, message } from "antd";
@@ -19,8 +19,13 @@ type LabelDrawModalProps = {
     label: Label;
 } );
 
+interface LabelDrawModalState {
+    width: number;
+}
+
 export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( props: LabelDrawModalProps ) => {
 
+    const [ state, setState ] = useState < LabelDrawModalState> ({width: props.label ? props.label.width : LabelExport.DEFAULT_WIDTH });
     const context = useContext( PrintContext );
     const [ saveLabelMutation, { 
         data: saveData, 
@@ -97,6 +102,16 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
         }
     };
 
+    const updateLabelWidthPixels = ( newPx: number ): void => {
+            console.log( "updateWidthPixels", "XXX" );
+            // if ( this.canvas ){
+            console.log( "updateWidthPixels", newPx );
+            // this.canvas.width = newPx;
+            // }
+            setState( { width: newPx } );
+
+        }
+
     const description = () => {
         const { item, label } = props;
         if ( props.item ) {
@@ -129,11 +144,10 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     // let drawWidth = 725;
     // let drawHeight = 225;
     let drawWidth = 48;
-    let drawHeight = 48;
     return (
         <Modal
             visible={visible == DISPLAY.VISIBLE}
-            title="Create a new label"
+            title={_labelIsNew ? "Create a new label":"Edit Label"}
             onCancel={handleCancel}
             onOk={handleSave}
             width={drawWidth > 500 ? drawWidth + 25 : 525}
@@ -153,6 +167,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                     <Button key="addToPrintList" type="primary" onClick={context.handleAddToPrintList}>
                         <Icon type="database" />
                         {console.log( "label comparison", label, context.getCurrentLabel() )}
+                        {/* TODO: fix */}
                         {context.getPrintLabels().includes( getLabel() ) ? "Remove from" : "Add to"} Print List
                         </Button>
                 </Tooltip>,
@@ -167,7 +182,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
         >
             {description()}
             <br />
-            <LabelDraw width={drawWidth} height={drawHeight} item={item} label={getLabel()} />
+            <LabelDraw updateWidth={updateLabelWidthPixels} width={state.width} item={item} label={getLabel()} />
         </Modal>
     );
 };

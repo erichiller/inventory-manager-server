@@ -28,6 +28,7 @@ interface LabelExportConstructorProps<T> extends LabelExportConstituents<T> {
 
 
 export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
+    static DEFAULT_WIDTH = 300;
     id: UUIDStringT;
 
     // texts: LabelText[];
@@ -37,7 +38,7 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
     // buffer: PixelMap;
     imgData: ImageData;
     // dataURL: string;
-    width: Integer;
+    width: Integer = LabelExport.DEFAULT_WIDTH;
     height: Integer;
 
     created_at: Scalars[ 'timestamptz' ];

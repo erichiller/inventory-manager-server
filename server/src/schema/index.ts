@@ -37,6 +37,10 @@ export const typeDefs = gql`
   
   scalar uint8
 
+  type LabelMonochromeRasterBuffer {
+      rasterBuffer: [[[uint8]]]
+  }
+
   type LabelMonochromeBuffer {
     # __typename: String
     imageBuffer: [[[uint8]]]
@@ -45,9 +49,9 @@ export const typeDefs = gql`
   type Mutation {
     uploadFiles(files: [Upload]!): [File]!
     putLabelMonochromeBuffer(imageBuffer: [[[[uint8]]]]!): [LabelMonochromeBuffer]
+    putLabelMonochromeRasterBuffer(rasterBuffer: [[[uint8]]]!): [LabelMonochromeRasterBuffer]
   }
 
-  # type LabelMonochromeBuffer: [Int]
 `;
 
 

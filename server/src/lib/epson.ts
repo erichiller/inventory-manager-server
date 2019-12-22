@@ -246,9 +246,11 @@ export class BrotherLabeler {
                             }
                         }
                     }
-                    retObj[ "heightInch" ] = parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( retObj[ "labelType" ] )[ 0 ] );
-                    retObj[ "heightMillimeter" ] = parseFloat( /[0-9]{1,2}mm/.exec( retObj[ "labelType" ] )[ 0 ] );
-                    resolve( retObj );
+                    if (retObj){
+                        retObj[ "heightInch" ] = parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( retObj[ "labelType" ] )[ 0 ] );
+                        retObj[ "heightMillimeter" ] = parseFloat( /[0-9]{1,2}mm/.exec( retObj[ "labelType" ] )[ 0 ] );
+                        resolve( retObj );
+                    }
                     // If done, close the session
                     session.close();
 
@@ -259,7 +261,7 @@ export class BrotherLabeler {
         }
     }
 
-    async imageRaster ( inputBuffer: Array<Array<Array<uint8>>> ) {
+    async printRaster ( inputBuffer: Array<Array<Array<uint8>>> ) {
 
         inputBuffer = [ [ [
             0xff,
@@ -333,15 +335,15 @@ export class BrotherLabeler {
             0x09,
             0x10
         ] ] ];
-        let dotPositions = 20; // 150 / 8 for 12mm
+        let dotPositions = 150; // 150 / 8 for 12mm
         for ( let i = 1; i <= dotPositions; i++ ) {
             inputBuffer[ 0 ][ i ] = inputBuffer[ 0 ][ 0 ];
         }
 
 
-        let labeler = new BrotherLabeler();
+        // let labeler = new BrotherLabeler();
 
-        let labelLen = new Length( 0.75 );
+        // let labelLen = new Length( 0.75 );
 
         let invalidateBuf = [];
         for ( let i = 0; i < 200; i++ ) {
@@ -466,16 +468,17 @@ export class BrotherLabeler {
                 // let imageBuf73 = labeler.imageMode73Density(labeler.imageMode73DensityTestData());
                 // console.log( `Page # ${ idx } of ${ inputBuffer.length }: \n\timageBuf73 is ${ imageBuf73.byteLength } bytes in length\n\tTerminating with ${ idx === inputBuffer.length - 1 ? 'lastpage, cut: 0x0c' : 'intermediary page, new page: 0xff' }` );
 
-                return page.map( ( buf, idx ) => {
+                return [...page.map( ( buf, idx ) => {
                     console.log(buf.length, buf2hex([buf.length]))
                     return [
                         0x47, 0x46, 0x00,
                         ...buf
                     ];
-                } );
+                } ), idx === inputBuffer.length - 1 ? 0x1a : 0x0c];
 
             } ).flat().flat() ),
-            Buffer.from( [0x1a] ) // last page print
+
+            // Buffer.from( [0x1a] ) // last page print
 
 
             // labeler.newline,
