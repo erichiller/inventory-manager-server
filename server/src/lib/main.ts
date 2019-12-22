@@ -3,7 +3,7 @@ import {BrotherLabeler} from './epson';
 
 let printer = new BrotherLabeler();
 
-let x = printer.imageRaster([]);
+let x = printer.printRaster([]);
 
 x.then( result => console.log("result is", result))
 

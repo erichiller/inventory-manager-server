@@ -51,11 +51,11 @@ interface ChangedValueI {
 }
 
 interface LabelDrawProps<T extends Item> {
-    height?: number;
-    width?: number;
+    width: number;
     // item: ItemHardwareFastenerBolt;
     item?: T;
     label: LabelExport<T>;
+    updateWidth: (newPx: number) => void;
 }
 
 
@@ -130,7 +130,7 @@ const DrawContextStateDefault: LabelDrawState<Item> = {
     stageRef: null,
     setRef: null,
     historyPosition: 0,
-    history: []
+    history: [],
 };
 
 export const DrawContext = React.createContext<DrawContext<any>>( DrawContextStateDefault );
@@ -547,7 +547,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         stageRef: null,
         setRef: this.setRef,
         historyPosition: 0,
-        history: []
+        history: [],
     };
 
     get width (): Integer | null {
@@ -603,8 +603,8 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
     };
 
     render () {
-        const { width, height, item } = this.props;
-        console.log( "LabelDraw.render()" );
+        const { item } = this.props;
+        console.log( `LabelDraw.render() with width=`,this.props );
         return (
             <DrawContext.Provider
                 value={this.state}>
@@ -639,7 +639,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                         }} id="DEBUG" />
                     </Tooltip>
 
-                    <LabelComponent>
+                    <LabelComponent {...this.props}>
                         {/* Debug Rectangle  */}
                         {/* <DebugRectangles /> */}
                         {[ 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160 ].map( i => {
