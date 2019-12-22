@@ -21,13 +21,15 @@ type LabelDrawModalProps = {
 
 interface LabelDrawModalState {
     width: number;
+    label: LabelExport<any>;
 }
 
 export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( props: LabelDrawModalProps ) => {
 
     const [ state, setState ] = useState < LabelDrawModalState> (
         {
-            width: props.label && props.label.width ? props.label.width : LabelExport.DEFAULT_WIDTH 
+            width: props.label && props.label.width ? props.label.width : LabelExport.DEFAULT_WIDTH,
+            label: props.label ? new LabelExport( props.label ) : new LabelExport()
         }
     );
     const context = useContext( PrintContext );
@@ -42,15 +44,8 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
         error: editEerror 
     } ] = useEditLabelMutation();
 
-    let _label: LabelExport<any>;
     // determine if label is new (already in DB) so that it can be edited or inserted
     const _labelIsNew: boolean = props.label ? false : true;
-    const getLabel = (): LabelExport<any> => {
-        if ( !_label ) {
-            _label = props.label ? new LabelExport( props.label ) : new LabelExport();
-        }
-        return _label;
-    };
 
     const handleCancel = () => {
         props.visibleHandler( DISPLAY.HIDDEN );
@@ -112,7 +107,10 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
             console.log( "updateWidthPixels", newPx );
             // this.canvas.width = newPx;
             // }
-            setState( { width: newPx } );
+            setState( {
+                width: newPx ,
+                label: state.label
+            } );
 
         }
 
@@ -159,7 +157,11 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                 </Tooltip >,
 
                 <Tooltip key="print" placement="top" title="Send to Label Maker">
-                    <SendBufferButton type="primary" value="Print" onClick={context.startSendBuffer} buffer={context.shouldSendBuffer ? [ context.currentLabelToBuffer() ] : null} />
+                    <SendBufferButton 
+                        type="primary" 
+                        value="Print" 
+                        onClick={context.startSendBuffer} buffer={context.shouldSendBuffer ? [ context.currentLabelToBuffer() ] : null} 
+                        />
                 </Tooltip>,
 
                 <Tooltip key="addToPrintList" placement="top" title="Add to list for bulk printing later">
@@ -167,7 +169,12 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                         <Icon type="database" />
                         {console.log( "label comparison", label, context.getCurrentLabel() )}
                         {/* TODO: fix */}
-                        {context.getPrintLabels().includes( getLabel() ) ? "Remove from" : "Add to"} Print List
+                        {context.getPrintLabels().some( el => {
+                            console.log("some() checking", `
+                            el.id    = ${el.id}
+                            el       = ${console.dir(el)}
+                            getLabel().id   = ${state.label.id}
+                            getLabel()      = ${console.dir(state.label.id)}`); return el.id === state.label.id; } ) ? "Remove from" : "Add to"} Print List
                         </Button>
                 </Tooltip>,
 
@@ -181,7 +188,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
         >
             {description()}
             <br />
-            <LabelDraw updateWidth={updateLabelWidthPixels} width={state.width} item={item} label={getLabel()} />
+            <LabelDraw updateWidth={updateLabelWidthPixels} width={state.width} item={item} label={state.label} />
         </Modal>
     );
 };
