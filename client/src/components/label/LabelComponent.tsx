@@ -138,7 +138,7 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( { 
                         // left: width,
                         transform: 'rotate( 270deg )',
                         transformOrigin: 'left top 0'
-                    }}><InputNumber value={height} /> "{labelInchesHeight}" ({height}px)</div>
+                    }}>{labelInchesHeight}" ({height}px)</div>
                     <div style={{
                         position: 'relative',
                         textAlign: 'center',

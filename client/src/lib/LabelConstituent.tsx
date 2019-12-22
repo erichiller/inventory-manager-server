@@ -42,6 +42,7 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
     height: Integer;
 
     created_at: Scalars[ 'timestamptz' ];
+    updated_at: Scalars[ 'timestamptz' ];
     is_template: boolean = false;
     edit_of_id?: Scalars[ 'uuid' ];
     parent_of: Label[] = [];

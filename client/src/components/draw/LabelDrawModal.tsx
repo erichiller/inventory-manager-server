@@ -25,7 +25,13 @@ interface LabelDrawModalState {
 
 export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( props: LabelDrawModalProps ) => {
 
-    const [ state, setState ] = useState < LabelDrawModalState> ({width: props.label ? props.label.width : LabelExport.DEFAULT_WIDTH });
+    console.log("props.label ? props.label.width : LabelExport.DEFAULT_WIDTH ", props.label, props.label.width, LabelExport.DEFAULT_WIDTH);
+
+    const [ state, setState ] = useState < LabelDrawModalState> (
+        {
+            width: props.label ? props.label.width : LabelExport.DEFAULT_WIDTH 
+        }
+    );
     const context = useContext( PrintContext );
     const [ saveLabelMutation, { 
         data: saveData, 
@@ -139,18 +145,13 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     console.log( 'state.visibleHandler', visibleHandler() );
     // console.log('state.visible', visibleHandler(), state.visible == display.VISIBLE ? true : false)
     // console.log( 'state.item', item );
-    // if ( visible)
-    // console.log( 'item keys', Object.keys( item ) );
-    // let drawWidth = 725;
-    // let drawHeight = 225;
-    let drawWidth = 48;
     return (
         <Modal
             visible={visible == DISPLAY.VISIBLE}
             title={_labelIsNew ? "Create a new label":"Edit Label"}
             onCancel={handleCancel}
             onOk={handleSave}
-            width={drawWidth > 500 ? drawWidth + 25 : 525}
+            width={state.width > 450 ? state.width + 75 : 525}
             footer={[
                 <Tooltip key="cancel" placement="top" title="Return to Items">
                     <Button key="cancel" type="danger" onClick={handleCancel}>

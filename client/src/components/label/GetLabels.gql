@@ -1,59 +1,44 @@
-query GetLabels {
-  label(order_by: {created_at: asc}) {
+fragment labelFields on label {
     id
     created_at
     content
     is_template
     title
+    width
+    height
     item {
-      id
-      class
-      name
+        id
+        class
+        name
     }
-  }
+}
+
+query GetLabels {
+    label(order_by: { created_at: asc }) {
+        ...labelFields
+    }
 }
 
 query GetLabelById($label_id: uuid) {
-  label(order_by: {created_at: asc}, where: {id: {_eq: $label_id}}) {
-    id
-    created_at
-    content
-    is_template
-    title
-    item {
-      id
-      class
-      name
+    label(order_by: { created_at: asc }, where: { id: { _eq: $label_id } }) {
+        ...labelFields
     }
-  }
 }
 
 query GetLabelByItemId($item_id: Int) {
-  label(order_by: {created_at: asc}, where: {item_id: {_eq: $item_id}}) {
-    id
-    created_at
-    content
-    is_template
-    title
-    item {
-      id
-      class
-      name
+    label(
+        order_by: { created_at: asc }
+        where: { item_id: { _eq: $item_id } }
+    ) {
+        ...labelFields
     }
-  }
 }
 
 query GetTemplates {
-  label(order_by: {created_at: asc}, where: {is_template: {_eq: true}}) {
-    id
-    created_at
-    content
-    is_template
-    title
-    item {
-      id
-      class
-      name
+    label(
+        order_by: { created_at: asc }
+        where: { is_template: { _eq: true } }
+    ) {
+        ...labelFields
     }
-  }
 }
