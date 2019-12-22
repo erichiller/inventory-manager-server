@@ -313,10 +313,10 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
 
         let updateContextResult = this.updateContext();
         let shouldUpdate = updateContextResult || nextState != this.state;
-        if ( shouldUpdate ) {
+        if ( updateContextResult ) {
             this.updateHistory();
         }
-        console.log( "shouldComponentUpdate", { 'history_length': this.state.history.length }, { shouldUpdate }, { updateContextResult }, ( nextState != this.state ) );
+        console.log( `shouldComponentUpdate ? ${shouldUpdate}\n`, { 'history_length': this.state.history.length , shouldUpdate , updateContextResult , "nextState!=this.state": nextState != this.state, nextState, "state": this.state });
         return shouldUpdate;
     };
 
