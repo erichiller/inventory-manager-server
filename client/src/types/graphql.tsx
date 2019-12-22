@@ -2281,6 +2281,7 @@ export type Label = {
   /** An aggregated array relationship */
   parent_of_aggregate: LabelAggregate,
   title?: Maybe<Scalars['String']>,
+  updated_at: Scalars['timestamptz'],
   width: Scalars['Int'],
 };
 
@@ -2412,6 +2413,7 @@ export type LabelBoolExp = {
   item_id?: Maybe<IntComparisonExp>,
   parent_of?: Maybe<LabelBoolExp>,
   title?: Maybe<StringComparisonExp>,
+  updated_at?: Maybe<TimestamptzComparisonExp>,
   width?: Maybe<IntComparisonExp>,
 };
 
@@ -2460,6 +2462,7 @@ export type LabelInsertInput = {
   item_id?: Maybe<Scalars['Int']>,
   parent_of?: Maybe<LabelArrRelInsertInput>,
   title?: Maybe<Scalars['String']>,
+  updated_at?: Maybe<Scalars['timestamptz']>,
   width?: Maybe<Scalars['Int']>,
 };
 
@@ -2470,6 +2473,7 @@ export type LabelMaxFields = {
   height?: Maybe<Scalars['Int']>,
   item_id?: Maybe<Scalars['Int']>,
   title?: Maybe<Scalars['String']>,
+  updated_at?: Maybe<Scalars['timestamptz']>,
   width?: Maybe<Scalars['Int']>,
 };
 
@@ -2479,6 +2483,7 @@ export type LabelMaxOrderBy = {
   height?: Maybe<OrderBy>,
   item_id?: Maybe<OrderBy>,
   title?: Maybe<OrderBy>,
+  updated_at?: Maybe<OrderBy>,
   width?: Maybe<OrderBy>,
 };
 
@@ -2489,6 +2494,7 @@ export type LabelMinFields = {
   height?: Maybe<Scalars['Int']>,
   item_id?: Maybe<Scalars['Int']>,
   title?: Maybe<Scalars['String']>,
+  updated_at?: Maybe<Scalars['timestamptz']>,
   width?: Maybe<Scalars['Int']>,
 };
 
@@ -2498,6 +2504,7 @@ export type LabelMinOrderBy = {
   height?: Maybe<OrderBy>,
   item_id?: Maybe<OrderBy>,
   title?: Maybe<OrderBy>,
+  updated_at?: Maybe<OrderBy>,
   width?: Maybe<OrderBy>,
 };
 
@@ -2536,6 +2543,7 @@ export type LabelOrderBy = {
   item_id?: Maybe<OrderBy>,
   parent_of_aggregate?: Maybe<LabelAggregateOrderBy>,
   title?: Maybe<OrderBy>,
+  updated_at?: Maybe<OrderBy>,
   width?: Maybe<OrderBy>,
 };
 
@@ -2563,6 +2571,8 @@ export enum LabelSelectColumn {
   /** column name */
   TITLE = 'title',
   /** column name */
+  UPDATED_AT = 'updated_at',
+  /** column name */
   WIDTH = 'width'
 }
 
@@ -2576,6 +2586,7 @@ export type LabelSetInput = {
   is_template?: Maybe<Scalars['Boolean']>,
   item_id?: Maybe<Scalars['Int']>,
   title?: Maybe<Scalars['String']>,
+  updated_at?: Maybe<Scalars['timestamptz']>,
   width?: Maybe<Scalars['Int']>,
 };
 
@@ -2657,6 +2668,8 @@ export enum LabelUpdateColumn {
   ITEM_ID = 'item_id',
   /** column name */
   TITLE = 'title',
+  /** column name */
+  UPDATED_AT = 'updated_at',
   /** column name */
   WIDTH = 'width'
 }
@@ -3087,7 +3100,11 @@ export enum OrderBy {
 
 export type PrinterStatus = {
    __typename?: 'PrinterStatus',
+  firmwareVersion?: Maybe<Scalars['Float']>,
+  heightInch?: Maybe<Scalars['Float']>,
+  heightMillimeter?: Maybe<Scalars['Float']>,
   labelType: Scalars['String'],
+  model?: Maybe<Scalars['String']>,
   uptime?: Maybe<Scalars['Int']>,
 };
 
@@ -4328,6 +4345,15 @@ export type ItemHardwareFastenerBoltQuery = (
   )> }
 );
 
+export type LabelFieldsFragment = (
+  { __typename?: 'label' }
+  & Pick<Label, 'id' | 'created_at' | 'content' | 'is_template' | 'title' | 'width' | 'height'>
+  & { item: Maybe<(
+    { __typename?: 'item' }
+    & Pick<Item, 'id' | 'class' | 'name'>
+  )> }
+);
+
 export type GetLabelsQueryVariables = {};
 
 
@@ -4335,11 +4361,7 @@ export type GetLabelsQuery = (
   { __typename?: 'query_root' }
   & { label: Array<(
     { __typename?: 'label' }
-    & Pick<Label, 'id' | 'created_at' | 'content' | 'is_template' | 'title'>
-    & { item: Maybe<(
-      { __typename?: 'item' }
-      & Pick<Item, 'id' | 'class' | 'name'>
-    )> }
+    & LabelFieldsFragment
   )> }
 );
 
@@ -4352,11 +4374,7 @@ export type GetLabelByIdQuery = (
   { __typename?: 'query_root' }
   & { label: Array<(
     { __typename?: 'label' }
-    & Pick<Label, 'id' | 'created_at' | 'content' | 'is_template' | 'title'>
-    & { item: Maybe<(
-      { __typename?: 'item' }
-      & Pick<Item, 'id' | 'class' | 'name'>
-    )> }
+    & LabelFieldsFragment
   )> }
 );
 
@@ -4369,11 +4387,7 @@ export type GetLabelByItemIdQuery = (
   { __typename?: 'query_root' }
   & { label: Array<(
     { __typename?: 'label' }
-    & Pick<Label, 'id' | 'created_at' | 'content' | 'is_template' | 'title'>
-    & { item: Maybe<(
-      { __typename?: 'item' }
-      & Pick<Item, 'id' | 'class' | 'name'>
-    )> }
+    & LabelFieldsFragment
   )> }
 );
 
@@ -4384,11 +4398,7 @@ export type GetTemplatesQuery = (
   { __typename?: 'query_root' }
   & { label: Array<(
     { __typename?: 'label' }
-    & Pick<Label, 'id' | 'created_at' | 'content' | 'is_template' | 'title'>
-    & { item: Maybe<(
-      { __typename?: 'item' }
-      & Pick<Item, 'id' | 'class' | 'name'>
-    )> }
+    & LabelFieldsFragment
   )> }
 );
 
@@ -4451,7 +4461,22 @@ export type SendBufferMutation = (
   )>>> }
 );
 
-
+export const LabelFieldsFragmentDoc = gql`
+    fragment labelFields on label {
+  id
+  created_at
+  content
+  is_template
+  title
+  width
+  height
+  item {
+    id
+    class
+    name
+  }
+}
+    `;
 export const InsertIconDocument = gql`
     mutation InsertIcon($mimeData: String, $description: String, $id: uuid, $label: String, $category: enum_icon_category_enum) {
   insert_icon(objects: {data: $mimeData, description: $description, id: $id, label: $label, category: $category}) {
@@ -4663,19 +4688,10 @@ export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<
 export const GetLabelsDocument = gql`
     query GetLabels {
   label(order_by: {created_at: asc}) {
-    id
-    created_at
-    content
-    is_template
-    title
-    item {
-      id
-      class
-      name
-    }
+    ...labelFields
   }
 }
-    `;
+    ${LabelFieldsFragmentDoc}`;
 export type GetLabelsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetLabelsQuery, GetLabelsQueryVariables>, 'query'>;
 
     export const GetLabelsComponent = (props: GetLabelsComponentProps) => (
@@ -4721,19 +4737,10 @@ export type GetLabelsQueryResult = ApolloReactCommon.QueryResult<GetLabelsQuery,
 export const GetLabelByIdDocument = gql`
     query GetLabelById($label_id: uuid) {
   label(order_by: {created_at: asc}, where: {id: {_eq: $label_id}}) {
-    id
-    created_at
-    content
-    is_template
-    title
-    item {
-      id
-      class
-      name
-    }
+    ...labelFields
   }
 }
-    `;
+    ${LabelFieldsFragmentDoc}`;
 export type GetLabelByIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetLabelByIdQuery, GetLabelByIdQueryVariables>, 'query'>;
 
     export const GetLabelByIdComponent = (props: GetLabelByIdComponentProps) => (
@@ -4780,19 +4787,10 @@ export type GetLabelByIdQueryResult = ApolloReactCommon.QueryResult<GetLabelById
 export const GetLabelByItemIdDocument = gql`
     query GetLabelByItemId($item_id: Int) {
   label(order_by: {created_at: asc}, where: {item_id: {_eq: $item_id}}) {
-    id
-    created_at
-    content
-    is_template
-    title
-    item {
-      id
-      class
-      name
-    }
+    ...labelFields
   }
 }
-    `;
+    ${LabelFieldsFragmentDoc}`;
 export type GetLabelByItemIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>, 'query'>;
 
     export const GetLabelByItemIdComponent = (props: GetLabelByItemIdComponentProps) => (
@@ -4839,19 +4837,10 @@ export type GetLabelByItemIdQueryResult = ApolloReactCommon.QueryResult<GetLabel
 export const GetTemplatesDocument = gql`
     query GetTemplates {
   label(order_by: {created_at: asc}, where: {is_template: {_eq: true}}) {
-    id
-    created_at
-    content
-    is_template
-    title
-    item {
-      id
-      class
-      name
-    }
+    ...labelFields
   }
 }
-    `;
+    ${LabelFieldsFragmentDoc}`;
 export type GetTemplatesComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetTemplatesQuery, GetTemplatesQueryVariables>, 'query'>;
 
     export const GetTemplatesComponent = (props: GetTemplatesComponentProps) => (
@@ -5060,4 +5049,4 @@ export function useSendBufferMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type SendBufferMutationHookResult = ReturnType<typeof useSendBufferMutation>;
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2019-12-08T18:09:06-07:00
+// graphql typescript defs generated on 2019-12-22T07:47:37-07:00
