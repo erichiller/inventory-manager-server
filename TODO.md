@@ -39,7 +39,7 @@
   * [ ] Show image in table (of saved labels) (or `onMouseOver`)
   * [ ] button to directly add label to *Print List*
 * [x] Ensure multiple labels (Chain Printing) print properly.
-* [ ] Ensure setting label length statically will also work. (Or calculate & display in UI)
+* [x] Ensure setting label length statically will also work. (Or calculate & display in UI)
 * [ ] _maybe:_ Undo / Redo → <https://konvajs.org/docs/react/Undo-Redo.html>
   * [ ] ensure history updated on
     * [ ] move

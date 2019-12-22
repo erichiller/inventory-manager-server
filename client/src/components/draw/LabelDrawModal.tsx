@@ -25,11 +25,9 @@ interface LabelDrawModalState {
 
 export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( props: LabelDrawModalProps ) => {
 
-    console.log("props.label ? props.label.width : LabelExport.DEFAULT_WIDTH ", props.label, props.label.width, LabelExport.DEFAULT_WIDTH);
-
     const [ state, setState ] = useState < LabelDrawModalState> (
         {
-            width: props.label ? props.label.width : LabelExport.DEFAULT_WIDTH 
+            width: props.label && props.label.width ? props.label.width : LabelExport.DEFAULT_WIDTH 
         }
     );
     const context = useContext( PrintContext );
