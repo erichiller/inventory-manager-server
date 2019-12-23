@@ -5,9 +5,9 @@ import { PixelMap, canvasToBuffer } from '../../lib/canvasToBuffer';
 export const PrintContext = React.createContext( {
 } as {
     handleAddToPrintList: ( ) => void;
-    setCurrentLabel: ( currentLabel: LabelExport<any> ) => void;
-    getCurrentLabel: () => LabelExport<any>;
-    getPrintLabels: () => LabelExport<any>[];
+    setCurrentLabel: ( currentLabel: LabelExport ) => void;
+    getCurrentLabel: () => LabelExport;
+    getPrintLabels: () => LabelExport[];
     startSendBuffer: ( shouldSendBuffer: boolean ) => void;
     currentLabelToBuffer: () => PixelMap;
     printLabelsToBuffer: () => PixelMap[];
@@ -15,8 +15,8 @@ export const PrintContext = React.createContext( {
 } );
 
 interface PrintContextHandlerState {
-    printLabels: LabelExport < any > [];
-    currentLabel: LabelExport<any>;
+    printLabels: LabelExport [];
+    currentLabel: LabelExport;
     shouldSendBuffer: boolean;
 }
 
@@ -39,11 +39,11 @@ export class PrintContextHandler extends React.Component<{},PrintContextHandlerS
         }
     };
 
-    // private _currentLabel: LabelExport<any>;
-    // get currentLabel(): LabelExport<any>{
+    // private _currentLabel: LabelExport;
+    // get currentLabel(): LabelExport{
     //     return this._currentLabel;
     // }
-    setCurrentLabel = ( currentLabel: LabelExport<any> ) => {
+    setCurrentLabel = ( currentLabel: LabelExport ) => {
         if ( !currentLabel ){
             console.group("setCurrentLabel");
             console.warn("! currentLabel parameter received.");
@@ -58,17 +58,17 @@ export class PrintContextHandler extends React.Component<{},PrintContextHandlerS
         });
     };
 
-    getCurrentLabel = (): LabelExport<any> => {
+    getCurrentLabel = (): LabelExport => {
         return this.state.currentLabel;
     };
 
-    getPrintLabels = (): LabelExport<any>[] => {
+    getPrintLabels = (): LabelExport[] => {
         return this.state.printLabels;
     };
     /**
      * return `true` if the label was added. else `false`
      */
-    addPrintLabel = (label: LabelExport<any>): boolean => {
+    addPrintLabel = (label: LabelExport): boolean => {
         if ( ! label ){
             console.warn("Attempt to add null object as label via context addPrintLabel()");
             return false;

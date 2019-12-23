@@ -21,7 +21,7 @@ type LabelDrawModalProps = {
 
 interface LabelDrawModalState {
     width: number;
-    label: LabelExport<any>;
+    label: LabelExport;
 }
 
 export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( props: LabelDrawModalProps ) => {

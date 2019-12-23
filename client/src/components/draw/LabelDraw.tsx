@@ -50,25 +50,25 @@ interface ChangedValueI {
     value: any;
 }
 
-interface LabelDrawProps<T extends Item> {
+interface LabelDrawProps {
     width: number;
     // item: ItemHardwareFastenerBolt;
-    item?: T;
-    label: LabelExport<T>;
+    item?: Item;
+    label: LabelExport;
     updateWidth: (newPx: number) => void;
 }
 
 
 type IKonvaEventHandler = ( d: boolean | KonvaEventObject<PointerEvent> ) => void;
 type IHtmlEventHandler = ( d: boolean | DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => void;
-type LabelConstituentT<T extends Item> = LabelText | LabelImage | LabelQR<T>;
-interface LabelDrawConstituents<T extends Item> {
+type LabelConstituentT = LabelText | LabelImage | LabelQR;
+interface LabelDrawConstituents {
     texts: LabelText[];
     images: LabelImage[];
-    qrs: LabelQR<T>[];
+    qrs: LabelQR[];
 }
 
-interface LabelDrawState<T extends Item> {
+interface LabelDrawState {
     displayContextMenu: IKonvaEventHandler;
     displayContextMenuStatus: boolean;
     displayContextMenuPosition?: [ number, number ];
@@ -80,28 +80,28 @@ interface LabelDrawState<T extends Item> {
     displayImageUploadModalStatus: DISPLAY;
     displayQREditModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
     displayQREditModalStatus: DISPLAY;
-    contextMenuLabelConstituent: LabelText | LabelImage | LabelQR<T>;
-    item: T;
+    contextMenuLabelConstituent: LabelText | LabelImage | LabelQR;
+    item: Item;
     texts: LabelText[];
     images: LabelImage[];
-    qrs: LabelQR<T>[];
+    qrs: LabelQR[];
     uncommittedText: LabelText;
     uncommittedImage: LabelImage;
-    uncommittedQR: LabelQR<T>;
+    uncommittedQR: LabelQR;
     commitLabelText: ( labelText: LabelText ) => void;
-    deleteLabelConstituent: ( constituent: LabelConstituentT<T> ) => void;
+    deleteLabelConstituent: ( constituent: LabelConstituentT ) => void;
     commitLabelImage: ( labelImage: LabelImage ) => void;
-    commitLabelQR: ( LabelQR: LabelQR<T> ) => void;
+    commitLabelQR: ( LabelQR: LabelQR ) => void;
     stageRef: Stage;
     setRef: ( stageRef: Stage ) => void;
     historyPosition: Integer;
-    history: LabelDrawConstituents<T>[];
+    history: LabelDrawConstituents[];
 }
-interface DrawContext<T extends Item> extends Omit<LabelDrawState<T>, "item"> {
-    item?: T;
+interface DrawContext extends Omit<LabelDrawState, "item"> {
+    item?: Item;
 }
 
-const DrawContextStateDefault: LabelDrawState<Item> = {
+const DrawContextStateDefault: LabelDrawState = {
     displayContextMenu: () => { },
     displayContextMenuStatus: false,
     displayContextMenuPosition: undefined,
@@ -133,17 +133,17 @@ const DrawContextStateDefault: LabelDrawState<Item> = {
     history: [],
 };
 
-export const DrawContext = React.createContext<DrawContext<any>>( DrawContextStateDefault );
+export const DrawContext = React.createContext<DrawContext>( DrawContextStateDefault );
 
 
 
-export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, LabelDrawState<T>> {
+export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
 
     static contextType = PrintContext;
     declare context: React.ContextType<typeof PrintContext>;
 
 
-    constructor ( props: LabelDrawProps<T> ) {
+    constructor ( props: LabelDrawProps ) {
         super( props );
 
         this.state.texts = this.props.label.content.texts ?? [];
@@ -306,7 +306,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
     };
 
 
-    shouldComponentUpdate = ( nextProps: LabelDrawProps<T>, nextState: LabelDrawState<T> ): boolean => {
+    shouldComponentUpdate = ( nextProps: LabelDrawProps, nextState: LabelDrawState ): boolean => {
         if ( !this.context.getCurrentLabel() ) {
             this.context.setCurrentLabel( this.exportLabel() );
         }
@@ -373,7 +373,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         return false;
     };
 
-    deleteLabelConstituent = ( constituent: LabelText | LabelImage | LabelQR<any> ): void => {
+    deleteLabelConstituent = ( constituent: LabelText | LabelImage | LabelQR ): void => {
         console.log( "deleteLabelConstituent : constituent <?>", constituent );
         if ( LabelText.is( constituent ) ) {
             console.log( "deleteLabelConstituent : constituent <LabelText>", constituent );
@@ -476,40 +476,40 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
     };
 
 
-    updateLabelQR = <T extends Item> ( changedValue: Partial<LabelQR<T>>, labelQR: LabelQR<T> ) => {
+    updateLabelQR =  ( changedValue: Partial<LabelQR>, labelQR: LabelQR ) => {
         let updatedQR = false;
         if ( changedValue.dataURL ) {
-            console.log( "setting labelQR<T> to", changedValue.dataURL );
+            console.log( "setting labelQR to", changedValue.dataURL );
             labelQR.dataURL = changedValue.dataURL;
         }
         if ( changedValue.canvasElement ) {
-            console.log( "setting canvasElement on labelQR<T> to", changedValue.canvasElement );
+            console.log( "setting canvasElement on labelQR to", changedValue.canvasElement );
             labelQR.canvasElement = changedValue.canvasElement;
         }
         this.state.qrs.forEach( ( qr => {
             if ( qr.id == labelQR.id ) {
-                console.log( "updating existing labelQR<T> with id", labelQR.id );
-                qr = labelQR as LabelQR<Item>;
+                console.log( "updating existing labelQR with id", labelQR.id );
+                qr = labelQR as LabelQR;
                 updatedQR = true;
                 return;
             }
         } ) );
         if ( !updatedQR ) {
-            console.log( "adding uncommitted labelQR<T> with id", labelQR.id );
+            console.log( "adding uncommitted labelQR with id", labelQR.id );
             this.setState( {
-                qrs: [ ...this.state.qrs, labelQR as LabelQR<Item> ]
+                qrs: [ ...this.state.qrs, labelQR as LabelQR ]
             } );
         }
         console.log( "this.state.qrs is now", this.state.qrs, "pending", [ ...this.state.qrs, labelQR ] );
     };
 
 
-    commitLableQR = <T extends {}> ( labelQR: LabelQR<T> ) => {
+    commitLableQR = <T extends {}> ( labelQR: LabelQR ) => {
         this.setState( { uncommittedQR: new LabelQR() } );
     };
 
     /*
-     * type React.Ref<T> = ((instance: T) => void) | React.RefObject<T>
+     * type React.Ref = ((instance: T) => void) | React.RefObject
     **/
     setRef = ( ref: Stage ): void => {
         console.log( "SETTING REF FOR canvas", ref );
@@ -520,7 +520,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         }
     };
 
-    state: LabelDrawState<T> = {
+    state: LabelDrawState = {
         displayContextMenu: this.displayContextMenu,
         displayContextMenuStatus: DrawContextStateDefault.displayContextMenuStatus,
         displayContextMenuPosition: undefined,
@@ -539,7 +539,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         qrs: [],
         uncommittedText: new LabelText(),
         uncommittedImage: new LabelImage(),
-        uncommittedQR: new LabelQR(),
+        uncommittedQR: new LabelQR({item: this.props.item}),
         commitLabelText: this.commitLabelText,
         commitLabelImage: this.commitLabelImage,
         commitLabelQR: this.commitLableQR,
@@ -569,7 +569,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
         return this.canvas && this.width && this.height ? this.canvas.getContext( '2d' ).getImageData( 0, 0, this.width, this.height ) : null;
     }
 
-    exportLabel = (): LabelExport<T> => {
+    exportLabel = (): LabelExport => {
         console.group( "LabelDraw.exportLabel()" );
         // console.trace();
         console.log( "LabelDraw, exporting Label verification values", {
@@ -772,7 +772,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                                 draggable />;
                         } )}
                         {this.state.qrs.map( labelQR => {
-                            console.log( "drawing LabelQR<T>", labelQR );
+                            console.log( "drawing LabelQR", labelQR );
                             return <Image
                                 qrObject={labelQR}
                                 key={labelQR.id}
@@ -784,7 +784,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                                 rotation={labelQR.rotation}
                                 onTransformEnd={( evt: KonvaEventObject<Event> ) => {
                                     console.log( "(QR) TransformEnd:\n", evt );
-                                    ( evt.currentTarget.attrs.qrObject as LabelQR<T> ).drawAttrs = {
+                                    ( evt.currentTarget.attrs.qrObject as LabelQR ).drawAttrs = {
                                         x: evt.currentTarget.attrs.x,
                                         y: evt.currentTarget.attrs.y,
                                         scaleX: evt.currentTarget.attrs.scaleX,
@@ -795,7 +795,7 @@ export class LabelDraw<T extends Item> extends Component<LabelDrawProps<T>, Labe
                                 }}
                                 onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
                                     console.log( "(QR) DragEnd:\n", evt );
-                                    ( evt.currentTarget.attrs.qrObject as LabelQR<T> ).drawAttrs = {
+                                    ( evt.currentTarget.attrs.qrObject as LabelQR ).drawAttrs = {
                                         x: evt.currentTarget.attrs.x,
                                         y: evt.currentTarget.attrs.y,
                                         scaleX: evt.currentTarget.attrs.scaleX,

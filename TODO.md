@@ -22,28 +22,31 @@
 * [x] Transforms , resize especially
   * [x] Save Transforms
 * [x] Ability to **DELETE** components from context menu
+* [x] Generalize code (not fixed to `HardwareFasteners`)
+* [x] **FIX** QR Code adding _"QR code without item is currently not supported."_
+* [x] fix button change in `DrawModal` when adding to Print List
 
 
 * [ ] Add `LICENSE.md`
 * [ ] Create templates for labels based on category / type
 * [ ] Filter / search on table
-* [ ] Generalize code (not fixed to `HardwareFasteners`)
 * [ ] Item data
   * [ ] Add Item form
   * [ ] Edit Item form
 * [ ] Generic data - example: House Wiring labels
+* [ ] `QREditModal`
+  * [ ] pick properties. checkbox ?
+  * [ ] `onCancel` should remove `LabelQR` object from `Label`
 
 
-* [ ] **FIX** QR Code adding _"QR code without item is currently not supported."_
-* [x] List saved labels
+* [x] List saved labels ( `LabelTable`)
   * [ ] Show image in table (of saved labels) (or `onMouseOver`)
   * [ ] button to directly add label to *Print List*
-* [x] Ensure multiple labels (Chain Printing) print properly.
-* [x] Ensure setting label length statically will also work. (Or calculate & display in UI)
+* [ ] Ensure multiple labels (Chain Printing) print properly.
+* [ ] Ensure setting label length statically will also work. (Or calculate & display in UI)
 * [ ] _maybe:_ Undo / Redo → <https://konvajs.org/docs/react/Undo-Redo.html>
   * [ ] ensure history updated on
     * [ ] move
     * [ ] transform
-* [ ] fix button change in `DrawModal` when adding to Print List
 * [ ] Figure out how to use the last 6 pixels on 12mm tape  
       150 is supported max. 48 * 3 = 144 is all I can get currently without printing a second page;

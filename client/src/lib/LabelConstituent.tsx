@@ -14,26 +14,26 @@ export type FormatOptionsT = "bold" | "italic" | "underline";
 
 
 
-class LabelExportConstituents<T> {
+class LabelExportConstituents {
     texts: LabelText[];
     images: LabelImage[];
-    qrs: LabelQR<T>[];
+    qrs: LabelQR[];
 }
 
-interface LabelExportConstructorProps<T> extends LabelExportConstituents<T> {
+interface LabelExportConstructorProps extends LabelExportConstituents {
     imgData: ImageData;
     width: Integer;
     height: Integer;
 }
 
 
-export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
+export class LabelExport implements Omit<Label, 'parent_of_aggregate'> {
     static DEFAULT_WIDTH = 300;
     id: UUIDStringT;
 
     // texts: LabelText[];
     // images: LabelImage[];
-    // qrs: LabelQR<T>[];
+    // qrs: LabelQR[];
 
     // buffer: PixelMap;
     imgData: ImageData;
@@ -50,7 +50,7 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
     title?: string;
 
 
-    content: LabelExportConstituents<T> = {
+    content: LabelExportConstituents = {
         texts: [],
         images: [],
         qrs: []
@@ -67,9 +67,9 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
      */
     constructor ();
     constructor ( label: Label );
-    constructor ( constituents: LabelExportConstructorProps<T> );
+    constructor ( constituents: LabelExportConstructorProps );
     constructor ( id?: UUIDStringT );
-    constructor ( props?: UUIDStringT | LabelExportConstructorProps<T> | Label ) {
+    constructor ( props?: UUIDStringT | LabelExportConstructorProps | Label ) {
         console.group( "LabelExport constructor" );
         console.log( "Props Received:", { props } );
         if ( !props ) {
@@ -122,7 +122,7 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
      * @param values update values
      * @returns self
      */
-    setValues ( values: LabelExportConstructorProps<T> ): LabelExport<T> {
+    setValues ( values: LabelExportConstructorProps ): LabelExport {
         console.log( "LabelConstituent.setValues ( #LabelComponent )\n********************\n", { ...values, ...{ imgData_width: values.imgData.width, imgData_height: values.imgData.height } }, "\n********************\n");
         this.content = {
             texts: values.texts,
@@ -176,7 +176,7 @@ export class LabelExport<T> implements Omit<Label, 'parent_of_aggregate'> {
         }} src={this.canvas.toDataURL()} />;
     }
 
-    public isEqual ( comparisonLabel: LabelExport<any> ): boolean {
+    public isEqual ( comparisonLabel: LabelExport ): boolean {
         return this.content.qrs && this.content.texts === comparisonLabel.content.texts && this.content.qrs === comparisonLabel.content.qrs && this.content.images === comparisonLabel.content.images && this.imgData === comparisonLabel.imgData;
     }
 }
@@ -323,12 +323,24 @@ export class LabelImage extends LabelConstituent {
 
 
 
-export class LabelQR<T extends Item> extends LabelConstituent {
-    properties: [ Partial<keyof T> ];
+export class LabelQR extends LabelConstituent {
+    // properties: [ Partial<keyof T> ];
+    // get properties() {
+    //     return this.
+    // }
+    properties: string[];
     canvasElement: HTMLCanvasElement;
     dataURL: string;
+    item: Item;
 
-    static is ( input: any ): input is LabelImage {
+    constructor ( options?: Partial<LabelConstituent> & { item: Item } ) {
+        super();
+        const { item } = options;
+        this.item = item;
+        this.properties = Object.getOwnPropertyNames(item);
+    }
+
+    static is ( input: any ): input is LabelQR {
         return LabelConstituent.is( input ) && ( "properties" in input ) && ( "canvasElement" in input ) && ( "dataURL" in input );
     }
 }
