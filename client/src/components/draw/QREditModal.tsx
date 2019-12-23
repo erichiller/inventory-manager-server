@@ -8,15 +8,15 @@ import bwipjs from 'bwip-js';
 import { LabelQR } from '../../lib/LabelConstituent';
 import { DrawContext } from './LabelDraw';
 
-interface QREditModalProps<T> {
+interface QREditModalProps {
     event?: KonvaEventObject<MouseEvent>;
     item?: Item;
-    labelQR: LabelQR<T>;
+    labelQR: LabelQR;
     visibleHandler: ( display?: DISPLAY ) => void;
-    changeHandler: ( newValue: any, labelQR: LabelQR<T> ) => void;
+    changeHandler: ( newValue: any, labelQR: LabelQR ) => void;
 }
 
-export default class QREditModal<T> extends Component<QREditModalProps<T>> {
+export default class QREditModal extends Component<QREditModalProps> {
 
     onCancel = () => {
         /// REMOVE ELEMENT /// REVERT ///
@@ -60,7 +60,7 @@ export default class QREditModal<T> extends Component<QREditModalProps<T>> {
         <Modal
             visible
             title={"QR"}
-            okText="Do"
+            okText="Add QR"
             onCancel={this.onCancel}
             onOk={() => { this.onClose(); }}
             width={drawWidth + 25}
@@ -88,22 +88,25 @@ export default class QREditModal<T> extends Component<QREditModalProps<T>> {
     }
 }
 
-interface QRCanvasProps<T> {
+interface QRCanvasProps {
     width: number;
-    labelQR: LabelQR<T>;
+    labelQR: LabelQR;
     changeHandler: UpdateLabelQR;
 }
 
-type UpdateLabelQR = ( newValue: Partial<LabelQR<any>>, labelQR: LabelQR<any> ) => void;
-type CommitLabelQR<T> = ( labelQR: LabelQR<T> ) => void;
+type UpdateLabelQR = ( newValue: Partial<LabelQR>, labelQR: LabelQR ) => void;
+type CommitLabelQR = ( labelQR: LabelQR ) => void;
 
-class QRCanvas<T> extends Component<QRCanvasProps<T>> {
+class QRCanvas extends Component<QRCanvasProps> {
 
     textToEncode = (): string => {
         if (this.props.labelQR.properties){
-            return this.props.labelQR.properties.map( p => `${ p }` ).join( '\n' );
+            return this.props.labelQR.properties.map( p => {
+                console.log( "QRCanvas is adding props from labelQR", { property: p , value: this.props.labelQR.item[p] } );
+                return `${ this.props.labelQR.item[p] }`;
+             } ).join( '\n' );
         }
-        message.warn("QR code without item is currently not supported.")
+        message.warn("QR code without item is currently not supported.");
         return "";
 
     }

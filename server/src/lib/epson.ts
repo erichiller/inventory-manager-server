@@ -16,8 +16,11 @@ import * as util from 'util';
 
 
 
-function buf2hex ( buffer ) { // buffer is an ArrayBuffer
+export function buf2hex ( buffer ) { // buffer is an ArrayBuffer
     return Array.prototype.map.call( new Uint8Array( buffer ), x => ( '00' + x.toString( 16 ) ).slice( -2 ) ).join( '' );
+}
+export function buf2bin ( buffer ) { // buffer is an ArrayBuffer
+    return Array.prototype.map.call( new Uint8Array( buffer ), x => ( '00000000' + x.toString( 2 ) ).slice( -8 ) ).join( '' );
 }
 
 export class PrinterStatus {
@@ -30,8 +33,51 @@ export class PrinterStatus {
     heightInch: number = null;
     /** Int */
     heightMillimeter: number = null;
+    status: {
+        mediaType: MEDIA_TYPE;
+        mediaWidth: MEDIA_WIDTH;
+        labelCharacteristic: LabelCharacteristic;
+    };
+    /** NodeJS buffer */
+    statusBytes: Buffer = null;
 }
 
+// type MEDIATYPE = keyof {
+//     0x00: "No media";
+//     0x01: "Laminated Tape";
+//     0x03: "Non-Laminated Tape";
+//     0x04: "Fabric Tape";
+//     0x11: "Heat Shrink Tube";
+//     0x13: "FLE Tape";
+//     0x14: "Flexible ID Tape";
+//     0x15: "Satin Tape";
+//     0xff: "Incompatible Tape";
+// };
+
+/**
+ * Media type is Byte 11 in the status returned
+ */
+enum MEDIA_TYPE {
+    NO_MEDIA = 0x00,
+    LAMINATED_TAPE = 0x01,
+    NON_LAMINATED_TAPE = 0x03,
+    FABRIC_TAPE = 0x04,
+    HEAT_SHRINK_TUBE = 0x11,
+    FLE_TAPE = 0x13,
+    FLEXIBLE_ID_TAPE = 0x14,
+    SATIN_TAPE = 0x15,
+    INCOMPATIBLE_TAPE = 0xff
+}
+
+/**
+ * Possible options of returned media width. hse uses rounded sizes.  
+ * `0x00` is an ERROR ( _NO TAPE_ )  
+ * This is byte `10`
+ */
+type MEDIA_WIDTH = 0x00 | 0x04 | 0x06 | 0x09 | 0x0c | 0x12 | 0x18 | 0x24 | 0x15;
+
+
+// function setEnum(enumValue: number){}
 /**
  * run with:
  * rm epson.js ; tsc -t ES2016 epson.ts ; node .\epson.js
@@ -45,16 +91,6 @@ enum LengthType {
     inch = "in",
     dots = "dots"
 }
-
-// type currency = "usd" | "eur";
-
-
-// interface length {
-//     mm?: number,
-//     inch?: number
-// }
-// type length = { mm: number; inch?: undefined } |
-//               { inch: number; mm?: undefined }
 
 class Length {
     private _inches: number;
@@ -103,6 +139,22 @@ class ImageBitMode {
 
 }
 
+interface LabelCharacteristics {
+    tze: {
+        [ key: number ]: LabelCharacteristic;
+    };
+    hse: {
+        [ key: number ]: LabelCharacteristic;
+    };
+}
+interface LabelCharacteristic {
+    widthMillimeters: number;
+    pinsLeft: number;
+    pinsPrint: number;
+    pinsRight: number;
+
+}
+
 
 /**
  *
@@ -118,6 +170,38 @@ class ImageBitMode {
  *
  */
 export class BrotherLabeler {
+
+    static LabelInfo: LabelCharacteristics = {
+        tze: {
+            9: {
+                widthMillimeters: 9,
+                pinsLeft: 219,
+                pinsPrint: 106,
+                pinsRight: 235
+            },
+            12: {
+                widthMillimeters: 12,
+                pinsLeft: 197,
+                pinsPrint: 150,
+                pinsRight: 213
+            },
+            18: {
+                widthMillimeters: 18,
+                pinsLeft: 155,
+                pinsPrint: 234,
+                pinsRight: 171
+            },
+            24: {
+                widthMillimeters: 24,
+                pinsLeft: 112,
+                pinsPrint: 320,
+                pinsRight: 128
+            }
+        },
+        hse: {
+
+        }
+    };
 
     /**
      * Command resets all parameters to their default settings  
@@ -222,7 +306,8 @@ export class BrotherLabeler {
                 "1.3.6.1.2.1.43.8.2.1.12.1.1": "labelType",
                 "1.3.6.1.2.1.1.3.0": "uptime",
                 "1.3.6.1.4.1.2435.2.4.3.1240.1.1.0": "model",
-                "1.3.6.1.4.1.2435.2.4.3.1240.1.4.0": "firmwareVersion"
+                "1.3.6.1.4.1.2435.2.4.3.1240.1.4.0": "firmwareVersion",
+                "1.3.6.1.4.1.2435.3.3.9.1.6.1.0": "status"
                 // "1.3.6.1.2.1.4.20.1": "ipAddresses"
                 // "1.3.6.1.4.1.2435.2.4.3.1240.5.2.3.0": "ipAddress"
                 // contact, name, location
@@ -242,11 +327,21 @@ export class BrotherLabeler {
                                 console.log( oids[ varbinds[ i ].oid ], varbinds[ i ].oid + " = " + varbinds[ i ].value );
                                 let val = varbinds[ i ].value;
                                 retObj[ oids[ varbinds[ i ].oid ] ] = val instanceof Buffer ? val.toString() : val;
+                                if ( oids[ varbinds[ i ].oid ] === "status" ) {
+                                    retObj[ "statusBytes" ] = val;
+                                    retObj[ "status" ] = {
+                                        mediaType: MEDIA_TYPE[ MEDIA_TYPE[ val[ 11 ] ] ],
+                                        mediaWidth: val[ 10 ],
+                                        labelCharacteristic: BrotherLabeler.LabelInfo[ val[ 11 ] === MEDIA_TYPE.HEAT_SHRINK_TUBE ? 'hse' : 'tze' ][ val[ 10 ] ]
+
+                                    };
+                                }
+                                // retObj[ oids[ varbinds[ i ].oid ] ] = val;
                                 // console.log( "retObj is now", retObj )
                             }
                         }
                     }
-                    if (retObj){
+                    if ( retObj ) {
                         retObj[ "heightInch" ] = parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( retObj[ "labelType" ] )[ 0 ] );
                         retObj[ "heightMillimeter" ] = parseFloat( /[0-9]{1,2}mm/.exec( retObj[ "labelType" ] )[ 0 ] );
                         resolve( retObj );
@@ -264,81 +359,216 @@ export class BrotherLabeler {
     async printRaster ( inputBuffer: Array<Array<Array<uint8>>> ) {
 
         inputBuffer = [ [ [
+            0xf0,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
             0xff,
-            0x02,
-            0x03,
-            0x04,
-            0x05,
-            0x06,
-            0x07,
-            0x08,
-            0x09,
-            0x10,
             0xff,
-            0x02,
-            0x03,
-            0x04,
-            0x05,
-            0x06,
-            0x07,
-            0x08,
-            0x09,
-            0x10,
             0xff,
-            0x02,
-            0x03,
-            0x04,
-            0x05,
-            0x06,
-            0x07,
-            0x08,
-            0x09,
-            0x10,
-            0xff,
-            0x02,
-            0x03,
-            0x04,
-            0x05,
-            0x06,
-            0x07,
-            0x08,
-            0x09,
-            0x10,
-            0xff,
-            0x02,
-            0x03,
-            0x04,
-            0x05,
-            0x06,
-            0x07,
-            0x08,
-            0x09,
-            0x10,
-            0xff,
-            0x02,
-            0x03,
-            0x04,
-            0x05,
-            0x06,
-            0x07,
-            0x08,
-            0x09,
-            0x10,
-            0x01,
-            0x02,
-            0x03,
-            0x04,
-            0x05,
-            0x06,
-            0x07,
-            0x08,
-            0x09,
-            0x10
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            // 0b00000111,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            // 0x01,
+            // 0x02,
+            // 0x03,
+            // 0x04,
+            // 0x05,
+            // 0x06,
+            // 0x07,
+            // 0x08,
+            // 0x09,
+            // 0xff,
+            // 0x01,
+            // 0x02,
+            // 0x03,
+            // 0x04,
+            // 0x05,
+            // 0x06,
+            // 0x07,
+            // 0x08,
+            // 0x09,
+            // 0xff,
+            // 0xff,
+            // 0x02,
+            // 0x03,
+            // 0x04,
+            // 0x05,
+            // 0x06,
+            // 0x07,
+            // 0x08,
+            // 0x09,
+            // 0xff,
+            // 0xff,
+            // 0xff,
+            // 0x03,
+            // 0x04,
+            // 0x05,
+            // 0x06,
+            // 0x07,
+            // 0x08,
+            // 0x09,
+            /** 5 */
+            // 0xff,
+            // 0xff,
+            // 0xff,
+            // 0xff,
+            // 0xff,
+            // 0x05,
+            // 0x06,
+            // 0x07,
+            // 0x08,
+            // 0x09,
+            // 0xff,
+            // 0xff,
+            // 0xff,
+            // 0xff,
+            // 0xff,
+            // 0xff,
+            // 0x06,
+            // 0x07,
+            // 0x08,
+            // 0x09,
+            // /** 6 */
+            // 0xff,
+            // 0xff,
+            // 0xff,
+            // 0xff,
+            // 0xff,
+            // 0xff,
+            // 0xff,
+            // 0x07,
+            // 0x08,
+            // 0x09,
+            // 0xff,
+            // 0x05,
+            // 0x06,
+            // 0x07,
+            // 0x08,
+            // 0x09,
+            // 0x10,
+            // 0xff,
+            // 0x02,
+            // 0x03,
+            // 0x04,
+            // 0x05,
+            // 0x06,
+            // 0x07,
+            // 0x08,
+            // 0x09,
+            // 0x10,
+            // 0xff,
+            // 0x02,
+            // 0x03,
+            // 0x04,
+            // 0x05,
+            // 0x06,
+            // 0x07,
+            // 0x08,
+            // 0x09,
+            // 0x10,
+            // 0xff,
+            // 0x02,
+            // 0x03,
+            // 0x04,
+            // 0x05,
+            // 0x06,
+            // 0x07,
+            // 0x08,
+            // 0x09,
+            // 0x10,
+            // 0xff,
+            // 0x02,
+            // 0x03,
+            // 0x04,
+            // 0x05,
+            // 0x06,
+            // 0x07,
+            // 0x08,
+            // 0x09,
+            // 0x10,
+            // 0x01,
+            // 0x02,
+            // 0x03,
+            // 0x04,
+            // 0x05,
+            // 0x06,
+            // 0x07,
+            // 0x08,
+            // 0x09,
+            // 0x10,
+            // 0xff
         ] ] ];
-        let dotPositions = 150; // 150 / 8 for 12mm
+        let dotPositions = 20; // 150 / 8 for 12mm
         for ( let i = 1; i <= dotPositions; i++ ) {
             inputBuffer[ 0 ][ i ] = inputBuffer[ 0 ][ 0 ];
         }
+
+
+        let { status } = await this.getPrinterStatus();
+
+        let shiftBits = status.labelCharacteristic.pinsLeft % 8;
+        let shiftBytes = Math.floor( status.labelCharacteristic.pinsLeft / 8 );
+
+        console.log( { status, shiftBits, shiftBytes } );
 
 
         // let labeler = new BrotherLabeler();
@@ -416,7 +646,7 @@ export class BrotherLabeler {
                 0x1b, 0x69, 0x61, 0x01,          // select Raster mode
 
                 //print information
-                0x1b, 0x69, 0x7a, 
+                0x1b, 0x69, 0x7a,
                 0x04,                               // Media width
                 0x00,                               // laminated tape
                 0x0c, 0x00,                         // 12mm
@@ -468,13 +698,74 @@ export class BrotherLabeler {
                 // let imageBuf73 = labeler.imageMode73Density(labeler.imageMode73DensityTestData());
                 // console.log( `Page # ${ idx } of ${ inputBuffer.length }: \n\timageBuf73 is ${ imageBuf73.byteLength } bytes in length\n\tTerminating with ${ idx === inputBuffer.length - 1 ? 'lastpage, cut: 0x0c' : 'intermediary page, new page: 0xff' }` );
 
-                return [...page.map( ( buf, idx ) => {
-                    console.log(buf.length, buf2hex([buf.length]))
+                return [ ...page.map( ( col, idx ) => {
+                    let o_col_len = col.length; // FOR DEBUG ONLY
+
+                    let paddedCol: typeof col = [];
+                    let transfer: number = null;
+                    while ( paddedCol.length < 0x46 ) {
+                        if ( paddedCol.length < shiftBytes ) {
+                            paddedCol[ paddedCol.length ] = 0x00;
+                            continue;
+                        }
+                        /**
+                         * `transfer` is the bits being moved from one byte to the next
+                         * note: length being shifted will be `8 - shiftbits`;
+                         */
+                        let originalByte = paddedCol.length - shiftBytes - 1 >= 0 ? col[ paddedCol.length - shiftBytes - 1 ] : 0x00;
+                        transfer = originalByte & ( 0xff >> ( 8 - shiftBits ) );
+                        // debug below
+                        if ( col[ paddedCol.length - shiftBytes ] && idx === 1 ) {
+                            let final_result = ( col[ paddedCol.length - shiftBytes ] >> shiftBits ) | ( transfer << ( 8 - shiftBits ) );
+                            console.log(
+                                `${ paddedCol.length }: ` +
+                                `0x${ buf2hex( [ originalByte ] ) } ${ buf2bin( [ originalByte ] ) } ` +
+                                `& 0xff >> ${ 8 - shiftBits } ` +
+                                `(${ 0xff >> shiftBits }) = ` +
+                                `${ buf2bin( [ transfer ] ) } ` +
+                                `(${ transfer } 0x${ buf2hex( [ transfer ] ) }) \n` +
+
+                                `    ${ buf2bin( [ col[ paddedCol.length - shiftBytes ] ] ) } >> ${ shiftBits } | ` +
+                                `${ buf2bin( [ transfer ] ) } << ${ shiftBits } = ` +
+                                buf2bin( [ final_result ] ) +
+                                `(${ final_result & 0xff } 0x${ buf2hex( [ final_result ] ) }) \n`
+
+                            );
+                        }
+                        paddedCol[ paddedCol.length ] = (
+                            ( col[ paddedCol.length - shiftBytes ] >> shiftBits )
+                            |
+                            ( transfer << ( 8 - shiftBits ) ) ) as uint8;
+
+
+
+                    }
+
+
+                    // if ( col.length < 0x46 ){
+                    //     while ( col.length < 0x46 ) {
+                    //         col[ col.length ] = 0x00;
+                    //     }
+                    // } else if ( col.length > 0x46 ){
+                    //     col = col.slice(0, 0x46);
+                    // }
+                    if ( idx === 1 ) {
+                        console.log( {
+                            original_len: o_col_len,
+                            original_len_hex: buf2hex( [ o_col_len ] ),
+                            new_length: col.length,
+                            new_length_hex: buf2hex( [ col.length ] ),
+                            paddedCol_length: paddedCol.length,
+                            paddedCol_length_hex: buf2hex( [ paddedCol.length ] ),
+                            ______col: buf2hex( col ),
+                            paddedCol: buf2hex( paddedCol )
+                        } );
+                    }
                     return [
                         0x47, 0x46, 0x00,
-                        ...buf
+                        ...paddedCol
                     ];
-                } ), idx === inputBuffer.length - 1 ? 0x1a : 0x0c];
+                } ), idx === inputBuffer.length - 1 ? 0x1a : 0x0c ];
 
             } ).flat().flat() ),
 
@@ -491,13 +782,20 @@ export class BrotherLabeler {
 
 
 
-        try {
-            await this.printer.raw( printBuffer );
-            // console.log()
-        } catch ( error ) {
-            console.error( "ERROR", error );
-        }
+        // try {
+        //     await this.printer.raw( printBuffer );
+        //     // console.log()
+        // } catch ( error ) {
+        //     console.error( "ERROR", error );
+        // }
+
     }
+
+
+
+
+
+
 
     /**
      *

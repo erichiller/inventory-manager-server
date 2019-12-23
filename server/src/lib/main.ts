@@ -1,4 +1,4 @@
-import {BrotherLabeler} from './epson';
+import {BrotherLabeler, buf2hex} from './epson';
 
 
 let printer = new BrotherLabeler();
@@ -9,7 +9,12 @@ x.then( result => console.log("result is", result))
 
 // let x = printer.getPrinterStatus();
 
-// x.then( result => console.log("result is", result))
+// x.then( result => {
+
+//     console.log("result is", result);
+//     // console.log(result.statusBytes;
+//     result.statusBytes.forEach( (b, i) => console.log(`${i}: ${buf2hex([b])}`));
+// })
 
 // console.log(x);
 
