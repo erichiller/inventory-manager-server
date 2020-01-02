@@ -1,99 +1,80 @@
-import { makeRemoteExecutableSchema , makeExecutableSchema , introspectSchema , mergeSchemas } from 'graphql-tools';
-import { gql } from "apollo-server";
-
-import resolvers from '../resolvers';
-import uint8 from './type_uint8';
-// import * as typeDefs from './schema.graphql';
-
-import { HASURA_GRAPHQL_API_URL , HASURA_ACCESS_KEY } from '../config';
-
 /** 
- * GraphQL Schema
- **/
-export const typeDefs = gql`
-  scalar Upload
+ * MUST USE graphql-tools-fork because of this issue with mergeSchemas
+ * See:  
+ * - https://github.com/apollographql/graphql-tools/pull/1206
+ * - https://github.com/apollographql/graphql-tools/issues/1033
+ * - https://github.com/graphql/graphql-js/issues/1997
+ */
+import { makeRemoteExecutableSchema , makeExecutableSchema , introspectSchema , mergeSchemas, ITypedef } from 'graphql-tools-fork';
 
-  type File {
-    # __typename: String
-    name: String!
-    path: String!
-    type: String!
-    base64: String!
-  }
+import { RGB, GQL_ENUMS as EpsonEnum } from '../schema/type/enum/epson';
+import { GraphQLSchema, GraphQLObjectType, GraphQLScalarType } from 'graphql/type';
 
-  type Query {
-    files: [File]
-    PrinterStatus: PrinterStatus
-  }
+import { fileSchema } from './schema_ast';
+import { MEDIA_TYPE } from '../lib/epson';
 
-  type PrinterStatus {
-    labelType: String!
-    uptime: Int
-    model: String
-    firmwareVersion: Float
-    heightInch: Float
-    heightMillimeter: Float
-  }
-  
-  scalar uint8
+const myStruct = new GraphQLObjectType( {
+    name: 'myStruct',
+    fields: {
+        color: { type: RGB },
+        mediaType: { type: EpsonEnum.MEDIA_TYPE }
+    }
+} );
 
-  type LabelMonochromeRasterBuffer {
-      rasterBuffer: [[[uint8]]]
-  }
+const enumSchema = new GraphQLSchema({
+    query:
+        new GraphQLObjectType( {
+            name: 'Query',
+            // description: 'query root',
+            fields: {
+                getColor: {
+                    description: 'get color, returns RGB',
+                    type: myStruct,
+                    // resolve: async () => RGB.getValue( 'RED' )
+                    resolve: () => {
+                        console.log( "RESOLVING getColor" );
+                        // console.log( typeof MEDIA_TYPE );
+                        // console.log( RGB.astNode);
+                        // console.log( RGB.getValue( 'RED' ) );
+                        // console.log( RGB.getValues() );
+                        // return { color: 'RED' };
+                        return { color: '#f00' };
+                        // return { color: RGB.getValue( 'RED' ) };
+                    }
+                },
+                // getMediaType: {
+                //     type:
+                // }
+            }
+        } ),
 
-  type LabelMonochromeBuffer {
-    # __typename: String
-    imageBuffer: [[[uint8]]]
-  }
-
-  type Mutation {
-    uploadFiles(files: [Upload]!): [File]!
-    putLabelMonochromeBuffer(imageBuffer: [[[[uint8]]]]!): [LabelMonochromeBuffer]
-    putLabelMonochromeRasterBuffer(rasterBuffer: [[[uint8]]]!): [LabelMonochromeRasterBuffer]
-  }
-
-`;
-
-
-
-
-const fileSchema = makeExecutableSchema({
-  typeDefs,
-  resolvers
+    types: [
+        RGB,
+        myStruct,
+    ]
 });
 
+export const schema = enumSchema;
 
 
 
-// const link = new HttpLink({ 
+export default mergeSchemas( {
+    schemas: [
+        fileSchema,
+        enumSchema
+    ]
+});
+/**
+ * 
+ *
+// const link = new HttpLink({
 //   uri: HASURA_GRAPHQL_API_URL,
 //   headers: {
 //     "x-hasura-admin-secret": HASURA_ACCESS_KEY
 //   },
-//   fetch 
+//   fetch
 // });
 
-// link.
-
-export default async () => {
-  // const schema = await introspectSchema(link);
-
-  // const executableRemoteSchema = makeRemoteExecutableSchema({
-  //   schema,
-  //   link,
-  // });
-
-  // merge custom resolvers with Hasura schema
-  return mergeSchemas({
-    schemas: [
-      fileSchema,
-      // executableRemoteSchema,
-    ]
-  });
-};
-/**
- * 
- * 
  * Remote schemas
  * https://github.com/hasura/graphql-engine/blob/5916b97b86fa30c29e35073a923472f84c6782a7/community/boilerplates/custom-resolvers/src/index.js#L27
  * 
