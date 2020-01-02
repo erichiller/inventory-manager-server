@@ -29,7 +29,8 @@ function graphiqlExpress(options: GraphiQL.GraphiQLData | ExpressGraphQLOptionsF
 }
 
 export async function startServer(port: number): Promise<Server> {
-  const schema = await getSchema();
+//   const schema = await getSchema();
+const schema = getSchema;
   const app = express();
 
   const server: Server = createServer(app);

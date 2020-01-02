@@ -1,0 +1,40 @@
+# schema: "http://graphql.hiller.pro:8080/v1/graphql"
+schema:
+    - './src/schema/index.ts'
+    # - './src/schema/def.ts'
+config:
+    transformUnderscore: true
+    namingConvention:
+        typeNames: change-case#pascalCase
+        enumValues: change-case#upperCase
+    useIndexSignature: true
+generates:
+    ./src/types/graphql.tsx:
+        # config:
+        #     enumValues:
+        #         MEDIA_TYPE:
+        #             A: 'eric'
+                # MEDIA_TYPE: ./src/lib/epson.ts#MEDIA_TYPE
+                # RGB: ../lib/epson#MEDIA_TYPE
+        plugins:
+            - "typescript"
+            # - "typescript-operations"
+            - "typescript-resolvers"
+            # - "typescript-document-nodes"
+            - time:
+                message: "inventory-server graphql typescript defs generated on "
+                format: YYYY-MM-DDTHH:mm:ssZ
+
+overwrite: true
+# schema: "http://graphql.hiller.pro:8080/v1/graphql"
+# documents: "src/**/**.tsx?"
+# generates:
+#   src/queries/types.d.ts:
+#     plugins:
+#       - "typescript"
+#       - "typescript-operations"
+#       - "typescript-react-apollo"
+#       - "typescript-document-nodes"
+#   ./graphql.schema.json:
+#     plugins:
+#       - "introspection"

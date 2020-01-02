@@ -10,7 +10,7 @@ import { ApolloClient } from 'apollo-client';
 import fetch from 'node-fetch';
 import { HASURA_GRAPHQL_API_URL, HASURA_ACCESS_KEY } from '../config';
 
-export default {
+export const resolvers = {
     uint8: uint8_resolver,
     Mutation: {
         async uploadFiles ( obj: any, { files }: any ) {

@@ -57,7 +57,7 @@ export class PrinterStatus {
 /**
  * Media type is Byte 11 in the status returned
  */
-enum MEDIA_TYPE {
+export enum MEDIA_TYPE {
     NO_MEDIA = 0x00,
     LAMINATED_TAPE = 0x01,
     NON_LAMINATED_TAPE = 0x03,
