@@ -26,18 +26,7 @@ export const resolvers = {
                 throw new Error( 'upload:fileNotLoaded' );
             }
         },
-        putLabelMonochromeBuffer ( obj: any, { imageBuffer }: {
-            imageBuffer: uint8[][][][];
-        } ) {
-            console.log( "received imageBuffer", imageBuffer, "\n received ", new Date().toISOString() );
-            new BrotherLabeler().print( imageBuffer );
-            //   return {
-            //     // __typename: "LabelMonochromeBuffer",
-            //     imageBuffer: imageBuffer,
-            //   };
-            return imageBuffer;
-        },
-        putLabelMonochromeRasterBuffer ( obj: any, { rasterBuffer }: {
+        putLabelMonochromeBuffer ( obj: any, { rasterBuffer }: {
             rasterBuffer: uint8[][][];
         } ) {
             console.log( "received rasterBuffer", rasterBuffer, "\n received ", new Date().toISOString() );

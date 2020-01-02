@@ -2724,6 +2724,18 @@ export type LabelMonochromeBuffer = {
   imageBuffer?: Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>,
 };
 
+export enum MediaType {
+  FABRIC_TAPE = 'FABRIC_TAPE',
+  FLEXIBLE_ID_TAPE = 'FLEXIBLE_ID_TAPE',
+  FLE_TAPE = 'FLE_TAPE',
+  HEAT_SHRINK_TUBE = 'HEAT_SHRINK_TUBE',
+  INCOMPATIBLE_TAPE = 'INCOMPATIBLE_TAPE',
+  LAMINATED_TAPE = 'LAMINATED_TAPE',
+  NON_LAMINATED_TAPE = 'NON_LAMINATED_TAPE',
+  NO_MEDIA = 'NO_MEDIA',
+  SATIN_TAPE = 'SATIN_TAPE'
+}
+
 
 /** expression to compare columns of type money. All fields are combined with logical 'AND'. */
 export type MoneyComparisonExp = {
@@ -2746,7 +2758,7 @@ export type Mutation = {
 
 
 export type MutationPutLabelMonochromeBufferArgs = {
-  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>>
+  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
 };
 
 
@@ -2972,7 +2984,7 @@ export type MutationRootInsertPurchaseArgs = {
 
 /** mutation root */
 export type MutationRootPutLabelMonochromeBufferArgs = {
-  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>>
+  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
 };
 
 
@@ -3066,6 +3078,12 @@ export type MutationRootUpdatePurchaseArgs = {
 /** mutation root */
 export type MutationRootUploadFilesArgs = {
   files: Array<Maybe<Scalars['Upload']>>
+};
+
+export type MyStruct = {
+   __typename?: 'myStruct',
+  color?: Maybe<Rgb>,
+  mediaType?: Maybe<MediaType>,
 };
 
 
@@ -3494,6 +3512,8 @@ export type Query = {
    __typename?: 'Query',
   PrinterStatus?: Maybe<PrinterStatus>,
   files?: Maybe<Array<Maybe<File>>>,
+  /** get color, returns RGB */
+  getColor?: Maybe<MyStruct>,
 };
 
 /** query root */
@@ -3537,6 +3557,8 @@ export type QueryRoot = {
   /** fetch data from the table: "enum.unit" using primary key columns */
   enum_unit_by_pk?: Maybe<EnumUnit>,
   files?: Maybe<Array<Maybe<File>>>,
+  /** get color, returns RGB */
+  getColor?: Maybe<MyStruct>,
   /** fetch data from the table: "icon" */
   icon: Array<Icon>,
   /** fetch aggregated fields from the table: "icon" */
@@ -3871,6 +3893,12 @@ export type QueryRootPurchaseByPkArgs = {
   item_id: Scalars['Int'],
   order_no: Scalars['String']
 };
+
+export enum Rgb {
+  BLUE = 'BLUE',
+  GREEN = 'GREEN',
+  RED = 'RED'
+}
 
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */
 export type StringComparisonExp = {
@@ -4449,7 +4477,7 @@ export type EditLabelMutation = (
 );
 
 export type SendBufferMutationVariables = {
-  buffer: Array<Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>>
+  buffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
 };
 
 
@@ -5001,7 +5029,7 @@ export type EditLabelMutationHookResult = ReturnType<typeof useEditLabelMutation
 export type EditLabelMutationResult = ApolloReactCommon.MutationResult<EditLabelMutation>;
 export type EditLabelMutationOptions = ApolloReactCommon.BaseMutationOptions<EditLabelMutation, EditLabelMutationVariables>;
 export const SendBufferDocument = gql`
-    mutation SendBuffer($buffer: [[[[uint8]]]]!) {
+    mutation SendBuffer($buffer: [[[uint8]]]!) {
   putLabelMonochromeBuffer(imageBuffer: $buffer) {
     imageBuffer
   }
@@ -5049,4 +5077,4 @@ export function useSendBufferMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type SendBufferMutationHookResult = ReturnType<typeof useSendBufferMutation>;
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2019-12-22T15:40:41-07:00
+// graphql typescript defs generated on 2020-01-02T07:12:43-07:00

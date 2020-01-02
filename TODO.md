@@ -25,6 +25,7 @@
 * [x] Generalize code (not fixed to `HardwareFasteners`)
 * [x] **FIX** QR Code adding _"QR code without item is currently not supported."_
 * [x] fix button change in `DrawModal` when adding to Print List
+* [x] improve `inventory-manager-api` `Dockerfile` to decrease build times
 
 
 * [ ] Add `LICENSE.md`
@@ -42,17 +43,18 @@
 * [x] List saved labels ( `LabelTable`)
   * [ ] Show image in table (of saved labels) (or `onMouseOver`)
   * [ ] button to directly add label to *Print List*
-* [ ] Ensure multiple labels (Chain Printing) print properly.
-* [ ] Ensure setting label length statically will also work. (Or calculate & display in UI)
 * [ ] _maybe:_ Undo / Redo → <https://konvajs.org/docs/react/Undo-Redo.html>
   * [ ] ensure history updated on
     * [ ] move
     * [ ] transform
+
+
+* [x] Ensure `printRaster` now works
+* [ ] Pass data from client to server/api for `printRaster`
+* [ ] Ensure multiple labels (Chain Printing) print properly.
+* [ ] Ensure setting label length statically will also work. (Or calculate & display in UI)
 * [ ] Figure out how to use the last 6 pixels on 12mm tape  
       150 is supported max. 48 * 3 = 144 is all I can get currently without printing a second page;
-
-
 * [ ] `canvasToBuffer` should also send along the number of pixels, otherwise if the last byte only has a single bit of importance, a whole extra byte is added.
 * [ ] `printRaster` should set the tape width to the actual tape width
 * [ ] flesh out the ENUMs used by `epson.ts` and populate GraphQL
-* [x] improve `inventory-manager-api` `Dockerfile` to decrease build times
