@@ -273,4 +273,4 @@ export type Resolvers<ContextType = any> = ResolversObject<{
 */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
-// inventory-server graphql typescript defs generated on 2020-01-01T17:32:57-07:00
+// inventory-server graphql typescript defs generated on 2020-01-01T18:55:42-07:00

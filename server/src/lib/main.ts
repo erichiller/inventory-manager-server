@@ -1,11 +1,94 @@
 import {BrotherLabeler, buf2hex} from './epson';
+import { uint8 } from '../schema/type_uint8';
 
 
 let printer = new BrotherLabeler();
 
-let x = printer.printRaster([]);
 
-x.then( result => console.log("result is", result))
+const inputBuffer: uint8[][][] = [ [ [
+    0xff,
+    0x00,
+    0xff,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0xff,
+    0xff,
+    0xff,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    // 0b00000111,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+] ] ];
+
+let dotPositions = 20; // 150 / 8 for 12mm
+for ( let i = 1; i < dotPositions; i++ ) {
+    inputBuffer[ 0 ][ i ] = inputBuffer[ 0 ][ 0 ];
+}
+let pages = 2;
+for ( let i = 1; i<pages ; i++ ){
+    inputBuffer[i] = inputBuffer[0];
+}
+
+
+let x = printer.printRaster( inputBuffer );
+
+x.then( result => console.log( "result is", result ) );
 
 // let x = printer.getPrinterStatus();
 
