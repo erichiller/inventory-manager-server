@@ -13,6 +13,7 @@ import * as config from '../config';
 
 import * as snmp from 'net-snmp';
 import * as util from 'util';
+import e = require( 'cors' );
 
 
 
@@ -41,6 +42,10 @@ export class PrinterStatus {
     /** NodeJS buffer */
     statusBytes: Buffer = null;
 }
+
+/**
+ * SEE PAGE 24 in Epson manual for status enums
+ */
 
 // type MEDIATYPE = keyof {
 //     0x00: "No media";
@@ -358,215 +363,13 @@ export class BrotherLabeler {
 
     async printRaster ( inputBuffer: Array<Array<Array<uint8>>> ) {
 
-        inputBuffer = [ [ [
-            0xf0,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0xff,
-            0xff,
-            0xff,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            // 0b00000111,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            0x00,
-            // 0x01,
-            // 0x02,
-            // 0x03,
-            // 0x04,
-            // 0x05,
-            // 0x06,
-            // 0x07,
-            // 0x08,
-            // 0x09,
-            // 0xff,
-            // 0x01,
-            // 0x02,
-            // 0x03,
-            // 0x04,
-            // 0x05,
-            // 0x06,
-            // 0x07,
-            // 0x08,
-            // 0x09,
-            // 0xff,
-            // 0xff,
-            // 0x02,
-            // 0x03,
-            // 0x04,
-            // 0x05,
-            // 0x06,
-            // 0x07,
-            // 0x08,
-            // 0x09,
-            // 0xff,
-            // 0xff,
-            // 0xff,
-            // 0x03,
-            // 0x04,
-            // 0x05,
-            // 0x06,
-            // 0x07,
-            // 0x08,
-            // 0x09,
-            /** 5 */
-            // 0xff,
-            // 0xff,
-            // 0xff,
-            // 0xff,
-            // 0xff,
-            // 0x05,
-            // 0x06,
-            // 0x07,
-            // 0x08,
-            // 0x09,
-            // 0xff,
-            // 0xff,
-            // 0xff,
-            // 0xff,
-            // 0xff,
-            // 0xff,
-            // 0x06,
-            // 0x07,
-            // 0x08,
-            // 0x09,
-            // /** 6 */
-            // 0xff,
-            // 0xff,
-            // 0xff,
-            // 0xff,
-            // 0xff,
-            // 0xff,
-            // 0xff,
-            // 0x07,
-            // 0x08,
-            // 0x09,
-            // 0xff,
-            // 0x05,
-            // 0x06,
-            // 0x07,
-            // 0x08,
-            // 0x09,
-            // 0x10,
-            // 0xff,
-            // 0x02,
-            // 0x03,
-            // 0x04,
-            // 0x05,
-            // 0x06,
-            // 0x07,
-            // 0x08,
-            // 0x09,
-            // 0x10,
-            // 0xff,
-            // 0x02,
-            // 0x03,
-            // 0x04,
-            // 0x05,
-            // 0x06,
-            // 0x07,
-            // 0x08,
-            // 0x09,
-            // 0x10,
-            // 0xff,
-            // 0x02,
-            // 0x03,
-            // 0x04,
-            // 0x05,
-            // 0x06,
-            // 0x07,
-            // 0x08,
-            // 0x09,
-            // 0x10,
-            // 0xff,
-            // 0x02,
-            // 0x03,
-            // 0x04,
-            // 0x05,
-            // 0x06,
-            // 0x07,
-            // 0x08,
-            // 0x09,
-            // 0x10,
-            // 0x01,
-            // 0x02,
-            // 0x03,
-            // 0x04,
-            // 0x05,
-            // 0x06,
-            // 0x07,
-            // 0x08,
-            // 0x09,
-            // 0x10,
-            // 0xff
-        ] ] ];
-        let dotPositions = 20; // 150 / 8 for 12mm
-        for ( let i = 1; i <= dotPositions; i++ ) {
-            inputBuffer[ 0 ][ i ] = inputBuffer[ 0 ][ 0 ];
-        }
+
 
 
         let { status } = await this.getPrinterStatus();
 
         let shiftBits = status.labelCharacteristic.pinsLeft % 8;
-        let shiftBytes = Math.floor( status.labelCharacteristic.pinsLeft / 8 );
+        let shiftBytes = Math.ceil( status.labelCharacteristic.pinsLeft / 8 );
 
         console.log( { status, shiftBits, shiftBytes } );
 
@@ -643,22 +446,6 @@ export class BrotherLabeler {
             Buffer.from( [
                 ...invalidateBuf,                            // invalidate
                 0x1b, 0x40,                      // initialize
-                0x1b, 0x69, 0x61, 0x01,          // select Raster mode
-
-                //print information
-                0x1b, 0x69, 0x7a,
-                0x04,                               // Media width
-                0x00,                               // laminated tape
-                0x0c, 0x00,                         // 12mm
-                dotPositions % 256, 0x00, 0x00, 0x00,             // raster number
-                0x02,                               // last page (always when single page)
-                0x00,                               // N/A
-
-
-
-                0x1b, 0x69, 0x41, 0x01,          // pages ?
-                0x1b, 0x69, 0x64, 0x0e, 0x00,          // set margin 50 1mm
-                0x4d, 0x00,                      // no compression
 
                 // /**
                 //  * Set label length
@@ -693,79 +480,131 @@ export class BrotherLabeler {
             ] ),
             // imageBuf,
             // labeler.newline,
-            Buffer.from( inputBuffer.map( ( page, idx ) => {
-                // let imageBuf73 = labeler.imageMode73Density( page );
-                // let imageBuf73 = labeler.imageMode73Density(labeler.imageMode73DensityTestData());
-                // console.log( `Page # ${ idx } of ${ inputBuffer.length }: \n\timageBuf73 is ${ imageBuf73.byteLength } bytes in length\n\tTerminating with ${ idx === inputBuffer.length - 1 ? 'lastpage, cut: 0x0c' : 'intermediary page, new page: 0xff' }` );
+            Buffer.from( inputBuffer.map( ( page, pageNumber ) => {
 
-                return [ ...page.map( ( col, idx ) => {
-                    let o_col_len = col.length; // FOR DEBUG ONLY
+                let pageByteLength = page.flat(1).length;
 
-                    let paddedCol: typeof col = [];
-                    let transfer: number = null;
-                    while ( paddedCol.length < 0x46 ) {
-                        if ( paddedCol.length < shiftBytes ) {
-                            paddedCol[ paddedCol.length ] = 0x00;
-                            continue;
+                console.log( `processing inputBuffer page ${ pageNumber }\n`, {
+                    _____pageLenth: page.length,
+                    pageByteLength: pageByteLength,
+                    mod256: page.length % 256
+                } );
+
+                /** 
+                 * page number:  
+                 * * 0 -> first page
+                 * * 1 -> intermediate page
+                 * * 2 -> last page (also always when single page)
+                **/
+                let print_info_n9: 0x00 | 0x01 | 0x02;
+                if ( pageNumber === 0 ) {
+                    print_info_n9 = 0x00;
+                } else if ( pageNumber === inputBuffer.length - 1){
+                    print_info_n9 = 0x02;
+                } else {
+                    print_info_n9 = 0x01;
+                }
+
+                return [
+
+                    0x1b, 0x69, 0x61, 0x01,          // select Raster mode
+
+                    /**
+                     * print information
+                     * 10 bytes sent to configure page
+                     **/
+                    0x1b, 0x69, 0x7a,                   // print information 'header'
+                    0x04,                               // Media width
+                    0x00,                               // laminated tape
+                    0x0c, 0x00,                         // 12mm ;  ************ TODO: this should read the actual tape *******************
+                    /**
+                     * raster number ; this is the number of COLUMNS *not* bytes
+                     * this is the next 4 bytes ( n5, n6, n7, n8)
+                     **/
+                    page.length % 256,                                  // n5
+                    Math.floor( page.length / Math.pow( 256, 1 ) ),     // n6
+                    Math.floor( page.length / Math.pow( 256, 2 ) ),     // n7
+                    Math.floor( page.length / Math.pow( 256, 3 ) ),     // n8
+                    print_info_n9,                      // n9
+                    0x00,                               // N/A ; always 0
+
+
+
+                    0x1b, 0x69, 0x41, 0x01,          // pages ? -- not sure what this is ? `Specify the page number in "cut each * labels"`
+                    0x1b, 0x69, 0x64, 0x0e, 0x00,    // set margin to 15 , which should be ~ 1mm
+                    0x4d, 0x00,                      // no compression
+
+                    ...page.map( ( col, idx ) => {
+                        console.log( `processing inputBuffer page ${ pageNumber }, col ${ idx }` );
+                        let o_col_len = col.length; // FOR DEBUG ONLY
+
+                        let paddedCol: typeof col = [];
+                        let transfer: number = null;
+                        while ( paddedCol.length < 0x46 ) {
+
+                            if ( paddedCol.length < shiftBytes ) {
+                                // console.log( `padding inputBuffer (current length is ${ paddedCol.length }, col ${ idx }` )
+                                paddedCol[ paddedCol.length ] = 0x00;
+                                continue;
+                            }
+                            /**
+                             * `transfer` is the bits being moved from one byte to the next
+                             * note: length being shifted will be `8 - shiftbits`;
+                             */
+                            let originalByte = paddedCol.length - shiftBytes - 1 >= 0 ? col[ paddedCol.length - shiftBytes - 1 ] : 0x00;
+                            transfer = originalByte & ( 0xff >> ( 8 - shiftBits ) );
+                            // debug below
+                            if ( col[ paddedCol.length - shiftBytes ] && idx === 1 ) {
+                                let final_result = ( col[ paddedCol.length - shiftBytes ] >> shiftBits ) | ( transfer << ( 8 - shiftBits ) );
+                                console.log(
+                                    `${ paddedCol.length }: ` +
+                                    `0x${ buf2hex( [ originalByte ] ) } ${ buf2bin( [ originalByte ] ) } ` +
+                                    `& 0xff >> ${ 8 - shiftBits } ` +
+                                    `(${ 0xff >> shiftBits }) = ` +
+                                    `${ buf2bin( [ transfer ] ) } ` +
+                                    `(${ transfer } 0x${ buf2hex( [ transfer ] ) }) \n` +
+
+                                    `    ${ buf2bin( [ col[ paddedCol.length - shiftBytes ] ] ) } >> ${ shiftBits } | ` +
+                                    `${ buf2bin( [ transfer ] ) } << ${ shiftBits } = ` +
+                                    buf2bin( [ final_result ] ) +
+                                    `(${ final_result & 0xff } 0x${ buf2hex( [ final_result ] ) }) \n`
+
+                                );
+                            }
+                            paddedCol[ paddedCol.length ] = (
+                                ( col[ paddedCol.length - shiftBytes ] >> shiftBits )
+                                |
+                                ( transfer << ( 8 - shiftBits ) ) ) as uint8;
+
+
+
                         }
-                        /**
-                         * `transfer` is the bits being moved from one byte to the next
-                         * note: length being shifted will be `8 - shiftbits`;
-                         */
-                        let originalByte = paddedCol.length - shiftBytes - 1 >= 0 ? col[ paddedCol.length - shiftBytes - 1 ] : 0x00;
-                        transfer = originalByte & ( 0xff >> ( 8 - shiftBits ) );
-                        // debug below
-                        if ( col[ paddedCol.length - shiftBytes ] && idx === 1 ) {
-                            let final_result = ( col[ paddedCol.length - shiftBytes ] >> shiftBits ) | ( transfer << ( 8 - shiftBits ) );
-                            console.log(
-                                `${ paddedCol.length }: ` +
-                                `0x${ buf2hex( [ originalByte ] ) } ${ buf2bin( [ originalByte ] ) } ` +
-                                `& 0xff >> ${ 8 - shiftBits } ` +
-                                `(${ 0xff >> shiftBits }) = ` +
-                                `${ buf2bin( [ transfer ] ) } ` +
-                                `(${ transfer } 0x${ buf2hex( [ transfer ] ) }) \n` +
 
-                                `    ${ buf2bin( [ col[ paddedCol.length - shiftBytes ] ] ) } >> ${ shiftBits } | ` +
-                                `${ buf2bin( [ transfer ] ) } << ${ shiftBits } = ` +
-                                buf2bin( [ final_result ] ) +
-                                `(${ final_result & 0xff } 0x${ buf2hex( [ final_result ] ) }) \n`
 
-                            );
+                        // if ( col.length < 0x46 ){
+                        //     while ( col.length < 0x46 ) {
+                        //         col[ col.length ] = 0x00;
+                        //     }
+                        // } else if ( col.length > 0x46 ){
+                        //     col = col.slice(0, 0x46);
+                        // }
+                        if ( pageNumber === 0 && idx === 1 ) {
+                            console.log( {
+                                original_len: o_col_len,
+                                original_len_hex: buf2hex( [ o_col_len ] ),
+                                new_length: col.length,
+                                new_length_hex: buf2hex( [ col.length ] ),
+                                paddedCol_length: paddedCol.length,
+                                paddedCol_length_hex: buf2hex( [ paddedCol.length ] ),
+                                ______col: buf2hex( col ),
+                                paddedCol: buf2hex( paddedCol )
+                            } );
                         }
-                        paddedCol[ paddedCol.length ] = (
-                            ( col[ paddedCol.length - shiftBytes ] >> shiftBits )
-                            |
-                            ( transfer << ( 8 - shiftBits ) ) ) as uint8;
-
-
-
-                    }
-
-
-                    // if ( col.length < 0x46 ){
-                    //     while ( col.length < 0x46 ) {
-                    //         col[ col.length ] = 0x00;
-                    //     }
-                    // } else if ( col.length > 0x46 ){
-                    //     col = col.slice(0, 0x46);
-                    // }
-                    if ( idx === 1 ) {
-                        console.log( {
-                            original_len: o_col_len,
-                            original_len_hex: buf2hex( [ o_col_len ] ),
-                            new_length: col.length,
-                            new_length_hex: buf2hex( [ col.length ] ),
-                            paddedCol_length: paddedCol.length,
-                            paddedCol_length_hex: buf2hex( [ paddedCol.length ] ),
-                            ______col: buf2hex( col ),
-                            paddedCol: buf2hex( paddedCol )
-                        } );
-                    }
-                    return [
-                        0x47, 0x46, 0x00,
-                        ...paddedCol
-                    ];
-                } ), idx === inputBuffer.length - 1 ? 0x1a : 0x0c ];
+                        return [
+                            0x47, 0x46, 0x00,
+                            ...paddedCol
+                        ];
+                    } ), pageNumber === inputBuffer.length - 1 ? 0x1a : 0x0c ];
 
             } ).flat().flat() ),
 
@@ -778,16 +617,20 @@ export class BrotherLabeler {
 
         ] );
 
-        console.log( buf2hex( printBuffer ) );
+        console.log( {
+            printBuffer_length: inputBuffer.length,
+            printBuffer_flat_2_length: inputBuffer.flat( 2 ).length,
+            printBuffer: buf2hex( printBuffer )
+        } );
 
 
 
-        // try {
-        //     await this.printer.raw( printBuffer );
-        //     // console.log()
-        // } catch ( error ) {
-        //     console.error( "ERROR", error );
-        // }
+        try {
+            await this.printer.raw( printBuffer );
+            // console.log()
+        } catch ( error ) {
+            console.error( "ERROR", error );
+        }
 
     }
 
