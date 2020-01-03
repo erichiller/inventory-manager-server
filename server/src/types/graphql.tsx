@@ -21,14 +21,17 @@ export type File = {
   base64: Scalars['String'],
 };
 
+export type LabelCharacteristic = {
+   __typename?: 'LabelCharacteristic',
+  widthMillimeters?: Maybe<Scalars['Int']>,
+  pinsLeft?: Maybe<Scalars['Int']>,
+  pinsPrint?: Maybe<Scalars['Int']>,
+  pinsRight?: Maybe<Scalars['Int']>,
+};
+
 export type LabelMonochromeBuffer = {
    __typename?: 'LabelMonochromeBuffer',
   imageBuffer?: Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>,
-};
-
-export type LabelMonochromeRasterBuffer = {
-   __typename?: 'LabelMonochromeRasterBuffer',
-  rasterBuffer?: Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>,
 };
 
 export enum MediaType {
@@ -47,7 +50,6 @@ export type Mutation = {
    __typename?: 'Mutation',
   uploadFiles: Array<Maybe<File>>,
   putLabelMonochromeBuffer?: Maybe<Array<Maybe<LabelMonochromeBuffer>>>,
-  putLabelMonochromeRasterBuffer?: Maybe<Array<Maybe<LabelMonochromeRasterBuffer>>>,
 };
 
 
@@ -57,18 +59,18 @@ export type MutationUploadFilesArgs = {
 
 
 export type MutationPutLabelMonochromeBufferArgs = {
-  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>>
-};
-
-
-export type MutationPutLabelMonochromeRasterBufferArgs = {
-  rasterBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
+  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
 };
 
 export type MyStruct = {
    __typename?: 'myStruct',
   color?: Maybe<Rgb>,
   mediaType?: Maybe<MediaType>,
+};
+
+export type PrinterLabelStatus = {
+   __typename?: 'PrinterLabelStatus',
+  labelCharacteristic?: Maybe<LabelCharacteristic>,
 };
 
 export type PrinterStatus = {
@@ -79,6 +81,7 @@ export type PrinterStatus = {
   firmwareVersion?: Maybe<Scalars['Float']>,
   heightInch?: Maybe<Scalars['Float']>,
   heightMillimeter?: Maybe<Scalars['Float']>,
+  labelStatus?: Maybe<PrinterLabelStatus>,
 };
 
 export type Query = {
@@ -175,6 +178,8 @@ export type ResolversTypes = ResolversObject<{
   PrinterStatus: ResolverTypeWrapper<PrinterStatus>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
   Float: ResolverTypeWrapper<Scalars['Float']>,
+  PrinterLabelStatus: ResolverTypeWrapper<PrinterLabelStatus>,
+  LabelCharacteristic: ResolverTypeWrapper<LabelCharacteristic>,
   myStruct: ResolverTypeWrapper<MyStruct>,
   RGB: Rgb,
   MEDIA_TYPE: MediaType,
@@ -182,7 +187,6 @@ export type ResolversTypes = ResolversObject<{
   Upload: ResolverTypeWrapper<Scalars['Upload']>,
   uint8: ResolverTypeWrapper<Scalars['uint8']>,
   LabelMonochromeBuffer: ResolverTypeWrapper<LabelMonochromeBuffer>,
-  LabelMonochromeRasterBuffer: ResolverTypeWrapper<LabelMonochromeRasterBuffer>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
 }>;
 
@@ -194,6 +198,8 @@ export type ResolversParentTypes = ResolversObject<{
   PrinterStatus: PrinterStatus,
   Int: Scalars['Int'],
   Float: Scalars['Float'],
+  PrinterLabelStatus: PrinterLabelStatus,
+  LabelCharacteristic: LabelCharacteristic,
   myStruct: MyStruct,
   RGB: Rgb,
   MEDIA_TYPE: MediaType,
@@ -201,7 +207,6 @@ export type ResolversParentTypes = ResolversObject<{
   Upload: Scalars['Upload'],
   uint8: Scalars['uint8'],
   LabelMonochromeBuffer: LabelMonochromeBuffer,
-  LabelMonochromeRasterBuffer: LabelMonochromeRasterBuffer,
   Boolean: Scalars['Boolean'],
 }>;
 
@@ -212,23 +217,29 @@ export type FileResolvers<ContextType = any, ParentType extends ResolversParentT
   base64?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
 }>;
 
-export type LabelMonochromeBufferResolvers<ContextType = any, ParentType extends ResolversParentTypes['LabelMonochromeBuffer'] = ResolversParentTypes['LabelMonochromeBuffer']> = ResolversObject<{
-  imageBuffer?: Resolver<Maybe<Array<Maybe<Array<Maybe<Array<Maybe<ResolversTypes['uint8']>>>>>>>, ParentType, ContextType>,
+export type LabelCharacteristicResolvers<ContextType = any, ParentType extends ResolversParentTypes['LabelCharacteristic'] = ResolversParentTypes['LabelCharacteristic']> = ResolversObject<{
+  widthMillimeters?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  pinsLeft?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  pinsPrint?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  pinsRight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
 }>;
 
-export type LabelMonochromeRasterBufferResolvers<ContextType = any, ParentType extends ResolversParentTypes['LabelMonochromeRasterBuffer'] = ResolversParentTypes['LabelMonochromeRasterBuffer']> = ResolversObject<{
-  rasterBuffer?: Resolver<Maybe<Array<Maybe<Array<Maybe<Array<Maybe<ResolversTypes['uint8']>>>>>>>, ParentType, ContextType>,
+export type LabelMonochromeBufferResolvers<ContextType = any, ParentType extends ResolversParentTypes['LabelMonochromeBuffer'] = ResolversParentTypes['LabelMonochromeBuffer']> = ResolversObject<{
+  imageBuffer?: Resolver<Maybe<Array<Maybe<Array<Maybe<Array<Maybe<ResolversTypes['uint8']>>>>>>>, ParentType, ContextType>,
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   uploadFiles?: Resolver<Array<Maybe<ResolversTypes['File']>>, ParentType, ContextType, RequireFields<MutationUploadFilesArgs, 'files'>>,
   putLabelMonochromeBuffer?: Resolver<Maybe<Array<Maybe<ResolversTypes['LabelMonochromeBuffer']>>>, ParentType, ContextType, RequireFields<MutationPutLabelMonochromeBufferArgs, 'imageBuffer'>>,
-  putLabelMonochromeRasterBuffer?: Resolver<Maybe<Array<Maybe<ResolversTypes['LabelMonochromeRasterBuffer']>>>, ParentType, ContextType, RequireFields<MutationPutLabelMonochromeRasterBufferArgs, 'rasterBuffer'>>,
 }>;
 
 export type MyStructResolvers<ContextType = any, ParentType extends ResolversParentTypes['myStruct'] = ResolversParentTypes['myStruct']> = ResolversObject<{
   color?: Resolver<Maybe<ResolversTypes['RGB']>, ParentType, ContextType>,
   mediaType?: Resolver<Maybe<ResolversTypes['MEDIA_TYPE']>, ParentType, ContextType>,
+}>;
+
+export type PrinterLabelStatusResolvers<ContextType = any, ParentType extends ResolversParentTypes['PrinterLabelStatus'] = ResolversParentTypes['PrinterLabelStatus']> = ResolversObject<{
+  labelCharacteristic?: Resolver<Maybe<ResolversTypes['LabelCharacteristic']>, ParentType, ContextType>,
 }>;
 
 export type PrinterStatusResolvers<ContextType = any, ParentType extends ResolversParentTypes['PrinterStatus'] = ResolversParentTypes['PrinterStatus']> = ResolversObject<{
@@ -238,6 +249,7 @@ export type PrinterStatusResolvers<ContextType = any, ParentType extends Resolve
   firmwareVersion?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
   heightInch?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
   heightMillimeter?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
+  labelStatus?: Resolver<Maybe<ResolversTypes['PrinterLabelStatus']>, ParentType, ContextType>,
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
@@ -256,10 +268,11 @@ export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 
 export type Resolvers<ContextType = any> = ResolversObject<{
   File?: FileResolvers<ContextType>,
+  LabelCharacteristic?: LabelCharacteristicResolvers<ContextType>,
   LabelMonochromeBuffer?: LabelMonochromeBufferResolvers<ContextType>,
-  LabelMonochromeRasterBuffer?: LabelMonochromeRasterBufferResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
   myStruct?: MyStructResolvers<ContextType>,
+  PrinterLabelStatus?: PrinterLabelStatusResolvers<ContextType>,
   PrinterStatus?: PrinterStatusResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   uint8?: GraphQLScalarType,
@@ -273,4 +286,4 @@ export type Resolvers<ContextType = any> = ResolversObject<{
 */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
-// inventory-server graphql typescript defs generated on 2020-01-01T18:55:42-07:00
+// inventory-server graphql typescript defs generated on 2020-01-03T07:18:14-07:00

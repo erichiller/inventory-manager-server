@@ -7,12 +7,17 @@ import { ThermalPrinter, PrinterTypes } from '../deps/node-thermal-printer';
 // import tprint from 'node-thermal-printer';
 
 
+/**
+ * run with:
+ * rm epson.js ; tsc -t ES2016 epson.ts ; node .\epson.js
+ */
+
+
 import { uint8 } from '../schema/type_uint8';
 
 import * as config from '../config';
 
 import * as snmp from 'net-snmp';
-import * as util from 'util';
 import e = require( 'cors' );
 
 
@@ -30,34 +35,42 @@ export class PrinterStatus {
     model: string = null;
     /** Float */
     firmwareVersion: number = null;
-    /** Float */
-    heightInch: number = null;
-    /** Int */
-    heightMillimeter: number = null;
-    status: {
+    // /** Float */
+    // heightInch: number = null;
+    // /** Int */
+    // heightMillimeter: number = null;
+    labelStatus: {
         mediaType: MEDIA_TYPE;
         mediaWidth: MEDIA_WIDTH;
         labelCharacteristic: LabelCharacteristic;
+        /** NodeJS buffer */
+        bytes: Buffer;
     };
-    /** NodeJS buffer */
-    statusBytes: Buffer = null;
 }
 
 /**
  * SEE PAGE 24 in Epson manual for status enums
  */
 
-// type MEDIATYPE = keyof {
-//     0x00: "No media";
-//     0x01: "Laminated Tape";
-//     0x03: "Non-Laminated Tape";
-//     0x04: "Fabric Tape";
-//     0x11: "Heat Shrink Tube";
-//     0x13: "FLE Tape";
-//     0x14: "Flexible ID Tape";
-//     0x15: "Satin Tape";
-//     0xff: "Incompatible Tape";
-// };
+/**
+ * Extended Error is Byte 7 in the status returned
+ */
+export enum EXTENDED_ERROR {
+    FLE_TAPE_END = 0x10,
+    DRAFT_PRINT_ERROR = 0x1d,
+    INSERT_ERROR = 0x1e,
+    BATTERY_ERROR = 0x1f,
+    INCOMPATIBLE_MEDIA_ERROR = 0x21,
+    SYSTEM_ERROR = 0xff
+}
+
+/**
+ * Possible options of returned media width. hse uses rounded sizes.  
+ * `0x00` is an ERROR ( _NO TAPE_ )  
+ * This is byte `10`
+ */
+type MEDIA_WIDTH = 0x00 | 0x04 | 0x06 | 0x09 | 0x0c | 0x12 | 0x18 | 0x24 | 0x15;
+
 
 /**
  * Media type is Byte 11 in the status returned
@@ -73,20 +86,6 @@ export enum MEDIA_TYPE {
     SATIN_TAPE = 0x15,
     INCOMPATIBLE_TAPE = 0xff
 }
-
-/**
- * Possible options of returned media width. hse uses rounded sizes.  
- * `0x00` is an ERROR ( _NO TAPE_ )  
- * This is byte `10`
- */
-type MEDIA_WIDTH = 0x00 | 0x04 | 0x06 | 0x09 | 0x0c | 0x12 | 0x18 | 0x24 | 0x15;
-
-
-// function setEnum(enumValue: number){}
-/**
- * run with:
- * rm epson.js ; tsc -t ES2016 epson.ts ; node .\epson.js
- */
 
 type millimeter = number;
 type inch = number;
@@ -157,7 +156,6 @@ interface LabelCharacteristic {
     pinsLeft: number;
     pinsPrint: number;
     pinsRight: number;
-
 }
 
 
@@ -178,6 +176,18 @@ export class BrotherLabeler {
 
     static LabelInfo: LabelCharacteristics = {
         tze: {
+            3_5: {
+                widthMillimeters: 3,
+                pinsLeft: 248,
+                pinsPrint: 48,
+                pinsRight: 264
+            },
+            6: {
+                widthMillimeters: 6,
+                pinsLeft: 240,
+                pinsPrint: 64,
+                pinsRight: 256
+            },
             9: {
                 widthMillimeters: 9,
                 pinsLeft: 219,
@@ -201,6 +211,12 @@ export class BrotherLabeler {
                 pinsLeft: 112,
                 pinsPrint: 320,
                 pinsRight: 128
+            },
+            36: {
+                widthMillimeters: 36,
+                pinsLeft: 45,
+                pinsPrint: 454,
+                pinsRight: 61
             }
         },
         hse: {
@@ -312,7 +328,7 @@ export class BrotherLabeler {
                 "1.3.6.1.2.1.1.3.0": "uptime",
                 "1.3.6.1.4.1.2435.2.4.3.1240.1.1.0": "model",
                 "1.3.6.1.4.1.2435.2.4.3.1240.1.4.0": "firmwareVersion",
-                "1.3.6.1.4.1.2435.3.3.9.1.6.1.0": "status"
+                "1.3.6.1.4.1.2435.3.3.9.1.6.1.0": "labelStatusBytes"
                 // "1.3.6.1.2.1.4.20.1": "ipAddresses"
                 // "1.3.6.1.4.1.2435.2.4.3.1240.5.2.3.0": "ipAddress"
                 // contact, name, location
@@ -333,16 +349,13 @@ export class BrotherLabeler {
                                 let val = varbinds[ i ].value;
                                 retObj[ oids[ varbinds[ i ].oid ] ] = val instanceof Buffer ? val.toString() : val;
                                 if ( oids[ varbinds[ i ].oid ] === "status" ) {
-                                    retObj[ "statusBytes" ] = val;
-                                    retObj[ "status" ] = {
+                                    retObj.labelStatus = {
                                         mediaType: MEDIA_TYPE[ MEDIA_TYPE[ val[ 11 ] ] ],
                                         mediaWidth: val[ 10 ],
-                                        labelCharacteristic: BrotherLabeler.LabelInfo[ val[ 11 ] === MEDIA_TYPE.HEAT_SHRINK_TUBE ? 'hse' : 'tze' ][ val[ 10 ] ]
-
+                                        labelCharacteristic: BrotherLabeler.LabelInfo[ val[ 11 ] === MEDIA_TYPE.HEAT_SHRINK_TUBE ? 'hse' : 'tze' ][ val[ 10 ] ],
+                                        bytes: val
                                     };
                                 }
-                                // retObj[ oids[ varbinds[ i ].oid ] ] = val;
-                                // console.log( "retObj is now", retObj )
                             }
                         }
                     }
@@ -363,40 +376,22 @@ export class BrotherLabeler {
 
     async printRaster ( inputBuffer: Array<Array<Array<uint8>>> ) {
 
+        if ( ! inputBuffer ){
+            console.error( "printRaster received an invalid inputBuffer" );
+            throw "printRaster received an invalid inputBuffer" ;
+        }
 
+        let { labelStatus } = await this.getPrinterStatus();
 
+        let shiftBits = labelStatus.labelCharacteristic.pinsLeft % 8;
+        let shiftBytes = Math.ceil( labelStatus.labelCharacteristic.pinsLeft / 8 );
 
-        let { status } = await this.getPrinterStatus();
-
-        let shiftBits = status.labelCharacteristic.pinsLeft % 8;
-        let shiftBytes = Math.ceil( status.labelCharacteristic.pinsLeft / 8 );
-
-        console.log( { status, shiftBits, shiftBytes } );
-
-
-        // let labeler = new BrotherLabeler();
-
-        // let labelLen = new Length( 0.75 );
+        console.log( { labelStatus, shiftBits, shiftBytes } );
 
         let invalidateBuf = [];
         for ( let i = 0; i < 200; i++ ) {
             invalidateBuf.push( 0x00 );
         }
-
-        // let dlo = inputBuffer.map( ( page, idx ) => {
-        //     // let imageBuf73 = labeler.imageMode73Density( page );
-        //     // let imageBuf73 = labeler.imageMode73Density(labeler.imageMode73DensityTestData());
-        //     // console.log( `Page # ${ idx } of ${ inputBuffer.length }: \n\timageBuf73 is ${ imageBuf73.byteLength } bytes in length\n\tTerminating with ${ idx === inputBuffer.length - 1 ? 'lastpage, cut: 0x0c' : 'intermediary page, new page: 0xff' }` );
-
-        //     return page.map( ( buf, idx ) => {
-        //         return [
-        //             0x47, 0x46, 0x00,
-        //                 ...buf,
-        //                     0x1a // last page print
-        //         ];
-        //     } );
-
-        // } ).flat(2);
 
         /**
          * 0x00 x 200
@@ -428,7 +423,7 @@ export class BrotherLabeler {
          * 27 * 16
          * - 6
          * + 10
-         * = 436 * 8 =3488
+         * = 436 * 8 = 3488
          * 
          * 5A
          * 19 * 16
@@ -444,39 +439,8 @@ export class BrotherLabeler {
         let printBuffer = Buffer.concat( [
 
             Buffer.from( [
-                ...invalidateBuf,                            // invalidate
+                ...invalidateBuf,                // invalidate
                 0x1b, 0x40,                      // initialize
-
-                // /**
-                //  * Set label length
-                //  * set to 0 for AUTO
-                // **/
-                // 0x1b, 0x69, 0x6c,
-                // // ( labelLen.dots % 256 ),
-                // // ( Math.floor( labelLen.dots / 256 ) ),
-                // 0, 0, // trying auto
-
-                // /**
-                //  * Set margin **width**
-                //  * default is 2mm (see page 38)
-                //  * this is measured in 1/180th of an inch, with the smallest being 0.04" (~1mm)
-                //  * 7/180 = .0355, so I'm thinking this is the end.
-                // **/
-                // 0x1b, 0x69, 0x6d, 7, 0,          // set margin to smallest possible (7)
-
-                // /** 
-                //  * Specify cut
-                //  *  see page 82
-                //  * 
-                //  * 0 = full cut
-                //  * 1 = half cut
-                //  * 2 = chain print
-                //  * 3 = special tape
-                //  * 4+  unused
-                //  */
-                // 0x1b, 0x69, 0x43, 0b00000100,    // specify cut setting = chain print
-
-                // 0x1b, 0x24, 0, 0,                // specify horizontal position
             ] ),
             // imageBuf,
             // labeler.newline,
@@ -507,7 +471,7 @@ export class BrotherLabeler {
 
                 return [
 
-                    0x1b, 0x69, 0x61, 0x01,          // select Raster mode
+                    0x1b, 0x69, 0x61, 0x01,             // select Raster mode
 
                     /**
                      * print information
@@ -530,9 +494,9 @@ export class BrotherLabeler {
 
 
 
-                    0x1b, 0x69, 0x41, 0x01,          // pages ? -- not sure what this is ? `Specify the page number in "cut each * labels"`
-                    0x1b, 0x69, 0x64, 0x0e, 0x00,    // set margin to 15 , which should be ~ 1mm
-                    0x4d, 0x00,                      // no compression
+                    0x1b, 0x69, 0x41, 0x01,             // pages ? -- not sure what this is ? `Specify the page number in "cut each * labels"`
+                    0x1b, 0x69, 0x64, 0x0e, 0x00,       // set margin to 15 , which should be ~ 1mm
+                    0x4d, 0x00,                         // no compression
 
                     ...page.map( ( col, idx ) => {
                         console.log( `processing inputBuffer page ${ pageNumber }, col ${ idx }` );

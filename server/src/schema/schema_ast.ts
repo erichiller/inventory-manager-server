@@ -22,6 +22,21 @@ const typeDefs = gql`
     PrinterStatus: PrinterStatus
   }
 
+  type LabelCharacteristic {
+    widthMillimeters: Int
+    pinsLeft: Int
+    pinsPrint: Int
+    pinsRight: Int
+  }
+
+  type PrinterLabelStatus {
+        # mediaType: MEDIA_TYPE;
+        # mediaWidth: MEDIA_WIDTH;
+        labelCharacteristic: LabelCharacteristic
+        # /** NodeJS buffer */
+        # bytes: Buffer;
+  }
+
   type PrinterStatus {
     labelType: String!
     uptime: Int
@@ -29,6 +44,7 @@ const typeDefs = gql`
     firmwareVersion: Float
     heightInch: Float
     heightMillimeter: Float
+    labelStatus: PrinterLabelStatus
   }
   
   scalar uint8
