@@ -8,3 +8,18 @@ mutation SendBuffer($buffer: [[[uint8]]]!) {
 # }
 
 # [[[256,0,256,0,256],[0,256,0,256,0]]]
+
+
+query GetPrinterStatus {
+  PrinterStatus {
+    labelType
+    labelStatus {
+      labelCharacteristic {
+        pinsRight
+        pinsPrint
+        pinsLeft
+        widthMillimeters
+      }
+    }
+  }
+}

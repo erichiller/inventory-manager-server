@@ -348,7 +348,7 @@ export class BrotherLabeler {
                                 console.log( oids[ varbinds[ i ].oid ], varbinds[ i ].oid + " = " + varbinds[ i ].value );
                                 let val = varbinds[ i ].value;
                                 retObj[ oids[ varbinds[ i ].oid ] ] = val instanceof Buffer ? val.toString() : val;
-                                if ( oids[ varbinds[ i ].oid ] === "status" ) {
+                                if ( oids[ varbinds[ i ].oid ] === "labelStatusBytes" ) {
                                     retObj.labelStatus = {
                                         mediaType: MEDIA_TYPE[ MEDIA_TYPE[ val[ 11 ] ] ],
                                         mediaWidth: val[ 10 ],
