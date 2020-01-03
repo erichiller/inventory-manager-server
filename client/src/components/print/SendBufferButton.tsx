@@ -22,10 +22,11 @@ export default class SendBufferButton extends React.Component<SendBufferButtonPr
         return (
             <SendBufferComponent onCompleted={() => { message.success("Print sent successfully") ; onClick(false) ; }} >
                 {( sendData, { loading, called, data, error } ) => {
+                    console.group("SendBufferButton - GraphQL operations");
                     console.log( "init", { loading, data, error, called} );
                     console.log( "buffer", this.props.buffer);
                     if ( called != true && this.props.buffer != null) {
-                        console.log( "PointEditModal Component sendData()" );
+                        console.log( "PointEditModal Component sendData(), sending buffer", buffer );
                         sendData(
                             {
                                 variables:
@@ -47,6 +48,7 @@ export default class SendBufferButton extends React.Component<SendBufferButtonPr
                     if ( data ) {
                         console.log( "SendBuffer data received", data );
                     }
+                    console.groupEnd();
                     return < Button {...this.props} 
                                 icon="printer" 
                                 onClick={() => onClick( true )} id={value} >

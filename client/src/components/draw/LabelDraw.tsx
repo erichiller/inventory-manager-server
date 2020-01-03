@@ -11,7 +11,6 @@ import DrawEditText from './DrawEditText';
 import DrawAddImage from './image/LabelAddImageModal';
 
 import QREditModal from './QREditModal';
-import SendBufferButton from '../print/SendBufferButton';
 import { Integer } from '../../types/uint8';
 import { LabelText, LabelImage, LabelQR, FormatOptionsT, LabelExport, UUIDStringT } from '../../lib/LabelConstituent';
 

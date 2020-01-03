@@ -102,9 +102,10 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     };
 
     const updateLabelWidthPixels = ( newPx: number ): void => {
-            console.log( "updateWidthPixels", "XXX" );
-            // if ( this.canvas ){
-            console.log( "updateWidthPixels", newPx );
+            console.log( "updateWidthPixels\n", {
+                prior: this.state.width,
+                __new: newPx 
+            });
             // this.canvas.width = newPx;
             // }
             setState( {
