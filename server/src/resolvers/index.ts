@@ -9,6 +9,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import fetch from 'node-fetch';
 import { HASURA_GRAPHQL_API_URL, HASURA_ACCESS_KEY } from '../config';
+import { UserInputError } from 'apollo-server';
 
 export const resolvers = {
     uint8: uint8_resolver,
@@ -26,16 +27,23 @@ export const resolvers = {
                 throw new Error( 'upload:fileNotLoaded' );
             }
         },
-        putLabelMonochromeBuffer ( obj: any, { rasterBuffer }: {
-            rasterBuffer: uint8[][][];
+        putLabelMonochromeBuffer ( obj: any, { imageBuffer }: {
+            imageBuffer: uint8[][][];
         } ) {
-            console.log( "received rasterBuffer", rasterBuffer, "\n received ", new Date().toISOString() );
-            new BrotherLabeler().printRaster( rasterBuffer );
+            console.log( "received imageBuffer:", imageBuffer, "\n received at", new Date().toISOString() );
+            try {
+                new BrotherLabeler().printRaster( imageBuffer );
+            } catch (e){
+                console.error("putLabelMonochromeBuffer Error:", e);
+                throw new UserInputError( e , {
+                    invalidArgs: imageBuffer
+                });
+            }
             //   return {
             //     // __typename: "LabelMonochromeBuffer",
-            //     rasterBuffer: rasterBuffer,
+            //     imageBuffer: imageBuffer,
             //   };
-            return rasterBuffer;
+            return imageBuffer;
         }
     },
     Query: {

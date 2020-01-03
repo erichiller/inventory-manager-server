@@ -1,15 +1,15 @@
 import { GraphQLEnumType, GraphQLEnumValueConfigMap } from "graphql/type";
 
 import { MEDIA_TYPE as MediaTypeEnum } from '../../../lib/epson';
+import { EXTENDED_ERROR as ExtendedErrorEnum } from '../../../lib/epson';
 
 function makeGraphQLEnumType ( tsEnum: { [ id: string ]: string | number }, name: string ): GraphQLEnumType {
     const values: GraphQLEnumValueConfigMap = {};
     Object.keys(tsEnum).forEach( key => {
-
         if ( !( parseInt( key ) >= 0 ) ) { 
             values[key] = { value: tsEnum[key]};
         }
-    })
+    });
     return new GraphQLEnumType({
         name: name,
         values: values
@@ -17,8 +17,9 @@ function makeGraphQLEnumType ( tsEnum: { [ id: string ]: string | number }, name
 }
 
 export const GQL_ENUMS = {
-    MEDIA_TYPE: makeGraphQLEnumType(MediaTypeEnum, 'MEDIA_TYPE')
-}
+    MEDIA_TYPE: makeGraphQLEnumType(MediaTypeEnum, 'MEDIA_TYPE'),
+    EXTENDED_ERROR: makeGraphQLEnumType( ExtendedErrorEnum, 'EXTENDED_ERROR' )
+};
 
 
 export const RGB = new GraphQLEnumType( {
