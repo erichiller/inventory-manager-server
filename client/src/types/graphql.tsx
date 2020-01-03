@@ -2719,6 +2719,14 @@ export type LabelVarianceOrderBy = {
   width?: Maybe<OrderBy>,
 };
 
+export type LabelCharacteristic = {
+   __typename?: 'LabelCharacteristic',
+  pinsLeft?: Maybe<Scalars['Int']>,
+  pinsPrint?: Maybe<Scalars['Int']>,
+  pinsRight?: Maybe<Scalars['Int']>,
+  widthMillimeters?: Maybe<Scalars['Int']>,
+};
+
 export type LabelMonochromeBuffer = {
    __typename?: 'LabelMonochromeBuffer',
   imageBuffer?: Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>,
@@ -3116,11 +3124,17 @@ export enum OrderBy {
   DESC_NULLS_LAST = 'desc_nulls_last'
 }
 
+export type PrinterLabelStatus = {
+   __typename?: 'PrinterLabelStatus',
+  labelCharacteristic?: Maybe<LabelCharacteristic>,
+};
+
 export type PrinterStatus = {
    __typename?: 'PrinterStatus',
   firmwareVersion?: Maybe<Scalars['Float']>,
   heightInch?: Maybe<Scalars['Float']>,
   heightMillimeter?: Maybe<Scalars['Float']>,
+  labelStatus?: Maybe<PrinterLabelStatus>,
   labelType: Scalars['String'],
   model?: Maybe<Scalars['String']>,
   uptime?: Maybe<Scalars['Int']>,
@@ -4351,17 +4365,6 @@ export type GetIconQuery = (
   )> }
 );
 
-export type GetPrinterStatusQueryVariables = {};
-
-
-export type GetPrinterStatusQuery = (
-  { __typename?: 'query_root' }
-  & { PrinterStatus: Maybe<(
-    { __typename?: 'PrinterStatus' }
-    & Pick<PrinterStatus, 'labelType'>
-  )> }
-);
-
 export type ItemHardwareFastenerBoltQueryVariables = {};
 
 
@@ -4489,6 +4492,24 @@ export type SendBufferMutation = (
   )>>> }
 );
 
+export type GetPrinterStatusQueryVariables = {};
+
+
+export type GetPrinterStatusQuery = (
+  { __typename?: 'query_root' }
+  & { PrinterStatus: Maybe<(
+    { __typename?: 'PrinterStatus' }
+    & Pick<PrinterStatus, 'labelType'>
+    & { labelStatus: Maybe<(
+      { __typename?: 'PrinterLabelStatus' }
+      & { labelCharacteristic: Maybe<(
+        { __typename?: 'LabelCharacteristic' }
+        & Pick<LabelCharacteristic, 'pinsRight' | 'pinsPrint' | 'pinsLeft' | 'widthMillimeters'>
+      )> }
+    )> }
+  )> }
+);
+
 export const LabelFieldsFragmentDoc = gql`
     fragment labelFields on label {
   id
@@ -4611,55 +4632,6 @@ export function useGetIconLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHook
 export type GetIconQueryHookResult = ReturnType<typeof useGetIconQuery>;
 export type GetIconLazyQueryHookResult = ReturnType<typeof useGetIconLazyQuery>;
 export type GetIconQueryResult = ApolloReactCommon.QueryResult<GetIconQuery, GetIconQueryVariables>;
-export const GetPrinterStatusDocument = gql`
-    query GetPrinterStatus {
-  PrinterStatus {
-    labelType
-  }
-}
-    `;
-export type GetPrinterStatusComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>, 'query'>;
-
-    export const GetPrinterStatusComponent = (props: GetPrinterStatusComponentProps) => (
-      <ApolloReactComponents.Query<GetPrinterStatusQuery, GetPrinterStatusQueryVariables> query={GetPrinterStatusDocument} {...props} />
-    );
-    
-export type GetPrinterStatusProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetPrinterStatusQuery, GetPrinterStatusQueryVariables> & TChildProps;
-export function withGetPrinterStatus<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetPrinterStatusQuery,
-  GetPrinterStatusQueryVariables,
-  GetPrinterStatusProps<TChildProps>>) {
-    return ApolloReactHoc.withQuery<TProps, GetPrinterStatusQuery, GetPrinterStatusQueryVariables, GetPrinterStatusProps<TChildProps>>(GetPrinterStatusDocument, {
-      alias: 'getPrinterStatus',
-      ...operationOptions
-    });
-};
-
-/**
- * __useGetPrinterStatusQuery__
- *
- * To run a query within a React component, call `useGetPrinterStatusQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPrinterStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPrinterStatusQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetPrinterStatusQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>(GetPrinterStatusDocument, baseOptions);
-      }
-export function useGetPrinterStatusLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>(GetPrinterStatusDocument, baseOptions);
-        }
-export type GetPrinterStatusQueryHookResult = ReturnType<typeof useGetPrinterStatusQuery>;
-export type GetPrinterStatusLazyQueryHookResult = ReturnType<typeof useGetPrinterStatusLazyQuery>;
-export type GetPrinterStatusQueryResult = ApolloReactCommon.QueryResult<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>;
 export const ItemHardwareFastenerBoltDocument = gql`
     query item_hardware_fastener_bolt {
   items: item_hardware_fastener_bolt {
@@ -5077,4 +5049,61 @@ export function useSendBufferMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type SendBufferMutationHookResult = ReturnType<typeof useSendBufferMutation>;
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2020-01-03T07:18:53-07:00
+export const GetPrinterStatusDocument = gql`
+    query GetPrinterStatus {
+  PrinterStatus {
+    labelType
+    labelStatus {
+      labelCharacteristic {
+        pinsRight
+        pinsPrint
+        pinsLeft
+        widthMillimeters
+      }
+    }
+  }
+}
+    `;
+export type GetPrinterStatusComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>, 'query'>;
+
+    export const GetPrinterStatusComponent = (props: GetPrinterStatusComponentProps) => (
+      <ApolloReactComponents.Query<GetPrinterStatusQuery, GetPrinterStatusQueryVariables> query={GetPrinterStatusDocument} {...props} />
+    );
+    
+export type GetPrinterStatusProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetPrinterStatusQuery, GetPrinterStatusQueryVariables> & TChildProps;
+export function withGetPrinterStatus<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetPrinterStatusQuery,
+  GetPrinterStatusQueryVariables,
+  GetPrinterStatusProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetPrinterStatusQuery, GetPrinterStatusQueryVariables, GetPrinterStatusProps<TChildProps>>(GetPrinterStatusDocument, {
+      alias: 'getPrinterStatus',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetPrinterStatusQuery__
+ *
+ * To run a query within a React component, call `useGetPrinterStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPrinterStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPrinterStatusQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPrinterStatusQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>(GetPrinterStatusDocument, baseOptions);
+      }
+export function useGetPrinterStatusLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>(GetPrinterStatusDocument, baseOptions);
+        }
+export type GetPrinterStatusQueryHookResult = ReturnType<typeof useGetPrinterStatusQuery>;
+export type GetPrinterStatusLazyQueryHookResult = ReturnType<typeof useGetPrinterStatusLazyQuery>;
+export type GetPrinterStatusQueryResult = ApolloReactCommon.QueryResult<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>;
+// graphql typescript defs generated on 2020-01-03T07:24:01-07:00

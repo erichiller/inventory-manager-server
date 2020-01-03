@@ -25,7 +25,7 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( { 
         selectedShapeName: ""
     } );
     const dpi = 360;
-    const margin = Math.floor( ( 14 / 180 ) * dpi ); // inches of margin to subtract
+    // const margin = Math.floor( ( 14 / 180 ) * dpi ); // inches of margin to subtract
     // if ( loading ) return <Loading />;
     // if ( error ) return <p>ERROR</p>;
     if ( data ) {
@@ -35,13 +35,14 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( { 
         console.log( "PrinterStatus:", data );
         // height is inches * 360
         let labelInchesHeight = parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType )[ 0 ] );
-        let height = Math.floor( ( labelInchesHeight * dpi ) - margin );
+        // let height = Math.floor( ( labelInchesHeight * dpi ) - margin );
+        let height = data.PrinterStatus.labelStatus.labelCharacteristic.pinsPrint;
         /** DEBUG - KILL 
          * 150 = 2 pages
          * 144 = 1 page
          * 145 = 
         */
-        height = 145;
+        // height = 145;
 
 
         console.log( "height",
