@@ -48,7 +48,12 @@ export const resolvers = {
     },
     Query: {
         async PrinterStatus ( obj: any ): Promise<PrinterStatus> {
-            return await new BrotherLabeler().getPrinterStatus();
+            try {
+                return await new BrotherLabeler().getPrinterStatus();
+            } catch ( e ) {
+                console.log( 'error', e );
+                throw new Error( `Error querying Label Maker: ${e}` );
+            }
         }
     }
 };

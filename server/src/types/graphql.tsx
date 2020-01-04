@@ -21,17 +21,19 @@ export type File = {
   base64: Scalars['String'],
 };
 
+/** Current Label size and that size's properties. */
 export type LabelCharacteristic = {
    __typename?: 'LabelCharacteristic',
-  widthMillimeters?: Maybe<Scalars['Int']>,
-  pinsLeft?: Maybe<Scalars['Int']>,
-  pinsPrint?: Maybe<Scalars['Int']>,
-  pinsRight?: Maybe<Scalars['Int']>,
+  widthMillimeters: Scalars['Int'],
+  pinsLeft: Scalars['Int'],
+  pinsPrint: Scalars['Int'],
+  pinsRight: Scalars['Int'],
 };
 
+/** Image Buffer / Raster data arranged as [page][column][pixels] of uint8 to the printer */
 export type LabelMonochromeBuffer = {
    __typename?: 'LabelMonochromeBuffer',
-  imageBuffer?: Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>,
+  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>,
 };
 
 export enum MediaType {
@@ -49,6 +51,7 @@ export enum MediaType {
 export type Mutation = {
    __typename?: 'Mutation',
   uploadFiles: Array<Maybe<File>>,
+  /** Send a label to be printed */
   putLabelMonochromeBuffer?: Maybe<Array<Maybe<LabelMonochromeBuffer>>>,
 };
 
@@ -68,26 +71,29 @@ export type MyStruct = {
   mediaType?: Maybe<MediaType>,
 };
 
+/** Label characteristics and properties */
 export type PrinterLabelStatus = {
    __typename?: 'PrinterLabelStatus',
   labelCharacteristic?: Maybe<LabelCharacteristic>,
 };
 
+/** Printer and label status and properies */
 export type PrinterStatus = {
    __typename?: 'PrinterStatus',
   labelType: Scalars['String'],
-  uptime?: Maybe<Scalars['Int']>,
-  model?: Maybe<Scalars['String']>,
-  firmwareVersion?: Maybe<Scalars['Float']>,
+  uptime: Scalars['Int'],
+  model: Scalars['String'],
+  firmwareVersion: Scalars['Float'],
   heightInch?: Maybe<Scalars['Float']>,
   heightMillimeter?: Maybe<Scalars['Float']>,
-  labelStatus?: Maybe<PrinterLabelStatus>,
+  labelStatus: PrinterLabelStatus,
 };
 
 export type Query = {
    __typename?: 'Query',
   files?: Maybe<Array<Maybe<File>>>,
-  PrinterStatus?: Maybe<PrinterStatus>,
+  /** Retrieve Printer and Label status and properties */
+  PrinterStatus: PrinterStatus,
   /** get color, returns RGB */
   getColor?: Maybe<MyStruct>,
 };
@@ -218,14 +224,14 @@ export type FileResolvers<ContextType = any, ParentType extends ResolversParentT
 }>;
 
 export type LabelCharacteristicResolvers<ContextType = any, ParentType extends ResolversParentTypes['LabelCharacteristic'] = ResolversParentTypes['LabelCharacteristic']> = ResolversObject<{
-  widthMillimeters?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
-  pinsLeft?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
-  pinsPrint?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
-  pinsRight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  widthMillimeters?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  pinsLeft?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  pinsPrint?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  pinsRight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
 }>;
 
 export type LabelMonochromeBufferResolvers<ContextType = any, ParentType extends ResolversParentTypes['LabelMonochromeBuffer'] = ResolversParentTypes['LabelMonochromeBuffer']> = ResolversObject<{
-  imageBuffer?: Resolver<Maybe<Array<Maybe<Array<Maybe<Array<Maybe<ResolversTypes['uint8']>>>>>>>, ParentType, ContextType>,
+  imageBuffer?: Resolver<Array<Maybe<Array<Maybe<Array<Maybe<ResolversTypes['uint8']>>>>>>, ParentType, ContextType>,
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
@@ -244,17 +250,17 @@ export type PrinterLabelStatusResolvers<ContextType = any, ParentType extends Re
 
 export type PrinterStatusResolvers<ContextType = any, ParentType extends ResolversParentTypes['PrinterStatus'] = ResolversParentTypes['PrinterStatus']> = ResolversObject<{
   labelType?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  uptime?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
-  model?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  firmwareVersion?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
+  uptime?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  model?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  firmwareVersion?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
   heightInch?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
   heightMillimeter?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
-  labelStatus?: Resolver<Maybe<ResolversTypes['PrinterLabelStatus']>, ParentType, ContextType>,
+  labelStatus?: Resolver<ResolversTypes['PrinterLabelStatus'], ParentType, ContextType>,
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   files?: Resolver<Maybe<Array<Maybe<ResolversTypes['File']>>>, ParentType, ContextType>,
-  PrinterStatus?: Resolver<Maybe<ResolversTypes['PrinterStatus']>, ParentType, ContextType>,
+  PrinterStatus?: Resolver<ResolversTypes['PrinterStatus'], ParentType, ContextType>,
   getColor?: Resolver<Maybe<ResolversTypes['myStruct']>, ParentType, ContextType>,
 }>;
 
@@ -286,4 +292,4 @@ export type Resolvers<ContextType = any> = ResolversObject<{
 */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
-// inventory-server graphql typescript defs generated on 2020-01-03T07:18:14-07:00
+// inventory-server graphql typescript defs generated on 2020-01-04T06:27:53-07:00
