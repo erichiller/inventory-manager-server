@@ -51,11 +51,12 @@
 
 * [x] Ensure `printRaster` now works
 * [x] Pass data from client to server/api for `printRaster`
-* [ ] Ensure multiple labels (Chain Printing) print properly.
-* [ ] Ensure setting label length statically will also work. (Or calculate & display in UI)
-* [ ] Figure out how to use the last 6 pixels on 12mm tape  
+* [x] Ensure multiple labels (Chain Printing) print properly.
+* [x] Figure out how to use the last 6 pixels on 12mm tape  
       150 is supported max. 48 * 3 = 144 is all I can get currently without printing a second page;
+* [ ] Ensure setting label length statically will also work. (Or calculate & display in UI)
 * [ ] `canvasToBuffer` should also send along the number of pixels, otherwise if the last byte only has a single bit of importance, a whole extra byte is added.
-* [ ] `printRaster` should set the tape width to the actual tape width
+* [ ] `printRaster()` should set the tape width to the actual tape width
+* [ ] `<LabelComponent>` should set the text color and background color to the actual color from the `PrinterStatus` GraphQL Query
 * [ ] Complete `PrinterStatus` in `epson.ts` and related GraphQL query
   * [ ] flesh out the ENUMs used by `epson.ts` and populate GraphQL
