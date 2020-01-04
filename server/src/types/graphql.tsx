@@ -21,7 +21,7 @@ export type File = {
   base64: Scalars['String'],
 };
 
-/** Current Label size and that size's properties. */
+/** Label characteristics and properties */
 export type LabelCharacteristic = {
    __typename?: 'LabelCharacteristic',
   widthMillimeters: Scalars['Int'],
@@ -52,7 +52,7 @@ export type Mutation = {
    __typename?: 'Mutation',
   uploadFiles: Array<Maybe<File>>,
   /** Send a label to be printed */
-  putLabelMonochromeBuffer?: Maybe<Array<Maybe<LabelMonochromeBuffer>>>,
+  putLabelMonochromeBuffer?: Maybe<LabelMonochromeBuffer>,
 };
 
 
@@ -65,19 +65,15 @@ export type MutationPutLabelMonochromeBufferArgs = {
   imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
 };
 
-export type MyStruct = {
-   __typename?: 'myStruct',
-  color?: Maybe<Rgb>,
-  mediaType?: Maybe<MediaType>,
-};
-
-/** Label characteristics and properties */
+/** Printer and label status and properies */
 export type PrinterLabelStatus = {
    __typename?: 'PrinterLabelStatus',
+  mediaType?: Maybe<MediaType>,
+  mediaWidth: Scalars['Int'],
   labelCharacteristic?: Maybe<LabelCharacteristic>,
 };
 
-/** Printer and label status and properies */
+/** Label characteristics and properties */
 export type PrinterStatus = {
    __typename?: 'PrinterStatus',
   labelType: Scalars['String'],
@@ -93,9 +89,7 @@ export type Query = {
    __typename?: 'Query',
   files?: Maybe<Array<Maybe<File>>>,
   /** Retrieve Printer and Label status and properties */
-  PrinterStatus: PrinterStatus,
-  /** get color, returns RGB */
-  getColor?: Maybe<MyStruct>,
+  PrinterStatus?: Maybe<PrinterStatus>,
 };
 
 export enum Rgb {
@@ -185,15 +179,14 @@ export type ResolversTypes = ResolversObject<{
   Int: ResolverTypeWrapper<Scalars['Int']>,
   Float: ResolverTypeWrapper<Scalars['Float']>,
   PrinterLabelStatus: ResolverTypeWrapper<PrinterLabelStatus>,
-  LabelCharacteristic: ResolverTypeWrapper<LabelCharacteristic>,
-  myStruct: ResolverTypeWrapper<MyStruct>,
-  RGB: Rgb,
   MEDIA_TYPE: MediaType,
+  LabelCharacteristic: ResolverTypeWrapper<LabelCharacteristic>,
   Mutation: ResolverTypeWrapper<{}>,
   Upload: ResolverTypeWrapper<Scalars['Upload']>,
   uint8: ResolverTypeWrapper<Scalars['uint8']>,
   LabelMonochromeBuffer: ResolverTypeWrapper<LabelMonochromeBuffer>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
+  RGB: Rgb,
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -205,15 +198,14 @@ export type ResolversParentTypes = ResolversObject<{
   Int: Scalars['Int'],
   Float: Scalars['Float'],
   PrinterLabelStatus: PrinterLabelStatus,
-  LabelCharacteristic: LabelCharacteristic,
-  myStruct: MyStruct,
-  RGB: Rgb,
   MEDIA_TYPE: MediaType,
+  LabelCharacteristic: LabelCharacteristic,
   Mutation: {},
   Upload: Scalars['Upload'],
   uint8: Scalars['uint8'],
   LabelMonochromeBuffer: LabelMonochromeBuffer,
   Boolean: Scalars['Boolean'],
+  RGB: Rgb,
 }>;
 
 export type FileResolvers<ContextType = any, ParentType extends ResolversParentTypes['File'] = ResolversParentTypes['File']> = ResolversObject<{
@@ -236,15 +228,12 @@ export type LabelMonochromeBufferResolvers<ContextType = any, ParentType extends
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   uploadFiles?: Resolver<Array<Maybe<ResolversTypes['File']>>, ParentType, ContextType, RequireFields<MutationUploadFilesArgs, 'files'>>,
-  putLabelMonochromeBuffer?: Resolver<Maybe<Array<Maybe<ResolversTypes['LabelMonochromeBuffer']>>>, ParentType, ContextType, RequireFields<MutationPutLabelMonochromeBufferArgs, 'imageBuffer'>>,
-}>;
-
-export type MyStructResolvers<ContextType = any, ParentType extends ResolversParentTypes['myStruct'] = ResolversParentTypes['myStruct']> = ResolversObject<{
-  color?: Resolver<Maybe<ResolversTypes['RGB']>, ParentType, ContextType>,
-  mediaType?: Resolver<Maybe<ResolversTypes['MEDIA_TYPE']>, ParentType, ContextType>,
+  putLabelMonochromeBuffer?: Resolver<Maybe<ResolversTypes['LabelMonochromeBuffer']>, ParentType, ContextType, RequireFields<MutationPutLabelMonochromeBufferArgs, 'imageBuffer'>>,
 }>;
 
 export type PrinterLabelStatusResolvers<ContextType = any, ParentType extends ResolversParentTypes['PrinterLabelStatus'] = ResolversParentTypes['PrinterLabelStatus']> = ResolversObject<{
+  mediaType?: Resolver<Maybe<ResolversTypes['MEDIA_TYPE']>, ParentType, ContextType>,
+  mediaWidth?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   labelCharacteristic?: Resolver<Maybe<ResolversTypes['LabelCharacteristic']>, ParentType, ContextType>,
 }>;
 
@@ -260,8 +249,7 @@ export type PrinterStatusResolvers<ContextType = any, ParentType extends Resolve
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   files?: Resolver<Maybe<Array<Maybe<ResolversTypes['File']>>>, ParentType, ContextType>,
-  PrinterStatus?: Resolver<ResolversTypes['PrinterStatus'], ParentType, ContextType>,
-  getColor?: Resolver<Maybe<ResolversTypes['myStruct']>, ParentType, ContextType>,
+  PrinterStatus?: Resolver<Maybe<ResolversTypes['PrinterStatus']>, ParentType, ContextType>,
 }>;
 
 export interface Uint8ScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['uint8'], any> {
@@ -277,7 +265,6 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   LabelCharacteristic?: LabelCharacteristicResolvers<ContextType>,
   LabelMonochromeBuffer?: LabelMonochromeBufferResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
-  myStruct?: MyStructResolvers<ContextType>,
   PrinterLabelStatus?: PrinterLabelStatusResolvers<ContextType>,
   PrinterStatus?: PrinterStatusResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
@@ -292,4 +279,4 @@ export type Resolvers<ContextType = any> = ResolversObject<{
 */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
-// inventory-server graphql typescript defs generated on 2020-01-04T06:27:53-07:00
+// inventory-server graphql typescript defs generated on 2020-01-04T07:15:20-07:00

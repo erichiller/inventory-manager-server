@@ -69,6 +69,13 @@ export enum EXTENDED_ERROR {
  * `0x00` is an ERROR ( _NO TAPE_ )  
  * This is byte `10`
  */
+export enum MEDIA_WIDTH_ENUM {
+    _0 = 0x00,
+}
+type MEDIA_WIDTH_E = MEDIA_WIDTH_ENUM[keyof MEDIA_WIDTH_ENUM];
+
+let foo: MEDIA_WIDTH_ENUM = 0x01;
+
 type MEDIA_WIDTH = 0x00 | 0x04 | 0x06 | 0x09 | 0x0c | 0x12 | 0x18 | 0x24 | 0x15;
 
 

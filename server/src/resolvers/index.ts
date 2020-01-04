@@ -10,6 +10,7 @@ import { ApolloClient } from 'apollo-client';
 import fetch from 'node-fetch';
 import { HASURA_GRAPHQL_API_URL, HASURA_ACCESS_KEY } from '../config';
 import { UserInputError } from 'apollo-server';
+import { IResolvers, ResolverTypeWrapper } from '../types/graphql';
 
 export const resolvers = {
     uint8: uint8_resolver,
@@ -29,7 +30,7 @@ export const resolvers = {
         },
         putLabelMonochromeBuffer ( obj: any, { imageBuffer }: {
             imageBuffer: uint8[][][];
-        } ) {
+        } ): uint8[][][] {
             console.log( "received imageBuffer:", imageBuffer, "\n received at", new Date().toISOString() );
             try {
                 new BrotherLabeler().printRaster( imageBuffer );
@@ -39,24 +40,24 @@ export const resolvers = {
                     invalidArgs: imageBuffer
                 });
             }
-            //   return {
-            //     // __typename: "LabelMonochromeBuffer",
-            //     imageBuffer: imageBuffer,
-            //   };
             return imageBuffer;
         }
     },
+    Query: {}
+};
+export const GraphQLSchemaResolvers = {
+
     Query: {
         async PrinterStatus ( obj: any ): Promise<PrinterStatus> {
             try {
                 return await new BrotherLabeler().getPrinterStatus();
             } catch ( e ) {
                 console.log( 'error', e );
-                throw new Error( `Error querying Label Maker: ${e}` );
+                throw new Error( `Error querying Label Maker: ${ e }` );
             }
         }
     }
-};
+}
 
 
 const cache = new InMemoryCache();
