@@ -2719,17 +2719,19 @@ export type LabelVarianceOrderBy = {
   width?: Maybe<OrderBy>,
 };
 
+/** Label characteristics and properties */
 export type LabelCharacteristic = {
    __typename?: 'LabelCharacteristic',
-  pinsLeft?: Maybe<Scalars['Int']>,
-  pinsPrint?: Maybe<Scalars['Int']>,
-  pinsRight?: Maybe<Scalars['Int']>,
-  widthMillimeters?: Maybe<Scalars['Int']>,
+  pinsLeft: Scalars['Int'],
+  pinsPrint: Scalars['Int'],
+  pinsRight: Scalars['Int'],
+  widthMillimeters: Scalars['Int'],
 };
 
+/** Image Buffer / Raster data arranged as [page][column][pixels] of uint8 to the printer */
 export type LabelMonochromeBuffer = {
    __typename?: 'LabelMonochromeBuffer',
-  imageBuffer?: Maybe<Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>>,
+  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>,
 };
 
 export enum MediaType {
@@ -2760,7 +2762,8 @@ export type MoneyComparisonExp = {
 
 export type Mutation = {
    __typename?: 'Mutation',
-  putLabelMonochromeBuffer?: Maybe<Array<Maybe<LabelMonochromeBuffer>>>,
+  /** Send a label to be printed */
+  putLabelMonochromeBuffer?: Maybe<LabelMonochromeBuffer>,
   uploadFiles: Array<Maybe<File>>,
 };
 
@@ -2821,7 +2824,8 @@ export type MutationRoot = {
   insert_label?: Maybe<LabelMutationResponse>,
   /** insert data into the table: "purchase" */
   insert_purchase?: Maybe<PurchaseMutationResponse>,
-  putLabelMonochromeBuffer?: Maybe<Array<Maybe<LabelMonochromeBuffer>>>,
+  /** Send a label to be printed */
+  putLabelMonochromeBuffer?: Maybe<LabelMonochromeBuffer>,
   /** update data of the table: "entity" */
   update_entity?: Maybe<EntityMutationResponse>,
   /** update data of the table: "enum.hardware_fastener_material" */
@@ -3088,12 +3092,6 @@ export type MutationRootUploadFilesArgs = {
   files: Array<Maybe<Scalars['Upload']>>
 };
 
-export type MyStruct = {
-   __typename?: 'myStruct',
-  color?: Maybe<Rgb>,
-  mediaType?: Maybe<MediaType>,
-};
-
 
 /** expression to compare columns of type numeric. All fields are combined with logical 'AND'. */
 export type NumericComparisonExp = {
@@ -3124,20 +3122,24 @@ export enum OrderBy {
   DESC_NULLS_LAST = 'desc_nulls_last'
 }
 
+/** Printer and label status and properies */
 export type PrinterLabelStatus = {
    __typename?: 'PrinterLabelStatus',
   labelCharacteristic?: Maybe<LabelCharacteristic>,
+  mediaType?: Maybe<MediaType>,
+  mediaWidth: Scalars['Int'],
 };
 
+/** Label characteristics and properties */
 export type PrinterStatus = {
    __typename?: 'PrinterStatus',
-  firmwareVersion?: Maybe<Scalars['Float']>,
+  firmwareVersion: Scalars['Float'],
   heightInch?: Maybe<Scalars['Float']>,
   heightMillimeter?: Maybe<Scalars['Float']>,
-  labelStatus?: Maybe<PrinterLabelStatus>,
+  labelStatus: PrinterLabelStatus,
   labelType: Scalars['String'],
-  model?: Maybe<Scalars['String']>,
-  uptime?: Maybe<Scalars['Int']>,
+  model: Scalars['String'],
+  uptime: Scalars['Int'],
 };
 
 /** columns and relationships of "purchase" */
@@ -3524,15 +3526,15 @@ export type PurchaseVarianceOrderBy = {
 
 export type Query = {
    __typename?: 'Query',
+  /** Retrieve Printer and Label status and properties */
   PrinterStatus?: Maybe<PrinterStatus>,
   files?: Maybe<Array<Maybe<File>>>,
-  /** get color, returns RGB */
-  getColor?: Maybe<MyStruct>,
 };
 
 /** query root */
 export type QueryRoot = {
    __typename?: 'query_root',
+  /** Retrieve Printer and Label status and properties */
   PrinterStatus?: Maybe<PrinterStatus>,
   /** fetch data from the table: "entity" */
   entity: Array<Entity>,
@@ -3571,8 +3573,6 @@ export type QueryRoot = {
   /** fetch data from the table: "enum.unit" using primary key columns */
   enum_unit_by_pk?: Maybe<EnumUnit>,
   files?: Maybe<Array<Maybe<File>>>,
-  /** get color, returns RGB */
-  getColor?: Maybe<MyStruct>,
   /** fetch data from the table: "icon" */
   icon: Array<Icon>,
   /** fetch aggregated fields from the table: "icon" */
@@ -4486,10 +4486,10 @@ export type SendBufferMutationVariables = {
 
 export type SendBufferMutation = (
   { __typename?: 'mutation_root' }
-  & { putLabelMonochromeBuffer: Maybe<Array<Maybe<(
+  & { putLabelMonochromeBuffer: Maybe<(
     { __typename?: 'LabelMonochromeBuffer' }
     & Pick<LabelMonochromeBuffer, 'imageBuffer'>
-  )>>> }
+  )> }
 );
 
 export type GetPrinterStatusQueryVariables = {};
@@ -4500,13 +4500,13 @@ export type GetPrinterStatusQuery = (
   & { PrinterStatus: Maybe<(
     { __typename?: 'PrinterStatus' }
     & Pick<PrinterStatus, 'labelType'>
-    & { labelStatus: Maybe<(
+    & { labelStatus: (
       { __typename?: 'PrinterLabelStatus' }
       & { labelCharacteristic: Maybe<(
         { __typename?: 'LabelCharacteristic' }
         & Pick<LabelCharacteristic, 'pinsRight' | 'pinsPrint' | 'pinsLeft' | 'widthMillimeters'>
       )> }
-    )> }
+    ) }
   )> }
 );
 
@@ -5106,4 +5106,4 @@ export function useGetPrinterStatusLazyQuery(baseOptions?: ApolloReactHooks.Lazy
 export type GetPrinterStatusQueryHookResult = ReturnType<typeof useGetPrinterStatusQuery>;
 export type GetPrinterStatusLazyQueryHookResult = ReturnType<typeof useGetPrinterStatusLazyQuery>;
 export type GetPrinterStatusQueryResult = ApolloReactCommon.QueryResult<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>;
-// graphql typescript defs generated on 2020-01-03T07:24:01-07:00
+// graphql typescript defs generated on 2020-01-04T07:17:40-07:00

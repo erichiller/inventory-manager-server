@@ -19,47 +19,8 @@ const typeDefs = gql`
 
     type Query {
         files: [File]
-        """
-        Retrieve Printer and Label status and properties
-        """
-        PrinterStatus: PrinterStatus!
     }
 
-
-    """
-    Current Label size and that size's properties.
-    """
-    type LabelCharacteristic {
-        widthMillimeters: Int!
-        pinsLeft: Int!
-        pinsPrint: Int!
-        pinsRight: Int!
-    }
-
-    """
-    Label characteristics and properties
-    """
-    type PrinterLabelStatus {
-        # mediaType: MEDIA_TYPE;
-        # mediaWidth: MEDIA_WIDTH;
-        labelCharacteristic: LabelCharacteristic
-        # /** NodeJS buffer */
-        # bytes: Buffer;
-    }
-
-    """
-    Printer and label status and properies
-    """
-    type PrinterStatus {
-        labelType: String!
-        uptime: Int!
-        model: String!
-        firmwareVersion: Float!
-        heightInch: Float
-        heightMillimeter: Float
-        labelStatus: PrinterLabelStatus!
-    }
-  
     """
     unsigned byte
     0 - 255
@@ -79,12 +40,13 @@ const typeDefs = gql`
         """
         Send a label to be printed
         """
-        putLabelMonochromeBuffer(imageBuffer: [[[uint8]]]!): [LabelMonochromeBuffer]
+        putLabelMonochromeBuffer(imageBuffer: [[[uint8]]]!): LabelMonochromeBuffer
     }
 
 `;
 
 export const fileSchema = makeExecutableSchema( {
     typeDefs: typeDefs,
-    resolvers: resolvers
+    resolvers: resolvers,
+    logger: { log: e => console.log( "ERROR IN GRAPHQL", e ) }
 } );
