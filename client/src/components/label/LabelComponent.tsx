@@ -54,21 +54,7 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( { 
                 asPixels: Math.floor( parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType )[ 0 ] ) * dpi )
             } );
 
-        // TODO: allow the user to set the width
-        // let widthInches = 0.75;
-        // let width = Math.floor( widthInches * dpi );
         let widthInches = width ? ( width / dpi ).toFixed( 2 ) : 0;
-
-
-        // DEBUG OVERRIDES
-        // 242      | works         | GOOD
-        // 192      | works         | GOOD
-        // 144      | works
-        // 150      | works
-        // 175      | works         | GOOD
-        // 185      | works         | FIXED
-        // width = Math.floor( 0.75 * dpi );
-        // height=48;
 
         return < DrawContext.Consumer >
             {( { displayContextMenu, setRef } ) => {
@@ -148,7 +134,7 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( { 
 
                         // transform: 'rotate( 90deg )',
                         // transformOrigin: 'left top 0'
-                    }}><i>Current Label Maker Tape Width: </i>{widthInches}"</div>
+                    }}><i>Current Label Maker Tape Width: </i>{labelInchesHeight}"</div>
                 </div>;
 
             }}
