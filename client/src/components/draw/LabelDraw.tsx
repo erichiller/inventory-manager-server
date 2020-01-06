@@ -311,11 +311,19 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         }
 
         let updateContextResult = this.updateContext();
-        let shouldUpdate = updateContextResult || nextState != this.state;
+        let shouldUpdate = updateContextResult || nextState != this.state || nextProps != this.props;
         if ( updateContextResult ) {
             this.updateHistory();
         }
-        console.log( `shouldComponentUpdate ? ${shouldUpdate}\n`, { 'history_length': this.state.history.length , shouldUpdate , updateContextResult , "nextState!=this.state": nextState != this.state, nextState, "state": this.state });
+        console.log( `shouldComponentUpdate ? ${shouldUpdate}\n`, {
+            'history_length': this.state.history.length , 
+            shouldUpdate , 
+            updateContextResult,
+            "nextProps!=this.props": nextProps != this.props,
+            "nextState!=this.state": nextState != this.state, 
+            nextState, 
+            "state": this.state 
+        });
         return shouldUpdate;
     };
 
@@ -363,6 +371,11 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
      * return value of `false` if the label was not exported.
      */
     updateContext = (): boolean => {
+        console.log( "should updateContext ?", {
+            'this.exportLabel()': this.exportLabel(),
+            'this.context.getCurrentLabel': this.context.getCurrentLabel,
+            'this.exportLabel() !== this.context.getCurrentLabel()': this.exportLabel() !== this.context.getCurrentLabel(),
+        });
         if ( !this.context.getCurrentLabel() || this.exportLabel() !== this.context.getCurrentLabel() ) {
             console.log( "will updateContext" );
             this.context.setCurrentLabel( this.exportLabel() );

@@ -26,7 +26,7 @@ interface LabelDrawModalState {
 
 export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( props: LabelDrawModalProps ) => {
 
-    const [ state, setState ] = useState < LabelDrawModalState> (
+    const [ state, setState ] = useState <LabelDrawModalState> (
         {
             width: props.label && props.label.width ? props.label.width : LabelExport.DEFAULT_WIDTH,
             label: props.label ? new LabelExport( props.label ) : new LabelExport()
@@ -103,10 +103,10 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
 
     const updateLabelWidthPixels = ( newPx: number ): void => {
             console.log( "updateWidthPixels\n", {
-                prior: this.state.width,
+                prior: state.width,
                 __new: newPx 
             });
-            // this.canvas.width = newPx;
+            // canvas.width = newPx;
             // }
             setState( {
                 width: newPx ,
@@ -189,6 +189,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
         >
             {description()}
             <br />
+            {console.log(`about to redraw 'LabelDraw' with width=${state.width}`)}
             <LabelDraw updateWidth={updateLabelWidthPixels} width={state.width} item={item} label={state.label} />
         </Modal>
     );
