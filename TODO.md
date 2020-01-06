@@ -61,17 +61,5 @@
 * [ ] Complete `PrinterStatus` in `epson.ts` and related GraphQL query
   * [ ] flesh out the ENUMs used by `epson.ts` and populate GraphQL
 * [ ] `item_id` is not getting saved alongside the `label`
-
-```text
-LabelDrawModal.tsx:106 Uncaught TypeError: Cannot read property 'width' of undefined
-    at updateLabelWidthPixels (LabelDrawModal.tsx:106)
-    at onPressEnter (LabelComponent.tsx:95)
-    at Input._this.handleKeyDown (Input.js:126)
-    at HTMLUnknownElement.callCallback (react-dom.development.js:336)
-    at Object.invokeGuardedCallbackDev (react-dom.development.js:385)
-    at invokeGuardedCallback (react-dom.development.js:440)
-    at invokeGuardedCallbackAndCatchFirstError (react-dom.development.js:454)
-    at executeDispatch (react-dom.development.js:584)
-    at executeDispatchesInOrder (react-dom.development.js:606)
-    at executeDispatchesAndRelease (react-dom.development.js:713)
-```
+* [x] fix error on re-print label ; label not being set = failure
+* [x] fix setting width in `LabelModal`
