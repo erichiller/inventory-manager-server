@@ -328,7 +328,7 @@ export class LabelQR extends LabelConstituent {
     // get properties() {
     //     return this.
     // }
-    properties: string[];
+    properties: string[] = [];
     canvasElement: HTMLCanvasElement;
     dataURL: string;
     item: Item;
@@ -337,7 +337,9 @@ export class LabelQR extends LabelConstituent {
         super();
         const { item } = options;
         this.item = item;
-        this.properties = Object.getOwnPropertyNames(item);
+        if ( item ){
+            this.properties = Object.getOwnPropertyNames(item);
+        }
     }
 
     static is ( input: any ): input is LabelQR {
