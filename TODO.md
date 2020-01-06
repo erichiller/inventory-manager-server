@@ -35,7 +35,7 @@
   * [ ] Add Item form
   * [ ] Edit Item form
 * [ ] Generic data - example: House Wiring labels
-* [ ] `QREditModal`
+* [ ] `QREditModal` needs to be completed
   * [ ] pick properties. checkbox ?
   * [ ] `onCancel` should remove `LabelQR` object from `Label`
 
@@ -55,8 +55,23 @@
 * [x] Figure out how to use the last 6 pixels on 12mm tape  
       150 is supported max. 48 * 3 = 144 is all I can get currently without printing a second page;
 * [ ] Ensure setting label length statically will also work. (Or calculate & display in UI)
-* [ ] `canvasToBuffer` should also send along the number of pixels, otherwise if the last byte only has a single bit of importance, a whole extra byte is added.
+* [x] ~~`canvasToBuffer` should also send along the number of pixels, otherwise if the last byte only has a single bit of importance, a whole extra byte is added.~~ This is not required since the printer is always going to shift `pinsLeft` to the right and any extra is truncated.
 * [ ] `printRaster()` should set the tape width to the actual tape width
 * [ ] `<LabelComponent>` should set the text color and background color to the actual color from the `PrinterStatus` GraphQL Query
 * [ ] Complete `PrinterStatus` in `epson.ts` and related GraphQL query
   * [ ] flesh out the ENUMs used by `epson.ts` and populate GraphQL
+* [ ] `item_id` is not getting saved alongside the `label`
+
+```text
+LabelDrawModal.tsx:106 Uncaught TypeError: Cannot read property 'width' of undefined
+    at updateLabelWidthPixels (LabelDrawModal.tsx:106)
+    at onPressEnter (LabelComponent.tsx:95)
+    at Input._this.handleKeyDown (Input.js:126)
+    at HTMLUnknownElement.callCallback (react-dom.development.js:336)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:385)
+    at invokeGuardedCallback (react-dom.development.js:440)
+    at invokeGuardedCallbackAndCatchFirstError (react-dom.development.js:454)
+    at executeDispatch (react-dom.development.js:584)
+    at executeDispatchesInOrder (react-dom.development.js:606)
+    at executeDispatchesAndRelease (react-dom.development.js:713)
+```
