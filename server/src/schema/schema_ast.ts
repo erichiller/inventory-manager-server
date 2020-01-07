@@ -27,20 +27,17 @@ const typeDefs = gql`
     """
     scalar uint8
 
-    """
-    Image Buffer / Raster data arranged as [page][column][pixels] of uint8 to the printer
-    """
-    type LabelMonochromeBuffer {
-        # __typename: String
-        imageBuffer: [[[uint8]]]!
+    type OperationResult {
+        result: Boolean!
     }
 
     type Mutation {
         uploadFiles(files: [Upload]!): [File]!
         """
         Send a label to be printed
+        Image Buffer / Raster data arranged as [page][column][pixels] of uint8 to the printer
         """
-        putLabelMonochromeBuffer(imageBuffer: [[[uint8]]]!): LabelMonochromeBuffer
+        putLabelMonochromeBuffer(imageBuffer: [[[uint8]]]!): OperationResult
     }
 
 `;

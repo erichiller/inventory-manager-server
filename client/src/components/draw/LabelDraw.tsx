@@ -654,7 +654,69 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                     <LabelComponent {...this.props}>
                         {/* Debug Rectangle  */}
                         {/* <DebugRectangles /> */}
-                        {[ 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160 ].map( i => {
+
+                        <Rect
+                            key={"rect_320_base"}
+                            x={100}
+                            y={310}
+                            width={10}
+                            height={10}
+                            fill="black"
+                        />
+                        <Rect
+                            key={"rect_290_base"}
+                            x={100}
+                            y={290}
+                            width={10}
+                            height={10}
+                            fill="black"
+                        />
+                        <Rect
+                            key={"rect_300_base_mid"}
+                            x={110}
+                            y={300}
+                            width={10}
+                            height={10}
+                            fill="black"
+                        />
+                        <Rect
+                            key={"rect_310_base_left"}
+                            x={0}
+                            y={310}
+                            width={10}
+                            height={10}
+                            fill="black"
+                        />
+                        <Rect
+                            key={"rect_0_top"}
+                            x={20}
+                            y={0}
+                            width={10}
+                            height={10}
+                            fill="black"
+                        />
+                        <Rect
+                            key={"rect_20_top"}
+                            x={20}
+                            y={20}
+                            width={10}
+                            height={10}
+                            fill="black"
+                        />
+                        <Text
+                            // textObject="1"
+                            key="text_320_base"
+                            text="320"
+                            fontSize={20}
+                            x={150}
+                            y={302}
+                            fill="black"
+                        />
+                        {[ 
+                            // 0, 10, 20, 
+                            30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160,
+                           170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310 ].map( (i, idx) => {
+                               return null;
                             return (
                                 <React.Fragment>
                                     <Rect
@@ -663,7 +725,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                                         y={i}
                                         width={10}
                                         height={10}
-                                        fill={i % 20 == 0 || i === 0 ? "black" : "white"}
+                                        fill={idx % 2 == 0 || i === 0 ? "black" : "white"}
                                     />
                                     <Text
                                         // textObject="1"
@@ -677,7 +739,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                                     {/* right side below */}
                                     <Rect
                                         key={"rect_right_" + i}
-                                        x={0.75 * 360 - 10}
+                                        x={300 - 10}
                                         y={i}
                                         width={10}
                                         height={10}
@@ -688,7 +750,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                                         key={"test_right_" + i}
                                         text={i.toString()}
                                         fontSize={10}
-                                        x={0.75 * 360 - 40}
+                                        x={300 - 40}
                                         y={i}
                                         align="right"
                                         width={20}

@@ -7,7 +7,7 @@
  */
 import { makeRemoteExecutableSchema, makeExecutableSchema, introspectSchema, mergeSchemas, ITypedef, addResolveFunctionsToSchema } from 'graphql-tools-fork';
 
-import { RGB, GQL_ENUMS as EpsonEnum } from '../schema/type/enum/epson';
+import { GQL_ENUMS as EpsonEnum } from '../schema/type/enum/epson';
 import { GraphQLSchema, GraphQLObjectType, GraphQLScalarType, GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLFloat } from 'graphql/type';
 
 import { fileSchema } from './schema_ast';
@@ -34,6 +34,8 @@ const PrinterLabelStatusT = new GraphQLObjectType( {
         mediaType: { type: EpsonEnum.MEDIA_TYPE },
         mediaWidth: { type: GraphQLNonNull( GraphQLInt ) },
         labelCharacteristic: { type: LabelCharacteristicT },
+        tapeColor: { type: EpsonEnum.TAPE_COLOR },
+        textColor: { type: EpsonEnum.TEXT_COLOR }
     }
 } );
 
@@ -52,6 +54,10 @@ const PrinterStatusT = new GraphQLObjectType( {
 } );
 
 
+/** 
+ * second schema containing more advanced types than could be implemented using the gql syntax
+ * resolve is being set by `addResolveFunctionsToSchema` wrapping this `GraphQLSchema` 
+ **/
 const enumSchema = addResolveFunctionsToSchema( {
     schema: new GraphQLSchema( {
         query:
@@ -62,17 +68,10 @@ const enumSchema = addResolveFunctionsToSchema( {
                     PrinterStatus: {
                         description: 'Retrieve Printer and Label status and properties',
                         type: PrinterStatusT,
-                        // resolve: async () => RGB.getValue( 'RED' )
-                        resolve: () => {
-                            console.log( "RESOLVING PrinterStatus" );
-                            // console.log( typeof MEDIA_TYPE );
-                            // console.log( RGB.astNode);
-                            // console.log( RGB.getValue( 'RED' ) );
-                            // console.log( RGB.getValues() );
-                            // return { color: 'RED' };
-                            return { color: '#f00' };
-                            // return { color: RGB.getValue( 'RED' ) };
-                        }
+                        // resolve: () => {
+                        //     console.log( "RESOLVING PrinterStatus" );
+                        //     return { color: '#f00' };
+                        // }
                     },
                     // getMediaType: {
                     //     type:
@@ -81,7 +80,6 @@ const enumSchema = addResolveFunctionsToSchema( {
             } ),
 
         types: [
-            RGB,
             PrinterStatusT,
             PrinterLabelStatusT
         ]

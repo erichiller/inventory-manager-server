@@ -38,6 +38,8 @@
 * [ ] `QREditModal` needs to be completed
   * [ ] pick properties. checkbox ?
   * [ ] `onCancel` should remove `LabelQR` object from `Label`
+* [ ] Print in modal leads to endless spooling (and can't print again)
+* [ ] Print List button should say "no labels in list" if there are none
 
 
 * [x] List saved labels ( `LabelTable`)
