@@ -1,0 +1,16 @@
+
+
+query GetPrinterStatus {
+  PrinterStatus {
+    labelType
+    heightInch
+    labelStatus {
+      labelCharacteristic {
+        pinsRight
+        pinsPrint
+        pinsLeft
+        widthMillimeters
+      }
+    }
+  }
+}

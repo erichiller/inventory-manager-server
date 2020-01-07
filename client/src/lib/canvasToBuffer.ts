@@ -83,7 +83,7 @@ export function canvasToBuffer ( canvas: HTMLCanvasElement ): PixelMap {
         let row = Math.floor( pxl / widthDots );
         let col = pxl % columnsCount;
 
-        let linebit = row % columnsCount;
+        let linebit = row % heightDots;
         let byteBit = 8 - 1 - ( linebit % 8 );
         let lineByte = Math.floor( linebit / 8 );
         // white = 0 ; black = 1

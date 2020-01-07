@@ -30,17 +30,17 @@ export const resolvers = {
         },
         putLabelMonochromeBuffer ( obj: any, { imageBuffer }: {
             imageBuffer: uint8[][][];
-        } ): uint8[][][] {
+        } ): {result: boolean} {
             console.log( "received imageBuffer:", imageBuffer, "\n received at", new Date().toISOString() );
             try {
                 new BrotherLabeler().printRaster( imageBuffer );
             } catch (e){
                 console.error("putLabelMonochromeBuffer Error:", e);
-                throw new UserInputError( e , {
+                throw new UserInputError( "putLabelMonochromeBuffer ERROR: " + e , {
                     invalidArgs: imageBuffer
                 });
             }
-            return imageBuffer;
+            return {result: true};
         }
     },
     Query: {}

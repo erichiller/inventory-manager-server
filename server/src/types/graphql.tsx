@@ -30,12 +30,6 @@ export type LabelCharacteristic = {
   pinsRight: Scalars['Int'],
 };
 
-/** Image Buffer / Raster data arranged as [page][column][pixels] of uint8 to the printer */
-export type LabelMonochromeBuffer = {
-   __typename?: 'LabelMonochromeBuffer',
-  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>,
-};
-
 export enum MediaType {
   NO_MEDIA = 'NO_MEDIA',
   LAMINATED_TAPE = 'LAMINATED_TAPE',
@@ -51,8 +45,11 @@ export enum MediaType {
 export type Mutation = {
    __typename?: 'Mutation',
   uploadFiles: Array<Maybe<File>>,
-  /** Send a label to be printed */
-  putLabelMonochromeBuffer?: Maybe<LabelMonochromeBuffer>,
+  /** 
+ * Send a label to be printed
+   * Image Buffer / Raster data arranged as [page][column][pixels] of uint8 to the printer
+ */
+  putLabelMonochromeBuffer?: Maybe<OperationResult>,
 };
 
 
@@ -65,12 +62,19 @@ export type MutationPutLabelMonochromeBufferArgs = {
   imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
 };
 
+export type OperationResult = {
+   __typename?: 'OperationResult',
+  result: Scalars['Boolean'],
+};
+
 /** Printer and label status and properies */
 export type PrinterLabelStatus = {
    __typename?: 'PrinterLabelStatus',
   mediaType?: Maybe<MediaType>,
   mediaWidth: Scalars['Int'],
   labelCharacteristic?: Maybe<LabelCharacteristic>,
+  tapeColor?: Maybe<TapeColor>,
+  textColor?: Maybe<TextColor>,
 };
 
 /** Label characteristics and properties */
@@ -92,10 +96,50 @@ export type Query = {
   PrinterStatus?: Maybe<PrinterStatus>,
 };
 
-export enum Rgb {
+export enum TapeColor {
+  WHITE = 'WHITE',
+  OTHER = 'OTHER',
+  CLEAR = 'CLEAR',
   RED = 'RED',
+  BLUE = 'BLUE',
+  YELLOW = 'YELLOW',
   GREEN = 'GREEN',
-  BLUE = 'BLUE'
+  BLACK = 'BLACK',
+  CLEAR_WHITE_TEXT = 'CLEAR_WHITE_TEXT',
+  MATTE_WHITE = 'MATTE_WHITE',
+  MATTE_CLEAR = 'MATTE_CLEAR',
+  MATTE_SILVER = 'MATTE_SILVER',
+  SATIN_GOLD = 'SATIN_GOLD',
+  SATIN_SILVER = 'SATIN_SILVER',
+  BLUE_D = 'BLUE_D',
+  RED_D = 'RED_D',
+  FLOURESCENT_ORANGE = 'FLOURESCENT_ORANGE',
+  FLOURESCENT_YELLOW = 'FLOURESCENT_YELLOW',
+  BERRY_PINK = 'BERRY_PINK',
+  LIGHT_GRAY = 'LIGHT_GRAY',
+  LIME_GREEN = 'LIME_GREEN',
+  YELLOW_F = 'YELLOW_F',
+  PINK_F = 'PINK_F',
+  BLUE_F = 'BLUE_F',
+  WHITE_HSE = 'WHITE_HSE',
+  WHITE_FLEX = 'WHITE_FLEX',
+  YELLOW_FLEX = 'YELLOW_FLEX',
+  CLEANING = 'CLEANING',
+  STENCIL = 'STENCIL',
+  INCOMPATIBLE = 'INCOMPATIBLE'
+}
+
+export enum TextColor {
+  WHITE = 'WHITE',
+  RED = 'RED',
+  BLUE = 'BLUE',
+  BLACK = 'BLACK',
+  GOLD = 'GOLD',
+  BLUE_F = 'BLUE_F',
+  CLEANING = 'CLEANING',
+  STENCIL = 'STENCIL',
+  OTHER = 'OTHER',
+  INCOMPATIBLE = 'INCOMPATIBLE'
 }
 
 
@@ -181,12 +225,13 @@ export type ResolversTypes = ResolversObject<{
   PrinterLabelStatus: ResolverTypeWrapper<PrinterLabelStatus>,
   MEDIA_TYPE: MediaType,
   LabelCharacteristic: ResolverTypeWrapper<LabelCharacteristic>,
+  TAPE_COLOR: TapeColor,
+  TEXT_COLOR: TextColor,
   Mutation: ResolverTypeWrapper<{}>,
   Upload: ResolverTypeWrapper<Scalars['Upload']>,
   uint8: ResolverTypeWrapper<Scalars['uint8']>,
-  LabelMonochromeBuffer: ResolverTypeWrapper<LabelMonochromeBuffer>,
+  OperationResult: ResolverTypeWrapper<OperationResult>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
-  RGB: Rgb,
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -200,12 +245,13 @@ export type ResolversParentTypes = ResolversObject<{
   PrinterLabelStatus: PrinterLabelStatus,
   MEDIA_TYPE: MediaType,
   LabelCharacteristic: LabelCharacteristic,
+  TAPE_COLOR: TapeColor,
+  TEXT_COLOR: TextColor,
   Mutation: {},
   Upload: Scalars['Upload'],
   uint8: Scalars['uint8'],
-  LabelMonochromeBuffer: LabelMonochromeBuffer,
+  OperationResult: OperationResult,
   Boolean: Scalars['Boolean'],
-  RGB: Rgb,
 }>;
 
 export type FileResolvers<ContextType = any, ParentType extends ResolversParentTypes['File'] = ResolversParentTypes['File']> = ResolversObject<{
@@ -222,19 +268,21 @@ export type LabelCharacteristicResolvers<ContextType = any, ParentType extends R
   pinsRight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
 }>;
 
-export type LabelMonochromeBufferResolvers<ContextType = any, ParentType extends ResolversParentTypes['LabelMonochromeBuffer'] = ResolversParentTypes['LabelMonochromeBuffer']> = ResolversObject<{
-  imageBuffer?: Resolver<Array<Maybe<Array<Maybe<Array<Maybe<ResolversTypes['uint8']>>>>>>, ParentType, ContextType>,
-}>;
-
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   uploadFiles?: Resolver<Array<Maybe<ResolversTypes['File']>>, ParentType, ContextType, RequireFields<MutationUploadFilesArgs, 'files'>>,
-  putLabelMonochromeBuffer?: Resolver<Maybe<ResolversTypes['LabelMonochromeBuffer']>, ParentType, ContextType, RequireFields<MutationPutLabelMonochromeBufferArgs, 'imageBuffer'>>,
+  putLabelMonochromeBuffer?: Resolver<Maybe<ResolversTypes['OperationResult']>, ParentType, ContextType, RequireFields<MutationPutLabelMonochromeBufferArgs, 'imageBuffer'>>,
+}>;
+
+export type OperationResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['OperationResult'] = ResolversParentTypes['OperationResult']> = ResolversObject<{
+  result?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 }>;
 
 export type PrinterLabelStatusResolvers<ContextType = any, ParentType extends ResolversParentTypes['PrinterLabelStatus'] = ResolversParentTypes['PrinterLabelStatus']> = ResolversObject<{
   mediaType?: Resolver<Maybe<ResolversTypes['MEDIA_TYPE']>, ParentType, ContextType>,
   mediaWidth?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   labelCharacteristic?: Resolver<Maybe<ResolversTypes['LabelCharacteristic']>, ParentType, ContextType>,
+  tapeColor?: Resolver<Maybe<ResolversTypes['TAPE_COLOR']>, ParentType, ContextType>,
+  textColor?: Resolver<Maybe<ResolversTypes['TEXT_COLOR']>, ParentType, ContextType>,
 }>;
 
 export type PrinterStatusResolvers<ContextType = any, ParentType extends ResolversParentTypes['PrinterStatus'] = ResolversParentTypes['PrinterStatus']> = ResolversObject<{
@@ -263,8 +311,8 @@ export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 export type Resolvers<ContextType = any> = ResolversObject<{
   File?: FileResolvers<ContextType>,
   LabelCharacteristic?: LabelCharacteristicResolvers<ContextType>,
-  LabelMonochromeBuffer?: LabelMonochromeBufferResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
+  OperationResult?: OperationResultResolvers<ContextType>,
   PrinterLabelStatus?: PrinterLabelStatusResolvers<ContextType>,
   PrinterStatus?: PrinterStatusResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
@@ -279,4 +327,4 @@ export type Resolvers<ContextType = any> = ResolversObject<{
 */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
-// inventory-server graphql typescript defs generated on 2020-01-04T07:15:20-07:00
+// inventory-server graphql typescript defs generated on 2020-01-06T19:19:29-07:00

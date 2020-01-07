@@ -2728,12 +2728,6 @@ export type LabelCharacteristic = {
   widthMillimeters: Scalars['Int'],
 };
 
-/** Image Buffer / Raster data arranged as [page][column][pixels] of uint8 to the printer */
-export type LabelMonochromeBuffer = {
-   __typename?: 'LabelMonochromeBuffer',
-  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>,
-};
-
 export enum MediaType {
   FABRIC_TAPE = 'FABRIC_TAPE',
   FLEXIBLE_ID_TAPE = 'FLEXIBLE_ID_TAPE',
@@ -2762,8 +2756,11 @@ export type MoneyComparisonExp = {
 
 export type Mutation = {
    __typename?: 'Mutation',
-  /** Send a label to be printed */
-  putLabelMonochromeBuffer?: Maybe<LabelMonochromeBuffer>,
+  /** 
+ * Send a label to be printed
+   * Image Buffer / Raster data arranged as [page][column][pixels] of uint8 to the printer
+ **/
+  putLabelMonochromeBuffer?: Maybe<OperationResult>,
   uploadFiles: Array<Maybe<File>>,
 };
 
@@ -2824,8 +2821,11 @@ export type MutationRoot = {
   insert_label?: Maybe<LabelMutationResponse>,
   /** insert data into the table: "purchase" */
   insert_purchase?: Maybe<PurchaseMutationResponse>,
-  /** Send a label to be printed */
-  putLabelMonochromeBuffer?: Maybe<LabelMonochromeBuffer>,
+  /** 
+ * Send a label to be printed
+   * Image Buffer / Raster data arranged as [page][column][pixels] of uint8 to the printer
+ **/
+  putLabelMonochromeBuffer?: Maybe<OperationResult>,
   /** update data of the table: "entity" */
   update_entity?: Maybe<EntityMutationResponse>,
   /** update data of the table: "enum.hardware_fastener_material" */
@@ -3106,6 +3106,11 @@ export type NumericComparisonExp = {
   _nin?: Maybe<Array<Scalars['numeric']>>,
 };
 
+export type OperationResult = {
+   __typename?: 'OperationResult',
+  result: Scalars['Boolean'],
+};
+
 /** column ordering options */
 export enum OrderBy {
   /** in the ascending order, nulls last */
@@ -3128,6 +3133,8 @@ export type PrinterLabelStatus = {
   labelCharacteristic?: Maybe<LabelCharacteristic>,
   mediaType?: Maybe<MediaType>,
   mediaWidth: Scalars['Int'],
+  tapeColor?: Maybe<TapeColor>,
+  textColor?: Maybe<TextColor>,
 };
 
 /** Label characteristics and properties */
@@ -3908,12 +3915,6 @@ export type QueryRootPurchaseByPkArgs = {
   order_no: Scalars['String']
 };
 
-export enum Rgb {
-  BLUE = 'BLUE',
-  GREEN = 'GREEN',
-  RED = 'RED'
-}
-
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */
 export type StringComparisonExp = {
   _eq?: Maybe<Scalars['String']>,
@@ -4307,6 +4308,52 @@ export type SubscriptionRootPurchaseByPkArgs = {
   order_no: Scalars['String']
 };
 
+export enum TapeColor {
+  BERRY_PINK = 'BERRY_PINK',
+  BLACK = 'BLACK',
+  BLUE = 'BLUE',
+  BLUE_D = 'BLUE_D',
+  BLUE_F = 'BLUE_F',
+  CLEANING = 'CLEANING',
+  CLEAR = 'CLEAR',
+  CLEAR_WHITE_TEXT = 'CLEAR_WHITE_TEXT',
+  FLOURESCENT_ORANGE = 'FLOURESCENT_ORANGE',
+  FLOURESCENT_YELLOW = 'FLOURESCENT_YELLOW',
+  GREEN = 'GREEN',
+  INCOMPATIBLE = 'INCOMPATIBLE',
+  LIGHT_GRAY = 'LIGHT_GRAY',
+  LIME_GREEN = 'LIME_GREEN',
+  MATTE_CLEAR = 'MATTE_CLEAR',
+  MATTE_SILVER = 'MATTE_SILVER',
+  MATTE_WHITE = 'MATTE_WHITE',
+  OTHER = 'OTHER',
+  PINK_F = 'PINK_F',
+  RED = 'RED',
+  RED_D = 'RED_D',
+  SATIN_GOLD = 'SATIN_GOLD',
+  SATIN_SILVER = 'SATIN_SILVER',
+  STENCIL = 'STENCIL',
+  WHITE = 'WHITE',
+  WHITE_FLEX = 'WHITE_FLEX',
+  WHITE_HSE = 'WHITE_HSE',
+  YELLOW = 'YELLOW',
+  YELLOW_F = 'YELLOW_F',
+  YELLOW_FLEX = 'YELLOW_FLEX'
+}
+
+export enum TextColor {
+  BLACK = 'BLACK',
+  BLUE = 'BLUE',
+  BLUE_F = 'BLUE_F',
+  CLEANING = 'CLEANING',
+  GOLD = 'GOLD',
+  INCOMPATIBLE = 'INCOMPATIBLE',
+  OTHER = 'OTHER',
+  RED = 'RED',
+  STENCIL = 'STENCIL',
+  WHITE = 'WHITE'
+}
+
 
 /** expression to compare columns of type timestamptz. All fields are combined with logical 'AND'. */
 export type TimestamptzComparisonExp = {
@@ -4479,6 +4526,24 @@ export type EditLabelMutation = (
   )> }
 );
 
+export type GetPrinterStatusQueryVariables = {};
+
+
+export type GetPrinterStatusQuery = (
+  { __typename?: 'query_root' }
+  & { PrinterStatus: Maybe<(
+    { __typename?: 'PrinterStatus' }
+    & Pick<PrinterStatus, 'labelType' | 'heightInch'>
+    & { labelStatus: (
+      { __typename?: 'PrinterLabelStatus' }
+      & { labelCharacteristic: Maybe<(
+        { __typename?: 'LabelCharacteristic' }
+        & Pick<LabelCharacteristic, 'pinsRight' | 'pinsPrint' | 'pinsLeft' | 'widthMillimeters'>
+      )> }
+    ) }
+  )> }
+);
+
 export type SendBufferMutationVariables = {
   buffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>
 };
@@ -4487,26 +4552,8 @@ export type SendBufferMutationVariables = {
 export type SendBufferMutation = (
   { __typename?: 'mutation_root' }
   & { putLabelMonochromeBuffer: Maybe<(
-    { __typename?: 'LabelMonochromeBuffer' }
-    & Pick<LabelMonochromeBuffer, 'imageBuffer'>
-  )> }
-);
-
-export type GetPrinterStatusQueryVariables = {};
-
-
-export type GetPrinterStatusQuery = (
-  { __typename?: 'query_root' }
-  & { PrinterStatus: Maybe<(
-    { __typename?: 'PrinterStatus' }
-    & Pick<PrinterStatus, 'labelType'>
-    & { labelStatus: (
-      { __typename?: 'PrinterLabelStatus' }
-      & { labelCharacteristic: Maybe<(
-        { __typename?: 'LabelCharacteristic' }
-        & Pick<LabelCharacteristic, 'pinsRight' | 'pinsPrint' | 'pinsLeft' | 'widthMillimeters'>
-      )> }
-    ) }
+    { __typename?: 'OperationResult' }
+    & Pick<OperationResult, 'result'>
   )> }
 );
 
@@ -5000,59 +5047,11 @@ export function useEditLabelMutation(baseOptions?: ApolloReactHooks.MutationHook
 export type EditLabelMutationHookResult = ReturnType<typeof useEditLabelMutation>;
 export type EditLabelMutationResult = ApolloReactCommon.MutationResult<EditLabelMutation>;
 export type EditLabelMutationOptions = ApolloReactCommon.BaseMutationOptions<EditLabelMutation, EditLabelMutationVariables>;
-export const SendBufferDocument = gql`
-    mutation SendBuffer($buffer: [[[uint8]]]!) {
-  putLabelMonochromeBuffer(imageBuffer: $buffer) {
-    imageBuffer
-  }
-}
-    `;
-export type SendBufferMutationFn = ApolloReactCommon.MutationFunction<SendBufferMutation, SendBufferMutationVariables>;
-export type SendBufferComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<SendBufferMutation, SendBufferMutationVariables>, 'mutation'>;
-
-    export const SendBufferComponent = (props: SendBufferComponentProps) => (
-      <ApolloReactComponents.Mutation<SendBufferMutation, SendBufferMutationVariables> mutation={SendBufferDocument} {...props} />
-    );
-    
-export type SendBufferProps<TChildProps = {}> = ApolloReactHoc.MutateProps<SendBufferMutation, SendBufferMutationVariables> & TChildProps;
-export function withSendBuffer<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  SendBufferMutation,
-  SendBufferMutationVariables,
-  SendBufferProps<TChildProps>>) {
-    return ApolloReactHoc.withMutation<TProps, SendBufferMutation, SendBufferMutationVariables, SendBufferProps<TChildProps>>(SendBufferDocument, {
-      alias: 'sendBuffer',
-      ...operationOptions
-    });
-};
-
-/**
- * __useSendBufferMutation__
- *
- * To run a mutation, you first call `useSendBufferMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSendBufferMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [sendBufferMutation, { data, loading, error }] = useSendBufferMutation({
- *   variables: {
- *      buffer: // value for 'buffer'
- *   },
- * });
- */
-export function useSendBufferMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SendBufferMutation, SendBufferMutationVariables>) {
-        return ApolloReactHooks.useMutation<SendBufferMutation, SendBufferMutationVariables>(SendBufferDocument, baseOptions);
-      }
-export type SendBufferMutationHookResult = ReturnType<typeof useSendBufferMutation>;
-export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
-export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
   PrinterStatus {
     labelType
+    heightInch
     labelStatus {
       labelCharacteristic {
         pinsRight
@@ -5106,4 +5105,53 @@ export function useGetPrinterStatusLazyQuery(baseOptions?: ApolloReactHooks.Lazy
 export type GetPrinterStatusQueryHookResult = ReturnType<typeof useGetPrinterStatusQuery>;
 export type GetPrinterStatusLazyQueryHookResult = ReturnType<typeof useGetPrinterStatusLazyQuery>;
 export type GetPrinterStatusQueryResult = ApolloReactCommon.QueryResult<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>;
-// graphql typescript defs generated on 2020-01-04T07:17:40-07:00
+export const SendBufferDocument = gql`
+    mutation SendBuffer($buffer: [[[uint8]]]!) {
+  putLabelMonochromeBuffer(imageBuffer: $buffer) {
+    result
+  }
+}
+    `;
+export type SendBufferMutationFn = ApolloReactCommon.MutationFunction<SendBufferMutation, SendBufferMutationVariables>;
+export type SendBufferComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<SendBufferMutation, SendBufferMutationVariables>, 'mutation'>;
+
+    export const SendBufferComponent = (props: SendBufferComponentProps) => (
+      <ApolloReactComponents.Mutation<SendBufferMutation, SendBufferMutationVariables> mutation={SendBufferDocument} {...props} />
+    );
+    
+export type SendBufferProps<TChildProps = {}> = ApolloReactHoc.MutateProps<SendBufferMutation, SendBufferMutationVariables> & TChildProps;
+export function withSendBuffer<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  SendBufferMutation,
+  SendBufferMutationVariables,
+  SendBufferProps<TChildProps>>) {
+    return ApolloReactHoc.withMutation<TProps, SendBufferMutation, SendBufferMutationVariables, SendBufferProps<TChildProps>>(SendBufferDocument, {
+      alias: 'sendBuffer',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useSendBufferMutation__
+ *
+ * To run a mutation, you first call `useSendBufferMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendBufferMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendBufferMutation, { data, loading, error }] = useSendBufferMutation({
+ *   variables: {
+ *      buffer: // value for 'buffer'
+ *   },
+ * });
+ */
+export function useSendBufferMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SendBufferMutation, SendBufferMutationVariables>) {
+        return ApolloReactHooks.useMutation<SendBufferMutation, SendBufferMutationVariables>(SendBufferDocument, baseOptions);
+      }
+export type SendBufferMutationHookResult = ReturnType<typeof useSendBufferMutation>;
+export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
+export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
+// graphql typescript defs generated on 2020-01-07T06:08:36-07:00

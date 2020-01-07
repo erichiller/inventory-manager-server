@@ -33,6 +33,16 @@ export class PrinterStatus {
     labelType: string = null;
     uptime: number = null;
     model: string = null;
+    modelCode: MODEL_CODE;
+    batteryLevel: BATTERY_LEVEL;
+    extendedError: EXTENDED_ERROR;
+    errorInformation1: ERROR_INFORMATION_1;
+    errorInformation2: ERROR_INFORMATION_2;
+    statusType: STATUS_TYPE;
+    phaseType: PHASE_TYPE;
+    phaseTypeHigh: PHASE_TYPE_HIGH;
+    phaseTypeLow: PHASE_TYPE_LOW;
+    notificationNumber: NOTIFICATION_NUMER;
     /** Float */
     firmwareVersion: number = null;
     // /** Float */
@@ -43,6 +53,8 @@ export class PrinterStatus {
         mediaType: MEDIA_TYPE;
         mediaWidth: MEDIA_WIDTH;
         labelCharacteristic: LabelCharacteristic;
+        tapeColor: TAPE_COLOR;
+        textColor: TEXT_COLOR;
         /** NodeJS buffer */
         bytes: Buffer;
     };
@@ -51,6 +63,27 @@ export class PrinterStatus {
 /**
  * SEE PAGE 24 in Epson manual for status enums
  */
+
+/**
+ * Model Code is Byte 4 in the status returned
+ */
+export enum MODEL_CODE {
+    PT_P900 = 0x71,
+    PT_P900W = 0x69,
+    PT_P950NW = 0x70
+}
+
+/**
+ * Model Code is Byte 6 in the status returned
+ */
+export enum BATTERY_LEVEL {
+    FULL = 0x00,
+    HALF = 0x01,
+    LOW = 0x02,
+    NEEDS_CHARGING = 0x03,
+    USING_AC = 0x04,
+    UNKNOWN = 0xFF,
+}
 
 /**
  * Extended Error is Byte 7 in the status returned
@@ -64,18 +97,145 @@ export enum EXTENDED_ERROR {
     SYSTEM_ERROR = 0xff
 }
 
+
+/**
+ * Error Information 1 is Byte 8 in the status returned
+ * This is provided as a bitmask, and therefor multiple options can be set
+ */
+export enum ERROR_INFORMATION_1 {
+    NO_MEDIA = 0x01,
+    END_OF_MEDIA = 0x02,
+    CUTTER_JAM = 0x04,
+    WEAK_BATTERIES = 0x08,
+    PRINTER_IN_USE = 0x10,
+    HIGH_VOLTAGE_ADAPTER = 0x40
+}
+
+
+/**
+ * Error Information 2 is Byte 9 in the status returned
+ * This is provided as a bitmask, and therefor multiple options can be set
+ */
+export enum ERROR_INFORMATION_2 {
+    REPLACE_MEDIA_WRONG_MEDIA = 0x01,
+    EXPANSION_BUFFER_FULL = 0x02,
+    COMMUNICATION_ERROR = 0x04,
+    COMMUNICATION_BUFFER_FULL = 0x08,
+    COVER_OPEN = 0x10,
+    OVERHEATING = 0x20,
+    BLACK_MARKING_NOT_DETECTED = 0x40,
+    SYSTEM_ERROR = 0x80
+}
+
+
+/**
+ * Status Type is Byte 18 in the status returned
+ */
+export enum STATUS_TYPE {
+    REPLY_TO_STATUS_REQUEST = 0x00,
+    PRINTING_COMPLETED      = 0x01,
+    ERROR_OCCURRED          = 0x02,
+    EXIT_IF_MODE            = 0x03, // not used ?
+    TURNED_OFF              = 0x04,
+    NOTIFICATION            = 0x05,
+    PHASE_CHANGE            = 0x06
+}
+
+/**
+ * Phase Type is Byte 19 in the status returned
+ */
+export enum PHASE_TYPE {
+    EDITING_STATE_RECEPTION_POSSIBLE = 0x00,
+    PRINTING_STATE = 0x01
+}
+/**
+ * Phase Type High is Byte 20 in the status returned
+ */
+export enum PHASE_TYPE_HIGH {
+    EDITING_STATE_RECEPTION_POSSIBLE = 0x00,
+    FEED = 0x01
+}
+/**
+ * Phase Type Low is Byte 21 in the status returned
+ */
+export enum PHASE_TYPE_LOW {
+    PRINTING                    = 0x00,
+    COVER_OPEN_WHILE_RECEIVING  = 0x14
+}
+
+/**
+ * NOTIFICATION_NUMER is Byte 22 in the status returned
+ */
+export enum NOTIFICATION_NUMER {
+    NOT_AVAILABLE    = 0x00,
+    COVER_OPEN       = 0x01,
+    COVER_CLOSED     = 0x02,
+    COOLING_STARTED  = 0x03,
+    COOLING_FINISHED = 0x04
+}
+
+
+/**
+ * Tape Color is Byte 24 in the status returned
+ */
+export enum TAPE_COLOR {
+    WHITE               = 0x01,
+    OTHER               = 0x02,
+    CLEAR               = 0x03,
+    RED                 = 0x04,
+    BLUE                = 0x05,
+    YELLOW              = 0x06,
+    GREEN               = 0x07,
+    BLACK               = 0x08,
+    CLEAR_WHITE_TEXT    = 0x09,
+    MATTE_WHITE         = 0x20,
+    MATTE_CLEAR         = 0x21,
+    MATTE_SILVER        = 0x22,
+    SATIN_GOLD          = 0x23,
+    SATIN_SILVER        = 0x24,
+    BLUE_D              = 0x30,
+    RED_D               = 0x31,
+    FLOURESCENT_ORANGE  = 0x40,
+    FLOURESCENT_YELLOW  = 0x41,
+    BERRY_PINK      = 0x50,
+    LIGHT_GRAY      = 0x51,
+    LIME_GREEN      = 0x52,
+    YELLOW_F        = 0x60,
+    PINK_F          = 0x61,
+    BLUE_F          = 0x62,
+    WHITE_HSE       = 0x70,
+    WHITE_FLEX      = 0x90,
+    YELLOW_FLEX     = 0x91,
+    CLEANING        = 0xf0,
+    STENCIL         = 0xf1,
+    INCOMPATIBLE    = 0xff
+}
+
+
+
+/**
+ * Model Code is Byte 25 in the status returned
+ */
+export enum TEXT_COLOR {
+    WHITE = 0x01,
+    RED = 0x04,
+    BLUE = 0x05,
+    BLACK = 0x08,
+    GOLD = 0x0a,
+    BLUE_F = 0x62,
+    CLEANING = 0xf0,
+    STENCIL = 0xf1,
+    OTHER = 0x02,
+    INCOMPATIBLE = 0xff
+}
+
+
+
 /**
  * Possible options of returned media width. hse uses rounded sizes.  
  * `0x00` is an ERROR ( _NO TAPE_ )  
  * This is byte `10`
  */
-export enum MEDIA_WIDTH_ENUM {
-    _0 = 0x00,
-}
-type MEDIA_WIDTH_E = MEDIA_WIDTH_ENUM[keyof MEDIA_WIDTH_ENUM];
-
-let foo: MEDIA_WIDTH_ENUM = 0x01;
-
 type MEDIA_WIDTH = 0x00 | 0x04 | 0x06 | 0x09 | 0x0c | 0x12 | 0x18 | 0x24 | 0x15;
 
 
@@ -93,9 +253,6 @@ export enum MEDIA_TYPE {
     SATIN_TAPE = 0x15,
     INCOMPATIBLE_TAPE = 0xff
 }
-
-type millimeter = number;
-type inch = number;
 
 enum LengthType {
     millimenter = "mm",
@@ -227,8 +384,38 @@ export class BrotherLabeler {
             }
         },
         hse: {
-
-        }
+            6: {
+                widthMillimeters: 6,
+                pinsLeft: 244,
+                pinsPrint: 56,
+                pinsRight: 260
+            },
+            9: {
+                widthMillimeters: 9,
+                pinsLeft: 224,
+                pinsPrint: 96,
+                pinsRight: 240
+            },
+            12: {
+                widthMillimeters: 12,
+                pinsLeft: 206,
+                pinsPrint: 132,
+                pinsRight: 222
+            },
+            18: {
+                widthMillimeters: 18,
+                pinsLeft: 166,
+                pinsPrint: 212,
+                pinsRight: 182
+            },
+            24: {
+                widthMillimeters: 24,
+                pinsLeft: 144,
+                pinsPrint: 256,
+                pinsRight: 160
+            },
+        },
+        // fle_21_45
     };
 
     /**
@@ -359,9 +546,20 @@ export class BrotherLabeler {
                                     retObj.labelStatus = {
                                         mediaType: MEDIA_TYPE[ MEDIA_TYPE[ val[ 11 ] ] ],
                                         mediaWidth: val[ 10 ],
+                                        tapeColor: TAPE_COLOR[ TAPE_COLOR[ val[24] ] ],
+                                        textColor: TEXT_COLOR[ TEXT_COLOR[ val[25] ] ],
                                         labelCharacteristic: BrotherLabeler.LabelInfo[ val[ 11 ] === MEDIA_TYPE.HEAT_SHRINK_TUBE ? 'hse' : 'tze' ][ val[ 10 ] ],
                                         bytes: val
                                     };
+                                    retObj.batteryLevel = BATTERY_LEVEL[ BATTERY_LEVEL[ val[ 6 ] ] ];
+                                    retObj.extendedError = EXTENDED_ERROR[ EXTENDED_ERROR[ val[7] ] ];
+                                    retObj.errorInformation1 = ERROR_INFORMATION_1[ ERROR_INFORMATION_1[ val[8] ] ];
+                                    retObj.errorInformation2 = ERROR_INFORMATION_2[ ERROR_INFORMATION_2[ val[9] ] ];
+                                    retObj.statusType = STATUS_TYPE[ STATUS_TYPE[ val[ 18 ] ] ];
+                                    retObj.phaseType = PHASE_TYPE[ PHASE_TYPE[ val[ 19 ] ] ];
+                                    retObj.phaseTypeHigh = PHASE_TYPE_HIGH[ PHASE_TYPE_HIGH[ val[ 6 ] ] ];
+                                    retObj.phaseTypeLow = PHASE_TYPE_LOW[ PHASE_TYPE_LOW[ val[ 6 ] ] ];
+                                    retObj.notificationNumber = NOTIFICATION_NUMER[ NOTIFICATION_NUMER[ val[ 22 ] ] ];
                                 }
                             }
                         }
@@ -390,9 +588,11 @@ export class BrotherLabeler {
 
         let { labelStatus } = await this.getPrinterStatus();
 
-        let shiftBits = labelStatus.labelCharacteristic.pinsLeft % 8;
-        let shiftBytes = Math.ceil( labelStatus.labelCharacteristic.pinsLeft / 8 );
-
+        // let shiftBits = labelStatus.labelCharacteristic.pinsLeft % 8;
+        // let shiftBytes = Math.ceil( labelStatus.labelCharacteristic.pinsLeft / 8 );
+        let shiftBits = labelStatus.labelCharacteristic.pinsRight % 8;
+        let shiftBytes = Math.ceil( labelStatus.labelCharacteristic.pinsRight / 8 );
+        
         console.log( { labelStatus, shiftBits, shiftBytes } );
 
         let invalidateBuf = [];
@@ -400,7 +600,9 @@ export class BrotherLabeler {
             invalidateBuf.push( 0x00 );
         }
 
-        /**
+        /**********************************
+         ** From the example in the docs **
+         **********************************
          * 0x00 x 200
          *                         1b 40 1b 69 61 01 1b 69
          * 55 4a 00 0c c0 7c d1 fd c8 28 00 00 09 00 00 00
@@ -425,22 +627,6 @@ export class BrotherLabeler {
          *                                                                      + 
          * 1b 69 64 0e 00 4d 02                                             Specify margin amount (feed amount)
          *                                                                      + 
-         * 
-         * 
-         * 27 * 16
-         * - 6
-         * + 10
-         * = 436 * 8 = 3488
-         * 
-         * 5A
-         * 19 * 16
-         * - 7
-         * - 7
-         * = 290 * 8 = 2320
-         * 
-         * 30 x 0x47
-         * 30 * 8 = 240
-         * 
          */
 
         let printBuffer = Buffer.concat( [
@@ -482,10 +668,11 @@ export class BrotherLabeler {
 
                     /**
                      * print information
+                     * see page 32
                      * 10 bytes sent to configure page
                      **/
                     0x1b, 0x69, 0x7a,                   // print information 'header'
-                    0x04,                               // Media width
+                    0x04,                               // Media width ; other options: KIND, LENGTH, QUALITY, RECOVER
                     0x00,                               // laminated tape
                     0x0c, 0x00,                         // 12mm ;  ************ TODO: this should read the actual tape *******************
                     /**
@@ -501,12 +688,14 @@ export class BrotherLabeler {
 
 
 
-                    0x1b, 0x69, 0x41, 0x01,             // pages ? -- not sure what this is ? `Specify the page number in "cut each * labels"`
-                    0x1b, 0x69, 0x64, 0x0e, 0x00,       // set margin to 15 , which should be ~ 1mm
+                    0x1b, 0x69, 0x41, 0x01,             // auto-cut, default which means "Cut all" is 0x01
+                                                        // unsure what pages means, says 1-99 is valid -- `Specify the page number in "cut each * labels"`
+                    0x1b, 0x69, 0x64, 0x00, 0x00,       // set the margin between each label and the cut line.
+                    // 0x1b, 0x69, 0x64, 0x0e, 0x00,       // set margin to 15 , which should be ~ 1mm
                     0x4d, 0x00,                         // no compression
 
                     ...page.map( ( col, idx ) => {
-                        console.log( `processing inputBuffer page ${ pageNumber }, col ${ idx }` );
+                        // console.log( `processing inputBuffer page ${ pageNumber }, col ${ idx }` );
                         let o_col_len = col.length; // FOR DEBUG ONLY
 
                         let paddedCol: typeof col = [];
@@ -559,16 +748,22 @@ export class BrotherLabeler {
                         // } else if ( col.length > 0x46 ){
                         //     col = col.slice(0, 0x46);
                         // }
+                        // console.log( `processed inputBuffer page ${ pageNumber }, cols ${ idx }` );
                         if ( pageNumber === 0 && idx === 1 ) {
                             console.log( {
+                                pages: inputBuffer.length,
+                                cols: inputBuffer[pageNumber].length,
+                                shiftBits: shiftBits,
+                                shiftBytes: shiftBytes,
+                                labelCharacteristic: labelStatus.labelCharacteristic,
                                 original_len: o_col_len,
-                                original_len_hex: buf2hex( [ o_col_len ] ),
+                                original_len_hex: `0x${buf2hex( [ o_col_len ] )}`,
                                 new_length: col.length,
-                                new_length_hex: buf2hex( [ col.length ] ),
+                                new_length_hex: `0x${buf2hex( [ col.length ] )}`,
                                 paddedCol_length: paddedCol.length,
-                                paddedCol_length_hex: buf2hex( [ paddedCol.length ] ),
-                                ______col: buf2hex( col ),
-                                paddedCol: buf2hex( paddedCol )
+                                paddedCol_length_hex: `0x${buf2hex( [ paddedCol.length ] )}`,
+                                ______col: `0x${buf2hex( col )}`,
+                                paddedCol: `0x${buf2hex( paddedCol )}`
                             } );
                         }
                         return [
