@@ -5,6 +5,9 @@ query GetPrinterStatus {
     labelType
     heightInch
     labelStatus {
+      mediaType
+      tapeColor
+      textColor
       labelCharacteristic {
         pinsRight
         pinsPrint

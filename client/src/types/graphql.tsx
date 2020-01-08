@@ -4536,6 +4536,7 @@ export type GetPrinterStatusQuery = (
     & Pick<PrinterStatus, 'labelType' | 'heightInch'>
     & { labelStatus: (
       { __typename?: 'PrinterLabelStatus' }
+      & Pick<PrinterLabelStatus, 'mediaType' | 'tapeColor' | 'textColor'>
       & { labelCharacteristic: Maybe<(
         { __typename?: 'LabelCharacteristic' }
         & Pick<LabelCharacteristic, 'pinsRight' | 'pinsPrint' | 'pinsLeft' | 'widthMillimeters'>
@@ -5053,6 +5054,9 @@ export const GetPrinterStatusDocument = gql`
     labelType
     heightInch
     labelStatus {
+      mediaType
+      tapeColor
+      textColor
       labelCharacteristic {
         pinsRight
         pinsPrint
@@ -5154,4 +5158,4 @@ export function useSendBufferMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type SendBufferMutationHookResult = ReturnType<typeof useSendBufferMutation>;
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2020-01-07T06:08:36-07:00
+// graphql typescript defs generated on 2020-01-07T07:33:21-07:00
