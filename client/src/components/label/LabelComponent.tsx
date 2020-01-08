@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Stage, Layer } from 'react-konva';
 import { Spin, InputNumber, Input } from "antd";
@@ -9,6 +9,7 @@ import { DrawContext } from "../draw/LabelDraw";
 import e from 'cors';
 import { KonvaEventObject } from 'konva/types/Node';
 import { DrawTransformHandler } from '../draw/DrawTransformHandler';
+import { TapeColorMap } from '../../types/labelCanvasColors';
 
 interface LabelComponentState {
     selectedShapeName: string;
@@ -24,21 +25,22 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( { 
     const [ state, setState ] = useState<LabelComponentState>( {
         selectedShapeName: ""
     } );
+    const context = useContext(DrawContext);
     const dpi = 360;
     // const margin = Math.floor( ( 14 / 180 ) * dpi ); // inches of margin to subtract
     // if ( loading ) return <Loading />;
     // if ( error ) return <p>ERROR</p>;
     if ( data ) {
-        // height is mm * 360
-        // let height = parseInt(/[0-9]{1,2}(?=mm)/.exec(data.PrinterStatus.labelType)[0]) * 360;
-
         console.log( "PrinterStatus:", data );
-        // height is inches * 360
         let labelInchesHeight = data.PrinterStatus.heightInch;
-        // let labelInchesHeight = parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType )[ 0 ] );
-        // let height = Math.floor( ( labelInchesHeight * dpi ) - margin );
         let height = data.PrinterStatus.labelStatus.labelCharacteristic.pinsPrint;
 
+        let backgroundStyles = TapeColorMap[data.PrinterStatus.labelStatus.tapeColor];
+        console.log( "backgroundStyles", backgroundStyles,'\ntextColor:', data.PrinterStatus.labelStatus.textColor);
+
+        // if (context.labelTextColor != data.PrinterStatus.labelStatus.textColor){
+        //     context.setLabelTextColor(data.PrinterStatus.labelStatus.textColor);
+        // }
         console.log( "height",
             {
                 height: height,
@@ -96,10 +98,11 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( { 
                         width={width}
                         style={{
                             border: '1px solid #D3D3D3',
-                            backgroundColor: 'rgba(199, 199, 199, 0.2)',
+                            // backgroundColor: `rgba(199, 199, 199, 0.2)`,
                             margin: '0 auto',
                             width: width,
-                            height: height
+                            height: height,
+                            ...backgroundStyles
                         }}
                         context
                         ref={setRef}
