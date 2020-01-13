@@ -20,6 +20,19 @@ item_hardware_fastener_bolt → (for bundle) = .item.bundle
 
 also, all item_id must remain unique
 
+
+Use schema comments:
+
+```sql
+
+COMMENT ON TABLE public.icon
+    IS 'Image / icon data for labels';
+
+COMMENT ON COLUMN public.icon.data
+    IS 'Store image data in Base64';
+
+```
+
 ====== Schema Start =====
 
 ```sql
