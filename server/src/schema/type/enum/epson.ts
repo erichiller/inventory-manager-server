@@ -22,18 +22,3 @@ export const GQL_ENUMS = {
     TAPE_COLOR: makeGraphQLEnumType( TAPE_COLOR, 'TAPE_COLOR' ),
     TEXT_COLOR: makeGraphQLEnumType( TEXT_COLOR, 'TEXT_COLOR' ),
 };
-
-
-/**
- * Example hand written GraphQL Enum
- */
-// export const RGB = new GraphQLEnumType( {
-//     name: 'RGB',
-//     values: {
-//         RED: { value: '#f00' },
-//         GREEN: { value: '#0f0' },
-//         BLUE: { value: '#00f' }
-//     }
-// } );
-
-

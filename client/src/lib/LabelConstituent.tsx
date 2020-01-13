@@ -24,10 +24,11 @@ interface LabelExportConstructorProps extends LabelExportConstituents {
     imgData: ImageData;
     width: Integer;
     height: Integer;
+    item_id?: Integer;
 }
 
 
-export class LabelExport implements Omit<Label, 'parent_of_aggregate'> {
+export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate'>> {
     static DEFAULT_WIDTH = 300;
     id: UUIDStringT;
 
@@ -43,11 +44,11 @@ export class LabelExport implements Omit<Label, 'parent_of_aggregate'> {
 
     created_at: Scalars[ 'timestamptz' ];
     updated_at: Scalars[ 'timestamptz' ];
-    is_template: boolean = false;
     edit_of_id?: Scalars[ 'uuid' ];
     parent_of: Label[] = [];
     item_id?: Integer;
     title?: string;
+    item?: Item;
 
 
     content: LabelExportConstituents = {
@@ -74,8 +75,7 @@ export class LabelExport implements Omit<Label, 'parent_of_aggregate'> {
         console.log( "Props Received:", { props } );
         if ( !props ) {
             this.id = UUIDv4();
-            console.warn( `LabelExport - no props received, generating UUIDv4 = ${ this.id }` );
-            console.trace();
+            console.log( `LabelExport - constructor received no props, generating UUIDv4 = ${ this.id }` );
         } else if ( typeof props === "string" ) {
             this.id = props;
             console.log( `LabelExport - props as id '${ props }' received, setting as id: UUIDv4 = '${ this.id }'` );
@@ -132,6 +132,7 @@ export class LabelExport implements Omit<Label, 'parent_of_aggregate'> {
         this.imgData = values.imgData;
         this.width = values.width;
         this.height = values.height;
+        this.item_id = values.item_id;
         return this;
     }
 
@@ -339,6 +340,27 @@ export class LabelQR extends LabelConstituent {
         this.item = item;
         if ( item ){
             this.properties = Object.getOwnPropertyNames(item);
+        }
+    }
+
+    get itemProperties(): string[] {
+        return Object.getOwnPropertyNames(this.item);
+    }
+
+    encodeText(): string {
+//         return `id: 1
+// name: test bolt
+// description: null
+// foobar: t
+// `;
+        if ( this.properties ) {
+            let result = this.properties.map( p => {
+                console.log( "QRCanvas is adding props from labelQR", { property: p, value: this.item[ p ] } );
+                return `${p}: ${ this.item[ p ] }`;
+            } ).join( '\n' ).replace('_', ' ');
+
+            console.log( "LabelQR.encodeText()", result );
+            return result;
         }
     }
 

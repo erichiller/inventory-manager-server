@@ -26,6 +26,19 @@
 * [x] **FIX** QR Code adding _"QR code without item is currently not supported."_
 * [x] fix button change in `DrawModal` when adding to Print List
 * [x] improve `inventory-manager-api` `Dockerfile` to decrease build times
+* [x] Ensure `printRaster` now works
+* [x] Pass data from client to server/api for `printRaster`
+* [x] Ensure multiple labels (Chain Printing) print properly.
+* [x] Figure out how to use the last 6 pixels on 12mm tape  
+      150 is supported max. 48 * 3 = 144 is all I can get currently without printing a second page;
+* [x] ~~`canvasToBuffer` should also send along the number of pixels, otherwise if the last byte only has a single bit of importance, a whole extra byte is added.~~ This is not required since the printer is always going to shift `pinsLeft` to the right and any extra is truncated.
+* [x] ~~`printRaster()` should set the tape width to the actual tape width~~ this is not a parameter, it is auto-done, extra is truncated
+* [x] fix error on re-print label ; label not being set = failure
+* [x] fix setting width in `LabelModal`
+* [x] Fix wrapping on height
+* [x] `<LabelComponent>` should set the text color and background color to the actual color from the `PrinterStatus` GraphQL Query
+* [x] Complete `PrinterStatus` in `epson.ts` and related GraphQL query
+  * [x] flesh out the ENUMs used by `epson.ts` and populate GraphQL
 
 
 * [ ] Add `LICENSE.md`
@@ -36,10 +49,13 @@
   * [ ] Edit Item form
 * [ ] Generic data - example: House Wiring labels
 * [ ] `QREditModal` needs to be completed
-  * [ ] pick properties. checkbox ?
+  * [x] pick properties. checkbox ?
   * [ ] `onCancel` should remove `LabelQR` object from `Label`
+  * [ ] As **SVG** ?
 * [ ] Print in modal leads to endless spooling (and can't print again)
 * [ ] Print List button should say "no labels in list" if there are none
+* [ ] add delete to the remainder of the objects (QR, Image)
+* [ ] Multi-line text entry for labels
 
 
 * [x] List saved labels ( `LabelTable`)
@@ -51,18 +67,5 @@
     * [ ] transform
 
 
-* [x] Ensure `printRaster` now works
-* [x] Pass data from client to server/api for `printRaster`
-* [x] Ensure multiple labels (Chain Printing) print properly.
-* [x] Figure out how to use the last 6 pixels on 12mm tape  
-      150 is supported max. 48 * 3 = 144 is all I can get currently without printing a second page;
-* [x] ~~`canvasToBuffer` should also send along the number of pixels, otherwise if the last byte only has a single bit of importance, a whole extra byte is added.~~ This is not required since the printer is always going to shift `pinsLeft` to the right and any extra is truncated.
-* [x] ~~`printRaster()` should set the tape width to the actual tape width~~ this is not a parameter, it is auto-done, extra is truncated
-* [x] fix error on re-print label ; label not being set = failure
-* [x] fix setting width in `LabelModal`
-* [x] Fix wrapping on height
-* [ ] `<LabelComponent>` should set the text color and background color to the actual color from the `PrinterStatus` GraphQL Query
-* [ ] Complete `PrinterStatus` in `epson.ts` and related GraphQL query
-  * [ ] flesh out the ENUMs used by `epson.ts` and populate GraphQL
-* [ ] `item_id` is not getting saved alongside the `label`
-* [ ] Ensure setting label length statically will also work. (Or calculate & display in UI)
+* [x] `item_id` is not getting saved alongside the `label`
+* [x] Ensure setting label length statically will also work. (Or calculate & display in UI)

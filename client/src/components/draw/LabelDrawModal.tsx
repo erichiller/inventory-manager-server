@@ -7,12 +7,13 @@ import { LabelDraw } from "./LabelDraw";
 import { PrintContext } from "../print/PrintContextHandler";
 import { LabelExport } from "../../lib/LabelConstituent";
 import SendBufferButton from "../print/SendBufferButton";
+import { visibleHandler } from "../item/ItemTable";
 
 type LabelDrawModalProps = {
-    visibleHandler: ( d?: DISPLAY ) => boolean;
+    visibleHandler: visibleHandler;
     visible: DISPLAY;
 } & ( {
-    item: Item;
+    item: ItemGeneric;
     label?: undefined;
 } | {
     item?: undefined;
@@ -48,7 +49,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     const _labelIsNew: boolean = props.label ? false : true;
 
     const handleCancel = () => {
-        props.visibleHandler( DISPLAY.HIDDEN );
+        props.visibleHandler( null );
     };
     const handleSave = () => {
         let label = context.getCurrentLabel();
@@ -59,7 +60,6 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                     id: label.id,
                     content: label.content,
                     height: label.height,
-                    is_template: label.is_template,
                     item_id: label.item_id,
                     title: label.title,
                     width: label.width
@@ -73,7 +73,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                 console.log( "MUTATE ERROR", error );
                 message.error( `Failure during save: ${ error }` );
             } ).finally( () => {
-                props.visibleHandler( DISPLAY.HIDDEN );
+                props.visibleHandler( null );
             } );
         } else {
             editLabelMutation( {
@@ -81,7 +81,6 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                     content: label.content,
                     height: label.height,
                     id: label.id,
-                    is_template: label.is_template,
                     item_id: label.item_id,
                     title: label.title,
                     width: label.width
@@ -95,7 +94,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                 console.log( "MUTATE ERROR", error );
                 message.error( `Failure during save: ${ error }` );
             } ).finally( () => {
-                props.visibleHandler( DISPLAY.HIDDEN );
+                props.visibleHandler( null );
             } );
 
         }
