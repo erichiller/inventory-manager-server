@@ -2,7 +2,6 @@ mutation SaveLabel (
     $content: jsonb,
     $height: Int,
     $id: uuid,
-    $is_template: Boolean,
     $item_id: Int,
     $title: String,
     $width: Int
@@ -12,7 +11,6 @@ mutation SaveLabel (
             content: $content, 
             height: $height, 
             id: $id, 
-            is_template: $is_template, 
             item_id: $item_id, 
             title: $title, 
             width: $width
@@ -29,7 +27,6 @@ mutation EditLabel (
     $content: jsonb,
     $height: Int,
     $id: uuid,
-    $is_template: Boolean,
     $item_id: Int,
     $title: String,
     $width: Int
@@ -44,7 +41,6 @@ mutation EditLabel (
         _set: {
             content: $content, 
             height: $height, 
-            is_template: $is_template, 
             item_id: $item_id, 
             title: $title, 
             width: $width

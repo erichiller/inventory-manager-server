@@ -2,14 +2,12 @@ fragment labelFields on label {
     id
     created_at
     content
-    is_template
     title
     width
     height
     item {
         id
         class
-        name
     }
 }
 
@@ -36,9 +34,19 @@ query GetLabelByItemId($item_id: Int) {
 
 query GetTemplates {
     label(
-        order_by: { created_at: asc }
-        where: { is_template: { _eq: true } }
+        order_by: { created_at: asc }, 
+        where: { template_items: {} }
     ) {
         ...labelFields
+    }
+}
+
+# Get non-template labels
+query GetSingleLabels {
+    label(
+        order_by: { created_at: asc }, 
+        where: { _not: { template_items: {} } }
+        ) {
+        id
     }
 }

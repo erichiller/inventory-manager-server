@@ -197,18 +197,18 @@ export enum TAPE_COLOR {
     RED_D               = 0x31,
     FLOURESCENT_ORANGE  = 0x40,
     FLOURESCENT_YELLOW  = 0x41,
-    BERRY_PINK      = 0x50,
-    LIGHT_GRAY      = 0x51,
-    LIME_GREEN      = 0x52,
-    YELLOW_F        = 0x60,
-    PINK_F          = 0x61,
-    BLUE_F          = 0x62,
-    WHITE_HSE       = 0x70,
-    WHITE_FLEX      = 0x90,
-    YELLOW_FLEX     = 0x91,
-    CLEANING        = 0xf0,
-    STENCIL         = 0xf1,
-    INCOMPATIBLE    = 0xff
+    BERRY_PINK          = 0x50,
+    LIGHT_GRAY          = 0x51,
+    LIME_GREEN          = 0x52,
+    YELLOW_F            = 0x60,
+    PINK_F              = 0x61,
+    BLUE_F              = 0x62,
+    WHITE_HSE           = 0x70,
+    WHITE_FLEX          = 0x90,
+    YELLOW_FLEX         = 0x91,
+    CLEANING            = 0xf0,
+    STENCIL             = 0xf1,
+    INCOMPATIBLE        = 0xff
 }
 
 
@@ -217,19 +217,17 @@ export enum TAPE_COLOR {
  * Model Code is Byte 25 in the status returned
  */
 export enum TEXT_COLOR {
-    WHITE = 0x01,
-    RED = 0x04,
-    BLUE = 0x05,
-    BLACK = 0x08,
-    GOLD = 0x0a,
-    BLUE_F = 0x62,
+    WHITE    = 0x01,
+    RED      = 0x04,
+    BLUE     = 0x05,
+    BLACK    = 0x08,
+    GOLD     = 0x0a,
+    BLUE_F   = 0x62,
     CLEANING = 0xf0,
-    STENCIL = 0xf1,
-    OTHER = 0x02,
+    STENCIL  = 0xf1,
+    OTHER    = 0x02,
     INCOMPATIBLE = 0xff
 }
-
-
 
 /**
  * Possible options of returned media width. hse uses rounded sizes.  

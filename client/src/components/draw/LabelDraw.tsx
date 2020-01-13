@@ -508,6 +508,10 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             console.log( "setting canvasElement on labelQR to", changedValue.canvasElement );
             labelQR.canvasElement = changedValue.canvasElement;
         }
+        if ( changedValue.properties ) {
+            console.log( "setting properties on labelQR to", changedValue.properties );
+            labelQR.properties = changedValue.properties;
+        }
         this.state.qrs.forEach( ( qr => {
             if ( qr.id == labelQR.id ) {
                 console.log( "updating existing labelQR with id", labelQR.id );
@@ -610,6 +614,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             this.props.label.setValues( {
                 ...( this.props.label ? { id: this.props.label.id } : {} ),
                 ...{
+                    item_id: this.state.item ? this.state.item.id : this.props.label.item ? this.props.label.item.id : null,
                     texts: this.state.texts,
                     images: this.state.images,
                     qrs: this.state.qrs,
@@ -678,7 +683,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                                 onContextMenu={this.state.displayContextMenu}
                                 x={labelText.x}
                                 y={labelText.y}
-                                stroke={this.state.labelTextColor}
+                                // stroke={this.state.labelTextColor}
                                 scaleX={labelText.scaleX}
                                 scaleY={labelText.scaleY}
                                 rotation={labelText.rotation}
@@ -720,6 +725,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                                 key={labelImage.id}
                                 name={labelImage.id}
                                 image={image}
+                                onContextMenu={this.state.displayContextMenu}
                                 x={labelImage.x}
                                 y={labelImage.y}
                                 scaleX={labelImage.scaleX}
@@ -756,6 +762,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                                 qrObject={labelQR}
                                 key={labelQR.id}
                                 name={labelQR.id}
+                                onContextMenu={this.state.displayContextMenu}
                                 x={labelQR.x}
                                 y={labelQR.y}
                                 scaleX={labelQR.scaleX}

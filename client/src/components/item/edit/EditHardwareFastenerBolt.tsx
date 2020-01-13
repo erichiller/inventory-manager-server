@@ -1,13 +1,16 @@
 import * as React from 'react';
-import { withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, Item, ItemHardwareFastenerBolt } from '../../types/graphql';
+import { withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, Item, ItemHardwareFastenerBolt } from '../../../types/graphql';
 import Form, { FormComponentProps } from 'antd/lib/form';
-import { DISPLAY } from '../../types/enums';
+import { DISPLAY } from '../../../types/enums';
 import { Modal, Spin, Input } from 'antd';
+import { visibleHandler } from '../ItemTable';
+import { GenericItem } from '../../../types/Generics';
 
 
 
-type ItemEditProps<T extends Omit<Item, '__typename'>> = Omit<T, '__typename'> & FormComponentProps & {
-    visibleHandler: ( display?: DISPLAY ) => void;
+type ItemEditProps<T extends Omit<GenericItem, '__typename'>> = FormComponentProps & {
+    visibleHandler: visibleHandler;
+    item: Omit<T, '__typename'>;
 };
 
 interface ItemEditState { }
@@ -26,7 +29,7 @@ export const EditHardwareFastenerBolt = Form.create<ItemEditProps<ItemHardwareFa
     class extends React.Component<ItemHardwareFastenerBoltProps<ItemEditProps<ItemHardwareFastenerBolt>>, ItemEditState> {
 
         onCancel = () => {
-            this.props.visibleHandler( DISPLAY.HIDDEN );
+            this.props.visibleHandler( null );
         }
 
         // get autocompleteFieldValues (): string[] {

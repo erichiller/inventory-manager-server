@@ -24,19 +24,6 @@ export type Scalars = {
   Upload: any,
 };
 
-/** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
-export type BooleanComparisonExp = {
-  _eq?: Maybe<Scalars['Boolean']>,
-  _gt?: Maybe<Scalars['Boolean']>,
-  _gte?: Maybe<Scalars['Boolean']>,
-  _in?: Maybe<Array<Scalars['Boolean']>>,
-  _is_null?: Maybe<Scalars['Boolean']>,
-  _lt?: Maybe<Scalars['Boolean']>,
-  _lte?: Maybe<Scalars['Boolean']>,
-  _neq?: Maybe<Scalars['Boolean']>,
-  _nin?: Maybe<Array<Scalars['Boolean']>>,
-};
-
 
 /** expression to compare columns of type date. All fields are combined with logical 'AND'. */
 export type DateComparisonExp = {
@@ -1278,10 +1265,11 @@ export type IntComparisonExp = {
 /** columns and relationships of "item" */
 export type Item = {
    __typename?: 'item',
-  class?: Maybe<Scalars['String']>,
-  description?: Maybe<Scalars['String']>,
-  id?: Maybe<Scalars['Int']>,
-  name?: Maybe<Scalars['String']>,
+  /** An object relationship */
+  bundle?: Maybe<ItemBundle>,
+  bundle_item_id?: Maybe<Scalars['Int']>,
+  class: Scalars['String'],
+  id: Scalars['Int'],
 };
 
 /** aggregated selection of "item" */
@@ -1329,14 +1317,22 @@ export type ItemAggregateOrderBy = {
   variance?: Maybe<ItemVarianceOrderBy>,
 };
 
+/** input type for inserting array relation for remote table "item" */
+export type ItemArrRelInsertInput = {
+  data: Array<ItemInsertInput>,
+  on_conflict?: Maybe<ItemOnConflict>,
+};
+
 /** aggregate avg on columns */
 export type ItemAvgFields = {
    __typename?: 'item_avg_fields',
+  bundle_item_id?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
 };
 
 /** order by avg() on columns of table "item" */
 export type ItemAvgOrderBy = {
+  bundle_item_id?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
 };
 
@@ -1345,11 +1341,324 @@ export type ItemBoolExp = {
   _and?: Maybe<Array<Maybe<ItemBoolExp>>>,
   _not?: Maybe<ItemBoolExp>,
   _or?: Maybe<Array<Maybe<ItemBoolExp>>>,
+  bundle?: Maybe<ItemBundleBoolExp>,
+  bundle_item_id?: Maybe<IntComparisonExp>,
   class?: Maybe<StringComparisonExp>,
+  id?: Maybe<IntComparisonExp>,
+};
+
+/** 
+ * for items purchased as a bundle or kit (a box of screws for example)
+ * 
+ * 
+ * columns and relationships of "item_bundle"
+ **/
+export type ItemBundle = {
+   __typename?: 'item_bundle',
+  created_at: Scalars['timestamptz'],
+  description?: Maybe<Scalars['String']>,
+  id: Scalars['Int'],
+  name: Scalars['String'],
+  product_url?: Maybe<Scalars['String']>,
+  updated_at: Scalars['timestamptz'],
+};
+
+/** aggregated selection of "item_bundle" */
+export type ItemBundleAggregate = {
+   __typename?: 'item_bundle_aggregate',
+  aggregate?: Maybe<ItemBundleAggregateFields>,
+  nodes: Array<ItemBundle>,
+};
+
+/** aggregate fields of "item_bundle" */
+export type ItemBundleAggregateFields = {
+   __typename?: 'item_bundle_aggregate_fields',
+  avg?: Maybe<ItemBundleAvgFields>,
+  count?: Maybe<Scalars['Int']>,
+  max?: Maybe<ItemBundleMaxFields>,
+  min?: Maybe<ItemBundleMinFields>,
+  stddev?: Maybe<ItemBundleStddevFields>,
+  stddev_pop?: Maybe<ItemBundleStddevPopFields>,
+  stddev_samp?: Maybe<ItemBundleStddevSampFields>,
+  sum?: Maybe<ItemBundleSumFields>,
+  var_pop?: Maybe<ItemBundleVarPopFields>,
+  var_samp?: Maybe<ItemBundleVarSampFields>,
+  variance?: Maybe<ItemBundleVarianceFields>,
+};
+
+
+/** aggregate fields of "item_bundle" */
+export type ItemBundleAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<ItemBundleSelectColumn>>,
+  distinct?: Maybe<Scalars['Boolean']>
+};
+
+/** order by aggregate values of table "item_bundle" */
+export type ItemBundleAggregateOrderBy = {
+  avg?: Maybe<ItemBundleAvgOrderBy>,
+  count?: Maybe<OrderBy>,
+  max?: Maybe<ItemBundleMaxOrderBy>,
+  min?: Maybe<ItemBundleMinOrderBy>,
+  stddev?: Maybe<ItemBundleStddevOrderBy>,
+  stddev_pop?: Maybe<ItemBundleStddevPopOrderBy>,
+  stddev_samp?: Maybe<ItemBundleStddevSampOrderBy>,
+  sum?: Maybe<ItemBundleSumOrderBy>,
+  var_pop?: Maybe<ItemBundleVarPopOrderBy>,
+  var_samp?: Maybe<ItemBundleVarSampOrderBy>,
+  variance?: Maybe<ItemBundleVarianceOrderBy>,
+};
+
+/** input type for inserting array relation for remote table "item_bundle" */
+export type ItemBundleArrRelInsertInput = {
+  data: Array<ItemBundleInsertInput>,
+  on_conflict?: Maybe<ItemBundleOnConflict>,
+};
+
+/** aggregate avg on columns */
+export type ItemBundleAvgFields = {
+   __typename?: 'item_bundle_avg_fields',
+  id?: Maybe<Scalars['Float']>,
+};
+
+/** order by avg() on columns of table "item_bundle" */
+export type ItemBundleAvgOrderBy = {
+  id?: Maybe<OrderBy>,
+};
+
+/** Boolean expression to filter rows from the table "item_bundle". All fields are combined with a logical 'AND'. */
+export type ItemBundleBoolExp = {
+  _and?: Maybe<Array<Maybe<ItemBundleBoolExp>>>,
+  _not?: Maybe<ItemBundleBoolExp>,
+  _or?: Maybe<Array<Maybe<ItemBundleBoolExp>>>,
+  created_at?: Maybe<TimestamptzComparisonExp>,
   description?: Maybe<StringComparisonExp>,
   id?: Maybe<IntComparisonExp>,
   name?: Maybe<StringComparisonExp>,
+  product_url?: Maybe<StringComparisonExp>,
+  updated_at?: Maybe<TimestamptzComparisonExp>,
 };
+
+/** unique or primary key constraints on table "item_bundle" */
+export enum ItemBundleConstraint {
+  /** unique or primary key constraint */
+  ITEM_BUNDLE_NAME_KEY = 'item_bundle_name_key',
+  /** unique or primary key constraint */
+  ITEM_BUNDLE_PKEY = 'item_bundle_pkey'
+}
+
+/** input type for incrementing integer columne in table "item_bundle" */
+export type ItemBundleIncInput = {
+  id?: Maybe<Scalars['Int']>,
+};
+
+/** input type for inserting data into table "item_bundle" */
+export type ItemBundleInsertInput = {
+  created_at?: Maybe<Scalars['timestamptz']>,
+  description?: Maybe<Scalars['String']>,
+  id?: Maybe<Scalars['Int']>,
+  name?: Maybe<Scalars['String']>,
+  product_url?: Maybe<Scalars['String']>,
+  updated_at?: Maybe<Scalars['timestamptz']>,
+};
+
+/** aggregate max on columns */
+export type ItemBundleMaxFields = {
+   __typename?: 'item_bundle_max_fields',
+  created_at?: Maybe<Scalars['timestamptz']>,
+  description?: Maybe<Scalars['String']>,
+  id?: Maybe<Scalars['Int']>,
+  name?: Maybe<Scalars['String']>,
+  product_url?: Maybe<Scalars['String']>,
+  updated_at?: Maybe<Scalars['timestamptz']>,
+};
+
+/** order by max() on columns of table "item_bundle" */
+export type ItemBundleMaxOrderBy = {
+  created_at?: Maybe<OrderBy>,
+  description?: Maybe<OrderBy>,
+  id?: Maybe<OrderBy>,
+  name?: Maybe<OrderBy>,
+  product_url?: Maybe<OrderBy>,
+  updated_at?: Maybe<OrderBy>,
+};
+
+/** aggregate min on columns */
+export type ItemBundleMinFields = {
+   __typename?: 'item_bundle_min_fields',
+  created_at?: Maybe<Scalars['timestamptz']>,
+  description?: Maybe<Scalars['String']>,
+  id?: Maybe<Scalars['Int']>,
+  name?: Maybe<Scalars['String']>,
+  product_url?: Maybe<Scalars['String']>,
+  updated_at?: Maybe<Scalars['timestamptz']>,
+};
+
+/** order by min() on columns of table "item_bundle" */
+export type ItemBundleMinOrderBy = {
+  created_at?: Maybe<OrderBy>,
+  description?: Maybe<OrderBy>,
+  id?: Maybe<OrderBy>,
+  name?: Maybe<OrderBy>,
+  product_url?: Maybe<OrderBy>,
+  updated_at?: Maybe<OrderBy>,
+};
+
+/** response of any mutation on the table "item_bundle" */
+export type ItemBundleMutationResponse = {
+   __typename?: 'item_bundle_mutation_response',
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'],
+  /** data of the affected rows by the mutation */
+  returning: Array<ItemBundle>,
+};
+
+/** input type for inserting object relation for remote table "item_bundle" */
+export type ItemBundleObjRelInsertInput = {
+  data: ItemBundleInsertInput,
+  on_conflict?: Maybe<ItemBundleOnConflict>,
+};
+
+/** on conflict condition type for table "item_bundle" */
+export type ItemBundleOnConflict = {
+  constraint: ItemBundleConstraint,
+  update_columns: Array<ItemBundleUpdateColumn>,
+  where?: Maybe<ItemBundleBoolExp>,
+};
+
+/** ordering options when selecting data from "item_bundle" */
+export type ItemBundleOrderBy = {
+  created_at?: Maybe<OrderBy>,
+  description?: Maybe<OrderBy>,
+  id?: Maybe<OrderBy>,
+  name?: Maybe<OrderBy>,
+  product_url?: Maybe<OrderBy>,
+  updated_at?: Maybe<OrderBy>,
+};
+
+/** select columns of table "item_bundle" */
+export enum ItemBundleSelectColumn {
+  /** column name */
+  CREATED_AT = 'created_at',
+  /** column name */
+  DESCRIPTION = 'description',
+  /** column name */
+  ID = 'id',
+  /** column name */
+  NAME = 'name',
+  /** column name */
+  PRODUCT_URL = 'product_url',
+  /** column name */
+  UPDATED_AT = 'updated_at'
+}
+
+/** input type for updating data in table "item_bundle" */
+export type ItemBundleSetInput = {
+  created_at?: Maybe<Scalars['timestamptz']>,
+  description?: Maybe<Scalars['String']>,
+  id?: Maybe<Scalars['Int']>,
+  name?: Maybe<Scalars['String']>,
+  product_url?: Maybe<Scalars['String']>,
+  updated_at?: Maybe<Scalars['timestamptz']>,
+};
+
+/** aggregate stddev on columns */
+export type ItemBundleStddevFields = {
+   __typename?: 'item_bundle_stddev_fields',
+  id?: Maybe<Scalars['Float']>,
+};
+
+/** order by stddev() on columns of table "item_bundle" */
+export type ItemBundleStddevOrderBy = {
+  id?: Maybe<OrderBy>,
+};
+
+/** aggregate stddev_pop on columns */
+export type ItemBundleStddevPopFields = {
+   __typename?: 'item_bundle_stddev_pop_fields',
+  id?: Maybe<Scalars['Float']>,
+};
+
+/** order by stddev_pop() on columns of table "item_bundle" */
+export type ItemBundleStddevPopOrderBy = {
+  id?: Maybe<OrderBy>,
+};
+
+/** aggregate stddev_samp on columns */
+export type ItemBundleStddevSampFields = {
+   __typename?: 'item_bundle_stddev_samp_fields',
+  id?: Maybe<Scalars['Float']>,
+};
+
+/** order by stddev_samp() on columns of table "item_bundle" */
+export type ItemBundleStddevSampOrderBy = {
+  id?: Maybe<OrderBy>,
+};
+
+/** aggregate sum on columns */
+export type ItemBundleSumFields = {
+   __typename?: 'item_bundle_sum_fields',
+  id?: Maybe<Scalars['Int']>,
+};
+
+/** order by sum() on columns of table "item_bundle" */
+export type ItemBundleSumOrderBy = {
+  id?: Maybe<OrderBy>,
+};
+
+/** update columns of table "item_bundle" */
+export enum ItemBundleUpdateColumn {
+  /** column name */
+  CREATED_AT = 'created_at',
+  /** column name */
+  DESCRIPTION = 'description',
+  /** column name */
+  ID = 'id',
+  /** column name */
+  NAME = 'name',
+  /** column name */
+  PRODUCT_URL = 'product_url',
+  /** column name */
+  UPDATED_AT = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type ItemBundleVarPopFields = {
+   __typename?: 'item_bundle_var_pop_fields',
+  id?: Maybe<Scalars['Float']>,
+};
+
+/** order by var_pop() on columns of table "item_bundle" */
+export type ItemBundleVarPopOrderBy = {
+  id?: Maybe<OrderBy>,
+};
+
+/** aggregate var_samp on columns */
+export type ItemBundleVarSampFields = {
+   __typename?: 'item_bundle_var_samp_fields',
+  id?: Maybe<Scalars['Float']>,
+};
+
+/** order by var_samp() on columns of table "item_bundle" */
+export type ItemBundleVarSampOrderBy = {
+  id?: Maybe<OrderBy>,
+};
+
+/** aggregate variance on columns */
+export type ItemBundleVarianceFields = {
+   __typename?: 'item_bundle_variance_fields',
+  id?: Maybe<Scalars['Float']>,
+};
+
+/** order by variance() on columns of table "item_bundle" */
+export type ItemBundleVarianceOrderBy = {
+  id?: Maybe<OrderBy>,
+};
+
+/** unique or primary key constraints on table "item" */
+export enum ItemConstraint {
+  /** unique or primary key constraint */
+  ITEM_PKEY = 'item_pkey'
+}
 
 /** columns and relationships of "item_hardware_fastener_bolt" */
 export type ItemHardwareFastenerBolt = {
@@ -2102,134 +2411,195 @@ export type ItemHardwareNutVarianceOrderBy = {
   id?: Maybe<OrderBy>,
 };
 
+/** input type for incrementing integer columne in table "item" */
+export type ItemIncInput = {
+  bundle_item_id?: Maybe<Scalars['Int']>,
+  id?: Maybe<Scalars['Int']>,
+};
+
+/** input type for inserting data into table "item" */
+export type ItemInsertInput = {
+  bundle?: Maybe<ItemBundleObjRelInsertInput>,
+  bundle_item_id?: Maybe<Scalars['Int']>,
+  class?: Maybe<Scalars['String']>,
+  id?: Maybe<Scalars['Int']>,
+};
+
 /** aggregate max on columns */
 export type ItemMaxFields = {
    __typename?: 'item_max_fields',
+  bundle_item_id?: Maybe<Scalars['Int']>,
   class?: Maybe<Scalars['String']>,
-  description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['Int']>,
-  name?: Maybe<Scalars['String']>,
 };
 
 /** order by max() on columns of table "item" */
 export type ItemMaxOrderBy = {
+  bundle_item_id?: Maybe<OrderBy>,
   class?: Maybe<OrderBy>,
-  description?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
-  name?: Maybe<OrderBy>,
 };
 
 /** aggregate min on columns */
 export type ItemMinFields = {
    __typename?: 'item_min_fields',
+  bundle_item_id?: Maybe<Scalars['Int']>,
   class?: Maybe<Scalars['String']>,
-  description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['Int']>,
-  name?: Maybe<Scalars['String']>,
 };
 
 /** order by min() on columns of table "item" */
 export type ItemMinOrderBy = {
+  bundle_item_id?: Maybe<OrderBy>,
   class?: Maybe<OrderBy>,
-  description?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
-  name?: Maybe<OrderBy>,
+};
+
+/** response of any mutation on the table "item" */
+export type ItemMutationResponse = {
+   __typename?: 'item_mutation_response',
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'],
+  /** data of the affected rows by the mutation */
+  returning: Array<Item>,
+};
+
+/** input type for inserting object relation for remote table "item" */
+export type ItemObjRelInsertInput = {
+  data: ItemInsertInput,
+  on_conflict?: Maybe<ItemOnConflict>,
+};
+
+/** on conflict condition type for table "item" */
+export type ItemOnConflict = {
+  constraint: ItemConstraint,
+  update_columns: Array<ItemUpdateColumn>,
+  where?: Maybe<ItemBoolExp>,
 };
 
 /** ordering options when selecting data from "item" */
 export type ItemOrderBy = {
+  bundle?: Maybe<ItemBundleOrderBy>,
+  bundle_item_id?: Maybe<OrderBy>,
   class?: Maybe<OrderBy>,
-  description?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
-  name?: Maybe<OrderBy>,
 };
 
 /** select columns of table "item" */
 export enum ItemSelectColumn {
   /** column name */
+  BUNDLE_ITEM_ID = 'bundle_item_id',
+  /** column name */
   CLASS = 'class',
   /** column name */
-  DESCRIPTION = 'description',
-  /** column name */
-  ID = 'id',
-  /** column name */
-  NAME = 'name'
+  ID = 'id'
 }
+
+/** input type for updating data in table "item" */
+export type ItemSetInput = {
+  bundle_item_id?: Maybe<Scalars['Int']>,
+  class?: Maybe<Scalars['String']>,
+  id?: Maybe<Scalars['Int']>,
+};
 
 /** aggregate stddev on columns */
 export type ItemStddevFields = {
    __typename?: 'item_stddev_fields',
+  bundle_item_id?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
 };
 
 /** order by stddev() on columns of table "item" */
 export type ItemStddevOrderBy = {
+  bundle_item_id?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate stddev_pop on columns */
 export type ItemStddevPopFields = {
    __typename?: 'item_stddev_pop_fields',
+  bundle_item_id?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
 };
 
 /** order by stddev_pop() on columns of table "item" */
 export type ItemStddevPopOrderBy = {
+  bundle_item_id?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate stddev_samp on columns */
 export type ItemStddevSampFields = {
    __typename?: 'item_stddev_samp_fields',
+  bundle_item_id?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
 };
 
 /** order by stddev_samp() on columns of table "item" */
 export type ItemStddevSampOrderBy = {
+  bundle_item_id?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate sum on columns */
 export type ItemSumFields = {
    __typename?: 'item_sum_fields',
+  bundle_item_id?: Maybe<Scalars['Int']>,
   id?: Maybe<Scalars['Int']>,
 };
 
 /** order by sum() on columns of table "item" */
 export type ItemSumOrderBy = {
+  bundle_item_id?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
 };
+
+/** update columns of table "item" */
+export enum ItemUpdateColumn {
+  /** column name */
+  BUNDLE_ITEM_ID = 'bundle_item_id',
+  /** column name */
+  CLASS = 'class',
+  /** column name */
+  ID = 'id'
+}
 
 /** aggregate var_pop on columns */
 export type ItemVarPopFields = {
    __typename?: 'item_var_pop_fields',
+  bundle_item_id?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
 };
 
 /** order by var_pop() on columns of table "item" */
 export type ItemVarPopOrderBy = {
+  bundle_item_id?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate var_samp on columns */
 export type ItemVarSampFields = {
    __typename?: 'item_var_samp_fields',
+  bundle_item_id?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
 };
 
 /** order by var_samp() on columns of table "item" */
 export type ItemVarSampOrderBy = {
+  bundle_item_id?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
 };
 
 /** aggregate variance on columns */
 export type ItemVarianceFields = {
    __typename?: 'item_variance_fields',
+  bundle_item_id?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['Float']>,
 };
 
 /** order by variance() on columns of table "item" */
 export type ItemVarianceOrderBy = {
+  bundle_item_id?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
 };
 
@@ -2272,7 +2642,6 @@ export type Label = {
   edit_of_id?: Maybe<Scalars['uuid']>,
   height: Scalars['Int'],
   id: Scalars['uuid'],
-  is_template: Scalars['Boolean'],
   /** An object relationship */
   item?: Maybe<Item>,
   item_id?: Maybe<Scalars['Int']>,
@@ -2280,6 +2649,10 @@ export type Label = {
   parent_of: Array<Label>,
   /** An aggregated array relationship */
   parent_of_aggregate: LabelAggregate,
+  /** An array relationship */
+  template_items: Array<LabelTemplateMap>,
+  /** An aggregated array relationship */
+  template_items_aggregate: LabelTemplateMapAggregate,
   title?: Maybe<Scalars['String']>,
   updated_at: Scalars['timestamptz'],
   width: Scalars['Int'],
@@ -2324,6 +2697,36 @@ export type LabelParentOfAggregateArgs = {
   offset?: Maybe<Scalars['Int']>,
   order_by?: Maybe<Array<LabelOrderBy>>,
   where?: Maybe<LabelBoolExp>
+};
+
+
+/** 
+ * For saved labels, use to reprint or template
+ * 
+ * 
+ * columns and relationships of "label"
+ **/
+export type LabelTemplateItemsArgs = {
+  distinct_on?: Maybe<Array<LabelTemplateMapSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<LabelTemplateMapOrderBy>>,
+  where?: Maybe<LabelTemplateMapBoolExp>
+};
+
+
+/** 
+ * For saved labels, use to reprint or template
+ * 
+ * 
+ * columns and relationships of "label"
+ **/
+export type LabelTemplateItemsAggregateArgs = {
+  distinct_on?: Maybe<Array<LabelTemplateMapSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<LabelTemplateMapOrderBy>>,
+  where?: Maybe<LabelTemplateMapBoolExp>
 };
 
 /** aggregated selection of "label" */
@@ -2408,10 +2811,10 @@ export type LabelBoolExp = {
   edit_of_id?: Maybe<UuidComparisonExp>,
   height?: Maybe<IntComparisonExp>,
   id?: Maybe<UuidComparisonExp>,
-  is_template?: Maybe<BooleanComparisonExp>,
   item?: Maybe<ItemBoolExp>,
   item_id?: Maybe<IntComparisonExp>,
   parent_of?: Maybe<LabelBoolExp>,
+  template_items?: Maybe<LabelTemplateMapBoolExp>,
   title?: Maybe<StringComparisonExp>,
   updated_at?: Maybe<TimestamptzComparisonExp>,
   width?: Maybe<IntComparisonExp>,
@@ -2458,9 +2861,10 @@ export type LabelInsertInput = {
   edit_of_id?: Maybe<Scalars['uuid']>,
   height?: Maybe<Scalars['Int']>,
   id?: Maybe<Scalars['uuid']>,
-  is_template?: Maybe<Scalars['Boolean']>,
+  item?: Maybe<ItemObjRelInsertInput>,
   item_id?: Maybe<Scalars['Int']>,
   parent_of?: Maybe<LabelArrRelInsertInput>,
+  template_items?: Maybe<LabelTemplateMapArrRelInsertInput>,
   title?: Maybe<Scalars['String']>,
   updated_at?: Maybe<Scalars['timestamptz']>,
   width?: Maybe<Scalars['Int']>,
@@ -2538,10 +2942,10 @@ export type LabelOrderBy = {
   edit_of_id?: Maybe<OrderBy>,
   height?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
-  is_template?: Maybe<OrderBy>,
   item?: Maybe<ItemOrderBy>,
   item_id?: Maybe<OrderBy>,
   parent_of_aggregate?: Maybe<LabelAggregateOrderBy>,
+  template_items_aggregate?: Maybe<LabelTemplateMapAggregateOrderBy>,
   title?: Maybe<OrderBy>,
   updated_at?: Maybe<OrderBy>,
   width?: Maybe<OrderBy>,
@@ -2565,8 +2969,6 @@ export enum LabelSelectColumn {
   /** column name */
   ID = 'id',
   /** column name */
-  IS_TEMPLATE = 'is_template',
-  /** column name */
   ITEM_ID = 'item_id',
   /** column name */
   TITLE = 'title',
@@ -2583,7 +2985,6 @@ export type LabelSetInput = {
   edit_of_id?: Maybe<Scalars['uuid']>,
   height?: Maybe<Scalars['Int']>,
   id?: Maybe<Scalars['uuid']>,
-  is_template?: Maybe<Scalars['Boolean']>,
   item_id?: Maybe<Scalars['Int']>,
   title?: Maybe<Scalars['String']>,
   updated_at?: Maybe<Scalars['timestamptz']>,
@@ -2650,6 +3051,267 @@ export type LabelSumOrderBy = {
   width?: Maybe<OrderBy>,
 };
 
+/** 
+ * map label to item use for template
+ * 
+ * 
+ * columns and relationships of "label_template_map"
+ **/
+export type LabelTemplateMap = {
+   __typename?: 'label_template_map',
+  /** An object relationship */
+  item?: Maybe<Item>,
+  item_id: Scalars['Int'],
+  /** An object relationship */
+  label: Label,
+  label_id: Scalars['uuid'],
+};
+
+/** aggregated selection of "label_template_map" */
+export type LabelTemplateMapAggregate = {
+   __typename?: 'label_template_map_aggregate',
+  aggregate?: Maybe<LabelTemplateMapAggregateFields>,
+  nodes: Array<LabelTemplateMap>,
+};
+
+/** aggregate fields of "label_template_map" */
+export type LabelTemplateMapAggregateFields = {
+   __typename?: 'label_template_map_aggregate_fields',
+  avg?: Maybe<LabelTemplateMapAvgFields>,
+  count?: Maybe<Scalars['Int']>,
+  max?: Maybe<LabelTemplateMapMaxFields>,
+  min?: Maybe<LabelTemplateMapMinFields>,
+  stddev?: Maybe<LabelTemplateMapStddevFields>,
+  stddev_pop?: Maybe<LabelTemplateMapStddevPopFields>,
+  stddev_samp?: Maybe<LabelTemplateMapStddevSampFields>,
+  sum?: Maybe<LabelTemplateMapSumFields>,
+  var_pop?: Maybe<LabelTemplateMapVarPopFields>,
+  var_samp?: Maybe<LabelTemplateMapVarSampFields>,
+  variance?: Maybe<LabelTemplateMapVarianceFields>,
+};
+
+
+/** aggregate fields of "label_template_map" */
+export type LabelTemplateMapAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<LabelTemplateMapSelectColumn>>,
+  distinct?: Maybe<Scalars['Boolean']>
+};
+
+/** order by aggregate values of table "label_template_map" */
+export type LabelTemplateMapAggregateOrderBy = {
+  avg?: Maybe<LabelTemplateMapAvgOrderBy>,
+  count?: Maybe<OrderBy>,
+  max?: Maybe<LabelTemplateMapMaxOrderBy>,
+  min?: Maybe<LabelTemplateMapMinOrderBy>,
+  stddev?: Maybe<LabelTemplateMapStddevOrderBy>,
+  stddev_pop?: Maybe<LabelTemplateMapStddevPopOrderBy>,
+  stddev_samp?: Maybe<LabelTemplateMapStddevSampOrderBy>,
+  sum?: Maybe<LabelTemplateMapSumOrderBy>,
+  var_pop?: Maybe<LabelTemplateMapVarPopOrderBy>,
+  var_samp?: Maybe<LabelTemplateMapVarSampOrderBy>,
+  variance?: Maybe<LabelTemplateMapVarianceOrderBy>,
+};
+
+/** input type for inserting array relation for remote table "label_template_map" */
+export type LabelTemplateMapArrRelInsertInput = {
+  data: Array<LabelTemplateMapInsertInput>,
+  on_conflict?: Maybe<LabelTemplateMapOnConflict>,
+};
+
+/** aggregate avg on columns */
+export type LabelTemplateMapAvgFields = {
+   __typename?: 'label_template_map_avg_fields',
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by avg() on columns of table "label_template_map" */
+export type LabelTemplateMapAvgOrderBy = {
+  item_id?: Maybe<OrderBy>,
+};
+
+/** Boolean expression to filter rows from the table "label_template_map". All fields are combined with a logical 'AND'. */
+export type LabelTemplateMapBoolExp = {
+  _and?: Maybe<Array<Maybe<LabelTemplateMapBoolExp>>>,
+  _not?: Maybe<LabelTemplateMapBoolExp>,
+  _or?: Maybe<Array<Maybe<LabelTemplateMapBoolExp>>>,
+  item?: Maybe<ItemBoolExp>,
+  item_id?: Maybe<IntComparisonExp>,
+  label?: Maybe<LabelBoolExp>,
+  label_id?: Maybe<UuidComparisonExp>,
+};
+
+/** unique or primary key constraints on table "label_template_map" */
+export enum LabelTemplateMapConstraint {
+  /** unique or primary key constraint */
+  LABEL_TEMPLATE_MAP_ITEM_ID_LABEL_ID_KEY = 'label_template_map_item_id_label_id_key',
+  /** unique or primary key constraint */
+  LABEL_TEMPLATE_MAP_PKEY = 'label_template_map_pkey'
+}
+
+/** input type for incrementing integer columne in table "label_template_map" */
+export type LabelTemplateMapIncInput = {
+  item_id?: Maybe<Scalars['Int']>,
+};
+
+/** input type for inserting data into table "label_template_map" */
+export type LabelTemplateMapInsertInput = {
+  item?: Maybe<ItemObjRelInsertInput>,
+  item_id?: Maybe<Scalars['Int']>,
+  label?: Maybe<LabelObjRelInsertInput>,
+  label_id?: Maybe<Scalars['uuid']>,
+};
+
+/** aggregate max on columns */
+export type LabelTemplateMapMaxFields = {
+   __typename?: 'label_template_map_max_fields',
+  item_id?: Maybe<Scalars['Int']>,
+};
+
+/** order by max() on columns of table "label_template_map" */
+export type LabelTemplateMapMaxOrderBy = {
+  item_id?: Maybe<OrderBy>,
+};
+
+/** aggregate min on columns */
+export type LabelTemplateMapMinFields = {
+   __typename?: 'label_template_map_min_fields',
+  item_id?: Maybe<Scalars['Int']>,
+};
+
+/** order by min() on columns of table "label_template_map" */
+export type LabelTemplateMapMinOrderBy = {
+  item_id?: Maybe<OrderBy>,
+};
+
+/** response of any mutation on the table "label_template_map" */
+export type LabelTemplateMapMutationResponse = {
+   __typename?: 'label_template_map_mutation_response',
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'],
+  /** data of the affected rows by the mutation */
+  returning: Array<LabelTemplateMap>,
+};
+
+/** input type for inserting object relation for remote table "label_template_map" */
+export type LabelTemplateMapObjRelInsertInput = {
+  data: LabelTemplateMapInsertInput,
+  on_conflict?: Maybe<LabelTemplateMapOnConflict>,
+};
+
+/** on conflict condition type for table "label_template_map" */
+export type LabelTemplateMapOnConflict = {
+  constraint: LabelTemplateMapConstraint,
+  update_columns: Array<LabelTemplateMapUpdateColumn>,
+  where?: Maybe<LabelTemplateMapBoolExp>,
+};
+
+/** ordering options when selecting data from "label_template_map" */
+export type LabelTemplateMapOrderBy = {
+  item?: Maybe<ItemOrderBy>,
+  item_id?: Maybe<OrderBy>,
+  label?: Maybe<LabelOrderBy>,
+  label_id?: Maybe<OrderBy>,
+};
+
+/** select columns of table "label_template_map" */
+export enum LabelTemplateMapSelectColumn {
+  /** column name */
+  ITEM_ID = 'item_id',
+  /** column name */
+  LABEL_ID = 'label_id'
+}
+
+/** input type for updating data in table "label_template_map" */
+export type LabelTemplateMapSetInput = {
+  item_id?: Maybe<Scalars['Int']>,
+  label_id?: Maybe<Scalars['uuid']>,
+};
+
+/** aggregate stddev on columns */
+export type LabelTemplateMapStddevFields = {
+   __typename?: 'label_template_map_stddev_fields',
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by stddev() on columns of table "label_template_map" */
+export type LabelTemplateMapStddevOrderBy = {
+  item_id?: Maybe<OrderBy>,
+};
+
+/** aggregate stddev_pop on columns */
+export type LabelTemplateMapStddevPopFields = {
+   __typename?: 'label_template_map_stddev_pop_fields',
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by stddev_pop() on columns of table "label_template_map" */
+export type LabelTemplateMapStddevPopOrderBy = {
+  item_id?: Maybe<OrderBy>,
+};
+
+/** aggregate stddev_samp on columns */
+export type LabelTemplateMapStddevSampFields = {
+   __typename?: 'label_template_map_stddev_samp_fields',
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by stddev_samp() on columns of table "label_template_map" */
+export type LabelTemplateMapStddevSampOrderBy = {
+  item_id?: Maybe<OrderBy>,
+};
+
+/** aggregate sum on columns */
+export type LabelTemplateMapSumFields = {
+   __typename?: 'label_template_map_sum_fields',
+  item_id?: Maybe<Scalars['Int']>,
+};
+
+/** order by sum() on columns of table "label_template_map" */
+export type LabelTemplateMapSumOrderBy = {
+  item_id?: Maybe<OrderBy>,
+};
+
+/** update columns of table "label_template_map" */
+export enum LabelTemplateMapUpdateColumn {
+  /** column name */
+  ITEM_ID = 'item_id',
+  /** column name */
+  LABEL_ID = 'label_id'
+}
+
+/** aggregate var_pop on columns */
+export type LabelTemplateMapVarPopFields = {
+   __typename?: 'label_template_map_var_pop_fields',
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by var_pop() on columns of table "label_template_map" */
+export type LabelTemplateMapVarPopOrderBy = {
+  item_id?: Maybe<OrderBy>,
+};
+
+/** aggregate var_samp on columns */
+export type LabelTemplateMapVarSampFields = {
+   __typename?: 'label_template_map_var_samp_fields',
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by var_samp() on columns of table "label_template_map" */
+export type LabelTemplateMapVarSampOrderBy = {
+  item_id?: Maybe<OrderBy>,
+};
+
+/** aggregate variance on columns */
+export type LabelTemplateMapVarianceFields = {
+   __typename?: 'label_template_map_variance_fields',
+  item_id?: Maybe<Scalars['Float']>,
+};
+
+/** order by variance() on columns of table "label_template_map" */
+export type LabelTemplateMapVarianceOrderBy = {
+  item_id?: Maybe<OrderBy>,
+};
+
 /** update columns of table "label" */
 export enum LabelUpdateColumn {
   /** column name */
@@ -2662,8 +3324,6 @@ export enum LabelUpdateColumn {
   HEIGHT = 'height',
   /** column name */
   ID = 'id',
-  /** column name */
-  IS_TEMPLATE = 'is_template',
   /** column name */
   ITEM_ID = 'item_id',
   /** column name */
@@ -2791,12 +3451,18 @@ export type MutationRoot = {
   delete_enum_unit?: Maybe<EnumUnitMutationResponse>,
   /** delete data from the table: "icon" */
   delete_icon?: Maybe<IconMutationResponse>,
+  /** delete data from the table: "item" */
+  delete_item?: Maybe<ItemMutationResponse>,
+  /** delete data from the table: "item_bundle" */
+  delete_item_bundle?: Maybe<ItemBundleMutationResponse>,
   /** delete data from the table: "item_hardware_fastener_bolt" */
   delete_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>,
   /** delete data from the table: "item_hardware_nut" */
   delete_item_hardware_nut?: Maybe<ItemHardwareNutMutationResponse>,
   /** delete data from the table: "label" */
   delete_label?: Maybe<LabelMutationResponse>,
+  /** delete data from the table: "label_template_map" */
+  delete_label_template_map?: Maybe<LabelTemplateMapMutationResponse>,
   /** delete data from the table: "purchase" */
   delete_purchase?: Maybe<PurchaseMutationResponse>,
   /** insert data into the table: "entity" */
@@ -2813,12 +3479,18 @@ export type MutationRoot = {
   insert_enum_unit?: Maybe<EnumUnitMutationResponse>,
   /** insert data into the table: "icon" */
   insert_icon?: Maybe<IconMutationResponse>,
+  /** insert data into the table: "item" */
+  insert_item?: Maybe<ItemMutationResponse>,
+  /** insert data into the table: "item_bundle" */
+  insert_item_bundle?: Maybe<ItemBundleMutationResponse>,
   /** insert data into the table: "item_hardware_fastener_bolt" */
   insert_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>,
   /** insert data into the table: "item_hardware_nut" */
   insert_item_hardware_nut?: Maybe<ItemHardwareNutMutationResponse>,
   /** insert data into the table: "label" */
   insert_label?: Maybe<LabelMutationResponse>,
+  /** insert data into the table: "label_template_map" */
+  insert_label_template_map?: Maybe<LabelTemplateMapMutationResponse>,
   /** insert data into the table: "purchase" */
   insert_purchase?: Maybe<PurchaseMutationResponse>,
   /** 
@@ -2840,12 +3512,18 @@ export type MutationRoot = {
   update_enum_unit?: Maybe<EnumUnitMutationResponse>,
   /** update data of the table: "icon" */
   update_icon?: Maybe<IconMutationResponse>,
+  /** update data of the table: "item" */
+  update_item?: Maybe<ItemMutationResponse>,
+  /** update data of the table: "item_bundle" */
+  update_item_bundle?: Maybe<ItemBundleMutationResponse>,
   /** update data of the table: "item_hardware_fastener_bolt" */
   update_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>,
   /** update data of the table: "item_hardware_nut" */
   update_item_hardware_nut?: Maybe<ItemHardwareNutMutationResponse>,
   /** update data of the table: "label" */
   update_label?: Maybe<LabelMutationResponse>,
+  /** update data of the table: "label_template_map" */
+  update_label_template_map?: Maybe<LabelTemplateMapMutationResponse>,
   /** update data of the table: "purchase" */
   update_purchase?: Maybe<PurchaseMutationResponse>,
   uploadFiles: Array<Maybe<File>>,
@@ -2895,6 +3573,18 @@ export type MutationRootDeleteIconArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteItemArgs = {
+  where: ItemBoolExp
+};
+
+
+/** mutation root */
+export type MutationRootDeleteItemBundleArgs = {
+  where: ItemBundleBoolExp
+};
+
+
+/** mutation root */
 export type MutationRootDeleteItemHardwareFastenerBoltArgs = {
   where: ItemHardwareFastenerBoltBoolExp
 };
@@ -2909,6 +3599,12 @@ export type MutationRootDeleteItemHardwareNutArgs = {
 /** mutation root */
 export type MutationRootDeleteLabelArgs = {
   where: LabelBoolExp
+};
+
+
+/** mutation root */
+export type MutationRootDeleteLabelTemplateMapArgs = {
+  where: LabelTemplateMapBoolExp
 };
 
 
@@ -2968,6 +3664,20 @@ export type MutationRootInsertIconArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertItemArgs = {
+  objects: Array<ItemInsertInput>,
+  on_conflict?: Maybe<ItemOnConflict>
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemBundleArgs = {
+  objects: Array<ItemBundleInsertInput>,
+  on_conflict?: Maybe<ItemBundleOnConflict>
+};
+
+
+/** mutation root */
 export type MutationRootInsertItemHardwareFastenerBoltArgs = {
   objects: Array<ItemHardwareFastenerBoltInsertInput>
 };
@@ -2984,6 +3694,13 @@ export type MutationRootInsertItemHardwareNutArgs = {
 export type MutationRootInsertLabelArgs = {
   objects: Array<LabelInsertInput>,
   on_conflict?: Maybe<LabelOnConflict>
+};
+
+
+/** mutation root */
+export type MutationRootInsertLabelTemplateMapArgs = {
+  objects: Array<LabelTemplateMapInsertInput>,
+  on_conflict?: Maybe<LabelTemplateMapOnConflict>
 };
 
 
@@ -3051,6 +3768,22 @@ export type MutationRootUpdateIconArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateItemArgs = {
+  _inc?: Maybe<ItemIncInput>,
+  _set?: Maybe<ItemSetInput>,
+  where: ItemBoolExp
+};
+
+
+/** mutation root */
+export type MutationRootUpdateItemBundleArgs = {
+  _inc?: Maybe<ItemBundleIncInput>,
+  _set?: Maybe<ItemBundleSetInput>,
+  where: ItemBundleBoolExp
+};
+
+
+/** mutation root */
 export type MutationRootUpdateItemHardwareFastenerBoltArgs = {
   _inc?: Maybe<ItemHardwareFastenerBoltIncInput>,
   _set?: Maybe<ItemHardwareFastenerBoltSetInput>,
@@ -3076,6 +3809,14 @@ export type MutationRootUpdateLabelArgs = {
   _prepend?: Maybe<LabelPrependInput>,
   _set?: Maybe<LabelSetInput>,
   where: LabelBoolExp
+};
+
+
+/** mutation root */
+export type MutationRootUpdateLabelTemplateMapArgs = {
+  _inc?: Maybe<LabelTemplateMapIncInput>,
+  _set?: Maybe<LabelTemplateMapSetInput>,
+  where: LabelTemplateMapBoolExp
 };
 
 
@@ -3590,6 +4331,14 @@ export type QueryRoot = {
   item: Array<Item>,
   /** fetch aggregated fields from the table: "item" */
   item_aggregate: ItemAggregate,
+  /** fetch data from the table: "item_bundle" */
+  item_bundle: Array<ItemBundle>,
+  /** fetch aggregated fields from the table: "item_bundle" */
+  item_bundle_aggregate: ItemBundleAggregate,
+  /** fetch data from the table: "item_bundle" using primary key columns */
+  item_bundle_by_pk?: Maybe<ItemBundle>,
+  /** fetch data from the table: "item" using primary key columns */
+  item_by_pk?: Maybe<Item>,
   /** fetch data from the table: "item_hardware_fastener_bolt" */
   item_hardware_fastener_bolt: Array<ItemHardwareFastenerBolt>,
   /** fetch aggregated fields from the table: "item_hardware_fastener_bolt" */
@@ -3606,6 +4355,12 @@ export type QueryRoot = {
   label_aggregate: LabelAggregate,
   /** fetch data from the table: "label" using primary key columns */
   label_by_pk?: Maybe<Label>,
+  /** fetch data from the table: "label_template_map" */
+  label_template_map: Array<LabelTemplateMap>,
+  /** fetch aggregated fields from the table: "label_template_map" */
+  label_template_map_aggregate: LabelTemplateMapAggregate,
+  /** fetch data from the table: "label_template_map" using primary key columns */
+  label_template_map_by_pk?: Maybe<LabelTemplateMap>,
   /** fetch data from the table: "purchase" */
   purchase: Array<Purchase>,
   /** fetch aggregated fields from the table: "purchase" */
@@ -3818,6 +4573,38 @@ export type QueryRootItemAggregateArgs = {
 
 
 /** query root */
+export type QueryRootItemBundleArgs = {
+  distinct_on?: Maybe<Array<ItemBundleSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<ItemBundleOrderBy>>,
+  where?: Maybe<ItemBundleBoolExp>
+};
+
+
+/** query root */
+export type QueryRootItemBundleAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemBundleSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<ItemBundleOrderBy>>,
+  where?: Maybe<ItemBundleBoolExp>
+};
+
+
+/** query root */
+export type QueryRootItemBundleByPkArgs = {
+  id: Scalars['Int']
+};
+
+
+/** query root */
+export type QueryRootItemByPkArgs = {
+  id: Scalars['Int']
+};
+
+
+/** query root */
 export type QueryRootItemHardwareFastenerBoltArgs = {
   distinct_on?: Maybe<Array<ItemHardwareFastenerBoltSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
@@ -3886,6 +4673,33 @@ export type QueryRootLabelAggregateArgs = {
 /** query root */
 export type QueryRootLabelByPkArgs = {
   id: Scalars['uuid']
+};
+
+
+/** query root */
+export type QueryRootLabelTemplateMapArgs = {
+  distinct_on?: Maybe<Array<LabelTemplateMapSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<LabelTemplateMapOrderBy>>,
+  where?: Maybe<LabelTemplateMapBoolExp>
+};
+
+
+/** query root */
+export type QueryRootLabelTemplateMapAggregateArgs = {
+  distinct_on?: Maybe<Array<LabelTemplateMapSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<LabelTemplateMapOrderBy>>,
+  where?: Maybe<LabelTemplateMapBoolExp>
+};
+
+
+/** query root */
+export type QueryRootLabelTemplateMapByPkArgs = {
+  item_id: Scalars['Int'],
+  label_id: Scalars['uuid']
 };
 
 
@@ -3983,6 +4797,14 @@ export type SubscriptionRoot = {
   item: Array<Item>,
   /** fetch aggregated fields from the table: "item" */
   item_aggregate: ItemAggregate,
+  /** fetch data from the table: "item_bundle" */
+  item_bundle: Array<ItemBundle>,
+  /** fetch aggregated fields from the table: "item_bundle" */
+  item_bundle_aggregate: ItemBundleAggregate,
+  /** fetch data from the table: "item_bundle" using primary key columns */
+  item_bundle_by_pk?: Maybe<ItemBundle>,
+  /** fetch data from the table: "item" using primary key columns */
+  item_by_pk?: Maybe<Item>,
   /** fetch data from the table: "item_hardware_fastener_bolt" */
   item_hardware_fastener_bolt: Array<ItemHardwareFastenerBolt>,
   /** fetch aggregated fields from the table: "item_hardware_fastener_bolt" */
@@ -3999,6 +4821,12 @@ export type SubscriptionRoot = {
   label_aggregate: LabelAggregate,
   /** fetch data from the table: "label" using primary key columns */
   label_by_pk?: Maybe<Label>,
+  /** fetch data from the table: "label_template_map" */
+  label_template_map: Array<LabelTemplateMap>,
+  /** fetch aggregated fields from the table: "label_template_map" */
+  label_template_map_aggregate: LabelTemplateMapAggregate,
+  /** fetch data from the table: "label_template_map" using primary key columns */
+  label_template_map_by_pk?: Maybe<LabelTemplateMap>,
   /** fetch data from the table: "purchase" */
   purchase: Array<Purchase>,
   /** fetch aggregated fields from the table: "purchase" */
@@ -4211,6 +5039,38 @@ export type SubscriptionRootItemAggregateArgs = {
 
 
 /** subscription root */
+export type SubscriptionRootItemBundleArgs = {
+  distinct_on?: Maybe<Array<ItemBundleSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<ItemBundleOrderBy>>,
+  where?: Maybe<ItemBundleBoolExp>
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemBundleAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemBundleSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<ItemBundleOrderBy>>,
+  where?: Maybe<ItemBundleBoolExp>
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemBundleByPkArgs = {
+  id: Scalars['Int']
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemByPkArgs = {
+  id: Scalars['Int']
+};
+
+
+/** subscription root */
 export type SubscriptionRootItemHardwareFastenerBoltArgs = {
   distinct_on?: Maybe<Array<ItemHardwareFastenerBoltSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
@@ -4279,6 +5139,33 @@ export type SubscriptionRootLabelAggregateArgs = {
 /** subscription root */
 export type SubscriptionRootLabelByPkArgs = {
   id: Scalars['uuid']
+};
+
+
+/** subscription root */
+export type SubscriptionRootLabelTemplateMapArgs = {
+  distinct_on?: Maybe<Array<LabelTemplateMapSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<LabelTemplateMapOrderBy>>,
+  where?: Maybe<LabelTemplateMapBoolExp>
+};
+
+
+/** subscription root */
+export type SubscriptionRootLabelTemplateMapAggregateArgs = {
+  distinct_on?: Maybe<Array<LabelTemplateMapSelectColumn>>,
+  limit?: Maybe<Scalars['Int']>,
+  offset?: Maybe<Scalars['Int']>,
+  order_by?: Maybe<Array<LabelTemplateMapOrderBy>>,
+  where?: Maybe<LabelTemplateMapBoolExp>
+};
+
+
+/** subscription root */
+export type SubscriptionRootLabelTemplateMapByPkArgs = {
+  item_id: Scalars['Int'],
+  label_id: Scalars['uuid']
 };
 
 
@@ -4425,10 +5312,10 @@ export type ItemHardwareFastenerBoltQuery = (
 
 export type LabelFieldsFragment = (
   { __typename?: 'label' }
-  & Pick<Label, 'id' | 'created_at' | 'content' | 'is_template' | 'title' | 'width' | 'height'>
+  & Pick<Label, 'id' | 'created_at' | 'content' | 'title' | 'width' | 'height'>
   & { item: Maybe<(
     { __typename?: 'item' }
-    & Pick<Item, 'id' | 'class' | 'name'>
+    & Pick<Item, 'id' | 'class'>
   )> }
 );
 
@@ -4480,11 +5367,21 @@ export type GetTemplatesQuery = (
   )> }
 );
 
+export type GetSingleLabelsQueryVariables = {};
+
+
+export type GetSingleLabelsQuery = (
+  { __typename?: 'query_root' }
+  & { label: Array<(
+    { __typename?: 'label' }
+    & Pick<Label, 'id'>
+  )> }
+);
+
 export type SaveLabelMutationVariables = {
   content?: Maybe<Scalars['jsonb']>,
   height?: Maybe<Scalars['Int']>,
   id?: Maybe<Scalars['uuid']>,
-  is_template?: Maybe<Scalars['Boolean']>,
   item_id?: Maybe<Scalars['Int']>,
   title?: Maybe<Scalars['String']>,
   width?: Maybe<Scalars['Int']>
@@ -4507,7 +5404,6 @@ export type EditLabelMutationVariables = {
   content?: Maybe<Scalars['jsonb']>,
   height?: Maybe<Scalars['Int']>,
   id?: Maybe<Scalars['uuid']>,
-  is_template?: Maybe<Scalars['Boolean']>,
   item_id?: Maybe<Scalars['Int']>,
   title?: Maybe<Scalars['String']>,
   width?: Maybe<Scalars['Int']>
@@ -4563,14 +5459,12 @@ export const LabelFieldsFragmentDoc = gql`
   id
   created_at
   content
-  is_template
   title
   width
   height
   item {
     id
     class
-    name
   }
 }
     `;
@@ -4884,7 +5778,7 @@ export type GetLabelByItemIdLazyQueryHookResult = ReturnType<typeof useGetLabelB
 export type GetLabelByItemIdQueryResult = ApolloReactCommon.QueryResult<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>;
 export const GetTemplatesDocument = gql`
     query GetTemplates {
-  label(order_by: {created_at: asc}, where: {is_template: {_eq: true}}) {
+  label(order_by: {created_at: asc}, where: {template_items: {}}) {
     ...labelFields
   }
 }
@@ -4931,9 +5825,58 @@ export function useGetTemplatesLazyQuery(baseOptions?: ApolloReactHooks.LazyQuer
 export type GetTemplatesQueryHookResult = ReturnType<typeof useGetTemplatesQuery>;
 export type GetTemplatesLazyQueryHookResult = ReturnType<typeof useGetTemplatesLazyQuery>;
 export type GetTemplatesQueryResult = ApolloReactCommon.QueryResult<GetTemplatesQuery, GetTemplatesQueryVariables>;
+export const GetSingleLabelsDocument = gql`
+    query GetSingleLabels {
+  label(order_by: {created_at: asc}, where: {_not: {template_items: {}}}) {
+    id
+  }
+}
+    `;
+export type GetSingleLabelsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>, 'query'>;
+
+    export const GetSingleLabelsComponent = (props: GetSingleLabelsComponentProps) => (
+      <ApolloReactComponents.Query<GetSingleLabelsQuery, GetSingleLabelsQueryVariables> query={GetSingleLabelsDocument} {...props} />
+    );
+    
+export type GetSingleLabelsProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetSingleLabelsQuery, GetSingleLabelsQueryVariables> & TChildProps;
+export function withGetSingleLabels<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetSingleLabelsQuery,
+  GetSingleLabelsQueryVariables,
+  GetSingleLabelsProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetSingleLabelsQuery, GetSingleLabelsQueryVariables, GetSingleLabelsProps<TChildProps>>(GetSingleLabelsDocument, {
+      alias: 'getSingleLabels',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetSingleLabelsQuery__
+ *
+ * To run a query within a React component, call `useGetSingleLabelsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSingleLabelsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSingleLabelsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSingleLabelsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>(GetSingleLabelsDocument, baseOptions);
+      }
+export function useGetSingleLabelsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>(GetSingleLabelsDocument, baseOptions);
+        }
+export type GetSingleLabelsQueryHookResult = ReturnType<typeof useGetSingleLabelsQuery>;
+export type GetSingleLabelsLazyQueryHookResult = ReturnType<typeof useGetSingleLabelsLazyQuery>;
+export type GetSingleLabelsQueryResult = ApolloReactCommon.QueryResult<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>;
 export const SaveLabelDocument = gql`
-    mutation SaveLabel($content: jsonb, $height: Int, $id: uuid, $is_template: Boolean, $item_id: Int, $title: String, $width: Int) {
-  insert_label(objects: {content: $content, height: $height, id: $id, is_template: $is_template, item_id: $item_id, title: $title, width: $width}) {
+    mutation SaveLabel($content: jsonb, $height: Int, $id: uuid, $item_id: Int, $title: String, $width: Int) {
+  insert_label(objects: {content: $content, height: $height, id: $id, item_id: $item_id, title: $title, width: $width}) {
     affected_rows
     returning {
       id
@@ -4976,7 +5919,6 @@ export function withSaveLabel<TProps, TChildProps = {}>(operationOptions?: Apoll
  *      content: // value for 'content'
  *      height: // value for 'height'
  *      id: // value for 'id'
- *      is_template: // value for 'is_template'
  *      item_id: // value for 'item_id'
  *      title: // value for 'title'
  *      width: // value for 'width'
@@ -4990,9 +5932,9 @@ export type SaveLabelMutationHookResult = ReturnType<typeof useSaveLabelMutation
 export type SaveLabelMutationResult = ApolloReactCommon.MutationResult<SaveLabelMutation>;
 export type SaveLabelMutationOptions = ApolloReactCommon.BaseMutationOptions<SaveLabelMutation, SaveLabelMutationVariables>;
 export const EditLabelDocument = gql`
-    mutation EditLabel($content: jsonb, $height: Int, $id: uuid, $is_template: Boolean, $item_id: Int, $title: String, $width: Int) {
+    mutation EditLabel($content: jsonb, $height: Int, $id: uuid, $item_id: Int, $title: String, $width: Int) {
   __typename
-  update_label(where: {id: {_eq: $id}}, _set: {content: $content, height: $height, is_template: $is_template, item_id: $item_id, title: $title, width: $width}) {
+  update_label(where: {id: {_eq: $id}}, _set: {content: $content, height: $height, item_id: $item_id, title: $title, width: $width}) {
     returning {
       id
     }
@@ -5035,7 +5977,6 @@ export function withEditLabel<TProps, TChildProps = {}>(operationOptions?: Apoll
  *      content: // value for 'content'
  *      height: // value for 'height'
  *      id: // value for 'id'
- *      is_template: // value for 'is_template'
  *      item_id: // value for 'item_id'
  *      title: // value for 'title'
  *      width: // value for 'width'
@@ -5158,4 +6099,4 @@ export function useSendBufferMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type SendBufferMutationHookResult = ReturnType<typeof useSendBufferMutation>;
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2020-01-07T07:33:21-07:00
+// graphql typescript defs generated on 2020-01-09T18:17:55-07:00
