@@ -46,7 +46,7 @@ table order (
     items_cost: numeric
     tax_cost: numeric
     total_cost: numeric
-    payment_method_id : Integer → payment_method
+    payment_method_id : Text -- ENUM -> payment_method
 )
 
 -- shipments, since many ship multiple for 1 order
