@@ -36,93 +36,6 @@ COMMENT ON COLUMN public.icon.data
 ====== Schema Start =====
 
 ```sql
-table order (
-    id : Integer
-    vendor_order_id : text
-    parent_order_id : Integer -- this is to map orders that are broken up into multiple invoices or sub-orders (ie. Mouser)
-    pon : text -- purchase order
-    vendor_id : Integer → Vendor
-    order_date: Date
-    items_cost: numeric
-    tax_cost: numeric
-    total_cost: numeric
-    payment_method_id : Text -- ENUM -> payment_method
-)
-
--- shipments, since many ship multiple for 1 order
-table order_shipment (
-    order_id: Integer
-    vendor_invoice_id: text
-    shipped_date: Date
-    received_date: Date
-    shipping_cost: numeric
-    tracking_id: text
-    shipping_carrier: ENUM ?
-)
-
-table vendor (
-    id : Integer
-    name : text
-    url : text
-)
-
-table payment_method (
-    id : Integer
-    name : text
-    class : CC | ACH | CHECK | CASH
-)
-
-table order_vendor_item_map (
-     order_id : Integer → order
-     vendor_item : Integer → vendor_item
-)
-
-table vendor_item (
-    id
-    vendor_id
-    item_id → item  -- if its a bundle then the bundle's items can be taken into account
-)
-
-table manufacturer_item (
-    id : Integer
-    manufacturer_id: Integer
-    product_url : text
-    manufacturer_sku: text
-    item_id → item -- if its a bundle then the bundle's items can be taken into account
-)
-
--- or name it `item_catalog`?
--- xxxx  Put name & description in actual item_X tables.
--- maybe this should just be a view , I'm not even sure it will ever be necessary ?
-table item (
-    id: Integer
-    class: item_class → item_class (enum)
-    name : string
-    description : string -- this could be a compound of various searchable strings that is kept up to date with triggers
-    -- or user generated Columns here to have a jsonb of the items properties
-    -- links / relationships here are not in sql,
-    -- are relationships defined in GraphQL
-    labelTemplates : → label_template[ ]
-    vendorItems : → vendor_item[ ]
-    manufacturerItems → manufacturer_item[ ]
-    bundles → item_bundle[ ]
-)
-
-table item_bundle (
-    item_id → item
-)
-
-table image_icon_map (
-    image_id → image
-    item_class → enum
-    sequence : integer
-    criteria : jsonb -- json rules in the form of:
-            { [propKey: keyof item_class]: regex }
-            -- this is then evaluated for each entry
-            -- evaluation is done in the sequence order
-            -- see jsonb filtering
-https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html#jsonb-operators-contains-has-key-etc
-)
 
 (TypeScript)
 abstract class GenericItem {
@@ -148,43 +61,8 @@ abstract class GenericItem {
     editComponent : ReactElement -- modal
     detailComponent : ReactElement -- single view
 }
-... then
-class ItemHardwareFastenerBolt extends GenericItem {
--- specific props here
 
-
-}
-
-view item_class (
-    -- enum of any tables that start with `item_`
-    -- or... maybe a new schema (not containing item view)
-    -- exposed in GraphQL as ENUM
-)
-
-table label_template_map (
-    label_id : uuid
-    item_class : item_class ( → enum)
-    sequence : smallint -- order in which chosen
-    -- unique index is then all 3 to keep duplicates from occurring
-    criteria : jsonb -- json rules in the form of:
-            { [propKey: keyof item_class]: regex }
-            -- this is then evaluated for each entry
-            -- evaluation is done in the sequence order
-            -- see jsonb filtering
-            -- https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html#jsonb-operators-contains-has-key-etc
-)
-
-table label_item_map (
-    label_id : uuid
-    item_id: Integer  -- must be in item table
-)
 ```
-
-
-....
-
-
-**************************************************************************************************************
 
 
 ## fetch based on presence of sub-objects and arrays

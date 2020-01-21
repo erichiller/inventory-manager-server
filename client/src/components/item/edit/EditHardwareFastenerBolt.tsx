@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, Item, ItemHardwareFastenerBolt } from '../../../types/graphql';
+import { withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps } from '../../../lib/types/graphql';
 import Form, { FormComponentProps } from 'antd/lib/form';
-import { DISPLAY } from '../../../types/enums';
+import { DISPLAY } from '../../../lib/types/enums';
 import { Modal, Spin, Input } from 'antd';
 import { visibleHandler } from '../ItemTable';
-import { GenericItem } from '../../../types/Generics';
+import { Item, ItemHardwareFastenerBolt } from '../../../lib/item';
 
 
 
-type ItemEditProps<T extends Omit<GenericItem, '__typename'>> = FormComponentProps & {
+type ItemEditProps<T extends Omit<Item<any>, '__typename'>> = FormComponentProps & {
     visibleHandler: visibleHandler;
     item: Omit<T, '__typename'>;
 };

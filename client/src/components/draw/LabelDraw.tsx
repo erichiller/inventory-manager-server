@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 
 
-import { Item, Label } from '../../types/graphql';
-import { DISPLAY } from '../../types/enums';
+import { Item } from '../../lib/item';
+import { DISPLAY } from '../../lib/types/enums';
 import { DrawContextMenu } from './DrawContextMenu';
 import { KonvaEventObject } from 'konva/types/Node';
 import { Button, Tooltip, message } from 'antd';
@@ -11,7 +11,7 @@ import DrawEditText from './DrawEditText';
 import DrawAddImage from './image/LabelAddImageModal';
 
 import QREditModal from './QREditModal';
-import { Integer } from '../../types/uint8';
+import { Integer } from '../../lib/types/uint8';
 import { LabelText, LabelImage, LabelQR, FormatOptionsT, LabelExport, UUIDStringT } from '../../lib/LabelConstituent';
 
 import nunjucks from 'nunjucks';
@@ -52,7 +52,7 @@ interface ChangedValueI {
 interface LabelDrawProps {
     width: number;
     // item: ItemHardwareFastenerBolt;
-    item?: Item;
+    item?: Item<any>;
     label: LabelExport;
     updateWidth: (newPx: number) => void;
 }
@@ -80,7 +80,7 @@ interface LabelDrawState {
     displayQREditModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
     displayQREditModalStatus: DISPLAY;
     contextMenuLabelConstituent: LabelText | LabelImage | LabelQR;
-    item: Item;
+    item: Item<any>;
     texts: LabelText[];
     images: LabelImage[];
     qrs: LabelQR[];
@@ -99,7 +99,7 @@ interface LabelDrawState {
     setLabelTextColor: (color: string) => void;
 }
 interface DrawContext extends Omit<LabelDrawState, "item"> {
-    item?: Item;
+    item?: Item<any>;
 }
 
 const DrawContextStateDefault: LabelDrawState = {

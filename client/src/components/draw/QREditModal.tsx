@@ -1,18 +1,17 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
-import { DISPLAY } from '../../types/enums';
+import { DISPLAY } from '../../lib/types/enums';
 import React from 'react';
 import { Modal, message, Checkbox } from 'antd';
-import { Item } from '../../types/graphql';
+import { Item } from '../../lib/item';
 import bwipjs from 'bwip-js';
 import { LabelQR } from '../../lib/LabelConstituent';
 import { DrawContext } from './LabelDraw';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
-import { responsePathAsArray } from 'graphql';
 
 interface QREditModalProps {
     event?: KonvaEventObject<MouseEvent>;
-    item?: Item;
+    item?: Item<any>;
     labelQR: LabelQR;
     visibleHandler: ( display?: DISPLAY ) => void;
     changeHandler: ( newValue: any, labelQR: LabelQR ) => void;

@@ -1,18 +1,18 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
 import Form, { FormComponentProps } from 'antd/lib/form';
-import { DISPLAY } from '../../types/enums';
+import { DISPLAY } from '../../lib/types/enums';
 import React from 'react';
 import { Modal, AutoComplete } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
-import { ItemHardwareFastenerBoltSelectColumn } from '../../types/graphql';
+import { ItemHardwareFastenerBoltSelectColumn } from '../../lib/types/graphql';
 import { LabelText, FormatOptionsT } from '../../lib/LabelConstituent';
 import { DrawContext } from './LabelDraw';
-import { GenericItem } from '../../types/Generics';
+import { Item } from '../../lib/item';
 
 interface LabelDrawEditTextProps extends FormComponentProps {
     event?: KonvaEventObject<MouseEvent>;
-    item?: GenericItem;
+    item?: Item<any>;
     labelText: LabelText;
     visibleHandler: (display?: DISPLAY) => void;
     changeHandler: (newValue: any, labelText: LabelText) => void;

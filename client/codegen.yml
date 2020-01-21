@@ -27,7 +27,7 @@ config:
     reactApolloVersion: 3
     # reactApolloVersion: 2
 generates:
-    ./src/types/graphql.tsx:
+    ./src/lib/types/graphql.tsx:
         # documents: ./src/**/*.tsx
         documents:
             - ./src/types/*.ts

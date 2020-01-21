@@ -1,4 +1,4 @@
-import { uint8 } from "../types/uint8";
+import { uint8 } from "./types/uint8";
 import { buf2hex } from "./helpers";
 
 
