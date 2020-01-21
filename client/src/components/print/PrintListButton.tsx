@@ -1,7 +1,7 @@
 import { Menu, Icon, Popconfirm, message } from "antd";
 import React, { CSSProperties } from "react";
 import { PrintContext } from "./PrintContextHandler";
-import { withSendBuffer, SendBufferProps } from "../../types/graphql";
+import { withSendBuffer, SendBufferProps } from "../../lib/types/graphql";
 import { filterObject } from "../../lib/helpers";
 
 

@@ -1,10 +1,10 @@
 import { Table, Divider } from 'antd';
 import * as React from 'react';
 import { ColumnProps } from 'antd/es/table';
-import { withGetLabels, GetLabelsProps, LabelSelectColumn, Label, GetLabelsQueryResult, GetLabelsQuery } from '../../types/graphql';
+import { withGetLabels, GetLabelsProps, LabelSelectColumn, Label, GetLabelsQueryResult, GetLabelsQuery } from '../../lib/types/graphql';
 import { LabelDrawModal } from './../draw/LabelDrawModal';
-import { GenericItem } from '../../types/Generics';
-import { DISPLAY } from '../../types/enums';
+import { Item } from '../../lib/item';
+import { DISPLAY } from '../../lib/types/enums';
 import { toTitleCase } from '../../lib/helpers';
 
 
@@ -15,7 +15,7 @@ interface LabelTableProps {
 }
 
 interface LableTableState {
-    data?: GenericItem[];
+    data?: Item<any>[];
     pagination: pagination;
     loading: boolean;
     clickedLabel: Label;

@@ -1,6 +1,6 @@
 import { Spin, Button, message } from "antd";
 import React from "react";
-import { SendBufferComponent } from "../../types/graphql";
+import { SendBufferComponent } from "../../lib/types/graphql";
 import { PixelMap } from "../../lib/canvasToBuffer";
 import { BaseButtonProps } from "antd/lib/button/button";
 import { PageSpin } from "../shared/PageSpin";

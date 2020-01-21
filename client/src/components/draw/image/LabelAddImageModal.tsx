@@ -1,17 +1,18 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
 import { Select, Icon, Tooltip, Button } from 'antd';
-import { DISPLAY } from '../../../types/enums';
+import { DISPLAY } from '../../../lib/types/enums';
 import React from 'react';
 import { Modal } from 'antd';
-import { withGetIcon, GetIconProps, Item, Icon as CustomIcon } from '../../../types/graphql';
+import { withGetIcon, GetIconProps, Icon as CustomIcon } from '../../../lib/types/graphql';
+import { Item } from '../../../lib/item';
 import { LabelImage } from '../../../lib/LabelConstituent';
 import { DrawContext } from '../LabelDraw';
 
 
 interface LabelAddImageProps {
     event?: KonvaEventObject<MouseEvent>;
-    item?: Item;
+    item?: Item<any>;
     labelImage: LabelImage;
     visibleHandler: ( display?: DISPLAY ) => void;
     changeHandler: ( newValue: any, labelImage: LabelImage ) => void;

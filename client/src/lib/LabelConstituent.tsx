@@ -2,9 +2,10 @@ import * as React from 'react';
 
 import { v4 as UUIDv4 } from 'uuid';
 
-import { EnumIconCategoryEnum, Scalars, LabelAggregate } from '../types/graphql';
-import { Integer } from '../types/uint8';
-import { Item, Label } from "../types/graphql";
+import { EnumIconCategoryEnum, Scalars, LabelAggregate } from './types/graphql';
+import { Integer } from './types/uint8';
+import { Label } from "./types/graphql";
+import { Item } from "./item";
 
 
 
@@ -27,6 +28,8 @@ interface LabelExportConstructorProps extends LabelExportConstituents {
     item_id?: Integer;
 }
 
+// QueryResult
+
 
 export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate'>> {
     static DEFAULT_WIDTH = 300;
@@ -48,7 +51,7 @@ export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate'>> 
     parent_of: Label[] = [];
     item_id?: Integer;
     title?: string;
-    item?: Item;
+    item?: Item<any>;
 
 
     content: LabelExportConstituents = {
@@ -332,9 +335,9 @@ export class LabelQR extends LabelConstituent {
     properties: string[] = [];
     canvasElement: HTMLCanvasElement;
     dataURL: string;
-    item: Item;
+    item: Item<any>;
 
-    constructor ( options?: Partial<LabelConstituent> & { item: Item } ) {
+    constructor ( options?: Partial<LabelConstituent> & { item: Item<any> } ) {
         super();
         const { item } = options;
         this.item = item;

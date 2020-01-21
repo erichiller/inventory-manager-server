@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
-import { DISPLAY } from '../../types/enums';
-import { Item, Label, useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument } from "../../types/graphql";
+import { DISPLAY } from '../../lib/types/enums';
+import { Label, useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument } from "../../lib/types/graphql";
 import { Modal, Descriptions, Button, Icon, Tooltip, message } from "antd";
 import React from "react";
 import { LabelDraw } from "./LabelDraw";
@@ -8,12 +8,13 @@ import { PrintContext } from "../print/PrintContextHandler";
 import { LabelExport } from "../../lib/LabelConstituent";
 import SendBufferButton from "../print/SendBufferButton";
 import { visibleHandler } from "../item/ItemTable";
+import { Item } from "../../lib/item";
 
 type LabelDrawModalProps = {
     visibleHandler: visibleHandler;
     visible: DISPLAY;
 } & ( {
-    item: ItemGeneric;
+    item: Item<any>;
     label?: undefined;
 } | {
     item?: undefined;

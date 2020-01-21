@@ -2,8 +2,9 @@ import { FormComponentProps } from "antd/lib/form";
 import React from 'react';
 import { LabelImage } from "../../../lib/LabelConstituent";
 import { Form, Spin, Icon, Select, Input, message, Modal } from "antd";
-import { InsertIconComponent, GetIconDocument, EnumIconCategoryEnum, Item } from "../../../types/graphql";
-import { DISPLAY } from '../../../types/enums';
+import { InsertIconComponent, GetIconDocument, EnumIconCategoryEnum } from "../../../lib/types/graphql";
+import { Item } from "../../../lib/item";
+import { DISPLAY } from '../../../lib/types/enums';
 import { DrawContext } from "../LabelDraw";
 
 
@@ -13,7 +14,7 @@ import { DrawContext } from "../LabelDraw";
 interface NewImageUploadModalProps extends FormComponentProps {
     labelImage: LabelImage;
     width?: number;
-    item?: Pick<NonNullable<Item>, 'id' | 'name' >;
+    item?: Pick<NonNullable<Item<any>>, 'id' | 'name' >;
     visibleHandler: ( display?: DISPLAY ) => void;
     changeHandler: ( newValue: any, labelText: LabelImage ) => void;
 }
