@@ -1,0 +1,3 @@
+[submodule "server/src/deps/node-thermal-printer"]
+	path = server/src/deps/node-thermal-printer
+	url = git@github.com:erichiller/node-thermal-printer.git

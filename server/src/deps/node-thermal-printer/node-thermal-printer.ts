@@ -1,1 +1,0 @@
-export { ThermalPrinter, PrinterTypes } from './lib/core'
