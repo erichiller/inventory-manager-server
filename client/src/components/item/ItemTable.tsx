@@ -36,7 +36,7 @@ interface ItemTableProps<T> {
     loading: boolean;
 }
 
-// export type visibleHandler = ( c?: React.ReactElement ) => void;
+export type visibleHandler = ( c?: React.ReactElement ) => void;
 
 
 
