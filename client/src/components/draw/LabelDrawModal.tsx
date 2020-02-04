@@ -12,7 +12,6 @@ import { Item } from "../../lib/item";
 
 type LabelDrawModalProps = {
     visibleHandler: visibleHandler;
-    visible: DISPLAY;
 } & ( {
     item: Item<any>;
     label?: undefined;
@@ -137,15 +136,15 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     };
 
 
-    const { visibleHandler, visible, label, item } = props;
+    const { visibleHandler, label, item } = props;
 
-    console.log( 'state.visibleHandler', visibleHandler() );
+    // console.log( 'state.visibleHandler', visibleHandler() );
     // console.log('state.visible', visibleHandler(), state.visible == display.VISIBLE ? true : false)
     // console.log( 'state.item', item );
     return (
         <Modal
-            visible={visible == DISPLAY.VISIBLE}
             title={_labelIsNew ? "Create a new label":"Edit Label"}
+            visible={true}
             onCancel={handleCancel}
             onOk={handleSave}
             width={state.width > 450 ? state.width + 75 : 525}

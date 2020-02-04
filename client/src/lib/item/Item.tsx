@@ -109,9 +109,3 @@ export abstract class Item<T extends GenericItem> {
     // }
     
 }
-
-export class ItemHardwareFastenerBolt extends Item<ItemHardwareFastenerBoltGql> {
-    // specific props here;
-
-
-}

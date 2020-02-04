@@ -19,7 +19,7 @@ interface LableTableState {
     pagination: pagination;
     loading: boolean;
     clickedLabel: Label;
-    printModal: DISPLAY;
+    modal: React.ReactElement;
 }
 
 interface pagination {
@@ -35,7 +35,7 @@ export const LabelTable = withGetLabels()(
             pagination: { total: 0, pageSize: 100, current: 0 },
             loading: false,
             clickedLabel: undefined,
-            printModal: DISPLAY.HIDDEN
+            modal: null
         };
 
         componentDidMount () {
@@ -68,7 +68,10 @@ export const LabelTable = withGetLabels()(
                                     //   clickedItem: record,
                                     //   // printModal: display.VISIBLE
                                     // })
-                                    this.viewPrintModal( DISPLAY.VISIBLE, record );
+                                    this.setModal( <LabelDrawModal
+                                            label={this.state.clickedLabel}
+                                            visibleHandler={this.setModal} />
+                                        , record );
                                 }
                                 }> Print</a>
                                 <Divider type="vertical" />
@@ -82,19 +85,39 @@ export const LabelTable = withGetLabels()(
             ];
         }
 
-        viewPrintModal = ( change?: DISPLAY, clickedLabel?: Label ) => {
-            console.log( "viewPrintModal () ? received", change );
-            if ( change !== undefined && change != this.state.printModal ) {
+        // viewPrintModal = ( change?: DISPLAY, clickedLabel?: Label ) => {
+        //     console.log( "viewPrintModal () ? received", change );
+        //     if ( change !== undefined && change != this.state.printModal ) {
+        //         this.setState( {
+        //             printModal: change,
+        //             clickedLabel: clickedLabel
+        //         } );
+        //         console.log( "viewPrintModal () ? change detected; returning:", change == DISPLAY.VISIBLE );
+        //         return change == DISPLAY.VISIBLE;
+        //     }
+        //     console.log( "viewPrintModal () ? NO change detected; returning:", this.state.printModal == DISPLAY.VISIBLE );
+        //     return this.state.printModal == DISPLAY.VISIBLE;
+        // }
+
+
+        setModal = ( modal: React.ReactElement, clickedLabel?: Label ) => {
+            console.log( "viewPrintModal () ? received", modal, clickedLabel );
+            if ( !modal ) {
                 this.setState( {
-                    printModal: change,
-                    clickedLabel: clickedLabel
+                    clickedLabel: clickedLabel,
+                    modal: null
                 } );
-                console.log( "viewPrintModal () ? change detected; returning:", change == DISPLAY.VISIBLE );
-                return change == DISPLAY.VISIBLE;
+                console.log( "viewPrintModal(null) removing modal" );
+                return;
             }
-            console.log( "viewPrintModal () ? NO change detected; returning:", this.state.printModal == DISPLAY.VISIBLE );
-            return this.state.printModal == DISPLAY.VISIBLE;
-        }
+            this.setState( {
+                modal: modal,
+                clickedLabel: clickedLabel
+            } );
+            console.log( "viewPrintModal () ? provided new modal" );
+            return;
+        };
+
 
         handleTableChange = ( pagination, filters, sorter ) => {
             const pager = { ...this.state.pagination };
@@ -115,13 +138,7 @@ export const LabelTable = withGetLabels()(
             console.log( "data is", data );
             return (
                 <div>
-                    {this.state.printModal ?
-                        <LabelDrawModal
-                            label={this.state.clickedLabel}
-                            visible={this.state.printModal}
-                            visibleHandler={this.viewPrintModal} />
-                        : null}
-
+                    {this.state.modal}
                     <Table
                         columns={this.Columns}
                         dataSource={data.label}

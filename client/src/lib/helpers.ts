@@ -24,3 +24,15 @@ export function filterObject( o: Object, allow: undefined | null | string[], exc
             return obj;
         }, {} );
 }
+
+
+
+export function toUpperCamelCase ( s: string ) {
+    return s.split( '_' ).join( ' ' ).split( ' ' ).map( function ( word ) {
+        return word.charAt( 0 ).toUpperCase() + word.slice( 1 ).toLowerCase();
+    } ).join( '' );
+}
+
+export function toLowerCamelCase ( s: string ) {
+    return toUpperCamelCase( s ).charAt( 0 ).toLowerCase() + toUpperCamelCase( s ).substr( 1 );
+}

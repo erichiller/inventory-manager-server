@@ -126,9 +126,17 @@ export const NewImageUploadModal = Form.create<NewImageUploadModalProps>(
                                             variables:
                                             {
                                                 id: labelImage.id,
-                                                category: labelImage.category,
+                                                categories: {
+                                                    data: [{ 
+                                                        category: labelImage.category
+                                                    }]
+                                                },
                                                 description: labelImage.description,
-                                                label: labelImage.label,
+                                                labels: {
+                                                    data: [{
+                                                        label_id: labelImage.label,
+                                                    }]
+                                                },
                                                 mimeData: this.state.imageUrl
                                                 // mimeData: labelImage.data
                                                 // buffer: buffer.map( col => col.map( row => Array.from( row ) ) )
