@@ -30,13 +30,13 @@ interface pagination {
 
 
 interface ItemTableProps<T> {
-    collapsed: boolean;
-    data: T[];
-    displayData: ( data: T, index: number ) => React.ReactNode;
-    loading: boolean;
+    collapsed?: boolean;
+    data?: T[];
+    displayData?: ( data: T, index: number ) => React.ReactNode;
+    loading?: boolean;
 }
 
-// export type visibleHandler = ( c?: React.ReactElement ) => void;
+export type visibleHandler = ( c?: React.ReactElement ) => void;
 
 
 
@@ -54,7 +54,6 @@ export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
     const getPrintModal = (): React.ReactElement => {
         return <LabelDrawModal
             item={state.clickedItem}
-            visible={DISPLAY.VISIBLE}
             visibleHandler={setModal} />;
     };
 
@@ -64,12 +63,11 @@ export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
             case "item_hardware_fastener_bolt":
                 return <EditHardwareFastenerBolt visibleHandler={setModal} item={record as ItemHardwareFastenerBolt} />;
                 break;
-
         }
     };
 
 
-    const getColumns = (): ColumnProps<Item<any>>[] => {
+    const getColumns = (): ColumnProps<T>[] => {
         return [
             ...( Object.keys( ItemHardwareFastenerBoltSelectColumn ).filter(
                 key => [ "ID" ].includes( key ) ? false : key ).map(

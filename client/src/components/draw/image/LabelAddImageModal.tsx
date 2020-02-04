@@ -162,7 +162,7 @@ export default withGetIcon<LabelAddImageProps, LabelAddImageState>()(
                                         {/* <Icon component={icon.data as any} /> */}
                                         {/* <Icon component={this.makeSvgElement( icon ) as any} /> */}
                                         {this.makeSvgElement( icon ) }
-                                        {icon.label ? icon.label : icon.id}
+                                        {icon.title || icon.description ? `${icon.title} ${icon.description}` : icon.id}
                                     </Select.Option>
                                 ) ) : null}
                             </Select>

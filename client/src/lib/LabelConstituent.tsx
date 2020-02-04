@@ -31,7 +31,7 @@ interface LabelExportConstructorProps extends LabelExportConstituents {
 // QueryResult
 
 
-export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate'>> {
+export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate' | 'item'>> {
     static DEFAULT_WIDTH = 300;
     id: UUIDStringT;
 
