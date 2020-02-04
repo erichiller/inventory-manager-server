@@ -1,6 +1,6 @@
 import React from 'react';
 import { matchPath } from 'react-router-dom';
-import {ItemTable} from '../components/item/ItemTable';
+import { ItemTable } from '../components/item/ItemTable';
 import { LabelTable } from '../components/label/LabelTable';
 
 type ReactFunctionComponent = ( ( route?: RouteEntry, match?: RouterMatch ) => JSX.Element );
