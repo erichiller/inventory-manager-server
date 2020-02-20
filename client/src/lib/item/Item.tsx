@@ -1,7 +1,10 @@
 
-import { Item as ItemGql, Icon, Label, ItemHardwareFastenerBolt as ItemHardwareFastenerBoltGql, ItemBundle } from "../types/graphql";
+import { Item as ItemGql, Icon, Label, GetIconQueryResult, GetIconDocument, GetIconQueryVariables, GetIconQuery } from "../types/graphql";
 
 import { Integer } from '../types/uint8';
+
+import { apolloClient } from '../../index';
+import { message } from "antd";
 
 export type GenericItem = Pick<ItemGql, 'id'>;
 
@@ -23,6 +26,30 @@ export abstract class Item<T extends GenericItem> {
      */
     get icon (): React.ReactElement {
         // return <img />;
+        apolloClient.query < Icon, GetIconQueryVariables>({
+            query: GetIconDocument,
+            variables: {}
+        } ).then( result => {
+            message.info( `Saved Successfully` );
+        } ).catch( error => {
+            console.log( "MUTATE ERROR", error );
+            message.error( `Failure during save: ${ error }` );
+        } ).finally( () => {
+            // props.visibleHandler( null );
+        } );
+        /**
+         * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+         * 
+         * SUBCRIBE TO CACHE UPDATES HERE
+         * 
+         * THE CONSTRUCTOR SHOULD TAKE IN THE RESULT OF THE QUERY.
+         * NO QUERIES SHOULD TAKE PLACE HERE
+         * 
+         * SEE:
+         * https://www.apollographql.com/docs/react/api/apollo-client/#apolloclient-functions
+         * https://www.apollographql.com/docs/react/api/apollo-client/#ObservableQuery
+         * 
+         */
         return null;
     }
     get iconMatches (): Icon[] {

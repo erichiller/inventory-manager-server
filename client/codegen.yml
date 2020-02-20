@@ -1,4 +1,8 @@
 # schema: "http://graphql.hiller.pro:8080/v1/graphql"
+
+# GraphQL Code Generator docs
+# https://graphql-code-generator.com/docs/plugins/typescript-react-apollo
+
 schema:
     - ${HASURA_GRAPHQL_ENGINE_URL:http://graphql:8080/v1/graphql}:
           headers:
