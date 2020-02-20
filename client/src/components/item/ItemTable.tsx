@@ -41,7 +41,7 @@ export type visibleHandler = ( c?: React.ReactElement ) => void;
 
 
 
-export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { children?: React.ReactNode; } ) => {
+export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { children?: React.ReactNode } ) => {
 
     const [ state, setState ] = useState<Partial<ItemTableState>>( {
         data: undefined,

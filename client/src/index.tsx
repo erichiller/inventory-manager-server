@@ -69,7 +69,7 @@ const link = new HttpLink({
   }
 });
 
-const apolloClient = new ApolloClient({
+export const apolloClient = new ApolloClient({
   // Provide required constructor fields
   cache: cache,
   link: link,
