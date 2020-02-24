@@ -1,0 +1,50 @@
+fragment ItemFields on item {
+    id
+    class
+    name: object(path: "name")
+    # bundle {
+    #     #
+    # }
+    # labels {
+    #     #
+    # }
+    # manufacturerItems {
+    #     #
+    # }
+    # orderItems {
+    #     #
+    # }
+    # vendorItems {
+    #     #
+    # }
+    # labelTemplates {
+    #     #
+    # }
+}
+
+query GetItems {
+    items: item {
+        ...ItemFields
+    }
+}
+
+query GetItem($id: Int!) {
+    item(where: { id: { _eq: $id } }) {
+        ...ItemFields
+    }
+}
+
+query SearchItems {
+    item(
+        where: {
+            object: {
+                # _has_key: "drive_size",
+                _contains: { drive_size: "3" }
+            }
+        }
+    ) {
+        id
+        name: object(path: "name")
+        drive_size: object(path: "drive_size")
+    }
+}
