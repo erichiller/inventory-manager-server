@@ -1,7 +1,7 @@
-import { Table, Divider } from 'antd';
+import { Table, Divider, message } from 'antd';
 import React, { useState } from 'react';
 import { ColumnProps } from 'antd/es/table';
-import { withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, ItemHardwareFastenerBoltSelectColumn, useItemHardwareFastenerBoltQuery, useGetIconQuery } from '../../lib/types/graphql';
+import { withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, ItemHardwareFastenerBoltSelectColumn, useItemHardwareFastenerBoltQuery, useGetIconQuery, useGetItemsQuery, ItemSelectColumn } from '../../lib/types/graphql';
 import { LabelDrawModal } from '../draw/LabelDrawModal';
 import { Item, ItemHardwareFastenerBolt } from '../../lib/item';
 import { DISPLAY } from '../../lib/types/enums';
@@ -11,6 +11,7 @@ import { EditHardwareFastenerBolt } from './edit/EditHardwareFastenerBolt';
 import { QueryHookOptions, useQuery } from '@apollo/react-hooks';
 import { QueryResult } from '@apollo/react-common';
 import { render } from 'react-dom';
+import { ItemSearch } from './ItemSearch';
 // import DocumentNode from 'graphql-tag';
 
 
@@ -33,7 +34,7 @@ interface ItemTableProps<T> {
     collapsed?: boolean;
     data?: T[];
     displayData?: ( data: T, index: number ) => React.ReactNode;
-    loading?: boolean;
+    // loading?: boolean;
 }
 
 export type visibleHandler = ( c?: React.ReactElement ) => void;
@@ -42,6 +43,18 @@ export type visibleHandler = ( c?: React.ReactElement ) => void;
 
 
 export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { children?: React.ReactNode } ) => {
+    let loading = false;
+
+    return    <ItemSearch />;
+
+    if ( ! props.data ){
+        let result = useGetItemsQuery();
+        loading = result.loading;
+        if ( result.data ){
+            message.info(`loaded data, found ${result.data.items.length} items`);
+        }
+    }
+
 
     const [ state, setState ] = useState<Partial<ItemTableState>>( {
         data: undefined,
@@ -66,16 +79,15 @@ export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
         }
     };
 
-
     const getColumns = (): ColumnProps<T>[] => {
         return [
-            ...( Object.keys( ItemHardwareFastenerBoltSelectColumn ).filter(
+            ...( Object.keys( ItemSelectColumn ).filter(
                 key => [ "ID" ].includes( key ) ? false : key ).map(
                     key => {
                         return {
                             key: key,
                             title: toTitleCase( key ),
-                            dataIndex: ItemHardwareFastenerBoltSelectColumn[ key ],
+                            dataIndex: ItemSelectColumn[ key ],
                         };
                     } ) ),
             ...[
@@ -145,7 +157,7 @@ export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
                 dataSource={props.data}
                 rowKey={item => item.id.toString()}
                 pagination={state.pagination}
-                loading={props.loading}
+                loading={loading}
                 onChange={onChange}
             >
             </Table>

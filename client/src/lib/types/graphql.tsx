@@ -7985,17 +7985,6 @@ export type GetIconQuery = (
   )> }
 );
 
-export type ItemHardwareFastenerBoltQueryVariables = {};
-
-
-export type ItemHardwareFastenerBoltQuery = (
-  { __typename?: 'query_root' }
-  & { items: Array<(
-    { __typename?: 'item_hardware_fastener_bolt' }
-    & Pick<ItemHardwareFastenerBolt, 'id' | 'name' | 'description' | 'unit' | 'thread_length'>
-  )> }
-);
-
 export type LabelFieldsFragment = (
   { __typename?: 'label' }
   & Pick<Label, 'id' | 'created_at' | 'content' | 'title' | 'width' | 'height'>
@@ -8140,6 +8129,59 @@ export type SendBufferMutation = (
   )> }
 );
 
+export type ItemFieldsFragment = (
+  { __typename?: 'item' }
+  & Pick<Item, 'id' | 'class'>
+  & { name: Item['object'] }
+);
+
+export type GetItemsQueryVariables = {};
+
+
+export type GetItemsQuery = (
+  { __typename?: 'query_root' }
+  & { items: Array<(
+    { __typename?: 'item' }
+    & ItemFieldsFragment
+  )> }
+);
+
+export type GetItemQueryVariables = {
+  id: Scalars['Int']
+};
+
+
+export type GetItemQuery = (
+  { __typename?: 'query_root' }
+  & { item: Array<(
+    { __typename?: 'item' }
+    & ItemFieldsFragment
+  )> }
+);
+
+export type SearchItemsQueryVariables = {};
+
+
+export type SearchItemsQuery = (
+  { __typename?: 'query_root' }
+  & { item: Array<(
+    { __typename?: 'item' }
+    & Pick<Item, 'id'>
+    & { name: Item['object'], drive_size: Item['object'] }
+  )> }
+);
+
+export type ItemHardwareFastenerBoltQueryVariables = {};
+
+
+export type ItemHardwareFastenerBoltQuery = (
+  { __typename?: 'query_root' }
+  & { items: Array<(
+    { __typename?: 'item_hardware_fastener_bolt' }
+    & Pick<ItemHardwareFastenerBolt, 'id' | 'name' | 'description' | 'unit' | 'thread_length'>
+  )> }
+);
+
 export const LabelFieldsFragmentDoc = gql`
     fragment labelFields on label {
   id
@@ -8152,6 +8194,13 @@ export const LabelFieldsFragmentDoc = gql`
     id
     class
   }
+}
+    `;
+export const ItemFieldsFragmentDoc = gql`
+    fragment ItemFields on item {
+  id
+  class
+  name: object(path: "name")
 }
     `;
 export const InsertIconDocument = gql`
@@ -8268,59 +8317,6 @@ export function useGetIconLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHook
 export type GetIconQueryHookResult = ReturnType<typeof useGetIconQuery>;
 export type GetIconLazyQueryHookResult = ReturnType<typeof useGetIconLazyQuery>;
 export type GetIconQueryResult = ApolloReactCommon.QueryResult<GetIconQuery, GetIconQueryVariables>;
-export const ItemHardwareFastenerBoltDocument = gql`
-    query item_hardware_fastener_bolt {
-  items: item_hardware_fastener_bolt {
-    id
-    name
-    description
-    unit
-    thread_length
-  }
-}
-    `;
-export type ItemHardwareFastenerBoltComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>, 'query'>;
-
-    export const ItemHardwareFastenerBoltComponent = (props: ItemHardwareFastenerBoltComponentProps) => (
-      <ApolloReactComponents.Query<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables> query={ItemHardwareFastenerBoltDocument} {...props} />
-    );
-    
-export type ItemHardwareFastenerBoltProps<TChildProps = {}> = ApolloReactHoc.DataProps<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables> & TChildProps;
-export function withItemHardwareFastenerBolt<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  ItemHardwareFastenerBoltQuery,
-  ItemHardwareFastenerBoltQueryVariables,
-  ItemHardwareFastenerBoltProps<TChildProps>>) {
-    return ApolloReactHoc.withQuery<TProps, ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables, ItemHardwareFastenerBoltProps<TChildProps>>(ItemHardwareFastenerBoltDocument, {
-      alias: 'itemHardwareFastenerBolt',
-      ...operationOptions
-    });
-};
-
-/**
- * __useItemHardwareFastenerBoltQuery__
- *
- * To run a query within a React component, call `useItemHardwareFastenerBoltQuery` and pass it any options that fit your needs.
- * When your component renders, `useItemHardwareFastenerBoltQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useItemHardwareFastenerBoltQuery({
- *   variables: {
- *   },
- * });
- */
-export function useItemHardwareFastenerBoltQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>) {
-        return ApolloReactHooks.useQuery<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>(ItemHardwareFastenerBoltDocument, baseOptions);
-      }
-export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>(ItemHardwareFastenerBoltDocument, baseOptions);
-        }
-export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
-export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
-export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
 export const GetLabelsDocument = gql`
     query GetLabels {
   label(order_by: {created_at: asc}) {
@@ -8793,4 +8789,207 @@ export function useSendBufferMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type SendBufferMutationHookResult = ReturnType<typeof useSendBufferMutation>;
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
-// graphql typescript defs generated on 2020-02-05T07:10:03-07:00
+export const GetItemsDocument = gql`
+    query GetItems {
+  items: item {
+    ...ItemFields
+  }
+}
+    ${ItemFieldsFragmentDoc}`;
+export type GetItemsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetItemsQuery, GetItemsQueryVariables>, 'query'>;
+
+    export const GetItemsComponent = (props: GetItemsComponentProps) => (
+      <ApolloReactComponents.Query<GetItemsQuery, GetItemsQueryVariables> query={GetItemsDocument} {...props} />
+    );
+    
+export type GetItemsProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetItemsQuery, GetItemsQueryVariables> & TChildProps;
+export function withGetItems<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetItemsQuery,
+  GetItemsQueryVariables,
+  GetItemsProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetItemsQuery, GetItemsQueryVariables, GetItemsProps<TChildProps>>(GetItemsDocument, {
+      alias: 'getItems',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetItemsQuery__
+ *
+ * To run a query within a React component, call `useGetItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetItemsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemsQuery, GetItemsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetItemsQuery, GetItemsQueryVariables>(GetItemsDocument, baseOptions);
+      }
+export function useGetItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemsQuery, GetItemsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetItemsQuery, GetItemsQueryVariables>(GetItemsDocument, baseOptions);
+        }
+export type GetItemsQueryHookResult = ReturnType<typeof useGetItemsQuery>;
+export type GetItemsLazyQueryHookResult = ReturnType<typeof useGetItemsLazyQuery>;
+export type GetItemsQueryResult = ApolloReactCommon.QueryResult<GetItemsQuery, GetItemsQueryVariables>;
+export const GetItemDocument = gql`
+    query GetItem($id: Int!) {
+  item(where: {id: {_eq: $id}}) {
+    ...ItemFields
+  }
+}
+    ${ItemFieldsFragmentDoc}`;
+export type GetItemComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetItemQuery, GetItemQueryVariables>, 'query'> & ({ variables: GetItemQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const GetItemComponent = (props: GetItemComponentProps) => (
+      <ApolloReactComponents.Query<GetItemQuery, GetItemQueryVariables> query={GetItemDocument} {...props} />
+    );
+    
+export type GetItemProps<TChildProps = {}> = ApolloReactHoc.DataProps<GetItemQuery, GetItemQueryVariables> & TChildProps;
+export function withGetItem<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetItemQuery,
+  GetItemQueryVariables,
+  GetItemProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, GetItemQuery, GetItemQueryVariables, GetItemProps<TChildProps>>(GetItemDocument, {
+      alias: 'getItem',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetItemQuery__
+ *
+ * To run a query within a React component, call `useGetItemQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetItemQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetItemQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetItemQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemQuery, GetItemQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetItemQuery, GetItemQueryVariables>(GetItemDocument, baseOptions);
+      }
+export function useGetItemLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemQuery, GetItemQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetItemQuery, GetItemQueryVariables>(GetItemDocument, baseOptions);
+        }
+export type GetItemQueryHookResult = ReturnType<typeof useGetItemQuery>;
+export type GetItemLazyQueryHookResult = ReturnType<typeof useGetItemLazyQuery>;
+export type GetItemQueryResult = ApolloReactCommon.QueryResult<GetItemQuery, GetItemQueryVariables>;
+export const SearchItemsDocument = gql`
+    query SearchItems {
+  item(where: {object: {_contains: {drive_size: "3"}}}) {
+    id
+    name: object(path: "name")
+    drive_size: object(path: "drive_size")
+  }
+}
+    `;
+export type SearchItemsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<SearchItemsQuery, SearchItemsQueryVariables>, 'query'>;
+
+    export const SearchItemsComponent = (props: SearchItemsComponentProps) => (
+      <ApolloReactComponents.Query<SearchItemsQuery, SearchItemsQueryVariables> query={SearchItemsDocument} {...props} />
+    );
+    
+export type SearchItemsProps<TChildProps = {}> = ApolloReactHoc.DataProps<SearchItemsQuery, SearchItemsQueryVariables> & TChildProps;
+export function withSearchItems<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  SearchItemsQuery,
+  SearchItemsQueryVariables,
+  SearchItemsProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, SearchItemsQuery, SearchItemsQueryVariables, SearchItemsProps<TChildProps>>(SearchItemsDocument, {
+      alias: 'searchItems',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useSearchItemsQuery__
+ *
+ * To run a query within a React component, call `useSearchItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchItemsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSearchItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchItemsQuery, SearchItemsQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchItemsQuery, SearchItemsQueryVariables>(SearchItemsDocument, baseOptions);
+      }
+export function useSearchItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchItemsQuery, SearchItemsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchItemsQuery, SearchItemsQueryVariables>(SearchItemsDocument, baseOptions);
+        }
+export type SearchItemsQueryHookResult = ReturnType<typeof useSearchItemsQuery>;
+export type SearchItemsLazyQueryHookResult = ReturnType<typeof useSearchItemsLazyQuery>;
+export type SearchItemsQueryResult = ApolloReactCommon.QueryResult<SearchItemsQuery, SearchItemsQueryVariables>;
+export const ItemHardwareFastenerBoltDocument = gql`
+    query item_hardware_fastener_bolt {
+  items: item_hardware_fastener_bolt {
+    id
+    name
+    description
+    unit
+    thread_length
+  }
+}
+    `;
+export type ItemHardwareFastenerBoltComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>, 'query'>;
+
+    export const ItemHardwareFastenerBoltComponent = (props: ItemHardwareFastenerBoltComponentProps) => (
+      <ApolloReactComponents.Query<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables> query={ItemHardwareFastenerBoltDocument} {...props} />
+    );
+    
+export type ItemHardwareFastenerBoltProps<TChildProps = {}> = ApolloReactHoc.DataProps<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables> & TChildProps;
+export function withItemHardwareFastenerBolt<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ItemHardwareFastenerBoltQuery,
+  ItemHardwareFastenerBoltQueryVariables,
+  ItemHardwareFastenerBoltProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables, ItemHardwareFastenerBoltProps<TChildProps>>(ItemHardwareFastenerBoltDocument, {
+      alias: 'itemHardwareFastenerBolt',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useItemHardwareFastenerBoltQuery__
+ *
+ * To run a query within a React component, call `useItemHardwareFastenerBoltQuery` and pass it any options that fit your needs.
+ * When your component renders, `useItemHardwareFastenerBoltQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useItemHardwareFastenerBoltQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useItemHardwareFastenerBoltQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>) {
+        return ApolloReactHooks.useQuery<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>(ItemHardwareFastenerBoltDocument, baseOptions);
+      }
+export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>(ItemHardwareFastenerBoltDocument, baseOptions);
+        }
+export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
+export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
+export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
+// graphql typescript defs generated on 2020-02-22T18:13:35-07:00

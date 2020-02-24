@@ -80,7 +80,7 @@ export abstract class Item<T extends GenericItem> {
      * Optionally defined on subclasses
      */
     get columnProps (): ( keyof T )[] {
-        return null;
+        return ['id', 'name'];
     }
     /**
      * Props which should be included in search (default)
