@@ -2,11 +2,13 @@ import React, { useState } from "react";
 
 import { Item, ItemHardwareFastenerBolt } from '../../lib/item';
 // import Search from "antd/lib/input/Search";
-import { Select } from "antd";
+import { Select, Icon } from "antd";
 
 
 // import * as ReactRouter from 'react-router';
 import { SelectValue, LabeledValue } from 'antd/lib/select';
+import { useSearchItemsQuery } from "../../lib/types/graphql";
+import { QueryStore } from "apollo-client/data/queries";
 
 const { Option } = Select;
 
@@ -35,62 +37,62 @@ interface ItemSearchProps<T> {
 }
 
 
-const sampleData = {
-    item: {
-        id: 3,
-        name: "item type 1"
-    },
-    item_hardware_fastener_bolt: {
-        id: 5,
-        name: "bolt type 1",
-        length: 3
-    }
-}
+// const sampleData = {
+//     item: {
+//         id: 3,
+//         name: "item type 1"
+//     },
+//     item_hardware_fastener_bolt: {
+//         id: 5,
+//         name: "bolt type 1",
+//         length: 3
+//     }
+// }
 
 // const options = sampleData.forEach(element => {
-    
+
 // });
 
 
-export const ItemSearch = <T extends Item<any>> ( props: ItemSearchProps<T> & { children?: React.ReactNode; } ) => {
-    let loading = false;
+// export const ItemSearch = <T extends Item<any>> ( props: ItemSearchProps<T> & { children?: React.ReactNode; } ) => {
+//     let loading = false;
 
-    // if ( !props.data ) {
-    //     let result = useGetItemsQuery();
-    //     loading = result.loading;
-    //     if ( result.data ) {
-    //         message.info( `loaded data, found ${ result.data.items.length } items` );
-    //     }
-    // }
-
-
-    const [ state, setState ] = useState<Partial<ItemSearchState>>( {
-        data: undefined,
-        pagination: { total: 0, pageSize: 100, current: 0 },
-        loading: false,
-        clickedItem: undefined,
-        modal: null
-    } );
+//     // if ( !props.data ) {
+//     //     let result = useGetItemsQuery();
+//     //     loading = result.loading;
+//     //     if ( result.data ) {
+//     //         message.info( `loaded data, found ${ result.data.items.length } items` );
+//     //     }
+//     // }
 
 
-    return <Select
-        mode="tags"
-        autoFocus={true}
-        style={{ width: 120 }}
-        children={[
-            <Select.Option key="title"></Select.Option>
-        ]}
-        />
-}
+//     const [ state, setState ] = useState<Partial<ItemSearchState>>( {
+//         data: undefined,
+//         pagination: { total: 0, pageSize: 100, current: 0 },
+//         loading: false,
+//         clickedItem: undefined,
+//         modal: null
+//     } );
 
 
+//     return <Select
+//         mode="tags"
+//         autoFocus={true}
+//         style={{ width: 120 }}
+//         children={[
+//             <Select.Option key="title"></Select.Option>
+//         ]}
+//         />
+// }
 
 
 
 
 
 
-const tags: string[] = [
+
+
+const filterKeys: string[] = [
     "fname",
     "lname",
     "mi",
@@ -105,7 +107,7 @@ interface Tags {
     multiple_allowed: boolean;
 }
 
-const tagOptions: Array<React.ReactElement> = tags.map( tag => <Option key={tag}>{tag}:</Option> );
+const tagOptions: Array<React.ReactElement> = filterKeys.map( tag => <Option key={tag}>{tag}:</Option> );
 
 
 interface SearchState {
@@ -122,8 +124,25 @@ interface SearchState {
  * - show result count
  */
 
+function ParseSearchString ( searchString: string, value: LabeledValue[] ): { containsFilter: object, hasAnyKeysFilter: string[]; } {
+    let hasAnyKeysFilter: string[] = [];
+    let containsFilter: object = {};
 
-export const SearchTest: React.FC<{}> = ( props ) => {
+    console.log( { function: 'ParseSearchString', searchString, value } );
+
+
+
+
+
+    return {
+        containsFilter: containsFilter,
+        hasAnyKeysFilter: hasAnyKeysFilter
+    };
+
+}
+
+
+export const ItemSearch: React.FC<{}> = ( props ) => {
 
 
     const [ state, setState ] = useState( {
@@ -134,25 +153,42 @@ export const SearchTest: React.FC<{}> = ( props ) => {
     } as SearchState );
 
     // Execute query
-    const queryResults = useSearchLayer0DataVaultQuery( {
+    const queryResults = useSearchItemsQuery( {
         variables: {
-            searchValue: `%${ state.searchString }%`
+            containsFilter: {}
         },
         partialRefetch: true,
         returnPartialData: true,
         // skip: state.loading
     } );
+    type QueryResultKeysT = Exclude<keyof typeof queryResults[ 'data' ], '__typename'>;
+
     console.debug( { "called?": queryResults.called, "error?": queryResults.error, "data?": queryResults.data, searchstring: state.searchString } );
 
     let options: Array<React.ReactElement> = [];
+    console.group( "Constructing Search Options" );
     if ( !queryResults.error && !queryResults.loading && queryResults.data ) {
-        Object.keys( queryResults.data ).forEach( typeString => {
-            let type = queryResults.data ? queryResults.data[ typeString ] : [];
-            options.push( <Select.OptGroup key={typeString} label={typeString} children={
-                type.map( result => <Option key={result.id}>{result.name}:</Option> )
-            } /> );
+        Object.keys( queryResults.data ).forEach( (typeString: QueryResultKeysT) => {
+            console.log( `typeString: ${ typeString }` );
+            // let type = queryResults.data ? queryResults.data[ typeString ] : [];
+            let priorClass = queryResults.data[typeString][ 0 ].class;
+            let optionGroupItems: { [ key in QueryResultKeysT ]: (typeof Option)[] };
+            for ( let i = 0; i < queryResults.data[ typeString ].length; i++ ) {
+                let result = queryResults.data.item[ i ]; // just to ease the typing
+                if ( queryResults.data.item[ i ].class != priorClass ) {
+                    priorClass = queryResults.data.item[ i ].class;
+                }
+                optionGroupItems[result.class].push(
+                    <Option key={result.id}>{result.name}:</Option>
+                );
+            }
+            Object.getOwnPropertyNames( optionGroupItems).forEach( (className: QueryResultKeysT) => {
+                console.log( { part: 'building optionGroups', className } );
+                options.push( <Select.OptGroup key={className} label={className} children={optionGroupItems[ className ]} /> );
+            })
         } );
     }
+    console.groupEnd();
     // if( queryResults.loading ){
     //     setState({loading: true, searchString: state.searchString})
     // }
@@ -175,7 +211,7 @@ export const SearchTest: React.FC<{}> = ( props ) => {
         // value ??
         // onPopupScroll	Called when dropdown scrolls - maybe we could use this to essentially paginate the results ?
         children={[
-            <Select.OptGroup label="Filters" children={tags
+            <Select.OptGroup label="Filters" children={filterKeys
                 .filter( tag => tag.startsWith( state.searchString ?? '' ) )
                 .map( tag => <Option key={":" + tag}>
                     <Icon type="tag" /> <b>{tag}:</b>
@@ -254,6 +290,6 @@ export const SearchTest: React.FC<{}> = ( props ) => {
         }}
 
 
-    /> <Icon type="search" style={{ position: 'relative', left: -30, opacity: .6 }} /></span>;
+    />  <Icon type="search" style={{ position: 'relative', left: -30, opacity: .6 }} /></span>;
 
 };

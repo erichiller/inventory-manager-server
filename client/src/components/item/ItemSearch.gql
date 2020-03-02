@@ -1,0 +1,35 @@
+query SearchItems(
+    # should be an obect of { key: value }
+    $containsFilter: jsonb
+    # hasKeyFilter should be an array of strings
+    $hasAnyKeysFilter: [String!]
+) {
+    item(
+        order_by: {class: asc}
+        where: {
+            object: {
+                _has_keys_any: $hasAnyKeysFilter
+                _contains: $containsFilter
+            }
+        }
+    ) {
+        id
+        name: object(path: "name")
+        # drive_size: object(path: "drive_size")
+        object
+        class
+    }
+    # item_aggregate(
+    #     distinct_on: class
+    #     where: {
+    #         object: {
+    #             _has_keys_any: $hasAnyKeysFilter
+    #             _contains: $containsFilter
+    #         }
+    #     }
+    # ) {
+    #     aggregate {
+    #         count
+    #     }
+    # }
+}

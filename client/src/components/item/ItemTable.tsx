@@ -45,7 +45,7 @@ export type visibleHandler = ( c?: React.ReactElement ) => void;
 export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { children?: React.ReactNode } ) => {
     let loading = false;
 
-    return    <ItemSearch />;
+    return <ItemSearch />;
 
     if ( ! props.data ){
         let result = useGetItemsQuery();

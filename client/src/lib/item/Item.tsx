@@ -6,7 +6,7 @@ import { Integer } from '../types/uint8';
 import { apolloClient } from '../../index';
 import { message } from "antd";
 
-export type GenericItem = Pick<ItemGql, 'id'>;
+export type GenericItem = Pick<ItemGql, 'id'> & Partial<Pick<ItemGql, 'class'>> ;
 
 export abstract class Item<T extends GenericItem> {
     __typename: string;
@@ -80,7 +80,7 @@ export abstract class Item<T extends GenericItem> {
      * Optionally defined on subclasses
      */
     get columnProps (): ( keyof T )[] {
-        return ['id', 'name'];
+        return ['id', 'class'];
     }
     /**
      * Props which should be included in search (default)
