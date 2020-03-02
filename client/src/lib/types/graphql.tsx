@@ -7985,6 +7985,21 @@ export type GetIconQuery = (
   )> }
 );
 
+export type SearchItemsQueryVariables = {
+  containsFilter?: Maybe<Scalars['jsonb']>,
+  hasAnyKeysFilter?: Maybe<Array<Scalars['String']>>
+};
+
+
+export type SearchItemsQuery = (
+  { __typename?: 'query_root' }
+  & { item: Array<(
+    { __typename?: 'item' }
+    & Pick<Item, 'id' | 'object' | 'class'>
+    & { name: Item['object'] }
+  )> }
+);
+
 export type LabelFieldsFragment = (
   { __typename?: 'label' }
   & Pick<Label, 'id' | 'created_at' | 'content' | 'title' | 'width' | 'height'>
@@ -8159,18 +8174,6 @@ export type GetItemQuery = (
   )> }
 );
 
-export type SearchItemsQueryVariables = {};
-
-
-export type SearchItemsQuery = (
-  { __typename?: 'query_root' }
-  & { item: Array<(
-    { __typename?: 'item' }
-    & Pick<Item, 'id'>
-    & { name: Item['object'], drive_size: Item['object'] }
-  )> }
-);
-
 export type ItemHardwareFastenerBoltQueryVariables = {};
 
 
@@ -8317,6 +8320,60 @@ export function useGetIconLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHook
 export type GetIconQueryHookResult = ReturnType<typeof useGetIconQuery>;
 export type GetIconLazyQueryHookResult = ReturnType<typeof useGetIconLazyQuery>;
 export type GetIconQueryResult = ApolloReactCommon.QueryResult<GetIconQuery, GetIconQueryVariables>;
+export const SearchItemsDocument = gql`
+    query SearchItems($containsFilter: jsonb, $hasAnyKeysFilter: [String!]) {
+  item(order_by: {class: asc}, where: {object: {_has_keys_any: $hasAnyKeysFilter, _contains: $containsFilter}}) {
+    id
+    name: object(path: "name")
+    object
+    class
+  }
+}
+    `;
+export type SearchItemsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<SearchItemsQuery, SearchItemsQueryVariables>, 'query'>;
+
+    export const SearchItemsComponent = (props: SearchItemsComponentProps) => (
+      <ApolloReactComponents.Query<SearchItemsQuery, SearchItemsQueryVariables> query={SearchItemsDocument} {...props} />
+    );
+    
+export type SearchItemsProps<TChildProps = {}> = ApolloReactHoc.DataProps<SearchItemsQuery, SearchItemsQueryVariables> & TChildProps;
+export function withSearchItems<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  SearchItemsQuery,
+  SearchItemsQueryVariables,
+  SearchItemsProps<TChildProps>>) {
+    return ApolloReactHoc.withQuery<TProps, SearchItemsQuery, SearchItemsQueryVariables, SearchItemsProps<TChildProps>>(SearchItemsDocument, {
+      alias: 'searchItems',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useSearchItemsQuery__
+ *
+ * To run a query within a React component, call `useSearchItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchItemsQuery({
+ *   variables: {
+ *      containsFilter: // value for 'containsFilter'
+ *      hasAnyKeysFilter: // value for 'hasAnyKeysFilter'
+ *   },
+ * });
+ */
+export function useSearchItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchItemsQuery, SearchItemsQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchItemsQuery, SearchItemsQueryVariables>(SearchItemsDocument, baseOptions);
+      }
+export function useSearchItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchItemsQuery, SearchItemsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchItemsQuery, SearchItemsQueryVariables>(SearchItemsDocument, baseOptions);
+        }
+export type SearchItemsQueryHookResult = ReturnType<typeof useSearchItemsQuery>;
+export type SearchItemsLazyQueryHookResult = ReturnType<typeof useSearchItemsLazyQuery>;
+export type SearchItemsQueryResult = ApolloReactCommon.QueryResult<SearchItemsQuery, SearchItemsQueryVariables>;
 export const GetLabelsDocument = gql`
     query GetLabels {
   label(order_by: {created_at: asc}) {
@@ -8888,57 +8945,6 @@ export function useGetItemLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHook
 export type GetItemQueryHookResult = ReturnType<typeof useGetItemQuery>;
 export type GetItemLazyQueryHookResult = ReturnType<typeof useGetItemLazyQuery>;
 export type GetItemQueryResult = ApolloReactCommon.QueryResult<GetItemQuery, GetItemQueryVariables>;
-export const SearchItemsDocument = gql`
-    query SearchItems {
-  item(where: {object: {_contains: {drive_size: "3"}}}) {
-    id
-    name: object(path: "name")
-    drive_size: object(path: "drive_size")
-  }
-}
-    `;
-export type SearchItemsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<SearchItemsQuery, SearchItemsQueryVariables>, 'query'>;
-
-    export const SearchItemsComponent = (props: SearchItemsComponentProps) => (
-      <ApolloReactComponents.Query<SearchItemsQuery, SearchItemsQueryVariables> query={SearchItemsDocument} {...props} />
-    );
-    
-export type SearchItemsProps<TChildProps = {}> = ApolloReactHoc.DataProps<SearchItemsQuery, SearchItemsQueryVariables> & TChildProps;
-export function withSearchItems<TProps, TChildProps = {}>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  SearchItemsQuery,
-  SearchItemsQueryVariables,
-  SearchItemsProps<TChildProps>>) {
-    return ApolloReactHoc.withQuery<TProps, SearchItemsQuery, SearchItemsQueryVariables, SearchItemsProps<TChildProps>>(SearchItemsDocument, {
-      alias: 'searchItems',
-      ...operationOptions
-    });
-};
-
-/**
- * __useSearchItemsQuery__
- *
- * To run a query within a React component, call `useSearchItemsQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSearchItemsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useSearchItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchItemsQuery, SearchItemsQueryVariables>) {
-        return ApolloReactHooks.useQuery<SearchItemsQuery, SearchItemsQueryVariables>(SearchItemsDocument, baseOptions);
-      }
-export function useSearchItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchItemsQuery, SearchItemsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SearchItemsQuery, SearchItemsQueryVariables>(SearchItemsDocument, baseOptions);
-        }
-export type SearchItemsQueryHookResult = ReturnType<typeof useSearchItemsQuery>;
-export type SearchItemsLazyQueryHookResult = ReturnType<typeof useSearchItemsLazyQuery>;
-export type SearchItemsQueryResult = ApolloReactCommon.QueryResult<SearchItemsQuery, SearchItemsQueryVariables>;
 export const ItemHardwareFastenerBoltDocument = gql`
     query item_hardware_fastener_bolt {
   items: item_hardware_fastener_bolt {
@@ -8992,4 +8998,4 @@ export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHo
 export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
 export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
-// graphql typescript defs generated on 2020-02-22T18:13:35-07:00
+// graphql typescript defs generated on 2020-02-28T06:42:55-07:00

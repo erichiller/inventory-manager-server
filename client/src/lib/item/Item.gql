@@ -34,17 +34,17 @@ query GetItem($id: Int!) {
     }
 }
 
-query SearchItems {
-    item(
-        where: {
-            object: {
-                # _has_key: "drive_size",
-                _contains: { drive_size: "3" }
-            }
-        }
-    ) {
-        id
-        name: object(path: "name")
-        drive_size: object(path: "drive_size")
-    }
-}
+# query SearchItems {
+#     item(
+#         where: {
+#             object: {
+#                 # _has_key: "drive_size",
+#                 _contains: { drive_size: "3" }
+#             }
+#         }
+#     ) {
+#         id
+#         name: object(path: "name")
+#         drive_size: object(path: "drive_size")
+#     }
+# }
