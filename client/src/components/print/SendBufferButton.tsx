@@ -1,3 +1,4 @@
+import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Spin, Button, message } from "antd";
 import React from "react";
 import { SendBufferComponent } from "../../lib/types/graphql";
@@ -49,15 +50,16 @@ export default class SendBufferButton extends React.Component<SendBufferButtonPr
                         console.log( "SendBuffer data received", data );
                     }
                     console.groupEnd();
-                    return < Button {...this.props} 
-                                icon="printer" 
-                                onClick={() => onClick( true )} id={value} >
-                                    {value}
-                                    <PageSpin spinning={this.props.buffer != null} />
-                            </Button>;
+                    return (
+                        < Button {...this.props} 
+                                    icon={<LegacyIcon type="printer" />} 
+                                    onClick={() => onClick( true )} id={value} >
+                                        {value}
+                                        <PageSpin spinning={this.props.buffer != null} />
+                                </Button>
+                    );
                 }}
             </SendBufferComponent >
-
         );
     }
 }

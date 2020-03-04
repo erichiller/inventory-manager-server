@@ -1,4 +1,5 @@
-import { Menu, Icon, Popconfirm, message } from "antd";
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Menu, Popconfirm, message } from "antd";
 import React, { CSSProperties } from "react";
 import { PrintContext } from "./PrintContextHandler";
 import { withSendBuffer, SendBufferProps } from "../../lib/types/graphql";
@@ -39,12 +40,14 @@ export const PrintListButton = withSendBuffer<PrintListButtonProps>()(
         render () {
             console.log( this.props );
             if ( !this.context.getPrintLabels() ) {
-                return <Menu.Item>
-                    <span>
-                        <Icon type="printer" />
-                        Print
-                    </span>
-                </Menu.Item>;
+                return (
+                    <Menu.Item>
+                        <span>
+                            <LegacyIcon type="printer" />
+                            Print
+                        </span>
+                    </Menu.Item>
+                );
             }
             console.log( "PrintListButton", this.context.getPrintLabels() );
             return (
@@ -59,7 +62,7 @@ export const PrintListButton = withSendBuffer<PrintListButtonProps>()(
                             cancelText="No"
                         >
                             <span>
-                                <Icon type="printer" />
+                                <LegacyIcon type="printer" />
                                 Print
                         </span>
                         </Popconfirm>

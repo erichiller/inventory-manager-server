@@ -6,6 +6,7 @@ import { Item } from '../../lib/item';
 import { DISPLAY } from '../../lib/types/enums';
 import { DrawContextMenu } from './DrawContextMenu';
 import { KonvaEventObject } from 'konva/types/Node';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Button, Tooltip, message } from 'antd';
 import DrawEditText from './DrawEditText';
 import DrawAddImage from './image/LabelAddImageModal';
@@ -655,7 +656,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                         : null}
 
                     <Tooltip key="debug" placement="top" title="Send debug information to the console">
-                        <Button icon="medicine-box" style={{
+                        <Button icon={<LegacyIcon type="medicine-box" />} style={{
                             padding: 0,
                             width: '24px',
                             height: '24px',
@@ -799,9 +800,9 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                         paddingTop: 10,
                         textAlign: 'center',
                     }}>
-                        <Button style={{ margin: 5 }} icon="font-size" onClick={this.displayEditTextModal} id="ADD_TEXT">Add Text</Button>
-                        <Button style={{ margin: 5 }} icon="qrcode" onClick={this.displayQREditModal} id="ADD_QR">Add QR</Button>
-                        <Button style={{ margin: 5 }} icon="picture" onClick={this.displayImageSelectModal} id="ADD_IMAGE">Add Image</Button>
+                        <Button style={{ margin: 5 }} icon={<LegacyIcon type="font-size" />} onClick={this.displayEditTextModal} id="ADD_TEXT">Add Text</Button>
+                        <Button style={{ margin: 5 }} icon={<LegacyIcon type="qrcode" />} onClick={this.displayQREditModal} id="ADD_QR">Add QR</Button>
+                        <Button style={{ margin: 5 }} icon={<LegacyIcon type="picture" />} onClick={this.displayImageSelectModal} id="ADD_IMAGE">Add Image</Button>
                     </div>
                 </div>
             </DrawContext.Provider>

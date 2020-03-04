@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps } from '../../../lib/types/graphql';
-import Form, { FormComponentProps } from 'antd/lib/form';
+import { FormComponentProps } from '@ant-design/compatible/lib/form';
+import Form from 'antd/lib/form';
 import { DISPLAY } from '../../../lib/types/enums';
 import { Modal, Spin, Input } from 'antd';
 import { visibleHandler } from '../ItemTable';
