@@ -1,6 +1,7 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
-import Form, { FormComponentProps } from 'antd/lib/form';
+import { FormComponentProps } from '@ant-design/compatible/lib/form';
+import Form from 'antd/lib/form';
 import { DISPLAY } from '../../lib/types/enums';
 import React from 'react';
 import { Modal, AutoComplete } from 'antd';

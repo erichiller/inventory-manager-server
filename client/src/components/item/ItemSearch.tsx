@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
 import { Item, ItemHardwareFastenerBolt } from '../../lib/item';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
 // import Search from "antd/lib/input/Search";
-import { Select, Icon } from "antd";
+import { Select } from "antd";
 
 
 // import * as ReactRouter from 'react-router';
@@ -194,102 +195,104 @@ export const ItemSearch: React.FC<{}> = ( props ) => {
     // }
     console.log( "options length is now", options.length );
 
-    return <span><Select
-        placeholder="Hint: use `property:value` to quickly filter."
-        mode="tags"
-        // defaultActiveFirstOption={false}
-        // mode="combobox"
-        style={{ width: 450 }}
-        tokenSeparators={[ ',' ]}
-        // suffixIcon={<Icon type="search" />}
-        loading={queryResults.loading}
-        value={state.value}
-        labelInValue={true}
-        // showSearch={true}
-        // value={undefined}
-        // choiceTransitionName
-        // value ??
-        // onPopupScroll	Called when dropdown scrolls - maybe we could use this to essentially paginate the results ?
-        children={[
-            <Select.OptGroup label="Filters" children={filterKeys
-                .filter( tag => tag.startsWith( state.searchString ?? '' ) )
-                .map( tag => <Option key={":" + tag}>
-                    <Icon type="tag" /> <b>{tag}:</b>
-                </Option> )
-            } />
-            ,
-            ...options ]}
+    return (
+        <span><Select
+            placeholder="Hint: use `property:value` to quickly filter."
+            mode="tags"
+            // defaultActiveFirstOption={false}
+            // mode="combobox"
+            style={{ width: 450 }}
+            tokenSeparators={[ ',' ]}
+            // suffixIcon={<Icon type="search" />}
+            loading={queryResults.loading}
+            value={state.value}
+            labelInValue={true}
+            // showSearch={true}
+            // value={undefined}
+            // choiceTransitionName
+            // value ??
+            // onPopupScroll	Called when dropdown scrolls - maybe we could use this to essentially paginate the results ?
+            children={[
+                <Select.OptGroup label="Filters" children={filterKeys
+                    .filter( tag => tag.startsWith( state.searchString ?? '' ) )
+                    .map( tag => <Option key={":" + tag}>
+                        <LegacyIcon type="tag" /> <b>{tag}:</b>
+                    </Option> )
+                } />
+                ,
+                ...options ]}
 
 
-        onChange={( value, option ) => {
-            // only called when option is chosen, same as onSelect it seems
-            console.log( { type: "onChange", value, option } );
-            // return;
-            setState( {
-                value: [
-                    // ...state.value ?? [],
-                    ...( value as LabeledValue[] ).map( i => {
-                        console.log( "map value", i );
-                        let newLabel = i.label;
-                        if ( i.label?.toString().includes( ":" ) ) {
-                            newLabel = i.label?.toString().split( ':', 2 );
-                            newLabel = <span><Icon type="tag" /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
-                        } else if ( typeof newLabel === "string" ) {
-                            newLabel = <span><Icon type="font-size" /> <i>{newLabel?.toString()}</i></span>;
-                        }
-                        return {
+            onChange={( value, option ) => {
+                // only called when option is chosen, same as onSelect it seems
+                console.log( { type: "onChange", value, option } );
+                // return;
+                setState( {
+                    value: [
+                        // ...state.value ?? [],
+                        ...( value as LabeledValue[] ).map( i => {
+                            console.log( "map value", i );
+                            let newLabel = i.label;
+                            if ( i.label?.toString().includes( ":" ) ) {
+                                newLabel = i.label?.toString().split( ':', 2 );
+                                newLabel = <span><LegacyIcon type="tag" /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
+                            } else if ( typeof newLabel === "string" ) {
+                                newLabel = <span><LegacyIcon type="font-size" /> <i>{newLabel?.toString()}</i></span>;
+                            }
+                            return {
+                                key: i.key,
+                                label: newLabel
+                            };
+                        } ) ]
+                } );
+                // setState({value: [ 
+                //     value.map(
+                //         { key: 'eric', label: <span>ERIC <b>BOLD</b></span>}
+                // ]})
+            }}
+
+            onSelect={( value, option ) => {
+                // receives the typed text in "value" and the present or generated "option"
+                console.log( { type: "onSelect", value, option, props: option.props, prior_state: state.value } );
+                return;
+                let i = value;
+                let newLabel = i.label;
+                if ( i.label?.toString().includes( ":" ) ) {
+                    newLabel = i.label?.toString().split( ':', 2 );
+                    newLabel = <span><LegacyIcon type="tag" /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
+                } else {
+                    newLabel = <span><LegacyIcon type="font-size" /> <i>{newLabel}</i></span>;
+                }
+                // return;
+                setState( {
+                    value: [
+                        ...(state.value ?? []),
+                        {
                             key: i.key,
                             label: newLabel
-                        };
-                    } ) ]
-            } );
-            // setState({value: [ 
-            //     value.map(
-            //         { key: 'eric', label: <span>ERIC <b>BOLD</b></span>}
-            // ]})
-        }}
-
-        onSelect={( value, option ) => {
-            // receives the typed text in "value" and the present or generated "option"
-            console.log( { type: "onSelect", value, option, props: option.props, prior_state: state.value } );
-            return;
-            let i = value;
-            let newLabel = i.label;
-            if ( i.label?.toString().includes( ":" ) ) {
-                newLabel = i.label?.toString().split( ':', 2 );
-                newLabel = <span><Icon type="tag" /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
-            } else {
-                newLabel = <span><Icon type="font-size" /> <i>{newLabel}</i></span>;
-            }
-            // return;
-            setState( {
-                value: [
-                    ...state.value ?? [],
-                    {
-                        key: i.key,
-                        label: newLabel
-                    }
-                ]
-            } );
-            // option = <React.Fragment>Hello</React.Fragment>;
-        }}
+                        }
+                    ]
+                } );
+                // option = <React.Fragment>Hello</React.Fragment>;
+            }}
 
 
-        onSearch={( value ) => {
-            // onSearch gets the value of the latest typed text, meaning that which is not in a "tag"
-            console.log( { type: "onSearch", value } );
-            setState( { searchString: value, value: state.value } );
-        }}
+            onSearch={( value ) => {
+                // onSearch gets the value of the latest typed text, meaning that which is not in a "tag"
+                console.log( { type: "onSearch", value } );
+                setState( { searchString: value, value: state.value } );
+            }}
 
-        filterOption={( inputData, option ) => {
-            // gets called for each option in the current Select.Children (Select.Options)
-            // return true to include it in the remaining results
-            // not necessary as we are doing the filtering in GraphQL
-            // console.log( { type: "filterOption()", inputData, option} );
-            return true;
-        }}
+            filterOption={( inputData, option ) => {
+                // gets called for each option in the current Select.Children (Select.Options)
+                // return true to include it in the remaining results
+                // not necessary as we are doing the filtering in GraphQL
+                // console.log( { type: "filterOption()", inputData, option} );
+                return true;
+            }}
 
 
-    />  <Icon type="search" style={{ position: 'relative', left: -30, opacity: .6 }} /></span>;
+        />  <LegacyIcon type="search" style={{ position: 'relative', left: -30, opacity: .6 }} /></span>
+    );
 
 };

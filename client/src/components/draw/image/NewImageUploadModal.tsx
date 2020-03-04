@@ -1,7 +1,9 @@
-import { FormComponentProps } from "antd/lib/form";
+import { FormComponentProps } from '@ant-design/compatible/lib/form';
 import React from 'react';
 import { LabelImage } from "../../../lib/LabelConstituent";
-import { Form, Spin, Icon, Select, Input, message, Modal } from "antd";
+import { Form, Icon as LegacyIcon } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Spin, Select, Input, message, Modal } from "antd";
 import { InsertIconComponent, GetIconDocument, EnumIconCategoryEnum } from "../../../lib/types/graphql";
 import { Item } from "../../../lib/item";
 import { DISPLAY } from '../../../lib/types/enums';
@@ -100,125 +102,129 @@ export const NewImageUploadModal = Form.create<NewImageUploadModalProps>(
 
 
 
-            return <DrawContext.Consumer>
-                {( { commitLabelImage } ) => {
-                    return <Modal
-                        visible
-                        title="Upload New Image"
-                        okText="Upload"
-                        onCancel={this.onCancel}
-                        onOk={() => { commitLabelImage( labelImage ); this.onCancel(); }}
-                        width={width ? width : 350}
-                    >
-                        <InsertIconComponent
-                            refetchQueries={[ {
-                                query: GetIconDocument
-                            } ]}
-                            onCompleted={() => message.success( "Successfully added image." )}
-                        >
-                            {( sendData, { loading, called, data, error } ) => {
-                                console.log( "init", { loading, data, error, called } );
-                                console.log( "image", this.props.labelImage );
-                                if ( called != true && this.props.labelImage != null && this.state.imageUrl ) {
-                                    console.log( "PointEditModal Component sendData()" );
-                                    sendData(
-                                        {
-                                            variables:
-                                            {
-                                                id: labelImage.id,
-                                                categories: {
-                                                    data: [{ 
-                                                        category: labelImage.category
-                                                    }]
-                                                },
-                                                description: labelImage.description,
-                                                labels: {
-                                                    data: [{
-                                                        label_id: labelImage.label,
-                                                    }]
-                                                },
-                                                mimeData: this.state.imageUrl
-                                                // mimeData: labelImage.data
-                                                // buffer: buffer.map( col => col.map( row => Array.from( row ) ) )
-                                            }
-                                        } );
-                                    console.log( "called != true", { loading, data, error, called } );
-                                    // this.setState({
-                                    //     values: undefined
-                                    // })
-                                    // console.log({ loading, data, error, called, mutate});
-
-                                }
-                                if ( loading ) {
-                                    console.log( "SendBuffer data loading" );
-                                }
-                                if ( data ) {
-                                    console.log( "SendBuffer data received", data );
-                                }
-                                return (
-                                    <Spin spinning={loading}>
-                                        <Form
-                                            layout="inline"
-                                            // onSubmit={(e) => this.props.validateFields((err, values) => {
-                                            //     if ( err ){
-                                            //         message.error(err);
-                                            //     }
-                                            //     values.forEach( (key, val) => {
-                                            //         this.props.labelImage[key] = val;
-                                            //     });
-                                            // }) }
-                                        >
-                                            <Form.Item label="Label">
-                                                {getFieldDecorator( 'label', {
-                                                    rules: [ { required: true, message: 'Please enter a label' } ],
-                                                } )( <Input placeholder="Label (title)" /> )}
-                                            </Form.Item>
-                                            <Form.Item label="Description">
-                                                {getFieldDecorator( 'description', {
-                                                    rules: [ { required: false, message: 'Description (optional)' } ],
-                                                } )( <Input placeholder="Description" /> )}
-                                            </Form.Item>
-                                            <Form.Item label="Category">
-                                                {getFieldDecorator( 'category', {
-                                                    rules: [ { required: true, message: 'Please select category.' } ],
-                                                } )( <Select
-                                                    filterOption={( input, option ) =>
-                                                        option.props.children.toString().toLowerCase().indexOf( input.toLowerCase() ) >= 0
+            return (
+                <DrawContext.Consumer>
+                    {( { commitLabelImage } ) => {
+                        return (
+                            <Modal
+                                visible
+                                title="Upload New Image"
+                                okText="Upload"
+                                onCancel={this.onCancel}
+                                onOk={() => { commitLabelImage( labelImage ); this.onCancel(); }}
+                                width={width ? width : 350}
+                            >
+                                <InsertIconComponent
+                                    refetchQueries={[ {
+                                        query: GetIconDocument
+                                    } ]}
+                                    onCompleted={() => message.success( "Successfully added image." )}
+                                >
+                                    {( sendData, { loading, called, data, error } ) => {
+                                        console.log( "init", { loading, data, error, called } );
+                                        console.log( "image", this.props.labelImage );
+                                        if ( called != true && this.props.labelImage != null && this.state.imageUrl ) {
+                                            console.log( "PointEditModal Component sendData()" );
+                                            sendData(
+                                                {
+                                                    variables:
+                                                    {
+                                                        id: labelImage.id,
+                                                        categories: {
+                                                            data: [{ 
+                                                                category: labelImage.category
+                                                            }]
+                                                        },
+                                                        description: labelImage.description,
+                                                        labels: {
+                                                            data: [{
+                                                                label_id: labelImage.label,
+                                                            }]
+                                                        },
+                                                        mimeData: this.state.imageUrl
+                                                        // mimeData: labelImage.data
+                                                        // buffer: buffer.map( col => col.map( row => Array.from( row ) ) )
                                                     }
-                                                    style={{width: '180px'}}
+                                                } );
+                                            console.log( "called != true", { loading, data, error, called } );
+                                            // this.setState({
+                                            //     values: undefined
+                                            // })
+                                            // console.log({ loading, data, error, called, mutate});
+
+                                        }
+                                        if ( loading ) {
+                                            console.log( "SendBuffer data loading" );
+                                        }
+                                        if ( data ) {
+                                            console.log( "SendBuffer data received", data );
+                                        }
+                                        return (
+                                            <Spin spinning={loading}>
+                                                <Form
+                                                    layout="inline"
+                                                    // onSubmit={(e) => this.props.validateFields((err, values) => {
+                                                    //     if ( err ){
+                                                    //         message.error(err);
+                                                    //     }
+                                                    //     values.forEach( (key, val) => {
+                                                    //         this.props.labelImage[key] = val;
+                                                    //     });
+                                                    // }) }
                                                 >
-                                                    {this.autocompleteFieldValues.map( category => <Select.Option key={category} value={category}>{category}</Select.Option> )}
-                                                </Select> )}
-                                            </Form.Item>
-                                            <br />
-                                            <input
-                                                name="file" id="file"
-                                                className="inputfile"
-                                                type="file"
-                                                multiple
-                                                required
-                                                style={{
-                                                    display: 'none',
-                                                    width: '0.1px',
-                                                    height: '0.1px',
-                                                    opacity: 0,
-                                                    overflow: 'hidden',
-                                                    position: 'absolute',
-                                                    zIndex: -1
-                                                }}
-                                                onChange={() => this.setFile()}
-                                            />
-                                            <label htmlFor="file" className="ant-btn ant-btn-primary" style={{ paddingTop: '3px' }}>
-                                                <Icon type="upload" style={{ margin: '2px', fontSize: '18px', marginRight: '3px' }} />
-                                                Upload
-                                            </label>
-                                        </Form>
-                                    </Spin>
-                                );
-                            }}
-                        </InsertIconComponent>
-                    </Modal>
-                }}
-            </DrawContext.Consumer>
+                                                    <Form.Item label="Label">
+                                                        {getFieldDecorator( 'label', {
+                                                            rules: [ { required: true, message: 'Please enter a label' } ],
+                                                        } )( <Input placeholder="Label (title)" /> )}
+                                                    </Form.Item>
+                                                    <Form.Item label="Description">
+                                                        {getFieldDecorator( 'description', {
+                                                            rules: [ { required: false, message: 'Description (optional)' } ],
+                                                        } )( <Input placeholder="Description" /> )}
+                                                    </Form.Item>
+                                                    <Form.Item label="Category">
+                                                        {getFieldDecorator( 'category', {
+                                                            rules: [ { required: true, message: 'Please select category.' } ],
+                                                        } )( <Select
+                                                            filterOption={( input, option ) =>
+                                                                option.props.children.toString().toLowerCase().indexOf( input.toLowerCase() ) >= 0
+                                                            }
+                                                            style={{width: '180px'}}
+                                                        >
+                                                            {this.autocompleteFieldValues.map( category => <Select.Option key={category} value={category}>{category}</Select.Option> )}
+                                                        </Select> )}
+                                                    </Form.Item>
+                                                    <br />
+                                                    <input
+                                                        name="file" id="file"
+                                                        className="inputfile"
+                                                        type="file"
+                                                        multiple
+                                                        required
+                                                        style={{
+                                                            display: 'none',
+                                                            width: '0.1px',
+                                                            height: '0.1px',
+                                                            opacity: 0,
+                                                            overflow: 'hidden',
+                                                            position: 'absolute',
+                                                            zIndex: -1
+                                                        }}
+                                                        onChange={() => this.setFile()}
+                                                    />
+                                                    <label htmlFor="file" className="ant-btn ant-btn-primary" style={{ paddingTop: '3px' }}>
+                                                        <LegacyIcon type="upload" style={{ margin: '2px', fontSize: '18px', marginRight: '3px' }} />
+                                                        Upload
+                                                    </label>
+                                                </Form>
+                                            </Spin>
+                                        );
+                                    }}
+                                </InsertIconComponent>
+                            </Modal>
+                        );
+                    }}
+                </DrawContext.Consumer>
+            );
         }
     } );

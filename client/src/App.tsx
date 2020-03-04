@@ -8,7 +8,8 @@ import {
 import { createBrowserHistory } from 'history';
 import './styles/app.scss';
 import 'antd/dist/antd.css';
-import { Menu, Icon } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Menu } from 'antd';
 import { flatRoutes, singularFullPath } from './config/routes';
 import { PrintListButton } from './components/print/PrintListButton';
 import { PrintContextHandler } from './components/print/PrintContextHandler';
@@ -34,15 +35,14 @@ history.listen( ( location, action ) => {
 
 const App = () => {
     return (
-
         <Router history={history} >
             <PrintContextHandler>
                 <Menu mode="horizontal" >
-                    <Menu.Item><Link to="/"><Icon type="dashboard" />Summary</Link></Menu.Item>
-                    <Menu.Item><Link to="/items"><Icon type="container" />Items</Link></Menu.Item>
-                    <Menu.Item><Link to="/networks"><Icon type="share-alt" />Network</Link></Menu.Item>
-                    <Menu.Item><Link to="/labels"><Icon type="tag" />Labels</Link></Menu.Item>
-                    <Menu.Item><Link to="/purchases"><Icon type="shopping-cart" />Purchases</Link></Menu.Item>
+                    <Menu.Item><Link to="/"><LegacyIcon type="dashboard" />Summary</Link></Menu.Item>
+                    <Menu.Item><Link to="/items"><LegacyIcon type="container" />Items</Link></Menu.Item>
+                    <Menu.Item><Link to="/networks"><LegacyIcon type="share-alt" />Network</Link></Menu.Item>
+                    <Menu.Item><Link to="/labels"><LegacyIcon type="tag" />Labels</Link></Menu.Item>
+                    <Menu.Item><Link to="/purchases"><LegacyIcon type="shopping-cart" />Purchases</Link></Menu.Item>
                     <PrintListButton key="PrintListButton" style={{ float: 'right' }} />
                 </Menu>
                 <div style={{

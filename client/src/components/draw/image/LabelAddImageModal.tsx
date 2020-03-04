@@ -1,6 +1,7 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
-import { Select, Icon, Tooltip, Button } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Select, Tooltip, Button } from 'antd';
 import { DISPLAY } from '../../../lib/types/enums';
 import React from 'react';
 import { Modal } from 'antd';
@@ -99,83 +100,85 @@ export default withGetIcon<LabelAddImageProps, LabelAddImageState>()(
             return (
                 <DrawContext.Consumer>
                     {( { commitLabelImage, displayImageUploadModal } ) => {
-                        return <Modal
-                            visible
-                            title={"Image"}
-                            onCancel={this.handleCancel}
-                            onOk={() => { commitLabelImage( labelImage ); this.onClose(); }}
-                            footer={[
-                                <Tooltip placement="top" title="Return to Items">
-                                    <Button key="cancel" type="danger" onClick={this.handleCancel}>
-                                        <Icon type="stop" />
-                                        Cancel
-                                    </Button>
-                                </Tooltip >,
-                                <Tooltip placement="top" title="Add to list for bulk printing later">
-                                    <Button key="Upload Image" type="primary" onClick={() => {
-                                        displayImageUploadModal( DISPLAY.VISIBLE );
-                                        visibleHandler( DISPLAY.HIDDEN );
-                                    }} >
-                                        {/* <Icon type="plus-circle" /> */}
-                                        <Icon type="upload" />
-                                        Upload New Image
-                                    </Button>
-                                </Tooltip>,
-                                <Tooltip placement="top" title="Add image to label">
-                                    <Button key="add" type="primary" onClick={() => { commitLabelImage( labelImage ); this.onClose(); }}>
-                                        <Icon type="plus-circle" />
-                                        Add
-                                    </Button>
-                                </Tooltip>
-                            ]}
-                            width={420}
-                        >
-                            <Select
-                                style={{ width: 370, height: 50 }}
-                                placeholder="Select an Existing Image"
-                                loading={loading}
-                                onChange={this.onChange}
-                                id="image-select"
-                            //                     dropdownRender={menu => (
-                            //                         <div>
-                            //                             {menu}
-                            //                             <Divider style={{ margin: '4px 0' }} />
-                            //                             <div
-                            //                                 style={{ padding: '4px 8px', cursor: 'pointer' }}
-                            //                                 onMouseDown={e => e.preventDefault()}
-                            //                                 onClick={this.commitLabelImage}
-
-                            //                             >
-                            //                                 <Icon type="plus" /> Add item
-                            // </div>
-                            //                         </div>
-                            //                     )}
+                        return (
+                            <Modal
+                                visible
+                                title={"Image"}
+                                onCancel={this.handleCancel}
+                                onOk={() => { commitLabelImage( labelImage ); this.onClose(); }}
+                                footer={[
+                                    <Tooltip placement="top" title="Return to Items">
+                                        <Button key="cancel" type="danger" onClick={this.handleCancel}>
+                                            <LegacyIcon type="stop" />
+                                            Cancel
+                                        </Button>
+                                    </Tooltip >,
+                                    <Tooltip placement="top" title="Add to list for bulk printing later">
+                                        <Button key="Upload Image" type="primary" onClick={() => {
+                                            displayImageUploadModal( DISPLAY.VISIBLE );
+                                            visibleHandler( DISPLAY.HIDDEN );
+                                        }} >
+                                            {/* <Icon type="plus-circle" /> */}
+                                            <LegacyIcon type="upload" />
+                                            Upload New Image
+                                        </Button>
+                                    </Tooltip>,
+                                    <Tooltip placement="top" title="Add image to label">
+                                        <Button key="add" type="primary" onClick={() => { commitLabelImage( labelImage ); this.onClose(); }}>
+                                            <LegacyIcon type="plus-circle" />
+                                            Add
+                                        </Button>
+                                    </Tooltip>
+                                ]}
+                                width={420}
                             >
-                                {console.log( "DrawAddImage", this.props.data )}
-                                {this.props.data.icon ? this.props.data.icon.map( icon => (
-                                    <Select.Option
-                                        value={icon.id}
-                                        key={icon.id}
-                                    // value={`${ icon.id }.${icon.category }.${ icon.label } ${ icon.description }`}
-                                    >
-                                        {/* <Icon type="file-image" /> */}
-                                        {/* <Icon component={icon.data as any} /> */}
-                                        {/* <Icon component={this.makeSvgElement( icon ) as any} /> */}
-                                        {this.makeSvgElement( icon ) }
-                                        {icon.title || icon.description ? `${icon.title} ${icon.description}` : icon.id}
-                                    </Select.Option>
-                                ) ) : null}
-                            </Select>
+                                <Select
+                                    style={{ width: 370, height: 50 }}
+                                    placeholder="Select an Existing Image"
+                                    loading={loading}
+                                    onChange={this.onChange}
+                                    id="image-select"
+                                //                     dropdownRender={menu => (
+                                //                         <div>
+                                //                             {menu}
+                                //                             <Divider style={{ margin: '4px 0' }} />
+                                //                             <div
+                                //                                 style={{ padding: '4px 8px', cursor: 'pointer' }}
+                                //                                 onMouseDown={e => e.preventDefault()}
+                                //                                 onClick={this.commitLabelImage}
 
-                            {/* <Divider />
-                            <i><Typography.Text type="secondary">Or create a new image</Typography.Text></i><br />
-                            <NewImageUploadModal
-                                changeHandler={changeHandler}
-                                visibleHandler={visibleHandler}
-                                buttonLabel="Upload Image"
-                                labelImage={labelImage}
-                            /> */}
-                        </Modal>;
+                                //                             >
+                                //                                 <Icon type="plus" /> Add item
+                                // </div>
+                                //                         </div>
+                                //                     )}
+                                >
+                                    {console.log( "DrawAddImage", this.props.data )}
+                                    {this.props.data.icon ? this.props.data.icon.map( icon => (
+                                        <Select.Option
+                                            value={icon.id}
+                                            key={icon.id}
+                                        // value={`${ icon.id }.${icon.category }.${ icon.label } ${ icon.description }`}
+                                        >
+                                            {/* <Icon type="file-image" /> */}
+                                            {/* <Icon component={icon.data as any} /> */}
+                                            {/* <Icon component={this.makeSvgElement( icon ) as any} /> */}
+                                            {this.makeSvgElement( icon ) }
+                                            {icon.title || icon.description ? `${icon.title} ${icon.description}` : icon.id}
+                                        </Select.Option>
+                                    ) ) : null}
+                                </Select>
+
+                                {/* <Divider />
+                                <i><Typography.Text type="secondary">Or create a new image</Typography.Text></i><br />
+                                <NewImageUploadModal
+                                    changeHandler={changeHandler}
+                                    visibleHandler={visibleHandler}
+                                    buttonLabel="Upload Image"
+                                    labelImage={labelImage}
+                                /> */}
+                            </Modal>
+                        );
                     }}
                 </DrawContext.Consumer>
             );

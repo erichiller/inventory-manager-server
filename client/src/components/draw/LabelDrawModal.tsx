@@ -1,7 +1,8 @@
 import { useContext, useState } from "react";
 import { DISPLAY } from '../../lib/types/enums';
 import { Label, useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument } from "../../lib/types/graphql";
-import { Modal, Descriptions, Button, Icon, Tooltip, message } from "antd";
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Modal, Descriptions, Button, Tooltip, message } from "antd";
 import React from "react";
 import { LabelDraw } from "./LabelDraw";
 import { PrintContext } from "../print/PrintContextHandler";
@@ -151,7 +152,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
             footer={[
                 <Tooltip key="cancel" placement="top" title="Return to Items">
                     <Button key="cancel" type="danger" onClick={handleCancel}>
-                        <Icon type="stop" />
+                        <LegacyIcon type="stop" />
                         Cancel
                         </Button>
                 </Tooltip >,
@@ -166,7 +167,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
 
                 <Tooltip key="addToPrintList" placement="top" title="Add to list for bulk printing later">
                     <Button key="addToPrintList" type="primary" onClick={context.handleAddToPrintList}>
-                        <Icon type="database" />
+                        <LegacyIcon type="database" />
                         {console.log( "label comparison", label, context.getCurrentLabel() )}
                         {/* TODO: fix */}
                         {context.getPrintLabels().some( el => {
@@ -180,7 +181,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
 
                 <Tooltip key="save" placement="top" title="Save label for future printing">
                     <Button key="save" type="primary" onClick={handleSave}>
-                        <Icon type="save" />
+                        <LegacyIcon type="save" />
                         Save
                         </Button>
                 </Tooltip>,
