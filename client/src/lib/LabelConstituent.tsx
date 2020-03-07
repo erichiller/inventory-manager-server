@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { v4 as UUIDv4 } from 'uuid';
 
-import { EnumIconCategoryEnum, Scalars, LabelAggregate } from './types/graphql';
+import { EnumItemClassEnum, Scalars, LabelAggregate } from './types/graphql';
 import { Integer } from './types/uint8';
 import { Label } from "./types/graphql";
 import { Item } from "./item";
@@ -306,7 +306,7 @@ export class LabelImage extends LabelConstituent {
     width: Integer;
     height: Integer;
     label?: string;
-    category?: EnumIconCategoryEnum;
+    category?: EnumItemClassEnum;
     description?: string;
 
     constructor ( options?: Partial<LabelImage> ) {

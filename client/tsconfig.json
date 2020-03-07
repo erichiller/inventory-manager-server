@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "outDir": "../dist/client/",
-        "target": "es5",
+        "target": "es2019",
         "skipLibCheck": true,
         "module": "commonjs",
         "jsx": "react",

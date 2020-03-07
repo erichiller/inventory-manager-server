@@ -30,11 +30,11 @@ export default withGetIcon<LabelAddImageProps, LabelAddImageState>()(
         handleCancel = () => {
             /// REMOVE ELEMENT /// REVERT ///
             this.onClose();
-        }
+        };
 
         onClose = () => {
             this.props.visibleHandler( DISPLAY.HIDDEN );
-        }
+        };
 
         getLabelImageSelectedObj ( id: string ): LabelImage {
             if ( this.props.data.icon ) {
@@ -74,13 +74,13 @@ export default withGetIcon<LabelAddImageProps, LabelAddImageState>()(
                 this.getLabelImageSelectedObj( value ),
                 this.props.labelImage
             );
-        }
+        };
 
         makeSvgElement = ( icon: Partial<CustomIcon> ) => {
             let image: HTMLImageElement = document.createElement('img');
             image.src = icon.data;
             return <img width={50} src={icon.data} />;
-        }
+        };
 
         render () {
             const {
