@@ -8,8 +8,9 @@ import { Select } from "antd";
 
 // import * as ReactRouter from 'react-router';
 import { SelectValue, LabeledValue } from 'antd/lib/select';
-import { useSearchItemsQuery } from "../../lib/types/graphql";
+import { useSearchItemsQuery, EnumItemClassEnum } from "../../lib/types/graphql";
 import { QueryStore } from "apollo-client/data/queries";
+import { OptionProps } from "rc-select/lib/Option";
 
 const { Option } = Select;
 
@@ -108,7 +109,7 @@ interface Tags {
     multiple_allowed: boolean;
 }
 
-const tagOptions: Array<React.ReactElement> = filterKeys.map( tag => <Option key={tag}>{tag}:</Option> );
+const tagOptions: Array<React.ReactElement> = filterKeys.map( tag => <Option value={tag}>{tag}:</Option> );
 
 
 interface SearchState {
@@ -173,14 +174,22 @@ export const ItemSearch: React.FC<{}> = ( props ) => {
             console.log( `typeString: ${ typeString }` );
             // let type = queryResults.data ? queryResults.data[ typeString ] : [];
             let priorClass = queryResults.data[typeString][ 0 ].class;
-            let optionGroupItems: { [ key in QueryResultKeysT ]: (typeof Option)[] };
+            // let optionGroupItems: { [ key in QueryResultKeysT ]: ( typeof Option )[] };
+            let optionGroupItems: { [ key in keyof Record<EnumItemClassEnum, string> ]: ( React.ReactElement )[] };
+
+            // optionGroupItems = "item_hardware_fastener_bolt";
             for ( let i = 0; i < queryResults.data[ typeString ].length; i++ ) {
                 let result = queryResults.data.item[ i ]; // just to ease the typing
                 if ( queryResults.data.item[ i ].class != priorClass ) {
                     priorClass = queryResults.data.item[ i ].class;
                 }
+                console.log({optionGroupItems});
+                if ( ! optionGroupItems || ! Object.keys(optionGroupItems).includes(result.class) ) { 
+                    optionGroupItems = {} as { [ key in keyof Record<EnumItemClassEnum, string> ]: ( React.ReactElement )[] };
+                    optionGroupItems[result.class] = []; 
+                }
                 optionGroupItems[result.class].push(
-                    <Option key={result.id}>{result.name}:</Option>
+                    <Option value={result.id}>{result.name}:</Option>
                 );
             }
             Object.getOwnPropertyNames( optionGroupItems).forEach( (className: QueryResultKeysT) => {
@@ -215,7 +224,7 @@ export const ItemSearch: React.FC<{}> = ( props ) => {
             children={[
                 <Select.OptGroup label="Filters" children={filterKeys
                     .filter( tag => tag.startsWith( state.searchString ?? '' ) )
-                    .map( tag => <Option key={":" + tag}>
+                    .map( tag => <Option value={":" + tag}>
                         <LegacyIcon type="tag" /> <b>{tag}:</b>
                     </Option> )
                 } />
@@ -242,7 +251,7 @@ export const ItemSearch: React.FC<{}> = ( props ) => {
                             return {
                                 key: i.key,
                                 label: newLabel
-                            };
+                            } as LabeledValue;
                         } ) ]
                 } );
                 // setState({value: [ 
@@ -270,7 +279,7 @@ export const ItemSearch: React.FC<{}> = ( props ) => {
                         {
                             key: i.key,
                             label: newLabel
-                        }
+                        } as LabeledValue
                     ]
                 } );
                 // option = <React.Fragment>Hello</React.Fragment>;

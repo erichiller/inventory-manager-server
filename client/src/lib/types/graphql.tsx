@@ -373,127 +373,127 @@ export enum EnumHardwareFinishUpdateColumn {
   ID = 'id'
 }
 
-export type EnumIconCategory = {
-   __typename?: 'enum_icon_category',
+export type EnumItemClass = {
+   __typename?: 'enum_item_class',
   description?: Maybe<Scalars['String']>,
   id: Scalars['String'],
 };
 
-export type EnumIconCategoryAggregate = {
-   __typename?: 'enum_icon_category_aggregate',
-  aggregate?: Maybe<EnumIconCategoryAggregateFields>,
-  nodes: Array<EnumIconCategory>,
+export type EnumItemClassAggregate = {
+   __typename?: 'enum_item_class_aggregate',
+  aggregate?: Maybe<EnumItemClassAggregateFields>,
+  nodes: Array<EnumItemClass>,
 };
 
-export type EnumIconCategoryAggregateFields = {
-   __typename?: 'enum_icon_category_aggregate_fields',
+export type EnumItemClassAggregateFields = {
+   __typename?: 'enum_item_class_aggregate_fields',
   count?: Maybe<Scalars['Int']>,
-  max?: Maybe<EnumIconCategoryMaxFields>,
-  min?: Maybe<EnumIconCategoryMinFields>,
+  max?: Maybe<EnumItemClassMaxFields>,
+  min?: Maybe<EnumItemClassMinFields>,
 };
 
 
-export type EnumIconCategoryAggregateFieldsCountArgs = {
-  columns?: Maybe<Array<EnumIconCategorySelectColumn>>,
+export type EnumItemClassAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<EnumItemClassSelectColumn>>,
   distinct?: Maybe<Scalars['Boolean']>
 };
 
-export type EnumIconCategoryAggregateOrderBy = {
+export type EnumItemClassAggregateOrderBy = {
   count?: Maybe<OrderBy>,
-  max?: Maybe<EnumIconCategoryMaxOrderBy>,
-  min?: Maybe<EnumIconCategoryMinOrderBy>,
+  max?: Maybe<EnumItemClassMaxOrderBy>,
+  min?: Maybe<EnumItemClassMinOrderBy>,
 };
 
-export type EnumIconCategoryArrRelInsertInput = {
-  data: Array<EnumIconCategoryInsertInput>,
-  on_conflict?: Maybe<EnumIconCategoryOnConflict>,
+export type EnumItemClassArrRelInsertInput = {
+  data: Array<EnumItemClassInsertInput>,
+  on_conflict?: Maybe<EnumItemClassOnConflict>,
 };
 
-export type EnumIconCategoryBoolExp = {
-  _and?: Maybe<Array<Maybe<EnumIconCategoryBoolExp>>>,
-  _not?: Maybe<EnumIconCategoryBoolExp>,
-  _or?: Maybe<Array<Maybe<EnumIconCategoryBoolExp>>>,
+export type EnumItemClassBoolExp = {
+  _and?: Maybe<Array<Maybe<EnumItemClassBoolExp>>>,
+  _not?: Maybe<EnumItemClassBoolExp>,
+  _or?: Maybe<Array<Maybe<EnumItemClassBoolExp>>>,
   description?: Maybe<StringComparisonExp>,
   id?: Maybe<StringComparisonExp>,
 };
 
-export enum EnumIconCategoryConstraint {
+export enum EnumItemClassConstraint {
   ICON_CATEGORY_ID_KEY = 'icon_category_id_key',
   ICON_CATEGORY_PKEY = 'icon_category_pkey'
 }
 
-export enum EnumIconCategoryEnum {
-  HARDWAREFASTENER = 'HardwareFastener'
+export enum EnumItemClassEnum {
+  ITEM_HARDWARE_FASTENER_BOLT = 'item_hardware_fastener_bolt'
 }
 
-export type EnumIconCategoryEnumComparisonExp = {
-  _eq?: Maybe<EnumIconCategoryEnum>,
-  _in?: Maybe<Array<EnumIconCategoryEnum>>,
+export type EnumItemClassEnumComparisonExp = {
+  _eq?: Maybe<EnumItemClassEnum>,
+  _in?: Maybe<Array<EnumItemClassEnum>>,
   _is_null?: Maybe<Scalars['Boolean']>,
-  _neq?: Maybe<EnumIconCategoryEnum>,
-  _nin?: Maybe<Array<EnumIconCategoryEnum>>,
+  _neq?: Maybe<EnumItemClassEnum>,
+  _nin?: Maybe<Array<EnumItemClassEnum>>,
 };
 
-export type EnumIconCategoryInsertInput = {
+export type EnumItemClassInsertInput = {
   description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['String']>,
 };
 
-export type EnumIconCategoryMaxFields = {
-   __typename?: 'enum_icon_category_max_fields',
+export type EnumItemClassMaxFields = {
+   __typename?: 'enum_item_class_max_fields',
   description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['String']>,
 };
 
-export type EnumIconCategoryMaxOrderBy = {
+export type EnumItemClassMaxOrderBy = {
   description?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
 };
 
-export type EnumIconCategoryMinFields = {
-   __typename?: 'enum_icon_category_min_fields',
+export type EnumItemClassMinFields = {
+   __typename?: 'enum_item_class_min_fields',
   description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['String']>,
 };
 
-export type EnumIconCategoryMinOrderBy = {
+export type EnumItemClassMinOrderBy = {
   description?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
 };
 
-export type EnumIconCategoryMutationResponse = {
-   __typename?: 'enum_icon_category_mutation_response',
+export type EnumItemClassMutationResponse = {
+   __typename?: 'enum_item_class_mutation_response',
   affected_rows: Scalars['Int'],
-  returning: Array<EnumIconCategory>,
+  returning: Array<EnumItemClass>,
 };
 
-export type EnumIconCategoryObjRelInsertInput = {
-  data: EnumIconCategoryInsertInput,
-  on_conflict?: Maybe<EnumIconCategoryOnConflict>,
+export type EnumItemClassObjRelInsertInput = {
+  data: EnumItemClassInsertInput,
+  on_conflict?: Maybe<EnumItemClassOnConflict>,
 };
 
-export type EnumIconCategoryOnConflict = {
-  constraint: EnumIconCategoryConstraint,
-  update_columns: Array<EnumIconCategoryUpdateColumn>,
-  where?: Maybe<EnumIconCategoryBoolExp>,
+export type EnumItemClassOnConflict = {
+  constraint: EnumItemClassConstraint,
+  update_columns: Array<EnumItemClassUpdateColumn>,
+  where?: Maybe<EnumItemClassBoolExp>,
 };
 
-export type EnumIconCategoryOrderBy = {
+export type EnumItemClassOrderBy = {
   description?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
 };
 
-export enum EnumIconCategorySelectColumn {
+export enum EnumItemClassSelectColumn {
   DESCRIPTION = 'description',
   ID = 'id'
 }
 
-export type EnumIconCategorySetInput = {
+export type EnumItemClassSetInput = {
   description?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['String']>,
 };
 
-export enum EnumIconCategoryUpdateColumn {
+export enum EnumItemClassUpdateColumn {
   DESCRIPTION = 'description',
   ID = 'id'
 }
@@ -867,7 +867,7 @@ export type IconInsertInput = {
 
 export type IconItemCategoryMap = {
    __typename?: 'icon_item_category_map',
-  category: EnumIconCategoryEnum,
+  category: EnumItemClassEnum,
   criteria?: Maybe<Scalars['jsonb']>,
   icon_id: Scalars['uuid'],
   sequence: Scalars['smallint'],
@@ -941,7 +941,7 @@ export type IconItemCategoryMapBoolExp = {
   _and?: Maybe<Array<Maybe<IconItemCategoryMapBoolExp>>>,
   _not?: Maybe<IconItemCategoryMapBoolExp>,
   _or?: Maybe<Array<Maybe<IconItemCategoryMapBoolExp>>>,
-  category?: Maybe<EnumIconCategoryEnumComparisonExp>,
+  category?: Maybe<EnumItemClassEnumComparisonExp>,
   criteria?: Maybe<JsonbComparisonExp>,
   icon_id?: Maybe<UuidComparisonExp>,
   sequence?: Maybe<SmallintComparisonExp>,
@@ -969,7 +969,7 @@ export type IconItemCategoryMapIncInput = {
 };
 
 export type IconItemCategoryMapInsertInput = {
-  category?: Maybe<EnumIconCategoryEnum>,
+  category?: Maybe<EnumItemClassEnum>,
   criteria?: Maybe<Scalars['jsonb']>,
   icon_id?: Maybe<Scalars['uuid']>,
   sequence?: Maybe<Scalars['smallint']>,
@@ -1029,7 +1029,7 @@ export enum IconItemCategoryMapSelectColumn {
 }
 
 export type IconItemCategoryMapSetInput = {
-  category?: Maybe<EnumIconCategoryEnum>,
+  category?: Maybe<EnumItemClassEnum>,
   criteria?: Maybe<Scalars['jsonb']>,
   icon_id?: Maybe<Scalars['uuid']>,
   sequence?: Maybe<Scalars['smallint']>,
@@ -1292,7 +1292,7 @@ export type Item = {
    __typename?: 'item',
   bundle: Array<ItemBundleMap>,
   bundle_aggregate: ItemBundleMapAggregate,
-  class: Scalars['String'],
+  class: EnumItemClassEnum,
   id: Scalars['Int'],
   labelTemplates: Array<LabelTemplateMap>,
   labelTemplates_aggregate: LabelTemplateMapAggregate,
@@ -1484,7 +1484,7 @@ export type ItemBoolExp = {
   _not?: Maybe<ItemBoolExp>,
   _or?: Maybe<Array<Maybe<ItemBoolExp>>>,
   bundle?: Maybe<ItemBundleMapBoolExp>,
-  class?: Maybe<StringComparisonExp>,
+  class?: Maybe<EnumItemClassEnumComparisonExp>,
   id?: Maybe<IntComparisonExp>,
   labelTemplates?: Maybe<LabelTemplateMapBoolExp>,
   labels?: Maybe<LabelBoolExp>,
@@ -2656,7 +2656,7 @@ export type ItemIncInput = {
 
 export type ItemInsertInput = {
   bundle?: Maybe<ItemBundleMapArrRelInsertInput>,
-  class?: Maybe<Scalars['String']>,
+  class?: Maybe<EnumItemClassEnum>,
   id?: Maybe<Scalars['Int']>,
   labelTemplates?: Maybe<LabelTemplateMapArrRelInsertInput>,
   labels?: Maybe<LabelArrRelInsertInput>,
@@ -2668,23 +2668,19 @@ export type ItemInsertInput = {
 
 export type ItemMaxFields = {
    __typename?: 'item_max_fields',
-  class?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['Int']>,
 };
 
 export type ItemMaxOrderBy = {
-  class?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
 };
 
 export type ItemMinFields = {
    __typename?: 'item_min_fields',
-  class?: Maybe<Scalars['String']>,
   id?: Maybe<Scalars['Int']>,
 };
 
 export type ItemMinOrderBy = {
-  class?: Maybe<OrderBy>,
   id?: Maybe<OrderBy>,
 };
 
@@ -2728,7 +2724,7 @@ export enum ItemSelectColumn {
 }
 
 export type ItemSetInput = {
-  class?: Maybe<Scalars['String']>,
+  class?: Maybe<EnumItemClassEnum>,
   id?: Maybe<Scalars['Int']>,
   object?: Maybe<Scalars['jsonb']>,
 };
@@ -4248,7 +4244,7 @@ export type MutationRoot = {
   delete_enum_hardware_fastener_material?: Maybe<EnumHardwareFastenerMaterialMutationResponse>,
   delete_enum_hardware_fastener_screw_point?: Maybe<EnumHardwareFastenerScrewPointMutationResponse>,
   delete_enum_hardware_finish?: Maybe<EnumHardwareFinishMutationResponse>,
-  delete_enum_icon_category?: Maybe<EnumIconCategoryMutationResponse>,
+  delete_enum_item_class?: Maybe<EnumItemClassMutationResponse>,
   delete_enum_payment_method_type?: Maybe<EnumPaymentMethodTypeMutationResponse>,
   delete_enum_unit?: Maybe<EnumUnitMutationResponse>,
   delete_icon?: Maybe<IconMutationResponse>,
@@ -4273,7 +4269,7 @@ export type MutationRoot = {
   insert_enum_hardware_fastener_material?: Maybe<EnumHardwareFastenerMaterialMutationResponse>,
   insert_enum_hardware_fastener_screw_point?: Maybe<EnumHardwareFastenerScrewPointMutationResponse>,
   insert_enum_hardware_finish?: Maybe<EnumHardwareFinishMutationResponse>,
-  insert_enum_icon_category?: Maybe<EnumIconCategoryMutationResponse>,
+  insert_enum_item_class?: Maybe<EnumItemClassMutationResponse>,
   insert_enum_payment_method_type?: Maybe<EnumPaymentMethodTypeMutationResponse>,
   insert_enum_unit?: Maybe<EnumUnitMutationResponse>,
   insert_icon?: Maybe<IconMutationResponse>,
@@ -4299,7 +4295,7 @@ export type MutationRoot = {
   update_enum_hardware_fastener_material?: Maybe<EnumHardwareFastenerMaterialMutationResponse>,
   update_enum_hardware_fastener_screw_point?: Maybe<EnumHardwareFastenerScrewPointMutationResponse>,
   update_enum_hardware_finish?: Maybe<EnumHardwareFinishMutationResponse>,
-  update_enum_icon_category?: Maybe<EnumIconCategoryMutationResponse>,
+  update_enum_item_class?: Maybe<EnumItemClassMutationResponse>,
   update_enum_payment_method_type?: Maybe<EnumPaymentMethodTypeMutationResponse>,
   update_enum_unit?: Maybe<EnumUnitMutationResponse>,
   update_icon?: Maybe<IconMutationResponse>,
@@ -4340,8 +4336,8 @@ export type MutationRootDeleteEnumHardwareFinishArgs = {
 };
 
 
-export type MutationRootDeleteEnumIconCategoryArgs = {
-  where: EnumIconCategoryBoolExp
+export type MutationRootDeleteEnumItemClassArgs = {
+  where: EnumItemClassBoolExp
 };
 
 
@@ -4468,9 +4464,9 @@ export type MutationRootInsertEnumHardwareFinishArgs = {
 };
 
 
-export type MutationRootInsertEnumIconCategoryArgs = {
-  objects: Array<EnumIconCategoryInsertInput>,
-  on_conflict?: Maybe<EnumIconCategoryOnConflict>
+export type MutationRootInsertEnumItemClassArgs = {
+  objects: Array<EnumItemClassInsertInput>,
+  on_conflict?: Maybe<EnumItemClassOnConflict>
 };
 
 
@@ -4623,9 +4619,9 @@ export type MutationRootUpdateEnumHardwareFinishArgs = {
 };
 
 
-export type MutationRootUpdateEnumIconCategoryArgs = {
-  _set?: Maybe<EnumIconCategorySetInput>,
-  where: EnumIconCategoryBoolExp
+export type MutationRootUpdateEnumItemClassArgs = {
+  _set?: Maybe<EnumItemClassSetInput>,
+  where: EnumItemClassBoolExp
 };
 
 
@@ -5762,9 +5758,9 @@ export type QueryRoot = {
   enum_hardware_finish: Array<EnumHardwareFinish>,
   enum_hardware_finish_aggregate: EnumHardwareFinishAggregate,
   enum_hardware_finish_by_pk?: Maybe<EnumHardwareFinish>,
-  enum_icon_category: Array<EnumIconCategory>,
-  enum_icon_category_aggregate: EnumIconCategoryAggregate,
-  enum_icon_category_by_pk?: Maybe<EnumIconCategory>,
+  enum_item_class: Array<EnumItemClass>,
+  enum_item_class_aggregate: EnumItemClassAggregate,
+  enum_item_class_by_pk?: Maybe<EnumItemClass>,
   enum_payment_method_type: Array<EnumPaymentMethodType>,
   enum_payment_method_type_aggregate: EnumPaymentMethodTypeAggregate,
   enum_payment_method_type_by_pk?: Maybe<EnumPaymentMethodType>,
@@ -5901,25 +5897,25 @@ export type QueryRootEnumHardwareFinishByPkArgs = {
 };
 
 
-export type QueryRootEnumIconCategoryArgs = {
-  distinct_on?: Maybe<Array<EnumIconCategorySelectColumn>>,
+export type QueryRootEnumItemClassArgs = {
+  distinct_on?: Maybe<Array<EnumItemClassSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<EnumIconCategoryOrderBy>>,
-  where?: Maybe<EnumIconCategoryBoolExp>
+  order_by?: Maybe<Array<EnumItemClassOrderBy>>,
+  where?: Maybe<EnumItemClassBoolExp>
 };
 
 
-export type QueryRootEnumIconCategoryAggregateArgs = {
-  distinct_on?: Maybe<Array<EnumIconCategorySelectColumn>>,
+export type QueryRootEnumItemClassAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumItemClassSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<EnumIconCategoryOrderBy>>,
-  where?: Maybe<EnumIconCategoryBoolExp>
+  order_by?: Maybe<Array<EnumItemClassOrderBy>>,
+  where?: Maybe<EnumItemClassBoolExp>
 };
 
 
-export type QueryRootEnumIconCategoryByPkArgs = {
+export type QueryRootEnumItemClassByPkArgs = {
   id: Scalars['String']
 };
 
@@ -6012,7 +6008,7 @@ export type QueryRootIconItemCategoryMapAggregateArgs = {
 
 
 export type QueryRootIconItemCategoryMapByPkArgs = {
-  category: EnumIconCategoryEnum,
+  category: EnumItemClassEnum,
   icon_id: Scalars['uuid'],
   sequence: Scalars['smallint']
 };
@@ -6737,9 +6733,9 @@ export type SubscriptionRoot = {
   enum_hardware_finish: Array<EnumHardwareFinish>,
   enum_hardware_finish_aggregate: EnumHardwareFinishAggregate,
   enum_hardware_finish_by_pk?: Maybe<EnumHardwareFinish>,
-  enum_icon_category: Array<EnumIconCategory>,
-  enum_icon_category_aggregate: EnumIconCategoryAggregate,
-  enum_icon_category_by_pk?: Maybe<EnumIconCategory>,
+  enum_item_class: Array<EnumItemClass>,
+  enum_item_class_aggregate: EnumItemClassAggregate,
+  enum_item_class_by_pk?: Maybe<EnumItemClass>,
   enum_payment_method_type: Array<EnumPaymentMethodType>,
   enum_payment_method_type_aggregate: EnumPaymentMethodTypeAggregate,
   enum_payment_method_type_by_pk?: Maybe<EnumPaymentMethodType>,
@@ -6875,25 +6871,25 @@ export type SubscriptionRootEnumHardwareFinishByPkArgs = {
 };
 
 
-export type SubscriptionRootEnumIconCategoryArgs = {
-  distinct_on?: Maybe<Array<EnumIconCategorySelectColumn>>,
+export type SubscriptionRootEnumItemClassArgs = {
+  distinct_on?: Maybe<Array<EnumItemClassSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<EnumIconCategoryOrderBy>>,
-  where?: Maybe<EnumIconCategoryBoolExp>
+  order_by?: Maybe<Array<EnumItemClassOrderBy>>,
+  where?: Maybe<EnumItemClassBoolExp>
 };
 
 
-export type SubscriptionRootEnumIconCategoryAggregateArgs = {
-  distinct_on?: Maybe<Array<EnumIconCategorySelectColumn>>,
+export type SubscriptionRootEnumItemClassAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumItemClassSelectColumn>>,
   limit?: Maybe<Scalars['Int']>,
   offset?: Maybe<Scalars['Int']>,
-  order_by?: Maybe<Array<EnumIconCategoryOrderBy>>,
-  where?: Maybe<EnumIconCategoryBoolExp>
+  order_by?: Maybe<Array<EnumItemClassOrderBy>>,
+  where?: Maybe<EnumItemClassBoolExp>
 };
 
 
-export type SubscriptionRootEnumIconCategoryByPkArgs = {
+export type SubscriptionRootEnumItemClassByPkArgs = {
   id: Scalars['String']
 };
 
@@ -6986,7 +6982,7 @@ export type SubscriptionRootIconItemCategoryMapAggregateArgs = {
 
 
 export type SubscriptionRootIconItemCategoryMapByPkArgs = {
-  category: EnumIconCategoryEnum,
+  category: EnumItemClassEnum,
   icon_id: Scalars['uuid'],
   sequence: Scalars['smallint']
 };
@@ -8998,4 +8994,4 @@ export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHo
 export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
 export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
-// graphql typescript defs generated on 2020-02-28T06:42:55-07:00
+// graphql typescript defs generated on 2020-03-06T17:50:16-07:00

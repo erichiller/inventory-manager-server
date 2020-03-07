@@ -4,7 +4,7 @@ import { LabelImage } from "../../../lib/LabelConstituent";
 import { Form, Icon as LegacyIcon } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import { Spin, Select, Input, message, Modal } from "antd";
-import { InsertIconComponent, GetIconDocument, EnumIconCategoryEnum } from "../../../lib/types/graphql";
+import { InsertIconComponent, GetIconDocument, EnumItemClassEnum } from "../../../lib/types/graphql";
 import { Item } from "../../../lib/item";
 import { DISPLAY } from '../../../lib/types/enums';
 import { DrawContext } from "../LabelDraw";
@@ -85,8 +85,8 @@ export const NewImageUploadModal = Form.create<NewImageUploadModalProps>(
         }
 
         get autocompleteFieldValues (): string[] {
-            // return Object.keys( EnumIconCategoryEnum ).map( col => col.toLowerCase() );
-            return Object.values( EnumIconCategoryEnum );
+            // return Object.keys( EnumItemClassEnum ).map( col => col.toLowerCase() );
+            return Object.values( EnumItemClassEnum );
         }
         onCancel = () => {
             this.props.visibleHandler( DISPLAY.HIDDEN );

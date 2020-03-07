@@ -1,7 +1,6 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
-import { FormComponentProps } from '@ant-design/compatible/lib/form';
-import Form from 'antd/lib/form';
+import Form, { FormComponentProps } from '@ant-design/compatible/lib/form';
 import { DISPLAY } from '../../lib/types/enums';
 import React from 'react';
 import { Modal, AutoComplete } from 'antd';
@@ -48,7 +47,7 @@ export default Form.create<LabelDrawEditTextProps>(
         // }
         onCancel = () => {
             this.props.visibleHandler(DISPLAY.HIDDEN);
-        }
+        };
         // onFormChange = (value: any): void => {
         //     console.log("onFormChange in DrawEditText", value, this.props.form.getFieldsValue());
         //     let currentLabelText: LabelText;
@@ -89,7 +88,7 @@ export default Form.create<LabelDrawEditTextProps>(
 
         onChangeFormatOptions = (checked: CheckedFormatOptionsT) => {
 
-        }
+        };
 
         render() {
             const { event, visibleHandler, form, item, changeHandler , labelText} = this.props;
