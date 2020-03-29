@@ -1,24 +1,32 @@
 # Schema and Data Structure
 
+* [ ] use the default icon for a class as it's identifying icon in graphical elements.
+
+
+
 
 
 
 about below.
 format is
 
+```
 <data_media> <data_name> (
     <field_name> : <field_data_type> [ → fkey ]
     ...
 )
+```
 
 
 key here is to always make from the most specific item to the least specific.
 
+```
 item_hardware_fastener_bolt → item.id (Item)
 item_hardware_fastener_bolt → manufacturer_item
 item_hardware_fastener_bolt → (for bundle) = .item.bundle
+```
 
-also, all item_id must remain unique
+also, all `item_id` must remain unique
 
 
 Use schema comments:
