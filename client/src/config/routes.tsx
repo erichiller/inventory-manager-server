@@ -2,6 +2,7 @@ import React from 'react';
 import { matchPath } from 'react-router-dom';
 import { ItemTable } from '../components/item/ItemTable';
 import { LabelTable } from '../components/label/LabelTable';
+import { ItemIndex } from '../components/item/Index';
 
 type ReactFunctionComponent = ( ( route?: RouteEntry, match?: RouterMatch ) => JSX.Element );
 
@@ -39,7 +40,7 @@ export const routes: RouteEntry[] = [
         path: [ "/items", "/item/:item_id" ],
         exact: true,
         // AppMenuEntry: () => <div></div>,
-        main: () => <ItemTable />,
+        main: () => <ItemIndex />,
         // AppMenuIcon: () => <Icon component={PathIcon as any} />,
         // AppMenuEntry: () => <span><Icon component={PathIcon as any} /><span>Network</span></span>
     },

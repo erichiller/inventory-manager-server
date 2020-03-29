@@ -1,0 +1,19 @@
+.flexContent {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.button {
+    color: #fff;
+    font: 100 24px/100px sans-serif;
+    height: 150px;
+    text-align: center;
+}
+
+.button button {
+    height: 50%;
+    width: 300px;
+    margin: 20px;
+}

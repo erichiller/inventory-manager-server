@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import { Item, ItemHardwareFastenerBolt } from '../../lib/item';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
 // import Search from "antd/lib/input/Search";
-import { Select } from "antd";
+import { Select, Row, Col, Button } from "antd";
 
 
 // import * as ReactRouter from 'react-router';
 import { SelectValue, LabeledValue } from 'antd/lib/select';
+import { SearchOutlined } from '@ant-design/icons';
 import { useSearchItemsQuery, EnumItemClassEnum } from "../../lib/types/graphql";
 import { QueryStore } from "apollo-client/data/queries";
 import { OptionProps } from "rc-select/lib/Option";
@@ -37,6 +38,7 @@ interface ItemSearchProps<T> {
     displayData?: ( data: T, index: number ) => React.ReactNode;
     // loading?: boolean;
 }
+
 
 
 // const sampleData = {
@@ -170,32 +172,32 @@ export const ItemSearch: React.FC<{}> = ( props ) => {
     let options: Array<React.ReactElement> = [];
     console.group( "Constructing Search Options" );
     if ( !queryResults.error && !queryResults.loading && queryResults.data ) {
-        Object.keys( queryResults.data ).forEach( (typeString: QueryResultKeysT) => {
+        Object.keys( queryResults.data ).forEach( ( typeString: QueryResultKeysT ) => {
             console.log( `typeString: ${ typeString }` );
             // let type = queryResults.data ? queryResults.data[ typeString ] : [];
-            let priorClass = queryResults.data[typeString][ 0 ].class;
+            let priorClass = queryResults.data[ typeString ][ 0 ].class;
             // let optionGroupItems: { [ key in QueryResultKeysT ]: ( typeof Option )[] };
             let optionGroupItems: { [ key in keyof Record<EnumItemClassEnum, string> ]: ( React.ReactElement )[] };
 
             // optionGroupItems = "item_hardware_fastener_bolt";
             for ( let i = 0; i < queryResults.data[ typeString ].length; i++ ) {
-                let result = queryResults.data.item[ i ]; // just to ease the typing
+                let result = new Item( queryResults.data.item[ i ] ); // just to ease the typing
                 if ( queryResults.data.item[ i ].class != priorClass ) {
                     priorClass = queryResults.data.item[ i ].class;
                 }
-                console.log({optionGroupItems});
-                if ( ! optionGroupItems || ! Object.keys(optionGroupItems).includes(result.class) ) { 
+                console.log( { optionGroupItems } );
+                if ( !optionGroupItems || !Object.keys( optionGroupItems ).includes( result.class ) ) {
                     optionGroupItems = {} as { [ key in keyof Record<EnumItemClassEnum, string> ]: ( React.ReactElement )[] };
-                    optionGroupItems[result.class] = []; 
+                    optionGroupItems[ result.class ] = [];
                 }
-                optionGroupItems[result.class].push(
-                    <Option value={result.id}>{result.name}:</Option>
+                optionGroupItems[ result.class ].push(
+                    <Option value={result.id}>{result.name}</Option>
                 );
             }
-            Object.getOwnPropertyNames( optionGroupItems).forEach( (className: QueryResultKeysT) => {
+            Object.getOwnPropertyNames( optionGroupItems ).forEach( ( className: QueryResultKeysT ) => {
                 console.log( { part: 'building optionGroups', className } );
                 options.push( <Select.OptGroup key={className} label={className} children={optionGroupItems[ className ]} /> );
-            })
+            } );
         } );
     }
     console.groupEnd();
@@ -204,104 +206,105 @@ export const ItemSearch: React.FC<{}> = ( props ) => {
     // }
     console.log( "options length is now", options.length );
 
-    return (
-        <span><Select
-            placeholder="Hint: use `property:value` to quickly filter."
-            mode="tags"
-            // defaultActiveFirstOption={false}
-            // mode="combobox"
-            style={{ width: 450 }}
-            tokenSeparators={[ ',' ]}
-            // suffixIcon={<Icon type="search" />}
-            loading={queryResults.loading}
-            value={state.value}
-            labelInValue={true}
-            // showSearch={true}
-            // value={undefined}
-            // choiceTransitionName
-            // value ??
-            // onPopupScroll	Called when dropdown scrolls - maybe we could use this to essentially paginate the results ?
-            children={[
-                <Select.OptGroup label="Filters" children={filterKeys
-                    .filter( tag => tag.startsWith( state.searchString ?? '' ) )
-                    .map( tag => <Option value={":" + tag}>
-                        <LegacyIcon type="tag" /> <b>{tag}:</b>
-                    </Option> )
-                } />
-                ,
-                ...options ]}
+    return <React.Fragment>
+        <Select
+        placeholder="Hint: use `property:value` to quickly filter."
+        mode="tags"
+        // defaultActiveFirstOption={false}
+        // mode="combobox"
+        style={{ width: 450 }}
+        tokenSeparators={[ ',' ]}
+        // suffixIcon={<SearchOutlined />}
+        loading={queryResults.loading}
+        value={state.value}
+        labelInValue={true}
+        // showSearch={true}
+        // value={undefined}
+        // choiceTransitionName
+        // value ??
+        // onPopupScroll	Called when dropdown scrolls - maybe we could use this to essentially paginate the results ?
+        children={[
+            <Select.OptGroup label="Filters" children={filterKeys
+                .filter( tag => tag.startsWith( state.searchString ?? '' ) )
+                .map( tag => <Option value={":" + tag}>
+                    <LegacyIcon type="tag" /> <b>{tag}:</b>
+                </Option> )
+            } />
+            ,
+            ...options ]}
 
 
-            onChange={( value, option ) => {
-                // only called when option is chosen, same as onSelect it seems
-                console.log( { type: "onChange", value, option } );
-                // return;
-                setState( {
-                    value: [
-                        // ...state.value ?? [],
-                        ...( value as LabeledValue[] ).map( i => {
-                            console.log( "map value", i );
-                            let newLabel = i.label;
-                            if ( i.label?.toString().includes( ":" ) ) {
-                                newLabel = i.label?.toString().split( ':', 2 );
-                                newLabel = <span><LegacyIcon type="tag" /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
-                            } else if ( typeof newLabel === "string" ) {
-                                newLabel = <span><LegacyIcon type="font-size" /> <i>{newLabel?.toString()}</i></span>;
-                            }
-                            return {
-                                key: i.key,
-                                label: newLabel
-                            } as LabeledValue;
-                        } ) ]
-                } );
-                // setState({value: [ 
-                //     value.map(
-                //         { key: 'eric', label: <span>ERIC <b>BOLD</b></span>}
-                // ]})
-            }}
-
-            onSelect={( value, option ) => {
-                // receives the typed text in "value" and the present or generated "option"
-                console.log( { type: "onSelect", value, option, props: option.props, prior_state: state.value } );
-                return;
-                let i = value;
-                let newLabel = i.label;
-                if ( i.label?.toString().includes( ":" ) ) {
-                    newLabel = i.label?.toString().split( ':', 2 );
-                    newLabel = <span><LegacyIcon type="tag" /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
-                } else {
-                    newLabel = <span><LegacyIcon type="font-size" /> <i>{newLabel}</i></span>;
-                }
-                // return;
-                setState( {
-                    value: [
-                        ...(state.value ?? []),
-                        {
+        onChange={( value, option ) => {
+            // only called when option is chosen, same as onSelect it seems
+            console.log( { type: "onChange", value, option } );
+            // return;
+            setState( {
+                value: [
+                    // ...state.value ?? [],
+                    ...( value as LabeledValue[] ).map( i => {
+                        console.log( "map value", i );
+                        let newLabel = i.label;
+                        if ( i.label?.toString().includes( ":" ) ) {
+                            newLabel = i.label?.toString().split( ':', 2 );
+                            newLabel = <span><LegacyIcon type="tag" /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
+                        } else if ( typeof newLabel === "string" ) {
+                            newLabel = <span><LegacyIcon type="font-size" /> <i>{newLabel?.toString()}</i></span>;
+                        }
+                        return {
                             key: i.key,
                             label: newLabel
-                        } as LabeledValue
-                    ]
-                } );
-                // option = <React.Fragment>Hello</React.Fragment>;
-            }}
+                        } as LabeledValue;
+                    } ) ]
+            } );
+            // setState({value: [ 
+            //     value.map(
+            //         { key: 'eric', label: <span>ERIC <b>BOLD</b></span>}
+            // ]})
+        }}
+
+        onSelect={( value, option ) => {
+            // receives the typed text in "value" and the present or generated "option"
+            console.log( { type: "onSelect", value, option, props: option.props, prior_state: state.value } );
+            return;
+            let i = value;
+            let newLabel = i.label;
+            if ( i.label?.toString().includes( ":" ) ) {
+                newLabel = i.label?.toString().split( ':', 2 );
+                newLabel = <span><LegacyIcon type="tag" /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
+            } else {
+                newLabel = <span><LegacyIcon type="font-size" /> <i>{newLabel}</i></span>;
+            }
+            // return;
+            setState( {
+                value: [
+                    ...( state.value ?? [] ),
+                    {
+                        key: i.key,
+                        label: newLabel
+                    } as LabeledValue
+                ]
+            } );
+            // option = <React.Fragment>Hello</React.Fragment>;
+        }}
 
 
-            onSearch={( value ) => {
-                // onSearch gets the value of the latest typed text, meaning that which is not in a "tag"
-                console.log( { type: "onSearch", value } );
-                setState( { searchString: value, value: state.value } );
-            }}
+        onSearch={( value ) => {
+            // onSearch gets the value of the latest typed text, meaning that which is not in a "tag"
+            console.log( { type: "onSearch", value } );
+            setState( { searchString: value, value: state.value } );
+        }}
 
-            filterOption={( inputData, option ) => {
-                // gets called for each option in the current Select.Children (Select.Options)
-                // return true to include it in the remaining results
-                // not necessary as we are doing the filtering in GraphQL
-                // console.log( { type: "filterOption()", inputData, option} );
-                return true;
-            }}
+        filterOption={( inputData, option ) => {
+            // gets called for each option in the current Select.Children (Select.Options)
+            // return true to include it in the remaining results
+            // not necessary as we are doing the filtering in GraphQL
+            // console.log( { type: "filterOption()", inputData, option} );
+            return true;
+        }}
 
 
-        />  <LegacyIcon type="search" style={{ position: 'relative', left: -30, opacity: .6 }} /></span>
-    );
+    />
+        <LegacyIcon type="search" style={{ position: 'relative', left: -30, opacity: .6 }} />
+    </React.Fragment>;
 
 };
