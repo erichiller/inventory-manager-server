@@ -2,7 +2,7 @@
 import { Table, Divider, message, Row, Col, Button } from 'antd';
 import React, { useState } from 'react';
 import { EnumItemClassEnum } from '../../lib/types/graphql';
-import { Item, IItem } from '../../lib/item';
+import { Item } from '../../lib/item';
 import { ItemSearch } from './ItemSearch';
 // import DocumentNode from 'graphql-tag';
 
@@ -57,9 +57,11 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
             {
                 Item.ClassTypes.map( className => {
                     console.log( itemClasses(), "itemClasses in" );
-                    let itemType: IItem = Item.getClassForType(className);
+                    let itemType = Item.getClassForType(className);
+                    console.log(itemType);
                     // return <div className="button">
-                    return <Button key={className} block>{ new (Item.getClassForType(className)()).icon}{className}</Button>;
+                    return <Button key={className} block>{(new itemType()).constructor.name}{className}</Button>;
+                    // return <Button key={className} block>{new itemType().icon}{className}</Button>;
                     // </div>
                 } )
             }

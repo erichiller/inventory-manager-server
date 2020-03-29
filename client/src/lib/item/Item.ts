@@ -17,13 +17,15 @@ type IEnumItemMap<R extends Item<any>> = { [ key in keyof typeof EnumItemClassEn
 //     // 0: "error" // expected: error;  current: error; //OK
 // };
 
-export interface IItem {
-    icon: React.ReactElement;
-}
+// export interface IItem<T> {
+//     new ( ...args: any[] ): InstanceType<T>
+//     icon: React.ReactElement;
+// }
+
 
 
 // export class Item<T extends GenericItem> implements IItem {
-export class Item<T extends GenericItem> implements IItem {
+export class Item<T extends GenericItem> {
     __typename: string;
     id: Integer;
 
@@ -34,7 +36,8 @@ export class Item<T extends GenericItem> implements IItem {
     item: ItemGql;
 
 
-    constructor ( props: Partial<GenericItem>){
+    constructor ( props: Partial<T>){
+        if (!props) return;
         this._name = props.name;
         this._class = props.class;
         this._object = props.object;
@@ -76,9 +79,9 @@ export class Item<T extends GenericItem> implements IItem {
     //     };
     // }
 
-    static RegisterClassType<T extends Item<any>> (
+    static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T>; }>(
         itemClass: keyof typeof EnumItemClassEnum,
-        typeClass: { new(): T }
+        typeClass: T
     ) {
         Item._ClassTypes = {
             ...Item._ClassTypes,
