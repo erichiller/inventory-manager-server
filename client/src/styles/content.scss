@@ -8,12 +8,26 @@
 .button {
     color: #fff;
     font: 100 24px/100px sans-serif;
-    height: 150px;
+    height: 250px;
     text-align: center;
 }
 
 .button button {
     height: 50%;
-    width: 300px;
+    width: 250px;
+    height: 250px;
     margin: 20px;
+}
+
+.button button span {
+    display: block;
+    font-size: large;
+    font-family: Segoe UI,SegoeUI,Segoe WP,Helvetica Neue,Helvetica,Tahoma,Arial,sans-serif
+    // border: 2px solid red;
+}
+.button button img {
+    // display: block;
+    margin-top: 25px;
+    max-width: 180px;
+    max-height: 150px;
 }

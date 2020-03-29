@@ -5,27 +5,39 @@ import { Integer } from '../types/uint8';
 
 import { apolloClient } from '../../index';
 import { message } from "antd";
+import React from "react";
+import { VaultIcon } from "../../styles/icon";
 
 export type GenericItem = Pick<ItemGql, 'id'> & Partial<Pick<ItemGql, 'class' | 'object'> & { name?: string }> ;
 
 type ItemExtender<R extends Item<any>> = R;
-type IEnumItemMap<R extends Item<any>> = { [ key in keyof typeof EnumItemClassEnum ]: new () => R };
+// type IEnumItemMap<R extends Item<any>> = { [ key in keyof typeof EnumItemClassEnum ]: new () => R };
 
-// var X: IEnumTpProp<string> = {
-//     ITEM_HARDWARE_FASTENER_BOLT: "text1",
-//     // ValB: "text2",
-//     // 0: "error" // expected: error;  current: error; //OK
-// };
+type IEnumIItemMap = { [ key in keyof typeof EnumItemClassEnum ]: Union<IItem, new () => Item<GenericItem>> };
 
-// export interface IItem<T> {
-//     new ( ...args: any[] ): InstanceType<T>
-//     icon: React.ReactElement;
-// }
+export interface IItem {
+    icon: IconComponentT;
+    name: string;
+    categories: CategoryHierarchyT[];
+}
+
+export type CategoryHierarchyT = "Item" | "Hardware" | "Fastener" | "Bolt" ;
+
+export type IconComponentT = 
+        React.FunctionComponent<
+            React.DetailedHTMLProps<
+                React.ImgHTMLAttributes<HTMLImageElement>, 
+                HTMLImageElement
+            >
+        >
+        | React.FunctionComponent<React.SVGProps<SVGSVGElement>> ;
+    // | React.FunctionComponentElement<"img">
 
 
+type Union<A,B> = A & B;
 
 // export class Item<T extends GenericItem> implements IItem {
-export class Item<T extends GenericItem> {
+export class Item<T extends GenericItem> implements IItem {
     __typename: string;
     id: Integer;
 
@@ -60,6 +72,14 @@ export class Item<T extends GenericItem> {
         }
     }
 
+
+    static get categories (): CategoryHierarchyT[] {
+        return [ "Hardware", "Fastener", "Bolt" ];
+    }
+    get categories (): CategoryHierarchyT[] {
+        return [ "Item" ];
+    }
+
     /**
      * All possible item classes / types
      */
@@ -68,18 +88,10 @@ export class Item<T extends GenericItem> {
     }
 
 
-    static _ClassTypes: Partial< IEnumItemMap< ItemExtender<any> > > = {};
+    // static _ClassTypes: Partial< IEnumItemMap< ItemExtender<any> > > = {};
+    static _ClassTypes: IEnumIItemMap;
 
-    // static RegisterClassType<G extends GenericItem, R extends Item<G> > ( 
-    //     itemClass: keyof typeof EnumItemClassEnum, 
-    //     typeClass: new () => R ){
-    //     Item._ClassTypes = {
-    //         ...Item._ClassTypes,
-    //         ...Object.fromEntries([ [itemClass, typeClass ] ])
-    //     };
-    // }
-
-    static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T>; }>(
+    static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T> }>(
         itemClass: keyof typeof EnumItemClassEnum,
         typeClass: T
     ) {
@@ -89,18 +101,19 @@ export class Item<T extends GenericItem> {
         };
     }
 
-    // public static getClassForType ( itemClass: keyof typeof EnumItemClassEnum ): new () => IItem {
-    //     return Item._ClassTypes[ itemClass ];
-    // }
-    public static getClassForType<T extends Item<any>> ( itemClass: keyof typeof EnumItemClassEnum ): new () => T {
+    public static getClassForType ( itemClass: keyof typeof EnumItemClassEnum ): Union< IItem , new () => IItem> {
         return Item._ClassTypes[ itemClass ];
+    }
+
+    static get icon (): IconComponentT {
+        return VaultIcon;
     }
 
     /**
      * common lookup of icon;
      * returns dataurl ( SVG )
      */
-    get icon (): React.ReactElement {
+get icon(): IconComponentT {
         // return <img />;
         apolloClient.query < Icon, GetIconQueryVariables >({
             query: GetIconDocument,
