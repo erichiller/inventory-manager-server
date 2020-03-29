@@ -130,8 +130,6 @@ not sure they're even useful ? they're basically trigger functions to create loc
 
 
 
-
-```
 see OneNote
 ... PostgreSQL
 
@@ -139,22 +137,25 @@ see OneNote
 about below.
 format is
 
+```sql
 <data_media> <data_name> (
     <field_name> : <field_data_type> [ → fkey ]
     ...
 )
-
+```
 
 key here is to always make from the most specific item to the least specific.
 
-item_hardware_fastener_bolt → item.id (Item)
-item_hardware_fastener_bolt → manufacturer_item
-item_hardware_fastener_bolt → (for bundle) = .item.bundle
+`item_hardware_fastener_bolt` → `item.id` (`Item`)
+`item_hardware_fastener_bolt` → `manufacturer_item`
+`item_hardware_fastener_bolt` → (for bundle) = `item.bundle`
 
 also, all item_id must remain unique
 
 ====== Schema Start =====
 
+
+```sql
 table order (
     id : Integer
     vendor_order_id : text
@@ -280,10 +281,12 @@ table label_item_map (
     label_id : uuid
     item_id: Integer  # must be in item table
 )✔
-
+```
 
 
 (TypeScript)
+
+```ts
 abstract class GenericItem {
     id : Integer
     __typename : string
@@ -307,42 +310,37 @@ abstract class GenericItem {
     editComponent : ReactElement # modal
     detailComponent : ReactElement # single view
 }
+```
+
 ... then
+
+```ts
 class ItemHardwareFastenerBolt extends GenericItem {
 # specific props here
-}✔
+} ✔
+```
 
 ....
 
-    fetch based on presence of sub-objects and arrays
-https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html#filter-based-on-nested-objects-fields
-    → fetch based on null, true
-https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html#the-true-expression
+* [fetch based on presence of sub-objects and arrays](https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html#filter-based-on-nested-objects-fields)
+* [fetch based on null, true](https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html#the-true-expression)
 
 
     search with a single large document containing multiple queries ?
-    = USE FUNCTIONS
-https://docs.hasura.io/1.0/graphql/manual/schema/custom-functions.html
+    = USE [FUNCTIONS](https://docs.hasura.io/1.0/graphql/manual/schema/custom-functions.html)
     = or I suppose there is no harm in querying a bunch of fields in one GraphQL field
-    → If multiple queries are part of the same request, they are executed in parallel
-https://docs.hasura.io/1.0/graphql/manual/queries/multiple-queries.html
-    → text queries
-https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html#text-search-or-pattern-matching-operators-like-similar-etc
-    → use directives
-https://docs.hasura.io/1.0/graphql/manual/queries/variables-aliases-fragments-directives.html#using-directives
-    → paginate (search and table display)
-https://docs.hasura.io/1.0/graphql/manual/queries/pagination.html
+    → If [multiple queries are part of the same request, they are executed in parallel](https://docs.hasura.io/1.0/graphql/manual/queries/multiple-queries.html)
+    → [text queries](https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html#text-search-or-pattern-matching-operators-like-similar-etc)
 
-    make GraphQL queries in a normal class
-https://www.apollographql.com/docs/react/api/core/#ApolloClient.query
+use [directives](https://docs.hasura.io/1.0/graphql/manual/queries/variables-aliases-fragments-directives.html#using-directives)
+
+[paginate (search and table display)](https://docs.hasura.io/1.0/graphql/manual/queries/pagination.html)
+
+[make GraphQL queries in a normal class](https://www.apollographql.com/docs/react/api/core/#ApolloClient.query)
 
 
-[no] alias fields ? ( item.name → name ) ( __typename → type_class ; to make compatible with the base `item` class )
+~~alias fields ? ( `item.name` → `name` ) ( `__typename` → `type_class` ; to make compatible with the base `item` class )~~
 
 
-    generated Columns
-    not sure they're even useful ? they're basically trigger functions to create locked columns.
-https://www.postgresql.org/docs/12/ddl-generated-columns.html
+~~[generated Columns](https://www.postgresql.org/docs/12/ddl-generated-columns.html) - I'm not sure they're even useful ? they're basically trigger functions to create locked columns.~~
 
-
-```
