@@ -8142,7 +8142,7 @@ export type SendBufferMutation = (
 
 export type ItemFieldsFragment = (
   { __typename?: 'item' }
-  & Pick<Item, 'id' | 'class'>
+  & Pick<Item, 'id' | 'class' | 'object'>
   & { name: Item['object'] }
 );
 
@@ -8200,6 +8200,7 @@ export const ItemFieldsFragmentDoc = gql`
   id
   class
   name: object(path: "name")
+  object
 }
     `;
 export const InsertIconDocument = gql`
@@ -8994,4 +8995,4 @@ export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHo
 export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
 export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
-// graphql typescript defs generated on 2020-03-06T17:50:16-07:00
+// graphql typescript defs generated on 2020-03-07T08:48:05-07:00

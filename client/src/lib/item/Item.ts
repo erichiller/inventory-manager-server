@@ -1,23 +1,96 @@
 
-import { Item as ItemGql, Icon, Label, GetIconQueryResult, GetIconDocument, GetIconQueryVariables, GetIconQuery } from "../types/graphql";
+import { Item as ItemGql, Icon, Label, GetIconQueryResult, GetIconDocument, GetIconQueryVariables, GetIconQuery, EnumItemClassEnum } from "../types/graphql";
 
 import { Integer } from '../types/uint8';
 
 import { apolloClient } from '../../index';
 import { message } from "antd";
 
-export type GenericItem = Pick<ItemGql, 'id'> & Partial<Pick<ItemGql, 'class'>> ;
+export type GenericItem = Pick<ItemGql, 'id'> & Partial<Pick<ItemGql, 'class' | 'object'> & { name?: string }> ;
 
-export abstract class Item<T extends GenericItem> {
+type ItemExtender<R extends Item<any>> = R;
+type IEnumItemMap<R extends Item<any>> = { [ key in keyof typeof EnumItemClassEnum ]: new () => R };
+
+// var X: IEnumTpProp<string> = {
+//     ITEM_HARDWARE_FASTENER_BOLT: "text1",
+//     // ValB: "text2",
+//     // 0: "error" // expected: error;  current: error; //OK
+// };
+
+export interface IItem {
+    icon: React.ReactElement;
+}
+
+
+// export class Item<T extends GenericItem> implements IItem {
+export class Item<T extends GenericItem> implements IItem {
     __typename: string;
     id: Integer;
 
-    name?: string;
-    description?: string;
+    _name?: string;
+    _object: Object;
+    _class: keyof Record<EnumItemClassEnum, string>;
+
     item: ItemGql;
 
-    get class (): string {
-        return this.__typename;
+
+    constructor ( props: Partial<GenericItem>){
+        this._name = props.name;
+        this._class = props.class;
+        this._object = props.object;
+    }
+
+    get class (): keyof Record<EnumItemClassEnum, string> {
+        // return this.__typename;
+        return this._class;
+    }
+
+    get name (): string {
+        if (this._name){
+            return this._name;
+        }
+        else if (this._object.hasOwnProperty("name")) {
+            return this._object['name'];
+        }
+        else {
+            return "err.";
+        }
+    }
+
+    /**
+     * All possible item classes / types
+     */
+    static get ClassTypes (): Array<keyof typeof EnumItemClassEnum> {
+        return Object.keys( EnumItemClassEnum ) as Array<keyof typeof EnumItemClassEnum>;
+    }
+
+
+    static _ClassTypes: Partial< IEnumItemMap< ItemExtender<any> > > = {};
+
+    // static RegisterClassType<G extends GenericItem, R extends Item<G> > ( 
+    //     itemClass: keyof typeof EnumItemClassEnum, 
+    //     typeClass: new () => R ){
+    //     Item._ClassTypes = {
+    //         ...Item._ClassTypes,
+    //         ...Object.fromEntries([ [itemClass, typeClass ] ])
+    //     };
+    // }
+
+    static RegisterClassType<T extends Item<any>> (
+        itemClass: keyof typeof EnumItemClassEnum,
+        typeClass: { new(): T }
+    ) {
+        Item._ClassTypes = {
+            ...Item._ClassTypes,
+            ...Object.fromEntries([ [itemClass, typeClass ] ])
+        };
+    }
+
+    // public static getClassForType ( itemClass: keyof typeof EnumItemClassEnum ): new () => IItem {
+    //     return Item._ClassTypes[ itemClass ];
+    // }
+    public static getClassForType<T extends Item<any>> ( itemClass: keyof typeof EnumItemClassEnum ): new () => T {
+        return Item._ClassTypes[ itemClass ];
     }
 
     /**
@@ -26,7 +99,7 @@ export abstract class Item<T extends GenericItem> {
      */
     get icon (): React.ReactElement {
         // return <img />;
-        apolloClient.query < Icon, GetIconQueryVariables>({
+        apolloClient.query < Icon, GetIconQueryVariables >({
             query: GetIconDocument,
             variables: {}
         } ).then( result => {
