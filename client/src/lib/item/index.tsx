@@ -1,9 +1,8 @@
-import { Item, IItem } from './Item';
+import { Item } from './Item';
 import { ItemHardwareFastenerBolt } from './ItemHardwareFastenerBolt';
 
 
 export {
     Item,
-    IItem,
     ItemHardwareFastenerBolt
 };
