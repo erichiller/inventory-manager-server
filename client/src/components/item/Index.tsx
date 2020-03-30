@@ -5,6 +5,10 @@ import { EnumItemClassEnum } from '../../lib/types/graphql';
 import { Item, ItemHardwareFastenerBolt } from '../../lib/item';
 import { ItemSearch } from './ItemSearch';
 import { IItem } from '../../lib/item/Item';
+import {
+    useLocation
+} from "react-router-dom";
+import { ItemTable } from './ItemTable';
 // import DocumentNode from 'graphql-tag';
 
 
@@ -32,7 +36,10 @@ interface ItemTableProps<T> {
 
 export type visibleHandler = ( c?: React.ReactElement ) => void;
 
-
+interface ItemIndexState {
+    // TODO: this should be category: CategoryEnum
+    searchResults: { [ category: string ]: IItem[]; };
+}
 
 
 export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { children?: React.ReactNode; } ) => {
@@ -44,6 +51,11 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
     //     return [ "1", "2", "3", "4", "5", "7" ];
     // };
 
+    let location = useLocation();
+    let [ state, setState ] = useState<ItemIndexState>( {
+        searchResults: {}
+    } );
+
 
 
     // console.log( itemClasses(), "itemClasses" );
@@ -51,35 +63,41 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
 
     return <div>
         <div className="flexContent" style={{ paddingTop: '15px' }}>
-            <ItemSearch />
+            <ItemSearch onSearchCallback={( results ) => setState( { searchResults: results } )} />
         </div>
+        {!state.searchResults ?
+            <div className="button flexContent" style={{ padding: '5px' }}>
+                {
+                    Item.ClassTypes.map( className => {
+                        // console.log( itemClasses(), "itemClasses in" );
+                        let itemType = Item.getClassForType( className );
+                        console.log( {
+                            name: "itemType check",
+                            itemType,
+                            // icon: ( itemType as any ).icon.constructor.name
+                            icon: itemType.icon
+                        } );
+                        // let Icon = ( itemType as any ).icon;
+                        let ItemTypeIcon = itemType.icon;
+                        // return <div className="button">
+                        return <Button key={className} block>
+                            <a href={`${ location.pathname }/${ className.toLowerCase() }`} >
+                                <span>{itemType.categories.join( ' / ' )}</span>
+                                {/* {(new itemType()).constructor.name} */}
+                                {/* <img src={(itemType as any).icon} alt="" /> */}
+                                <ItemTypeIcon />
+                                {/* {className} */}
+                            </a>
+                        </Button>;
+                        // return <Button key={className} block>{new itemType().icon}{className}</Button>;
+                        // </div>
+                    } )
+                }
+            </div>
 
-        <div className="button flexContent" style={{ padding: '5px' }}>
-            {
-                Item.ClassTypes.map( className => {
-                    // console.log( itemClasses(), "itemClasses in" );
-                    let itemType = Item.getClassForType( className );
-                    console.log( {
-                        name: "itemType check",
-                        itemType,
-                        // icon: ( itemType as any ).icon.constructor.name
-                        icon: itemType.icon
-                    } );
-                    // let Icon = ( itemType as any ).icon;
-                    let Icon = itemType.icon;
-                    // return <div className="button">
-                    return <Button key={className} block>
-                        <span>{itemType.categories.join( ' / ' )}</span>
-                        {/* {(new itemType()).constructor.name} */}
-                        {/* <img src={(itemType as any).icon} alt="" /> */}
-                        {<Icon />}
-                        {/* {className} */}
-                    </Button>;
-                    // return <Button key={className} block>{new itemType().icon}{className}</Button>;
-                    // </div>
-                } )
-            }
-        </div> </div>;
+            : <ItemTable />}
+
+    </div>;
 
 
 };
