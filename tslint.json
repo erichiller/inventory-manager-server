@@ -5,13 +5,16 @@
     ],
     "jsRules": {},
     "rules": {
-        "type-literal-delimiter": {
-            "severity": "warning"
-        },
+        "type-literal-delimiter": [
+            true,
+            {
+                "singleLine": "always"
+            }
+        ],
         "semicolon": [
             true,
-            "always",
-            "strict-bound-class-methods"
+            "always"
+            // "strict-bound-class-methods"
         ]
     },
     "rulesDirectory": [
