@@ -1,5 +1,5 @@
 
-import { Item as ItemGql, Icon, Label, GetIconQueryResult, GetIconDocument, GetIconQueryVariables, GetIconQuery, EnumItemClassEnum } from "../types/graphql";
+import { Item as ItemGql, Icon, Label, GetIconQueryResult, GetIconDocument, GetIconQueryVariables, GetIconQuery, EnumItemClassEnum, ItemSelectColumn } from "../types/graphql";
 
 import { Integer } from '../types/uint8';
 
@@ -7,8 +7,12 @@ import { apolloClient } from '../../index';
 import { message } from "antd";
 import React from "react";
 import { VaultIcon } from "../../styles/icon";
+import { ColumnProps } from "antd/lib/table";
+import { toTitleCase } from "../helpers";
 
-export type GenericItem = Pick<ItemGql, 'id'> & Partial<Pick<ItemGql, 'class' | 'object'> & { name?: string }> ;
+export type GenericItem = Pick<ItemGql, 'id'> 
+                          & Partial<Pick<ItemGql, 'class' | 'object'> 
+                          & { name?: string; }> ;
 
 type ItemExtender<R extends Item<any>> = R;
 // type IEnumItemMap<R extends Item<any>> = { [ key in keyof typeof EnumItemClassEnum ]: new () => R };
@@ -48,11 +52,24 @@ export class Item<T extends GenericItem> implements IItem {
     item: ItemGql;
 
 
-    constructor ( props: Partial<T>){
-        if (!props) return;
+    constructor ( props: T ) {
+    // constructor( props: Partial<T>){
+        // if (!props) return;
+        // this.item = props;
+        this.id = props.id;
         this._name = props.name;
         this._class = props.class;
         this._object = props.object;
+    }
+
+    /**
+     * Return an array of items from input Gql results
+     */
+    static ItemFactory ( results: GenericItem[] ): Item<GenericItem>[] {
+        let items: Item<GenericItem>[] = [];
+        results.forEach( i => items.push(new Item(i) ));
+        return items;
+
     }
 
     get class (): keyof Record<EnumItemClassEnum, string> {
@@ -91,7 +108,7 @@ export class Item<T extends GenericItem> implements IItem {
     // static _ClassTypes: Partial< IEnumItemMap< ItemExtender<any> > > = {};
     static _ClassTypes: IEnumIItemMap;
 
-    static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T> }>(
+    static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T>; }>(
         itemClass: keyof typeof EnumItemClassEnum,
         typeClass: T
     ) {
@@ -168,8 +185,17 @@ get icon(): IconComponentT {
      * Ordered
      * Optionally defined on subclasses
      */
-    get columnProps (): ( keyof T )[] {
-        return ['id', 'class'];
+    get Columns (): ColumnProps<T>[] {
+        let cols: ColumnProps<T>[] = ( Object.keys( ItemSelectColumn ).filter(
+            key => [ "ID" ].includes( key ) ? false : key ).map(
+                key => {
+                    return {
+                        key: key,
+                        title: toTitleCase( key ),
+                        dataIndex: ItemSelectColumn[ key ],
+                    };
+                } ) );
+        return cols;
     }
     /**
      * Props which should be included in search (default)

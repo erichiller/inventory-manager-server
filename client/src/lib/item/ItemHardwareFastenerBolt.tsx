@@ -13,7 +13,7 @@ export class ItemHardwareFastenerBolt extends Item<ItemHardwareFastenerBoltGql> 
     //     return 3;
     // }
 
-    constructor(props: Partial<ItemHardwareFastenerBoltGql>){
+    constructor(props: ItemHardwareFastenerBoltGql){
         super(props);
     }
     // specific props here;

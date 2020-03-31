@@ -60,10 +60,14 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
 
     // console.log( itemClasses(), "itemClasses" );
 
+    const processSearchResults = ( results ) => {
+        console.log("Item/Index.tsx : search results from ItemSearch:\n", results);
+        setState( { searchResults: results } );
+    };
 
     return <div>
         <div className="flexContent" style={{ paddingTop: '15px' }}>
-            <ItemSearch onSearchCallback={( results ) => setState( { searchResults: results } )} />
+            <ItemSearch onSearchCallback={processSearchResults} />
         </div>
         {!state.searchResults ?
             <div className="button flexContent" style={{ padding: '5px' }}>

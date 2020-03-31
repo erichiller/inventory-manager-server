@@ -42,27 +42,32 @@ export type visibleHandler = ( c?: React.ReactElement ) => void;
 
 
 
-export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { children?: React.ReactNode } ) => {
+export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { children?: React.ReactNode; } ) => {
     let loading = false;
 
-    return <ItemSearch />;
-
-    if ( ! props.data ){
-        let result = useGetItemsQuery();
-        loading = result.loading;
-        if ( result.data ){
-            message.info(`loaded data, found ${result.data.items.length} items`);
-        }
-    }
-
+    // return <ItemSearch />;
 
     const [ state, setState ] = useState<Partial<ItemTableState>>( {
-        data: undefined,
+        data: props.data ?? undefined,
         pagination: { total: 0, pageSize: 100, current: 0 },
         loading: false,
         clickedItem: undefined,
         modal: null
     } );
+
+    if ( ! props.data ){
+        let result = useGetItemsQuery();
+        loading = result.loading;
+
+        React.useEffect( () => {
+            if ( result.data ) {
+                setState( { data: Item.ItemFactory( result.data.items ) });
+                message.info( `loaded data, found ${ result.data.items.length } items` );
+            }
+        }, [ result.data ] );
+    }
+
+
 
     const getPrintModal = (): React.ReactElement => {
         return <LabelDrawModal
@@ -81,15 +86,7 @@ export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
 
     const getColumns = (): ColumnProps<T>[] => {
         return [
-            ...( Object.keys( ItemSelectColumn ).filter(
-                key => [ "ID" ].includes( key ) ? false : key ).map(
-                    key => {
-                        return {
-                            key: key,
-                            title: toTitleCase( key ),
-                            dataIndex: ItemSelectColumn[ key ],
-                        };
-                    } ) ),
+            ...(state.data ? state.data[ 0 ].Columns : [ ] ),
             ...[
                 {
                     title: 'Action',
@@ -147,14 +144,14 @@ export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
         console.log( 'params', pagination, filters, sorter );
     };
 
-
+    console.log( { data: state.data, first_id: state.data ? state.data[0].id : "xxx"});
     return (
         <div>
             {state.modal}
 
             <Table
                 columns={getColumns()}
-                dataSource={props.data}
+                dataSource={state.data}
                 rowKey={item => item.id.toString()}
                 pagination={state.pagination}
                 loading={loading}
