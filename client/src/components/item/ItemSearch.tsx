@@ -94,7 +94,7 @@ interface ItemSearchProps {
      * callback called when results are present for search.  
      * a parent component can use this to render a table, etc.
      */
-    onSearchCallback: ( results: { [ category: string ]: IItem[]; } ) => void;
+    onSearchCallback?: ( results: { [ category: string ]: IItem[]; } ) => void;
 }
 
 
@@ -209,6 +209,8 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
                         } ) ]
                 };
                 setState( results );
+
+                // TODO: call `props.onSearchCallback`
                 // setState({value: [ 
                 //     value.map(
                 //         { key: 'eric', label: <span>ERIC <b>BOLD</b></span>}
