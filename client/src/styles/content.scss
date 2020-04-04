@@ -91,65 +91,24 @@
             }
         }
     }
-    // }
-
-    // .ant-tree-indent {
-    //       &::before {
-    //         position: absolute;
-    //         top: calc(100% - 4px);
-    //         right: 2;
-    //         bottom: 0;
-    //         border-right: 1px solid gray;
-    //         content: '';
-    //       }
-    // }
-    // & span {
-    //     padding: 0 0 0 10px;
-    // }
-    // & svg {
-    //     display: none;
-    // }
 }
 
-// .ant-tree.ant-tree-show-line.hide-file-icon span.ant-tree-switcher-noop {
-//   background: transparent;
-// }
+.IconButton {
+    // position: relative;
+    // display: block;
+    // margin: 0;
+    // padding: 0 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-transition: color .3s cubic-bezier(.645,.045,.355,1),border-color .3s cubic-bezier(.645,.045,.355,1),background .3s cubic-bezier(.645,.045,.355,1),padding .15s cubic-bezier(.645,.045,.355,1);
+    transition: color .3s cubic-bezier(.645,.045,.355,1),border-color .3s cubic-bezier(.645,.045,.355,1),background .3s cubic-bezier(.645,.045,.355,1),padding .15s cubic-bezier(.645,.045,.355,1);
+    transition-property: color, border-color, background, padding;
+    transition-duration: 0.3s, 0.3s, 0.3s, 0.15s;
+    transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1), cubic-bezier(0.645, 0.045, 0.355, 1), cubic-bezier(0.645, 0.045, 0.355, 1), cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition-delay: 0s, 0s, 0s, 0s;
 
-// .ant-tree.ant-tree-show-line.hide-file-icon li:before {
-//   content: " ";
-//   width: 1px;
-//   border-left: 1px solid #d9d9d9;
-//   height: 100%;
-//   position: absolute;
-//   left: 12px;
-//   top: 0;
-//   margin: 0;
-// }
-
-// .ant-tree.ant-tree-show-line.hide-file-icon li:first-child:before {
-//   top: 6px;
-//   height: calc(100% - 6px);
-// }
-
-// .ant-tree.ant-tree-show-line.hide-file-icon li:last-child:before {
-//   height: 16px;
-// }
-
-// .ant-tree.ant-tree-show-line.hide-file-icon li:first-child:last-child:before {
-//   height: 10px;
-// }
-
-// .ant-tree.ant-tree-show-line.hide-file-icon li .ant-tree-switcher-noop > i {
-//   visibility: hidden;
-// }
-
-// .ant-tree.ant-tree-show-line.hide-file-icon .ant-tree-switcher-noop .anticon-file {
-//   content: " ";
-//   height: 1px;
-//   border-bottom: 1px solid #d9d9d9;
-//   width: 10px;
-//   position: absolute;
-//   left: 12px;
-//   top: 50%;
-//   margin: 0;
-// }
+    // color:rgba(0,0,0,.85);
+    &:hover {
+        color: rgba(64, 169, 255, 0.7);
+    }
+}

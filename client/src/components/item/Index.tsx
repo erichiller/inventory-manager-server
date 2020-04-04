@@ -86,7 +86,7 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
             </div>
             <div className="fillFlex">
                 <div style={{ display: 'flex', padding: 10 }}>
-                    <Button><PlusCircleOutlined />new</Button>
+                    <Button><PlusCircleOutlined />New Item</Button>
                     {/* </div>
                 <div style={{ display: 'flex' }}> */}
                     <div
