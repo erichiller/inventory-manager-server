@@ -32,30 +32,31 @@ export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: Re
     // let loading = false;
 
     let hiData: DataNode[] = [];
-    ( props.data ?? Object.getOwnPropertyNames(EnumItemClassEnum) ).forEach(
+    ( props.data ?? Object.getOwnPropertyNames( EnumItemClassEnum ) ).forEach(
         key => {
             let categories = key.split( '_' );
             let editLevel: DataNode[] = hiData;
             let path: string[] = [];
             categories.forEach( cat => {
-                path.push(cat);
-                if ( ! editLevel.find( node => node.key === path.join('_') ) ) {
+                path.push( cat );
+                if ( !editLevel.find( node => node.key === path.join( '_' ) ) ) {
                     let cls = Item.getClassForType( path.join( '_' ) as keyof typeof EnumItemClassEnum );
                     let newNode = {
                         key: path.join( '_' ),
-                        title: <Popover content={<span>content</span>} title="actions"><span>{toTitleCase( cat )}</span></Popover>,
-                        icon: cls ? < cls.icon /> : null,
+                        title: <Popover content={<span>content</span>} title="actions"><span>{cls ? < cls.icon /> : null}{toTitleCase( cat )}</span></Popover>,
+                        // icon: 
                         children: []
                     } as DataNode;
                     editLevel.push( newNode );
                 }
-                editLevel = editLevel.find( node => node.key === path.join('_')).children;
+                editLevel = editLevel.find( node => node.key === path.join( '_' ) ).children;
             } );
         } );
 
     const [ state, setState ] = useState<Partial<ItemCategoryTreeState>>( {
         data: hiData
     } );
+
 
     // if ( !props.data ) {
     //     let result = useGetItemsQuery();
@@ -82,10 +83,8 @@ export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: Re
         // onRightClick={ ( info ) =>  } // TODO: context menu
         // showLine
         className="ItemCategoryTree ant-tree-show-line"
-        // treeData={state.data}
-    >
-        {/* <TreeNode title={<span><VaultIcon width={25} height={25} /><span>vault</span></span>} key="0-0-0-2" active={false} /> */}
-    </Tree>;
+        treeData={state.data}
+        />;
 };
 
 

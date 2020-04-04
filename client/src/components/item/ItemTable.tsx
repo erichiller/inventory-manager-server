@@ -17,6 +17,7 @@ import { QueryResult } from '@apollo/react-common';
 import { render } from 'react-dom';
 import { ItemSearch } from './ItemSearch';
 import { GenericItem } from '../../lib/item/Item';
+import { EditOutlined, PrinterOutlined, DeleteOutlined } from '@ant-design/icons';
 // import DocumentNode from 'graphql-tag';
 
 
@@ -119,16 +120,16 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                     render: ( text, record ) => (
                         <span>
                             <a onClick={( obj ) => {
-                                setModal( getPrintModal(), record );
-                            }
-                            }>Print</a>
-                            <Divider type="vertical" />
-                            <a onClick={( obj ) => {
                                 setModal( getRecordEditModal( record ), record );
                             }
-                            }>Edit</a>
+                            }><EditOutlined className="IconButton" /></a>
                             <Divider type="vertical" />
-                            <a>Delete</a>
+                            <a onClick={( obj ) => {
+                                setModal( getPrintModal(), record );
+                            }
+                            }><PrinterOutlined className="IconButton" /></a>
+                            <Divider type="vertical" />
+                            <a><DeleteOutlined className="IconButton" /></a>
                         </span >
                     ),
                 }
