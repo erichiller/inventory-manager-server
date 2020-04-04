@@ -46,7 +46,7 @@ const App = () => {
                     <PrintListButton key="PrintListButton" style={{ float: 'right' }} />
                 </Menu>
                 <div style={{
-                    width: '95%',
+                    width: '98%',
                     margin: '0 auto'
                 }} >
                     {flatRoutes.map( ( route ) => {

@@ -57,14 +57,19 @@ export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
 
     if ( ! props.data ){
         let result = useGetItemsQuery();
+        console.debug("no data received in props, running useGetItemsQuery");
         loading = result.loading;
 
         React.useEffect( () => {
             if ( result.data ) {
-                setState( { data: Item.ItemFactory( result.data.items ) });
+                setState( { 
+                    data: Item.ItemFactory( result.data.items ) 
+                });
                 message.info( `loaded data, found ${ result.data.items.length } items` );
             }
         }, [ result.data ] );
+    } else {
+        console.debug(`data received in props ${props.data} not running GraphQL`);
     }
 
 
@@ -78,6 +83,7 @@ export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
     const getRecordEditModal = ( record: Item<any> ): React.ReactElement => {
 
         switch ( record.class ) {
+            //TODO: replace this with an edit modal defined within the Item subclass
             case "item_hardware_fastener_bolt":
                 return <EditHardwareFastenerBolt visibleHandler={setModal} item={record as ItemHardwareFastenerBolt} />;
                 break;
@@ -144,7 +150,7 @@ export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
         console.log( 'params', pagination, filters, sorter );
     };
 
-    console.log( { data: state.data, first_id: state.data ? state.data[0].id : "xxx"});
+    console.log( { data: state.data, first_id: state.data ? state.data[0].id : "NO DATA!"});
     return (
         <div>
             {state.modal}

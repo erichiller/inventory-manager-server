@@ -22,7 +22,8 @@
 .button button span {
     display: block;
     font-size: large;
-    font-family: Segoe UI,SegoeUI,Segoe WP,Helvetica Neue,Helvetica,Tahoma,Arial,sans-serif
+    font-family: Segoe UI, SegoeUI, Segoe WP, Helvetica Neue, Helvetica, Tahoma,
+        Arial, sans-serif;
     // border: 2px solid red;
 }
 .button button img {
@@ -31,3 +32,100 @@
     max-width: 180px;
     max-height: 150px;
 }
+
+/**
+ * Ant Design - Tree
+**/
+
+.ItemCategoryTree {
+    // border: 1px solid red;
+    user-select: none;
+    & img {
+        // margin-right: 20px;
+        width: 25px;
+        position: relative;
+        right: 5px;
+        bottom: 1px;
+        background-color: white;
+    }
+    // .ant-tree-treenode-switcher-open {
+    .ant-tree-switcher-noop {
+        display: none;
+        // visibility: hidden;
+    }
+    .ant-tree-treenode-switcher-open {
+        .ant-tree-switcher-noop {
+            display: initial;
+            // width: 35px;
+            // visibility: hidden;
+            
+        &.ant-tree-switcher {
+            // background: white;
+            background: initial;
+            // display: none;
+            // content: 'E'
+        }
+        }
+    }
+    // }
+
+    // .ant-tree-indent {
+    //       &::before {
+    //         position: absolute;
+    //         top: calc(100% - 4px);
+    //         right: 2;
+    //         bottom: 0;
+    //         border-right: 1px solid gray;
+    //         content: '';
+    //       }
+    // }
+    // & span {
+    //     padding: 0 0 0 10px;
+    // }
+    // & svg {
+    //     display: none;
+    // }
+}
+
+// .ant-tree.ant-tree-show-line.hide-file-icon span.ant-tree-switcher-noop {
+//   background: transparent;
+// }
+
+// .ant-tree.ant-tree-show-line.hide-file-icon li:before {
+//   content: " ";
+//   width: 1px;
+//   border-left: 1px solid #d9d9d9;
+//   height: 100%;
+//   position: absolute;
+//   left: 12px;
+//   top: 0;
+//   margin: 0;
+// }
+
+// .ant-tree.ant-tree-show-line.hide-file-icon li:first-child:before {
+//   top: 6px;
+//   height: calc(100% - 6px);
+// }
+
+// .ant-tree.ant-tree-show-line.hide-file-icon li:last-child:before {
+//   height: 16px;
+// }
+
+// .ant-tree.ant-tree-show-line.hide-file-icon li:first-child:last-child:before {
+//   height: 10px;
+// }
+
+// .ant-tree.ant-tree-show-line.hide-file-icon li .ant-tree-switcher-noop > i {
+//   visibility: hidden;
+// }
+
+// .ant-tree.ant-tree-show-line.hide-file-icon .ant-tree-switcher-noop .anticon-file {
+//   content: " ";
+//   height: 1px;
+//   border-bottom: 1px solid #d9d9d9;
+//   width: 10px;
+//   position: absolute;
+//   left: 12px;
+//   top: 50%;
+//   margin: 0;
+// }
