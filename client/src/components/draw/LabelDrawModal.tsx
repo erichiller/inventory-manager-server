@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { DISPLAY } from '../../lib/types/enums';
 import { Label, useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument } from "../../lib/types/graphql";
-import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Modal, Descriptions, Button, Tooltip, message } from "antd";
 import React from "react";
 import { LabelDraw } from "./LabelDraw";
@@ -10,6 +9,7 @@ import { LabelExport } from "../../lib/LabelConstituent";
 import SendBufferButton from "../print/SendBufferButton";
 import { visibleHandler } from "../item/ItemTable";
 import { Item } from "../../lib/item";
+import { StopOutlined, DatabaseOutlined, SaveOutlined } from "@ant-design/icons";
 
 type LabelDrawModalProps = {
     visibleHandler: visibleHandler;
@@ -152,7 +152,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
             footer={[
                 <Tooltip key="cancel" placement="top" title="Return to Items">
                     <Button key="cancel" type="danger" onClick={handleCancel}>
-                        <LegacyIcon type="stop" />
+                        <StopOutlined />
                         Cancel
                         </Button>
                 </Tooltip >,
@@ -167,7 +167,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
 
                 <Tooltip key="addToPrintList" placement="top" title="Add to list for bulk printing later">
                     <Button key="addToPrintList" type="primary" onClick={context.handleAddToPrintList}>
-                        <LegacyIcon type="database" />
+                        <DatabaseOutlined />
                         {console.log( "label comparison", label, context.getCurrentLabel() )}
                         {/* TODO: fix */}
                         {context.getPrintLabels().some( el => {
@@ -181,7 +181,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
 
                 <Tooltip key="save" placement="top" title="Save label for future printing">
                     <Button key="save" type="primary" onClick={handleSave}>
-                        <LegacyIcon type="save" />
+                        <SaveOutlined />
                         Save
                         </Button>
                 </Tooltip>,

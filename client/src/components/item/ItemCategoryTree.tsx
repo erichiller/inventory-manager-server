@@ -1,4 +1,4 @@
-import { Item } from "../../lib/item";
+import { Item, ItemHardwareFastenerBolt } from "../../lib/item";
 import React, { useState } from "react";
 import { Tree, message } from "antd";
 import { DataNode } from 'rc-tree/lib/interface';
@@ -6,6 +6,8 @@ import { DownOutlined } from "@ant-design/icons";
 import { useGetItemsQuery, EnumItemClassEnum } from "../../lib/types/graphql";
 import { HexBoltIcon } from "../../styles/icon";
 import { TreeProps } from "antd/lib/tree";
+import { toTitleCase } from "../../lib/helpers";
+import { IconComponentT } from "../../lib/item/Item";
 
 const { TreeNode } = Tree;
 
@@ -27,7 +29,17 @@ interface ItemCategoryTreeState {
 export type visibleHandler = ( c?: React.ReactElement ) => void;
 
 type Intersection<A, B> = A | B;
-type DataNodeCategoryMap = { [ key: string ]: Intersection<DataNode, DataNodeCategoryMap>; };
+// type DataNodeCategoryMap = { [ key: string ]: Intersection<DataNode, DataNodeCategoryMap>; };
+
+
+// enum EnumItemClassEnum {
+//     ITEM_HARDWARE_FASTENER_BOLT = "item_hardware_fastener_bolt",
+//     ITEM_HARDWARE_FASTENER_SCREW = "item_hardware_fastener_screw",
+//     ITEM_HARDWARE_FASTENER_WASHER = "item_hardware_fastener_washer",
+//     ITEM_TOOL_CONSUMABLES_SAW = "item_tool_consumables_saw",
+//     ITEM_TOOL_CONSUMABLES_TAP = "item_tool_consumables_tap",
+//     ITEM_TOOL_PART_CHUCK = "item_tool_part_chuck",
+// }
 
 
 export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: React.ReactNode; } ) => {
@@ -35,158 +47,163 @@ export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: Re
 
     // return <ItemSearch />;
 
-    let hiData: DataNodeCategoryMap = {};
-    ( props.data ?? [ EnumItemClassEnum.ITEM_HARDWARE_FASTENER_BOLT ] ).forEach(
+    let hiData: DataNode[] = [];
+    // let hiData: DataNodeCategoryMap = {};
+    ( props.data ?? Object.getOwnPropertyNames(EnumItemClassEnum) ).forEach(
         key => {
+            // console.group(key);
+            // console.log( `processing enum key ${key}` );
             let categories = key.split( '_' );
-            let editLevel: Intersection<DataNode, DataNodeCategoryMap> = hiData;
+            // let editLevel: Intersection<DataNode, DataNodeCategoryMap> = hiData;
+            let editLevel: DataNode[] = hiData;
+            let path: string[] = [];
             categories.forEach( cat => {
-                if ( !Object.getOwnPropertyNames( hiData ).includes( cat ) ) {
-                    editLevel[ cat ] = {} as Intersection<DataNode, DataNodeCategoryMap>;
-                    editLevel = editLevel[ cat ];
+                path.push(cat);
+                
+                // console.log( "INITIAL----\n", {
+                //     cat,
+                //     hiData_json: JSON.stringify( hiData ),
+                //     editLevel_json: JSON.stringify( editLevel ), 
+                //     hiData,
+                //     editLevel } );
+                if ( ! editLevel.find( node => node.key === path.join('_') ) ) {
+                    let cls = Item.getClassForType( path.join( '_' ) as keyof typeof EnumItemClassEnum );
+                    let newNode = {
+                        key: path.join( '_' ),
+                        title: toTitleCase( cat ),
+                        icon: cls ? < cls.icon /> : null,
+                        children: []
+                    } as DataNode;
+                    editLevel.push( newNode );
                 }
+                editLevel = editLevel.find( node => node.key === path.join('_')).children;
             } );
-            //     editLevel = {}
-            // // checkable: true,
-            // // children ?: DataNode[];
-            // disabled: false,
-            //     // disableCheckbox ?: boolean;
-            //     icon: <HexBoltIcon />,
-            //         // isLeaf ?: boolean;
-            //         key: key,
-            //             title: <span>{key}</span>,
-            //                 selectable: true,;
-            //         // switcherIcon ?: IconType;
-            //         /** Set style of TreeNode. This is not recommend if you don't have any force requirement */
-            //         // className ?: string;
-            //         // style ?: React.CSSProperties;
-            //     } as DataNode;
-
         } );
 
     const [ state, setState ] = useState<Partial<ItemCategoryTreeState>>( {
-        data: [
-            {
-                key: 'hardware',
-                title: <span>1_Hardware</span>,
-                // disabled: false,
-                // selectable: true,
-                // checkable: true,
-                children: [
-                    {
-                        key: 'hardware_fastener',
-                        title: '2_Fastener',
-                        children: [
-                            {
-                                key: 'hardware_fastener_bolt',
-                                title: '3_Bolt',
-                                isLeaf: true,
-                                icon: <HexBoltIcon />,
-                            },
-                            {
-                                key: 'hardware_fastener_screw',
-                                title: '3_Screw',
-                                isLeaf: true,
-                                icon: <HexBoltIcon />,
-                            }
-                        ]
-                    },
-                    {
-                        key: 'hardware_drill_bit',
-                        title: '2_Drill Bit',
-                        children: [
-                            {
-                                key: 'hardware_drill_bit_type_1',
-                                title: '3_Type 1',
-                                children: [
-                                    {
-                                        key: 'hardware_drill_bit_type_1_1',
-                                        title: '4_Bolt',
-                                        isLeaf: true,
-                                        icon: <HexBoltIcon />,
-                                    },
-                                    {
-                                        key: 'hardware_drill_bit_type_1_2',
-                                        title: '4_Screw',
-                                        isLeaf: true,
-                                        icon: <HexBoltIcon />,
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        key: 'try3',
-                        title: '2_ssssssss'
-                    }
-                ],
-                // disableCheckbox ?: boolean;
-                // icon: <HexBoltIcon />,
-                // isLeaf ?: boolean;
-                // switcherIcon ?: IconType;
-                /** Set style of TreeNode. This is not recommend if you don't have any force requirement */
-                // className ?: string;
-                // style ?: React.CSSProperties;
-            }, {
-                key: 'tools',
-                title: <span>1_Tools</span>,
-                // disabled: false,
-                // selectable: true,
-                // checkable: true,
-                children: [
-                    {
-                        key: 'tools_fastener',
-                        title: '2_Fastener',
-                        children: [
-                            {
-                                key: 'tools_fastener_bolt',
-                                title: '3_Bolt',
-                                isLeaf: true,
-                                icon: <HexBoltIcon />,
-                            },
-                            {
-                                key: 'tools_fastener_screw',
-                                title: '3_Screw',
-                                isLeaf: true,
-                                icon: <HexBoltIcon />,
-                            }
-                        ]
-                    },
-                    {
-                        key: 'tools_drill_bit',
-                        title: '2_Drill Bit',
-                        children: [
-                            {
-                                key: 'tools_drill_bit_type_1',
-                                title: '3_Type 1'
-                            }
-                        ]
-                    }
-                ],
-                // disableCheckbox ?: boolean;
-                // icon: <HexBoltIcon />,
-                // isLeaf ?: boolean;
-                // switcherIcon ?: IconType;
-                /** Set style of TreeNode. This is not recommend if you don't have any force requirement */
-                // className ?: string;
-                // style ?: React.CSSProperties;
-            }
+        data: hiData
+        // [
+        //     {
+        //         key: 'hardware',
+        //         title: <span>1_Hardware</span>,
+        //         // disabled: false,
+        //         // selectable: true,
+        //         // checkable: true,
+        //         children: [
+        //             {
+        //                 key: 'hardware_fastener',
+        //                 title: '2_Fastener',
+        //                 children: [
+        //                     {
+        //                         key: 'hardware_fastener_bolt',
+        //                         title: '3_Bolt',
+        //                         isLeaf: true,
+        //                         icon: <HexBoltIcon />,
+        //                     },
+        //                     {
+        //                         key: 'hardware_fastener_screw',
+        //                         title: '3_Screw',
+        //                         isLeaf: true,
+        //                         icon: <HexBoltIcon />,
+        //                     }
+        //                 ]
+        //             },
+        //             {
+        //                 key: 'hardware_drill_bit',
+        //                 title: '2_Drill Bit',
+        //                 children: [
+        //                     {
+        //                         key: 'hardware_drill_bit_type_1',
+        //                         title: '3_Type 1',
+        //                         children: [
+        //                             {
+        //                                 key: 'hardware_drill_bit_type_1_1',
+        //                                 title: '4_Bolt',
+        //                                 isLeaf: true,
+        //                                 icon: <HexBoltIcon />,
+        //                             },
+        //                             {
+        //                                 key: 'hardware_drill_bit_type_1_2',
+        //                                 title: '4_Screw',
+        //                                 isLeaf: true,
+        //                                 icon: <HexBoltIcon />,
+        //                             }
+        //                         ]
+        //                     }
+        //                 ]
+        //             },
+        //             {
+        //                 key: 'try2',
+        //                 title: '2_ssssssss'
+        //             }
+        //         ],
+        //         // disableCheckbox ?: boolean;
+        //         // icon: <HexBoltIcon />,
+        //         // isLeaf ?: boolean;
+        //         // switcherIcon ?: IconType;
+        //         /** Set style of TreeNode. This is not recommend if you don't have any force requirement */
+        //         // className ?: string;
+        //         // style ?: React.CSSProperties;
+        //     }, {
+        //         key: 'tools',
+        //         title: <span>1_Tools</span>,
+        //         // disabled: false,
+        //         // selectable: true,
+        //         // checkable: true,
+        //         children: [
+        //             {
+        //                 key: 'tools_fastener',
+        //                 title: '2_Fastener',
+        //                 children: [
+        //                     {
+        //                         key: 'tools_fastener_bolt',
+        //                         title: '3_Bolt',
+        //                         isLeaf: true,
+        //                         icon: <HexBoltIcon />,
+        //                     },
+        //                     {
+        //                         key: 'tools_fastener_screw',
+        //                         title: '3_Screw',
+        //                         isLeaf: true,
+        //                         icon: <HexBoltIcon />,
+        //                     }
+        //                 ]
+        //             },
+        //             {
+        //                 key: 'tools_drill_bit',
+        //                 title: '2_Drill Bit',
+        //                 children: [
+        //                     {
+        //                         key: 'tools_drill_bit_type_1',
+        //                         title: '3_Type 1'
+        //                     }
+        //                 ]
+        //             }
+        //         ],
+        //         // disableCheckbox ?: boolean;
+        //         // icon: <HexBoltIcon />,
+        //         // isLeaf ?: boolean;
+        //         // switcherIcon ?: IconType;
+        //         /** Set style of TreeNode. This is not recommend if you don't have any force requirement */
+        //         // className ?: string;
+        //         // style ?: React.CSSProperties;
+        //     }
 
-            // <TreeNode title="hardware"
-            //           active={false}
-            //           key="hardware" 
-            //           children={[
-            //               <TreeNode title="fastener"
-            //                   active={false}
-            //                   key="hardware_fastener" 
-            //                   children={[
-            //                       <TreeNode title="bolt"
-            //                           active={false}
-            //                           icon={<HexBoltIcon />}
-            //                           key="hardware_fastener_bolt" />
-            //             ]} />
-            //     ]} />
-        ]
+        //     // <TreeNode title="hardware"
+        //     //           active={false}
+        //     //           key="hardware" 
+        //     //           children={[
+        //     //               <TreeNode title="fastener"
+        //     //                   active={false}
+        //     //                   key="hardware_fastener" 
+        //     //                   children={[
+        //     //                       <TreeNode title="bolt"
+        //     //                           active={false}
+        //     //                           icon={<HexBoltIcon />}
+        //     //                           key="hardware_fastener_bolt" />
+        //     //             ]} />
+        //     //     ]} />
+        // ]
     } );
 
     // if ( !props.data ) {

@@ -1,13 +1,13 @@
-import { FormComponentProps } from '@ant-design/compatible/lib/form';
+import Form, { FormComponentProps } from '@ant-design/compatible/lib/form';
 import React from 'react';
 import { LabelImage } from "../../../lib/LabelConstituent";
-import { Form, Icon as LegacyIcon } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
 import { Spin, Select, Input, message, Modal } from "antd";
 import { InsertIconComponent, GetIconDocument, EnumItemClassEnum } from "../../../lib/types/graphql";
 import { Item } from "../../../lib/item";
 import { DISPLAY } from '../../../lib/types/enums';
 import { DrawContext } from "../LabelDraw";
+import { UploadOutlined } from '@ant-design/icons';
 
 
 
@@ -213,7 +213,7 @@ export const NewImageUploadModal = Form.create<NewImageUploadModalProps>(
                                                         onChange={() => this.setFile()}
                                                     />
                                                     <label htmlFor="file" className="ant-btn ant-btn-primary" style={{ paddingTop: '3px' }}>
-                                                        <LegacyIcon type="upload" style={{ margin: '2px', fontSize: '18px', marginRight: '3px' }} />
+                                                        <UploadOutlined style={{ margin: '2px', fontSize: '18px', marginRight: '3px' }} />
                                                         Upload
                                                     </label>
                                                 </Form>

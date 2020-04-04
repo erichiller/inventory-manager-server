@@ -76,6 +76,9 @@
             }
         }
     }
+    .ant-tree-indent-unit::before {
+        top: 0 !important;
+    }
     .ant-tree-treenode-selected {
         .ant-tree-node-content-wrapper {
             // background-color: white;

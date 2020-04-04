@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 
 import { Item, ItemHardwareFastenerBolt } from '../../lib/item';
-import { Icon as LegacyIcon } from '@ant-design/compatible';
 // import Search from "antd/lib/input/Search";
 import { Select, Row, Col, Button } from "antd";
 
 
 // import * as ReactRouter from 'react-router';
 import { SelectValue, LabeledValue } from 'antd/lib/select';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, TagOutlined, FontSizeOutlined } from '@ant-design/icons';
 import { useSearchItemsQuery, EnumItemClassEnum } from "../../lib/types/graphql";
 import { QueryStore } from "apollo-client/data/queries";
 import { OptionProps } from "rc-select/lib/Option";
@@ -179,7 +178,7 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
                 <Select.OptGroup label="Filters" children={filterKeys
                     .filter( tag => tag.startsWith( state.searchString ?? '' ) )
                     .map( tag => <Option value={":" + tag}>
-                        <LegacyIcon type="tag" /> <b>{tag}:</b>
+                        <TagOutlined /> <b>{tag}:</b>
                     </Option> )
                 } />
                 ,
@@ -198,9 +197,9 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
                             let newLabel = i.label;
                             if ( i.label?.toString().includes( ":" ) ) {
                                 newLabel = i.label?.toString().split( ':', 2 );
-                                newLabel = <span><LegacyIcon type="tag" /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
+                                newLabel = <span><TagOutlined /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
                             } else if ( typeof newLabel === "string" ) {
-                                newLabel = <span><LegacyIcon type="font-size" /> <i>{newLabel?.toString()}</i></span>;
+                                newLabel = <span><FontSizeOutlined /> <i>{newLabel?.toString()}</i></span>;
                             }
                             return {
                                 key: i.key,
@@ -225,9 +224,9 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
                 let newLabel = i.label;
                 if ( i.label?.toString().includes( ":" ) ) {
                     newLabel = i.label?.toString().split( ':', 2 );
-                    newLabel = <span><LegacyIcon type="tag" /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
+                    newLabel = <span><TagOutlined /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
                 } else {
-                    newLabel = <span><LegacyIcon type="font-size" /> <i>{newLabel}</i></span>;
+                    newLabel = <span><FontSizeOutlined /> <i>{newLabel}</i></span>;
                 }
                 // return;
                 setState( {

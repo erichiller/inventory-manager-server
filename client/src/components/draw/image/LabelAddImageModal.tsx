@@ -1,6 +1,5 @@
 import { KonvaEventObject } from 'konva/types/Node';
 import { Component } from 'react';
-import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Select, Tooltip, Button } from 'antd';
 import { DISPLAY } from '../../../lib/types/enums';
 import React from 'react';
@@ -9,6 +8,7 @@ import { withGetIcon, GetIconProps, Icon as CustomIcon } from '../../../lib/type
 import { Item } from '../../../lib/item';
 import { LabelImage } from '../../../lib/LabelConstituent';
 import { DrawContext } from '../LabelDraw';
+import { StopOutlined, UploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 
 interface LabelAddImageProps {
@@ -109,7 +109,7 @@ export default withGetIcon<LabelAddImageProps, LabelAddImageState>()(
                                 footer={[
                                     <Tooltip placement="top" title="Return to Items">
                                         <Button key="cancel" type="danger" onClick={this.handleCancel}>
-                                            <LegacyIcon type="stop" />
+                                            <StopOutlined />
                                             Cancel
                                         </Button>
                                     </Tooltip >,
@@ -119,13 +119,13 @@ export default withGetIcon<LabelAddImageProps, LabelAddImageState>()(
                                             visibleHandler( DISPLAY.HIDDEN );
                                         }} >
                                             {/* <Icon type="plus-circle" /> */}
-                                            <LegacyIcon type="upload" />
+                                            <UploadOutlined />
                                             Upload New Image
                                         </Button>
                                     </Tooltip>,
                                     <Tooltip placement="top" title="Add image to label">
                                         <Button key="add" type="primary" onClick={() => { commitLabelImage( labelImage ); this.onClose(); }}>
-                                            <LegacyIcon type="plus-circle" />
+                                            <PlusCircleOutlined />
                                             Add
                                         </Button>
                                     </Tooltip>

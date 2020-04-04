@@ -14,7 +14,7 @@ export type GenericItem = Pick<ItemGql, 'id'>
                           & Partial<Pick<ItemGql, 'class' | 'object'> 
                           & { name?: string; }> ;
 
-type ItemExtender<R extends Item<any>> = R;
+// type ItemExtender<R extends Item<any>> = R;
 // type IEnumItemMap<R extends Item<any>> = { [ key in keyof typeof EnumItemClassEnum ]: new () => R };
 
 type IEnumIItemMap = { [ key in keyof typeof EnumItemClassEnum ]: Union<IItem, new () => Item<GenericItem>> };

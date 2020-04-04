@@ -8,11 +8,11 @@ import {
 import { createBrowserHistory } from 'history';
 import './styles/app.scss';
 import 'antd/dist/antd.css';
-import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Menu } from 'antd';
 import { flatRoutes, singularFullPath } from './config/routes';
 import { PrintListButton } from './components/print/PrintListButton';
 import { PrintContextHandler } from './components/print/PrintContextHandler';
+import { DashboardOutlined, ContainerOutlined, ShareAltOutlined, TagOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 
 export const history = createBrowserHistory( {
     basename: '', // The base URL of the app (see below)
@@ -38,11 +38,11 @@ const App = () => {
         <Router history={history} >
             <PrintContextHandler>
                 <Menu mode="horizontal" >
-                    <Menu.Item><Link to="/"><LegacyIcon type="dashboard" />Summary</Link></Menu.Item>
-                    <Menu.Item><Link to="/items"><LegacyIcon type="container" />Items</Link></Menu.Item>
-                    <Menu.Item><Link to="/networks"><LegacyIcon type="share-alt" />Network</Link></Menu.Item>
-                    <Menu.Item><Link to="/labels"><LegacyIcon type="tag" />Labels</Link></Menu.Item>
-                    <Menu.Item><Link to="/purchases"><LegacyIcon type="shopping-cart" />Purchases</Link></Menu.Item>
+                    <Menu.Item><Link to="/"><DashboardOutlined />Summary</Link></Menu.Item>
+                    <Menu.Item><Link to="/items"><ContainerOutlined />Items</Link></Menu.Item>
+                    <Menu.Item><Link to="/networks"><ShareAltOutlined />Network</Link></Menu.Item>
+                    <Menu.Item><Link to="/labels"><TagOutlined />Labels</Link></Menu.Item>
+                    <Menu.Item><Link to="/purchases"><ShoppingCartOutlined />Purchases</Link></Menu.Item>
                     <PrintListButton key="PrintListButton" style={{ float: 'right' }} />
                 </Menu>
                 <div style={{
