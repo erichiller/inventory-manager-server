@@ -48,6 +48,15 @@
         bottom: 1px;
         background-color: white;
     }
+
+    .ant-tree-node-content-wrapper {
+        &:hover {
+            img {
+                background-color: transparent;
+            }
+        }
+    }
+
     // .ant-tree-treenode-switcher-open {
     .ant-tree-switcher-noop {
         display: none;
@@ -58,13 +67,22 @@
             display: initial;
             // width: 35px;
             // visibility: hidden;
-            
-        &.ant-tree-switcher {
-            // background: white;
-            background: initial;
-            // display: none;
-            // content: 'E'
+
+            &.ant-tree-switcher {
+                // background: white;
+                background: initial;
+                // display: none;
+                // content: 'E'
+            }
         }
+    }
+    .ant-tree-treenode-selected {
+        .ant-tree-node-content-wrapper {
+            // background-color: white;
+
+            & img {
+                background-color: transparent;
+            }
         }
     }
     // }
