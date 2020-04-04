@@ -1,10 +1,10 @@
-import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Spin, Button, message } from "antd";
 import React from "react";
 import { SendBufferComponent } from "../../lib/types/graphql";
 import { PixelMap } from "../../lib/canvasToBuffer";
 import { BaseButtonProps } from "antd/lib/button/button";
 import { PageSpin } from "../shared/PageSpin";
+import { PrinterOutlined } from "@ant-design/icons";
 
 
 
@@ -52,7 +52,7 @@ export default class SendBufferButton extends React.Component<SendBufferButtonPr
                     console.groupEnd();
                     return (
                         < Button {...this.props} 
-                                    icon={<LegacyIcon type="printer" />} 
+                                    icon={<PrinterOutlined />} 
                                     onClick={() => onClick( true )} id={value} >
                                         {value}
                                         <PageSpin spinning={this.props.buffer != null} />
