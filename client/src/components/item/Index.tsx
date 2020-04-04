@@ -9,6 +9,7 @@ import {
     useLocation
 } from "react-router-dom";
 import { ItemTable } from './ItemTable';
+import { ItemCategoryTree } from './ItemCategoryTree';
 // import DocumentNode from 'graphql-tag';
 
 
@@ -66,40 +67,18 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
     };
 
     return <div>
-        <div className="flexContent" style={{ paddingTop: '15px' }}>
+        <div className="flexContent" style={{ paddingTop: '15px', paddingBottom: '5px' }}>
             <ItemSearch onSearchCallback={processSearchResults} />
         </div>
-        {!state.searchResults ?
-            <div className="button flexContent" style={{ padding: '5px' }}>
-                {
-                    Item.ClassTypes.map( className => {
-                        // console.log( itemClasses(), "itemClasses in" );
-                        let itemType = Item.getClassForType( className );
-                        console.log( {
-                            name: "itemType check",
-                            itemType,
-                            // icon: ( itemType as any ).icon.constructor.name
-                            icon: itemType.icon
-                        } );
-                        // let Icon = ( itemType as any ).icon;
-                        let ItemTypeIcon = itemType.icon;
-                        // return <div className="button">
-                        return <Button key={className} block>
-                            <a href={`${ location.pathname }/${ className.toLowerCase() }`} >
-                                <span>{itemType.categories.join( ' / ' )}</span>
-                                {/* {(new itemType()).constructor.name} */}
-                                {/* <img src={(itemType as any).icon} alt="" /> */}
-                                <ItemTypeIcon />
-                                {/* {className} */}
-                            </a>
-                        </Button>;
-                        // return <Button key={className} block>{new itemType().icon}{className}</Button>;
-                        // </div>
-                    } )
-                }
-            </div>
 
-            : <ItemTable />}
+        <div style={{display: 'flex'}}>
+            <div style={{width: '250px'}}>
+                <ItemCategoryTree />
+            </div>
+            <div style={{ flexGrow: 1}} className="fillFlex">
+                <ItemTable />
+            </div>
+        </div>
 
     </div>;
 
@@ -107,3 +86,36 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
 };
 
 
+// {
+// !state.searchResults || state.searchResults === {} ?
+//     <div className="button flexContent" style={{ padding: '5px' }}>
+//         {
+//             Item.ClassTypes.map( className => {
+//                 // console.log( itemClasses(), "itemClasses in" );
+//                 let itemType = Item.getClassForType( className );
+//                 console.log( {
+//                     name: "itemType check",
+//                     itemType,
+//                     // icon: ( itemType as any ).icon.constructor.name
+//                     icon: itemType.icon
+//                 } );
+//                 // let Icon = ( itemType as any ).icon;
+//                 let ItemTypeIcon = itemType.icon;
+//                 // return <div className="button">
+//                 return <Button key={className} block>
+//                     <a href={`${ location.pathname }/${ className.toLowerCase() }`} >
+//                         <span>{itemType.categories.join( ' / ' )}</span>
+//                         {/* {(new itemType()).constructor.name} */}
+//                         {/* <img src={(itemType as any).icon} alt="" /> */}
+//                         <ItemTypeIcon />
+//                         {/* {className} */}
+//                     </a>
+//                 </Button>;
+//                 // return <Button key={className} block>{new itemType().icon}{className}</Button>;
+//                 // </div>
+//             } )
+//         }
+//     </div>
+
+//     : <ItemTable />;
+// }

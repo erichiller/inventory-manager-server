@@ -9,7 +9,8 @@ module.exports = {
         // 'react-hot-loader/patch',
         './src/index.tsx' // your app's entry point
     ],
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
+    // devtool: 'inline-source-map',
     module: {
         rules: [
             {
@@ -39,6 +40,12 @@ module.exports = {
                     loader: 'url-loader',
                 },
             },
+            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+            {
+                enforce: "pre",
+                test: /\.js$/,
+                loader: "source-map-loader"
+            },
             // {
             //     test: /\.svg$/,
             //     use: [
@@ -53,7 +60,9 @@ module.exports = {
         ]
     },
     resolve: {
+        // extensions: ['.ts', '.tsx'],
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        // extensions: ['.ts', '.tsx', '.js'],
         modules: [
             path.resolve(__dirname, 'src'),
             'node_modules'
@@ -82,5 +91,9 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html'
         }),
-    ]
+    ],
+    // externals: {
+    //     react: "React",
+    //     "react-dom": "ReactDOM"
+    // }
 };

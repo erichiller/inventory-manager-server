@@ -13,8 +13,8 @@ export class ItemHardwareFastenerBolt extends Item<ItemHardwareFastenerBoltGql> 
     //     return 3;
     // }
 
-    constructor(props: ItemHardwareFastenerBoltGql){
-        super(props);
+    constructor ( props: ItemHardwareFastenerBoltGql ) {
+        super( props );
     }
     // specific props here;
     get icon (): IconComponentT {
@@ -27,7 +27,7 @@ export class ItemHardwareFastenerBolt extends Item<ItemHardwareFastenerBoltGql> 
     }
 
     static get categories (): CategoryHierarchyT[] {
-        return [ "Hardware", "Fastener", "Bolt"];
+        return [ "Hardware", "Fastener", "Bolt" ];
     }
 }
 
