@@ -89,6 +89,10 @@ function ParseSearchString (
 }
 
 interface ItemSearchProps {
+    /** CSS Classes */
+    className?: string;
+    /** CSS Styles */
+    style?: React.CSSProperties;
     /**
      * callback called when results are present for search.  
      * a parent component can use this to render a table, etc.
@@ -163,12 +167,13 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
             mode="tags"
             // defaultActiveFirstOption={false}
             // mode="combobox"
-            style={{ width: 450 }}
+            style={{ width: 450, ...props.style }}
             tokenSeparators={[ ',' ]}
             // suffixIcon={<SearchOutlined />}
             loading={queryResults.loading}
             value={state.value}
             labelInValue={true}
+            className={props.className}
             // showSearch={true}
             // value={undefined}
             // choiceTransitionName

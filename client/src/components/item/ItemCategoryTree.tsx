@@ -1,10 +1,10 @@
 import { Item, ItemHardwareFastenerBolt } from "../../lib/item";
 import React, { useState } from "react";
-import { Tree, message } from "antd";
+import { Tree, message, Popover, Menu } from "antd";
 import { DataNode } from 'rc-tree/lib/interface';
 import { DownOutlined } from "@ant-design/icons";
 import { useGetItemsQuery, EnumItemClassEnum } from "../../lib/types/graphql";
-import { HexBoltIcon } from "../../styles/icon";
+import { HexBoltIcon, VaultIcon } from "../../styles/icon";
 import { TreeProps } from "antd/lib/tree";
 import { toTitleCase } from "../../lib/helpers";
 import { IconComponentT } from "../../lib/item/Item";
@@ -12,7 +12,7 @@ import { IconComponentT } from "../../lib/item/Item";
 const { TreeNode } = Tree;
 
 
-interface ItemCategoryTreeProps {
+interface ItemCategoryTreeProps extends Pick<TreeProps, 'onSelect'> {
     // collapsed?: boolean;
     data?: Array<keyof Record<EnumItemClassEnum, string>>;
     // displayData?: ( data: T, index: number ) => React.ReactNode;
@@ -28,7 +28,69 @@ interface ItemCategoryTreeState {
 
 export type visibleHandler = ( c?: React.ReactElement ) => void;
 
-type Intersection<A, B> = A | B;
+export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: React.ReactNode; } ) => {
+    // let loading = false;
+
+    let hiData: DataNode[] = [];
+    ( props.data ?? Object.getOwnPropertyNames(EnumItemClassEnum) ).forEach(
+        key => {
+            let categories = key.split( '_' );
+            let editLevel: DataNode[] = hiData;
+            let path: string[] = [];
+            categories.forEach( cat => {
+                path.push(cat);
+                if ( ! editLevel.find( node => node.key === path.join('_') ) ) {
+                    let cls = Item.getClassForType( path.join( '_' ) as keyof typeof EnumItemClassEnum );
+                    let newNode = {
+                        key: path.join( '_' ),
+                        title: <Popover content={<span>content</span>} title="actions"><span>{toTitleCase( cat )}</span></Popover>,
+                        icon: cls ? < cls.icon /> : null,
+                        children: []
+                    } as DataNode;
+                    editLevel.push( newNode );
+                }
+                editLevel = editLevel.find( node => node.key === path.join('_')).children;
+            } );
+        } );
+
+    const [ state, setState ] = useState<Partial<ItemCategoryTreeState>>( {
+        data: hiData
+    } );
+
+    // if ( !props.data ) {
+    //     let result = useGetItemsQuery();
+    //     loading = result.loading;
+
+    //     React.useEffect( () => {
+    //         if ( result.data ) {
+    //             setState( { data: Item.ItemFactory( result.data.items ) } );
+    //             message.info( `loaded data, found ${ result.data.items.length } items` );
+    //         }
+    //     }, [ result.data ] );
+    // }
+
+
+
+    return <Tree
+        showIcon
+        defaultExpandAll
+        selectable
+        multiple
+        // defaultSelectedKeys={[ '0-0-0' ]}
+        switcherIcon={<DownOutlined />}
+        onSelect={props.onSelect}
+        // onRightClick={ ( info ) =>  } // TODO: context menu
+        // showLine
+        className="ItemCategoryTree ant-tree-show-line"
+        // treeData={state.data}
+    >
+        {/* <TreeNode title={<span><VaultIcon width={25} height={25} /><span>vault</span></span>} key="0-0-0-2" active={false} /> */}
+    </Tree>;
+};
+
+
+
+
 // type DataNodeCategoryMap = { [ key: string ]: Intersection<DataNode, DataNodeCategoryMap>; };
 
 
@@ -42,46 +104,6 @@ type Intersection<A, B> = A | B;
 // }
 
 
-export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: React.ReactNode; } ) => {
-    let loading = false;
-
-    // return <ItemSearch />;
-
-    let hiData: DataNode[] = [];
-    // let hiData: DataNodeCategoryMap = {};
-    ( props.data ?? Object.getOwnPropertyNames(EnumItemClassEnum) ).forEach(
-        key => {
-            // console.group(key);
-            // console.log( `processing enum key ${key}` );
-            let categories = key.split( '_' );
-            // let editLevel: Intersection<DataNode, DataNodeCategoryMap> = hiData;
-            let editLevel: DataNode[] = hiData;
-            let path: string[] = [];
-            categories.forEach( cat => {
-                path.push(cat);
-                
-                // console.log( "INITIAL----\n", {
-                //     cat,
-                //     hiData_json: JSON.stringify( hiData ),
-                //     editLevel_json: JSON.stringify( editLevel ), 
-                //     hiData,
-                //     editLevel } );
-                if ( ! editLevel.find( node => node.key === path.join('_') ) ) {
-                    let cls = Item.getClassForType( path.join( '_' ) as keyof typeof EnumItemClassEnum );
-                    let newNode = {
-                        key: path.join( '_' ),
-                        title: toTitleCase( cat ),
-                        icon: cls ? < cls.icon /> : null,
-                        children: []
-                    } as DataNode;
-                    editLevel.push( newNode );
-                }
-                editLevel = editLevel.find( node => node.key === path.join('_')).children;
-            } );
-        } );
-
-    const [ state, setState ] = useState<Partial<ItemCategoryTreeState>>( {
-        data: hiData
         // [
         //     {
         //         key: 'hardware',
@@ -204,32 +226,4 @@ export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: Re
         //     //             ]} />
         //     //     ]} />
         // ]
-    } );
 
-    // if ( !props.data ) {
-    //     let result = useGetItemsQuery();
-    //     loading = result.loading;
-
-    //     React.useEffect( () => {
-    //         if ( result.data ) {
-    //             setState( { data: Item.ItemFactory( result.data.items ) } );
-    //             message.info( `loaded data, found ${ result.data.items.length } items` );
-    //         }
-    //     }, [ result.data ] );
-    // }
-
-    return <Tree
-        showIcon
-        defaultExpandAll
-        selectable
-        multiple
-        // defaultSelectedKeys={[ '0-0-0' ]}
-        switcherIcon={<DownOutlined />}
-        onSelect={ (selectedKeys, info) => {
-            console.log({selectedKeys, info});
-        }}
-        // showLine
-        className="ItemCategoryTree ant-tree-show-line"
-        treeData={state.data}
-    />;
-};

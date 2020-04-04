@@ -1,7 +1,7 @@
 
 import { Table, Divider, message, Row, Col, Button } from 'antd';
 import React, { useState } from 'react';
-import { EnumItemClassEnum } from '../../lib/types/graphql';
+import { EnumItemClassEnum, useGetItemsQuery } from '../../lib/types/graphql';
 import { Item, ItemHardwareFastenerBolt } from '../../lib/item';
 import { ItemSearch } from './ItemSearch';
 import { IItem } from '../../lib/item/Item';
@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import { ItemTable } from './ItemTable';
 import { ItemCategoryTree } from './ItemCategoryTree';
+import { PlusCircleOutlined } from '@ant-design/icons';
 // import DocumentNode from 'graphql-tag';
 
 
@@ -62,21 +63,41 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
     // console.log( itemClasses(), "itemClasses" );
 
     const processSearchResults = ( results ) => {
-        console.log("Item/Index.tsx : search results from ItemSearch:\n", results);
+        console.log( "Item/Index.tsx : search results from ItemSearch:\n", results );
         setState( { searchResults: results } );
     };
 
     return <div>
-        <div className="flexContent" style={{ paddingTop: '15px', paddingBottom: '5px' }}>
+        {/* <div className="flexContent" style={{ paddingTop: '15px', paddingBottom: '5px' }}>
             <ItemSearch onSearchCallback={processSearchResults} />
-        </div>
-
-        <div style={{display: 'flex'}}>
-            <div style={{width: '250px'}}>
-                <ItemCategoryTree />
+        </div> */}
+        {/* <div style={{ display: 'flex', paddingTop: '15px', paddingBottom: '5px' }}>
+            <div style={{ width: '250px' }}>
+                <Button><PlusCircleOutlined />new</Button>
             </div>
-            <div style={{ flexGrow: 1}} className="fillFlex">
-                <ItemTable />
+            <div style={{ flexGrow: 1 }} className="flexContent fillFlex">
+                <ItemSearch onSearchCallback={processSearchResults} />
+            </div>
+        </div> */}
+
+        <div style={{ display: 'flex' }}>
+            <div style={{ width: '250px' }}>
+                <ItemCategoryTree onSelect={( selection, info ) => console.log( selection, info )} />
+            </div>
+            <div className="fillFlex">
+                <div style={{ display: 'flex', padding: 10 }}>
+                    <Button><PlusCircleOutlined />new</Button>
+                    {/* </div>
+                <div style={{ display: 'flex' }}> */}
+                    <div
+                        className="fillFlex flexContent" >
+                        <ItemSearch
+                            // style={{marginRight: 50}}
+                            onSearchCallback={processSearchResults}
+                        />
+                    </div>
+                </div>
+                <ItemTable query={useGetItemsQuery} variables={{}} />
             </div>
         </div>
 

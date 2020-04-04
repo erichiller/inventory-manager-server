@@ -23,8 +23,10 @@ fragment ItemFields on item {
     # }
 }
 
-query GetItems {
-    items: item {
+query GetItems( $categories: [enum_item_class_enum!] ) {
+    items: item( 
+        where: {class: {_in: $categories}}
+    ) {
         ...ItemFields
     }
 }
