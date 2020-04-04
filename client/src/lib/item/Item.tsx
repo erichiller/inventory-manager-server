@@ -1,5 +1,9 @@
 
-import { Item as ItemGql, Icon, Label, GetIconQueryResult, GetIconDocument, GetIconQueryVariables, GetIconQuery, EnumItemClassEnum, ItemSelectColumn } from "../types/graphql";
+import { 
+    Item as ItemGql, Icon, Label, GetIconQueryResult, GetIconDocument, GetIconQueryVariables, GetIconQuery, 
+    EnumItemClassEnum, 
+    ItemSelectColumn 
+} from "../types/graphql";
 
 import { Integer } from '../types/uint8';
 
@@ -8,7 +12,7 @@ import { message } from "antd";
 import React from "react";
 import { VaultIcon } from "../../styles/icon";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase } from "../helpers";
+import { toTitleCase, Union } from "../helpers";
 
 export type GenericItem = Pick<ItemGql, 'id'> 
                           & Partial<Pick<ItemGql, 'class' | 'object'> 
@@ -38,7 +42,6 @@ export type IconComponentT =
     // | React.FunctionComponentElement<"img">
 
 
-type Union<A,B> = A & B;
 
 // export class Item<T extends GenericItem> implements IItem {
 export class Item<T extends GenericItem> implements IItem {

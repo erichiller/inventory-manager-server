@@ -1,17 +1,22 @@
 import { Table, Divider, message } from 'antd';
 import React, { useState } from 'react';
 import { ColumnProps } from 'antd/es/table';
-import { withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, ItemHardwareFastenerBoltSelectColumn, useItemHardwareFastenerBoltQuery, useGetIconQuery, useGetItemsQuery, ItemSelectColumn } from '../../lib/types/graphql';
+import { 
+    // withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, ItemHardwareFastenerBoltSelectColumn, useItemHardwareFastenerBoltQuery, useGetIconQuery, 
+    useGetItemsQuery, GetItemQuery, GetItemsQueryVariables, 
+    // ItemSelectColumn 
+} from '../../lib/types/graphql';
 import { LabelDrawModal } from '../draw/LabelDrawModal';
 import { Item, ItemHardwareFastenerBolt } from '../../lib/item';
 import { DISPLAY } from '../../lib/types/enums';
-import { toTitleCase } from '../../lib/helpers';
+import { toTitleCase, QueryResultTypePlus } from '../../lib/helpers';
 import { EditHardwareFastenerBolt } from './edit/EditHardwareFastenerBolt';
 
 import { QueryHookOptions, useQuery } from '@apollo/react-hooks';
 import { QueryResult } from '@apollo/react-common';
 import { render } from 'react-dom';
 import { ItemSearch } from './ItemSearch';
+import { GenericItem } from '../../lib/item/Item';
 // import DocumentNode from 'graphql-tag';
 
 
@@ -29,20 +34,31 @@ interface pagination {
     current: number;
 }
 
-
-interface ItemTableProps<T> {
-    collapsed?: boolean;
-    data?: T[];
-    displayData?: ( data: T, index: number ) => React.ReactNode;
-    // loading?: boolean;
+type ItemTableProps<T, Q extends typeof useGetItemsQuery> = {
+    data?: T[] ;
+    query: Q; // QueryResultTypePlus
+    variables: GetItemsQueryVariables;
+} | {
+    data: T[];
+    query?: Q; // QueryResultTypePlus
+    variables?: GetItemsQueryVariables;
 }
+// interface ItemTableProps<T> {
+//     // collapsed?: boolean;
+//     data?: T[];
+//     query?
+//     // itemClass: T;
+//     // displayData?: ( data: T, index: number ) => React.ReactNode;
+//     // filter:
+//     // loading?: boolean;
+// }
 
 export type visibleHandler = ( c?: React.ReactElement ) => void;
 
 
 
 
-export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { children?: React.ReactNode; } ) => {
+export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery> ( props: ItemTableProps<T, Q> & { children?: React.ReactNode; } ) => {
     let loading = false;
 
     // return <ItemSearch />;
@@ -56,7 +72,9 @@ export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
     } );
 
     if ( ! props.data ){
-        let result = useGetItemsQuery();
+        let result = props.query({
+            variables: props.variables
+        });
         console.debug("no data received in props, running useGetItemsQuery");
         loading = result.loading;
 
@@ -103,12 +121,12 @@ export const ItemTable = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
                             <a onClick={( obj ) => {
                                 setModal( getPrintModal(), record );
                             }
-                            }> Print</a>
+                            }>Print</a>
                             <Divider type="vertical" />
                             <a onClick={( obj ) => {
                                 setModal( getRecordEditModal( record ), record );
                             }
-                            }> Print</a>
+                            }>Edit</a>
                             <Divider type="vertical" />
                             <a>Delete</a>
                         </span >

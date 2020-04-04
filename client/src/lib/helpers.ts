@@ -1,3 +1,5 @@
+import { QueryResult } from "@apollo/react-common";
+import { QueryHookOptions } from 'react-apollo';
 
 export function buf2hex ( buffer: ArrayBuffer ) { // buffer is an ArrayBuffer
     return Array.prototype.map.call( new Uint8Array( buffer ), x => ( '00' + x.toString( 16 ) ).slice( -2 ) ).join( '' );
@@ -36,3 +38,24 @@ export function toUpperCamelCase ( s: string ) {
 export function toLowerCamelCase ( s: string ) {
     return toUpperCamelCase( s ).charAt( 0 ).toLowerCase() + toUpperCamelCase( s ).substr( 1 );
 }
+
+export type Union<A, B> = A & B;
+
+export type ClassType<T> = Union<keyof T, new () => T>;
+
+
+/**
+ * Return Type of elements within an Array
+ */
+export type Unpacked<T> =
+    T extends ( infer U )[] ? U :
+    T extends ( ...args: any[] ) => infer U ? U :
+    T extends Promise<infer U> ? U :
+    T;
+
+export type IQuery = ( baseOptions?: QueryHookOptions<any, any> ) => QueryResult;
+
+export type QueryResultReturnKey<Q extends IQuery> = keyof Omit<Exclude<ReturnType<Q>[ 'data' ], undefined>, '__typename'>;
+
+/** Returns Type that is the result of the Query , this is the type when fully unpacked, the result of the GraphQL query. */
+export type QueryResultTypePlus<Q extends IQuery> = Unpacked<Exclude<ReturnType<Q>[ 'data' ], undefined>[ QueryResultReturnKey<Q> ]>;
