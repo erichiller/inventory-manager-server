@@ -11,6 +11,7 @@ import {
 import { ItemTable } from './ItemTable';
 import { ItemCategoryTree } from './ItemCategoryTree';
 import { PlusCircleOutlined } from '@ant-design/icons';
+import { EventDataNode, DataNode } from 'rc-tree/lib/interface';
 // import DocumentNode from 'graphql-tag';
 
 
@@ -41,6 +42,8 @@ export type visibleHandler = ( c?: React.ReactElement ) => void;
 interface ItemIndexState {
     // TODO: this should be category: CategoryEnum
     searchResults: { [ category: string ]: IItem[]; };
+    // categoryFilters: Array<keyof typeof EnumItemClassEnum>;
+    categoryFilters: Array<keyof Record<EnumItemClassEnum, string>>;
 }
 
 
@@ -55,7 +58,8 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
 
     let location = useLocation();
     let [ state, setState ] = useState<ItemIndexState>( {
-        searchResults: {}
+        searchResults: {},
+        categoryFilters: []
     } );
 
 
@@ -64,7 +68,20 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
 
     const processSearchResults = ( results ) => {
         console.log( "Item/Index.tsx : search results from ItemSearch:\n", results );
-        setState( { searchResults: results } );
+        setState( { ...state, searchResults: results } );
+    };
+    const setCategoryFilters = ( 
+        // selectedKeys: React.ReactText[], 
+        selectedKeys: Array<keyof Record<EnumItemClassEnum, string>>,
+        // selectedKeys: Array<keyof typeof EnumItemClassEnum>,
+        info: {
+            event: "select";
+            selected: boolean;
+            node: EventDataNode;
+            selectedNodes: DataNode[];
+            nativeEvent: MouseEvent;
+        } ) => {
+        setState( { ...state, categoryFilters: selectedKeys });
     };
 
     return <div>
@@ -82,7 +99,7 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
 
         <div style={{ display: 'flex' }}>
             <div style={{ width: '250px' }}>
-                <ItemCategoryTree onSelect={( selection, info ) => console.log( selection, info )} />
+                <ItemCategoryTree onSelect={setCategoryFilters} />
             </div>
             <div className="fillFlex">
                 <div style={{ display: 'flex', padding: 10 }}>
@@ -92,12 +109,12 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
                     <div
                         className="fillFlex flexContent" >
                         <ItemSearch
-                            // style={{marginRight: 50}}
+                            // style={{marginLeft: -57}}
                             onSearchCallback={processSearchResults}
                         />
                     </div>
                 </div>
-                <ItemTable query={useGetItemsQuery} variables={{}} />
+                <ItemTable query={useGetItemsQuery} variables={{categories: state.categoryFilters}} />
             </div>
         </div>
 

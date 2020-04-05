@@ -39,17 +39,26 @@ export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: Re
             let path: string[] = [];
             categories.forEach( cat => {
                 path.push( cat );
-                if ( !editLevel.find( node => node.key === path.join( '_' ) ) ) {
-                    let cls = Item.getClassForType( path.join( '_' ) as keyof typeof EnumItemClassEnum );
+                let pathString = path.join('_').toLowerCase();
+                if ( !editLevel.find( node => node.key === pathString ) ) {
+                    let cls = Item.getClassForType( pathString as keyof typeof EnumItemClassEnum );
                     let newNode = {
-                        key: path.join( '_' ),
-                        title: <Popover content={<span>content</span>} title="actions"><span>{cls ? < cls.icon /> : null}{toTitleCase( cat )}</span></Popover>,
+                        key: pathString,
+                        title: <Popover
+                                placement="bottomRight"
+                                trigger="contextMenu"
+                                content={<span>content</span>}
+                                title="actions">
+                                    <span>
+                                        {cls ? < cls.icon /> : null}{toTitleCase( cat )}
+                                    </span>
+                                </Popover>,
                         // icon: 
                         children: []
                     } as DataNode;
                     editLevel.push( newNode );
                 }
-                editLevel = editLevel.find( node => node.key === path.join( '_' ) ).children;
+                editLevel = editLevel.find( node => node.key === pathString ).children;
             } );
         } );
 
