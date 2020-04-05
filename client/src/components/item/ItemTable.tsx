@@ -1,9 +1,9 @@
-import { Table, Divider, message } from 'antd';
+import { Table, Divider, message, Alert } from 'antd';
 import React, { useState } from 'react';
 import { ColumnProps } from 'antd/es/table';
-import { 
+import {
     // withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, ItemHardwareFastenerBoltSelectColumn, useItemHardwareFastenerBoltQuery, useGetIconQuery, 
-    useGetItemsQuery, GetItemQuery, GetItemsQueryVariables, 
+    useGetItemsQuery, GetItemQuery, GetItemsQueryVariables,
     // ItemSelectColumn 
 } from '../../lib/types/graphql';
 import { LabelDrawModal } from '../draw/LabelDrawModal';
@@ -17,7 +17,8 @@ import { QueryResult } from '@apollo/react-common';
 import { render } from 'react-dom';
 import { ItemSearch } from './ItemSearch';
 import { GenericItem } from '../../lib/item/Item';
-import { EditOutlined, PrinterOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, PrinterOutlined, DeleteOutlined, TagOutlined } from '@ant-design/icons';
+import { PageSpinGQL } from '../shared/PageSpin';
 // import DocumentNode from 'graphql-tag';
 
 
@@ -36,14 +37,14 @@ interface pagination {
 }
 
 type ItemTableProps<T, Q extends typeof useGetItemsQuery> = {
-    data?: T[] ;
+    data?: T[];
     query: Q; // QueryResultTypePlus
     variables: GetItemsQueryVariables;
 } | {
     data: T[];
     query?: Q; // QueryResultTypePlus
     variables?: GetItemsQueryVariables;
-}
+};
 // interface ItemTableProps<T> {
 //     // collapsed?: boolean;
 //     data?: T[];
@@ -60,43 +61,60 @@ export type visibleHandler = ( c?: React.ReactElement ) => void;
 
 
 export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery> ( props: ItemTableProps<T, Q> & { children?: React.ReactNode; } ) => {
-    let loading = false;
+    let loading = true;
+    let result;
 
     // return <ItemSearch />;
 
     const [ state, setState ] = useState<Partial<ItemTableState>>( {
-        data: props.data ?? undefined,
-        pagination: { total: 0, pageSize: 100, current: 0 },
-        loading: false,
+        // data: props.data ?? undefined,
+        // pagination: { total: 0, pageSize: 100, current: 0 },
+        // loading: false,
         clickedItem: undefined,
         modal: null
     } );
+    
+    const [ data, setData ] = useState( props.data );
+    // console.log("DATA__1", data);
 
-    if ( ! props.data ){
-        let result = props.query({
+    if ( !props.data ) {
+        let variables = props.variables;
+        if ( !variables.categories || variables.categories.length === 0 ) {
+            variables.categories = null;
+        }
+        result = props.query( {
             variables: props.variables
-        });
-        console.debug("no data received in props, running useGetItemsQuery");
+        } );
         loading = result.loading;
 
         React.useEffect( () => {
-            if ( result.data ) {
-                setState( { 
-                    data: Item.ItemFactory( result.data.items ) 
-                });
-                message.info( `loaded data, found ${ result.data.items.length } items` );
+            if ( result.error ) {
+                message.error( result.error );
             }
-        }, [ result.data ] );
+            if ( result.data ) {
+                // setState( {
+                //     data: Item.ItemFactory( result.data.items )
+                // } );
+                setData( Item.ItemFactory( result.data.items ) as T[] );
+                if ( result.data.items.length > 0 ) {
+                    message.info( `loaded data, found ${ result.data.items.length } items` );
+                } else {
+                    message.warning( `No Items found matching your filters` );
+                }
+            }
+        }, [ result.data, result.error ] );
     } else {
-        console.debug(`data received in props ${props.data} not running GraphQL`);
+        console.debug( `data received in props ${ props.data } not running GraphQL` );
     }
 
 
-
     const getPrintModal = (): React.ReactElement => {
+        console.log("getPrintModal()");
+        // return <span>LOOK AT ME <br />MEMEME<br /></span>;
         return <LabelDrawModal
             item={state.clickedItem}
             visibleHandler={setModal} />;
+
     };
 
     const getRecordEditModal = ( record: Item<any> ): React.ReactElement => {
@@ -111,24 +129,35 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
 
     const getColumns = (): ColumnProps<T>[] => {
         return [
-            ...(state.data ? state.data[ 0 ].Columns : [ ] ),
+            ...( data ? data[ 0 ].Columns : [] ),
             ...[
                 {
                     title: 'Action',
                     key: 'action',
                     // dataIndex: '',
-                    render: ( text, record ) => (
+                    render: ( text, record: T ) => (
                         <span>
                             <a onClick={( obj ) => {
                                 setModal( getRecordEditModal( record ), record );
                             }
                             }><EditOutlined className="IconButton" /></a>
+
                             <Divider type="vertical" />
+
                             <a onClick={( obj ) => {
                                 setModal( getPrintModal(), record );
                             }
-                            }><PrinterOutlined className="IconButton" /></a>
+                            }><TagOutlined className="IconButton" /></a>
+
                             <Divider type="vertical" />
+
+                            <a onClick={( obj ) => {
+                                // TODO: this should add row to print list
+                            }
+                            }><PrinterOutlined className="IconButton" /></a>
+
+                            <Divider type="vertical" />
+
                             <a><DeleteOutlined className="IconButton" /></a>
                         </span >
                     ),
@@ -140,11 +169,11 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
 
 
     const setModal = ( modal: React.ReactElement, clickedItem?: T ) => {
-        console.log( "viewPrintModal () ? received", modal, clickedItem );
+        console.log( "setModal () ? received", modal, clickedItem );
         if ( !modal ) {
             setState( {
-                clickedItem: clickedItem,
-                modal: null
+                modal: null,
+                clickedItem: clickedItem
             } );
             console.log( "viewPrintModal(null) removing modal" );
             return;
@@ -153,32 +182,53 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
             modal: modal,
             clickedItem: clickedItem
         } );
-        console.log( "viewPrintModal () ? provided new modal" );
-        return;
+        console.log( "setModal () ? provided new modal" );
     };
 
-    const handleTableChange = ( pagination, filters, sorter ) => {
-        const pager = { ...state.pagination };
-        pager.current = pagination.current;
-        setState( {
-            pagination: pager,
-        } );
-    };
+    // const handleTableChange = ( pagination, filters, sorter ) => {
+    //     const pager = { ...state.pagination };
+    //     pager.current = pagination.current;
+    //     setState( {
+    //         pagination: pager,
+    //     } );
+    // };
 
     const onChange = ( pagination, filters, sorter ) => {
         console.log( 'params', pagination, filters, sorter );
     };
 
-    console.log( { data: state.data, first_id: state.data ? state.data[0].id : "NO DATA!"});
+    // console.log( {
+    //     loading,
+    //     result,
+    //     data,
+    //     state_data: state.data,
+    //     first_id: ( state.data && state.data.length > 0 ? state.data[ 0 ].id : "NO DATA!" )
+    // } );
+    // if ( !loading && !result.data && ( !state.data || state.data.length == 0 ) ) {
+    //     return <Alert
+    //         message="Warning"
+    //         description="No items found"
+    //         type="warning"
+    //         showIcon
+    //     />;
+    // }
+    // console.log( 'DATA__2', data );
     return (
         <div>
+            {/* <pre>{JSON.stringify( data, null, 2 )}</pre>
+            <br/><br/>
+            <pre>{JSON.stringify( getColumns(), null, 2)}</pre> */}
             {state.modal}
 
             <Table
+                style={{
+                    userSelect: 'none'
+                }}
                 columns={getColumns()}
-                dataSource={state.data}
+                dataSource={data}
+                // dataSource={state.data}
                 rowKey={item => item.id.toString()}
-                pagination={state.pagination}
+                // pagination={state.pagination}
                 loading={loading}
                 onChange={onChange}
             >
