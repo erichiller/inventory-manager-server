@@ -4,7 +4,6 @@ import { Tree, message, Popover, Menu } from "antd";
 import { DataNode } from 'rc-tree/lib/interface';
 import { DownOutlined } from "@ant-design/icons";
 import { useGetItemsQuery, EnumItemClassEnum } from "../../lib/types/graphql";
-import { HexBoltIcon, VaultIcon } from "../../styles/icon";
 import { TreeProps } from "antd/lib/tree";
 import { toTitleCase } from "../../lib/helpers";
 import { IconComponentT } from "../../lib/item/Item";

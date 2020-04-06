@@ -10,9 +10,9 @@ import { Integer } from '../types/uint8';
 import { apolloClient } from '../../index';
 import { message } from "antd";
 import React from "react";
-import { VaultIcon } from "../../styles/icon";
 import { ColumnProps } from "antd/lib/table";
 import { toTitleCase, Union } from "../helpers";
+import { CodeIcon } from "../../styles/icon";
 
 export type GenericItem = Pick<ItemGql, 'id'> 
                           & Partial<Pick<ItemGql, 'class' | 'object'> 
@@ -84,7 +84,7 @@ export class Item<T extends GenericItem> implements IItem {
         if (this._name){
             return this._name;
         }
-        else if (this._object.hasOwnProperty("name")) {
+        else if (this._object && this._object.hasOwnProperty("name")) {
             return this._object['name'];
         }
         else {
@@ -126,7 +126,7 @@ export class Item<T extends GenericItem> implements IItem {
     }
 
     static get icon (): IconComponentT {
-        return VaultIcon;
+        return CodeIcon;
     }
 
     /**
@@ -180,7 +180,7 @@ get icon(): IconComponentT {
      * Props which should be included in label (default) 
      * Optionally defined on subclasses
      */
-    get labelProps (): ( keyof T )[] {
+    get labelProps (): Array<Record<keyof T, string>> {
         return null;
     }
     /**

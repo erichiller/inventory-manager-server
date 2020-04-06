@@ -7,10 +7,10 @@ import { DISPLAY } from '../../lib/types/enums';
 import { DrawContextMenu } from './DrawContextMenu';
 import { KonvaEventObject } from 'konva/types/Node';
 import { Button, Tooltip, message } from 'antd';
-import DrawEditText from './DrawEditText';
+import { DrawEditText } from './DrawEditText';
 import DrawAddImage from './image/LabelAddImageModal';
 
-import QREditModal from './QREditModal';
+import { QREditModal } from './QREditModal';
 import { Integer } from '../../lib/types/uint8';
 import { LabelText, LabelImage, LabelQR, FormatOptionsT, LabelExport, UUIDStringT } from '../../lib/LabelConstituent';
 
@@ -20,6 +20,8 @@ import { PrintContext } from '../print/PrintContextHandler';
 import { LabelComponent } from '../label/LabelComponent';
 import { Stage, Text, Image, Rect } from 'react-konva';
 import { MedicineBoxOutlined, FontSizeOutlined, QrcodeOutlined, PictureOutlined } from '@ant-design/icons';
+import { CodeIcon } from '../../styles/icon';
+import Konva from 'konva';
 
 
 
@@ -27,8 +29,8 @@ import { MedicineBoxOutlined, FontSizeOutlined, QrcodeOutlined, PictureOutlined 
 
 interface ChangedValueTextI {
     text?: ChangedValueI;
-    format_options?: ChangedValueI;
-    text_size?: ChangedValueI;
+    format_options?: FormatOptionsT[];
+    text_size?: number;
 }
 
 interface ChangedValueImageI {
@@ -41,21 +43,22 @@ interface ChangedValueImageI {
     category?: ChangedValueI;
 }
 
-interface ChangedValueI {
-    dirty: boolean;
-    errors?: any;
-    name: string;
-    touched: boolean;
-    validating: boolean;
-    value: any;
-}
+type ChangedValueI = string;
+// interface ChangedValueI {
+//     dirty: boolean;
+//     errors?: any;
+//     name: string;
+//     touched: boolean;
+//     validating: boolean;
+//     value: any;
+// }
 
 interface LabelDrawProps {
     width: number;
     // item: ItemHardwareFastenerBolt;
     item?: Item<any>;
     label: LabelExport;
-    updateWidth: (newPx: number) => void;
+    updateWidth: ( newPx: number ) => void;
 }
 
 
@@ -97,7 +100,7 @@ interface LabelDrawState {
     historyPosition: Integer;
     history: LabelDrawConstituents[];
     labelTextColor: string;
-    setLabelTextColor: (color: string) => void;
+    setLabelTextColor: ( color: string ) => void;
 }
 interface DrawContext extends Omit<LabelDrawState, "item"> {
     item?: Item<any>;
@@ -156,6 +159,9 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         // this.state.item = this.props.label.
     }
 
+    /**
+     * Right click menu on Konva canvas
+     */
     displayContextMenu = ( display: KonvaEventObject<PointerEvent> ) => {
         console.log( "displayContextMenu()", display );
         if ( display ) {
@@ -270,24 +276,25 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         }
     };
 
+    /** Run when `DrawEditText`'s form changes values */
     updateLabelTexts = ( changedValue: ChangedValueTextI, labelText: LabelText ) => {
-        console.log( "input for updateLabelTexts", changedValue, labelText );
+        console.log( "input for updateLabelTexts", { changedValue, labelText } );
         // let texts = this.state.texts;
         let updatedText = false;
         // if ( ! labelText ){
         //     labelText = new LabelText();
         // // }
         if ( changedValue.text ) {
-            console.log( "setting text to", changedValue.text.value );
-            labelText.text = changedValue.text.value;
-        } else if ( changedValue.format_options ) {
-            console.log( "setting format_options to", changedValue.format_options.value );
+            console.log( "setting text to", changedValue.text );
+            labelText.text = changedValue.text;
+        } else if ( changedValue.format_options && changedValue.format_options ) {
+            console.log( "setting format_options to", { format_options: changedValue, value: changedValue.format_options } );
             // if changedValue.
-            labelText.bold = ( changedValue.format_options.value as FormatOptionsT[] ).includes( "bold" );
-            labelText.underline = ( changedValue.format_options.value as FormatOptionsT[] ).includes( "underline" );
-            labelText.italic = ( changedValue.format_options.value as FormatOptionsT[] ).includes( "italic" );
+            labelText.bold = ( changedValue.format_options as FormatOptionsT[] ).includes( "bold" );
+            labelText.underline = ( changedValue.format_options as FormatOptionsT[] ).includes( "underline" );
+            labelText.italic = ( changedValue.format_options as FormatOptionsT[] ).includes( "italic" );
         } else if ( changedValue.text_size ) {
-            labelText.fontSize = changedValue.text_size.value;
+            labelText.fontSize = changedValue.text_size;
         } else {
             console.warn( "no match found for field", changedValue );
         }
@@ -313,7 +320,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         this.setState( {
             labelTextColor: color
         } );
-    }
+    };
 
 
     shouldComponentUpdate = ( nextProps: LabelDrawProps, nextState: LabelDrawState ): boolean => {
@@ -326,15 +333,15 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         if ( updateContextResult ) {
             this.updateHistory();
         }
-        console.log( `shouldComponentUpdate ? ${shouldUpdate}\n`, {
-            'history_length': this.state.history.length , 
-            shouldUpdate , 
+        console.log( `shouldComponentUpdate ? ${ shouldUpdate }\n`, {
+            'history_length': this.state.history.length,
+            shouldUpdate,
             updateContextResult,
             "nextProps!=this.props": nextProps != this.props,
-            "nextState!=this.state": nextState != this.state, 
-            nextState, 
-            "state": this.state 
-        });
+            "nextState!=this.state": nextState != this.state,
+            nextState,
+            "state": this.state
+        } );
         return shouldUpdate;
     };
 
@@ -386,7 +393,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             'this.exportLabel()': this.exportLabel(),
             'this.context.getCurrentLabel': this.context.getCurrentLabel,
             'this.exportLabel() !== this.context.getCurrentLabel()': this.exportLabel() !== this.context.getCurrentLabel(),
-        });
+        } );
         if ( !this.context.getCurrentLabel() || this.exportLabel() !== this.context.getCurrentLabel() ) {
             console.log( "will updateContext" );
             this.context.setCurrentLabel( this.exportLabel() );
@@ -499,8 +506,19 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
     };
 
 
-    updateLabelQR =  ( changedValue: Partial<LabelQR>, labelQR: LabelQR ) => {
+    /**
+     * changedValue - values changes on...
+     * labelQR - LabelQR object whose values have changed
+     * NOTE: pass in FALSE to delete the object
+     **/
+    updateLabelQR = ( changedValue: Partial<LabelQR> | false, labelQR: LabelQR ) => {
         let updatedQR = false;
+        if ( changedValue === false ){
+            this.setState( {
+                qrs: this.state.qrs.filter( qr => qr.id !== labelQR.id)
+            });
+            return;
+        }
         if ( changedValue.dataURL ) {
             console.log( "setting labelQR to", changedValue.dataURL );
             labelQR.dataURL = changedValue.dataURL;
@@ -566,7 +584,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         qrs: [],
         uncommittedText: new LabelText(),
         uncommittedImage: new LabelImage(),
-        uncommittedQR: new LabelQR({item: this.props.item}),
+        uncommittedQR: new LabelQR( { item: this.props.item } ),
         commitLabelText: this.commitLabelText,
         commitLabelImage: this.commitLabelImage,
         commitLabelQR: this.commitLableQR,
@@ -633,8 +651,9 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
     };
 
     render () {
+        // TODO: Why isnt `props.item` showing up ??
         const { item } = this.props;
-        console.log( `LabelDraw.render() with width=`,this.props );
+        console.log( `LabelDraw.render() with props:\n`, this.props );
         return (
             <DrawContext.Provider
                 value={this.state}>
@@ -643,35 +662,64 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                         <DrawContextMenu />
                         : null}
                     {this.state.displayEditTextModalStatus ?
-                        <DrawEditText visibleHandler={this.displayEditTextModal} changeHandler={this.updateLabelTexts} item={item} labelText={this.state.uncommittedText} />
+                        <DrawEditText
+                            visibleHandler={this.displayEditTextModal}
+                            changeHandler={this.updateLabelTexts}
+                            item={item}
+                            labelText={this.state.uncommittedText} />
                         : null}
                     {this.state.displayImageSelectModalStatus ?
-                        <DrawAddImage visibleHandler={this.displayImageSelectModal} changeHandler={this.updateLabelImages} item={item} labelImage={this.state.uncommittedImage} />
+                        <DrawAddImage
+                            visibleHandler={this.displayImageSelectModal}
+                            changeHandler={this.updateLabelImages}
+                            item={item}
+                            labelImage={this.state.uncommittedImage} />
                         : null}
                     {this.state.displayQREditModalStatus ?
-                        <QREditModal visibleHandler={this.displayQREditModal} changeHandler={this.updateLabelQR} item={item} labelQR={this.state.uncommittedQR} />
+                        <QREditModal
+                            visibleHandler={this.displayQREditModal}
+                            changeHandler={this.updateLabelQR}
+                            item={item}
+                            labelQR={this.state.uncommittedQR} />
                         : null}
                     {this.state.displayImageUploadModalStatus ?
                         <NewImageUploadModal visibleHandler={this.displayImageUploadModal} changeHandler={this.updateLabelImages} item={item} labelImage={this.state.uncommittedImage} />
                         : null}
 
-                    <Tooltip key="debug" placement="top" title="Send debug information to the console">
-                        <Button icon={<MedicineBoxOutlined />} style={{
-                            padding: 0,
-                            width: '24px',
-                            height: '24px',
-                            float: 'right',
-                            border: 0
-                        }} onClick={() => {
-                            console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
-                            console.log( this.context.currentLabelToBuffer() );
-                            message.info( "Debug output sent to console" );
-                        }} id="DEBUG" />
-                    </Tooltip>
+                    <div style={{ float: 'right', position: "relative", top: -40 }}>
+                        <Tooltip key="debug" placement="top" title="Send debug information to the console">
+                            <Button icon={<MedicineBoxOutlined />} style={{
+                                padding: 0,
+                                width: '24px',
+                                height: '24px',
+                                border: 0
+                            }} onClick={() => {
+                                console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
+                                console.log( this.context.currentLabelToBuffer() );
+                                message.info( "Debug output sent to console" );
+                            }} id="DEBUG" />
+                        </Tooltip>
+                        <Tooltip key="codeView" placement="top" title="View current label json">
+                            <Button icon={<CodeIcon />} style={{
+                                padding: 0,
+                                width: '24px',
+                                height: '24px',
+                                border: 0,
+                                position: "relative",
+                                top: "2px"
+                            }} onClick={() => {
+                                console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
+                                console.log( this.context.currentLabelToBuffer() );
+                                message.info( "Debug output sent to console" );
+                            }} id="DEBUG" />
+                        </Tooltip>
+                    </div>
 
                     <LabelComponent {...this.props}>
                         {this.state.texts.map( labelText => {
-                            console.log( "drawing new labelText", labelText );
+                            console.log( "drawing new labelText", labelText.text ? true : false, labelText );
+                            if ( !labelText.text ) { return null; }
+                            console.log( "... will draw" );
                             return <Text
                                 textObject={labelText}
                                 key={labelText.id}
@@ -771,13 +819,28 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                                 rotation={labelQR.rotation}
                                 onTransformEnd={( evt: KonvaEventObject<Event> ) => {
                                     console.log( "(QR) TransformEnd:\n", evt );
-                                    ( evt.currentTarget.attrs.qrObject as LabelQR ).drawAttrs = {
+                                    let labelQR = ( evt.currentTarget.attrs.qrObject as LabelQR );
+                                    let qrCanvas = labelQR.canvasElement;
+                                    evt.currentTarget.attrs.scaleX = 1;
+                                    evt.currentTarget.attrs.scaleY = 1;
+                                    // evt.currentTarget =
+                                    labelQR.drawAttrs = {
                                         x: evt.currentTarget.attrs.x,
                                         y: evt.currentTarget.attrs.y,
-                                        scaleX: evt.currentTarget.attrs.scaleX,
-                                        scaleY: evt.currentTarget.attrs.scaleY,
+                                        scaleX: 1,
+                                        scaleY: 1,
+                                        // scaleX: evt.currentTarget.attrs.scaleX,
+                                        // scaleY: evt.currentTarget.attrs.scaleY,
                                         rotation: evt.currentTarget.attrs.rotation
                                     };
+                                    console.log( "canvasElement for LabelQR -- start", JSON.stringify({ width: qrCanvas.width, height: qrCanvas.height}) );
+                                    ( evt.currentTarget.attrs.qrObject as LabelQR ).canvasElement.width = qrCanvas.width;
+                                    ( evt.currentTarget.attrs.qrObject as LabelQR ).canvasElement.height = qrCanvas.height;
+                                    (evt.currentTarget as Konva.Image).image( ( evt.currentTarget.attrs.qrObject as LabelQR ).setCanvas( true ) );
+                                    // evt.currentTarget.parent.findOne<Konva.Image>(labelQR.id).image( ( evt.currentTarget.attrs.qrObject as LabelQR ).setCanvas(true) );
+
+                                    console.log( "canvasElement for LabelQR -- end", JSON.stringify( { width: qrCanvas.width, height: qrCanvas.height } ) );
+
                                     this.updateHistory();
                                 }}
                                 onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
