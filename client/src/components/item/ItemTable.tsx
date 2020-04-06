@@ -73,9 +73,8 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
         clickedItem: undefined,
         modal: null
     } );
-    
     const [ data, setData ] = useState( props.data );
-    // console.log("DATA__1", data);
+    const [ clickedItem, setClickedItem ] = useState<T>( );
 
     if ( !props.data ) {
         let variables = props.variables;
@@ -107,16 +106,6 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
         console.debug( `data received in props ${ props.data } not running GraphQL` );
     }
 
-
-    const getPrintModal = (): React.ReactElement => {
-        console.log("getPrintModal()");
-        // return <span>LOOK AT ME <br />MEMEME<br /></span>;
-        return <LabelDrawModal
-            item={state.clickedItem}
-            visibleHandler={setModal} />;
-
-    };
-
     const getRecordEditModal = ( record: Item<any> ): React.ReactElement => {
 
         switch ( record.class ) {
@@ -125,6 +114,10 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                 return <EditHardwareFastenerBolt visibleHandler={setModal} item={record as ItemHardwareFastenerBolt} />;
                 break;
         }
+    };
+
+    const getLabelDrawModal = ( record: T ): React.ReactElement => {
+        return <LabelDrawModal item={record} visibleHandler={setModal} />
     };
 
     const getColumns = (): ColumnProps<T>[] => {
@@ -145,19 +138,20 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                             <Divider type="vertical" />
 
                             <a onClick={( obj ) => {
-                                setModal( getPrintModal(), record );
+                                setModal( getLabelDrawModal( record ), record );
                             }
                             }><TagOutlined className="IconButton" /></a>
 
                             <Divider type="vertical" />
 
+                            {/* TODO */}
                             <a onClick={( obj ) => {
                                 // TODO: this should add row to print list
                             }
                             }><PrinterOutlined className="IconButton" /></a>
 
                             <Divider type="vertical" />
-
+                            {/* TODO */}
                             <a><DeleteOutlined className="IconButton" /></a>
                         </span >
                     ),
@@ -168,20 +162,22 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
 
 
 
-    const setModal = ( modal: React.ReactElement, clickedItem?: T ) => {
-        console.log( "setModal () ? received", modal, clickedItem );
+    const setModal = ( modal: React.ReactElement, newClickedItem?: T ) => {
+        console.log( "setModal () ? received:\n", { modal, newClickedItem, clickedItem } );
         if ( !modal ) {
             setState( {
                 modal: null,
-                clickedItem: clickedItem
+                // clickedItem: clickedItem
             } );
             console.log( "viewPrintModal(null) removing modal" );
             return;
+        } else {
+            setState( {
+                modal: modal,
+                // clickedItem: clickedItem
+            } );
         }
-        setState( {
-            modal: modal,
-            clickedItem: clickedItem
-        } );
+        setClickedItem( newClickedItem );
         console.log( "setModal () ? provided new modal" );
     };
 

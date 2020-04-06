@@ -5,9 +5,8 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "esModuleInterop": true,
-        // "jsx": "react",
-        "jsx": "preserve",
-        // "module": "commonjs",
+        "jsx": "react",
+        // "jsx": "preserve", // this must be react unless using whatever create-react-app uses
         "module": "esnext",
         "moduleResolution": "node",
         "outDir": "../dist/client/",

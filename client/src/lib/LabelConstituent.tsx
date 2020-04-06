@@ -6,6 +6,8 @@ import { EnumItemClassEnum, Scalars, LabelAggregate } from './types/graphql';
 import { Integer } from './types/uint8';
 import { Label } from "./types/graphql";
 import { Item } from "./item";
+import bwipjs from 'bwip-js';
+import { DrawingSVG } from './BwipJsSvg';
 
 
 
@@ -336,6 +338,7 @@ export class LabelQR extends LabelConstituent {
     canvasElement: HTMLCanvasElement;
     dataURL: string;
     item: Item<any>;
+    encodedText: string;
 
     constructor ( options?: Partial<LabelConstituent> & { item: Item<any> } ) {
         super();
@@ -350,12 +353,49 @@ export class LabelQR extends LabelConstituent {
         return Object.getOwnPropertyNames(this.item);
     }
 
+
+    setCanvas ( refresh: true ): HTMLCanvasElement;
+    setCanvas ( refresh: true, height: number ): HTMLCanvasElement;
+    setCanvas ( text?: string, height?: number): HTMLCanvasElement;
+    /**
+     * 
+     * @param text if text is not supplied, the currant instances will be;
+     * @param height 
+     */
+    setCanvas ( text?: string | true, height: number = 20, el: HTMLCanvasElement | string = 'tempCanvas'): HTMLCanvasElement {
+        let scale = 1;
+        if ( text === true ){
+            text = this.encodedText;
+            el = this.canvasElement;
+            scale = 2;
+        }
+        console.log({FontLib: bwipjs.FontLib });
+        return bwipjs.toCanvas( el, {
+            bcid: 'datamatrix',       // Barcode type
+            text: text,    // Text to encode
+            scale: scale,               // 3x scaling factor
+            // width: props.width,
+            height: height,              // Bar height, in millimeters
+            monochrome: true,
+
+            // includetext: true,            // Show human-readable text
+            // textxalign: 'center',        // Always good to set this
+        } );
+    }
+
+    get svg(): SVGElement {
+        return new DrawingSVG( {
+            bcid: 'datamatrix',       // Barcode type
+            text: text,    // Text to encode
+            scale: scale,               // 3x scaling factor
+            // width: props.width,
+            height: height,              // Bar height, in millimeters
+            monochrome: true,
+        }).end()
+
+    }
+
     encodeText(): string {
-//         return `id: 1
-// name: test bolt
-// description: null
-// foobar: t
-// `;
         if ( this.properties ) {
             let result = this.properties.map( p => {
                 console.log( "QRCanvas is adding props from labelQR", { property: p, value: this.item[ p ] } );
@@ -363,6 +403,7 @@ export class LabelQR extends LabelConstituent {
             } ).join( '\n' ).replace('_', ' ');
 
             console.log( "LabelQR.encodeText()", result );
+            this.encodedText = result;
             return result;
         }
     }

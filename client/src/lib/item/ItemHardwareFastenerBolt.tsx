@@ -1,5 +1,5 @@
 import { Item, IconComponentT, CategoryHierarchyT } from './Item';
-import { ItemHardwareFastenerBolt as ItemHardwareFastenerBoltGql } from "../types/graphql";
+import { ItemHardwareFastenerBolt as ItemHardwareFastenerBoltGql, ItemHardwareFastenerBoltSelectColumn } from "../types/graphql";
 import React from 'react';
 import { Integer } from '../types/uint8';
 import { HexBoltIcon } from '../../styles/icon';
@@ -28,6 +28,10 @@ export class ItemHardwareFastenerBolt extends Item<ItemHardwareFastenerBoltGql> 
 
     static get categories (): CategoryHierarchyT[] {
         return [ "Hardware", "Fastener", "Bolt" ];
+    }
+
+    static get labelProps (): Array<keyof typeof ItemHardwareFastenerBoltSelectColumn> {
+        return Object.keys(ItemHardwareFastenerBoltSelectColumn) as Array<keyof typeof ItemHardwareFastenerBoltSelectColumn>;
     }
 }
 
