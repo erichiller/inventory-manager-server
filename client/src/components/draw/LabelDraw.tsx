@@ -620,7 +620,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         console.group( "LabelDraw.exportLabel()" );
         // console.trace();
         console.log( "LabelDraw, exporting Label verification values", {
-            "canvas": this.canvas,
+            // "canvas": this.canvas,
             "width": this.width,
             "height": this.height,
             "imgData": this.imgData,
@@ -834,9 +834,9 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                                         rotation: evt.currentTarget.attrs.rotation
                                     };
                                     console.log( "canvasElement for LabelQR -- start", JSON.stringify({ width: qrCanvas.width, height: qrCanvas.height}) );
-                                    ( evt.currentTarget.attrs.qrObject as LabelQR ).canvasElement.width = qrCanvas.width;
-                                    ( evt.currentTarget.attrs.qrObject as LabelQR ).canvasElement.height = qrCanvas.height;
-                                    (evt.currentTarget as Konva.Image).image( ( evt.currentTarget.attrs.qrObject as LabelQR ).setCanvas( true ) );
+                                    // ( evt.currentTarget.attrs.qrObject as LabelQR ).canvasElement.width = qrCanvas.width;
+                                    // ( evt.currentTarget.attrs.qrObject as LabelQR ).canvasElement.height = qrCanvas.height;
+                                    // (evt.currentTarget as Konva.Image).image( ( evt.currentTarget.attrs.qrObject as LabelQR ).setCanvas( true ) );
                                     // evt.currentTarget.parent.findOne<Konva.Image>(labelQR.id).image( ( evt.currentTarget.attrs.qrObject as LabelQR ).setCanvas(true) );
 
                                     console.log( "canvasElement for LabelQR -- end", JSON.stringify( { width: qrCanvas.width, height: qrCanvas.height } ) );

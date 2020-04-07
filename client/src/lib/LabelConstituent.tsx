@@ -107,7 +107,7 @@ export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate' | 
                 } else if ( props.texts ) {
                     console.log( "LabelExport - 'texts' in props" );
                     this.content = {
-                        texts: props.texts.map(text => new LabelText(text)),
+                        texts: props.texts.map( text => new LabelText( text ) ),
                         images: props.images,
                         qrs: props.qrs
                     };
@@ -128,7 +128,7 @@ export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate' | 
      * @returns self
      */
     setValues ( values: LabelExportConstructorProps ): LabelExport {
-        console.log( "LabelConstituent.setValues ( #LabelComponent )\n********************\n", { ...values, ...{ imgData_width: values.imgData.width, imgData_height: values.imgData.height } }, "\n********************\n");
+        console.log( "LabelConstituent.setValues ( #LabelComponent )\n********************\n", { ...values, ...{ imgData_width: values.imgData.width, imgData_height: values.imgData.height } }, "\n********************\n" );
         this.content = {
             texts: values.texts,
             images: values.images,
@@ -148,11 +148,11 @@ export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate' | 
     get canvas (): HTMLCanvasElement {
         let canvas = document.createElement( 'canvas' );
         console.log( `LabelConstituent.canvas (getter) initial canvas create ( #LabelComponent )\n********************\n`,
-                     `\t imgData_width:     ${ this.imgData.width }\n`,
-                     `\t imgData_height:    ${ this.imgData.height }\n`, 
-                     `\t canvas_width:      ${ canvas.width }\n`,
-                     `\t canvas_height:     ${ canvas.height }\n`,
-                     `********************\n` );
+            `\t imgData_width:     ${ this.imgData.width }\n`,
+            `\t imgData_height:    ${ this.imgData.height }\n`,
+            `\t canvas_width:      ${ canvas.width }\n`,
+            `\t canvas_height:     ${ canvas.height }\n`,
+            `********************\n` );
 
         let ctx = canvas.getContext( '2d' );
         if ( this.imgData instanceof ImageData ) {
@@ -210,21 +210,21 @@ class LabelConstituent extends DrawAttrs {
         this.id = UUIDv4();
         this.x = 0;
         this.y = 0;
-        this.scaleX     = 1.0; 
-        this.scaleY     = 1.0;
-        this.rotation   = 0.0;
+        this.scaleX = 1.0;
+        this.scaleY = 1.0;
+        this.rotation = 0.0;
     }
 
-    get drawAttrs(){ return undefined; }
-    set drawAttrs(newAttrs: Partial<DrawAttrs>){
-        Object.entries(newAttrs).forEach( ([k, v]) => {
-            console.log(`drawAttrs ${k} = ${v}`);
-            this[k] = v;
-        });
+    get drawAttrs () { return undefined; }
+    set drawAttrs ( newAttrs: Partial<DrawAttrs> ) {
+        Object.entries( newAttrs ).forEach( ( [ k, v ] ) => {
+            console.log( `drawAttrs ${ k } = ${ v }` );
+            this[ k ] = v;
+        } );
     }
 
     setDrawAttrs ( newAttrs: Partial<DrawAttrs> ) {
-        console.log("in setDrawAttrs()", newAttrs);
+        console.log( "in setDrawAttrs()", newAttrs );
         Object.entries( newAttrs ).forEach( ( [ k, v ] ) => {
             console.log( `drawAttrs ${ k } = ${ v }` );
             this[ k ] = v;
@@ -282,14 +282,14 @@ export class LabelText extends LabelConstituent {
     toJSON ( key?: string ) {
         // no op for key
         let ret: Object = {};
-        console.log(`LabelText.toJSON(${key}) being called`);
+        console.log( `LabelText.toJSON(${ key }) being called` );
         console.log(
             [
                 ...Object.keys( this ).filter( element => element === "_fontSize" ? false : true )
                 , "fontSize"
             ].forEach( k => ret[ k ] = this[ k ] )
         );
-        console.log("LabelText.toJSON() returns", ret);
+        console.log( "LabelText.toJSON() returns", ret );
         return ret;
     }
 
@@ -335,41 +335,41 @@ export class LabelQR extends LabelConstituent {
     //     return this.
     // }
     properties: string[] = [];
-    canvasElement: HTMLCanvasElement;
+    canvasElement: HTMLCanvasElement | HTMLOrSVGImageElement;
     dataURL: string;
     item: Item<any>;
-    encodedText: string;
+    private _encodedText: string;
 
-    constructor ( options?: Partial<LabelConstituent> & { item: Item<any> } ) {
+    constructor ( options?: Partial<LabelConstituent> & { item: Item<any>; } ) {
         super();
         const { item } = options;
         this.item = item;
-        if ( item ){
-            this.properties = Object.getOwnPropertyNames(item);
+        if ( item ) {
+            this.properties = Object.getOwnPropertyNames( item );
         }
     }
 
-    get itemProperties(): string[] {
-        return Object.getOwnPropertyNames(this.item);
+    get itemProperties (): string[] {
+        return Object.getOwnPropertyNames( this.item );
     }
 
 
     setCanvas ( refresh: true ): HTMLCanvasElement;
     setCanvas ( refresh: true, height: number ): HTMLCanvasElement;
-    setCanvas ( text?: string, height?: number): HTMLCanvasElement;
+    setCanvas ( text?: string, height?: number ): HTMLCanvasElement;
     /**
      * 
      * @param text if text is not supplied, the currant instances will be;
      * @param height 
      */
-    setCanvas ( text?: string | true, height: number = 20, el: HTMLCanvasElement | string = 'tempCanvas'): HTMLCanvasElement {
+    setCanvas ( text?: string | true, height: number = 20, el: HTMLCanvasElement | string = 'tempCanvas' ): HTMLCanvasElement {
         let scale = 1;
-        if ( text === true ){
+        if ( text === true ) {
             text = this.encodedText;
-            el = this.canvasElement;
+            el = ( this.canvasElement as HTMLCanvasElement ) ?? null;
             scale = 2;
         }
-        console.log({FontLib: bwipjs.FontLib });
+        console.log( { FontLib: bwipjs.FontLib } );
         return bwipjs.toCanvas( el, {
             bcid: 'datamatrix',       // Barcode type
             text: text,    // Text to encode
@@ -383,27 +383,36 @@ export class LabelQR extends LabelConstituent {
         } );
     }
 
-    get svg(): SVGElement {
-        return new DrawingSVG( {
+    get svg (): HTMLImageElement {
+        // get svg(): HTMLImageElement {
+        console.group( 'DrawingSVG' );
+        let image: HTMLImageElement = document.createElement( 'img' );
+        let opts = {
             bcid: 'datamatrix',       // Barcode type
-            text: text,    // Text to encode
-            scale: scale,               // 3x scaling factor
+            text: this.encodedText,    // Text to encode
+            // scale: scale,               // 3x scaling factor
             // width: props.width,
-            height: height,              // Bar height, in millimeters
+            // height: height,              // Bar height, in millimeters
             monochrome: true,
-        }).end()
-
+        };
+        bwipjs.fixupOptions( opts );
+        const src = bwipjs.render( opts, new DrawingSVG( opts, bwipjs.FontLib ));
+        console.log({method: 'get svg ()', src, opts});
+        // image.src = opts).end();
+        // image.src = src;
+        console.groupEnd();
+        return image;
     }
 
-    encodeText(): string {
+    get encodedText (): string {
         if ( this.properties ) {
             let result = this.properties.map( p => {
                 console.log( "QRCanvas is adding props from labelQR", { property: p, value: this.item[ p ] } );
-                return `${p}: ${ this.item[ p ] }`;
-            } ).join( '\n' ).replace('_', ' ');
+                return `${ p }: ${ this.item[ p ] }`;
+            } ).join( '\n' ).replace( '_', ' ' );
 
             console.log( "LabelQR.encodeText()", result );
-            this.encodedText = result;
+            this._encodedText = result;
             return result;
         }
     }
