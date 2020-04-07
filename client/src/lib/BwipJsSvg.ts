@@ -19,8 +19,12 @@ import bwipjs from 'bwip-js';
 
 const FontLib = bwipjs.FontLib;
 
+// [x, y]
+type Point = [ number, number];
+type Points = Array<Point>;
 
-export class DrawingSVG {
+
+export class DrawingSVG implements bwipjs.Drawing {
     // Unrolled x,y rotate/translate matrix
     tx0 = 0;
     tx1 = 0;
@@ -35,35 +39,49 @@ export class DrawingSVG {
     path;
     lines = {};
 
-    // Magic number to approximate an ellipse/circle using 4 cubic beziers.
+    /**
+     * Magic number to approximate an ellipse/circle using 4 cubic beziers.
+     */
     ELLIPSE_MAGIC = 0.55228475 - 0.00045;
 
-    // Global graphics state
-    gs_width;
-    gs_height;    // image size, in pixels
+    /**
+     * Global graphics state
+     * image width, in pixels
+     */
+    gs_width: number;
+    /**
+     * Global graphics state
+     * image height, in pixels
+     */
+    gs_height: number;
 
-    gs_dx;
-    gs_dy;           // x,y translate (padding)
+    /** x translate (padding) */
+    gs_dx: number;
+    /** y translate (padding) */
+    gs_dy: number;
 
     opts: bwipjs.CanvasOptions;
 
-    constructor ( opts: bwipjs.CanvasOptions ) {
+    constructor ( opts: bwipjs.DrawingOptions, fontLib: typeof FontLib ) {
+        console.debug( { method: 'constructor', opts } );
         this.opts = opts;
-
-
     }
 
     // Make no adjustments
-    scale ( sx, sy ) {
-    };
+    scale ( sx: number, sy: number ) {
+        console.debug( { method: 'scale', sx, sy } );
+    }
 
-    // Measure text.  This and scale() are the only drawing primitives that
-    // are called before init().
-    //
-    // `font` is the font name typically OCR-A or OCR-B.
-    // `fwidth` and `fheight` are the requested font cell size.  They will
-    // usually be the same, except when the scaling is not symetric.
-    measure ( str: string, font: string, fwidth: number, fheight: number ) {
+    /**
+     * Measure text.  
+     * This and `scale()` are the only drawing primitives that are called before init().
+     *
+     * * `font` is the font name typically OCR-A or OCR-B.
+     * * `fwidth` and `fheight` are the requested font cell size.  They will
+     *     usually be the same, except when the scaling is not symetric.
+     */
+    measure ( str: string, font: string, fwidth: number, fheight: number ): bwipjs.Measurement {
+        console.debug( { method: 'measure', str, font, fwidth, fheight } );
         fwidth = fwidth | 0;
         fheight = fheight | 0;
 
@@ -82,11 +100,15 @@ export class DrawingSVG {
             width += glyph.advance;
         }
         return { width, ascent, descent };
-    };
+    }
 
-    // width and height represent the maximum bounding box the graphics will occupy.
-    // The dimensions are for an unrotated rendering.  Adjust as necessary.
-    init ( width, height ) {
+    /**
+     * `width` and `height` represent the maximum bounding box the graphics will occupy.
+     * The dimensions are for an unrotated rendering.
+     * Adjust as necessary.
+     */ 
+    init ( width: number, height:number ) {
+        console.debug( { method: 'init', width, height } );
         // Add in the effects of padding.  These are always set before the
         // drawing constructor is called.
         var padl = this.opts.paddingleft;
@@ -118,11 +140,14 @@ export class DrawingSVG {
         this.gs_dy = padt;
 
         this.svg = '';
-    };
+    }
 
-    // Unconnected stroked lines are used to draw the bars in linear barcodes.
-    // No line cap should be applied.  These lines are always orthogonal.
-    line ( x0, y0, x1, y1, lw, rgb ) {
+    /**
+     * Unconnected stroked lines are used to draw the bars in linear barcodes.
+     * No line cap should be applied.  These lines are always orthogonal.
+     */ 
+    line ( x0: number, y0: number, x1: number, y1: number, lw: number, rgb: string ): void {
+        console.debug( { method: 'line', x0, y0, x1, y1, lw, rgb } );
         // Try to get non-blurry lines...
         x0 = x0 | 0;
         y0 = y0 | 0;
@@ -143,19 +168,24 @@ export class DrawingSVG {
             }
         }
 
-        // Group together all lines of the same width and emit as single paths.
-        // Dramatically reduces resulting text size.
+        /**
+         * Group together all lines of the same width and emit as single paths.
+         * Dramatically reduces resulting text size.
+         */ 
         var key = '' + lw + '#' + rgb;
         if ( !this.lines[ key ] ) {
             this.lines[ key ] = '<path stroke="#' + rgb + '" stroke-width="' + lw + '" d="';
         }
         this.lines[ key ] += 'M' + this.transform( x0, y0 ) + 'L' + this.transform( x1, y1 );
-    };
-    // Polygons are used to draw the connected regions in a 2d barcode.
-    // These will always be unstroked, filled, non-intersecting,
-    // orthogonal shapes.
-    // You will see a series of polygon() calls, followed by a fill().
-    polygon ( pts ) {
+    }
+    /**
+     * Polygons are used to draw the connected regions in a 2d barcode.
+     * These will always be unstroked, filled, non-intersecting,
+     * orthogonal shapes.
+     * You will see a series of `polygon()` calls, followed by a `fill()`.
+     */ 
+    polygon ( pts: Points ): void {
+        console.debug( { method: 'polygon', pts } );
         if ( !this.path ) {
             this.path = '<path d="';
         }
@@ -165,19 +195,25 @@ export class DrawingSVG {
             this.path += 'L' + this.transform( p[ 0 ], p[ 1 ] );
         }
         this.path += 'Z';
-    };
-    // An unstroked, filled hexagon used by maxicode.  You can choose to fill
-    // each individually, or wait for the final fill().
-    //
-    // The hexagon is drawn from the top, counter-clockwise.
-    hexagon ( pts, rgb ) {
+    }
+    /**
+     * An unstroked, filled hexagon used by maxicode.  You can choose to fill
+     * each individually, or wait for the final `fill()`.
+     *
+     * The hexagon is drawn from the top, counter-clockwise.
+     * @param pts
+     * @param rgb this is ignored.
+     */ 
+    hexagon ( pts: Points, rgb: string ): void {
+        console.debug( { method: 'hexagon', pts } );
         this.polygon( pts ); // A hexagon is just a polygon...
-    };
+    }
     // An unstroked, filled ellipse.  Used by dotcode and maxicode at present.
     // maxicode issues pairs of ellipse calls (one cw, one ccw) followed by a fill()
     // to create the bullseye rings.  dotcode issues all of its ellipses then a
     // fill().
-    ellipse ( x, y, rx, ry, ccw ) {
+    ellipse ( x, y, rx, ry, ccw ) { // TODO
+        console.debug( { method: 'ellipse', x, y, rx, ry, ccw } );
         if ( !this.path ) {
             this.path = '<path d="';
         }
@@ -199,19 +235,21 @@ export class DrawingSVG {
             this.transform( x - rx, y + dy ) + ' ' +
             this.transform( x - rx, y ) +
             'Z';
-    };
+    }
     // PostScript's default fill rule is even-odd.
-    fill ( rgb ) {
+    fill ( rgb:string ): void {
+        console.debug( { method: 'fill', rgb } );
         if ( this.path ) {
             this.svg += this.path + '" fill="#' + rgb + '" fill-rule="evenodd" />\n';
             this.path = null;
         }
-    };
+    }
     // Draw text with optional inter-character spacing.  `y` is the baseline.
     // font is an object with properties { name, width, height, dx }
     // width and height are the font cell size.
     // dx is extra space requested between characters (usually zero).
-    text ( x, y, str, rgb, font ) {
+    text ( x, y, str, rgb, font ) { // TODO
+        console.debug( { method: 'text', x, y, str, rgb, font } );
         var fontid = FontLib.lookup( font.name );
         var fwidth = font.width | 0;
         var fheight = font.height | 0;
@@ -250,10 +288,12 @@ export class DrawingSVG {
         if ( path ) {
             this.svg += '<path d="' + path + '" fill="#' + rgb + '" />\n';
         }
-    };
+    }
     // Called after all drawing is complete.  The return value from this method
     // is the return value from `bwipjs.render()`.
-    end () {
+    end (): string {
+        console.debug( {
+            method: 'end'} );
         var linesvg = '';
         for ( var key in this.lines ) {
             linesvg += this.lines[ key ] + '" />\n';
@@ -267,8 +307,11 @@ export class DrawingSVG {
             linesvg + this.svg + '</svg>\n';
     }
 
-    // translate/rotate and return as an SVG coordinate pair
+    /**
+     * translate/rotate and return as an SVG coordinate pair
+     */ 
     transform ( x, y ) {
+        console.debug( { method: 'transform', x, y } );
         x += this.gs_dx;
         y += this.gs_dy;
         var tx = this.tx0 * x + this.tx1 * y + this.tx2 * ( this.gs_width - 1 ) + this.tx3 * ( this.gs_height - 1 );

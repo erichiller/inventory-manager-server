@@ -81,11 +81,125 @@ declare module 'bwip-js' {
         inkspreadv?: number;
     }
 
+    export interface CanvasOptions extends DrawingOptions {
+        /**
+         * Most of the public methods of the bwip - js export use an options object.Only two values are required:
+        **/
+
+        /** The name of the barcode type / symbol. */
+        bcid: string;
+        /** The text to encode */
+        text: string;
+
+        /**
+         * All remaining options are optional, though you may find some quite useful.
+         * 
+         * The options values can be divided into two parts, bwip - js specific options and BWIPP options.
+         * The bwip-js options are:
+         */
+
+        /** The x-axis scaling factor.Must be an integer > 0. Default is 2. */
+        scaleX?: Integer;
+
+        /** The y-axis scaling factor.Must be an integer > 0. Default is scaleX. */
+        scaleY?: Integer;
+
+        /** Sets both the x-axis and y-axis scaling factors.Must be an integer > 0. */
+        scale?: Integer;
+
+        /** Allows rotating the image to one of the four orthogonal orientations. */
+        rotate?: RotateT;
+
+        /** Shorthand for setting paddingtop, paddingleft, paddingright, and paddingbottom. */
+        padding?: string;
+
+        /** Shorthand for setting `paddingleft` and `paddingright`. */
+        paddingwidth?: number;
+
+        /** Shorthand for setting `paddingtop` and `paddingbottom`. */
+        paddingheight?: number;
+
+        /** 
+         * Sets the height of the padding area, in points, on the top of the barcode image.
+         * Rotates and scales with the image. 
+         * */
+        paddingtop?: number;
+
+        /**
+         * Sets the width of the padding area, in points, on the left side of the barcode image.
+         * Rotates and scales with the image.
+         */
+        paddingleft?: number;
+
+        /**
+         * Sets the width of the padding area, in points, on the right side of the barcode image.
+         * Rotates and scales with the image.
+         */
+        paddingright?: number;
+
+        /**
+         * Sets the height of the padding area, in points, on the bottom of the barcode image.
+         * Rotates and scales with the image.
+         */
+        paddingbottom?: number;
+
+        /**
+         * This is actually a BWIPP option but is better handled by the bwip-js drawing code.  
+         * Takes either a hex RRGGBB or hex CCMMYYKK string value.
+         */
+        backgroundcolor?: ColorString;
+    }
+
     export type Paths = Array & {
         ascent: number;
         descent: number;
         advance: number;
+    };
+
+    export interface Measurement {
+        ascent: number;
+        descent: number;
+        width: number;
     }
+
+    // TODO: requires other Drawing types
+    export class Drawing {
+        constructor (opts, ...args);
+        scale( sx: number, sy: number);
+        measure ( str: string, font: string, fwidth: number, fheight: number ): Measurement;
+        init ( width: number, height: number ): void;
+        line ( x0: number, y0: number, x1: number, y1: number, lw: number, rgb: string ): void;
+        polygon ( pts: Points ): void;
+        hexagon ( pts: Points, rgb: string ): void;
+        ellipse ( x, y, rx, ry, ccw ): void; // TODO
+        fill ( rgb: string ): void;
+        text ( x, y, str, rgb, font ); // TODO
+        end(): void;
+    }
+    /**
+     * src: `src/drawing-builtin.js`
+     */
+    export class DrawingBuiltin extends Drawing {
+        // TODO: theres a ton here, I'm only doing what's necessary
+    }
+
+    export class DrawingCanvas extends Drawing {
+        constructor ( options: DrawingCanvasOptions, canvas: HTMLCanvasElement );
+        image ( width, height ): { buffer: ImageData, ispng: false; };
+        end (): void;
+    }
+
+    /**
+     * `FixupOptions` within `exports.js`
+     * Call this before passing your options object to a drawing constructor.
+     * Modifies `opts` inline.
+     * @param opts Options input to be transformed for BWIP operations
+     */
+    export function fixupOptions(opts: DrawingOptions): void;
+    export namespace fixupOptions {
+        function padding( a: number, b: number, c: number, s: number ): number;
+    }
+    // namespace 
     //     type: string;
     //     x: number;
     //     y: number;
@@ -201,94 +315,16 @@ declare module 'bwip-js' {
      */
     type ColorString = string;
 
-    export interface CanvasOptions extends DrawingOptions {
-        /**
-         * Most of the public methods of the bwip - js export use an options object.Only two values are required:
-        **/
 
-        /** The name of the barcode type / symbol. */
-        bcid: string;
-        /** The text to encode */
-        text: string;
+    /** in `exports.js` it's `Render` */
+    function Render ( params: DrawingOptions, drawing: Drawing ): Drawing;
 
-        /**
-         * All remaining options are optional, though you may find some quite useful.
-         * 
-         * The options values can be divided into two parts, bwip - js specific options and BWIPP options.
-         * The bwip-js options are:
-         */
+    export const render = Render;
 
-        /** The x-axis scaling factor.Must be an integer > 0. Default is 2. */
-        scaleX?: Integer;
-
-        /** The y-axis scaling factor.Must be an integer > 0. Default is scaleX. */
-        scaleY?: Integer;
-
-        /** Sets both the x-axis and y-axis scaling factors.Must be an integer > 0. */
-        scale?: Integer;
-
-        /** Allows rotating the image to one of the four orthogonal orientations. */
-        rotate?: RotateT;
-
-        /** Shorthand for setting paddingtop, paddingleft, paddingright, and paddingbottom. */
-        padding?: string;
-
-        /** Shorthand for setting paddingleft and paddingright. */
-        paddingwidth?: string;
-
-        /** Shorthand for setting paddingtop and paddingbottom. */
-        paddingheight?: number;
-
-        /** 
-         * Sets the height of the padding area, in points, on the top of the barcode image.
-         * Rotates and scales with the image. 
-         * */
-        paddingtop?: number;
-
-        /**
-         * Sets the width of the padding area, in points, on the left side of the barcode image.
-         * Rotates and scales with the image.
-         */
-        paddingleft?: number;
-
-        /**
-         * Sets the width of the padding area, in points, on the right side of the barcode image.
-         * Rotates and scales with the image.
-         */
-        paddingright?: number;
-
-        /**
-         * Sets the height of the padding area, in points, on the bottom of the barcode image.
-         * Rotates and scales with the image.
-         */
-        paddingbottom?: number;
-
-        /**
-         * This is actually a BWIPP option but is better handled by the bwip-js drawing code.  
-         * Takes either a hex RRGGBB or hex CCMMYYKK string value.
-         */
-        backgroundcolor?: ColorString;
-    }
-
-    // TODO: requires other Drawing types
-    export type Drawing = DrawingCanvas;
-    export function Render ( params, drawing: Drawing ): Drawing;
     export class BWIPJS {
         constructor ( drawing: Drawing );
     }
 
-    /**
-     * src: `src/drawing-builtin.js`
-     */
-    export class DrawingBuiltin {
-        // TODO: theres a ton here, I'm only doing what's necessary
-    }
-
-    export class DrawingCanvas extends DrawingBuiltin {
-        constructor ( options: DrawingCanvasOptions, canvas: HTMLCanvasElement );
-        image ( width, height ): { buffer: ImageData, ispng: false; };
-        end (): void;
-    }
 
     /** must be the ID of an HTML Element that is present in the DOM */
     type HTMLElementID = string;
@@ -317,6 +353,8 @@ declare module 'bwip-js' {
             opts: CanvasOptions,
             canvas: HTMLCanvasElement | string
         ): HTMLCanvasElement;
+
+        export type render = Render;
     }
 
     export = BwipJs;

@@ -77,8 +77,6 @@ export default withGetIcon<LabelAddImageProps, LabelAddImageState>()(
         };
 
         makeSvgElement = ( icon: Partial<CustomIcon> ) => {
-            let image: HTMLImageElement = document.createElement('img');
-            image.src = icon.data;
             return <img width={50} src={icon.data} />;
         };
 

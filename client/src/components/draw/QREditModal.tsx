@@ -104,16 +104,23 @@ export const QRCanvas: React.FC<QRCanvasProps> = ( props ) => {
 
     const textToEncode = (): string => {
         if ( props.labelQR.properties ) {
-            return props.labelQR.encodeText();
+            return props.labelQR.encodedText;
         }
         message.warn( "QR code without item is currently not supported." );
         return "";
     };
 
     useEffect( () => {
-        const el = props.labelQR.setCanvas( textToEncode(), props.mmHeight );
+        // const el = props.labelQR.setCanvas( textToEncode(), props.mmHeight );
+        // props.changeHandler( {
+        //     dataURL: el.toDataURL( 'image/png' ),
+        //     canvasElement: el
+        // }, props.labelQR );
+        const el = props.labelQR.svg;
+        console.log( { title: 'QRCanvas svg element', el, textToEndcode: textToEncode()});
+        if ( ! el ){ console.warn('QRCanvas element is invalid', {el}); return; }
         props.changeHandler( {
-            dataURL: el.toDataURL( 'image/png' ),
+            // dataURL: el.toDataURL( 'image/svg' ),
             canvasElement: el
         }, props.labelQR );
     } );
