@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { DISPLAY } from '../../lib/types/enums';
 import { Label, useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument } from "../../lib/types/graphql";
-import { Modal, Descriptions, Button, Tooltip, message } from "antd";
+import { Modal, Descriptions, Button, Tooltip, message, Input } from "antd";
 import React from "react";
 import { LabelDraw } from "./LabelDraw";
 import { PrintContext } from "../print/PrintContextHandler";

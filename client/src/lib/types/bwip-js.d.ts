@@ -162,7 +162,6 @@ declare module 'bwip-js' {
         width: number;
     }
 
-    // TODO: requires other Drawing types
     export class Drawing {
         constructor (opts, ...args);
         scale( sx: number, sy: number);
@@ -171,10 +170,11 @@ declare module 'bwip-js' {
         line ( x0: number, y0: number, x1: number, y1: number, lw: number, rgb: string ): void;
         polygon ( pts: Points ): void;
         hexagon ( pts: Points, rgb: string ): void;
-        ellipse ( x, y, rx, ry, ccw ): void; // TODO
+        ellipse ( x: number, y: number, rx: number, ry: number, ccw: boolean ): void;
         fill ( rgb: string ): void;
-        text ( x, y, str, rgb, font ); // TODO
+        text ( x: number, y, str: string, rgb: string, font: bwipjs.Font ): void;
         end(): void;
+        transform ( x: number, y: number ): string;
     }
     /**
      * src: `src/drawing-builtin.js`
@@ -248,6 +248,13 @@ declare module 'bwip-js' {
         advance: number;
     }
 
+    export interface Font { 
+        name: string;
+        width: number;
+        height: number;
+        dx: number;
+    }
+
     export namespace FontLib {
 
         /**
@@ -255,7 +262,7 @@ declare module 'bwip-js' {
          * Default returns is `1` for OCR-B
          * @param name font name
          */
-        function lookup ( name );
+        function lookup ( name ): number;
 
         /**
          * Not supported by stbtt
@@ -317,7 +324,7 @@ declare module 'bwip-js' {
 
 
     /** in `exports.js` it's `Render` */
-    function Render ( params: DrawingOptions, drawing: Drawing ): Drawing;
+    function Render ( params: DrawingOptions, drawing: Drawing ): string;
 
     export const render = Render;
 

@@ -34,11 +34,11 @@ class DraggableModal extends React.PureComponent<DragModalProps> {
     tLeft: number;
     tTop: number;
 
-    constructor ( props ) {
+    constructor ( props: DragModalProps ) {
         super( props );
 
         this.id = genNonDuplicateID( 10 );
-        this.initLeft = ( window.innerWidth - ( props.width || 520 ) ) / 2; // Initial position adjustment
+        this.initLeft = ( window.innerWidth - ( ( typeof props.width === "string" ? parseInt(props.width) : props.width) || 520 ) ) / 2; // Initial position adjustment
 
         this.dragDom = null; // Drag target element
         this.dragging = false; // Whether to drag switch
@@ -63,7 +63,7 @@ class DraggableModal extends React.PureComponent<DragModalProps> {
      * */
     getDragDom = () => {
         setTimeout( () => {
-            // 获取唯一标示元素
+            // Get uniquely marked elements
             const dragDom: HTMLElement = ( document.getElementsByClassName( `d_${ this.id }` )[ 0 ] ) as HTMLElement;
             if ( dragDom ) {
                 dragDom.style.left = `${ this.initLeft }px`;

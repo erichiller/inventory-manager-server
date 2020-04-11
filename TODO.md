@@ -25,10 +25,10 @@
 
 ## Drawing
 
-- [ ] `QREditModal` needs to be completed
+- [x] `QREditModal` needs to be completed
   - [x] pick properties. checkbox ?
-  - [ ] `onCancel` should remove `LabelQR` object from `Label`
-  - [ ] As **SVG** ?
+  - [x] `onCancel` should remove `LabelQR` object from `Label`
+  - [x] As **SVG** ?
 - [ ] Print in modal leads to endless spooling (and can't print again)
 - [ ] Multi-line text entry for labels
 - [ ] Draggable right border for resizing label

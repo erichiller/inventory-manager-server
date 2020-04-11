@@ -35,9 +35,9 @@ export class DrawingSVG implements bwipjs.Drawing {
     ty2 = 0;
     ty3 = 0;
 
-    svg = '';
-    path;
-    lines = {};
+    svg: string = '';
+    path: string;
+    lines: {[key: string]: string} = {};
 
     /**
      * Magic number to approximate an ellipse/circle using 4 cubic beziers.
@@ -63,13 +63,13 @@ export class DrawingSVG implements bwipjs.Drawing {
     opts: bwipjs.CanvasOptions;
 
     constructor ( opts: bwipjs.DrawingOptions, fontLib: typeof FontLib ) {
-        console.debug( { method: 'constructor', opts } );
+        // console.debug( { method: 'constructor', opts } );
         this.opts = opts;
     }
 
     // Make no adjustments
     scale ( sx: number, sy: number ) {
-        console.debug( { method: 'scale', sx, sy } );
+        // console.debug( { method: 'scale', sx, sy } );
     }
 
     /**
@@ -81,7 +81,7 @@ export class DrawingSVG implements bwipjs.Drawing {
      *     usually be the same, except when the scaling is not symetric.
      */
     measure ( str: string, font: string, fwidth: number, fheight: number ): bwipjs.Measurement {
-        console.debug( { method: 'measure', str, font, fwidth, fheight } );
+        // console.debug( { method: 'measure', str, font, fwidth, fheight } );
         fwidth = fwidth | 0;
         fheight = fheight | 0;
 
@@ -108,7 +108,7 @@ export class DrawingSVG implements bwipjs.Drawing {
      * Adjust as necessary.
      */ 
     init ( width: number, height:number ) {
-        console.debug( { method: 'init', width, height } );
+        // console.debug( { method: 'init', width, height } );
         // Add in the effects of padding.  These are always set before the
         // drawing constructor is called.
         var padl = this.opts.paddingleft;
@@ -147,7 +147,7 @@ export class DrawingSVG implements bwipjs.Drawing {
      * No line cap should be applied.  These lines are always orthogonal.
      */ 
     line ( x0: number, y0: number, x1: number, y1: number, lw: number, rgb: string ): void {
-        console.debug( { method: 'line', x0, y0, x1, y1, lw, rgb } );
+        // console.debug( { method: 'line', x0, y0, x1, y1, lw, rgb } );
         // Try to get non-blurry lines...
         x0 = x0 | 0;
         y0 = y0 | 0;
@@ -185,7 +185,7 @@ export class DrawingSVG implements bwipjs.Drawing {
      * You will see a series of `polygon()` calls, followed by a `fill()`.
      */ 
     polygon ( pts: Points ): void {
-        console.debug( { method: 'polygon', pts } );
+        // console.debug( { method: 'polygon', pts } );
         if ( !this.path ) {
             this.path = '<path d="';
         }
@@ -205,15 +205,28 @@ export class DrawingSVG implements bwipjs.Drawing {
      * @param rgb this is ignored.
      */ 
     hexagon ( pts: Points, rgb: string ): void {
-        console.debug( { method: 'hexagon', pts } );
+        // console.debug( { method: 'hexagon', pts } );
         this.polygon( pts ); // A hexagon is just a polygon...
     }
-    // An unstroked, filled ellipse.  Used by dotcode and maxicode at present.
-    // maxicode issues pairs of ellipse calls (one cw, one ccw) followed by a fill()
-    // to create the bullseye rings.  dotcode issues all of its ellipses then a
-    // fill().
-    ellipse ( x, y, rx, ry, ccw ) { // TODO
-        console.debug( { method: 'ellipse', x, y, rx, ry, ccw } );
+    /**
+     * An unstroked, filled ellipse.  Used by dotcode and maxicode at present.
+     * maxicode issues pairs of ellipse calls (one cw, one ccw) followed by a `fill()`
+     * to create the bullseye rings.  dotcode issues all of its ellipses then a
+     * `fill()`.
+     * 
+     * @param x The x-axis (horizontal) coordinate of the ellipse's center.
+     * @param y The y-axis (vertical) coordinate of the ellipse's center.
+     * @param radiusX The ellipse's major-axis radius. Must be non-negative.
+     * @param radiusY The ellipse's minor-axis radius. Must be non-negative.
+     * @param rotation The rotation of the ellipse, expressed in radians.
+     * @param startAngle The angle at which the ellipse starts, measured clockwise from the positive x-axis and expressed in radians.
+     * @param endAngle The angle at which the ellipse ends, measured clockwise from the positive x-axis and expressed in radians.
+     * @param anticlockwise An optional Boolean which, if true, draws the ellipse anticlockwise (counter-clockwise). The default value is false (clockwise).
+     * 
+     * [Mozilla docs on Context2D.ellipse](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse)
+     */ 
+    ellipse ( x: number, y: number, rx: number, ry: number, ccw: boolean ): void {
+        // console.debug( { method: 'ellipse', x, y, rx, ry, ccw } );
         if ( !this.path ) {
             this.path = '<path d="';
         }
@@ -236,20 +249,25 @@ export class DrawingSVG implements bwipjs.Drawing {
             this.transform( x - rx, y ) +
             'Z';
     }
-    // PostScript's default fill rule is even-odd.
-    fill ( rgb:string ): void {
-        console.debug( { method: 'fill', rgb } );
+
+    /**
+     * PostScript's default fill rule is even-odd.
+     */
+    fill ( rgb: string ): void {
+        // console.debug( { method: 'fill', rgb } );
         if ( this.path ) {
             this.svg += this.path + '" fill="#' + rgb + '" fill-rule="evenodd" />\n';
             this.path = null;
         }
     }
-    // Draw text with optional inter-character spacing.  `y` is the baseline.
-    // font is an object with properties { name, width, height, dx }
-    // width and height are the font cell size.
-    // dx is extra space requested between characters (usually zero).
-    text ( x, y, str, rgb, font ) { // TODO
-        console.debug( { method: 'text', x, y, str, rgb, font } );
+    /**
+     * Draw text with optional inter-character spacing.  `y` is the baseline.
+     * `font` is an object with properties `{ name, width, height, dx }`
+     * `width` and `height` are the font cell size.
+     * `dx` is extra space requested between characters (usually zero).
+     */
+    text ( x: number, y: number, str: string, rgb: string, font: bwipjs.Font ): void {
+        // console.debug( { method: 'text', x, y, str, rgb, font } );
         var fontid = FontLib.lookup( font.name );
         var fwidth = font.width | 0;
         var fheight = font.height | 0;
@@ -289,11 +307,13 @@ export class DrawingSVG implements bwipjs.Drawing {
             this.svg += '<path d="' + path + '" fill="#' + rgb + '" />\n';
         }
     }
-    // Called after all drawing is complete.  The return value from this method
-    // is the return value from `bwipjs.render()`.
+    
+    /**
+     * Called after all drawing is complete.  The return value from this method
+     * is the return value from `bwipjs.render()`.
+     */ 
     end (): string {
-        console.debug( {
-            method: 'end'} );
+        // console.debug( {method: 'end'} );
         var linesvg = '';
         for ( var key in this.lines ) {
             linesvg += this.lines[ key ] + '" />\n';
@@ -310,8 +330,8 @@ export class DrawingSVG implements bwipjs.Drawing {
     /**
      * translate/rotate and return as an SVG coordinate pair
      */ 
-    transform ( x, y ) {
-        console.debug( { method: 'transform', x, y } );
+    transform ( x: number, y: number ): string {
+        // console.debug( { method: 'transform', x, y } );
         x += this.gs_dx;
         y += this.gs_dy;
         var tx = this.tx0 * x + this.tx1 * y + this.tx2 * ( this.gs_width - 1 ) + this.tx3 * ( this.gs_height - 1 );
