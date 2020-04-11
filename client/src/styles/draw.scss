@@ -1,0 +1,47 @@
+// div {
+//   border:dashed 1px #aaaaaa;
+//   padding: 6px 12px;
+//   font-size: 1.2em;
+// }
+.resize-handle {
+    &:after {
+        // content: "....";
+        // width: 10px;
+        // height: 20px;
+        // display: inline-block;
+        // overflow: hidden;
+        // line-height: 5px;
+        // padding: 3px 4px;
+        // // cursor: move;
+        // vertical-align: middle;
+        // margin-top: -0.7em;
+        // margin-right: 0.3em;
+        // font-size: 12px;
+        // font-family: sans-serif;
+        // letter-spacing: 2px;
+        // color: #cccccc;
+        // text-shadow: 1px 0 1px black;
+        content: " ";
+        width: 5px;
+        height: 20%;
+        display: block;
+        overflow: hidden;
+        line-height: 5px;
+        /* padding: 3px 4px; */
+        // vertical-align: middle;
+        /* margin-top: -0.7em; */
+        margin-left: 2px;
+        font-size: 12px;
+        font-family: sans-serif;
+        letter-spacing: 2px;
+        color: #cccccc;
+        text-shadow: 1px 0 1px black;
+        top: 40%;
+        position: absolute;
+        border: 1px solid rgb(211, 211, 211);
+        line-height: normal;
+    }
+}
+// .resize-handle::after {
+//   content: '.. .. .. ..';
+// }

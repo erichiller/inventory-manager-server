@@ -23,7 +23,8 @@ export class DrawTransformHandler extends React.Component<DrawTransformHandlerPr
         const stage = this.transformer.getStage();
         const { selectedShapeName } = this.props;
         const selectedNode = stage.findOne( "." + selectedShapeName );
-        if ( selectedNode ) {
+        if ( selectedNode ) { console.log( "DrawTransformHandler - selected node type", selectedNode.getType(), selectedNode.nodeType); }
+        if ( selectedNode && selectedNode.nodeType !== 'Text') {
             this.transformer.attachTo( selectedNode );
         } else {
             this.transformer.detach();

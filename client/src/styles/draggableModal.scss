@@ -1,0 +1,15 @@
+.drag_modal {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  right: auto !important;
+  bottom: auto !important;
+  top: 100px;
+}
+
+.drag_title {
+  cursor: move;
+}
+
+.ant-modal {
+  top: auto !important;
+  padding-bottom: 0 !important;
+}

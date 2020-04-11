@@ -8,6 +8,7 @@ import { Label } from "./types/graphql";
 import { Item } from "./item";
 import bwipjs from 'bwip-js';
 import { DrawingSVG } from './BwipJsSvg';
+import { message, Alert } from 'antd';
 
 
 
@@ -338,7 +339,6 @@ export class LabelQR extends LabelConstituent {
     canvasElement: HTMLCanvasElement | HTMLOrSVGImageElement;
     dataURL: string;
     item: Item<any>;
-    private _encodedText: string;
 
     constructor ( options?: Partial<LabelConstituent> & { item: Item<any>; } ) {
         super();
@@ -369,7 +369,6 @@ export class LabelQR extends LabelConstituent {
             el = ( this.canvasElement as HTMLCanvasElement ) ?? null;
             scale = 2;
         }
-        console.log( { FontLib: bwipjs.FontLib } );
         return bwipjs.toCanvas( el, {
             bcid: 'datamatrix',       // Barcode type
             text: text,    // Text to encode
@@ -383,10 +382,13 @@ export class LabelQR extends LabelConstituent {
         } );
     }
 
-    get svg (): HTMLImageElement {
+    get svgDataURL (): string {
         // get svg(): HTMLImageElement {
-        console.group( 'DrawingSVG' );
-        let image: HTMLImageElement = document.createElement( 'img' );
+        // console.group( 'DrawingSVG' );
+        if ( ! this.encodedText ){
+            message.error('nothing is being encoded within the QR');
+            return;
+        }
         let opts = {
             bcid: 'datamatrix',       // Barcode type
             text: this.encodedText,    // Text to encode
@@ -398,9 +400,17 @@ export class LabelQR extends LabelConstituent {
         bwipjs.fixupOptions( opts );
         const src = bwipjs.render( opts, new DrawingSVG( opts, bwipjs.FontLib ));
         console.log({method: 'get svg ()', src, opts});
-        // image.src = opts).end();
-        // image.src = src;
+        // image.src = `data:image/svg+xml;base64,${ btoa(src) }`;
+        
+        // image.src = `data:image/svg+xml,${src}`;
         console.groupEnd();
+        // return image;
+        return `data:image/svg+xml;base64,${ btoa( src ) }`;
+    }
+    
+    get svgImage (): HTMLImageElement {
+        let image: HTMLImageElement = document.createElement( 'img' );
+        image.src = this.svgDataURL ?? '';
         return image;
     }
 
@@ -410,9 +420,7 @@ export class LabelQR extends LabelConstituent {
                 console.log( "QRCanvas is adding props from labelQR", { property: p, value: this.item[ p ] } );
                 return `${ p }: ${ this.item[ p ] }`;
             } ).join( '\n' ).replace( '_', ' ' );
-
             console.log( "LabelQR.encodeText()", result );
-            this._encodedText = result;
             return result;
         }
     }

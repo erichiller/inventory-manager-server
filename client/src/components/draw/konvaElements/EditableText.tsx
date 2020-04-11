@@ -1,0 +1,296 @@
+import React, { useContext } from 'react';
+import Konva from "konva";
+// import { Stage } from "konva/types/Stage";
+import ReactKonva, { KonvaNodeComponent, Transformer } from 'react-konva';
+// import { Text } from "konva/types/shapes/Text";
+import { Node, NodeConfig, KonvaEventObject } from "konva/types/Node";
+import { BaseLayer } from "konva/types/BaseLayer";
+import { LabelText } from '../../../lib/LabelConstituent';
+// client / node_modules / konva / types / Node.d.ts
+// import { Stage } from "react-konva";
+// import { Stage } from "react-konva";
+import nunjucks from 'nunjucks';
+import { Item } from '../../../lib/item';
+import { DrawContext } from '../LabelDraw';
+
+
+interface EditableTextProps {
+    labelText: LabelText;
+    item: Item<any>;
+    // stage: Konva.Stage;
+    // layer: Konva.Layer;
+    // getPublicInstance: () => Node;
+    // getNativeNode: () => Node;
+}
+
+// type EditableTextComponent = Partial<typeof ReactKonvaText>;
+// type EditableTextComponent = KonvaNodeComponent<Konva.Text & EditableTextProps, Konva.TextConfig>;
+// type EditableTextComponent = Omit<typeof ReactKonvaText, 'getPublicInstance' | 'getNativeNode'>;
+// type EditableTextComponent = Pick<typeof ReactKonvaText, 'propTypes'>;
+
+
+// type EditableTextComponent = Konva.Text & Konva.TextConfig;
+
+
+export function EditableText ( props: EditableTextProps ): React.ReactElement<KonvaNodeComponent<Konva.Text & EditableTextProps, Konva.TextConfig>> {
+
+
+    const { displayContextMenu, setRef, stageRef, updateHistory } = useContext( DrawContext );
+    // export const EditableText:  React.FC<EditableTextProps> = ( props ) => {
+
+
+
+
+    const labelText = props.labelText;
+    const item = props.item;
+
+
+    const textNodeRef = React.useRef<Konva.Text>();
+    const trRef = React.useRef<Konva.Transformer>();
+
+
+    // let stage: Konva.Stage;
+    // let layer: BaseLayer;
+    // let layer = new Konva.Layer();
+    // props.stage.add( layer );
+
+
+    // React.useEffect( () => {
+    //     if ( isSelected ) {
+    //         // we need to attach transformer manually
+    //         trRef.current.setNode( shapeRef.current );
+    //         trRef.current.getLayer().batchDraw();
+    //     }
+    // }, [ isSelected ] );
+
+    React.useEffect( () => {
+        console.log( { cls: 'EditableText', method: 'useEffect', trRef } );
+        // we need to attach transformer manually
+        if ( trRef && trRef.current ) {
+            trRef.current.setNode( textNodeRef.current );
+            // trRef.current.getLayer().batchDraw();
+            // stage = trRef.current.getStage();
+            // layer = trRef.current.getLayer();
+        }
+    }, [ trRef ] );
+
+    return <React.Fragment>
+        <Transformer
+            key={`${ labelText.id }_labeltext_transformer`}
+            ref={trRef}
+            // node={textNodeRef.current as any}
+            enabledAnchors={[ 'middle-left', 'middle-right' ]}
+            // set minimum width of text
+            boundBoxFunc={( oldBox, newBox ) => {
+                newBox.width = Math.max( 30, newBox.width );
+                return newBox;
+            }} />
+        <ReactKonva.Text
+            ref={textNodeRef}
+            textObject={labelText}
+            key={labelText.id}
+            name={labelText.id}
+            text={nunjucks.renderString( labelText.text, item )}
+            fontStyle={labelText.bold ? "bold" : labelText.italic ? "italic" : "normal"}
+            textDecoration={labelText.underline ? "underlined" : ""}
+            fontSize={labelText.fontSize}
+            fill={labelText.text.includes( "{{" ) ? 'red' : 'black'}
+            onContextMenu={displayContextMenu}
+            x={labelText.x}
+            y={labelText.y}
+            scaleX={labelText.scaleX}
+            scaleY={labelText.scaleY}
+            rotation={labelText.rotation}
+            onDblClick={( evt ) => {
+                {
+                    console.group("EditableText.onDblClick");
+                    // hide text node and transformer:
+                    textNodeRef.current.hide();
+                    trRef.current.hide();
+                    evt.currentTarget.getLayer().draw();
+
+                    // create textarea over canvas with absolute position
+                    // first we need to find position for textarea
+                    // how to find it?
+
+                    // at first lets find position of text node relative to the props.stage:
+                    // let textPosition = ( textNode as Node ).absolutePosition();
+                    // let textPosition = ( ( textNode as any ).absolutePosition() as {
+                    //     x: number;
+                    //     y: number;
+                    // });
+                    let textPosition = textNodeRef.current.getAbsolutePosition();
+
+                    // then lets find position of props.stage container on the page:
+                    let stageBox = evt.currentTarget.getStage().container().getBoundingClientRect();
+
+
+
+                    // so position of textarea will be the sum of positions above:
+                    let areaPosition = {
+                        x: stageBox.left + textPosition.x,
+                        y: stageBox.top + textPosition.y
+                    };
+                    console.log( "EditableText.onDblClick", { textPosition, stageBox, areaPosition, trRef, textNodeRef,evt});
+
+                    // create textarea and style it
+                    let textarea = document.createElement( 'textarea' );
+                    document.body.appendChild( textarea );
+
+                    // apply many styles to match text on canvas as close as possible
+                    // remember that text rendering on canvas and on the textarea can be different
+                    // and sometimes it is hard to make it 100% the same. But we will try...
+                    textarea.value = textNodeRef.current.text();
+                    textarea.style.position = 'absolute';
+                    textarea.style.top = areaPosition.y + 'px';
+                    textarea.style.left = areaPosition.x + 'px';
+                    textarea.style.width = textNodeRef.current.width() - textNodeRef.current.padding() * 2 + 'px';
+                    textarea.style.height =
+                        textNodeRef.current.height() - textNodeRef.current.padding() * 2 + 5 + 'px';
+                    textarea.style.fontSize = textNodeRef.current.fontSize() + 'px';
+                    textarea.style.border = 'none';
+                    // start temp
+                    // textarea.style.border = '4px solid purple';
+                    // textarea.style.backgroundColor = 'red';
+                    textarea.style.zIndex = '1001';
+                    // end temp
+                    textarea.style.padding = '0px';
+                    textarea.style.margin = '0px';
+                    textarea.style.overflow = 'hidden';
+                    textarea.style.background = 'none';
+                    textarea.style.outline = 'none';
+                    textarea.style.resize = 'none';
+                    textarea.style.lineHeight = textNodeRef.current.lineHeight().toString();
+                    textarea.style.fontFamily = textNodeRef.current.fontFamily();
+                    textarea.style.transformOrigin = 'left top';
+                    textarea.style.textAlign = textNodeRef.current.align();
+                    textarea.style.color = textNodeRef.current.fill();
+                    let rotation = textNodeRef.current.rotation();
+                    let transform = '';
+                    if ( rotation ) {
+                        transform += 'rotateZ(' + rotation + 'deg)';
+                    }
+
+                    let px = 0;
+                    // also we need to slightly move textarea on firefox
+                    // because it jumps a bit
+                    let isFirefox = navigator.userAgent.toLowerCase().indexOf( 'firefox' ) > -1;
+                    if ( isFirefox ) {
+                        px += 2 + Math.round( textNodeRef.current.fontSize() / 20 );
+                    }
+                    transform += 'translateY(-' + px + 'px)';
+
+                    textarea.style.transform = transform;
+
+                    // reset height
+                    textarea.style.height = 'auto';
+                    // after browsers resized it we can set actual value
+                    textarea.style.height = textarea.scrollHeight + 3 + 'px';
+
+                    textarea.focus();
+                    console.log( "EditableText .onDblClick textarea\n", {textarea});
+
+                    function removeTextarea () {
+                        console.log("EditableText .onDblClick .removeTextarea");
+                        textarea.parentNode.removeChild( textarea );
+                        window.removeEventListener( 'click', handleOutsideClick );
+                        textNodeRef.current.show();
+                        // trRef.current.show();
+                        trRef.current.forceUpdate();
+                        evt.currentTarget.getLayer().draw();
+                    }
+
+                    function setTextareaWidth ( newWidth ) {
+                        console.log( "EditableText .onDblClick .setTextareaWidth\n", {newWidth} );
+                        if ( !newWidth ) {
+                            // set width for placeholder
+                            newWidth = textNodeRef.current.text.length * textNodeRef.current.fontSize();
+                        }
+                        // some extra fixes on different browsers
+                        let isSafari = /^((?!chrome|android).)*safari/i.test(
+                            navigator.userAgent
+                        );
+                        let isFirefox =
+                            navigator.userAgent.toLowerCase().indexOf( 'firefox' ) > -1;
+                        if ( isSafari || isFirefox ) {
+                            newWidth = Math.ceil( newWidth );
+                        }
+
+                        let isEdge =
+                            document.DOCUMENT_NODE || /Edge/.test( navigator.userAgent );
+                        if ( isEdge ) {
+                            newWidth += 1;
+                        }
+                        textarea.style.width = newWidth + 'px';
+                    }
+
+                    textarea.addEventListener( 'keydown', function ( e ) {
+                        console.log( "EditableText .onDblClick .addEventListener (keydown= 13 | 27)\n", { e } );
+                        // hide on enter
+                        // but don't hide on shift + enter
+                        if ( e.keyCode === 13 && !e.shiftKey ) {
+                            textNodeRef.current.text( textarea.value );
+                            removeTextarea();
+                        }
+                        // on esc do not set value back to node
+                        if ( e.keyCode === 27 ) {
+                            removeTextarea();
+                        }
+                    } );
+
+                    textarea.addEventListener( 'keydown', function ( e ) {
+                        console.log( "EditableText .onDblClick .addEventListener (keydown)\n", {e} );
+                        let scale = textNodeRef.current.getAbsoluteScale().x;
+                        setTextareaWidth( textNodeRef.current.width() * scale );
+                        textarea.style.height = 'auto';
+                        textarea.style.height =
+                            textarea.scrollHeight + textNodeRef.current.fontSize() + 'px';
+                    } );
+
+                    function handleOutsideClick ( e ) {
+                        console.log( "EditableText .onDblClick .handleOutsideClick\n", { e } );
+                        if ( e.target !== textarea ) {
+                            textNodeRef.current.text( textarea.value );
+                            removeTextarea();
+                        }
+                    }
+                    setTimeout( () => {
+                        console.log( "EditableText .onDblClick .setTimeout" );
+                        window.addEventListener( 'click', handleOutsideClick );
+                    } );
+                    console.groupEnd()
+                }
+            }}
+            onTransform={() => {
+                // reset scale, so only width is changing by transformer
+                textNodeRef.current.setAttrs( {
+                    width: textNodeRef.current.width() * textNodeRef.current.scaleX(),
+                    scaleX: 1
+                } );
+            }}
+            onTransformEnd={( evt: KonvaEventObject<Event> ) => {
+                console.log( "(Text) TransformEnd:\n", evt, "attrs", evt.currentTarget.attrs );
+                ( evt.currentTarget.attrs.textObject as LabelText ).setDrawAttrs( {
+                    x: evt.currentTarget.attrs.x,
+                    y: evt.currentTarget.attrs.y,
+                    scaleX: evt.currentTarget.attrs.scaleX,
+                    scaleY: evt.currentTarget.attrs.scaleY,
+                    rotation: evt.currentTarget.attrs.rotation
+                } );
+                updateHistory();
+            }}
+            onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
+                console.log( "(Text) DragEnd:", evt, "to:", [ evt.currentTarget.attrs.x, evt.currentTarget.attrs.y ] );
+                ( evt.currentTarget.attrs.textObject as LabelText ).setDrawAttrs( {
+                    x: evt.currentTarget.attrs.x,
+                    y: evt.currentTarget.attrs.y,
+                    scaleX: evt.currentTarget.attrs.scaleX,
+                    scaleY: evt.currentTarget.attrs.scaleY,
+                    rotation: evt.currentTarget.attrs.rotation
+                } );
+                updateHistory();
+            }}
+            draggable={true}
+        />
+    </React.Fragment>;
+};

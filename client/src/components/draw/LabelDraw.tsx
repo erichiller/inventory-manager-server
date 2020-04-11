@@ -1,27 +1,28 @@
 
 import React, { Component } from 'react';
-
+import nunjucks from 'nunjucks';
+import { Stage, Text, Image } from 'react-konva';
+import { KonvaEventObject } from 'konva/types/Node';
+import { Button, Tooltip, message } from 'antd';
+import { MedicineBoxOutlined, FontSizeOutlined, QrcodeOutlined, PictureOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 import { Item } from '../../lib/item';
 import { DISPLAY } from '../../lib/types/enums';
 import { DrawContextMenu } from './DrawContextMenu';
-import { KonvaEventObject } from 'konva/types/Node';
-import { Button, Tooltip, message } from 'antd';
 import { DrawEditText } from './DrawEditText';
 import DrawAddImage from './image/LabelAddImageModal';
 
 import { QREditModal } from './QREditModal';
 import { Integer } from '../../lib/types/uint8';
-import { LabelText, LabelImage, LabelQR, FormatOptionsT, LabelExport, UUIDStringT } from '../../lib/LabelConstituent';
+import { LabelText, LabelImage, LabelQR, FormatOptionsT, LabelExport } from '../../lib/LabelConstituent';
 
-import nunjucks from 'nunjucks';
 import { NewImageUploadModal } from './image/NewImageUploadModal';
 import { PrintContext } from '../print/PrintContextHandler';
 import { LabelComponent } from '../label/LabelComponent';
-import { Stage, Text, Image, Rect } from 'react-konva';
-import { MedicineBoxOutlined, FontSizeOutlined, QrcodeOutlined, PictureOutlined } from '@ant-design/icons';
 import { CodeIcon } from '../../styles/icon';
-import Konva from 'konva';
+import { EditableText } from './konvaElements/EditableText';
+import { TransformableImage } from './konvaElements/TransformableImage';
+import { TransformableQR } from './konvaElements/TransformableQR';
 
 
 
@@ -62,7 +63,7 @@ interface LabelDrawProps {
 }
 
 
-type IKonvaEventHandler = ( d: boolean | KonvaEventObject<PointerEvent> ) => void;
+type IKonvaEventHandler = ( d: boolean | KonvaEventObject<PointerEvent | MouseEvent> ) => void;
 type IHtmlEventHandler = ( d: boolean | DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => void;
 type LabelConstituentT = LabelText | LabelImage | LabelQR;
 interface LabelDrawConstituents {
@@ -72,7 +73,6 @@ interface LabelDrawConstituents {
 }
 
 interface LabelDrawState {
-    displayContextMenu: IKonvaEventHandler;
     displayContextMenuStatus: boolean;
     displayContextMenuPosition?: [ number, number ];
     displayEditTextModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
@@ -91,22 +91,30 @@ interface LabelDrawState {
     uncommittedText: LabelText;
     uncommittedImage: LabelImage;
     uncommittedQR: LabelQR;
+    stageRef: Stage;
+    historyPosition: Integer;
+    history: LabelDrawConstituents[];
+    selectedShapeName: string;
+}
+export interface DrawContextAdditions {
+    item?: Item<any>;
+    updateHistory: () => void;
+    setSelectedShapeName: ( name: string ) => void;
+    setRef: ( stageRef: Stage ) => void;
     commitLabelText: ( labelText: LabelText ) => void;
     deleteLabelConstituent: ( constituent: LabelConstituentT ) => void;
     commitLabelImage: ( labelImage: LabelImage ) => void;
     commitLabelQR: ( LabelQR: LabelQR ) => void;
-    stageRef: Stage;
-    setRef: ( stageRef: Stage ) => void;
-    historyPosition: Integer;
-    history: LabelDrawConstituents[];
-    labelTextColor: string;
-    setLabelTextColor: ( color: string ) => void;
-}
-interface DrawContext extends Omit<LabelDrawState, "item"> {
-    item?: Item<any>;
+    displayContextMenu: IKonvaEventHandler;
 }
 
-const DrawContextStateDefault: LabelDrawState = {
+export type DrawContext = DrawContextAdditions & Omit<LabelDrawState, "item">;
+
+const NoOp = (opName?:  string) => { 
+    return () => console.warn(`NOOP: ${opName ?? 'this'} operation is not configured.`);
+};
+
+const DrawContextStateDefault: DrawContext = {
     displayContextMenu: () => { },
     displayContextMenuStatus: false,
     displayContextMenuPosition: undefined,
@@ -128,16 +136,17 @@ const DrawContextStateDefault: LabelDrawState = {
     uncommittedText: null,
     uncommittedImage: null,
     uncommittedQR: null,
-    commitLabelImage: () => { },
-    commitLabelText: () => { },
-    deleteLabelConstituent: () => { },
-    commitLabelQR: () => { },
+    commitLabelImage: NoOp(),
+    commitLabelText: NoOp(),
+    deleteLabelConstituent: NoOp(),
+    commitLabelQR: NoOp(),
     stageRef: null,
     setRef: null,
     historyPosition: 0,
     history: [],
-    labelTextColor: 'black',
-    setLabelTextColor: () => { },
+    updateHistory: NoOp(),
+    selectedShapeName: '',
+    setSelectedShapeName: NoOp('setSelectedShapeName'),
 };
 
 export const DrawContext = React.createContext<DrawContext>( DrawContextStateDefault );
@@ -162,10 +171,10 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
     /**
      * Right click menu on Konva canvas
      */
-    displayContextMenu = ( display: KonvaEventObject<PointerEvent> ) => {
+    displayContextMenu = ( display: KonvaEventObject<PointerEvent | MouseEvent> ) => {
         console.log( "displayContextMenu()", display );
         if ( display ) {
-            display.evt.preventDefault();
+            if ( display.evt ) { display.evt.preventDefault(); }
             this.setState( {
                 item: this.props.item,
                 displayContextMenuStatus: true,
@@ -316,11 +325,6 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         // this.updateContext();
     };
 
-    setLabelTextColor = ( color: string ) => {
-        this.setState( {
-            labelTextColor: color
-        } );
-    };
 
 
     shouldComponentUpdate = ( nextProps: LabelDrawProps, nextState: LabelDrawState ): boolean => {
@@ -512,6 +516,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
      * NOTE: pass in FALSE to delete the object
      **/
     updateLabelQR = ( changedValue: Partial<LabelQR> | false, labelQR: LabelQR ) => {
+        console.log({method: 'updateLabelQR', changedValue, labelQR});
         let updatedQR = false;
         if ( changedValue === false ){
             this.setState( {
@@ -523,13 +528,19 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             console.log( "setting labelQR to", changedValue.dataURL );
             labelQR.dataURL = changedValue.dataURL;
         }
-        if ( changedValue.canvasElement ) {
-            console.log( "setting canvasElement on labelQR to", changedValue.canvasElement );
-            labelQR.canvasElement = changedValue.canvasElement;
-        }
-        if ( changedValue.properties ) {
+        // if ( changedValue.dataURL ) {
+        //     console.log( "setting labelQR to", changedValue.dataURL );
+        //     labelQR.sv = changedValue.svgImage;
+        //     // labelQR.svgDataURL = changedValue.svgDataURL;
+        // }
+        // if ( changedValue.canvasElement ) {
+        //     console.log( "setting canvasElement on labelQR to", changedValue.canvasElement );
+        //     labelQR.canvasElement = changedValue.canvasElement;
+        // }
+        if ( changedValue.properties && labelQR.properties !== changedValue.properties ) {
             console.log( "setting properties on labelQR to", changedValue.properties );
             labelQR.properties = changedValue.properties;
+            this.setState( { uncommittedQR: labelQR } );
         }
         this.state.qrs.forEach( ( qr => {
             if ( qr.id == labelQR.id ) {
@@ -545,7 +556,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                 qrs: [ ...this.state.qrs, labelQR as LabelQR ]
             } );
         }
-        console.log( "this.state.qrs is now", this.state.qrs, "pending", [ ...this.state.qrs, labelQR ] );
+        console.log( { "this.state.qrs is now": this.state.qrs, "pending": [ ...this.state.qrs, labelQR ] });
     };
 
 
@@ -565,8 +576,14 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         }
     };
 
+    setSelectedShapeName = ( name: string ) => {
+        console.log("LabelDraw.setSelectedShapeName:", name);
+        this.setState( {
+            selectedShapeName: name
+        } );
+    };
+
     state: LabelDrawState = {
-        displayContextMenu: this.displayContextMenu,
         displayContextMenuStatus: DrawContextStateDefault.displayContextMenuStatus,
         displayContextMenuPosition: undefined,
         displayEditTextModal: this.displayEditTextModal,
@@ -585,16 +602,20 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         uncommittedText: new LabelText(),
         uncommittedImage: new LabelImage(),
         uncommittedQR: new LabelQR( { item: this.props.item } ),
+        stageRef: null,
+        historyPosition: 0,
+        history: [],
+        selectedShapeName: ''
+    };
+    ContextConstants: DrawContextAdditions = {
+        setSelectedShapeName: this.setSelectedShapeName,
+        displayContextMenu: this.displayContextMenu,
         commitLabelText: this.commitLabelText,
         commitLabelImage: this.commitLabelImage,
         commitLabelQR: this.commitLableQR,
         deleteLabelConstituent: this.deleteLabelConstituent,
-        stageRef: null,
         setRef: this.setRef,
-        historyPosition: 0,
-        history: [],
-        labelTextColor: 'black',
-        setLabelTextColor: this.setLabelTextColor
+        updateHistory: this.updateHistory,
     };
 
     get width (): Integer | null {
@@ -656,7 +677,10 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         console.log( `LabelDraw.render() with props:\n`, this.props );
         return (
             <DrawContext.Provider
-                value={this.state}>
+                // value={{ ...( this.state ),
+                //     setSelectedShapeName: this.setSelectedShapeName
+                // }}>
+                value={{ ...( this.state ), ...( this.ContextConstants ) }}>
                 <div>
                     {this.state.displayContextMenuStatus ?
                         <DrawContextMenu />
@@ -686,6 +710,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                         <NewImageUploadModal visibleHandler={this.displayImageUploadModal} changeHandler={this.updateLabelImages} item={item} labelImage={this.state.uncommittedImage} />
                         : null}
 
+                    {/* DEBUG & DIAGNOSTICS */}
                     <div style={{ float: 'right', position: "relative", top: -40 }}>
                         <Tooltip key="debug" placement="top" title="Send debug information to the console">
                             <Button icon={<MedicineBoxOutlined />} style={{
@@ -713,149 +738,44 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                                 message.info( "Debug output sent to console" );
                             }} id="DEBUG" />
                         </Tooltip>
+                        <Tooltip key="EXPAND_CANVAS_TOOLTIP" placement="top" title="Enlarge print canvas">
+                            <Button icon={<PlusCircleOutlined />} style={{
+                                padding: 0,
+                                width: '24px',
+                                height: '24px',
+                                border: 0,
+                                position: "relative",
+                                // top: "2px"
+                            }} onClick={() => {
+                                console.log( "expanding canvas\n", { was: this.state.stageRef.getStage().width()})
+                                // console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
+                                // console.log( this.context.currentLabelToBuffer() );
+                                this.props.updateWidth( this.state.stageRef.getStage().width() + 50);
+                                // this.state.stageRef.getStage().width( this.state.stageRef.getStage().width() + 50 );
+                                // this.state.stageRef.getStage().height( this.state.stageRef.getStage().width() + 50 );
+                                }} id="EXPAND_CANVAS" />
+                        </Tooltip>
                     </div>
 
                     <LabelComponent {...this.props}>
+                        
+                        {/* TEXT */}
                         {this.state.texts.map( labelText => {
-                            console.log( "drawing new labelText", labelText.text ? true : false, labelText );
-                            if ( !labelText.text ) { return null; }
-                            console.log( "... will draw" );
-                            return <Text
-                                textObject={labelText}
-                                key={labelText.id}
-                                name={labelText.id}
-                                text={nunjucks.renderString( labelText.text, item )}
-                                fontStyle={labelText.bold ? "bold" : labelText.italic ? "italic" : "normal"}
-                                textDecoration={labelText.underline ? "underlined" : ""}
-                                fontSize={labelText.fontSize}
-                                fill={labelText.text.includes( "{{" ) ? 'red' : 'black'}
-                                onContextMenu={this.state.displayContextMenu}
-                                x={labelText.x}
-                                y={labelText.y}
-                                // stroke={this.state.labelTextColor}
-                                scaleX={labelText.scaleX}
-                                scaleY={labelText.scaleY}
-                                rotation={labelText.rotation}
-                                onTransformEnd={( evt: KonvaEventObject<Event> ) => {
-                                    console.log( "(Text) TransformEnd:\n", evt, "attrs", evt.currentTarget.attrs );
-                                    ( evt.currentTarget.attrs.textObject as LabelText ).setDrawAttrs( {
-                                        x: evt.currentTarget.attrs.x,
-                                        y: evt.currentTarget.attrs.y,
-                                        scaleX: evt.currentTarget.attrs.scaleX,
-                                        scaleY: evt.currentTarget.attrs.scaleY,
-                                        rotation: evt.currentTarget.attrs.rotation
-                                    } );
-                                    this.updateHistory();
-                                }}
-                                onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
-                                    console.log( "(Text) DragEnd:", evt, "to:", [ evt.currentTarget.attrs.x, evt.currentTarget.attrs.y ] );
-                                    ( evt.currentTarget.attrs.textObject as LabelText ).setDrawAttrs( {
-                                        x: evt.currentTarget.attrs.x,
-                                        y: evt.currentTarget.attrs.y,
-                                        scaleX: evt.currentTarget.attrs.scaleX,
-                                        scaleY: evt.currentTarget.attrs.scaleY,
-                                        rotation: evt.currentTarget.attrs.rotation
-                                    } );
-                                    this.updateHistory();
-                                }}
-                                draggable />;
-                        } )}
+                            console.log("Drawing EditableText");
+                            return <EditableText key={`editable_text_${labelText.id}`} labelText={labelText} item={item} />;
+                        })}
+                        {/* IMAGE */}
                         {this.state.images.map( labelImage => {
                             console.log( "drawing image", labelImage );
-                            // if(!labelImage.data) { message.warn(`image ${labelImage.id} does not have any data `); }
-                            // const [ image ] = labelImage.url
-                            const image = document.createElement( 'img' );
-                            image.src = labelImage.data;
-                            image.width = labelImage.width;
-                            image.height = labelImage.height;
-                            console.log( "proceeding with draw image", { src: image.src, width: image.width, height: image.height } );
-                            return <Image
-                                imageObject={labelImage}
-                                key={labelImage.id}
-                                name={labelImage.id}
-                                image={image}
-                                onContextMenu={this.state.displayContextMenu}
-                                x={labelImage.x}
-                                y={labelImage.y}
-                                scaleX={labelImage.scaleX}
-                                scaleY={labelImage.scaleY}
-                                rotation={labelImage.rotation}
-                                onTransformEnd={( evt: KonvaEventObject<Event> ) => {
-                                    console.log( "(Image) TransformEnd:\n", evt, "attrs", evt.currentTarget.attrs );
-
-                                    ( evt.currentTarget.attrs.imageObject as LabelImage ).setDrawAttrs( {
-                                        x: evt.currentTarget.attrs.x,
-                                        y: evt.currentTarget.attrs.y,
-                                        scaleX: evt.currentTarget.attrs.scaleX,
-                                        scaleY: evt.currentTarget.attrs.scaleY,
-                                        rotation: evt.currentTarget.attrs.rotation
-                                    } );
-                                    this.updateHistory();
-                                }}
-                                onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
-                                    console.log( "(Image) DragEnd:\n", evt, "attrs", evt.currentTarget.attrs );
-                                    ( evt.currentTarget.attrs.imageObject as LabelImage ).setDrawAttrs( {
-                                        x: evt.currentTarget.attrs.x,
-                                        y: evt.currentTarget.attrs.y,
-                                        scaleX: evt.currentTarget.attrs.scaleX,
-                                        scaleY: evt.currentTarget.attrs.scaleY,
-                                        rotation: evt.currentTarget.attrs.rotation
-                                    } );
-                                    this.updateHistory();
-                                }}
-                                draggable />;
+                            return <TransformableImage key={`transformable_image_${ labelImage.id }`} labelImage={labelImage} item={item} />;
                         } )}
+                        {/* QR */}
                         {this.state.qrs.map( labelQR => {
                             console.log( "drawing LabelQR", labelQR );
-                            return <Image
-                                qrObject={labelQR}
-                                key={labelQR.id}
-                                name={labelQR.id}
-                                onContextMenu={this.state.displayContextMenu}
-                                x={labelQR.x}
-                                y={labelQR.y}
-                                scaleX={labelQR.scaleX}
-                                scaleY={labelQR.scaleY}
-                                rotation={labelQR.rotation}
-                                onTransformEnd={( evt: KonvaEventObject<Event> ) => {
-                                    console.log( "(QR) TransformEnd:\n", evt );
-                                    let labelQR = ( evt.currentTarget.attrs.qrObject as LabelQR );
-                                    let qrCanvas = labelQR.canvasElement;
-                                    evt.currentTarget.attrs.scaleX = 1;
-                                    evt.currentTarget.attrs.scaleY = 1;
-                                    // evt.currentTarget =
-                                    labelQR.drawAttrs = {
-                                        x: evt.currentTarget.attrs.x,
-                                        y: evt.currentTarget.attrs.y,
-                                        scaleX: 1,
-                                        scaleY: 1,
-                                        // scaleX: evt.currentTarget.attrs.scaleX,
-                                        // scaleY: evt.currentTarget.attrs.scaleY,
-                                        rotation: evt.currentTarget.attrs.rotation
-                                    };
-                                    console.log( "canvasElement for LabelQR -- start", JSON.stringify({ width: qrCanvas.width, height: qrCanvas.height}) );
-                                    // ( evt.currentTarget.attrs.qrObject as LabelQR ).canvasElement.width = qrCanvas.width;
-                                    // ( evt.currentTarget.attrs.qrObject as LabelQR ).canvasElement.height = qrCanvas.height;
-                                    // (evt.currentTarget as Konva.Image).image( ( evt.currentTarget.attrs.qrObject as LabelQR ).setCanvas( true ) );
-                                    // evt.currentTarget.parent.findOne<Konva.Image>(labelQR.id).image( ( evt.currentTarget.attrs.qrObject as LabelQR ).setCanvas(true) );
-
-                                    console.log( "canvasElement for LabelQR -- end", JSON.stringify( { width: qrCanvas.width, height: qrCanvas.height } ) );
-
-                                    this.updateHistory();
-                                }}
-                                onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
-                                    console.log( "(QR) DragEnd:\n", evt );
-                                    ( evt.currentTarget.attrs.qrObject as LabelQR ).drawAttrs = {
-                                        x: evt.currentTarget.attrs.x,
-                                        y: evt.currentTarget.attrs.y,
-                                        scaleX: evt.currentTarget.attrs.scaleX,
-                                        scaleY: evt.currentTarget.attrs.scaleY,
-                                        rotation: evt.currentTarget.attrs.rotation
-                                    };
-                                    this.updateHistory();
-                                }}
-                                image={labelQR.canvasElement}
-                                draggable />;
+                            return <TransformableQR 
+                                {...this.ContextConstants}
+                                selectedShapeName={this.state.selectedShapeName}
+                                key={`transformable_qr_${ labelQR.id }`} labelQR={labelQR} item={item} />;
                         } )}
                     </LabelComponent>
                     <br />

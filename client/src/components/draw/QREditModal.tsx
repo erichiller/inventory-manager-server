@@ -1,13 +1,15 @@
 import { KonvaEventObject } from 'konva/types/Node';
-import { Component, useEffect, useContext } from 'react';
+import { Component, useEffect, useContext, useState, Ref, MouseEvent } from 'react';
 import { DISPLAY } from '../../lib/types/enums';
 import React from 'react';
-import { Modal, message, Checkbox } from 'antd';
+import { Modal, message, Checkbox, Button } from 'antd';
 import { Item } from '../../lib/item';
 import bwipjs from 'bwip-js';
 import { LabelQR } from '../../lib/LabelConstituent';
 import { DrawContext } from './LabelDraw';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
+import { AntTreeNode } from 'antd/lib/tree';
+import DraggableModal from '../shared/DraggableModal';
 
 interface QREditModalProps {
     event?: KonvaEventObject<MouseEvent>;
@@ -22,7 +24,7 @@ interface QREditModalProps {
 export const QREditModal: React.FC<QREditModalProps> = ( props ) => {
 
 
-
+    const [ modalRef, setModalRef ] = useState<any>();
     const onCancel = () => {
         /// REMOVE ELEMENT /// REVERT ///
         props.changeHandler( false, props.labelQR );
@@ -34,39 +36,119 @@ export const QREditModal: React.FC<QREditModalProps> = ( props ) => {
     };
 
     const updateText = ( newValue: CheckboxValueType[] ) => {
-        console.log( "LabelQR Update Text", newValue );
-        // setState( { checkboxes: newValue as string[] } );
+        console.log( "LabelQR Update Text\n", newValue );
         props.changeHandler( {
             properties: newValue
         }, props.labelQR );
     };
 
 
-    const { event, visibleHandler, item, changeHandler, labelQR } = props;
+    useEffect( () => {
+        // const el = props.labelQR.setCanvas( textToEncode(), props.mmHeight );
+        // props.changeHandler( {
+        //     dataURL: el.toDataURL( 'image/png' ),
+        //     canvasElement: el
+        // }, props.labelQR );
+        // const el = props.labelQR.svg;
+        // console.log( { title: 'QRCanvas svg element', el, textToEndcode: textToEncode()});
+        // if ( ! el ){ console.warn('QRCanvas element is invalid', {el}); return; }
+        // props.labelQR.setCanvas();
+        props.changeHandler( {
+            dataURL: props.labelQR.svgDataURL
+            // dataURL: el.toDataURL( 'image/svg' ),
+            // canvasElement: el
+        }, props.labelQR );
+    } );
 
-    console.log( 'props.visible', visibleHandler() );
+
+    // const { event, visibleHandler, item, changeHandler, labelQR } = props;
+
+    console.log( 'props.visible', props.visibleHandler() );
     // console.log('state.visible', visibleHandler(), state.visible == display.VISIBLE ? true : false)
-    console.log( 'props.item', item );
+    console.log( 'props.item', props.item );
     let pxWidth = 325;
     let mmHeight = 20;
+
+    type mouseMoveOriginT = { x: number; y: number; top: number, left: number; } | false;
+    type modalPositionT = { top: number; left: number | false; };
+
+    // const [ mouseMoveOrigin, setMouseMoveOrigin ] = useState<mouseMoveOriginT>( false );
+    // const [ modalPosition, setModalPosition ] = useState<modalPositionT>( { top: 100, left: false } );
+
+    let mouseMoveOrigin: mouseMoveOriginT = false;
+
+    let modalPosition: modalPositionT = { top: 100, left: false };
+
+    const setMouseMoveOrigin =  v => mouseMoveOrigin = v;
+    const setModalPosition = p => modalPosition = p;
+
+
+
+
+
+
+    // const foo: EventListener = () => void;
+    // const mouseMove = ( evt ) =>{
+    //     let ev = ( evt as MouseEvent )
+    //     console.log( { in: 'title', mouseMoveOrigin, modalRef, action: 'onMouseMove', ev } );
+    //         if ( mouseMoveOrigin ) {
+    //             setModalPosition( {
+    //                 top: mouseMoveOrigin.y - ev.clientY + mouseMoveOrigin.top,
+    //                 left: mouseMoveOrigin.x - ev.clientX + mouseMoveOrigin.left,
+    //             } );
+    //         }
+    //     // ( modalRef as HTMLElement ).style.top = '50px';
+    //     ( modalRef as any).props.style.top = '50px';
+    // }
+    // const mouseUp = ( evt ) => {
+    //     let ev = (evt as MouseEvent);
+    //     setMouseMoveOrigin( false );
+    //     window.removeEventListener( 'mousemove', mouseMove );
+    //     window.removeEventListener( 'mouseup', mouseUp );
+    // }
+
+        console.log( "labelQR properties map", props.labelQR.properties.map( key => {
+            return { label: key, value: props.labelQR.item[ key ], defaultChecked: true };
+        } ).filter( n => n.value !== null ) );
     return (
 
-        <Modal
+        <DraggableModal
             visible
-            title={"QR"}
+            // title={"QR"}
             okText="Add QR"
             onCancel={onCancel}
             onOk={() => { onClose(); }}
             width={pxWidth + 25}
+            // ref={(ref) => setModalRef(ref)}
+            // title={
+            //     <Button
+            //         onMouseDown={( ev: React.MouseEvent<HTMLElement> ) => {
+            //             console.log( {
+            //                 'in': 'title',
+            //                 action: 'onMouseDown',
+            //                 mousemove: { x: ev.clientX, y: ev.clientY },
+            //                 ev,
+            //                 currentTarget: ev.currentTarget
+            //             } );
+            //             let top = ( ( ev.currentTarget.offsetParent as HTMLElement ).offsetParent as HTMLElement ).offsetTop;
+            //             let left = ( ( ev.currentTarget.offsetParent as HTMLElement ) as HTMLElement ).offsetLeft;
+            //             setMouseMoveOrigin( { x: ev.clientX, y: ev.clientY, top: top, left: left } );
+            //             setModalPosition( {
+            //                 top: top,
+            //                 left: left,
+            //             } );
+            //             window.addEventListener( 'mousemove', mouseMove );
+            //             window.addEventListener( 'mouseup', mouseUp );
+            //         }}
+            //         >
+            //         Foo
+            //     </Button>}
+            // style={{
+                // top: modalPosition.top,
+                // left: '50%'
+                // ... ( modalPosition.left ? { left: modalPosition.left } : { margin: '0 auto' } )
+            // }}
         >
-            {/* {props.labelQR.properties.map( key => {
-                return `${key}: ${props.labelQR.item[key]}\n`
-            })} */}
-            <br />
-            {console.log( "labelQR properties map", props.labelQR.properties.map( key => {
-                return { label: key, value: props.labelQR.item[ key ], defaultChecked: true };
-            } )
-                .filter( n => n.value !== null ) )}
             <Checkbox.Group
                 style={{
                     display: 'inline-grid',
@@ -79,15 +161,14 @@ export const QREditModal: React.FC<QREditModalProps> = ( props ) => {
                     return {
                         label: key,
                         value: key,
-                        // value: props.labelQR.item[ key ]
                     };
                 } )
                     .filter( n => n.value !== null )}
                 onChange={newValue => updateText( newValue )}
             />
             <br />
-            <QRCanvas mmHeight={mmHeight} labelQR={labelQR} changeHandler={changeHandler} />
-        </Modal>
+            <QRCanvas mmHeight={mmHeight} labelQR={props.labelQR} changeHandler={props.changeHandler} />
+        </DraggableModal>
     );
 };
 
@@ -102,41 +183,48 @@ type UpdateLabelQR = ( newValue: Partial<LabelQR>, labelQR: LabelQR ) => void;
 
 export const QRCanvas: React.FC<QRCanvasProps> = ( props ) => {
 
-    const textToEncode = (): string => {
-        if ( props.labelQR.properties ) {
-            return props.labelQR.encodedText;
-        }
-        message.warn( "QR code without item is currently not supported." );
-        return "";
-    };
+    // const textToEncode = (): string => {
+    //     if ( props.labelQR.properties ) {
+    //         return props.labelQR.encodedText;
+    //     }
+    //     message.warn( "QR code without item is currently not supported." );
+    //     return "";
+    // };
 
-    useEffect( () => {
-        // const el = props.labelQR.setCanvas( textToEncode(), props.mmHeight );
-        // props.changeHandler( {
-        //     dataURL: el.toDataURL( 'image/png' ),
-        //     canvasElement: el
-        // }, props.labelQR );
-        const el = props.labelQR.svg;
-        console.log( { title: 'QRCanvas svg element', el, textToEndcode: textToEncode()});
-        if ( ! el ){ console.warn('QRCanvas element is invalid', {el}); return; }
-        props.changeHandler( {
-            // dataURL: el.toDataURL( 'image/svg' ),
-            canvasElement: el
-        }, props.labelQR );
-    } );
-    // TODO: convert to React.FunctionComponent
-    // TODO: convert to drawing SVG
+    // useEffect( () => {
+    //     // const el = props.labelQR.setCanvas( textToEncode(), props.mmHeight );
+    //     // props.changeHandler( {
+    //     //     dataURL: el.toDataURL( 'image/png' ),
+    //     //     canvasElement: el
+    //     // }, props.labelQR );
+    //     // const el = props.labelQR.svg;
+    //     // console.log( { title: 'QRCanvas svg element', el, textToEndcode: textToEncode()});
+    //     // if ( ! el ){ console.warn('QRCanvas element is invalid', {el}); return; }
+    //     // props.labelQR.setCanvas();
+    //     props.changeHandler( {
+    //         dataURL: props.labelQR.svgDataURL
+    //         // dataURL: el.toDataURL( 'image/svg' ),
+    //         // canvasElement: el
+    //     }, props.labelQR );
+    // } );
 
-    return <React.Fragment>
-        <canvas
+    return <div style={{ textAlign: 'center' }}>
+        <img
+            src={props.labelQR.svgDataURL} />
+        {/* <canvas
             // ref={setCanvasRef}
             style={{
                 // border: '1px solid black', 
                 // width: '750px' 
                 margin: '0px auto',
                 display: 'block'
-            }} id="tempCanvas"></canvas>
+            }} id="tempCanvas"></canvas> */}
 
-        <pre>{textToEncode()}</pre>
-    </React.Fragment>;
+        {/* <pre>{textToEncode()}</pre>
+        <pre>{JSON.stringify(textToEncode(), null, 2)}</pre>
+        <br />
+        <pre>{props.labelQR.dataURL}</pre>
+        <br />
+        <pre>{JSON.stringify( props.labelQR.properties, null, 2 )}</pre> */}
+    </div>;
 };
