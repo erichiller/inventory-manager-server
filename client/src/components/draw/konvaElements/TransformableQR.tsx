@@ -94,6 +94,8 @@ export function TransformableQR ( props: QrImageProps ): React.ReactElement<Konv
                 };
                 props.updateHistory();
             }}
+            onMouseEnter={( ev ) => ev.currentTarget.getStage().container().style.cursor = 'crosshair'}
+            onMouseLeave={( ev ) => ev.currentTarget.getStage().container().style.cursor = 'default'}
             draggable />
         <Transformer
                 key={`${ labelQR.id }_labelQR_transformer`}

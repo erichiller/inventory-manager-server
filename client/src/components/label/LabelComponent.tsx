@@ -11,7 +11,6 @@ import { GetPrinterStatusQuery, GetPrinterStatusDocument } from "../../lib/types
 import { DrawContext } from "../draw/LabelDraw";
 import e from 'cors';
 import { KonvaEventObject } from 'konva/types/Node';
-import { DrawTransformHandler } from '../draw/DrawTransformHandler';
 import { TapeColorMap } from '../../lib/types/labelCanvasColors';
 
 interface LabelComponentState {

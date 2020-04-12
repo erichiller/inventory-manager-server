@@ -414,8 +414,9 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             this.setState( {
                 "texts":
                     this.state.texts.filter( ( text ) => {
-                        if ( text.id == constituent.id ) {
+                        if ( text.id === constituent.id ) {
                             console.log( `deleteLabelConstituent <texts> : deleting id ${ constituent.id }` );
+                            this.state.stageRef.getStage().findOne( "." + constituent.id ).remove();
                             return;
                         }
                         return text;
@@ -431,6 +432,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                     this.state.images.filter( ( image ) => {
                         if ( image.id == constituent.id ) {
                             console.log( `deleteLabelConstituent <images> : deleting id ${ constituent.id }` );
+                            this.state.stageRef.getStage().findOne( "." + constituent.id ).remove();
                             return;
                         }
                         return image;
@@ -446,6 +448,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                     this.state.qrs.filter( ( qr ) => {
                         if ( qr.id == constituent.id ) {
                             console.log( `deleteLabelConstituent <qrs> : deleting id ${ constituent.id }` );
+                            this.state.stageRef.getStage().findOne( "." + constituent.id ).remove();
                             return;
                         }
                         return qr;
