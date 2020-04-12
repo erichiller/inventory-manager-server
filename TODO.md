@@ -32,9 +32,9 @@
 - [ ] Print in modal leads to endless spooling (and can't print again)
 - [x] Multi-line text entry for labels
 - [x] Draggable right border for resizing label
-- [ ] Speed / Performance issues in `LabelDraw` modal
+- [ ] Speed / Performance issues in `LabelDraw` modal ( see below )
   - [ ] Async GraphQL ? - do not block Konva drawing
-- [ ] Delete Label components with keyboard `[Delete]` ; see <https://konvajs.org/docs/events/Keyboard_Events.html>
+- [x] Delete Label components with keyboard `[Delete]` ; see <https://konvajs.org/docs/events/Keyboard_Events.html>
 
 
 - [ ] _maybe:_ Undo / Redo → <https://konvajs.org/docs/react/Undo-Redo.html>
@@ -44,7 +44,14 @@
   - [ ] undo with normal keyboard shortcuts: `Ctrl+Z` for undo ; `Ctrl+Y` for redo
 
 - [ ] context menu for text should allow size, decoration changes
-- [ ] 
+- [ ] QR Code Strangeness upon first modal render. Something to do with the dragging code.
+
+### Performance
+
+- [ ] try `shape.draw` (not `layer.draw`) ; [Shape Redraw](https://konvajs.org/docs/performance/Shape_Redraw.html) ; side effects? OR seperate objects with layers, only the moved redraw (prefer shape.draw ) [Layer Management](https://konvajs.org/docs/performance/Layer_Management.html)
+- [ ] try disabling perfect drawing ( which just accounts for the width of the border in the overall size ) ; [Disabling Perfect Draw](https://konvajs.org/docs/performance/Disable_Perfect_Draw.html)
+- [ ] there are a bunch of repeated calls, debug this
+- [ ] try not putting history inside labeldraw state.
 
 ## Completed
 

@@ -84,15 +84,15 @@ export function TransformableQR ( props: QrImageProps ): React.ReactElement<Konv
                 props.updateHistory();
             }}
             onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
-                console.log( "(QR) DragEnd:\n", evt );
-                ( evt.currentTarget.attrs.qrObject as LabelQR ).drawAttrs = {
-                    x: evt.currentTarget.attrs.x,
-                    y: evt.currentTarget.attrs.y,
-                    scaleX: evt.currentTarget.attrs.scaleX,
-                    scaleY: evt.currentTarget.attrs.scaleY,
-                    rotation: evt.currentTarget.attrs.rotation
-                };
-                props.updateHistory();
+                // console.log( "(QR) DragEnd:\n", evt );
+                // ( evt.currentTarget.attrs.qrObject as LabelQR ).drawAttrs = {
+                //     x: evt.currentTarget.attrs.x,
+                //     y: evt.currentTarget.attrs.y,
+                //     scaleX: evt.currentTarget.attrs.scaleX,
+                //     scaleY: evt.currentTarget.attrs.scaleY,
+                //     rotation: evt.currentTarget.attrs.rotation
+                // };
+                // props.updateHistory();
             }}
             onMouseEnter={( ev ) => ev.currentTarget.getStage().container().style.cursor = 'crosshair'}
             onMouseLeave={( ev ) => ev.currentTarget.getStage().container().style.cursor = 'default'}
