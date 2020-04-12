@@ -32,7 +32,6 @@ export function TransformableQR ( props: QrImageProps ): React.ReactElement<Konv
     const nodeRef = React.useRef<Konva.Image>();
     const trRef = React.useRef<Konva.Transformer>();
 
-    // const { displayContextMenu, updateHistory, selectedShapeName, setSelectedShapeName } = useContext( DrawContext );
     let isSelected = labelQR.id === props.selectedShapeName;
 
     console.log( "TransformableQR\n", { ...props, isSelected, trRef, nodeRef});
