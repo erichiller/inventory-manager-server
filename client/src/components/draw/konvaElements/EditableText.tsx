@@ -14,7 +14,7 @@ import { Item } from '../../../lib/item';
 import { DrawContext } from '../LabelDraw';
 
 
-interface EditableTextProps {
+interface EditableTextProps extends Pick<DrawContext, 'displayContextMenu' | 'selectedShapeName' | 'updateHistory' | 'setSelectedShapeName'> {
     labelText: LabelText;
     item: Item<any>;
     // stage: Konva.Stage;
@@ -33,14 +33,6 @@ interface EditableTextProps {
 
 
 export function EditableText ( props: EditableTextProps ): React.ReactElement<KonvaNodeComponent<Konva.Text & EditableTextProps, Konva.TextConfig>> {
-
-
-    const { displayContextMenu, setRef, stageRef, updateHistory } = useContext( DrawContext );
-    // export const EditableText:  React.FC<EditableTextProps> = ( props ) => {
-
-
-
-
     const labelText = props.labelText;
     const item = props.item;
 
@@ -48,31 +40,28 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
     const textNodeRef = React.useRef<Konva.Text>();
     const trRef = React.useRef<Konva.Transformer>();
 
-
-    // let stage: Konva.Stage;
-    // let layer: BaseLayer;
-    // let layer = new Konva.Layer();
-    // props.stage.add( layer );
-
-
-    // React.useEffect( () => {
-    //     if ( isSelected ) {
-    //         // we need to attach transformer manually
-    //         trRef.current.setNode( shapeRef.current );
-    //         trRef.current.getLayer().batchDraw();
-    //     }
-    // }, [ isSelected ] );
+    let isSelected = labelText.id === props.selectedShapeName;
+    console.log( "EditableText\n", { ...props, isSelected, trRef, textNodeRef } );
 
     React.useEffect( () => {
-        console.log( { cls: 'EditableText', method: 'useEffect', trRef } );
+        console.log( { cls: 'EditableText', method: 'useEffect', trRef, tr_truth: trRef && trRef.current, isSelected, qrid: labelText.id, selectedname: props.selectedShapeName } );
         // we need to attach transformer manually
-        if ( trRef && trRef.current ) {
+        // if ( trRef && trRef.current ) {
+        if ( isSelected && trRef && trRef.current ) {
+            console.log( { cls: 'EditableText', method: 'useEffect', op: 'willoperate', trRef, curr: trRef.current } );
             trRef.current.setNode( textNodeRef.current );
-            // trRef.current.getLayer().batchDraw();
-            // stage = trRef.current.getStage();
-            // layer = trRef.current.getLayer();
+            trRef.current.getLayer().batchDraw();
+        } else {
+            console.log( { cls: 'EditableText', method: 'useEffect', op: 'DETACH' } );
+            trRef.current.detach();
+            trRef.current.getLayer().batchDraw();
         }
-    }, [ trRef ] );
+    }, [ isSelected, trRef, trRef.current, props.selectedShapeName ] );
+
+    function onSelect ( e: KonvaEventObject<MouseEvent> ) {
+        console.log( "EditableText onSelect setSelectedShapeName", {e, name: e.target.name()} );
+        props.setSelectedShapeName( e.target.name() );
+    }
 
     return <React.Fragment>
         <Transformer
@@ -95,12 +84,14 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
             textDecoration={labelText.underline ? "underlined" : ""}
             fontSize={labelText.fontSize}
             fill={labelText.text.includes( "{{" ) ? 'red' : 'black'}
-            onContextMenu={displayContextMenu}
+            onContextMenu={props.displayContextMenu}
             x={labelText.x}
             y={labelText.y}
             scaleX={labelText.scaleX}
             scaleY={labelText.scaleY}
             rotation={labelText.rotation}
+            onClick={onSelect}
+            onTap={onSelect}
             onDblClick={( evt ) => {
                 {
                     console.group("EditableText.onDblClick");
@@ -195,7 +186,7 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
                         textarea.parentNode.removeChild( textarea );
                         window.removeEventListener( 'click', handleOutsideClick );
                         textNodeRef.current.show();
-                        // trRef.current.show();
+                        trRef.current.show();
                         trRef.current.forceUpdate();
                         evt.currentTarget.getLayer().draw();
                     }
@@ -277,7 +268,7 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
                     scaleY: evt.currentTarget.attrs.scaleY,
                     rotation: evt.currentTarget.attrs.rotation
                 } );
-                updateHistory();
+                props.updateHistory();
             }}
             onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
                 console.log( "(Text) DragEnd:", evt, "to:", [ evt.currentTarget.attrs.x, evt.currentTarget.attrs.y ] );
@@ -288,7 +279,7 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
                     scaleY: evt.currentTarget.attrs.scaleY,
                     rotation: evt.currentTarget.attrs.rotation
                 } );
-                updateHistory();
+                props.updateHistory();
             }}
             draggable={true}
         />

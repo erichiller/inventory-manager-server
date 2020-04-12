@@ -762,12 +762,21 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                         {/* TEXT */}
                         {this.state.texts.map( labelText => {
                             console.log("Drawing EditableText");
-                            return <EditableText key={`editable_text_${labelText.id}`} labelText={labelText} item={item} />;
+                            return <EditableText
+                                    {...this.ContextConstants}
+                                    selectedShapeName={this.state.selectedShapeName} 
+                                    key={`editable_text_${labelText.id}`} 
+                                    labelText={labelText} item={item} />;
                         })}
                         {/* IMAGE */}
                         {this.state.images.map( labelImage => {
                             console.log( "drawing image", labelImage );
-                            return <TransformableImage key={`transformable_image_${ labelImage.id }`} labelImage={labelImage} item={item} />;
+                            return <TransformableImage
+                                    {...this.ContextConstants}
+                                    selectedShapeName={this.state.selectedShapeName}
+                                    key={`transformable_image_${ labelImage.id }`} 
+                                    labelImage={labelImage} 
+                                    item={item} />;
                         } )}
                         {/* QR */}
                         {this.state.qrs.map( labelQR => {
