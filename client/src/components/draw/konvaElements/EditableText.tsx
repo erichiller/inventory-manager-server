@@ -81,7 +81,7 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
             name={labelText.id}
             text={nunjucks.renderString( labelText.text, item )}
             fontStyle={labelText.bold ? "bold" : labelText.italic ? "italic" : "normal"}
-            textDecoration={labelText.underline ? "underlined" : ""}
+            textDecoration={labelText.underline ? "underline" : ""}
             fontSize={labelText.fontSize}
             fill={labelText.text.includes( "{{" ) ? 'red' : 'black'}
             onContextMenu={props.displayContextMenu}
@@ -98,24 +98,15 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
                     // hide text node and transformer:
                     textNodeRef.current.hide();
                     trRef.current.hide();
-                    evt.currentTarget.getLayer().draw();
+                    // evt.currentTarget.getLayer().draw();
+                    evt.currentTarget.getLayer().batchDraw();
 
                     // create textarea over canvas with absolute position
                     // first we need to find position for textarea
-                    // how to find it?
-
-                    // at first lets find position of text node relative to the props.stage:
-                    // let textPosition = ( textNode as Node ).absolutePosition();
-                    // let textPosition = ( ( textNode as any ).absolutePosition() as {
-                    //     x: number;
-                    //     y: number;
-                    // });
                     let textPosition = textNodeRef.current.getAbsolutePosition();
 
                     // then lets find position of props.stage container on the page:
                     let stageBox = evt.currentTarget.getStage().container().getBoundingClientRect();
-
-
 
                     // so position of textarea will be the sum of positions above:
                     let areaPosition = {
@@ -153,6 +144,9 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
                     textarea.style.resize = 'none';
                     textarea.style.lineHeight = textNodeRef.current.lineHeight().toString();
                     textarea.style.fontFamily = textNodeRef.current.fontFamily();
+                    textarea.style.fontStyle = textNodeRef.current.fontStyle() === "italic" ? "italic" : "normal";
+                    textarea.style.textDecoration = textNodeRef.current.textDecoration() === "underline" ? "underline" : "none";
+                    textarea.style.fontWeight = textNodeRef.current.fontStyle() === "bold" ? "bold" : "normal";
                     textarea.style.transformOrigin = 'left top';
                     textarea.style.textAlign = textNodeRef.current.align();
                     textarea.style.color = textNodeRef.current.fill();
@@ -188,7 +182,9 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
                         textNodeRef.current.show();
                         trRef.current.show();
                         trRef.current.forceUpdate();
-                        evt.currentTarget.getLayer().draw();
+                        // evt.currentTarget.getLayer().draw();
+                        evt.currentTarget.getLayer().batchDraw();
+                        
                     }
 
                     function setTextareaWidth ( newWidth ) {
@@ -281,6 +277,8 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
                 } );
                 props.updateHistory();
             }}
+            onMouseEnter={( ev ) => ev.currentTarget.getStage().container().style.cursor = 'crosshair'}
+            onMouseLeave={( ev ) => ev.currentTarget.getStage().container().style.cursor = 'default'}
             draggable={true}
         />
     </React.Fragment>;

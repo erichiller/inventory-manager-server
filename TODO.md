@@ -30,8 +30,8 @@
   - [x] `onCancel` should remove `LabelQR` object from `Label`
   - [x] As **SVG** ?
 - [ ] Print in modal leads to endless spooling (and can't print again)
-- [ ] Multi-line text entry for labels
-- [ ] Draggable right border for resizing label
+- [x] Multi-line text entry for labels
+- [x] Draggable right border for resizing label
 - [ ] Speed / Performance issues in `LabelDraw` modal
   - [ ] Async GraphQL ? - do not block Konva drawing
 - [ ] Delete Label components with keyboard `[Delete]` ; see <https://konvajs.org/docs/events/Keyboard_Events.html>
@@ -43,6 +43,8 @@
     - [ ] transform
   - [ ] undo with normal keyboard shortcuts: `Ctrl+Z` for undo ; `Ctrl+Y` for redo
 
+- [ ] context menu for text should allow size, decoration changes
+- [ ] 
 
 ## Completed
 

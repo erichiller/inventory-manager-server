@@ -51,7 +51,6 @@ interface DrawContextMenuProps {
 export class DrawContextMenu extends React.Component<DrawContextMenuProps> {
 
     onClick = ({ key }) => {
-
         // message.info(`Click detected on item ${key}`);
     };
 
@@ -106,7 +105,6 @@ export class DrawContextMenu extends React.Component<DrawContextMenuProps> {
                                         zIndex: 5,
                                     }}
                                 >
-
                                     <Menu.Item key="delete" onClick={() => {
                                         message.info(`Click detected on DELETE in context menu`);
                                         console.log( "DELETING LABEL CONSTITUENT", contextMenuLabelConstituent);

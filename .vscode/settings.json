@@ -3,5 +3,12 @@
     "typescript.tsdk": "./client/node_modules/typescript/lib",
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true,
+        "**/yarn.lock": true,
+        "**/graphql.tsx": true
+    }
 }

@@ -116,6 +116,8 @@ export function TransformableImage ( props: ImageProps ): React.ReactElement<Kon
                 } );
                 props.updateHistory();
             }}
+            onMouseEnter={( ev ) => ev.currentTarget.getStage().container().style.cursor = 'crosshair'}
+            onMouseLeave={( ev ) => ev.currentTarget.getStage().container().style.cursor = 'default'}
             draggable />
     </React.Fragment>;
 };
