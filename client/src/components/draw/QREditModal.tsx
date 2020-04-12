@@ -114,40 +114,10 @@ export const QREditModal: React.FC<QREditModalProps> = ( props ) => {
 
         <DraggableModal
             visible
-            // title={"QR"}
             okText="Add QR"
             onCancel={onCancel}
             onOk={() => { onClose(); }}
             width={pxWidth + 25}
-            // ref={(ref) => setModalRef(ref)}
-            // title={
-            //     <Button
-            //         onMouseDown={( ev: React.MouseEvent<HTMLElement> ) => {
-            //             console.log( {
-            //                 'in': 'title',
-            //                 action: 'onMouseDown',
-            //                 mousemove: { x: ev.clientX, y: ev.clientY },
-            //                 ev,
-            //                 currentTarget: ev.currentTarget
-            //             } );
-            //             let top = ( ( ev.currentTarget.offsetParent as HTMLElement ).offsetParent as HTMLElement ).offsetTop;
-            //             let left = ( ( ev.currentTarget.offsetParent as HTMLElement ) as HTMLElement ).offsetLeft;
-            //             setMouseMoveOrigin( { x: ev.clientX, y: ev.clientY, top: top, left: left } );
-            //             setModalPosition( {
-            //                 top: top,
-            //                 left: left,
-            //             } );
-            //             window.addEventListener( 'mousemove', mouseMove );
-            //             window.addEventListener( 'mouseup', mouseUp );
-            //         }}
-            //         >
-            //         Foo
-            //     </Button>}
-            // style={{
-                // top: modalPosition.top,
-                // left: '50%'
-                // ... ( modalPosition.left ? { left: modalPosition.left } : { margin: '0 auto' } )
-            // }}
         >
             <Checkbox.Group
                 style={{

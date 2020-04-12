@@ -407,6 +407,9 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         return false;
     };
 
+    /**
+     * Removes the `LabelConstituent` object from the label as well as deletes/`remove()`s its `Node` from `Konva`
+     */
     deleteLabelConstituent = ( constituent: LabelText | LabelImage | LabelQR ): void => {
         console.log( "deleteLabelConstituent : constituent <?>", constituent );
         if ( LabelText.is( constituent ) ) {
@@ -636,6 +639,10 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
     get dataURL (): string | null {
         return this.canvas ? this.canvas.toDataURL() : null;
     }
+    /**
+     * return imgdata for the entire canvas.  
+     * THIS IS A _**VERY** EXPENSIVE CALL_
+     */
     get imgData (): ImageData | null {
         return this.canvas && this.width && this.height ? this.canvas.getContext( '2d' ).getImageData( 0, 0, this.width, this.height ) : null;
     }
@@ -643,13 +650,13 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
     exportLabel = (): LabelExport => {
         console.group( "LabelDraw.exportLabel()" );
         // console.trace();
-        console.log( "LabelDraw, exporting Label verification values", {
-            // "canvas": this.canvas,
-            "width": this.width,
-            "height": this.height,
-            "imgData": this.imgData,
-            "this.props.label": this.props.label
-        } );
+        // console.log( "LabelDraw, exporting Label verification values", {
+        //     // "canvas": this.canvas,
+        //     "width": this.width,
+        //     "height": this.height,
+        //     "imgData": this.imgData,
+        //     "this.props.label": this.props.label
+        // } );
         // console.trace();
         if ( this.canvas && this.width && this.height && this.imgData ) {
             JSON.stringify( this.state.texts );
@@ -760,7 +767,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                         </Tooltip>
                     </div>
 
-                    <LabelComponent {...this.props}>
+                    <LabelComponent {...this.props} selectedShapeName={this.state.selectedShapeName}>
                         
                         {/* TEXT */}
                         {this.state.texts.map( labelText => {
