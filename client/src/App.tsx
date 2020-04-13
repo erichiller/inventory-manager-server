@@ -7,7 +7,6 @@ import {
 } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import './styles/app.scss';
-import 'antd/dist/antd.css';
 import { Menu } from 'antd';
 import { flatRoutes, singularFullPath } from './config/routes';
 import { PrintListButton } from './components/print/PrintListButton';

@@ -44,7 +44,7 @@
   - [ ] undo with normal keyboard shortcuts: `Ctrl+Z` for undo ; `Ctrl+Y` for redo
 
 - [ ] context menu for text should allow size, decoration changes
-- [ ] QR Code Strangeness upon first modal render. Something to do with the dragging code.
+- [x] QR Code Strangeness upon first modal render. Something to do with the dragging code.
 
 ### Performance
 

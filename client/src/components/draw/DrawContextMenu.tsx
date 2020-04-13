@@ -4,7 +4,7 @@ import { Menu, message } from 'antd';
 // import { CSSTransition } from 'react-transition-group';
 import Animate from 'rc-animate';
 
-import './DrawContextMenu.scss';
+import '../../styles/DrawContextMenu.scss';
 import { DrawContext } from "./LabelDraw";
 
 
