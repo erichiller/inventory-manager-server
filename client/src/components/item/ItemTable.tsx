@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { ColumnProps } from 'antd/es/table';
 import {
     // withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, ItemHardwareFastenerBoltSelectColumn, useItemHardwareFastenerBoltQuery, useGetIconQuery, 
-    useGetItemsQuery, GetItemQuery, GetItemsQueryVariables,
+    useGetItemsQuery, GetItemQuery, GetItemsQueryVariables, GetItemsQuery,
     // ItemSelectColumn 
 } from '../../lib/types/graphql';
 import { LabelDrawModal } from '../draw/LabelDrawModal';
@@ -62,7 +62,7 @@ export type visibleHandler = ( c?: React.ReactElement ) => void;
 
 export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery> ( props: ItemTableProps<T, Q> & { children?: React.ReactNode; } ) => {
     let loading = true;
-    let result;
+    let result: QueryResult<GetItemsQuery, GetItemsQueryVariables>;
 
     // return <ItemSearch />;
 
@@ -109,7 +109,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     const getRecordEditModal = ( record: Item<any> ): React.ReactElement => {
 
         switch ( record.class ) {
-            //TODO: replace this with an edit modal defined within the Item subclass
+            // TODO: replace this with an edit modal defined within the Item subclass
             case "item_hardware_fastener_bolt":
                 return <EditHardwareFastenerBolt visibleHandler={setModal} item={record as ItemHardwareFastenerBolt} />;
                 break;
@@ -200,21 +200,14 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     //     state_data: state.data,
     //     first_id: ( state.data && state.data.length > 0 ? state.data[ 0 ].id : "NO DATA!" )
     // } );
-    // if ( !loading && !result.data && ( !state.data || state.data.length == 0 ) ) {
-    //     return <Alert
-    //         message="Warning"
-    //         description="No items found"
-    //         type="warning"
-    //         showIcon
-    //     />;
-    // }
-    // console.log( 'DATA__2', data );
     return (
         <div>
             {/* <pre>{JSON.stringify( data, null, 2 )}</pre>
             <br/><br/>
             <pre>{JSON.stringify( getColumns(), null, 2)}</pre> */}
             {state.modal}
+
+            {console.log("Table has data:\n", data)}
 
             <Table
                 style={{

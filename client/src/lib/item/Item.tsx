@@ -63,6 +63,7 @@ export class Item<T extends GenericItem> implements IItem {
         this._name = props.name;
         this._class = props.class;
         this._object = props.object;
+        console.log("Item class created with props:\n", props)
     }
 
     /**
@@ -88,7 +89,8 @@ export class Item<T extends GenericItem> implements IItem {
             return this._object['name'];
         }
         else {
-            return "err.";
+            // should this warn?
+            return "";
         }
     }
 
@@ -189,13 +191,15 @@ get icon(): IconComponentT {
      * Optionally defined on subclasses
      */
     get Columns (): ColumnProps<T>[] {
-        let cols: ColumnProps<T>[] = ( Object.keys( ItemSelectColumn ).filter(
-            key => [ "ID" ].includes( key ) ? false : key ).map(
+        // TODO: order columns sensibly
+        let cols: ColumnProps<T>[] = ( [...Object.keys( ItemSelectColumn ), 'name'].filter(
+            key => [ "OBJECT" ].includes( key ) ? false : key ).map(
+            // key => [ "ID" ].includes( key ) ? false : key ).map(
                 key => {
                     return {
                         key: key,
                         title: toTitleCase( key ),
-                        dataIndex: ItemSelectColumn[ key ],
+                        dataIndex: ItemSelectColumn[ key ] ?? key,
                     };
                 } ) );
         return cols;

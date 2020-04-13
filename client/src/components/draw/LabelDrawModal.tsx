@@ -124,8 +124,11 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                     {Object.keys( item ).map( key => {
                         let value = item[ key ];
                         if ( ![ "__typename" ].includes( key ) && value ) {
+                            let stringValue = ["string", "number"].includes(typeof value) ? value : 
+                                                typeof value === typeof {} ? `${JSON.stringify(value, null, 2)}` :
+                                                'error';
                             console.log( `property of item ${ key } = ${ value }` );
-                            return <Descriptions.Item key={key} label={key}>{value}</Descriptions.Item>;
+                            return <Descriptions.Item key={key} label={key}><pre>{stringValue}</pre></Descriptions.Item>;
                         }
                     } )}
                 </Descriptions>

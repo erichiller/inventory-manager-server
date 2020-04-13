@@ -39,7 +39,7 @@ COMMENT ON COLUMN public.icon.data
 
 ```
 
-====== Schema Start =====
+## Schema Start
 
 ```sql
 
@@ -162,7 +162,7 @@ key here is to always make from the most specific item to the least specific.
 `item_hardware_fastener_bolt` → `manufacturer_item`
 `item_hardware_fastener_bolt` → (for bundle) = `item.bundle`
 
-also, all item_id must remain unique
+also, all `item_id` must remain unique
 
 ====== Schema Start =====
 
