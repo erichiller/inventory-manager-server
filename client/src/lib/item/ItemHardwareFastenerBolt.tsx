@@ -27,7 +27,7 @@ export class ItemHardwareFastenerBolt extends Item<ItemHardwareFastenerBoltGql> 
     }
 
     static get categories (): CategoryHierarchyT[] {
-        return [ "Hardware", "Fastener", "Bolt" ];
+        return [ "Item", "Hardware", "Fastener", "Bolt" ];
     }
 
     static get labelProps (): Array<keyof typeof ItemHardwareFastenerBoltSelectColumn> {

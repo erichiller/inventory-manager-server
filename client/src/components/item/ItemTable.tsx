@@ -122,7 +122,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
 
     const getColumns = (): ColumnProps<T>[] => {
         return [
-            ...( data ? data[ 0 ].Columns : [] ),
+            ...( data && data.length > 0 ? data[ 0 ].Columns : [] ),
             ...[
                 {
                     title: 'Action',

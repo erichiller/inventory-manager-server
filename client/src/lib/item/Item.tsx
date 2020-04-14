@@ -21,7 +21,10 @@ export type GenericItem = Pick<ItemGql, 'id'>
 // type ItemExtender<R extends Item<any>> = R;
 // type IEnumItemMap<R extends Item<any>> = { [ key in keyof typeof EnumItemClassEnum ]: new () => R };
 
-type IEnumIItemMap = { [ key in keyof typeof EnumItemClassEnum ]: Union<IItem, new () => Item<GenericItem>> };
+type ItemClass = keyof typeof EnumItemClassEnum | 'ITEM';
+
+type IEnumIItemMap = { [ key in ItemClass ]: Union<IItem, new () => Item<GenericItem>> };
+
 
 export interface IItem {
     icon: IconComponentT;
@@ -96,7 +99,7 @@ export class Item<T extends GenericItem> implements IItem {
 
 
     static get categories (): CategoryHierarchyT[] {
-        return [ "Hardware", "Fastener", "Bolt" ];
+        return [ "Item", "Hardware", "Fastener", "Bolt" ];
     }
     get categories (): CategoryHierarchyT[] {
         return [ "Item" ];
@@ -114,17 +117,22 @@ export class Item<T extends GenericItem> implements IItem {
     static _ClassTypes: IEnumIItemMap;
 
     static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T>; }>(
-        itemClass: keyof typeof EnumItemClassEnum,
+        itemClass: ItemClass,
         typeClass: T
     ) {
         Item._ClassTypes = {
             ...Item._ClassTypes,
-            ...Object.fromEntries([ [itemClass, typeClass ] ])
+            ...Object.fromEntries([ [itemClass.toLowerCase(), typeClass ] ])
         };
     }
 
     public static getClassForType ( itemClass: keyof typeof EnumItemClassEnum ): Union< IItem , new () => IItem> {
-        return Item._ClassTypes[ itemClass ];
+        let itemClassLowerCase = itemClass.toLowerCase();
+        console.log({class: 'Item', method: 'getClassForType', classTypes: Item._ClassTypes, lookup_key: itemClass });
+        // if ( itemClassLowerCase === "item" ) {
+        //     return Item;
+        // }
+        return Item._ClassTypes[ itemClassLowerCase ];
     }
 
     static get icon (): IconComponentT {
@@ -258,3 +266,5 @@ get icon(): IconComponentT {
     // }
     
 }
+
+Item.RegisterClassType( "ITEM", Item );
