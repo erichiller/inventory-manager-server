@@ -41,6 +41,7 @@ export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: Re
                 let pathString = path.join('_').toLowerCase();
                 if ( !editLevel.find( node => node.key === pathString ) ) {
                     let cls = Item.getClassForType( pathString as keyof typeof EnumItemClassEnum );
+                    console.log({cls});
                     let newNode = {
                         key: pathString,
                         title: <Popover
