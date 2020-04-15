@@ -32,7 +32,13 @@ export interface IItem {
     categories: CategoryHierarchyT[];
 }
 
-export type CategoryHierarchyT = "Item" | "Hardware" | "Fastener" | "Bolt" ;
+export type CategoryHierarchyT = "Item" 
+                                    | "Hardware" 
+                                        | "Fastener" 
+                                            | "Bolt"
+                                            | "Screw"
+                                            | "Nut"
+                                            | "Washer" ;
 
 export type IconComponentT = 
         React.FunctionComponent<
@@ -42,7 +48,6 @@ export type IconComponentT =
             >
         >
         | React.FunctionComponent<React.SVGProps<SVGSVGElement>> ;
-    // | React.FunctionComponentElement<"img">
 
 
 
@@ -198,9 +203,9 @@ get icon(): IconComponentT {
      * Ordered
      * Optionally defined on subclasses
      */
-    get Columns (): ColumnProps<T>[] {
+    static get Columns (): ColumnProps<any>[] {
         // TODO: order columns sensibly
-        let cols: ColumnProps<T>[] = ( [...Object.keys( ItemSelectColumn ), 'name'].filter(
+        let cols: ColumnProps<any>[] = ( [...Object.keys( ItemSelectColumn ), 'name'].filter(
             key => [ "OBJECT" ].includes( key ) ? false : key ).map(
             // key => [ "ID" ].includes( key ) ? false : key ).map(
                 key => {
@@ -211,6 +216,10 @@ get icon(): IconComponentT {
                     };
                 } ) );
         return cols;
+    }
+    get Columns (): ColumnProps<T>[] {
+        return Item.Columns as ColumnProps<T>[];
+
     }
     /**
      * Props which should be included in search (default)
