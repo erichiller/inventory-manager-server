@@ -121,8 +121,23 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     };
 
     const getColumns = (): ColumnProps<T>[] => {
+        let columns: {[key: string]: ColumnProps<T>; } = {};
+        if ( data && data.length ){
+            data.forEach( d => {
+                console.log({class: 'ItemTable', method: 'getColumns', d, d_Columns: d.Columns})
+                d.Columns.forEach( c => columns[ c.key ] = c ) 
+            });
+            // data.forEach( d => d.Columns.forEach( c => columns[ c.key ] = c ) );
+        }
         return [
-            ...( data && data.length > 0 ? data[ 0 ].Columns : [] ),
+            {
+                key: 'icon',
+                title: 'icon',
+                render: (text, record: T) => { console.log({q: 'render icon ?', record, icon: record.icon}); return record.icon; }
+                // render: (text, record: T) => < record.icon />
+            },
+            ...Object.values(columns ?? Item.Columns),
+            // ...( data && data.length > 0 ? data[ 0 ].Columns : [] ),
             ...[
                 {
                     title: 'Action',
