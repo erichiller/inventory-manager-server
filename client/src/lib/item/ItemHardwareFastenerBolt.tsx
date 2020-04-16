@@ -3,6 +3,8 @@ import { ItemHardwareFastenerBolt as ItemHardwareFastenerBoltGql, ItemHardwareFa
 import React from 'react';
 import { Integer } from '../types/uint8';
 import { HexBoltIcon } from '../../styles/icon';
+import { ColumnProps } from 'antd/lib/table';
+import { toTitleCase } from '../helpers';
 
 
 type ItemPlusClassT<T extends GenericItem, C extends ItemClass> = Exclude<ItemHardwareFastenerBoltGql, 'class'>;
@@ -34,6 +36,24 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
 
     static get labelProps (): Array<keyof typeof ItemHardwareFastenerBoltSelectColumn> {
         return Object.keys(ItemHardwareFastenerBoltSelectColumn) as Array<keyof typeof ItemHardwareFastenerBoltSelectColumn>;
+    }
+
+    static get Columns (): ColumnProps<any>[] {
+        // TODO: order columns sensibly
+        let cols: ColumnProps<ItemHardwareFastenerBoltGql>[] = ( [ ...Object.keys( ItemHardwareFastenerBoltSelectColumn ), 'name' ].filter(
+            key => [ "OBJECT" ].includes( key ) ? false : key ).map(
+                // key => [ "ID" ].includes( key ) ? false : key ).map(
+                key => {
+                    return {
+                        key: key,
+                        title: toTitleCase( key ),
+                        dataIndex: ItemHardwareFastenerBoltSelectColumn[ key ] ?? key,
+                    };
+                } ) );
+        return cols;
+    }
+    get Columns (): ColumnProps<ItemHardwareFastenerBoltGql>[] {
+        return ItemHardwareFastenerBolt.Columns as ColumnProps<ItemHardwareFastenerBoltGql>[];
     }
 }
 

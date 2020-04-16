@@ -107,7 +107,6 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     }
 
     const getRecordEditModal = ( record: Item<any> ): React.ReactElement => {
-
         switch ( record.class ) {
             // TODO: replace this with an edit modal defined within the Item subclass
             case "item_hardware_fastener_bolt":
