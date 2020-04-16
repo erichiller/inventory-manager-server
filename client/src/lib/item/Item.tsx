@@ -140,10 +140,10 @@ export class Item<T extends GenericItem> implements IItem {
         let items: IItem[] = [];
         results.forEach( i => {
             let cls = this.getClassForType( i.class || i.__typename );
+            console.log({_cls: "Item" , method: 'ItemFactory', msg:"loading class of type", item_class: cls, item_class_name: cls.name});
             items.push( new cls(i) );
         });
         return items;
-
     }
 
     get class (): keyof Record<ItemClass, string> {
@@ -281,7 +281,6 @@ get icon(): IconComponentT {
     }
     get Columns (): ColumnProps<T>[] {
         return Item.Columns as ColumnProps<T>[];
-
     }
     /**
      * Props which should be included in search (default)
