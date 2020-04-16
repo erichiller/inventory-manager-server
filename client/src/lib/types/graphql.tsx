@@ -82,7 +82,7 @@ export type EnumHardwareFastenerMaterialBoolExp = {
 };
 
 export enum EnumHardwareFastenerMaterialConstraint {
-  HARDWARE_FASTENER_MATERIAL_PKEY = 'hardware_fastener_material_pkey'
+  hardware_fastener_material_pkey = 'hardware_fastener_material_pkey'
 }
 
 export type EnumHardwareFastenerMaterialInsertInput = {
@@ -135,8 +135,8 @@ export type EnumHardwareFastenerMaterialOrderBy = {
 };
 
 export enum EnumHardwareFastenerMaterialSelectColumn {
-  DESCRIPTION = 'description',
-  ID = 'id'
+  description = 'description',
+  id = 'id'
 }
 
 export type EnumHardwareFastenerMaterialSetInput = {
@@ -145,8 +145,8 @@ export type EnumHardwareFastenerMaterialSetInput = {
 };
 
 export enum EnumHardwareFastenerMaterialUpdateColumn {
-  DESCRIPTION = 'description',
-  ID = 'id'
+  description = 'description',
+  id = 'id'
 }
 
 export type EnumHardwareFastenerScrewPoint = {
@@ -194,7 +194,7 @@ export type EnumHardwareFastenerScrewPointBoolExp = {
 };
 
 export enum EnumHardwareFastenerScrewPointConstraint {
-  HARDWARE_FASTENER_SCREW_POINT_PKEY = 'hardware_fastener_screw_point_pkey'
+  hardware_fastener_screw_point_pkey = 'hardware_fastener_screw_point_pkey'
 }
 
 export type EnumHardwareFastenerScrewPointInsertInput = {
@@ -247,8 +247,8 @@ export type EnumHardwareFastenerScrewPointOrderBy = {
 };
 
 export enum EnumHardwareFastenerScrewPointSelectColumn {
-  DESCRIPTION = 'description',
-  ID = 'id'
+  description = 'description',
+  id = 'id'
 }
 
 export type EnumHardwareFastenerScrewPointSetInput = {
@@ -257,8 +257,8 @@ export type EnumHardwareFastenerScrewPointSetInput = {
 };
 
 export enum EnumHardwareFastenerScrewPointUpdateColumn {
-  DESCRIPTION = 'description',
-  ID = 'id'
+  description = 'description',
+  id = 'id'
 }
 
 export type EnumHardwareFinish = {
@@ -306,7 +306,7 @@ export type EnumHardwareFinishBoolExp = {
 };
 
 export enum EnumHardwareFinishConstraint {
-  HARDWARE_FINISH_PKEY = 'hardware_finish_pkey'
+  hardware_finish_pkey = 'hardware_finish_pkey'
 }
 
 export type EnumHardwareFinishInsertInput = {
@@ -359,8 +359,8 @@ export type EnumHardwareFinishOrderBy = {
 };
 
 export enum EnumHardwareFinishSelectColumn {
-  DESCRIPTION = 'description',
-  ID = 'id'
+  description = 'description',
+  id = 'id'
 }
 
 export type EnumHardwareFinishSetInput = {
@@ -369,8 +369,8 @@ export type EnumHardwareFinishSetInput = {
 };
 
 export enum EnumHardwareFinishUpdateColumn {
-  DESCRIPTION = 'description',
-  ID = 'id'
+  description = 'description',
+  id = 'id'
 }
 
 export type EnumItemClass = {
@@ -418,15 +418,15 @@ export type EnumItemClassBoolExp = {
 };
 
 export enum EnumItemClassConstraint {
-  ICON_CATEGORY_ID_KEY = 'icon_category_id_key',
-  ICON_CATEGORY_PKEY = 'icon_category_pkey'
+  icon_category_id_key = 'icon_category_id_key',
+  icon_category_pkey = 'icon_category_pkey'
 }
 
 export enum EnumItemClassEnum {
-  ITEM_HARDWARE_FASTENER_BOLT = 'item_hardware_fastener_bolt',
-  ITEM_HARDWARE_FASTENER_NUT = 'item_hardware_fastener_nut',
-  ITEM_HARDWARE_FASTENER_SCREW = 'item_hardware_fastener_screw',
-  ITEM_HARDWARE_FASTENER_WASHER = 'item_hardware_fastener_washer'
+  item_hardware_fastener_bolt = 'item_hardware_fastener_bolt',
+  item_hardware_fastener_nut = 'item_hardware_fastener_nut',
+  item_hardware_fastener_screw = 'item_hardware_fastener_screw',
+  item_hardware_fastener_washer = 'item_hardware_fastener_washer'
 }
 
 export type EnumItemClassEnumComparisonExp = {
@@ -487,8 +487,8 @@ export type EnumItemClassOrderBy = {
 };
 
 export enum EnumItemClassSelectColumn {
-  DESCRIPTION = 'description',
-  ID = 'id'
+  description = 'description',
+  id = 'id'
 }
 
 export type EnumItemClassSetInput = {
@@ -497,8 +497,8 @@ export type EnumItemClassSetInput = {
 };
 
 export enum EnumItemClassUpdateColumn {
-  DESCRIPTION = 'description',
-  ID = 'id'
+  description = 'description',
+  id = 'id'
 }
 
 export type EnumPaymentMethodType = {
@@ -546,7 +546,7 @@ export type EnumPaymentMethodTypeBoolExp = {
 };
 
 export enum EnumPaymentMethodTypeConstraint {
-  PAYMENT_METHOD_TYP_PKEY = 'payment_method_typ_pkey'
+  payment_method_typ_pkey = 'payment_method_typ_pkey'
 }
 
 export enum EnumPaymentMethodTypeEnum {
@@ -614,8 +614,8 @@ export type EnumPaymentMethodTypeOrderBy = {
 };
 
 export enum EnumPaymentMethodTypeSelectColumn {
-  DESCRIPTION = 'description',
-  ID = 'id'
+  description = 'description',
+  id = 'id'
 }
 
 export type EnumPaymentMethodTypeSetInput = {
@@ -624,8 +624,8 @@ export type EnumPaymentMethodTypeSetInput = {
 };
 
 export enum EnumPaymentMethodTypeUpdateColumn {
-  DESCRIPTION = 'description',
-  ID = 'id'
+  description = 'description',
+  id = 'id'
 }
 
 export type EnumUnit = {
@@ -673,12 +673,12 @@ export type EnumUnitBoolExp = {
 };
 
 export enum EnumUnitConstraint {
-  UNIT_PKEY = 'unit_pkey'
+  unit_pkey = 'unit_pkey'
 }
 
 export enum EnumUnitEnum {
-  METRIC = 'metric',
-  USC = 'usc'
+  metric = 'metric',
+  usc = 'usc'
 }
 
 export type EnumUnitEnumComparisonExp = {
@@ -739,8 +739,8 @@ export type EnumUnitOrderBy = {
 };
 
 export enum EnumUnitSelectColumn {
-  DESCRIPTION = 'description',
-  ID = 'id'
+  description = 'description',
+  id = 'id'
 }
 
 export type EnumUnitSetInput = {
@@ -749,8 +749,8 @@ export type EnumUnitSetInput = {
 };
 
 export enum EnumUnitUpdateColumn {
-  DESCRIPTION = 'description',
-  ID = 'id'
+  description = 'description',
+  id = 'id'
 }
 
 export type File = {
@@ -854,8 +854,8 @@ export type IconBoolExp = {
 };
 
 export enum IconConstraint {
-  ICONS_ID_KEY = 'icons_id_key',
-  ICONS_PKEY = 'icons_pkey'
+  icons_id_key = 'icons_id_key',
+  icons_pkey = 'icons_pkey'
 }
 
 export type IconInsertInput = {
@@ -951,8 +951,8 @@ export type IconItemCategoryMapBoolExp = {
 };
 
 export enum IconItemCategoryMapConstraint {
-  ICON_ITEM_CATEGORY_MAP_CATEGORY_SEQUENCE_KEY = 'icon_item_category_map_category_sequence_key',
-  ICON_ITEM_CATEGORY_MAP_PKEY = 'icon_item_category_map_pkey'
+  icon_item_category_map_category_sequence_key = 'icon_item_category_map_category_sequence_key',
+  icon_item_category_map_pkey = 'icon_item_category_map_pkey'
 }
 
 export type IconItemCategoryMapDeleteAtPathInput = {
@@ -1025,10 +1025,10 @@ export type IconItemCategoryMapPrependInput = {
 };
 
 export enum IconItemCategoryMapSelectColumn {
-  CATEGORY = 'category',
-  CRITERIA = 'criteria',
-  ICON_ID = 'icon_id',
-  SEQUENCE = 'sequence'
+  category = 'category',
+  criteria = 'criteria',
+  icon_id = 'icon_id',
+  sequence = 'sequence'
 }
 
 export type IconItemCategoryMapSetInput = {
@@ -1075,10 +1075,10 @@ export type IconItemCategoryMapSumOrderBy = {
 };
 
 export enum IconItemCategoryMapUpdateColumn {
-  CATEGORY = 'category',
-  CRITERIA = 'criteria',
-  ICON_ID = 'icon_id',
-  SEQUENCE = 'sequence'
+  category = 'category',
+  criteria = 'criteria',
+  icon_id = 'icon_id',
+  sequence = 'sequence'
 }
 
 export type IconItemCategoryMapVarPopFields = {
@@ -1151,7 +1151,7 @@ export type IconLabelMapBoolExp = {
 };
 
 export enum IconLabelMapConstraint {
-  ICON_LABEL_MAP_PKEY = 'icon_label_map_pkey'
+  icon_label_map_pkey = 'icon_label_map_pkey'
 }
 
 export type IconLabelMapInsertInput = {
@@ -1184,8 +1184,8 @@ export type IconLabelMapOrderBy = {
 };
 
 export enum IconLabelMapSelectColumn {
-  ICON_ID = 'icon_id',
-  LABEL_ID = 'label_id'
+  icon_id = 'icon_id',
+  label_id = 'label_id'
 }
 
 export type IconLabelMapSetInput = {
@@ -1194,8 +1194,8 @@ export type IconLabelMapSetInput = {
 };
 
 export enum IconLabelMapUpdateColumn {
-  ICON_ID = 'icon_id',
-  LABEL_ID = 'label_id'
+  icon_id = 'icon_id',
+  label_id = 'label_id'
 }
 
 export type IconMaxFields = {
@@ -1256,11 +1256,11 @@ export type IconOrderBy = {
 };
 
 export enum IconSelectColumn {
-  CREATED_AT = 'created_at',
-  DATA = 'data',
-  DESCRIPTION = 'description',
-  ID = 'id',
-  TITLE = 'title'
+  created_at = 'created_at',
+  data = 'data',
+  description = 'description',
+  id = 'id',
+  title = 'title'
 }
 
 export type IconSetInput = {
@@ -1272,11 +1272,11 @@ export type IconSetInput = {
 };
 
 export enum IconUpdateColumn {
-  CREATED_AT = 'created_at',
-  DATA = 'data',
-  DESCRIPTION = 'description',
-  ID = 'id',
-  TITLE = 'title'
+  created_at = 'created_at',
+  data = 'data',
+  description = 'description',
+  id = 'id',
+  title = 'title'
 }
 
 export type IntComparisonExp = {
@@ -1573,8 +1573,8 @@ export type ItemBundleBoolExp = {
 };
 
 export enum ItemBundleConstraint {
-  ITEM_BUNDLE_NAME_KEY = 'item_bundle_name_key',
-  ITEM_BUNDLE_PKEY = 'item_bundle_pkey'
+  item_bundle_name_key = 'item_bundle_name_key',
+  item_bundle_pkey = 'item_bundle_pkey'
 }
 
 export type ItemBundleIncInput = {
@@ -1661,7 +1661,7 @@ export type ItemBundleMapBoolExp = {
 };
 
 export enum ItemBundleMapConstraint {
-  ITEM_BUNDLE_MAP_PKEY = 'item_bundle_map_pkey'
+  item_bundle_map_pkey = 'item_bundle_map_pkey'
 }
 
 export type ItemBundleMapIncInput = {
@@ -1719,8 +1719,8 @@ export type ItemBundleMapOrderBy = {
 };
 
 export enum ItemBundleMapSelectColumn {
-  ITEM_BUNDLE_ID = 'item_bundle_id',
-  ITEM_MEMBER_ID = 'item_member_id'
+  item_bundle_id = 'item_bundle_id',
+  item_member_id = 'item_member_id'
 }
 
 export type ItemBundleMapSetInput = {
@@ -1773,8 +1773,8 @@ export type ItemBundleMapSumOrderBy = {
 };
 
 export enum ItemBundleMapUpdateColumn {
-  ITEM_BUNDLE_ID = 'item_bundle_id',
-  ITEM_MEMBER_ID = 'item_member_id'
+  item_bundle_id = 'item_bundle_id',
+  item_member_id = 'item_member_id'
 }
 
 export type ItemBundleMapVarPopFields = {
@@ -1870,11 +1870,11 @@ export type ItemBundleOrderBy = {
 };
 
 export enum ItemBundleSelectColumn {
-  CREATED_AT = 'created_at',
-  DESCRIPTION = 'description',
-  ID = 'id',
-  NAME = 'name',
-  UPDATED_AT = 'updated_at'
+  created_at = 'created_at',
+  description = 'description',
+  id = 'id',
+  name = 'name',
+  updated_at = 'updated_at'
 }
 
 export type ItemBundleSetInput = {
@@ -1922,11 +1922,11 @@ export type ItemBundleSumOrderBy = {
 };
 
 export enum ItemBundleUpdateColumn {
-  CREATED_AT = 'created_at',
-  DESCRIPTION = 'description',
-  ID = 'id',
-  NAME = 'name',
-  UPDATED_AT = 'updated_at'
+  created_at = 'created_at',
+  description = 'description',
+  id = 'id',
+  name = 'name',
+  updated_at = 'updated_at'
 }
 
 export type ItemBundleVarPopFields = {
@@ -1957,7 +1957,7 @@ export type ItemBundleVarianceOrderBy = {
 };
 
 export enum ItemConstraint {
-  ITEM_PKEY = 'item_pkey'
+  item_pkey = 'item_pkey'
 }
 
 export type ItemDeleteAtPathInput = {
@@ -2084,7 +2084,7 @@ export type ItemHardwareFastenerBoltBoolExp = {
 };
 
 export enum ItemHardwareFastenerBoltConstraint {
-  ITEM_HARDWARE_FASTENER_BOLT_PKEY = 'item_hardware_fastener_bolt_pkey'
+  item_hardware_fastener_bolt_pkey = 'item_hardware_fastener_bolt_pkey'
 }
 
 export type ItemHardwareFastenerBoltIncInput = {
@@ -2221,22 +2221,22 @@ export type ItemHardwareFastenerBoltOrderBy = {
 };
 
 export enum ItemHardwareFastenerBoltSelectColumn {
-  COUNTERSUNK = 'countersunk',
-  DESCRIPTION = 'description',
-  DRIVE_SIZE = 'drive_size',
-  DRIVE_TYPE = 'drive_type',
-  HEAD = 'head',
-  HEAD_DIAMETER = 'head_diameter',
-  HEAD_HEIGHT = 'head_height',
-  ID = 'id',
-  LENGTH_EMBEDDED = 'length_embedded',
-  NAME = 'name',
-  POINT = 'point',
-  PRODUCT_URL = 'product_url',
-  SHAFT_LENGTH = 'shaft_length',
-  THREAD = 'thread',
-  THREAD_LENGTH = 'thread_length',
-  UNIT = 'unit'
+  countersunk = 'countersunk',
+  description = 'description',
+  drive_size = 'drive_size',
+  drive_type = 'drive_type',
+  head = 'head',
+  head_diameter = 'head_diameter',
+  head_height = 'head_height',
+  id = 'id',
+  length_embedded = 'length_embedded',
+  name = 'name',
+  point = 'point',
+  product_url = 'product_url',
+  shaft_length = 'shaft_length',
+  thread = 'thread',
+  thread_length = 'thread_length',
+  unit = 'unit'
 }
 
 export type ItemHardwareFastenerBoltSetInput = {
@@ -2351,22 +2351,22 @@ export type ItemHardwareFastenerBoltSumOrderBy = {
 };
 
 export enum ItemHardwareFastenerBoltUpdateColumn {
-  COUNTERSUNK = 'countersunk',
-  DESCRIPTION = 'description',
-  DRIVE_SIZE = 'drive_size',
-  DRIVE_TYPE = 'drive_type',
-  HEAD = 'head',
-  HEAD_DIAMETER = 'head_diameter',
-  HEAD_HEIGHT = 'head_height',
-  ID = 'id',
-  LENGTH_EMBEDDED = 'length_embedded',
-  NAME = 'name',
-  POINT = 'point',
-  PRODUCT_URL = 'product_url',
-  SHAFT_LENGTH = 'shaft_length',
-  THREAD = 'thread',
-  THREAD_LENGTH = 'thread_length',
-  UNIT = 'unit'
+  countersunk = 'countersunk',
+  description = 'description',
+  drive_size = 'drive_size',
+  drive_type = 'drive_type',
+  head = 'head',
+  head_diameter = 'head_diameter',
+  head_height = 'head_height',
+  id = 'id',
+  length_embedded = 'length_embedded',
+  name = 'name',
+  point = 'point',
+  product_url = 'product_url',
+  shaft_length = 'shaft_length',
+  thread = 'thread',
+  thread_length = 'thread_length',
+  unit = 'unit'
 }
 
 export type ItemHardwareFastenerBoltVarPopFields = {
@@ -2510,7 +2510,7 @@ export type ItemHardwareFastenerNutBoolExp = {
 };
 
 export enum ItemHardwareFastenerNutConstraint {
-  ITEMS_HARDWARE_NUT_PKEY = 'items_hardware_nut_pkey'
+  items_hardware_nut_pkey = 'items_hardware_nut_pkey'
 }
 
 export type ItemHardwareFastenerNutIncInput = {
@@ -2573,9 +2573,9 @@ export type ItemHardwareFastenerNutOrderBy = {
 };
 
 export enum ItemHardwareFastenerNutSelectColumn {
-  DESCRIPTION = 'description',
-  ID = 'id',
-  NAME = 'name'
+  description = 'description',
+  id = 'id',
+  name = 'name'
 }
 
 export type ItemHardwareFastenerNutSetInput = {
@@ -2621,9 +2621,9 @@ export type ItemHardwareFastenerNutSumOrderBy = {
 };
 
 export enum ItemHardwareFastenerNutUpdateColumn {
-  DESCRIPTION = 'description',
-  ID = 'id',
-  NAME = 'name'
+  description = 'description',
+  id = 'id',
+  name = 'name'
 }
 
 export type ItemHardwareFastenerNutVarPopFields = {
@@ -2721,9 +2721,9 @@ export type ItemPrependInput = {
 };
 
 export enum ItemSelectColumn {
-  CLASS = 'class',
-  ID = 'id',
-  OBJECT = 'object'
+  class = 'class',
+  id = 'id',
+  object = 'object'
 }
 
 export type ItemSetInput = {
@@ -2769,9 +2769,9 @@ export type ItemSumOrderBy = {
 };
 
 export enum ItemUpdateColumn {
-  CLASS = 'class',
-  ID = 'id',
-  OBJECT = 'object'
+  class = 'class',
+  id = 'id',
+  object = 'object'
 }
 
 export type ItemVarPopFields = {
@@ -2962,8 +2962,8 @@ export type LabelBoolExp = {
 };
 
 export enum LabelConstraint {
-  LABEL_ID_KEY = 'label_id_key',
-  LABEL_PKEY = 'label_pkey'
+  label_id_key = 'label_id_key',
+  label_pkey = 'label_pkey'
 }
 
 export type LabelDeleteAtPathInput = {
@@ -3070,7 +3070,7 @@ export type LabelItemMapBoolExp = {
 };
 
 export enum LabelItemMapConstraint {
-  LABEL_ITEM_MAP_PKEY = 'label_item_map_pkey'
+  label_item_map_pkey = 'label_item_map_pkey'
 }
 
 export type LabelItemMapIncInput = {
@@ -3123,8 +3123,8 @@ export type LabelItemMapOrderBy = {
 };
 
 export enum LabelItemMapSelectColumn {
-  ITEM_ID = 'item_id',
-  LABEL_ID = 'label_id'
+  item_id = 'item_id',
+  label_id = 'label_id'
 }
 
 export type LabelItemMapSetInput = {
@@ -3169,8 +3169,8 @@ export type LabelItemMapSumOrderBy = {
 };
 
 export enum LabelItemMapUpdateColumn {
-  ITEM_ID = 'item_id',
-  LABEL_ID = 'label_id'
+  item_id = 'item_id',
+  label_id = 'label_id'
 }
 
 export type LabelItemMapVarPopFields = {
@@ -3276,15 +3276,15 @@ export type LabelPrependInput = {
 };
 
 export enum LabelSelectColumn {
-  CONTENT = 'content',
-  CREATED_AT = 'created_at',
-  EDIT_OF_ID = 'edit_of_id',
-  HEIGHT = 'height',
-  ID = 'id',
-  ITEM_ID = 'item_id',
-  TITLE = 'title',
-  UPDATED_AT = 'updated_at',
-  WIDTH = 'width'
+  content = 'content',
+  created_at = 'created_at',
+  edit_of_id = 'edit_of_id',
+  height = 'height',
+  id = 'id',
+  item_id = 'item_id',
+  title = 'title',
+  updated_at = 'updated_at',
+  width = 'width'
 }
 
 export type LabelSetInput = {
@@ -3440,8 +3440,8 @@ export type LabelTemplateMapBoolExp = {
 };
 
 export enum LabelTemplateMapConstraint {
-  LABEL_TEMPLATE_MAP_ITEM_ID_LABEL_ID_KEY = 'label_template_map_item_id_label_id_key',
-  LABEL_TEMPLATE_MAP_PKEY = 'label_template_map_pkey'
+  label_template_map_item_id_label_id_key = 'label_template_map_item_id_label_id_key',
+  label_template_map_pkey = 'label_template_map_pkey'
 }
 
 export type LabelTemplateMapDeleteAtPathInput = {
@@ -3527,11 +3527,11 @@ export type LabelTemplateMapPrependInput = {
 };
 
 export enum LabelTemplateMapSelectColumn {
-  CRITERIA = 'criteria',
-  ITEM_CLASS = 'item_class',
-  ITEM_ID = 'item_id',
-  LABEL_ID = 'label_id',
-  SEQUENCE = 'sequence'
+  criteria = 'criteria',
+  item_class = 'item_class',
+  item_id = 'item_id',
+  label_id = 'label_id',
+  sequence = 'sequence'
 }
 
 export type LabelTemplateMapSetInput = {
@@ -3587,11 +3587,11 @@ export type LabelTemplateMapSumOrderBy = {
 };
 
 export enum LabelTemplateMapUpdateColumn {
-  CRITERIA = 'criteria',
-  ITEM_CLASS = 'item_class',
-  ITEM_ID = 'item_id',
-  LABEL_ID = 'label_id',
-  SEQUENCE = 'sequence'
+  criteria = 'criteria',
+  item_class = 'item_class',
+  item_id = 'item_id',
+  label_id = 'label_id',
+  sequence = 'sequence'
 }
 
 export type LabelTemplateMapVarPopFields = {
@@ -3628,15 +3628,15 @@ export type LabelTemplateMapVarianceOrderBy = {
 };
 
 export enum LabelUpdateColumn {
-  CONTENT = 'content',
-  CREATED_AT = 'created_at',
-  EDIT_OF_ID = 'edit_of_id',
-  HEIGHT = 'height',
-  ID = 'id',
-  ITEM_ID = 'item_id',
-  TITLE = 'title',
-  UPDATED_AT = 'updated_at',
-  WIDTH = 'width'
+  content = 'content',
+  created_at = 'created_at',
+  edit_of_id = 'edit_of_id',
+  height = 'height',
+  id = 'id',
+  item_id = 'item_id',
+  title = 'title',
+  updated_at = 'updated_at',
+  width = 'width'
 }
 
 export type LabelVarPopFields = {
@@ -3762,8 +3762,8 @@ export type ManufacturerBoolExp = {
 };
 
 export enum ManufacturerConstraint {
-  MANUFACTURER_PKEY = 'manufacturer_pkey',
-  MANUFACTURER_VENDOR_ID_KEY = 'manufacturer_vendor_id_key'
+  manufacturer_pkey = 'manufacturer_pkey',
+  manufacturer_vendor_id_key = 'manufacturer_vendor_id_key'
 }
 
 export type ManufacturerIncInput = {
@@ -3858,7 +3858,7 @@ export type ManufacturerItemBoolExp = {
 };
 
 export enum ManufacturerItemConstraint {
-  MANUFACTURER_ITEM_PKEY = 'manufacturer_item_pkey'
+  manufacturer_item_pkey = 'manufacturer_item_pkey'
 }
 
 export type ManufacturerItemIncInput = {
@@ -3935,11 +3935,11 @@ export type ManufacturerItemOrderBy = {
 };
 
 export enum ManufacturerItemSelectColumn {
-  ID = 'id',
-  ITEM_ID = 'item_id',
-  MANUFACTURER_ID = 'manufacturer_id',
-  MANUFACTURER_PRODUCT_ID = 'manufacturer_product_id',
-  PRODUCT_URL = 'product_url'
+  id = 'id',
+  item_id = 'item_id',
+  manufacturer_id = 'manufacturer_id',
+  manufacturer_product_id = 'manufacturer_product_id',
+  product_url = 'product_url'
 }
 
 export type ManufacturerItemSetInput = {
@@ -4003,11 +4003,11 @@ export type ManufacturerItemSumOrderBy = {
 };
 
 export enum ManufacturerItemUpdateColumn {
-  ID = 'id',
-  ITEM_ID = 'item_id',
-  MANUFACTURER_ID = 'manufacturer_id',
-  MANUFACTURER_PRODUCT_ID = 'manufacturer_product_id',
-  PRODUCT_URL = 'product_url'
+  id = 'id',
+  item_id = 'item_id',
+  manufacturer_id = 'manufacturer_id',
+  manufacturer_product_id = 'manufacturer_product_id',
+  product_url = 'product_url'
 }
 
 export type ManufacturerItemVarPopFields = {
@@ -4104,10 +4104,10 @@ export type ManufacturerOrderBy = {
 };
 
 export enum ManufacturerSelectColumn {
-  ID = 'id',
-  NAME = 'name',
-  URL = 'url',
-  VENDOR_ID = 'vendor_id'
+  id = 'id',
+  name = 'name',
+  url = 'url',
+  vendor_id = 'vendor_id'
 }
 
 export type ManufacturerSetInput = {
@@ -4162,10 +4162,10 @@ export type ManufacturerSumOrderBy = {
 };
 
 export enum ManufacturerUpdateColumn {
-  ID = 'id',
-  NAME = 'name',
-  URL = 'url',
-  VENDOR_ID = 'vendor_id'
+  id = 'id',
+  name = 'name',
+  url = 'url',
+  vendor_id = 'vendor_id'
 }
 
 export type ManufacturerVarPopFields = {
@@ -4905,16 +4905,16 @@ export type OrderBoolExp = {
 };
 
 export enum OrderBy {
-  ASC = 'asc',
-  ASC_NULLS_FIRST = 'asc_nulls_first',
-  ASC_NULLS_LAST = 'asc_nulls_last',
-  DESC = 'desc',
-  DESC_NULLS_FIRST = 'desc_nulls_first',
-  DESC_NULLS_LAST = 'desc_nulls_last'
+  asc = 'asc',
+  asc_nulls_first = 'asc_nulls_first',
+  asc_nulls_last = 'asc_nulls_last',
+  desc = 'desc',
+  desc_nulls_first = 'desc_nulls_first',
+  desc_nulls_last = 'desc_nulls_last'
 }
 
 export enum OrderConstraint {
-  ORDER_PKEY = 'order_pkey'
+  order_pkey = 'order_pkey'
 }
 
 export type OrderIncInput = {
@@ -5033,8 +5033,8 @@ export type OrderItemBoolExp = {
 };
 
 export enum OrderItemConstraint {
-  ORDER_ITEM_PKEY = 'order_item_pkey',
-  ORDER_ITEM_VENDOR_ITEM_ID_ORDER_ID_SERIAL_NO_KEY = 'order_item_vendor_item_id_order_id_serial_no_key'
+  order_item_pkey = 'order_item_pkey',
+  order_item_vendor_item_id_order_id_serial_no_key = 'order_item_vendor_item_id_order_id_serial_no_key'
 }
 
 export type OrderItemIncInput = {
@@ -5131,16 +5131,16 @@ export type OrderItemOrderBy = {
 };
 
 export enum OrderItemSelectColumn {
-  COST_ITEM = 'cost_item',
-  COST_TAX = 'cost_tax',
-  COST_TOTAL = 'cost_total',
-  ITEM_ID = 'item_id',
-  MANUFACTURER_ITEM_ID = 'manufacturer_item_id',
-  ORDER_ID = 'order_id',
-  QTY = 'qty',
-  SERIAL_NO = 'serial_no',
-  SHIPMENT_ID = 'shipment_id',
-  VENDOR_ITEM_ID = 'vendor_item_id'
+  cost_item = 'cost_item',
+  cost_tax = 'cost_tax',
+  cost_total = 'cost_total',
+  item_id = 'item_id',
+  manufacturer_item_id = 'manufacturer_item_id',
+  order_id = 'order_id',
+  qty = 'qty',
+  serial_no = 'serial_no',
+  shipment_id = 'shipment_id',
+  vendor_item_id = 'vendor_item_id'
 }
 
 export type OrderItemSetInput = {
@@ -5233,16 +5233,16 @@ export type OrderItemSumOrderBy = {
 };
 
 export enum OrderItemUpdateColumn {
-  COST_ITEM = 'cost_item',
-  COST_TAX = 'cost_tax',
-  COST_TOTAL = 'cost_total',
-  ITEM_ID = 'item_id',
-  MANUFACTURER_ITEM_ID = 'manufacturer_item_id',
-  ORDER_ID = 'order_id',
-  QTY = 'qty',
-  SERIAL_NO = 'serial_no',
-  SHIPMENT_ID = 'shipment_id',
-  VENDOR_ITEM_ID = 'vendor_item_id'
+  cost_item = 'cost_item',
+  cost_tax = 'cost_tax',
+  cost_total = 'cost_total',
+  item_id = 'item_id',
+  manufacturer_item_id = 'manufacturer_item_id',
+  order_id = 'order_id',
+  qty = 'qty',
+  serial_no = 'serial_no',
+  shipment_id = 'shipment_id',
+  vendor_item_id = 'vendor_item_id'
 }
 
 export type OrderItemVarPopFields = {
@@ -5380,17 +5380,17 @@ export type OrderOrderBy = {
 };
 
 export enum OrderSelectColumn {
-  FULFILLED_DATE = 'fulfilled_date',
-  ID = 'id',
-  ITEMS_COST = 'items_cost',
-  PAYMENT_METHOD_ID = 'payment_method_id',
-  PLACED_DATE = 'placed_date',
-  PON = 'pon',
-  TAX_COST = 'tax_cost',
-  TOTAL_COST = 'total_cost',
-  URL = 'url',
-  VENDOR_ID = 'vendor_id',
-  VENDOR_ORDER_ID = 'vendor_order_id'
+  fulfilled_date = 'fulfilled_date',
+  id = 'id',
+  items_cost = 'items_cost',
+  payment_method_id = 'payment_method_id',
+  placed_date = 'placed_date',
+  pon = 'pon',
+  tax_cost = 'tax_cost',
+  total_cost = 'total_cost',
+  url = 'url',
+  vendor_id = 'vendor_id',
+  vendor_order_id = 'vendor_order_id'
 }
 
 export type OrderSetInput = {
@@ -5460,17 +5460,17 @@ export type OrderSumOrderBy = {
 };
 
 export enum OrderUpdateColumn {
-  FULFILLED_DATE = 'fulfilled_date',
-  ID = 'id',
-  ITEMS_COST = 'items_cost',
-  PAYMENT_METHOD_ID = 'payment_method_id',
-  PLACED_DATE = 'placed_date',
-  PON = 'pon',
-  TAX_COST = 'tax_cost',
-  TOTAL_COST = 'total_cost',
-  URL = 'url',
-  VENDOR_ID = 'vendor_id',
-  VENDOR_ORDER_ID = 'vendor_order_id'
+  fulfilled_date = 'fulfilled_date',
+  id = 'id',
+  items_cost = 'items_cost',
+  payment_method_id = 'payment_method_id',
+  placed_date = 'placed_date',
+  pon = 'pon',
+  tax_cost = 'tax_cost',
+  total_cost = 'total_cost',
+  url = 'url',
+  vendor_id = 'vendor_id',
+  vendor_order_id = 'vendor_order_id'
 }
 
 export type OrderVarPopFields = {
@@ -5584,7 +5584,7 @@ export type PaymentMethodBoolExp = {
 };
 
 export enum PaymentMethodConstraint {
-  PAYMENT_METHOD_PKEY = 'payment_method_pkey'
+  payment_method_pkey = 'payment_method_pkey'
 }
 
 export type PaymentMethodIncInput = {
@@ -5643,9 +5643,9 @@ export type PaymentMethodOrderBy = {
 };
 
 export enum PaymentMethodSelectColumn {
-  CLASS = 'class',
-  ID = 'id',
-  NAME = 'name'
+  class = 'class',
+  id = 'id',
+  name = 'name'
 }
 
 export type PaymentMethodSetInput = {
@@ -5691,9 +5691,9 @@ export type PaymentMethodSumOrderBy = {
 };
 
 export enum PaymentMethodUpdateColumn {
-  CLASS = 'class',
-  ID = 'id',
-  NAME = 'name'
+  class = 'class',
+  id = 'id',
+  name = 'name'
 }
 
 export type PaymentMethodVarPopFields = {
@@ -6498,7 +6498,7 @@ export type ShipmentBoolExp = {
 };
 
 export enum ShipmentConstraint {
-  SHIPMENT_PKEY = 'shipment_pkey'
+  shipment_pkey = 'shipment_pkey'
 }
 
 export type ShipmentIncInput = {
@@ -6588,13 +6588,13 @@ export type ShipmentOrderBy = {
 };
 
 export enum ShipmentSelectColumn {
-  ID = 'id',
-  ORDER_ID = 'order_id',
-  RECEIVED_DATE = 'received_date',
-  SHIPPED_DATE = 'shipped_date',
-  SHIPPING_CARRIER = 'shipping_carrier',
-  TRACKING_ID = 'tracking_id',
-  VENDOR_INVOICE_ID = 'vendor_invoice_id'
+  id = 'id',
+  order_id = 'order_id',
+  received_date = 'received_date',
+  shipped_date = 'shipped_date',
+  shipping_carrier = 'shipping_carrier',
+  tracking_id = 'tracking_id',
+  vendor_invoice_id = 'vendor_invoice_id'
 }
 
 export type ShipmentSetInput = {
@@ -6652,13 +6652,13 @@ export type ShipmentSumOrderBy = {
 };
 
 export enum ShipmentUpdateColumn {
-  ID = 'id',
-  ORDER_ID = 'order_id',
-  RECEIVED_DATE = 'received_date',
-  SHIPPED_DATE = 'shipped_date',
-  SHIPPING_CARRIER = 'shipping_carrier',
-  TRACKING_ID = 'tracking_id',
-  VENDOR_INVOICE_ID = 'vendor_invoice_id'
+  id = 'id',
+  order_id = 'order_id',
+  received_date = 'received_date',
+  shipped_date = 'shipped_date',
+  shipping_carrier = 'shipping_carrier',
+  tracking_id = 'tracking_id',
+  vendor_invoice_id = 'vendor_invoice_id'
 }
 
 export type ShipmentVarPopFields = {
@@ -7536,7 +7536,7 @@ export type VendorBoolExp = {
 };
 
 export enum VendorConstraint {
-  VENDOR_PKEY = 'vendor_pkey'
+  vendor_pkey = 'vendor_pkey'
 }
 
 export type VendorIncInput = {
@@ -7628,7 +7628,7 @@ export type VendorItemBoolExp = {
 };
 
 export enum VendorItemConstraint {
-  VENDOR_ITEM_PKEY = 'vendor_item_pkey'
+  vendor_item_pkey = 'vendor_item_pkey'
 }
 
 export type VendorItemIncInput = {
@@ -7699,10 +7699,10 @@ export type VendorItemOrderBy = {
 };
 
 export enum VendorItemSelectColumn {
-  ID = 'id',
-  ITEM_ID = 'item_id',
-  VENDOR_ID = 'vendor_id',
-  VENDOR_SKU = 'vendor_sku'
+  id = 'id',
+  item_id = 'item_id',
+  vendor_id = 'vendor_id',
+  vendor_sku = 'vendor_sku'
 }
 
 export type VendorItemSetInput = {
@@ -7765,10 +7765,10 @@ export type VendorItemSumOrderBy = {
 };
 
 export enum VendorItemUpdateColumn {
-  ID = 'id',
-  ITEM_ID = 'item_id',
-  VENDOR_ID = 'vendor_id',
-  VENDOR_SKU = 'vendor_sku'
+  id = 'id',
+  item_id = 'item_id',
+  vendor_id = 'vendor_id',
+  vendor_sku = 'vendor_sku'
 }
 
 export type VendorItemVarPopFields = {
@@ -7865,10 +7865,10 @@ export type VendorOrderBy = {
 };
 
 export enum VendorSelectColumn {
-  ACCOUNT_ID = 'account_id',
-  ID = 'id',
-  NAME = 'name',
-  URL = 'url'
+  account_id = 'account_id',
+  id = 'id',
+  name = 'name',
+  url = 'url'
 }
 
 export type VendorSetInput = {
@@ -7915,10 +7915,10 @@ export type VendorSumOrderBy = {
 };
 
 export enum VendorUpdateColumn {
-  ACCOUNT_ID = 'account_id',
-  ID = 'id',
-  NAME = 'name',
-  URL = 'url'
+  account_id = 'account_id',
+  id = 'id',
+  name = 'name',
+  url = 'url'
 }
 
 export type VendorVarPopFields = {
@@ -9001,4 +9001,4 @@ export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHo
 export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
 export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
-// graphql typescript defs generated on 2020-04-04T10:11:10-06:00
+// graphql typescript defs generated on 2020-04-15T18:56:09-06:00

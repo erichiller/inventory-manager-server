@@ -20,7 +20,7 @@ config:
     transformUnderscore: true
     namingConvention:
         typeNames: change-case#pascalCase
-        enumValues: change-case#upperCase
+        enumValues: keep
     # globalNamespace: true
     # operationResultSuffix: "xxx"
     withComponent: true
