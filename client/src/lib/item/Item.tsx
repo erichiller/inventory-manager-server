@@ -11,17 +11,71 @@ import { apolloClient } from '../../index';
 import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Union } from "../helpers";
+import { toTitleCase, Union, Unpacked } from "../helpers";
 import { CodeIcon } from "../../styles/icon";
+import { T } from "antd/lib/upload/utils";
 
 export type GenericItem = Pick<ItemGql, 'id'> 
-                          & Partial<Pick<ItemGql, 'class' | 'object'> 
-                          & { name?: string; }> ;
+                          & Partial<Pick<ItemGql, | 'object'> 
+                          & { 
+                              name?: string; 
+                              __typename: ItemClass;
+                              class: ItemClass;
+                            }> ;
 
 // type ItemExtender<R extends Item<any>> = R;
 // type IEnumItemMap<R extends Item<any>> = { [ key in keyof typeof EnumItemClassEnum ]: new () => R };
 
-type ItemClass = keyof typeof EnumItemClassEnum | 'ITEM';
+export type ItemClass = keyof typeof EnumItemClassEnum | 'ITEM';
+// export type ItemClasstest = typeof EnumItemClassEnum[ keyof typeof EnumItemClassEnum];
+// // let foo: Record<EnumItemClassEnum, string>;
+// let foo: Unpacked<EnumItemClassEnum>;
+// foo = 'item_hardware_class_bolt';
+// foo = 'ITEM_HARDWARE_CLASS_BOLT';
+// let foo2: ItemClasstest;
+// foo2 = 'item_hardware_class_bolt';
+// foo2 = 'ITEM_HARDWARE_CLASS_BOLT';
+// let foo3: typeof EnumItemClassEnum;
+// foo3 = 'item_hardware_class_bolt';
+// foo3 = 'ITEM_HARDWARE_CLASS_BOLT';
+
+
+
+// type FooType = Record<EnumItemClassEnum, keyof typeof EnumItemClassEnum>;
+// let someval: FooType;
+// someval = "item_hardware_class_bolt";
+// someval = "ITEM_HARDWARE_CLASS_BOLT";
+
+// type Record<K extends string | number | symbol, T> = { [ P in K ]: T; }
+
+// type EnumValues<K extends keyof typeof EnumItemClassEnum> = typeof EnumItemClassEnum[ K ];
+
+
+
+// let foo6: EnumItemClassEnum[ 'item_hardware_class_bolt' ];
+// foo6 = EnumItemClassEnum['item_hardware_class_bolt'];
+
+// let foo5: EnumValues<keyof typeof EnumItemClassEnum>;
+// // foo5 = 
+
+// foo5 = 'item_hardware_class_bolt';
+// foo5 = 'ITEM_HARDWARE_CLASS_BOLT';
+
+// let foo7: typeof EnumItemClassEnum['ITEM_HARDWARE_FASTENER_BOLT'];
+// foo7 = "item";
+// foo7 = "item_hardware_class_bolt";
+// // foo5 = 
+
+// foo7 = 'item_hardware_class_bolt';
+// foo7 = 'ITEM_HARDWARE_CLASS_BOLT';
+
+
+// let foo4: PropertyTypeMatch< EnumItemClassEnum, >;
+// foo4 = 'item_hardware_class_bolt';
+// foo4 = 'ITEM_HARDWARE_CLASS_BOLT';
+
+
+// ConstructorParameters
 
 type IEnumIItemMap = { [ key in ItemClass ]: Union<IItem, new () => Item<GenericItem>> };
 
@@ -30,6 +84,10 @@ export interface IItem {
     icon: IconComponentT;
     name: string;
     categories: CategoryHierarchyT[];
+}
+export interface IItemConstructor {
+    // new( ): IItem;
+    new( params: GenericItem): IItem;
 }
 
 export type CategoryHierarchyT = "Item" 
@@ -58,7 +116,7 @@ export class Item<T extends GenericItem> implements IItem {
 
     _name?: string;
     _object: Object;
-    _class: keyof Record<EnumItemClassEnum, string>;
+    _class: keyof Record<ItemClass, string>;
 
     item: ItemGql;
 
@@ -77,14 +135,18 @@ export class Item<T extends GenericItem> implements IItem {
     /**
      * Return an array of items from input Gql results
      */
-    static ItemFactory ( results: GenericItem[] ): Item<GenericItem>[] {
-        let items: Item<GenericItem>[] = [];
-        results.forEach( i => items.push(new Item(i) ));
+    static ItemFactory ( results: GenericItem[] ): IItem[] {
+    // static ItemFactory ( results: GenericItem[] ): Item<GenericItem>[] {
+        let items: IItem[] = [];
+        results.forEach( i => {
+            let cls = this.getClassForType( i.class || i.__typename );
+            items.push( new cls(i) );
+        });
         return items;
 
     }
 
-    get class (): keyof Record<EnumItemClassEnum, string> {
+    get class (): keyof Record<ItemClass, string> {
         // return this.__typename;
         return this._class;
     }
@@ -131,7 +193,7 @@ export class Item<T extends GenericItem> implements IItem {
         };
     }
 
-    public static getClassForType ( itemClass: keyof typeof EnumItemClassEnum ): Union< IItem , new () => IItem> {
+    public static getClassForType ( itemClass: ItemClass ): Union<IItem, IItemConstructor> {
         let itemClassLowerCase = itemClass.toLowerCase();
         console.log({class: 'Item', method: 'getClassForType', classTypes: Item._ClassTypes, lookup_key: itemClass });
         // if ( itemClassLowerCase === "item" ) {

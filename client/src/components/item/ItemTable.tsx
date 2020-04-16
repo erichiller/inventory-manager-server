@@ -125,9 +125,8 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
         if ( data && data.length ){
             data.forEach( d => {
                 console.log({class: 'ItemTable', method: 'getColumns', d, d_Columns: d.Columns})
-                d.Columns.forEach( c => columns[ c.key ] = c ) 
+                d.Columns.forEach( c => columns[ c.key ] = c );
             });
-            // data.forEach( d => d.Columns.forEach( c => columns[ c.key ] = c ) );
         }
         return [
             {

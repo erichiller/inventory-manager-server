@@ -1,12 +1,14 @@
-import { Item, IconComponentT, CategoryHierarchyT } from './Item';
+import { Item, IconComponentT, CategoryHierarchyT, ItemClass, IItem, GenericItem } from './Item';
 import { ItemHardwareFastenerBolt as ItemHardwareFastenerBoltGql, ItemHardwareFastenerBoltSelectColumn } from "../types/graphql";
 import React from 'react';
 import { Integer } from '../types/uint8';
 import { HexBoltIcon } from '../../styles/icon';
 
 
+type ItemPlusClassT<T extends GenericItem, C extends ItemClass> = Exclude<ItemHardwareFastenerBoltGql, 'class'>;
 
-export class ItemHardwareFastenerBolt extends Item<ItemHardwareFastenerBoltGql> {
+
+export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFastenerBoltGql, 'item_hardware_fastener_bolt'>> {
 
     // id: Integer;
     // getSomething(): number {
@@ -35,5 +37,5 @@ export class ItemHardwareFastenerBolt extends Item<ItemHardwareFastenerBoltGql> 
     }
 }
 
-Item.RegisterClassType( "ITEM_HARDWARE_FASTENER_BOLT", ItemHardwareFastenerBolt );
+Item.RegisterClassType( "item_hardware_fastener_bolt", ItemHardwareFastenerBolt );
 // Item.RegisterClassType<ItemHardwareFastenerBoltGql, ItemHardwareFastenerBolt>( "ITEM_HARDWARE_FASTENER_BOLT", ItemHardwareFastenerBolt );
