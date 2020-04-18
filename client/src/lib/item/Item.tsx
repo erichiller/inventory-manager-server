@@ -1,81 +1,34 @@
 
-import { 
-    Item as ItemGql, Icon, Label, GetIconQueryResult, GetIconDocument, GetIconQueryVariables, GetIconQuery, 
-    EnumItemClassEnum, 
-    ItemSelectColumn 
+import {
+    Item as ItemGql, Icon, Label, GetIconQueryResult, GetIconDocument, GetIconQueryVariables, GetIconQuery,
+    EnumItemClassEnum,
+    ItemSelectColumn
 } from "../types/graphql";
 
 import { Integer } from '../types/uint8';
 
 import { apolloClient } from '../../index';
-import { message } from "antd";
+import { message, Tooltip } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
 import { toTitleCase, Union, Unpacked } from "../helpers";
 import { CodeIcon } from "../../styles/icon";
-import { T } from "antd/lib/upload/utils";
+import { FormInstance } from "antd/lib/form";
 
-export type GenericItem = Pick<ItemGql, 'id'> 
-                          & Partial<Pick<ItemGql, | 'object'> 
-                          & { 
-                              name?: string; 
-                              __typename: ItemClass;
-                              class: ItemClass;
-                            }> ;
-
-// type ItemExtender<R extends Item<any>> = R;
-// type IEnumItemMap<R extends Item<any>> = { [ key in keyof typeof EnumItemClassEnum ]: new () => R };
+export type GenericItem = Pick<ItemGql, 'id'>
+    & Partial<Pick<ItemGql, | 'object'>
+        & {
+            name?: string;
+            __typename: ItemClass;
+            class: ItemClass;
+        }>;
 
 export type ItemClass = keyof typeof EnumItemClassEnum | 'ITEM';
-// export type ItemClasstest = typeof EnumItemClassEnum[ keyof typeof EnumItemClassEnum];
-// // let foo: Record<EnumItemClassEnum, string>;
-// let foo: Unpacked<EnumItemClassEnum>;
-// foo = 'item_hardware_class_bolt';
-// foo = 'ITEM_HARDWARE_CLASS_BOLT';
-// let foo2: ItemClasstest;
-// foo2 = 'item_hardware_class_bolt';
-// foo2 = 'ITEM_HARDWARE_CLASS_BOLT';
-// let foo3: typeof EnumItemClassEnum;
-// foo3 = 'item_hardware_class_bolt';
-// foo3 = 'ITEM_HARDWARE_CLASS_BOLT';
 
 
-
-// type FooType = Record<EnumItemClassEnum, keyof typeof EnumItemClassEnum>;
-// let someval: FooType;
-// someval = "item_hardware_class_bolt";
-// someval = "ITEM_HARDWARE_CLASS_BOLT";
-
-// type Record<K extends string | number | symbol, T> = { [ P in K ]: T; }
-
-// type EnumValues<K extends keyof typeof EnumItemClassEnum> = typeof EnumItemClassEnum[ K ];
-
-
-
-// let foo6: EnumItemClassEnum[ 'item_hardware_class_bolt' ];
-// foo6 = EnumItemClassEnum['item_hardware_class_bolt'];
-
-// let foo5: EnumValues<keyof typeof EnumItemClassEnum>;
-// // foo5 = 
-
-// foo5 = 'item_hardware_class_bolt';
-// foo5 = 'ITEM_HARDWARE_CLASS_BOLT';
-
-// let foo7: typeof EnumItemClassEnum['ITEM_HARDWARE_FASTENER_BOLT'];
-// foo7 = "item";
-// foo7 = "item_hardware_class_bolt";
-// // foo5 = 
-
-// foo7 = 'item_hardware_class_bolt';
-// foo7 = 'ITEM_HARDWARE_CLASS_BOLT';
-
-
-// let foo4: PropertyTypeMatch< EnumItemClassEnum, >;
-// foo4 = 'item_hardware_class_bolt';
-// foo4 = 'ITEM_HARDWARE_CLASS_BOLT';
-
-
-// ConstructorParameters
+export interface ItemEditFormProps {
+    form: FormInstance;
+}
 
 type IEnumIItemMap = { [ key in ItemClass ]: Union<IItem, new () => Item<GenericItem>> };
 
@@ -87,25 +40,25 @@ export interface IItem {
 }
 export interface IItemConstructor {
     // new( ): IItem;
-    new( params: GenericItem): IItem;
+    new( params: GenericItem ): IItem;
 }
 
-export type CategoryHierarchyT = "Item" 
-                                    | "Hardware" 
-                                        | "Fastener" 
-                                            | "Bolt"
-                                            | "Screw"
-                                            | "Nut"
-                                            | "Washer" ;
+export type CategoryHierarchyT = "Item"
+    | "Hardware"
+    | "Fastener"
+    | "Bolt"
+    | "Screw"
+    | "Nut"
+    | "Washer";
 
-export type IconComponentT = 
-        React.FunctionComponent<
-            React.DetailedHTMLProps<
-                React.ImgHTMLAttributes<HTMLImageElement>, 
-                HTMLImageElement
-            >
+export type IconComponentT =
+    React.FunctionComponent<
+        React.DetailedHTMLProps<
+            React.ImgHTMLAttributes<HTMLImageElement>,
+            HTMLImageElement
         >
-        | React.FunctionComponent<React.SVGProps<SVGSVGElement>> ;
+    >
+    | React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 
 
 
@@ -122,27 +75,27 @@ export class Item<T extends GenericItem> implements IItem {
 
 
     constructor ( props: T ) {
-    // constructor( props: Partial<T>){
+        // constructor( props: Partial<T>){
         // if (!props) return;
         // this.item = props;
         this.id = props.id;
         this._name = props.name;
         this._class = props.class;
         this._object = props.object;
-        console.log("Item class created with props:\n", props)
+        console.log( "Item class created with props:\n", props );
     }
 
     /**
      * Return an array of items from input Gql results
      */
     static ItemFactory ( results: GenericItem[] ): IItem[] {
-    // static ItemFactory ( results: GenericItem[] ): Item<GenericItem>[] {
+        // static ItemFactory ( results: GenericItem[] ): Item<GenericItem>[] {
         let items: IItem[] = [];
         results.forEach( i => {
             let cls = this.getClassForType( i.class || i.__typename );
-            console.log({_cls: "Item" , method: 'ItemFactory', msg:"loading class of type", item_class: cls, item_class_name: cls.name});
-            items.push( new cls(i) );
-        });
+            console.log( { _cls: "Item", method: 'ItemFactory', msg: "loading class of type", item_class: cls, item_class_name: cls.name } );
+            items.push( new cls( i ) );
+        } );
         return items;
     }
 
@@ -152,11 +105,11 @@ export class Item<T extends GenericItem> implements IItem {
     }
 
     get name (): string {
-        if (this._name){
+        if ( this._name ) {
             return this._name;
         }
-        else if (this._object && this._object.hasOwnProperty("name")) {
-            return this._object['name'];
+        else if ( this._object && this._object.hasOwnProperty( "name" ) ) {
+            return this._object[ 'name' ];
         }
         else {
             // should this warn?
@@ -183,19 +136,19 @@ export class Item<T extends GenericItem> implements IItem {
     // static _ClassTypes: Partial< IEnumItemMap< ItemExtender<any> > > = {};
     static _ClassTypes: IEnumIItemMap;
 
-    static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T>; }>(
+    static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T>; }> (
         itemClass: ItemClass,
         typeClass: T
     ) {
         Item._ClassTypes = {
             ...Item._ClassTypes,
-            ...Object.fromEntries([ [itemClass.toLowerCase(), typeClass ] ])
+            ...Object.fromEntries( [ [ itemClass.toLowerCase(), typeClass ] ] )
         };
     }
 
     public static getClassForType ( itemClass: ItemClass ): Union<IItem, IItemConstructor> {
         let itemClassLowerCase = itemClass.toLowerCase();
-        console.log({class: 'Item', method: 'getClassForType', classTypes: Item._ClassTypes, lookup_key: itemClass });
+        console.log( { class: 'Item', method: 'getClassForType', classTypes: Item._ClassTypes, lookup_key: itemClass } );
         // if ( itemClassLowerCase === "item" ) {
         //     return Item;
         // }
@@ -210,9 +163,9 @@ export class Item<T extends GenericItem> implements IItem {
      * common lookup of icon;
      * returns dataurl ( SVG )
      */
-get icon(): IconComponentT {
+    get icon (): IconComponentT {
         // return <img />;
-        apolloClient.query < Icon, GetIconQueryVariables >({
+        apolloClient.query<Icon, GetIconQueryVariables>( {
             query: GetIconDocument,
             variables: {}
         } ).then( result => {
@@ -267,9 +220,9 @@ get icon(): IconComponentT {
      */
     static get Columns (): ColumnProps<any>[] {
         // TODO: order columns sensibly
-        let cols: ColumnProps<any>[] = ( [...Object.keys( ItemSelectColumn ), 'name'].filter(
+        let cols: ColumnProps<any>[] = ( [ ...Object.keys( ItemSelectColumn ), 'name' ].filter(
             key => [ "OBJECT" ].includes( key ) ? false : key ).map(
-            // key => [ "ID" ].includes( key ) ? false : key ).map(
+                // key => [ "ID" ].includes( key ) ? false : key ).map(
                 key => {
                     return {
                         key: key,
@@ -315,26 +268,34 @@ get icon(): IconComponentT {
         return null;
     }
 
-    get tableRowComponent (): React.ReactElement {
+    // TODO: am I actually using this ??
+    get tableRowComponent (): React.FC {
         return null;
     }
     /**
-     * Modal
+     * Form to edit Item
      */
-    get editComponent (): React.ReactElement {
+    get editComponent (): React.FC {
         return null;
     }
     /**
      * Single, detailed view
      */
-    get detailComponent (): React.ReactElement {
+    get detailComponent (): React.FC {
         return null;
+    }
+
+    /**
+     * Component displayed when item moused over in Table
+     */
+    get mouseOverRowComponent (): React.FC {
+        return ( props ) => <pre>{JSON.stringify( this, null, 2 )}</pre>;
     }
 
     // get bundle (): Item {
     //     return null;
     // }
-    
+
 }
 
 Item.RegisterClassType( "ITEM", Item );

@@ -1,10 +1,11 @@
-import { Item, IconComponentT, CategoryHierarchyT, ItemClass, IItem, GenericItem } from './Item';
-import { ItemHardwareFastenerBolt as ItemHardwareFastenerBoltGql, ItemHardwareFastenerBoltSelectColumn } from "../types/graphql";
+import { Item, IconComponentT, CategoryHierarchyT, ItemClass, IItem, GenericItem } from '../Item';
+import { ItemHardwareFastenerBolt as ItemHardwareFastenerBoltGql, ItemHardwareFastenerBoltSelectColumn } from "../../types/graphql";
 import React from 'react';
-import { Integer } from '../types/uint8';
-import { HexBoltIcon } from '../../styles/icon';
+import { Integer } from '../../types/uint8';
+import { HexBoltIcon } from '../../../styles/icon';
 import { ColumnProps } from 'antd/lib/table';
-import { toTitleCase } from '../helpers';
+import { toTitleCase } from '../../helpers';
+import { ItemHardwareFastenerBoltEditForm } from './Edit';
 
 
 type ItemPlusClassT<T extends GenericItem, C extends ItemClass> = Exclude<ItemHardwareFastenerBoltGql, 'class'>;
@@ -54,6 +55,10 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
     }
     get Columns (): ColumnProps<ItemHardwareFastenerBoltGql>[] {
         return ItemHardwareFastenerBolt.Columns as ColumnProps<ItemHardwareFastenerBoltGql>[];
+    }
+
+    get editComponent (): React.FC {
+        return ItemHardwareFastenerBoltEditForm;
     }
 }
 
