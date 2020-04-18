@@ -1,5 +1,5 @@
 import { Item } from './Item';
-import { ItemHardwareFastenerBolt } from './ItemHardwareFastenerBolt';
+import { ItemHardwareFastenerBolt } from './ItemHardwareFastenerBolt/Index';
 
 
 export {

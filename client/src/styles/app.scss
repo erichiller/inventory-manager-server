@@ -263,6 +263,17 @@
   }
 }
 
+.ItemTableMouseOver {
+    border-radius: 3px;
+    border: 1px solid lightgray;
+    padding: 25px;
+    max-width: 50%;
+    max-height: 90%;
+    font-size: 13px;
+    font-family: Consolas, MONOSPACE;
+    background: #e8f4ff;
+}
+
 /*
 See
   ant-tag

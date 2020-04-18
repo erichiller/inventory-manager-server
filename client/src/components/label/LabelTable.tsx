@@ -64,6 +64,7 @@ export const LabelTable = withGetLabels()(
                         render: ( text, record ) => (
                             <span>
                                 <a onClick={( obj ) => {
+                                    obj.preventDefault();
                                     // this.setState({
                                     //   clickedItem: record,
                                     //   // printModal: display.VISIBLE
