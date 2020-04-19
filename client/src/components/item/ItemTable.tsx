@@ -143,6 +143,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                     title: 'Action',
                     key: 'action',
                     // dataIndex: '',
+                    className: 'action_no_mouseover',
                     render: ( text, record: T ) => (
                         <span onMouseOver={event => event.preventDefault()}>
                             <a onClick={( obj ) => {
@@ -197,7 +198,8 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     //     setMouseOver({visible: mouseOver.visible, ref: ref});
     // }
 
-    let testRef = React.useRef < HTMLDivElement>();
+
+
     return (
         <div
             onMouseLeave={event => {
@@ -224,16 +226,16 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                 //     setCurrentRecord( null );
                 // }} >
                 onMouseOver={event => {
+                    console.log( { 'class of target_INNER_DIV': ( event.target as HTMLTableDataCellElement ).className.toString(), eventType: 'onMouseOver', event, currentTarget: event.currentTarget, target: event.target })
+                    if ( ( event.target as HTMLTableDataCellElement ).className.toString() !== "ant-table-cell" ) {
+                        return;
+                    }
                     if ( currentRecord && currentRecord && !mouseOverVisible ) {
                         setMouseOverVisible( true );
                     }
                     if ( mouseOverRef && mouseOverRef.current ) {
                         mouseOverRef.current.style.left = `${ (event.pageX + 3).toString() }px`;
                         mouseOverRef.current.style.top = `${ event.pageY.toString() }px`;
-                    }
-                    if ( testRef && testRef.current ){
-                        testRef.current.style.backgroundColor = 'green';
-                        testRef.current.style.top = `${event.pageY.toString()}px`;
                     }
                 }}
             >
@@ -247,9 +249,6 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                     onRow={( record, rowIndex ) => {
                         return {
                             onMouseOver: event => {
-                                // if ( ( event.target as HTMLTableDataCellElement ).className.toString() !== "ant-table-cell" ) {
-                                //     return;
-                                // }
                                 // let {
                                 //     target,
                                 //     // relatedtarget,
@@ -287,9 +286,9 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
 
                                 console.log( currentRecordRef.current );
                                 if ( currentRecordRef.current != record ){
-                                    // setCurrentRecord( record);
+                                    setCurrentRecord( record);
                                     console.log("setting currentRecordRef");
-                                    currentRecordRef = {current: record};
+                                    // currentRecordRef = {current: record};
                                 }
                             }
                         };
