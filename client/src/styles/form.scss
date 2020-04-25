@@ -1,0 +1,88 @@
+.numberInput {
+    width: 110px;
+}
+
+div[role="tooltip"] {
+    header {
+        font-weight: bold;
+        font-size: 1.2em;
+        font-variant-caps: small-caps;
+        padding-bottom: 5px;
+    }
+    b {
+        font-weight: bolder;
+        padding-top: 5px;
+        display: block;
+    }
+    pre {
+        margin-left: 1em;
+        .highlight {
+            color: red;
+            border: 1px solid red;
+            border-radius: 1em;
+            padding: 3px;
+            line-height: 2em;
+        }
+    }
+}
+
+.ItemEditFormModal {
+    max-width: 80vw;
+    // max-width: fit-content;
+    // min-width: 80em;
+    // .ant-divider-horizontal {
+    //     //
+    // }
+    // .ant-row {
+
+    // }
+    .col {
+        max-width: 50%;
+        // style={{ flexFlow: 'column wrap;'}}
+    }
+    input {
+        max-width: 100%;
+    }
+    form {
+        flex-flow: column wrap;
+        display: flex;
+        max-height: 80em;
+    }
+    
+    /* Chrome, Safari, Edge, Opera */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    /* Firefox */
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+
+
+    .screw-size-input {
+        // border: none;
+        // & div {
+        //     border: none;
+        // }
+        // .ant-select-selector {
+        //     padding-right: 2px;
+        // }
+        // .ant-input-group-addon {
+        //     border: none;
+        // }
+
+
+        // /* Chrome, Safari, Edge, Opera */
+        // input[type="number"]::-webkit-outer-spin-button,
+        // input[type="number"]::-webkit-inner-spin-button {
+        //     -webkit-appearance: none;
+        //     margin: 0;
+        // }
+        // /* Firefox */
+        // input[type="number"] {
+        //     -moz-appearance: textfield;
+        // }
+    }
+}

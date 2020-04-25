@@ -1,9 +1,25 @@
 query item_hardware_fastener_bolt {
-  items: item_hardware_fastener_bolt {
+  items: item_hardware_fastener_bolt(order_by: {id: asc}) {
     id
     name
     description
     unit
     thread_length
+    head_type
+    drive_type
+    drive_size
+    head_diameter
+    head_height
+    thread_diameter
+    finish
+    material
+    thread_direction
+    countersunk_angle
+    tensile_strength
+    specifications_met
+    thread_fit
+    point_type
+    hardness
+    strength_class
   }
 }

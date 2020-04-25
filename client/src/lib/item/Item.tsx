@@ -104,6 +104,9 @@ export class Item<T extends GenericItem> implements IItem {
         return this._class;
     }
 
+    set name (nameVal: string) {
+        this._name = nameVal;
+    }
     get name (): string {
         if ( this._name ) {
             return this._name;
