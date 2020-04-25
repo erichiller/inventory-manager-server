@@ -226,15 +226,31 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                 //     setCurrentRecord( null );
                 // }} >
                 onMouseOver={event => {
-                    console.log( { 'class of target_INNER_DIV': ( event.target as HTMLTableDataCellElement ).className.toString(), eventType: 'onMouseOver', event, currentTarget: event.currentTarget, target: event.target })
+                    // console.log( { 
+                    //     'class of target_INNER_DIV': ( event.target as HTMLTableDataCellElement ).className.toString(), 
+                    //     eventType: 'onMouseOver', 
+                    //     event, 
+                    //     screen: { x: event.screenX, y: event.screenY },
+                    //     client: { x: event.clientX, y: event.clientY },
+                    //     screen_size: screen.width, // shows the actual monitor size
+                    //     innerWidth: window.innerWidth,
+                    //     elementWidth: mouseOverRef.current.offsetWidth,
+                    //     // event_json: JSON.stringify(event),
+                    //     currentTarget: event.currentTarget, 
+                    //     target: event.target });
                     if ( ( event.target as HTMLTableDataCellElement ).className.toString() !== "ant-table-cell" ) {
+                        setMouseOverVisible(false);
                         return;
                     }
                     if ( currentRecord && currentRecord && !mouseOverVisible ) {
                         setMouseOverVisible( true );
                     }
                     if ( mouseOverRef && mouseOverRef.current ) {
-                        mouseOverRef.current.style.left = `${ (event.pageX + 3).toString() }px`;
+                        let newX: number = event.pageX + 3;
+                        if ( newX > mouseOverRef.current.offsetWidth - 3 ){
+                            newX = newX - mouseOverRef.current.offsetWidth - 3; 
+                        }
+                        mouseOverRef.current.style.left = `${ newX.toString() }px`;
                         mouseOverRef.current.style.top = `${ event.pageY.toString() }px`;
                     }
                 }}

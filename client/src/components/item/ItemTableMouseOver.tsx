@@ -1,13 +1,5 @@
 import React from "react";
 
-import {
-    EditOutlined,
-    InfoCircleOutlined,
-    CopyOutlined,
-} from '@ant-design/icons';
-
-import { Menu, message } from 'antd';
-
 import Animate from 'rc-animate';
 
 interface ItemTableMouseOverProps {
