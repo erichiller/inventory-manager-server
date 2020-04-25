@@ -26,6 +26,7 @@ fragment ItemFields on item {
 query GetItems( $categories: [enum_item_class_enum!] ) {
     items: item( 
         where: {class: {_in: $categories}}
+        order_by: {id: asc}
     ) {
         ...ItemFields
     }

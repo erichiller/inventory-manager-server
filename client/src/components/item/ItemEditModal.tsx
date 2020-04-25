@@ -1,11 +1,12 @@
 import React from 'react';
 import { useForm, FormProps } from 'antd/lib/form/Form';
-import { Form, Modal, Input } from 'antd';
+import { Form, Modal, Input, Button } from 'antd';
 import { visibleHandler } from './ItemTable';
 import { Item } from '../../lib/item';
+import { ItemEditFormProps } from '../../lib/item/Item';
 
 interface ItemEditModalProps {
-    recordEditComponent: React.FC;
+    recordEditComponent: React.FC<ItemEditFormProps>;
     visibleHandler: visibleHandler;
     item: Item<any>;
 }
@@ -13,34 +14,45 @@ interface ItemEditModalProps {
 export const ItemEditModal: React.FC<ItemEditModalProps> = ( props ) => {
     const [ form ] = useForm();
 
-    const formProps: Partial<FormProps> = {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 16 },
-    };
-
     const onFinish = ( values: {
         [ name: string ]: any;
     } ) => {
         console.log( { class: 'ItemEditModal', method: 'onFinish', values } );
     };
 
+    const onFinishFailed = ( errorInfo ) => console.error(errorInfo);
+
     return <Modal
         visible={true}
         title={Item.name}
-        onOk={onFinish}
+        width={null}
+        bodyStyle={{
+            maxWidth: '80vw',
+            maxHeight: '80vh'
+        }}
+        className="ItemEditFormModal"
+        onOk={e => form.submit()}
         onCancel={event => props.visibleHandler()}
     >
-        <Form {...formProps}
+        <Form
+            name="ItemForm"
             form={form}
             layout="horizontal"
-            name="item-add-edit-delete"
-            onFinish={onFinish}>
-            <Form.Item>
-                <Form.Item label="Field AA">
-                    <Input title="test" placeholder="input placeholder" />
+            labelCol={{span: 8 }}
+            wrapperCol={{span: 9 }}
+            // name="item-add-edit-delete"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            >
+            {/* <Form.Item> */}
+            {/* <Form.Item key="aaa" name="bbb" label="Field AA">
+                    <Input placeholder="input placeholder" />
                 </Form.Item>
-            </Form.Item>
-            {props.recordEditComponent}
+            {/* </Form.Item> */}
+            <props.recordEditComponent form={form} />
+            {/* <Button type="primary" htmlType="submit">
+                Submit
+        </Button> */}
         </Form>
     </Modal>;
 };
