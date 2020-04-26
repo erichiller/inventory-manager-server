@@ -38,3 +38,11 @@ export function toUpperCamelCase ( s: string ): string {
 export function toLowerCamelCase ( s: string ): string {
     return toUpperCamelCase( s ).charAt( 0 ).toLowerCase() + toUpperCamelCase( s ).substr( 1 );
 }
+
+export function toMinimumFixed ( n: number, min: 0 | 1 | 2 | 3 | 4, max: number = 4 ): string {
+    let curr = n.toFixed(max);
+    if ( max > min && curr.substr(-1) === "0" ){
+        return toMinimumFixed(n, min, max - 1);
+    }
+    return curr;
+}
