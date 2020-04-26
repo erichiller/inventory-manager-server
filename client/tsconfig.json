@@ -12,13 +12,9 @@
         "outDir": "../dist/client/",
         "removeComments": false,
         "resolveJsonModule": true,
-        "skipLibCheck": true, // turning off is new
+        // "skipLibCheck": true, // turning off is new
         "sourceMap": true,
         "target": "es2019",
-        // "typeRoots": [
-        //     "node_modules/@types",
-        //     "node_modules/@types/node"
-        // ],
     },
     "include": [
         "src/**/*",
