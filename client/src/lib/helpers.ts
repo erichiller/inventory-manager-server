@@ -41,7 +41,9 @@ export function toLowerCamelCase ( s: string ): string {
 
 export function toMinimumFixed ( n: number, min: 0 | 1 | 2 | 3 | 4, max: number = 4 ): string {
     let curr = n.toFixed(max);
-    if ( max > min && curr.substr(-1) === "0" ){
+    // console.log( { 'f': 'toMinimumFixed', n, min, max, curr, n_type: typeof n } );
+    if ( max > min && curr.substr( -1 ) === "0" ) {
+        // console.log( { 'f': 'toMinimumFixed calling next', n, min, max, curr, n_type: typeof n, last: curr.substr( -1 ), is_zero: curr.substr( -1 ) === "0" } );
         return toMinimumFixed(n, min, max - 1);
     }
     return curr;

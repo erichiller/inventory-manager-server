@@ -24,4 +24,7 @@
             // "url": "./client/src/lib/types/schema.json"
         }
     ],
+    "files.associations": {
+        "**/client/src/lib/item/ItemHardwareFastenerBolt/*.json": "jsonc"
+    }
 }
