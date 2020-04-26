@@ -1,7 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "outDir": "../dist/server/",
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "jsx": "preserve",
+    "lib": [
+        "es2019"
+    ],
     // "lib": [
     //   "dom",
     //   "dom.iterable",
@@ -12,7 +18,6 @@
     // "allowJs": true,
     // "skipLibCheck": true,
     // "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     // "strict": true,
     // "forceConsistentCasingInFileNames": true,
     "module": "commonjs",
@@ -20,15 +25,10 @@
     // "resolveJsonModule": true,
     // "isolatedModules": true,
     // "noEmit": true,
-    "jsx": "preserve",
     // "outDir": "/dist",
+    "outDir": "../dist/server/",
     "sourceMap": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "lib": [
-      "es2019"
-    ]
+    "target": "es2016",
   },
   "include": [
     "**/*"

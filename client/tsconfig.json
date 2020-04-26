@@ -3,27 +3,31 @@
         "allowJs": true, // new
         "allowSyntheticDefaultImports": true,
         "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
         "esModuleInterop": true,
+        "experimentalDecorators": true,
         "jsx": "react",
         // "jsx": "preserve", // this must be react unless using whatever create-react-app uses
         "module": "esnext",
         "moduleResolution": "node",
         "outDir": "../dist/client/",
         "removeComments": false,
-        "skipLibCheck": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true, // turning off is new
         "sourceMap": true,
         "target": "es2019",
+        // "typeRoots": [
+        //     "node_modules/@types",
+        //     "node_modules/@types/node"
+        // ],
     },
     "include": [
         "src/**/*",
-        "../typings/*.d.ts",
+        "../typings/*.d.ts"
     ],
     "exclude": [
         "node_modules"
     ]
 }
-
 // {
 //     "compilerOptions": {
 //         "allowJs": true,

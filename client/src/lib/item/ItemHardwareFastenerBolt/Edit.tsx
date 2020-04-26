@@ -10,6 +10,8 @@ import { InputProps } from 'antd/lib/input';
 import InputNumber, { InputNumberProps } from 'antd/lib/input-number';
 import TextArea from 'antd/lib/input/TextArea';
 
+import * as ScrewSizeOptions from './ScrewSizeOptions.json';
+
 enum EnumHardwareFastenerSpecificationsEnum {
     ASME = "ASME",
     DIN = "DIN",

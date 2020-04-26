@@ -10,5 +10,18 @@
         "**/*.code-search": true,
         "**/yarn.lock": true,
         "**/graphql.tsx": true
-    }
+    },
+    // Associate schemas to JSON files in the current project
+    "json.schemas": [
+        {
+            // "fileMatch": [
+            //     // "./client/src/lib/item/**/*.json",
+            //     // "./client/src/lib/item/ItemHardwareFastenerBolt/ScrewSizeOptions.json",
+            //     // "./src/**/*.json"
+            //     "/client/src/lib/item/ItemHardwareFastenerBolt/ScrewSizeOptions.json"
+            //     // "./client/src/lib/item/**.json"
+            // ],
+            // "url": "./client/src/lib/types/schema.json"
+        }
+    ],
 }
