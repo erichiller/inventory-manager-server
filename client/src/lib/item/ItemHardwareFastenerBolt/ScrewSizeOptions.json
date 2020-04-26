@@ -1,0 +1,16 @@
+{
+   "$schema": "./schema.json",
+   "metric": {
+       "m1": {
+           "coarse": 3,
+           "fine": 22
+       }
+    },
+   "uscs": {
+       "6": {
+        "coarse": 3,
+        "fine": 22
+       }
+    },
+    "goo": 4
+}

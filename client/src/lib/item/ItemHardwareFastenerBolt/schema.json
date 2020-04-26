@@ -1,0 +1,55 @@
+{
+  "$ref": "#/definitions/ScrewSizeSchema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "IScrewThreadDiameterDefinition": {
+      "additionalProperties": false,
+      "description": "thread pitches for fine and coarse varieties",
+      "properties": {
+        "coarse": {
+          "description": "ie. 6-32",
+          "type": "number"
+        },
+        "fine": {
+          "description": "ie. 6-40",
+          "type": "number"
+        }
+      },
+      "required": [
+        "fine",
+        "coarse"
+      ],
+      "type": "object"
+    },
+    "SchemaDefinition<IScrewSizeDefinition>": {
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "metric": {
+          "additionalProperties": {
+            "$ref": "#/definitions/IScrewThreadDiameterDefinition"
+          },
+          "type": "object"
+        },
+        "uscs": {
+          "additionalProperties": {
+            "$ref": "#/definitions/IScrewThreadDiameterDefinition"
+          },
+          "description": "United States Customary System",
+          "type": "object"
+        }
+      },
+      "required": [
+        "$schema",
+        "metric",
+        "uscs"
+      ],
+      "type": "object"
+    },
+    "ScrewSizeSchema": {
+      "$ref": "#/definitions/SchemaDefinition%3CIScrewSizeDefinition%3E"
+    }
+  }
+}
