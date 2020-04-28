@@ -70,10 +70,11 @@ module.exports = {
     },
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve('.', 'dist'),
+        publicPath: "/"
     },
     devServer: {
-        contentBase: "./dist",
+        contentBase: path.resolve(__dirname, 'dist'),
         // do not print bundle build stats
         // noInfo: true,
         // enable HMR
@@ -82,15 +83,21 @@ module.exports = {
         inline: true,
         // serve index.html in place of 404 responses to allow HTML5 history
         historyApiFallback: true,
-        port: 8081,
+        port: 80,
         // host: HOST
     },
     plugins: [
         // new webpack.NoEmitOnErrorsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
-            template: './src/index.html'
+            template: path.resolve(__dirname, 'src', 'index.html')
         }),
+        new webpack.EnvironmentPlugin({
+            NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
+            DEBUG: true, // Not currently used,
+            HASURA_GRAPHQL_API_URL: 'http://GRAPHQL:8080/v1/graphql',
+            HASURA_ACCESS_KEY: "achoo"
+        })
     ],
     // externals: {
     //     react: "React",
