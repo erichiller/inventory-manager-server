@@ -150,7 +150,36 @@ declare module 'bwip-js' {
         backgroundcolor?: ColorString;
     }
 
-    export type Paths = Array & {
+
+    /**
+     * Rotates the image to one of the four orthogonal orientations
+     * A string value. Must be one of:
+     * - `N` : Normal orientation
+     * - `R` : Rotated right 90 degrees
+     * - `L` : Rotated left 90 degrees
+     * - `I` : Inverted, rotated 180 degrees
+     */
+    export type RotateT = 'N' | 'R' | 'L' | 'I';
+
+
+    export type PathVertex = {
+        x: number;
+        y: number;
+    } & ( 
+    {
+        type: 'M' | 'L';
+    } | {
+        type: 'Q';
+        cx: number;
+        cy: number;
+    } | {
+        type: 'C';
+        cx1: number;
+        cy1: number;
+        cx2: number;
+        cy2: number;
+    });
+    export type Paths = Array<PathVertex> & {
         ascent: number;
         descent: number;
         advance: number;
@@ -162,17 +191,31 @@ declare module 'bwip-js' {
         width: number;
     }
 
+    export type Point = [number, number];
+
     export class Drawing {
         constructor (opts, ...args);
-        scale( sx: number, sy: number);
+        /**
+         * Adjust scale.  The return value is a two-element array with the
+         * scale-x and scale-y values adjusted as desired.
+         * 
+         * The builtin drawing returns [ floor(sx), floor(sy) ] to ensure all
+         * bars and spaces are sized uniformly.
+         * 
+         * Composite symbols cause this method to be called multiple times; be
+         * consistent if you adjust the values.
+         * @param sx ScaleX
+         * @param sy ScaleY
+         */
+        scale ( sx: number, sy: number ): [ number, number] | null | void;
         measure ( str: string, font: string, fwidth: number, fheight: number ): Measurement;
         init ( width: number, height: number ): void;
         line ( x0: number, y0: number, x1: number, y1: number, lw: number, rgb: string ): void;
-        polygon ( pts: Points ): void;
-        hexagon ( pts: Points, rgb: string ): void;
+        polygon ( pts: Point[] ): void;
+        hexagon ( pts: Point[], rgb: string ): void;
         ellipse ( x: number, y: number, rx: number, ry: number, ccw: boolean ): void;
         fill ( rgb: string ): void;
-        text ( x: number, y, str: string, rgb: string, font: bwipjs.Font ): void;
+        text ( x: number, y: number, str: string, rgb: string, font: Font ): void;
         end(): void;
         transform ( x: number, y: number ): string;
     }
@@ -184,8 +227,8 @@ declare module 'bwip-js' {
     }
 
     export class DrawingCanvas extends Drawing {
-        constructor ( options: DrawingCanvasOptions, canvas: HTMLCanvasElement );
-        image ( width, height ): { buffer: ImageData, ispng: false; };
+        constructor ( options: CanvasOptions, canvas: HTMLCanvasElement );
+        image ( width: number, height: number ): { buffer: ImageData, ispng: false; };
         end (): void;
     }
 
@@ -271,10 +314,10 @@ declare module 'bwip-js' {
         function monochrome ( mono ): void;
         
         
-        function getglyph ( fontid, charcode, width, height ): Glpyh;
+        function getglyph ( fontid: number, charcode: number, width: number, height: number ): Glpyh;
         
         
-        function getpaths ( fontid, charcode, width, height ): Paths;
+        function getpaths ( fontid: number, charcode: number, width: number, height: number ): Paths;
 
 
         /**
@@ -283,7 +326,7 @@ declare module 'bwip-js' {
          * @param data data must be the font data, either a binary or base64 encoded string.
          * @returns FontID
          */
-        function loadFont(name, data): number;
+        function loadFont(name: string, data): number;
         /**
          * 
          * @param name 
@@ -291,7 +334,7 @@ declare module 'bwip-js' {
          * @param data data must be the font data, either a binary or base64 encoded string.
          * @returns FontID
          */
-        function loadFont ( name, mult, data ): number;
+        function loadFont ( name: string, mult, data ): number;
         /**
          * **Note order: `y`,`x`**
          * @param name 
@@ -300,8 +343,8 @@ declare module 'bwip-js' {
          * @param data data must be the font data, either a binary or base64 encoded string.
          * @returns FontID
          */
-        function loadFont ( name, multy, multx, data ): number;
-        function loadFont ( name /*...args*/ ): number;
+        function loadFont ( name: string, multy: number, multx: number, data ): number;
+        function loadFont ( name: string /*...args*/ ): number;
     }
 
     /** Integer placeholder since JavaScript has no integer type */
@@ -326,7 +369,6 @@ declare module 'bwip-js' {
     /** in `exports.js` it's `Render` */
     function Render ( params: DrawingOptions, drawing: Drawing ): string;
 
-    export const render = Render;
 
     export class BWIPJS {
         constructor ( drawing: Drawing );
@@ -336,10 +378,10 @@ declare module 'bwip-js' {
     /** must be the ID of an HTML Element that is present in the DOM */
     type HTMLElementID = string;
 
-    declare namespace BwipJs {
+    // export namespace BwipJs {
         /**
-         * bwipjs.toCanvas(canvas, options)
-         * bwipjs.toCanvas(options, canvas)
+         * `bwipjs.toCanvas(canvas, options)`  
+         * `bwipjs.toCanvas(options, canvas)`
          *
          * The Browser version of the library's functionality, which makes use of an HTMLCanvasElement for rendering.
          * Uses the built-in canvas drawing.  Identical rendering as toBuffer().
@@ -352,19 +394,23 @@ declare module 'bwip-js' {
          * @param opts are a bwip-js/BWIPP options object.
          * Returns the HTMLCanvasElement.
         **/
-        function toCanvas (
+        export function toCanvas (
             canvas: HTMLCanvasElement | string,
             opts: CanvasOptions
         ): HTMLCanvasElement;
-        function toCanvas (
+        export function toCanvas (
             opts: CanvasOptions,
             canvas: HTMLCanvasElement | string
         ): HTMLCanvasElement;
 
-        export type render = Render;
-    }
+        // type render = Render;
+    // }
 
-    export = BwipJs;
+    // export = BwipJs;
+    export {
+        Render as render,
+        // * as bwipjs
+    }
 
 }
 

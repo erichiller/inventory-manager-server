@@ -24,6 +24,7 @@ export const EnumSelect = ( props: EnumSelectProps<string> ) => {
     return (
         <React.Fragment>
             <Select
+                showSearch
                 onChange={triggerChange}
                 options={enumKeys.map( k => { return { value: k }; } )}
                 {...remainingProps}

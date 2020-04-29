@@ -1,7 +1,7 @@
 import Form, { FormComponentProps } from '@ant-design/compatible/lib/form';
 import React from 'react';
 import { LabelImage } from "../../../lib/LabelConstituent";
-import '@ant-design/compatible/assets/index.css';
+// import '@ant-design/compatible/assets/index.css';
 import { Spin, Select, Input, message, Modal } from "antd";
 import { InsertIconComponent, GetIconDocument, EnumItemClassEnum } from "../../../lib/types/graphql";
 import { Item } from "../../../lib/item";

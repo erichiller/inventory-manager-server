@@ -1,15 +1,27 @@
 {
-   "$schema": "../types/schema.json",
-   "metric": {
-       "m1": {
-           "coarse": 3,
-           "fine": 22
-       }
+    "$schema": "./ScrewSizeOptions.schema.json",
+    "metric": {
+        "m1": {
+            "coarse": 3,
+            "fine": 22
+        }
     },
-   "uscs": {
-       "6": {
-        "coarse": 3,
-        "fine": 22
-       }
+    "uscs": {
+        "#6": {
+            "coarse": 3,
+            "fine": 22
+        },
+        "#1/2": {
+            "coarse": 3,
+            "fine": 22
+        },
+        "#1/": {
+            "coarse": 3,
+            "fine": 22
+        },
+        "1/4": {
+            "coarse": 3,
+            "fine": 22
+        }
     }
 }

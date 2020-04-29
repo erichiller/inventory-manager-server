@@ -20,6 +20,7 @@ import { EditOutlined, PrinterOutlined, DeleteOutlined, TagOutlined } from '@ant
 import { PageSpinGQL } from '../shared/PageSpin';
 import { ItemTableMouseOver } from './ItemTableMouseOver';
 import { ItemEditModal } from './ItemEditModal';
+import { useLocation, useParams } from 'react-router-dom';
 // import DocumentNode from 'graphql-tag';
 
 
@@ -65,6 +66,11 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     let loading = true;
     let result: QueryResult<GetItemsQuery, GetItemsQueryVariables>;
 
+    let location = useLocation();
+    let params   = useParams();
+
+    console.log( { location, cls: 'ItemTable', params})
+    
     // return <ItemSearch />;
 
     const [ data, setData ] = useState( props.data );

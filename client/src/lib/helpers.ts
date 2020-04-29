@@ -39,7 +39,22 @@ export function toLowerCamelCase ( s: string ): string {
     return toUpperCamelCase( s ).charAt( 0 ).toLowerCase() + toUpperCamelCase( s ).substr( 1 );
 }
 
-export function toMinimumFixed ( n: number, min: 0 | 1 | 2 | 3 | 4, max: number = 4 ): string {
+/**
+ * @summary
+ * Returns a string that has _at least_ `min` number of digits after the decimal and no more than `max`.  
+ * If a string is passed in, it is immediately returned.
+ * 
+ * @param n number
+ * @param min minimum number of decimal places
+ * @param max maximum number of decimal places. Defaults to 4
+ * 
+ * @example
+ * input: 4.0, 2  => 4.00
+ * input: 4.12, 1  => 4.12
+ * input: 4.95672, 2, 3  => 4.956
+ */
+export function toMinimumFixed ( n: number | string, min: 0 | 1 | 2 | 3 | 4, max: number = 4 ): string {
+    if ( typeof n !== "number"){ return n; }
     let curr = n.toFixed(max);
     // console.log( { 'f': 'toMinimumFixed', n, min, max, curr, n_type: typeof n } );
     if ( max > min && curr.substr( -1 ) === "0" ) {

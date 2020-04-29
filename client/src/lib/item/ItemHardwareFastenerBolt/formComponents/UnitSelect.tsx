@@ -19,6 +19,9 @@ export const UnitSelect: React.FC<SelectProps<EnumUnitKeys>> = ( props ) => {
             onChange( value, option );
         }
     };
+    if ( value !== props.value ) {
+        triggerChange( props.value, null );
+    }
     return (
         <React.Fragment>
             <Select

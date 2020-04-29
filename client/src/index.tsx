@@ -13,9 +13,6 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
-import { HASURA_GRAPHQL_API_URL, HASURA_ACCESS_KEY } from '../../server/src/config';
-
-import './styles/index.css';
 
 // const link = createUploadLink({ 
 //   uri: HASURA_GRAPHQL_API_URL,
@@ -58,37 +55,35 @@ import './styles/index.css';
 //   _history.push("eric was here");
 // });
 
-
-
 // Instantiate required constructor fields
 const cache = new InMemoryCache();
-const link = new HttpLink({
-  uri: HASURA_GRAPHQL_API_URL,
-  headers: {
-    "x-hasura-admin-secret": HASURA_ACCESS_KEY
-  }
-});
+const link = new HttpLink( {
+    uri: process.env.HASURA_GRAPHQL_API_URL,
+    headers: {
+        "x-hasura-admin-secret": process.env.HASURA_ACCESS_KEY
+    }
+} );
 
-export const apolloClient = new ApolloClient({
-  // Provide required constructor fields
-  cache: cache,
-  link: link,
+export const apolloClient = new ApolloClient( {
+    // Provide required constructor fields
+    cache: cache,
+    link: link,
 
-  // Provide some optional constructor fields
-  name: 'react-web-client',
-  version: '1.3',
-  queryDeduplication: false,
-  defaultOptions: {
-    watchQuery: {
-      fetchPolicy: 'cache-and-network',
+    // Provide some optional constructor fields
+    name: 'react-web-client',
+    version: '1.3',
+    queryDeduplication: false,
+    defaultOptions: {
+        watchQuery: {
+            fetchPolicy: 'cache-and-network',
+        },
     },
-  },
-});
+} );
 
 render(
-  <ApolloProvider client={apolloClient}>
-    <App />
-  </ApolloProvider>
-  ,
-  document.getElementById('root')
+    <ApolloProvider client={apolloClient}>
+        <App />
+    </ApolloProvider>
+    ,
+    document.getElementById( 'root' )
 );
