@@ -3,6 +3,7 @@ import { matchPath } from 'react-router-dom';
 import { ItemTable } from '../components/item/ItemTable';
 import { LabelTable } from '../components/label/LabelTable';
 import { ItemIndex } from '../components/item/Index';
+import { ItemEditModal } from '../components/item/ItemEditModal';
 
 type ReactFunctionComponent = ( ( route?: RouteEntry, match?: RouterMatch ) => JSX.Element );
 
@@ -31,13 +32,13 @@ export interface RouterMatch {
 export const routes: RouteEntry[] = [
     {
         /**
-         * Network route
+         * Items
          * Note that the title and subtitle can use information from ReactRoute match
          */
         title: ( route?: RouteEntry ) => <span>{( route ? route.breadcrumbName : "" )}</span>,
         subtitle: ( route?: RouteEntry ) => <span>{( route ? route.breadcrumbName : "" )}</span>,
         breadcrumbName: "Items",
-        path: [ "/items", "/item/:item_id" ],
+        path: [ "/items", "/item/:item_id", "/item/:item_id/edit" ],
         exact: true,
         // AppMenuEntry: () => <div></div>,
         main: () => <ItemIndex />,

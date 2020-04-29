@@ -6,6 +6,11 @@ import React, { useState } from "react";
 import { AutoComplete, Input } from "antd";
 import { InputProps } from "antd/lib/input";
 
+import { ThreadOptionT } from '../types/ScrewSizeOption';
+
+import ScrewSizeConfig from '../config/ScrewSizeOptions.json';
+
+console.log( { ScrewSizeConfig} );
 
 
 /** string form is <Unit>?<Diameter>-<pitch>x<Length> */
@@ -27,17 +32,31 @@ const constructOptionValue = ( optionData: ScrewSizeInputOptionData ): string =>
     console.log( { method: 'ScrewSizeInput', f: 'constructOptionValue', ...optionData } );
     if ( !optionData ) { return null; }
     // const abbrevUnit = getPrefix( optionData.unit );
-    // TODO - REMOVE THIS , calculate
-    let unitPrefix = 'M';
-    return `${ unitPrefix }${ optionData.thread_diameter }${ optionData.thread_pitch ? `-${ optionData.thread_pitch }` : '' }x${ optionData.embedded_length }`;
+    return `${ optionData.prefix }${ optionData.thread_diameter }${ optionData.thread_pitch ? `-${ optionData.thread_pitch }` : '' }x${ optionData.embedded_length }`;
 };
-function getDefaultPitch ( unit: EnumUnitEnum, diameter: number ): number {
-    // TODO!
-    return 32;
+function getDefaultPitch (
+    prefix: UnitPrefixT,
+    unit: EnumUnitEnum, 
+    diameter: number, 
+    thread_type: EnumHardwareFastenerThreadTypeEnum = EnumHardwareFastenerThreadTypeEnum.fine 
+): number {
+    return ScrewSizeConfig[unit][`${prefix}${diameter}`][thread_type];
+}
+function getThreadType (
+    prefix: UnitPrefixT,
+    unit: EnumUnitEnum,
+    diameter: number, 
+    pitch: number
+): EnumHardwareFastenerThreadTypeEnum {
+    for( let pitchOption in ScrewSizeConfig[ unit ][ `${ prefix }${ diameter }` ] ){
+        if ( ScrewSizeConfig[ unit ][ `${ prefix }${ diameter }` ][pitchOption] === pitch){
+            return pitchOption as EnumHardwareFastenerThreadTypeEnum;
+        }
+    }
 }
 const parseScrewSizeInputOptionData: ( s: string ) => ScrewSizeInputOptionData = ( s ) => {
     if ( !s || typeof s !== "string" || s.length < 1 ) { return null; }
-    let r = /(?<unitPrefix>[mM#]?)(?<diameter>[/0-9]+)-?(?<pitch>[0-9\.]*)x?(?<length>[/0-9]*)/.exec( s );
+    let r = /(?<unitPrefix>[mM#]?)(?<diameter>[/0-9]*)-?(?<pitch>[0-9\.]*)x?(?<length>[/0-9]*)/.exec( s );
     if ( r && Object.keys( r ).includes( 'groups' ) ) {
         let prefix = r.groups.unitPrefix as UnitPrefixT;
         let unit = getUnitSystemFromUnitPrefix( prefix );
@@ -55,19 +74,52 @@ const parseScrewSizeInputOptionData: ( s: string ) => ScrewSizeInputOptionData =
 
         }
         let length = parseFloat( r.groups.length );
-        let pitch = parseFloat( r.groups.pitch ) ?? getDefaultPitch( unit, diameter );
+        let pitch = parseFloat( r.groups.pitch ) ?? getDefaultPitch( prefix, unit, diameter );
         console.log( { method: 'parseScrewSizeInputOptionData', diameter, unit, length, pitch, s, r } );
         return {
             prefix,
             unit,
             thread_diameter: diameter,
             embedded_length: length,
-            thread_pitch: pitch
+            thread_pitch: pitch,
+            thread_type: getThreadType( prefix, unit, diameter, pitch)
         };
     }
     return null;
 };
 function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOptionData[] {
+    if (v.unit){ 
+        if ( v.thread_diameter ) { 
+            if ( v.thread_pitch ){
+                return [v]; // this is as specific as we can get
+            }
+            if ( v.thread_type ){
+                return [{ ...v, thread_pitch: getDefaultPitch( v.prefix, v.unit, v.thread_diameter, v.thread_type ) }];
+            }
+            console.log( "TAG", {
+                v,
+                unit: v.unit,
+                obj: v[unit]
+            } );
+            console.log( {
+                v,
+                v_unit: Object.keys( v[ "unit" ] )
+            } );
+                // [ `${ v.prefix }${ v.thread_diameter }` ] )})
+                // TODO: not `v` use `ScrewSizeConfig`
+            return Object.keys( v[ v.unit ][ `${ v.prefix }${ v.thread_diameter }`] )
+                .map( thread_pitch => { 
+                    return {
+                        ...v, 
+                        thread_pitch: v[v.unit][v.thread_diameter][thread_pitch] 
+                    } 
+                });
+        }
+        // TODO: need to handle `prefix`
+        return Object.keys( v[ v.unit ] ).map( thread_diameter => v[ v.unit ][ thread_diameter ].map( ( thread_pitch: ThreadOptionT ) => { 
+            return { ...v, thread_diameter: thread_diameter, thread_pitch: v[ v.unit ][ thread_diameter ][ thread_pitch ] }; 
+        } ) );
+    }
     return [];
 }
 interface ScrewSizeInputProps extends Omit<InputProps, 'value' | 'onChange'> {
@@ -77,7 +129,6 @@ interface ScrewSizeInputProps extends Omit<InputProps, 'value' | 'onChange'> {
     onChange?: ( event: ScrewSizeInputOptionData ) => void;
 }
 export const ScrewSizeInput: React.FC<ScrewSizeInputProps> = ( props ) => {
-
     console.log( { m: 'ScrewSizeInput', f: 'init', props_value: props.value, props } );
     const { onChange, value, unit, ...remainingProps } = props;
     // const [ value, setValue ] = useState<ScrewSizeInputOptionData>( props.value );

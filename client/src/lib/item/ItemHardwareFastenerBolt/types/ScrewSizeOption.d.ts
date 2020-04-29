@@ -1,22 +1,26 @@
 /**
  * thread pitches for fine and coarse varieties
  **/
-export interface IScrewThreadDiameterDefinition {
-    /** ie. 6-40 */
-    fine: number;
-    /** ie. 6-32 */
-    coarse: number;
-}
+// export interface IScrewThreadDiameterDefinition {
+//     /** ie. 6-40 */
+//     fine: number;
+//     /** ie. 6-32 */
+//     coarse: number;
+// }
+
+import { EnumHardwareFastenerThreadType, EnumHardwareFastenerThreadTypeEnum } from "../../../types/graphql";
+
+export type ThreadOptionT = Record<keyof typeof EnumHardwareFastenerThreadTypeEnum, number>;
 
 /**
  * screw definitions for metric and imperial (uscs)
  **/
 export interface IScrewSizeDefinition {
-    metric: { [ diameter: number]: IScrewThreadDiameterDefinition; };
+    metric: { [ diameter: number ]: Partial<ThreadOptionT>; };
     /** United States Customary System */
-    uscs: { [ diameter: number ]: IScrewThreadDiameterDefinition; };
+    uscs: { [ diameter: number ]: Partial<ThreadOptionT>; };
 }
 
-export type SchemaDefinition<T> = { $schema: string } & T;
+export type SchemaDefinition<T> = { $schema: string; } & T;
 
 export type ScrewSizeSchema = SchemaDefinition<IScrewSizeDefinition>;

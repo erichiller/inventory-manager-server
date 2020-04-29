@@ -84,7 +84,8 @@ module.exports = {
         // serve index.html in place of 404 responses to allow HTML5 history
         historyApiFallback: true,
         port: 80,
-        // host: HOST
+        host: '0.0.0.0',
+        disableHostCheck: true,   // insecure , should use `public: 'inventory.hiller.pro`
     },
     plugins: [
         // new webpack.NoEmitOnErrorsPlugin(),

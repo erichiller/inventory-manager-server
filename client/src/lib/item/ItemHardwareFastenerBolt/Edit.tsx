@@ -10,43 +10,35 @@ import { UnitSelect } from './formComponents/UnitSelect';
 import { MeasurementInput } from './formComponents/MeasurementInput';
 import { EnumSelect } from './formComponents/EnumSelect';
 import { ScrewSizeInput, ScrewSizeInputOptionData } from './formComponents/ScrewSizeInput';
-import { toMinimumFixed } from '../../helpers';
+import { toMinimumFixed, Union } from '../../helpers';
 import { FormInstance } from 'antd/lib/form';
+import { ItemHardwareFastenerBolt } from './Index';
 
 
-interface ItemHardwareFastenerBoltEditFormProps extends ItemEditFormProps {
+interface ItemHardwareFastenerBoltEditFormProps extends Union<ItemEditFormProps, ItemHardwareFastenerBolt> {
 
 }
-
-
-// type EnumUnitKeys = keyof typeof EnumUnitEnum;
-
-
 
 
 interface FormFields {
     screw_size: ScrewSizeInputOptionData;
 }
 
-const setFieldInShouldUpdate = (field: string, form: FormInstance) => {
+
+const setFieldInShouldUpdate = ( field: keyof ScrewSizeInputOptionData, form: FormInstance ) => {
+    // if ( field !== "thread_diameter" ) { return () => false; }
     return ( prev: FormFields, next: FormFields ) => {
-        const field: keyof ScrewSizeInputOptionData = "thread_diameter";
         let currentValue = form.getFieldValue( field );
-        if ( next.screw_size ) {
-            if ( next.screw_size[ field ] ) {
-                let nextValue = toMinimumFixed( next.screw_size[ field ], 1 );
-                if ( currentValue !== nextValue ) {
-                    console.log( "form", `${ field } shouldUpdate?`, `SETTING ${ field } from screw_size`, `${ currentValue } !== ${ nextValue }` );
-                    form.setFieldsValue( Object.fromEntries( [ [ field, nextValue ] ] ) );
-                    return true;
-                }
-            } else {
-                form.setFieldsValue( Object.fromEntries( [ [ field, null ] ] ) );
-            }
+        console.log( "form", `${ field } shouldUpdate?`, { currentValue, next } );
+        let nextValue = next.screw_size && next.screw_size[ field ] ? toMinimumFixed( next.screw_size[ field ], 1 ) : null;
+        if ( currentValue !== nextValue ) {
+            console.log( "form", `${ field } shouldUpdate?`, `SETTING ${ field } from screw_size`, `${ currentValue } !== ${ nextValue }` );
+            form.setFieldsValue( Object.fromEntries( [ [ field, nextValue ] ] ) );
+            return true;
         }
         return false;
-    }
-}
+    };
+};
 
 
 export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBoltEditFormProps> = ( props ) => {
@@ -59,8 +51,14 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
         screwSizeInputRef.current.focus();
     }, [ screwSizeInputRef ] );
 
+    useEffect( () => {
+        let initProps: Partial<ItemHardwareFastenerBolt> = {};
+        if ( ! props.thread_direction ){
+            initProps.thread_direction = EnumHardwareFastenerThreadDirectionEnum.right;
+        }
+        form.setFieldsValue( initProps );
+    })
 
-    console.log( { f: "ItemHardwareFastenerBoltEditForm" } );
     return (
         <React.Fragment>
             {/********************************************************************************
@@ -72,7 +70,7 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                     <Input placeholder="Item name" />
                 </Form.Item>
                 <Form.Item name="description" label="Description">
-                    <TextArea placeholder="Description, leave empty for auto-generate" autoSize />
+                    <TextArea placeholder="Description, leave empty to auto-generate" autoSize />
                 </Form.Item>
                 {/* TODO: then here have a type selector when in the generic add form */}
             </div>
@@ -84,16 +82,7 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
             <div className="col">
 
                 <Form.Item name="unit" label="Measurement Unit" required
-                    shouldUpdate={( prev: FormFields, next: FormFields ) => {
-                        const field: keyof ScrewSizeInputOptionData = "unit";
-                        let currentValue = form.getFieldValue( field );
-                        if ( ( next.screw_size && next.screw_size[ field ] && currentValue !== next.screw_size[ field ] ) ) {
-                            console.log( "form", `${ field } shouldUpdate?`, `SETTING ${ field } from screw_size`, `${ currentValue } !== ${ next.screw_size[ field ] }` );
-                            form.setFieldsValue( Object.fromEntries( [ [ field, next.screw_size[ field ] ] ] ) );
-                            return true;
-                        }
-                        return false;
-                    }}
+                    shouldUpdate={setFieldInShouldUpdate( "unit", form )}
                 >
                     <UnitSelect onChange={setUnit} />
                 </Form.Item>
@@ -110,7 +99,7 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                             <pre><span className="highlight">M3</span>-0.5x5</pre>
                         </span>
                     } ><span>Diameter</span></Tooltip>}
-                    shouldUpdate={setFieldInShouldUpdate("thread_diameter", form)}
+                    shouldUpdate={setFieldInShouldUpdate( "thread_diameter", form )}
                 >
                     <MeasurementInput
                         unit={unit}
@@ -129,19 +118,7 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                             <pre>M3-<span className="highlight">0.5</span>x5</pre>
                         </span>
                     } ><span>Pitch</span></Tooltip>}
-                    shouldUpdate={( prev: FormFields, next: FormFields ) => {
-                        const field: keyof ScrewSizeInputOptionData = "thread_pitch";
-                        let currentValue = form.getFieldValue( field );
-                        if ( next.screw_size && next.screw_size[ field ] ) {
-                            let nextValue = toMinimumFixed( next.screw_size[ field ], 1 );
-                            if ( currentValue !== nextValue ) {
-                                console.log( "form", `${ field } shouldUpdate?`, `SETTING ${ field } from screw_size`, `${ currentValue } !== ${ nextValue }` );
-                                form.setFieldsValue( Object.fromEntries( [ [ field, nextValue ] ] ) );
-                                return true;
-                            }
-                        }
-                        return false;
-                    }}
+                    shouldUpdate={setFieldInShouldUpdate( "thread_pitch", form )}
                 >
                     <MeasurementInput
                         unit={unit}
@@ -153,19 +130,7 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                     name="embedded_length"
                     label={<Tooltip title="Embedded Length" ><span>Length</span></Tooltip>}
                     dependencies={[ 'unit' ]}
-                    shouldUpdate={( prev: FormFields, next: FormFields ) => {
-                        const field: keyof ScrewSizeInputOptionData = "embedded_length";
-                        let currentValue = form.getFieldValue( field );
-                        if ( next.screw_size && next.screw_size[ field ] ) {
-                            let nextValue = toMinimumFixed( next.screw_size[ field ], 1 );
-                            if ( currentValue !== nextValue ) {
-                                console.log( "form", `${ field } shouldUpdate?`, `SETTING ${ field } from screw_size`, `${ currentValue } !== ${ nextValue }` );
-                                form.setFieldsValue( Object.fromEntries( [ [ field, nextValue ] ] ) );
-                                return true;
-                            }
-                        }
-                        return false;
-                    }}
+                    shouldUpdate={setFieldInShouldUpdate( "embedded_length", form )}
                 >
                     <MeasurementInput
                         unit={unit}
@@ -187,11 +152,13 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                     />
                 </Form.Item>
             </div>
-            {/* Most important */}
 
 
 
-            <div className="col">
+            {/********************************************************************************
+              ** Most Important
+              ********************************************************************************/}            <div className="col">
+                <Divider key="divider_screw_size" orientation="left" />
                 <Form.Item
                     name="screw_size"
                     label="Length"
@@ -205,8 +172,6 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                     />
                 </Form.Item>
             </div>
-
-
 
             <div className="col">
                 <Form.Item name="head_type" label="Head">
@@ -224,33 +189,37 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                 </Form.Item>
             </div>
 
-            {/* </div> */}
-            {/* <div style={{
-                flexWrap: 'wrap',
-                border: '1px solid purple',
-                display: 'flex',
-                flexFlow: 'column wrap;'
-            }} > */}
-            {/* Thread */}
 
+
+            {/********************************************************************************
+              ** Thread
+              ********************************************************************************/}
             <div className="col">
                 <Divider key="divider_thread" orientation="left">Thread</Divider>
-                <Form.Item name="thread_length" label="Length" dependencies={[ 'unit' ]} required>
+
+                <Form.Item name="thread_length" dependencies={[ 'unit' ]}
+                    label={<Tooltip title="The length of the screw that is threaded" ><span>Thread Length</span></Tooltip>}
+                >
                     <MeasurementInput
                         unit={unit}
                         maxLength={6}
                     // placeholder=""
                     />
                 </Form.Item>
-                <Form.Item name="thread_direction" label="Direction">
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerThreadDirectionEnum )} placeholder="input placeholder" />
+                <Form.Item name="thread_direction"
+                    label={<Tooltip title="If in doubt, assume it is Right-handed" ><span>Handedness</span></Tooltip>}
+                >
+                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerThreadDirectionEnum )} placeholder="Right" />
                 </Form.Item>
                 <Form.Item name="thread_fit" label="Fit">
                     <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerThreadFitEnum )} placeholder="input placeholder" />
                 </Form.Item>
             </div>
 
-            {/* Head */}
+
+            {/********************************************************************************
+              ** Head
+              ********************************************************************************/}
             <div className="col">
                 <Divider key="divider_head" orientation="left">Head</Divider>
                 <Form.Item name="head_diameter" dependencies={[ 'unit' ]} label="Diameter">

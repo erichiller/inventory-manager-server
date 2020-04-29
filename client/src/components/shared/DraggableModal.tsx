@@ -7,7 +7,6 @@
 
 import React, { Ref } from "react";
 import { Modal } from "antd";
-import "../../styles/DraggableModal.scss";
 import { ModalProps } from "antd/lib/modal";
 
 // Get random number

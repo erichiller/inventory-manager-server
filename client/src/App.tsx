@@ -12,6 +12,7 @@ import { flatRoutes, singularFullPath } from './config/routes';
 import { PrintListButton } from './components/print/PrintListButton';
 import { PrintContextHandler } from './components/print/PrintContextHandler';
 import { DashboardOutlined, ContainerOutlined, ShareAltOutlined, TagOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { ItemIndex } from './components/item/Index';
 
 export const history = createBrowserHistory( {
     basename: '', // The base URL of the app (see below)
@@ -50,7 +51,6 @@ const App = () => {
                 }} >
                     {flatRoutes.map( ( route ) => {
                         console.log( `flatmap; ${ route.path }`, route, singularFullPath( route ) );
-                        // return <Route path="/news2"><div>ERIC2</div></Route>
                         return <Route
                             key={singularFullPath( route )}
                             path={route.path}

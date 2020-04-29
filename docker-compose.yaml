@@ -2,27 +2,45 @@
 
 version: '3.7'
 services:
-  inventory-api:
-    container_name: inventory-api
-    hostname: inventory-api
-    image: ehiller/inventory-manager-server:linux
+  web:
+    image: ehiller/inventory-web:20200427001
     build:
-      context:  ./server
-      dockerfile: linux.dockerfile
+      context:  ./client
+      # dockerfile: linux.dockerfile
       labels:
-        - "pro.hiller.description=API and printer communication for inventory-manager-server"
-    working_dir: /app
-    # see usage in /server/src/config.ts
-    # environment:
-      # - NODE_ENV=production
+        - "pro.hiller.description=Web server providing client for inventory"
+    # command: --bind :80
     # volumes:
-    # - ./server/src/:/app/src
-    # - ./server/public/:/app/public
-    ports:
-    - "80:80"
-    environment:
-      PORT: "80"
-    # command: npm run install-run-server
+    # ports:
+    # - "8081:80"
+    mac_address: "4E:00:00:00:04:02"
+    hostname: inventory
+networks:
+ default:
+  external:
+    # name: "nat"
+    name: "Mellanox ConnectX-3 Pro Ethernet Adapter #2 - Virtual Switch"
+  # inventory-api:
+  #   container_name: inventory-api
+  #   hostname: inventory-api
+  #   image: ehiller/inventory-manager-server:linux
+  #   build:
+  #     context:  ./server
+  #     dockerfile: linux.dockerfile
+  #     labels:
+  #       - "pro.hiller.description=API and printer communication for inventory-manager-server"
+  #   working_dir: /app
+  #   # see usage in /server/src/config.ts
+  #   # environment:
+  #     # - NODE_ENV=production
+  #   # volumes:
+  #   # - ./server/src/:/app/src
+  #   # - ./server/public/:/app/public
+  #   ports:
+  #   - "80:80"
+  #   environment:
+  #     PORT: "80"
+  #   # command: npm run install-run-server
   # webclient:
   #   build: ./client
   #   working_dir: /app
@@ -34,55 +52,55 @@ services:
   #   - ./webpack.conifg.js:/app/webpack.config.js
   #   ports:
   #   - "8081:80"
-    # command: npm run install-run-client
-  postgres:
-    container_name: postgres
-    hostname: postgres
-    image: postgres
-    restart: always
-    volumes:
-    - db_data:/var/lib/postgresql/data
-    - /home/eric/Documents/db4.dump:/db4.dump
-    ports:
-    - "5432:5432"
+  #   command: npm run install-run-client
+  # postgres:
+  #   container_name: postgres
+  #   hostname: postgres
+  #   image: postgres
+  #   restart: always
+  #   volumes:
+  #   - db_data:/var/lib/postgresql/data
+  #   - /home/eric/Documents/db4.dump:/db4.dump
+  #   ports:
+  #   - "5432:5432"
 
-  pgadmin:
-    container_name: pgadmin
-    hostname: pgadmin
-    image: dpage/pgadmin4:4.17
-    ports:
-    - "8090:80"
-    # depends_on:
-    # - "postgres"
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: eric@hiller.pro
-      PGADMIN_DEFAULT_PASSWORD: achoo
-      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 10
+  # pgadmin:
+  #   container_name: pgadmin
+  #   hostname: pgadmin
+  #   image: dpage/pgadmin4:4.17
+  #   ports:
+  #   - "8090:80"
+  #   # depends_on:
+  #   # - "postgres"
+  #   restart: always
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: eric@hiller.pro
+  #     PGADMIN_DEFAULT_PASSWORD: achoo
+  #     PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 10
 
-  hasura:
-    container_name: hasura
-    hostname: hasura
-    image: hasura/graphql-engine:v1.1.0-beta.2
-    ports:
-    - "8080:8080"
-    depends_on:
-    - "postgres"
-    - "inventory-api"
-    # links:
-    # - "localhost:inventory-api"
-    restart: always
-    environment:
-      HASURA_GRAPHQL_DATABASE_URL: postgres://hasura:xeEYlDFh4wVPC7hzz01d@postgres:5432/inventory
-    #   HASURA_GRAPHQL_ACCESS_KEY: mylongsecretkey
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
-      HASURA_GRAPHQL_ADMIN_SECRET: achoo
+  # hasura:
+  #   container_name: hasura
+  #   hostname: hasura
+  #   image: hasura/graphql-engine:v1.1.0-beta.2
+  #   ports:
+  #   - "8080:8080"
+  #   depends_on:
+  #   - "postgres"
+  #   - "inventory-api"
+  #   # links:
+  #   # - "localhost:inventory-api"
+  #   restart: always
+  #   environment:
+  #     HASURA_GRAPHQL_DATABASE_URL: postgres://hasura:xeEYlDFh4wVPC7hzz01d@postgres:5432/inventory
+  #   #   HASURA_GRAPHQL_ACCESS_KEY: mylongsecretkey
+  #     HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+  #     HASURA_GRAPHQL_ADMIN_SECRET: achoo
       
     # healthcheck:
       # https://docs.hasura.io/1.0/graphql/manual/api-reference/index.html#health-check-api
       # to /healthz ; 200 OK
-volumes:
-  db_data:
+# volumes:
+  # db_data:
 #   server_data:
 #   server_public:
   # timescale:

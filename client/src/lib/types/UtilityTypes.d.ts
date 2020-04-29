@@ -1,4 +1,4 @@
-
+import { QueryHookOptions, QueryResult } from 'react-apollo';
 export type Union<A, B> = A & B;
 
 export type ClassType<T> = Union<keyof T, new () => T>;
