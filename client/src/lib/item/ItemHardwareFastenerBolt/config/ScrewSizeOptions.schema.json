@@ -31,7 +31,7 @@
                 },
                 "uscs": {
                     "propertyNames": {
-                        "pattern": "^(#[0-9]{1,2})|([0-9\\/]{3,})$"
+                        "pattern": "^((#[0-9]{1,2})|([0-9\\/]{3,}))$"
                     },
                     "additionalProperties": {
                         "additionalProperties": false,
