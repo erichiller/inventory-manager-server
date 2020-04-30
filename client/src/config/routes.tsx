@@ -38,7 +38,7 @@ export const routes: RouteEntry[] = [
         title: ( route?: RouteEntry ) => <span>{( route ? route.breadcrumbName : "" )}</span>,
         subtitle: ( route?: RouteEntry ) => <span>{( route ? route.breadcrumbName : "" )}</span>,
         breadcrumbName: "Items",
-        path: [ "/items", "/item/:item_id", "/item/:item_id/edit" ],
+        path: [ "/items", "/item/:item_id", "/item/:item_id/:action" ],
         exact: true,
         // AppMenuEntry: () => <div></div>,
         main: () => <ItemIndex />,

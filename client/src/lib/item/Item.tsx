@@ -2,7 +2,10 @@
 import {
     Item as ItemGql, Icon, Label, GetIconQueryResult, GetIconDocument, GetIconQueryVariables, GetIconQuery,
     EnumItemClassEnum,
-    ItemSelectColumn
+    ItemSelectColumn,
+    GetItemQueryVariables,
+    GetItemDocument,
+    GetItemQuery
 } from "../types/graphql";
 
 import { Integer } from '../types/uint8';
@@ -14,6 +17,8 @@ import { ColumnProps } from "antd/lib/table";
 import { toTitleCase, Union, Unpacked } from "../helpers";
 import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
+import { resolve } from "url";
+import { rejects } from "assert";
 
 export type GenericItem = Pick<ItemGql, 'id'>
     & Partial<Pick<ItemGql, | 'object'>
@@ -82,18 +87,47 @@ export class Item<T extends GenericItem> implements IItem {
         this._name = props.name;
         this._class = props.class;
         this._object = props.object;
-        console.log( "Item class created with props:\n", props );
+        console.log( "Item class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
     }
+
+    static async ItemFactory<Q extends typeof GetItemDocument> ( variables: GetItemQueryVariables, query: Q = GetItemDocument as Q ): Promise<IItem> {
+
+        return new Promise( ( resolve, reject ) => apolloClient.query<GetItemQuery, GetItemQueryVariables>( {
+            query: GetItemDocument,
+            variables: {
+                id: variables.id
+            }
+        } ).then( result => {
+            console.log( { _cls: "Item", method: 'ItemFactory', msg: "loading item from GraphQL", item_data: result } );
+            const data = result.data.item[0]
+            let cls = this.getClassForType( data.class || data.__typename as EnumItemClassEnum );
+            let item = new cls( result.data.item[0] );
+            // it._name = result.data.object?.main ? result.data.object.name : "";
+            // this._class = result.data.object;
+            // this._object = result.data.object;
+            resolve( item );
+            // message.info( `Saved Successfully` );
+        } ).catch( error => {
+            const msg = `Failure loading item ${ variables.id }: ${ error }`;
+            console.error( msg );
+            message.error( msg );
+            reject( error );
+        // } ).finally( () => {
+            // props.visibleHandler( null );
+        } ) );
+    }
+
 
     /**
      * Return an array of items from input Gql results
+     * @param results Output from Item GraphQL query (data)
      */
-    static ItemFactory ( results: GenericItem[] ): IItem[] {
+    static ItemsFactory ( results: GenericItem[] ): IItem[] {
         // static ItemFactory ( results: GenericItem[] ): Item<GenericItem>[] {
         let items: IItem[] = [];
         results.forEach( i => {
             let cls = this.getClassForType( i.class || i.__typename );
-            console.log( { _cls: "Item", method: 'ItemFactory', msg: "loading class of type", item_class: cls, item_class_name: cls.name } );
+            console.log( { _cls: "Item", method: 'ItemsFactory', msg: "loading class of type", item_class: cls, item_class_name: cls.name } );
             items.push( new cls( i ) );
         } );
         return items;

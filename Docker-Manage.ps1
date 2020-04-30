@@ -58,7 +58,7 @@ $Containers = @{
         # Image    = "inventory-manager-api"
     }
     hasura = @{
-        MAC             = "4E:00:00:00:04:02"
+        MAC             = "4E:00:00:00:04:03"
         Hostname        = "hasura"
         ContainerHost   = "ubntv"
         Shell           = "/bin.bash"

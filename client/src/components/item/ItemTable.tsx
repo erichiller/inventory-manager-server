@@ -1,5 +1,5 @@
 import { Table, Divider, message, Alert, Popover, Pagination, Modal, Spin } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ColumnProps } from 'antd/es/table';
 import {
     // withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, ItemHardwareFastenerBoltSelectColumn, useItemHardwareFastenerBoltQuery, useGetIconQuery, 
@@ -47,15 +47,12 @@ type ItemTableProps<T, Q extends typeof useGetItemsQuery> = {
     query?: Q; // QueryResultTypePlus
     variables?: GetItemsQueryVariables;
 };
-// interface ItemTableProps<T> {
-//     // collapsed?: boolean;
-//     data?: T[];
-//     query?
-//     // itemClass: T;
-//     // displayData?: ( data: T, index: number ) => React.ReactNode;
-//     // filter:
-//     // loading?: boolean;
-// }
+
+interface IItemTableParams {
+    /** item_id is Int as string */
+    item_id: string;
+    action: "edit"
+}
 
 export type visibleHandler = ( c?: React.ReactElement ) => void;
 
@@ -67,7 +64,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     let result: QueryResult<GetItemsQuery, GetItemsQueryVariables>;
 
     let location = useLocation();
-    let params   = useParams();
+    let params = useParams < IItemTableParams >();
 
     console.log( { location, cls: 'ItemTable', params})
     
@@ -83,6 +80,27 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     const mouseOverRef = React.useRef<HTMLDivElement>();
     const [ modal, setModal ] = useState<React.ReactElement>();
 
+    /** Load item into currentRecord is  */
+    useEffect( () => {
+        if (params.item_id){
+            Item.ItemFactory( { id: parseInt( params.item_id ) } )
+                .then( item => {
+                    console.info("loaded item from ItemFactory", item);
+                    setCurrentRecord( item as T );
+                })
+                .catch( error => console.log("error"));
+        }
+    }, [ params.item_id ])
+
+    useEffect( () => {
+        console.log( { _cls: "ItemTable", method: 'useEffect for currentRecord & params.action', currentRecord, msg: "run", params_action: params.action } );
+        if ( params.action == "edit" && currentRecord ) {
+            setModal( getRecordEditModal( currentRecord ) );
+        }
+    }, [ currentRecord, params.action ] )
+
+
+
     if ( !props.data ) {
         let variables = props.variables;
         if ( !variables.categories || variables.categories.length === 0 ) {
@@ -93,12 +111,12 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
         } );
         loading = result.loading;
 
-        React.useEffect( () => {
+        useEffect( () => {
             if ( result.error ) {
                 message.error( result.error );
             }
             if ( result.data ) {
-                setData( Item.ItemFactory( result.data.items ) as T[] );
+                setData( Item.ItemsFactory( result.data.items ) as T[] );
                 if ( result.data.items.length > 0 ) {
                     message.info( `loaded data, found ${ result.data.items.length } items` );
                 } else {
@@ -154,7 +172,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                         <span onMouseOver={event => event.preventDefault()}>
                             <a onClick={( obj ) => {
                                 obj.preventDefault();
-                                setCurrentRecord(record );
+                                setCurrentRecord( record );
                                 setModal( getRecordEditModal( record ) );
                             }
                             }><EditOutlined className="IconButton" /></a>
