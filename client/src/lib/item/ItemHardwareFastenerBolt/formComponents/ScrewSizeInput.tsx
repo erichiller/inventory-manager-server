@@ -99,7 +99,7 @@ function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOpti
             console.log( "TAG", {
                 v,
                 unit: v.unit,
-                obj: v[unit]
+                obj: ScrewSizeConfig[v.unit]
             } );
             console.log( {
                 v,

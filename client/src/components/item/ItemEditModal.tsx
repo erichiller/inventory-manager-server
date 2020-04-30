@@ -13,6 +13,7 @@ interface ItemEditModalProps {
 
 export const ItemEditModal: React.FC<ItemEditModalProps> = ( props ) => {
     const [ form ] = useForm();
+    console.log( { class: 'ItemEditModal', msg: 'load FC', props } );
 
     const onFinish = ( values: {
         [ name: string ]: any;
@@ -49,7 +50,9 @@ export const ItemEditModal: React.FC<ItemEditModalProps> = ( props ) => {
                     <Input placeholder="input placeholder" />
                 </Form.Item>
             {/* </Form.Item> */}
-            <props.recordEditComponent form={form} />
+            { props && props.recordEditComponent ?
+                <props.recordEditComponent form={form} />
+            : null}
             {/* <Button type="primary" htmlType="submit">
                 Submit
         </Button> */}
