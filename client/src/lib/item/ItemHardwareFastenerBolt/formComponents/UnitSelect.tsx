@@ -1,6 +1,6 @@
 import { SelectProps } from "antd/lib/select";
 import { EnumUnitKeys } from "../types/types";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Select } from "antd";
 import { EnumUnitEnum } from "../../../types/graphql";
 
@@ -13,15 +13,22 @@ export const UnitSelect: React.FC<SelectProps<EnumUnitKeys>> = ( props ) => {
     console.log("UnitSelect", {props})
     const { onChange } = props;
     const [ value, setValue ] = useState<EnumUnitKeys>( props.value );
+
+    // useEffect( () => {
+    //     console.log( "UnitSelect useEffect", { props, value } )
+    //     if ( value !== props.value ) {
+    //         console.log( "UnitSelect useEffect triggered", { props, value } );
+    //         triggerChange( props.value, null );
+    //     }
+    // }, [value, props.value])
+
     const triggerChange = ( value: EnumUnitKeys, option: OptionsType | OptionData | OptionGroupData ) => {
         setValue( value );
         if ( onChange ) {
             onChange( value, option );
         }
     };
-    if ( value !== props.value ) {
-        triggerChange( props.value, null );
-    }
+
     return (
         <React.Fragment>
             <Select
