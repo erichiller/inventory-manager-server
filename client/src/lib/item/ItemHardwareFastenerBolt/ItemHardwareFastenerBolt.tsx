@@ -65,12 +65,12 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
 
     constructor ( props: ItemHardwareFastenerBoltGql | ItemGql ) {
         super( props as ItemHardwareFastenerBoltGql );
-        console.log({class: 'ItemHardwareFastenerBolt', method: 'constructor', props});
+        // console.log({class: 'ItemHardwareFastenerBolt', method: 'constructor', props});
         if ( Object.keys(props).includes('object') && (props as ItemGql).object ){
-            console.log( { class: 'ItemHardwareFastenerBolt', method: 'constructor', action: 'props contains "object"', props_object: (props as ItemGql).object } );
+            // console.log( { class: 'ItemHardwareFastenerBolt', method: 'constructor', action: 'props contains "object"', props_object: (props as ItemGql).object } );
 
             Object.keys( ( props as ItemGql ).object ).forEach( key => {
-                console.log( { class: 'ItemHardwareFastenerBolt', method: 'constructor', action: 'adding props to this', key } );
+                // console.log( { class: 'ItemHardwareFastenerBolt', method: 'constructor', action: 'adding props to this', key } );
                 this[key] = (props as ItemGql).object[key];
             });
         }

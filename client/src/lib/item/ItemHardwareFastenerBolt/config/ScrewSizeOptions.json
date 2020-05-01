@@ -4,6 +4,13 @@
         "m1": {
             "coarse": 3,
             "fine": 22
+        },
+        "M2": {
+            "coarse": 4,
+            "fine": 5
+        },
+        "M3": {
+            "coarse": 0.5
         }
     },
     "uscs": {

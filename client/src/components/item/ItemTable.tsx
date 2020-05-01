@@ -151,7 +151,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
         let columns: { [ key: string ]: ColumnProps<T>; } = {};
         if ( data && data.length ) {
             data.forEach( d => {
-                console.log( { class: 'ItemTable', method: 'getColumns', d, d_Columns: d.Columns } );
+                // console.log( { class: 'ItemTable', method: 'getColumns', d, d_Columns: d.Columns } );
                 d.Columns.forEach( c => columns[ c.key ] = c );
             } );
         }
@@ -227,7 +227,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     return (
         <div
             onMouseLeave={event => {
-                console.log( { 'class of target_TOP_DIV': ( event.target as HTMLTableDataCellElement ).className.toString(), eventType: 'onMouseOut', event, currentTarget: event.currentTarget, target: event.target } );
+                // console.log( { 'class of target_TOP_DIV': ( event.target as HTMLTableDataCellElement ).className.toString(), eventType: 'onMouseOut', event, currentTarget: event.currentTarget, target: event.target } );
                 setMouseOverVisible( false );
 
                 // currentRecord = { current: null };

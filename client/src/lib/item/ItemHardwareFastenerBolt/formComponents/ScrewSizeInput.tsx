@@ -1,5 +1,5 @@
 import { EnumUnitEnum, EnumHardwareFastenerThreadTypeEnum } from "../../../types/graphql";
-import { getUnitSystemFromUnitPrefix } from "./helpers";
+import { getUnitSystemFromUnitPrefix, getUnitPrefixAndDiameterFromOptionString } from "./helpers";
 import { UnitPrefixT, EnumUnitKeys } from "../types/types";
 import { SelectProps } from "antd/lib/select";
 import React, { useState } from "react";
@@ -11,6 +11,12 @@ import { ThreadOptionT } from '../types/ScrewSizeOption';
 import ScrewSizeConfig from '../config/ScrewSizeOptions.json';
 
 console.log( { ScrewSizeConfig} );
+
+const foo = ScrewSizeConfig.metric.m1.coarse
+let v = {unit: 'metric'}
+let thread_diameter = 'm1';
+const fook = Object.keys( ScrewSizeConfig[ v.unit ] ) as [ 'metric', 'uscs'];
+const foop = ScrewSizeConfig.metric.m1.coarse
 
 
 /** string form is <Unit>?<Diameter>-<pitch>x<Length> */
@@ -32,7 +38,9 @@ const constructOptionValue = ( optionData: ScrewSizeInputOptionData ): string =>
     console.log( { method: 'ScrewSizeInput', f: 'constructOptionValue', ...optionData } );
     if ( !optionData ) { return null; }
     // const abbrevUnit = getPrefix( optionData.unit );
-    return `${ optionData.prefix }${ optionData.thread_diameter }${ optionData.thread_pitch ? `-${ optionData.thread_pitch }` : '' }x${ optionData.embedded_length }`;
+    return `${ optionData.prefix.toUpperCase() }${ optionData.thread_diameter ?? '' }` +
+            `${ optionData.thread_pitch ? `-${ optionData.thread_pitch }` : '' }` + 
+        `${  optionData.embedded_length ? `x${ optionData.embedded_length}`: ''}`;
 };
 function getDefaultPitch (
     prefix: UnitPrefixT,
@@ -71,7 +79,6 @@ const parseScrewSizeInputOptionData: ( s: string ) => ScrewSizeInputOptionData =
                     diameter = numer / denom;
                 }
             }
-
         }
         let length = parseFloat( r.groups.length );
         let pitch = parseFloat( r.groups.pitch ) ?? getDefaultPitch( prefix, unit, diameter );
@@ -89,6 +96,8 @@ const parseScrewSizeInputOptionData: ( s: string ) => ScrewSizeInputOptionData =
 };
 function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOptionData[] {
     if (v.unit){ 
+        if ( v.prefix ){ v.prefix = v.prefix.toLowerCase() as UnitPrefixT } // tolowercase for more certain matching
+        ScrewSizeConfig[v.unit] = Object.fromEntries( Object.keys(ScrewSizeConfig[v.unit]).map( thread_diameter => [thread_diameter.toLowerCase(), ScrewSizeConfig[v.unit][thread_diameter]]) );
         if ( v.thread_diameter ) { 
             if ( v.thread_pitch ){
                 return [v]; // this is as specific as we can get
@@ -99,26 +108,38 @@ function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOpti
             console.log( "TAG", {
                 v,
                 unit: v.unit,
-                obj: ScrewSizeConfig[v.unit]
-            } );
-            console.log( {
-                v,
-                v_unit: Object.keys( v[ "unit" ] )
+                obj: ScrewSizeConfig[v.unit],
+                v_unit_keys: Object.keys( v[ "unit" ] )
             } );
                 // [ `${ v.prefix }${ v.thread_diameter }` ] )})
                 // TODO: not `v` use `ScrewSizeConfig`
-            return Object.keys( v[ v.unit ][ `${ v.prefix }${ v.thread_diameter }`] )
-                .map( thread_pitch => { 
+            return Object.keys( ScrewSizeConfig[ v.unit ][ `${ v.prefix }${ v.thread_diameter}`] )
+                .map( thread_pitch => {
+                    console.log( { v, thread_pitch, pitches: ScrewSizeConfig[ v.unit ][ `${ v.prefix }${ v.thread_diameter }` ] } );
                     return {
                         ...v, 
-                        thread_pitch: v[v.unit][v.thread_diameter][thread_pitch] 
+                        thread_pitch: ScrewSizeConfig[ v.unit ][ `${ v.prefix }${ v.thread_diameter }` ][ thread_pitch ],
+                        embedded_length: null
                     } 
                 });
         }
         // TODO: need to handle `prefix`
-        return Object.keys( v[ v.unit ] ).map( thread_diameter => v[ v.unit ][ thread_diameter ].map( ( thread_pitch: ThreadOptionT ) => { 
-            return { ...v, thread_diameter: thread_diameter, thread_pitch: v[ v.unit ][ thread_diameter ][ thread_pitch ] }; 
-        } ) );
+        return Object.keys( ScrewSizeConfig[ v.unit ] ).flatMap( prefixed_thread_diameter => {
+            prefixed_thread_diameter = prefixed_thread_diameter.toLowerCase();
+            console.log( { v, thread_diameter } );
+            return Object.keys( ScrewSizeConfig[ v.unit ][ prefixed_thread_diameter ] ).map( 
+                ( thread_pitch: keyof typeof EnumHardwareFastenerThreadTypeEnum ) => {
+                    console.log( { v, thread_pitch } );
+                    let { prefix, thread_diameter } = getUnitPrefixAndDiameterFromOptionString( prefixed_thread_diameter);
+                    return {
+                        ...v,
+                        prefix: prefix,
+                        thread_diameter: thread_diameter,
+                        thread_pitch: ScrewSizeConfig[ v.unit ][ prefixed_thread_diameter ][ thread_pitch ],
+                        embedded_length: null
+                    };
+            } )
+        } );
     }
     return [];
 }
@@ -166,7 +187,7 @@ export const ScrewSizeInput: React.FC<ScrewSizeInputProps> = ( props ) => {
         // TODO: add ability to input fractions
         <React.Fragment>
             <AutoComplete options={options}>
-                <Input ref={props.forwardRef} onChange={testInputOnChange} />
+                <Input ref={props.forwardRef} spellCheck={false} onChange={testInputOnChange} />
             </AutoComplete>
         </React.Fragment>
     );

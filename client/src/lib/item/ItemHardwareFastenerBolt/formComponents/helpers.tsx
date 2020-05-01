@@ -6,9 +6,14 @@ import { SelectProps } from 'antd/lib/select';
 
 import { EnumUnitEnum } from "../../../types/graphql";
 import { EnumUnitKeys, UnitPrefixT } from "../types/types";
+import { ScrewSizeInputOptionData } from "./ScrewSizeInput";
 
 
 
+/**
+ * Accept Unit enum and return the string for representation of the unit system's dimensions
+ * @param sys EnumUnit or its keys
+ */
 export function getUnitFromUnitSystem ( sys: EnumUnitKeys | EnumUnitEnum ) {
     switch ( sys ) {
         case EnumUnitEnum.metric:
@@ -17,7 +22,6 @@ export function getUnitFromUnitSystem ( sys: EnumUnitKeys | EnumUnitEnum ) {
         case EnumUnitEnum.usc:
         case 'usc':
             return "in.";
-        // return "\"";
         default:
             return '';
     }
@@ -36,7 +40,20 @@ export function getUnitSystemFromUnitPrefix ( prefix: UnitPrefixT ): EnumUnitEnu
         case '#':
             return EnumUnitEnum.usc;
     }
+}
 
+/**
+ * Accept an option string and return the unit prefix and diameter
+ * @param optionString string which would normally be fed into ScrewSizeInput Option. Of the form `<unitPrefix><diameter>-<pitch>-<length>`
+ */
+export function getUnitPrefixAndDiameterFromOptionString ( optionString: string ): Pick< ScrewSizeInputOptionData, 'prefix' | 'thread_diameter'> {
+    let r = /(?<unitPrefix>[mM#]?)(?<diameter>[/0-9]*)-?(?<pitch>[0-9\.]*)x?(?<length>[/0-9]*)/.exec( optionString );
+    if ( r && Object.keys( r ).includes( 'groups' ) ) {
+        return { 
+            prefix: r.groups.unitPrefix as UnitPrefixT,
+            thread_diameter: parseFloat(r.groups.diameter)
+        }
+    }
 }
 
 /*****************************************************************************/
