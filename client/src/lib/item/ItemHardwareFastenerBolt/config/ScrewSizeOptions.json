@@ -1,24 +1,109 @@
 {
     "$schema": "./ScrewSizeOptions.schema.json",
     "metric": {
-        "m1": {
-            "coarse": 3,
-            "fine": 22
+        "m1.6": {
+            "coarse": 00,
+            "fine": 00
+        },
+        "M1.8": {
+            "coarse": 00,
+            "fine": 00
         },
         "M2": {
-            "coarse": 4,
-            "fine": 5
+            "coarse": 00
         },
         "M3": {
-            "coarse": 0.5
+            "fine": 0.75,
+            "coarse": 1.0
+        },
+        "M3.5": {
+            "fine": 0.75,
+            "coarse": 1.0
+        },
+        "M4": {
+            "fine": 0.75,
+            "coarse": 1.0
+        },
+
+
+// these are actual
+        "M5": {
+            "fine": null,
+            "coarse": 0.8
+        },
+        "M6": {
+            "fine": 0.75,
+            "coarse": 1.0
+        },
+        "M8": {
+            "fine": 1.0,
+            "coarse": 1.25
+        },
+        "M10": {
+            "extra_fine": 1.0
+            "fine": 1.25,
+            "coarse": 1.5
+        },
+        "M12": {
+            "fine": 1.5,
+            "coarse": 1.75
+        },
+        "M16": {
+            "fine": 1.5,
+            "coarse": 2.0
+        },
+        "M20": {
+            "fine": 2.5,
+            "coarse": 1.5
+        },
+        "M24": {
+            "fine": 2.0,
+            "coarse": 3.0
+        },
+        "M30": {
+            "fine": 2.0
+            "coarse": 3.5
         }
     },
     "uscs": {
+        "#0": {
+
+        },
+        "#1": {
+
+        },
+        "#2": {
+
+        },
+        "#3": {
+
+        },
+        "#4": {
+
+        },
+        "#5": {
+
+        },
         "#6": {
             "coarse": 3,
             "fine": 22
         },
-        "#1/2": {
+        "#7": {
+
+        },
+        "#8": {
+
+        },
+        "#9": {
+
+        },
+        "#10": {
+
+        },
+        "#12": {
+
+        },
+        "#1/4": {
             "coarse": 3,
             "fine": 22
         },
