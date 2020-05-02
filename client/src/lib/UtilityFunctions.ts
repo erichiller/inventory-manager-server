@@ -63,3 +63,16 @@ export function toMinimumFixed ( n: number | string, min: 0 | 1 | 2 | 3 | 4, max
     }
     return curr;
 }
+
+/**
+ * Elimnate duplicate elements within an array.
+ * @param arr input array
+ */
+export function eliminateArrayDuplicates<T>( arr: Array<T> ): Array<T> {
+    return arr.filter( (el, idx) => arr.indexOf(el) === idx );
+}
+
+export function transparentLog<T>(logparams: {[key: string]: any}, input: T): T {
+    console.log(logparams, input);
+    return input;
+}

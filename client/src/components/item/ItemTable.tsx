@@ -9,7 +9,7 @@ import {
 import { LabelDrawModal } from '../draw/LabelDrawModal';
 import { Item, ItemHardwareFastenerBolt } from '../../lib/item';
 import { DISPLAY } from '../../lib/types/enums';
-import { toTitleCase, QueryResultTypePlus } from '../../lib/helpers';
+import { toTitleCase, QueryResultTypePlus } from '../../lib/UtilityFunctions';
 
 import { QueryHookOptions, useQuery } from '@apollo/react-hooks';
 import { QueryResult } from '@apollo/react-common';
