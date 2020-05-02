@@ -12,13 +12,6 @@ import ScrewSizeConfig from '../config/ScrewSizeOptions.json';
 
 console.log( { ScrewSizeConfig} );
 
-const foo = ScrewSizeConfig.metric.m1.coarse
-let v = {unit: 'metric'}
-let thread_diameter = 'm1';
-const fook = Object.keys( ScrewSizeConfig[ v.unit ] ) as [ 'metric', 'uscs'];
-const foop = ScrewSizeConfig.metric.m1.coarse
-
-
 /** string form is <Unit>?<Diameter>-<pitch>x<Length> */
 export class ScrewSizeInputOptionData {
     unit: EnumUnitEnum;
@@ -126,7 +119,6 @@ function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOpti
         // TODO: need to handle `prefix`
         return Object.keys( ScrewSizeConfig[ v.unit ] ).flatMap( prefixed_thread_diameter => {
             prefixed_thread_diameter = prefixed_thread_diameter.toLowerCase();
-            console.log( { v, thread_diameter } );
             return Object.keys( ScrewSizeConfig[ v.unit ][ prefixed_thread_diameter ] ).map( 
                 ( thread_pitch: keyof typeof EnumHardwareFastenerThreadTypeEnum ) => {
                     console.log( { v, thread_pitch } );
