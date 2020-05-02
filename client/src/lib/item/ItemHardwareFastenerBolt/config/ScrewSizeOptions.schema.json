@@ -16,13 +16,22 @@
                         "additionalProperties": false,
                         "properties": {
                             "coarse": {
-                                "type": "number"
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
                             },
                             "extra_fine": {
-                                "type": "number"
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
                             },
                             "fine": {
-                                "type": "number"
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
                             }
                         },
                         "type": "object"
@@ -37,13 +46,22 @@
                         "additionalProperties": false,
                         "properties": {
                             "coarse": {
-                                "type": "number"
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
                             },
                             "extra_fine": {
-                                "type": "number"
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
                             },
                             "fine": {
-                                "type": "number"
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
                             }
                         },
                         "type": "object"

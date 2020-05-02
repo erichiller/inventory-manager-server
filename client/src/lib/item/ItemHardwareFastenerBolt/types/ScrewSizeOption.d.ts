@@ -10,7 +10,7 @@
 
 import { EnumHardwareFastenerThreadType, EnumHardwareFastenerThreadTypeEnum } from "../../../types/graphql";
 
-export type ThreadOptionT = Record<keyof typeof EnumHardwareFastenerThreadTypeEnum, number>;
+export type ThreadOptionT = Record<keyof typeof EnumHardwareFastenerThreadTypeEnum, number | null>;
 
 /**
  * screw definitions for metric and imperial (uscs)
