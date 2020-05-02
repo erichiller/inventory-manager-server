@@ -8,6 +8,7 @@ import { EnumUnitEnum } from "../../../types/graphql";
 import { EnumUnitKeys, UnitPrefixT } from "../types/types";
 import { ScrewSizeInputOptionData } from "./ScrewSizeInput";
 
+export const screwSizeRegex = /(?<unitPrefix>[mM#]?)(?<diameter>[/0-9\.]*)-?(?<pitch>[0-9\.]*)x?(?<length>[/0-9\.]*)/;
 
 
 /**
@@ -47,7 +48,7 @@ export function getUnitSystemFromUnitPrefix ( prefix: UnitPrefixT ): EnumUnitEnu
  * @param optionString string which would normally be fed into ScrewSizeInput Option. Of the form `<unitPrefix><diameter>-<pitch>-<length>`
  */
 export function getUnitPrefixAndDiameterFromOptionString ( optionString: string ): Pick< ScrewSizeInputOptionData, 'prefix' | 'thread_diameter'> {
-    let r = /(?<unitPrefix>[mM#]?)(?<diameter>[/0-9]*)-?(?<pitch>[0-9\.]*)x?(?<length>[/0-9]*)/.exec( optionString );
+    let r = screwSizeRegex.exec( optionString );
     if ( r && Object.keys( r ).includes( 'groups' ) ) {
         return { 
             prefix: r.groups.unitPrefix as UnitPrefixT,

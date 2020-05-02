@@ -4,7 +4,7 @@ import React from 'react';
 import { Integer } from '../../types/uint8';
 import { HexBoltIcon } from '../../../styles/icon';
 import { ColumnProps } from 'antd/lib/table';
-import { toTitleCase } from '../../helpers';
+import { toTitleCase } from '../../UtilityFunctions';
 import { ItemHardwareFastenerBoltEditForm } from './Edit';
 
 

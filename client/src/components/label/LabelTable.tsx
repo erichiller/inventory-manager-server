@@ -5,7 +5,7 @@ import { withGetLabels, GetLabelsProps, LabelSelectColumn, Label, GetLabelsQuery
 import { LabelDrawModal } from './../draw/LabelDrawModal';
 import { Item } from '../../lib/item';
 import { DISPLAY } from '../../lib/types/enums';
-import { toTitleCase } from '../../lib/helpers';
+import { toTitleCase } from '../../lib/UtilityFunctions';
 
 
 

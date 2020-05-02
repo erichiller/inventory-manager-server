@@ -10,7 +10,7 @@ import { UnitSelect } from './formComponents/UnitSelect';
 import { MeasurementInput } from './formComponents/MeasurementInput';
 import { EnumSelect } from './formComponents/EnumSelect';
 import { ScrewSizeInput, ScrewSizeInputOptionData } from './formComponents/ScrewSizeInput';
-import { toMinimumFixed, Union } from '../../helpers';
+import { toMinimumFixed, Union } from '../../UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { ItemHardwareFastenerBolt } from './Index';
 

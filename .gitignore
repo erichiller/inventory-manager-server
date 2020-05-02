@@ -3,3 +3,4 @@ dist
 server/public
 .DS_STORE
 apollo.config.js
+yarn-error.log

@@ -2,15 +2,15 @@
     "$schema": "./ScrewSizeOptions.schema.json",
     "metric": {
         "m1.6": {
-            "coarse": 0,
-            "fine": 0
+            "fine": 0.5,
+            "coarse": 1
         },
         "M1.8": {
-            "coarse": 0,
-            "fine": 0
+            "fine": 0.7,
+            "coarse": 1
         },
         "M2": {
-            "coarse": 0
+            "coarse": 1
         },
         "M3": {
             "fine": 0.75,

@@ -2,7 +2,7 @@ import { Menu, Popconfirm, message } from "antd";
 import React, { CSSProperties } from "react";
 import { PrintContext } from "./PrintContextHandler";
 import { withSendBuffer, SendBufferProps } from "../../lib/types/graphql";
-import { filterObject } from "../../lib/helpers";
+import { filterObject } from "../../lib/UtilityFunctions";
 import { PrinterOutlined } from "@ant-design/icons";
 
 
