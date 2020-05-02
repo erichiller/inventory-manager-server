@@ -1,55 +1,154 @@
+// "m1.6": {
+            pitch: {
+                extra_sizes?: [ 0.x, 0.y ],
+                "extra_fine": 0.2, // these are the "named" sizes
+                "fine": 0.3,
+                "coarse": 0.35
+            }
+        },
+// start actual
+
 {
     "$schema": "./ScrewSizeOptions.schema.json",
     "metric": {
         "m1.6": {
-            "fine": 0.5,
-            "coarse": 1
+            "extra_fine": 0.2,
+            "fine": 0.3,
+            "coarse": 0.35
+        },
+        "m1.7": {
+            "extra_fine": null,
+            "fine": null,
+            "coarse": 0.35
         },
         "M1.8": {
-            "fine": 0.7,
-            "coarse": 1
+            "fine": 0.2,
+            "coarse": 0.35
         },
         "M2": {
-            "coarse": 1
+            "fine": 0.25,
+            "coarse": 0.4
+        },
+        "M2.2": {
+            "fine": 0.25,
+            "coarse": 0.45
+        },
+        "M2.3": {
+            "fine": 0.4,
+            "coarse": 0.45
+        },
+        "M2.5": {
+            "fine": 0.35,
+            "coarse": 0.45
+        },
+        "M2.6": {
+            "fine": null,
+            "coarse": 0.45
         },
         "M3": {
-            "fine": 0.75,
-            "coarse": 1.0
+            "fine": 0.35,
+            "coarse": 0.5
         },
         "M3.5": {
-            "fine": 0.75,
-            "coarse": 1.0
+            "fine": 0.35,
+            "coarse": 0.6
         },
         "M4": {
-            "fine": 0.75,
-            "coarse": 1.0
+            "fine": 0.5,
+            "coarse": 0.7
         },
-
-
+        "M4.5": {
+            "fine": 0.5,
+            "coarse": 0.75
+        },
         "M5": {
-            "fine": null,
+            "fine": 0.5,
             "coarse": 0.8
         },
+        "M5.5": {
+            "fine": 0.5,
+            "coarse": null
+        },
         "M6": {
+            "fine+2": 0.5,
+            "fine+1": 0.7,
+            "fine": 0.75,
+            "fine-1": 0.8,
+            "coarse": 1.0
+        },
+        "M7": {
+            "extra_fine": 0.5,
             "fine": 0.75,
             "coarse": 1.0
         },
         "M8": {
+            "fine+3": 0.5,
+            "fine+2": 0.75,
+            "fine+1": 0.8,
+            "fine": 1.0,
+            "coarse": 1.25
+        },
+        "M9": {
+            "fine+2": 0.5,
+            "fine+1": 0.75,
             "fine": 1.0,
             "coarse": 1.25
         },
         "M10": {
+            "extra_fine+3": 0.5,
+            "extra_fine+2": 0.75,
             "extra_fine": 1.0,
+            "extra_fine-1": 1.12,
             "fine": 1.25,
             "coarse": 1.5
         },
+        "M11": {
+            "fine+3": 0.5,
+            "fine+2": 0.75,
+            "fine": 1.0,
+            "coarse": 1.5
+        },
         "M12": {
+            "fine+4": 0.5,
+            "fine+3": 0.75,
+            "fine+2": 1.0,
+            "fine+1": 1.25,
             "fine": 1.5,
             "coarse": 1.75
         },
-        "M16": {
+        "M14": {
+            "fine+4": 0.5,
+            "fine+3": 0.75,
+            "fine+2": 1.0,
+            "fine+1": 1.25,
             "fine": 1.5,
             "coarse": 2.0
+        },
+        "M15": {
+            "fine": 1.0,
+            "coarse": 1.5
+        },
+        "M16": {
+            "fine+4": 0.5,
+            "fine+3": 0.75,
+            "fine+2": 1.0,
+            "fine+1": 1.25,
+            "fine": 1.5,
+            "fine-1": 1.6,
+            "coarse": 2.0
+        },
+        "M17": {
+            "fine": 1.0,
+            "coarse": 1.5
+        },
+        "M18": {
+            "fine+4": 0.5,
+            "fine+3": 0.75,
+            "fine+2": 1.0,
+            "fine+1": 1.25,
+            "fine": 1.5,
+            "fine-1": 2.0,
+            "coarse": 2.5
         },
         "M20": {
             "fine": 2.5,
