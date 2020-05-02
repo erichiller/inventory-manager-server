@@ -27,10 +27,10 @@ export const ItemEditModal: React.FC<ItemEditModalProps> = ( props ) => {
         visible={true}
         title={Item.name}
         width={null}
-        bodyStyle={{
-            maxWidth: '80vw',
-            maxHeight: '80vh'
-        }}
+        // bodyStyle={{
+        //     maxWidth: '80vw',
+        //     maxHeight: '80vh'
+        // }}
         className="ItemEditFormModal"
         onOk={e => form.submit()}
         onCancel={event => props.visibleHandler()}

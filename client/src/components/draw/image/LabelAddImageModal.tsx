@@ -106,7 +106,7 @@ export default withGetIcon<LabelAddImageProps, LabelAddImageState>()(
                                 onOk={() => { commitLabelImage( labelImage ); this.onClose(); }}
                                 footer={[
                                     <Tooltip placement="top" title="Return to Items">
-                                        <Button key="cancel" type="danger" onClick={this.handleCancel}>
+                                        <Button key="cancel" danger={true} onClick={this.handleCancel}>
                                             <StopOutlined />
                                             Cancel
                                         </Button>
