@@ -154,7 +154,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
             width={state.width > 450 ? state.width + 75 : 525}
             footer={[
                 <Tooltip key="cancel" placement="top" title="Return to Items">
-                    <Button key="cancel" type="danger" onClick={handleCancel}>
+                    <Button key="cancel" danger={true} onClick={handleCancel}>
                         <StopOutlined />
                         Cancel
                         </Button>

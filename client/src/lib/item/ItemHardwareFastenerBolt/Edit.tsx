@@ -70,7 +70,7 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                     <Input placeholder="Item name" />
                 </Form.Item>
                 <Form.Item name="description" label="Description">
-                    <TextArea placeholder="Description, leave empty to auto-generate" autoSize />
+                    <TextArea placeholder="Description, leave empty to auto-generate" autoSize={{minRows: 2}} />
                 </Form.Item>
                 {/* TODO: then here have a type selector when in the generic add form */}
             </div>
