@@ -6,7 +6,7 @@ export function buf2hex ( buffer: ArrayBuffer ): string { // buffer is an ArrayB
 
 export function toTitleCase ( s: string ): string {
     if ( [ 'ID', 'id'].includes(s) ){ return s; }
-    return s.replace( '_', ' ' ).split( ' ' ).map( function ( word ) {
+    return s.replace( /_/g, ' ' ).split( ' ' ).map( function ( word ) {
         return word.charAt( 0 ).toUpperCase() + word.slice( 1 ).toLowerCase();
     } ).join( ' ' );
 }
@@ -72,6 +72,11 @@ export function eliminateArrayDuplicates<T>( arr: Array<T> ): Array<T> {
     return arr.filter( (el, idx) => arr.indexOf(el) === idx );
 }
 
+/**
+ * Log data and return same.
+ * @param logparams arbitrary object to add to log message
+ * @param input Value which is passed in, printed to the log, and returned unchanges
+ */
 export function transparentLog<T>(logparams: {[key: string]: any}, input: T): T {
     console.log(logparams, input);
     return input;
