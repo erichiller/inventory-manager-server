@@ -1,10 +1,19 @@
-// "m1.6": {
+"m1.6": {
             pitch: {
-                extra_sizes?: [ 0.x, 0.y ],
-                "extra_fine": 0.2, // these are the "named" sizes
-                "fine": 0.3,
-                "coarse": 0.35
-            }
+                "0.2": { // Regex limit these
+                    label: "extra_fine" // limit to extra, fine, coarse
+                },
+                "0.3": {
+                    label: "fine"
+                },
+                "0.35": {
+                    label: "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8"
+            },
+            ,
         },
 // start actual
 
