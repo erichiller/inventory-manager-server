@@ -173,6 +173,11 @@ export type EnumHardwareFastenerBoltPointOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
+/** primary key columns input for table: "enum.hardware_fastener_bolt_point" */
+export type EnumHardwareFastenerBoltPointPkColumnsInput = {
+  id: Scalars['String'];
+};
+
 /** select columns of table "enum.hardware_fastener_bolt_point" */
 export enum EnumHardwareFastenerBoltPointSelectColumn {
   /** column name */
@@ -345,6 +350,11 @@ export type EnumHardwareFastenerDriveOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
+/** primary key columns input for table: "enum.hardware_fastener_drive" */
+export type EnumHardwareFastenerDrivePkColumnsInput = {
+  id: Scalars['String'];
+};
+
 /** select columns of table "enum.hardware_fastener_drive" */
 export enum EnumHardwareFastenerDriveSelectColumn {
   /** column name */
@@ -511,6 +521,11 @@ export type EnumHardwareFastenerHardnessOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
+/** primary key columns input for table: "enum.hardware_fastener_hardness" */
+export type EnumHardwareFastenerHardnessPkColumnsInput = {
+  id: Scalars['String'];
+};
+
 /** select columns of table "enum.hardware_fastener_hardness" */
 export enum EnumHardwareFastenerHardnessSelectColumn {
   /** column name */
@@ -667,6 +682,11 @@ export type EnumHardwareFastenerHeadOnConflict = {
 export type EnumHardwareFastenerHeadOrderBy = {
   description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "enum.hardware_fastener_head" */
+export type EnumHardwareFastenerHeadPkColumnsInput = {
+  id: Scalars['String'];
 };
 
 /** select columns of table "enum.hardware_fastener_head" */
@@ -837,6 +857,11 @@ export type EnumHardwareFastenerMaterialOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
+/** primary key columns input for table: "enum.hardware_fastener_material" */
+export type EnumHardwareFastenerMaterialPkColumnsInput = {
+  id: Scalars['String'];
+};
+
 /** select columns of table "enum.hardware_fastener_material" */
 export enum EnumHardwareFastenerMaterialSelectColumn {
   /** column name */
@@ -995,6 +1020,11 @@ export type EnumHardwareFastenerStrengthClassOnConflict = {
 export type EnumHardwareFastenerStrengthClassOrderBy = {
   description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "enum.hardware_fastener_strength_class" */
+export type EnumHardwareFastenerStrengthClassPkColumnsInput = {
+  id: Scalars['String'];
 };
 
 /** select columns of table "enum.hardware_fastener_strength_class" */
@@ -1158,6 +1188,11 @@ export type EnumHardwareFastenerThreadDirectionOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
+/** primary key columns input for table: "enum.hardware_fastener_thread_direction" */
+export type EnumHardwareFastenerThreadDirectionPkColumnsInput = {
+  id: Scalars['String'];
+};
+
 /** select columns of table "enum.hardware_fastener_thread_direction" */
 export enum EnumHardwareFastenerThreadDirectionSelectColumn {
   /** column name */
@@ -1316,6 +1351,11 @@ export type EnumHardwareFastenerThreadFitOnConflict = {
 export type EnumHardwareFastenerThreadFitOrderBy = {
   description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "enum.hardware_fastener_thread_fit" */
+export type EnumHardwareFastenerThreadFitPkColumnsInput = {
+  id: Scalars['String'];
 };
 
 /** select columns of table "enum.hardware_fastener_thread_fit" */
@@ -1480,6 +1520,11 @@ export type EnumHardwareFastenerThreadTypeOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
+/** primary key columns input for table: "enum.hardware_fastener_thread_type" */
+export type EnumHardwareFastenerThreadTypePkColumnsInput = {
+  id: Scalars['String'];
+};
+
 /** select columns of table "enum.hardware_fastener_thread_type" */
 export enum EnumHardwareFastenerThreadTypeSelectColumn {
   /** column name */
@@ -1569,6 +1614,8 @@ export enum EnumHardwareFastenerUseMaterialConstraint {
 
 export enum EnumHardwareFastenerUseMaterialEnum {
   drywall = 'drywall',
+  /** Pre-threaded holes, typically in metal */
+  machine = 'machine',
   plastic = 'plastic',
   wood = 'wood'
 }
@@ -1640,6 +1687,11 @@ export type EnumHardwareFastenerUseMaterialOnConflict = {
 export type EnumHardwareFastenerUseMaterialOrderBy = {
   description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "enum.hardware_fastener_use_material" */
+export type EnumHardwareFastenerUseMaterialPkColumnsInput = {
+  id: Scalars['String'];
 };
 
 /** select columns of table "enum.hardware_fastener_use_material" */
@@ -1802,6 +1854,11 @@ export type EnumHardwareFinishOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
+/** primary key columns input for table: "enum.hardware_finish" */
+export type EnumHardwareFinishPkColumnsInput = {
+  id: Scalars['String'];
+};
+
 /** select columns of table "enum.hardware_finish" */
 export enum EnumHardwareFinishSelectColumn {
   /** column name */
@@ -1958,6 +2015,11 @@ export type EnumItemClassOnConflict = {
 export type EnumItemClassOrderBy = {
   description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "enum.item_class" */
+export type EnumItemClassPkColumnsInput = {
+  id: Scalars['String'];
 };
 
 /** select columns of table "enum.item_class" */
@@ -2119,6 +2181,11 @@ export type EnumPaymentMethodTypeOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
+/** primary key columns input for table: "enum.payment_method_type" */
+export type EnumPaymentMethodTypePkColumnsInput = {
+  id: Scalars['String'];
+};
+
 /** select columns of table "enum.payment_method_type" */
 export enum EnumPaymentMethodTypeSelectColumn {
   /** column name */
@@ -2271,6 +2338,11 @@ export type EnumUnitOnConflict = {
 export type EnumUnitOrderBy = {
   description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "enum.unit" */
+export type EnumUnitPkColumnsInput = {
+  id: Scalars['String'];
 };
 
 /** select columns of table "enum.unit" */
@@ -2580,7 +2652,7 @@ export type IconItemCategoryMapDeleteKeyInput = {
   criteria?: Maybe<Scalars['String']>;
 };
 
-/** input type for incrementing integer columne in table "icon_item_category_map" */
+/** input type for incrementing integer column in table "icon_item_category_map" */
 export type IconItemCategoryMapIncInput = {
   sequence?: Maybe<Scalars['smallint']>;
 };
@@ -2596,22 +2668,26 @@ export type IconItemCategoryMapInsertInput = {
 /** aggregate max on columns */
 export type IconItemCategoryMapMaxFields = {
    __typename?: 'icon_item_category_map_max_fields';
+  icon_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
 
 /** order by max() on columns of table "icon_item_category_map" */
 export type IconItemCategoryMapMaxOrderBy = {
+  icon_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
 export type IconItemCategoryMapMinFields = {
    __typename?: 'icon_item_category_map_min_fields';
+  icon_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
 
 /** order by min() on columns of table "icon_item_category_map" */
 export type IconItemCategoryMapMinOrderBy = {
+  icon_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
@@ -2643,6 +2719,13 @@ export type IconItemCategoryMapOrderBy = {
   criteria?: Maybe<OrderBy>;
   icon_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "icon_item_category_map" */
+export type IconItemCategoryMapPkColumnsInput = {
+  category: EnumItemClassEnum;
+  icon_id: Scalars['uuid'];
+  sequence: Scalars['smallint'];
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
@@ -2779,6 +2862,8 @@ export type IconLabelMapAggregate = {
 export type IconLabelMapAggregateFields = {
    __typename?: 'icon_label_map_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
+  max?: Maybe<IconLabelMapMaxFields>;
+  min?: Maybe<IconLabelMapMinFields>;
 };
 
 
@@ -2791,6 +2876,8 @@ export type IconLabelMapAggregateFieldsCountArgs = {
 /** order by aggregate values of table "icon_label_map" */
 export type IconLabelMapAggregateOrderBy = {
   count?: Maybe<OrderBy>;
+  max?: Maybe<IconLabelMapMaxOrderBy>;
+  min?: Maybe<IconLabelMapMinOrderBy>;
 };
 
 /** input type for inserting array relation for remote table "icon_label_map" */
@@ -2822,6 +2909,32 @@ export type IconLabelMapInsertInput = {
   label_id?: Maybe<Scalars['uuid']>;
 };
 
+/** aggregate max on columns */
+export type IconLabelMapMaxFields = {
+   __typename?: 'icon_label_map_max_fields';
+  icon_id?: Maybe<Scalars['uuid']>;
+  label_id?: Maybe<Scalars['uuid']>;
+};
+
+/** order by max() on columns of table "icon_label_map" */
+export type IconLabelMapMaxOrderBy = {
+  icon_id?: Maybe<OrderBy>;
+  label_id?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type IconLabelMapMinFields = {
+   __typename?: 'icon_label_map_min_fields';
+  icon_id?: Maybe<Scalars['uuid']>;
+  label_id?: Maybe<Scalars['uuid']>;
+};
+
+/** order by min() on columns of table "icon_label_map" */
+export type IconLabelMapMinOrderBy = {
+  icon_id?: Maybe<OrderBy>;
+  label_id?: Maybe<OrderBy>;
+};
+
 /** response of any mutation on the table "icon_label_map" */
 export type IconLabelMapMutationResponse = {
    __typename?: 'icon_label_map_mutation_response';
@@ -2849,6 +2962,12 @@ export type IconLabelMapOrderBy = {
   icon?: Maybe<IconOrderBy>;
   icon_id?: Maybe<OrderBy>;
   label_id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "icon_label_map" */
+export type IconLabelMapPkColumnsInput = {
+  icon_id: Scalars['uuid'];
+  label_id: Scalars['uuid'];
 };
 
 /** select columns of table "icon_label_map" */
@@ -2879,6 +2998,7 @@ export type IconMaxFields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   data?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
   title?: Maybe<Scalars['String']>;
 };
 
@@ -2887,6 +3007,7 @@ export type IconMaxOrderBy = {
   created_at?: Maybe<OrderBy>;
   data?: Maybe<OrderBy>;
   description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   title?: Maybe<OrderBy>;
 };
 
@@ -2896,6 +3017,7 @@ export type IconMinFields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   data?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
   title?: Maybe<Scalars['String']>;
 };
 
@@ -2904,6 +3026,7 @@ export type IconMinOrderBy = {
   created_at?: Maybe<OrderBy>;
   data?: Maybe<OrderBy>;
   description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   title?: Maybe<OrderBy>;
 };
 
@@ -2938,6 +3061,11 @@ export type IconOrderBy = {
   id?: Maybe<OrderBy>;
   labels_aggregate?: Maybe<IconLabelMapAggregateOrderBy>;
   title?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "icon" */
+export type IconPkColumnsInput = {
+  id: Scalars['uuid'];
 };
 
 /** select columns of table "icon" */
@@ -3328,7 +3456,7 @@ export enum ItemBundleConstraint {
   item_bundle_pkey = 'item_bundle_pkey'
 }
 
-/** input type for incrementing integer columne in table "item_bundle" */
+/** input type for incrementing integer column in table "item_bundle" */
 export type ItemBundleIncInput = {
   id?: Maybe<Scalars['Int']>;
 };
@@ -3428,7 +3556,7 @@ export enum ItemBundleMapConstraint {
   item_bundle_map_pkey = 'item_bundle_map_pkey'
 }
 
-/** input type for incrementing integer columne in table "item_bundle_map" */
+/** input type for incrementing integer column in table "item_bundle_map" */
 export type ItemBundleMapIncInput = {
   item_bundle_id?: Maybe<Scalars['Int']>;
   item_member_id?: Maybe<Scalars['Int']>;
@@ -3492,6 +3620,12 @@ export type ItemBundleMapOnConflict = {
 export type ItemBundleMapOrderBy = {
   item_bundle_id?: Maybe<OrderBy>;
   item_member_id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "item_bundle_map" */
+export type ItemBundleMapPkColumnsInput = {
+  item_bundle_id: Scalars['Int'];
+  item_member_id: Scalars['Int'];
 };
 
 /** select columns of table "item_bundle_map" */
@@ -3676,6 +3810,11 @@ export type ItemBundleOrderBy = {
   updated_at?: Maybe<OrderBy>;
 };
 
+/** primary key columns input for table: "item_bundle" */
+export type ItemBundlePkColumnsInput = {
+  id: Scalars['Int'];
+};
+
 /** select columns of table "item_bundle" */
 export enum ItemBundleSelectColumn {
   /** column name */
@@ -3854,17 +3993,19 @@ export type ItemHardwareFastenerBolt = {
   strength_class?: Maybe<EnumHardwareFastenerStrengthClassEnum>;
   /** psi */
   tensile_strength?: Maybe<Scalars['numeric']>;
+  /** ie. M3 or #6 */
+  thread_diameter: Scalars['numeric'];
   thread_direction: EnumHardwareFastenerThreadDirectionEnum;
   thread_fit?: Maybe<EnumHardwareFastenerThreadFitEnum>;
   /** if fully threaded, this should be === `shaft_length` */
   thread_length: Scalars['numeric'];
   /** TPI for usc, Pitch for metric ; ie. the 0.5 in M3 x 0.5 */
   thread_pitch: Scalars['numeric'];
-  /** ie. M3 or #6 */
-  thread_size: Scalars['numeric'];
   thread_type?: Maybe<EnumHardwareFastenerThreadTypeEnum>;
   /** ENUM:Unit */
   unit: EnumUnitEnum;
+  /** Material this fastener is meant to thread into. */
+  use_material: EnumHardwareFastenerUseMaterialEnum;
 };
 
 
@@ -3940,9 +4081,9 @@ export type ItemHardwareFastenerBoltAvgFields = {
   id?: Maybe<Scalars['Float']>;
   shaft_length?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
+  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
-  thread_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "item.hardware_fastener_bolt" */
@@ -3955,9 +4096,9 @@ export type ItemHardwareFastenerBoltAvgOrderBy = {
   id?: Maybe<OrderBy>;
   shaft_length?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
+  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
-  thread_size?: Maybe<OrderBy>;
 };
 
 /**
@@ -3987,13 +4128,14 @@ export type ItemHardwareFastenerBoltBoolExp = {
   specifications_met?: Maybe<JsonbComparisonExp>;
   strength_class?: Maybe<EnumHardwareFastenerStrengthClassEnumComparisonExp>;
   tensile_strength?: Maybe<NumericComparisonExp>;
+  thread_diameter?: Maybe<NumericComparisonExp>;
   thread_direction?: Maybe<EnumHardwareFastenerThreadDirectionEnumComparisonExp>;
   thread_fit?: Maybe<EnumHardwareFastenerThreadFitEnumComparisonExp>;
   thread_length?: Maybe<NumericComparisonExp>;
   thread_pitch?: Maybe<NumericComparisonExp>;
-  thread_size?: Maybe<NumericComparisonExp>;
   thread_type?: Maybe<EnumHardwareFastenerThreadTypeEnumComparisonExp>;
   unit?: Maybe<EnumUnitEnumComparisonExp>;
+  use_material?: Maybe<EnumHardwareFastenerUseMaterialEnumComparisonExp>;
 };
 
 /** unique or primary key constraints on table "item.hardware_fastener_bolt" */
@@ -4020,9 +4162,19 @@ export type ItemHardwareFastenerBoltDeleteKeyInput = {
   specifications_met?: Maybe<Scalars['String']>;
 };
 
-/** input type for incrementing integer columne in table "item.hardware_fastener_bolt" */
+/** input type for incrementing integer column in table "item.hardware_fastener_bolt" */
 export type ItemHardwareFastenerBoltIncInput = {
+  countersunk_angle?: Maybe<Scalars['numeric']>;
+  countersunk_height?: Maybe<Scalars['numeric']>;
+  embedded_length?: Maybe<Scalars['numeric']>;
+  head_diameter?: Maybe<Scalars['numeric']>;
+  head_height?: Maybe<Scalars['numeric']>;
   id?: Maybe<Scalars['Int']>;
+  shaft_length?: Maybe<Scalars['numeric']>;
+  tensile_strength?: Maybe<Scalars['numeric']>;
+  thread_diameter?: Maybe<Scalars['numeric']>;
+  thread_length?: Maybe<Scalars['numeric']>;
+  thread_pitch?: Maybe<Scalars['numeric']>;
 };
 
 /** input type for inserting data into table "item.hardware_fastener_bolt" */
@@ -4046,13 +4198,14 @@ export type ItemHardwareFastenerBoltInsertInput = {
   specifications_met?: Maybe<Scalars['jsonb']>;
   strength_class?: Maybe<EnumHardwareFastenerStrengthClassEnum>;
   tensile_strength?: Maybe<Scalars['numeric']>;
+  thread_diameter?: Maybe<Scalars['numeric']>;
   thread_direction?: Maybe<EnumHardwareFastenerThreadDirectionEnum>;
   thread_fit?: Maybe<EnumHardwareFastenerThreadFitEnum>;
   thread_length?: Maybe<Scalars['numeric']>;
   thread_pitch?: Maybe<Scalars['numeric']>;
-  thread_size?: Maybe<Scalars['numeric']>;
   thread_type?: Maybe<EnumHardwareFastenerThreadTypeEnum>;
   unit?: Maybe<EnumUnitEnum>;
+  use_material?: Maybe<EnumHardwareFastenerUseMaterialEnum>;
 };
 
 /** aggregate max on columns */
@@ -4069,9 +4222,9 @@ export type ItemHardwareFastenerBoltMaxFields = {
   name?: Maybe<Scalars['String']>;
   shaft_length?: Maybe<Scalars['numeric']>;
   tensile_strength?: Maybe<Scalars['numeric']>;
+  thread_diameter?: Maybe<Scalars['numeric']>;
   thread_length?: Maybe<Scalars['numeric']>;
   thread_pitch?: Maybe<Scalars['numeric']>;
-  thread_size?: Maybe<Scalars['numeric']>;
 };
 
 /** order by max() on columns of table "item.hardware_fastener_bolt" */
@@ -4087,9 +4240,9 @@ export type ItemHardwareFastenerBoltMaxOrderBy = {
   name?: Maybe<OrderBy>;
   shaft_length?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
+  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
-  thread_size?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
@@ -4106,9 +4259,9 @@ export type ItemHardwareFastenerBoltMinFields = {
   name?: Maybe<Scalars['String']>;
   shaft_length?: Maybe<Scalars['numeric']>;
   tensile_strength?: Maybe<Scalars['numeric']>;
+  thread_diameter?: Maybe<Scalars['numeric']>;
   thread_length?: Maybe<Scalars['numeric']>;
   thread_pitch?: Maybe<Scalars['numeric']>;
-  thread_size?: Maybe<Scalars['numeric']>;
 };
 
 /** order by min() on columns of table "item.hardware_fastener_bolt" */
@@ -4124,9 +4277,9 @@ export type ItemHardwareFastenerBoltMinOrderBy = {
   name?: Maybe<OrderBy>;
   shaft_length?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
+  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
-  thread_size?: Maybe<OrderBy>;
 };
 
 /** response of any mutation on the table "item.hardware_fastener_bolt" */
@@ -4172,13 +4325,19 @@ export type ItemHardwareFastenerBoltOrderBy = {
   specifications_met?: Maybe<OrderBy>;
   strength_class?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
+  thread_diameter?: Maybe<OrderBy>;
   thread_direction?: Maybe<OrderBy>;
   thread_fit?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
-  thread_size?: Maybe<OrderBy>;
   thread_type?: Maybe<OrderBy>;
   unit?: Maybe<OrderBy>;
+  use_material?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "item.hardware_fastener_bolt" */
+export type ItemHardwareFastenerBoltPkColumnsInput = {
+  id: Scalars['Int'];
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
@@ -4227,6 +4386,8 @@ export enum ItemHardwareFastenerBoltSelectColumn {
   /** column name */
   tensile_strength = 'tensile_strength',
   /** column name */
+  thread_diameter = 'thread_diameter',
+  /** column name */
   thread_direction = 'thread_direction',
   /** column name */
   thread_fit = 'thread_fit',
@@ -4235,11 +4396,11 @@ export enum ItemHardwareFastenerBoltSelectColumn {
   /** column name */
   thread_pitch = 'thread_pitch',
   /** column name */
-  thread_size = 'thread_size',
-  /** column name */
   thread_type = 'thread_type',
   /** column name */
-  unit = 'unit'
+  unit = 'unit',
+  /** column name */
+  use_material = 'use_material'
 }
 
 /** input type for updating data in table "item.hardware_fastener_bolt" */
@@ -4263,13 +4424,14 @@ export type ItemHardwareFastenerBoltSetInput = {
   specifications_met?: Maybe<Scalars['jsonb']>;
   strength_class?: Maybe<EnumHardwareFastenerStrengthClassEnum>;
   tensile_strength?: Maybe<Scalars['numeric']>;
+  thread_diameter?: Maybe<Scalars['numeric']>;
   thread_direction?: Maybe<EnumHardwareFastenerThreadDirectionEnum>;
   thread_fit?: Maybe<EnumHardwareFastenerThreadFitEnum>;
   thread_length?: Maybe<Scalars['numeric']>;
   thread_pitch?: Maybe<Scalars['numeric']>;
-  thread_size?: Maybe<Scalars['numeric']>;
   thread_type?: Maybe<EnumHardwareFastenerThreadTypeEnum>;
   unit?: Maybe<EnumUnitEnum>;
+  use_material?: Maybe<EnumHardwareFastenerUseMaterialEnum>;
 };
 
 /** aggregate stddev on columns */
@@ -4283,9 +4445,9 @@ export type ItemHardwareFastenerBoltStddevFields = {
   id?: Maybe<Scalars['Float']>;
   shaft_length?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
+  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
-  thread_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "item.hardware_fastener_bolt" */
@@ -4298,9 +4460,9 @@ export type ItemHardwareFastenerBoltStddevOrderBy = {
   id?: Maybe<OrderBy>;
   shaft_length?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
+  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
-  thread_size?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -4314,9 +4476,9 @@ export type ItemHardwareFastenerBoltStddevPopFields = {
   id?: Maybe<Scalars['Float']>;
   shaft_length?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
+  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
-  thread_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "item.hardware_fastener_bolt" */
@@ -4329,9 +4491,9 @@ export type ItemHardwareFastenerBoltStddevPopOrderBy = {
   id?: Maybe<OrderBy>;
   shaft_length?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
+  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
-  thread_size?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -4345,9 +4507,9 @@ export type ItemHardwareFastenerBoltStddevSampFields = {
   id?: Maybe<Scalars['Float']>;
   shaft_length?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
+  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
-  thread_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "item.hardware_fastener_bolt" */
@@ -4360,9 +4522,9 @@ export type ItemHardwareFastenerBoltStddevSampOrderBy = {
   id?: Maybe<OrderBy>;
   shaft_length?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
+  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
-  thread_size?: Maybe<OrderBy>;
 };
 
 /** aggregate sum on columns */
@@ -4376,9 +4538,9 @@ export type ItemHardwareFastenerBoltSumFields = {
   id?: Maybe<Scalars['Int']>;
   shaft_length?: Maybe<Scalars['numeric']>;
   tensile_strength?: Maybe<Scalars['numeric']>;
+  thread_diameter?: Maybe<Scalars['numeric']>;
   thread_length?: Maybe<Scalars['numeric']>;
   thread_pitch?: Maybe<Scalars['numeric']>;
-  thread_size?: Maybe<Scalars['numeric']>;
 };
 
 /** order by sum() on columns of table "item.hardware_fastener_bolt" */
@@ -4391,9 +4553,9 @@ export type ItemHardwareFastenerBoltSumOrderBy = {
   id?: Maybe<OrderBy>;
   shaft_length?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
+  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
-  thread_size?: Maybe<OrderBy>;
 };
 
 /** update columns of table "item.hardware_fastener_bolt" */
@@ -4437,6 +4599,8 @@ export enum ItemHardwareFastenerBoltUpdateColumn {
   /** column name */
   tensile_strength = 'tensile_strength',
   /** column name */
+  thread_diameter = 'thread_diameter',
+  /** column name */
   thread_direction = 'thread_direction',
   /** column name */
   thread_fit = 'thread_fit',
@@ -4445,11 +4609,11 @@ export enum ItemHardwareFastenerBoltUpdateColumn {
   /** column name */
   thread_pitch = 'thread_pitch',
   /** column name */
-  thread_size = 'thread_size',
-  /** column name */
   thread_type = 'thread_type',
   /** column name */
-  unit = 'unit'
+  unit = 'unit',
+  /** column name */
+  use_material = 'use_material'
 }
 
 /** aggregate var_pop on columns */
@@ -4463,9 +4627,9 @@ export type ItemHardwareFastenerBoltVarPopFields = {
   id?: Maybe<Scalars['Float']>;
   shaft_length?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
+  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
-  thread_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "item.hardware_fastener_bolt" */
@@ -4478,9 +4642,9 @@ export type ItemHardwareFastenerBoltVarPopOrderBy = {
   id?: Maybe<OrderBy>;
   shaft_length?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
+  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
-  thread_size?: Maybe<OrderBy>;
 };
 
 /** aggregate var_samp on columns */
@@ -4494,9 +4658,9 @@ export type ItemHardwareFastenerBoltVarSampFields = {
   id?: Maybe<Scalars['Float']>;
   shaft_length?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
+  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
-  thread_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "item.hardware_fastener_bolt" */
@@ -4509,9 +4673,9 @@ export type ItemHardwareFastenerBoltVarSampOrderBy = {
   id?: Maybe<OrderBy>;
   shaft_length?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
+  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
-  thread_size?: Maybe<OrderBy>;
 };
 
 /** aggregate variance on columns */
@@ -4525,9 +4689,9 @@ export type ItemHardwareFastenerBoltVarianceFields = {
   id?: Maybe<Scalars['Float']>;
   shaft_length?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
+  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
-  thread_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "item.hardware_fastener_bolt" */
@@ -4540,9 +4704,9 @@ export type ItemHardwareFastenerBoltVarianceOrderBy = {
   id?: Maybe<OrderBy>;
   shaft_length?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
+  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
-  thread_size?: Maybe<OrderBy>;
 };
 
 /** columns and relationships of "item.hardware_fastener_nut" */
@@ -4631,7 +4795,7 @@ export enum ItemHardwareFastenerNutConstraint {
   items_hardware_nut_pkey = 'items_hardware_nut_pkey'
 }
 
-/** input type for incrementing integer columne in table "item.hardware_fastener_nut" */
+/** input type for incrementing integer column in table "item.hardware_fastener_nut" */
 export type ItemHardwareFastenerNutIncInput = {
   id?: Maybe<Scalars['Int']>;
 };
@@ -4700,6 +4864,11 @@ export type ItemHardwareFastenerNutOrderBy = {
   description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "item.hardware_fastener_nut" */
+export type ItemHardwareFastenerNutPkColumnsInput = {
+  id: Scalars['Int'];
 };
 
 /** select columns of table "item.hardware_fastener_nut" */
@@ -4901,7 +5070,7 @@ export enum ItemHardwareFastenerScrewConstraint {
   hardware_fastener_screw_pkey = 'hardware_fastener_screw_pkey'
 }
 
-/** input type for incrementing integer columne in table "item.hardware_fastener_screw" */
+/** input type for incrementing integer column in table "item.hardware_fastener_screw" */
 export type ItemHardwareFastenerScrewIncInput = {
   id?: Maybe<Scalars['Int']>;
 };
@@ -4976,6 +5145,11 @@ export type ItemHardwareFastenerScrewOrderBy = {
   point?: Maybe<OrderBy>;
   unit?: Maybe<OrderBy>;
   use_material?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "item.hardware_fastener_screw" */
+export type ItemHardwareFastenerScrewPkColumnsInput = {
+  id: Scalars['Int'];
 };
 
 /** select columns of table "item.hardware_fastener_screw" */
@@ -5097,7 +5271,7 @@ export type ItemHardwareFastenerScrewVarianceOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
-/** input type for incrementing integer columne in table "item" */
+/** input type for incrementing integer column in table "item" */
 export type ItemIncInput = {
   id?: Maybe<Scalars['Int']>;
 };
@@ -5170,6 +5344,11 @@ export type ItemOrderBy = {
   object?: Maybe<OrderBy>;
   orderItems_aggregate?: Maybe<OrderItemAggregateOrderBy>;
   vendorItems_aggregate?: Maybe<VendorItemAggregateOrderBy>;
+};
+
+/** primary key columns input for table: "item" */
+export type ItemPkColumnsInput = {
+  id: Scalars['Int'];
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
@@ -5524,7 +5703,7 @@ export type LabelDeleteKeyInput = {
   content?: Maybe<Scalars['String']>;
 };
 
-/** input type for incrementing integer columne in table "label" */
+/** input type for incrementing integer column in table "label" */
 export type LabelIncInput = {
   height?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
@@ -5632,7 +5811,7 @@ export enum LabelItemMapConstraint {
   label_item_map_pkey = 'label_item_map_pkey'
 }
 
-/** input type for incrementing integer columne in table "label_item_map" */
+/** input type for incrementing integer column in table "label_item_map" */
 export type LabelItemMapIncInput = {
   item_id?: Maybe<Scalars['Int']>;
 };
@@ -5647,22 +5826,26 @@ export type LabelItemMapInsertInput = {
 export type LabelItemMapMaxFields = {
    __typename?: 'label_item_map_max_fields';
   item_id?: Maybe<Scalars['Int']>;
+  label_id?: Maybe<Scalars['uuid']>;
 };
 
 /** order by max() on columns of table "label_item_map" */
 export type LabelItemMapMaxOrderBy = {
   item_id?: Maybe<OrderBy>;
+  label_id?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
 export type LabelItemMapMinFields = {
    __typename?: 'label_item_map_min_fields';
   item_id?: Maybe<Scalars['Int']>;
+  label_id?: Maybe<Scalars['uuid']>;
 };
 
 /** order by min() on columns of table "label_item_map" */
 export type LabelItemMapMinOrderBy = {
   item_id?: Maybe<OrderBy>;
+  label_id?: Maybe<OrderBy>;
 };
 
 /** response of any mutation on the table "label_item_map" */
@@ -5691,6 +5874,12 @@ export type LabelItemMapOnConflict = {
 export type LabelItemMapOrderBy = {
   item_id?: Maybe<OrderBy>;
   label_id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "label_item_map" */
+export type LabelItemMapPkColumnsInput = {
+  item_id: Scalars['Int'];
+  label_id: Scalars['uuid'];
 };
 
 /** select columns of table "label_item_map" */
@@ -5796,7 +5985,9 @@ export type LabelItemMapVarianceOrderBy = {
 export type LabelMaxFields = {
    __typename?: 'label_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  edit_of_id?: Maybe<Scalars['uuid']>;
   height?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['uuid']>;
   item_id?: Maybe<Scalars['Int']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -5806,7 +5997,9 @@ export type LabelMaxFields = {
 /** order by max() on columns of table "label" */
 export type LabelMaxOrderBy = {
   created_at?: Maybe<OrderBy>;
+  edit_of_id?: Maybe<OrderBy>;
   height?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   title?: Maybe<OrderBy>;
   updated_at?: Maybe<OrderBy>;
@@ -5817,7 +6010,9 @@ export type LabelMaxOrderBy = {
 export type LabelMinFields = {
    __typename?: 'label_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  edit_of_id?: Maybe<Scalars['uuid']>;
   height?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['uuid']>;
   item_id?: Maybe<Scalars['Int']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -5827,7 +6022,9 @@ export type LabelMinFields = {
 /** order by min() on columns of table "label" */
 export type LabelMinOrderBy = {
   created_at?: Maybe<OrderBy>;
+  edit_of_id?: Maybe<OrderBy>;
   height?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   title?: Maybe<OrderBy>;
   updated_at?: Maybe<OrderBy>;
@@ -5871,6 +6068,11 @@ export type LabelOrderBy = {
   title?: Maybe<OrderBy>;
   updated_at?: Maybe<OrderBy>;
   width?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "label" */
+export type LabelPkColumnsInput = {
+  id: Scalars['uuid'];
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
@@ -6115,7 +6317,7 @@ export type LabelTemplateMapDeleteKeyInput = {
   criteria?: Maybe<Scalars['String']>;
 };
 
-/** input type for incrementing integer columne in table "label_template_map" */
+/** input type for incrementing integer column in table "label_template_map" */
 export type LabelTemplateMapIncInput = {
   item_id?: Maybe<Scalars['Int']>;
   sequence?: Maybe<Scalars['smallint']>;
@@ -6136,6 +6338,7 @@ export type LabelTemplateMapMaxFields = {
    __typename?: 'label_template_map_max_fields';
   item_class?: Maybe<Scalars['String']>;
   item_id?: Maybe<Scalars['Int']>;
+  label_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
 
@@ -6143,6 +6346,7 @@ export type LabelTemplateMapMaxFields = {
 export type LabelTemplateMapMaxOrderBy = {
   item_class?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
+  label_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
@@ -6151,6 +6355,7 @@ export type LabelTemplateMapMinFields = {
    __typename?: 'label_template_map_min_fields';
   item_class?: Maybe<Scalars['String']>;
   item_id?: Maybe<Scalars['Int']>;
+  label_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
 
@@ -6158,6 +6363,7 @@ export type LabelTemplateMapMinFields = {
 export type LabelTemplateMapMinOrderBy = {
   item_class?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
+  label_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
@@ -6191,6 +6397,13 @@ export type LabelTemplateMapOrderBy = {
   label?: Maybe<LabelOrderBy>;
   label_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "label_template_map" */
+export type LabelTemplateMapPkColumnsInput = {
+  item_class: Scalars['String'];
+  label_id: Scalars['uuid'];
+  sequence: Scalars['smallint'];
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
@@ -6494,7 +6707,7 @@ export enum ManufacturerConstraint {
   manufacturer_vendor_id_key = 'manufacturer_vendor_id_key'
 }
 
-/** input type for incrementing integer columne in table "manufacturer" */
+/** input type for incrementing integer column in table "manufacturer" */
 export type ManufacturerIncInput = {
   id?: Maybe<Scalars['Int']>;
   vendor_id?: Maybe<Scalars['Int']>;
@@ -6602,7 +6815,7 @@ export enum ManufacturerItemConstraint {
   manufacturer_item_pkey = 'manufacturer_item_pkey'
 }
 
-/** input type for incrementing integer columne in table "manufacturer_item" */
+/** input type for incrementing integer column in table "manufacturer_item" */
 export type ManufacturerItemIncInput = {
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
@@ -6685,6 +6898,11 @@ export type ManufacturerItemOrderBy = {
   manufacturer_id?: Maybe<OrderBy>;
   manufacturer_product_id?: Maybe<OrderBy>;
   product_url?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "manufacturer_item" */
+export type ManufacturerItemPkColumnsInput = {
+  id: Scalars['Int'];
 };
 
 /** select columns of table "manufacturer_item" */
@@ -6893,6 +7111,11 @@ export type ManufacturerOrderBy = {
   vendor_id?: Maybe<OrderBy>;
 };
 
+/** primary key columns input for table: "manufacturer" */
+export type ManufacturerPkColumnsInput = {
+  id: Scalars['Int'];
+};
+
 /** select columns of table "manufacturer" */
 export enum ManufacturerSelectColumn {
   /** column name */
@@ -7067,140 +7290,276 @@ export type MutationRoot = {
    __typename?: 'mutation_root';
   /** delete data from the table: "enum.hardware_fastener_bolt_point" */
   delete_enum_hardware_fastener_bolt_point?: Maybe<EnumHardwareFastenerBoltPointMutationResponse>;
+  /** delete single row from the table: "enum.hardware_fastener_bolt_point" */
+  delete_enum_hardware_fastener_bolt_point_by_pk?: Maybe<EnumHardwareFastenerBoltPoint>;
   /** delete data from the table: "enum.hardware_fastener_drive" */
   delete_enum_hardware_fastener_drive?: Maybe<EnumHardwareFastenerDriveMutationResponse>;
+  /** delete single row from the table: "enum.hardware_fastener_drive" */
+  delete_enum_hardware_fastener_drive_by_pk?: Maybe<EnumHardwareFastenerDrive>;
   /** delete data from the table: "enum.hardware_fastener_hardness" */
   delete_enum_hardware_fastener_hardness?: Maybe<EnumHardwareFastenerHardnessMutationResponse>;
+  /** delete single row from the table: "enum.hardware_fastener_hardness" */
+  delete_enum_hardware_fastener_hardness_by_pk?: Maybe<EnumHardwareFastenerHardness>;
   /** delete data from the table: "enum.hardware_fastener_head" */
   delete_enum_hardware_fastener_head?: Maybe<EnumHardwareFastenerHeadMutationResponse>;
+  /** delete single row from the table: "enum.hardware_fastener_head" */
+  delete_enum_hardware_fastener_head_by_pk?: Maybe<EnumHardwareFastenerHead>;
   /** delete data from the table: "enum.hardware_fastener_material" */
   delete_enum_hardware_fastener_material?: Maybe<EnumHardwareFastenerMaterialMutationResponse>;
+  /** delete single row from the table: "enum.hardware_fastener_material" */
+  delete_enum_hardware_fastener_material_by_pk?: Maybe<EnumHardwareFastenerMaterial>;
   /** delete data from the table: "enum.hardware_fastener_strength_class" */
   delete_enum_hardware_fastener_strength_class?: Maybe<EnumHardwareFastenerStrengthClassMutationResponse>;
+  /** delete single row from the table: "enum.hardware_fastener_strength_class" */
+  delete_enum_hardware_fastener_strength_class_by_pk?: Maybe<EnumHardwareFastenerStrengthClass>;
   /** delete data from the table: "enum.hardware_fastener_thread_direction" */
   delete_enum_hardware_fastener_thread_direction?: Maybe<EnumHardwareFastenerThreadDirectionMutationResponse>;
+  /** delete single row from the table: "enum.hardware_fastener_thread_direction" */
+  delete_enum_hardware_fastener_thread_direction_by_pk?: Maybe<EnumHardwareFastenerThreadDirection>;
   /** delete data from the table: "enum.hardware_fastener_thread_fit" */
   delete_enum_hardware_fastener_thread_fit?: Maybe<EnumHardwareFastenerThreadFitMutationResponse>;
+  /** delete single row from the table: "enum.hardware_fastener_thread_fit" */
+  delete_enum_hardware_fastener_thread_fit_by_pk?: Maybe<EnumHardwareFastenerThreadFit>;
   /** delete data from the table: "enum.hardware_fastener_thread_type" */
   delete_enum_hardware_fastener_thread_type?: Maybe<EnumHardwareFastenerThreadTypeMutationResponse>;
+  /** delete single row from the table: "enum.hardware_fastener_thread_type" */
+  delete_enum_hardware_fastener_thread_type_by_pk?: Maybe<EnumHardwareFastenerThreadType>;
   /** delete data from the table: "enum.hardware_fastener_use_material" */
   delete_enum_hardware_fastener_use_material?: Maybe<EnumHardwareFastenerUseMaterialMutationResponse>;
+  /** delete single row from the table: "enum.hardware_fastener_use_material" */
+  delete_enum_hardware_fastener_use_material_by_pk?: Maybe<EnumHardwareFastenerUseMaterial>;
   /** delete data from the table: "enum.hardware_finish" */
   delete_enum_hardware_finish?: Maybe<EnumHardwareFinishMutationResponse>;
+  /** delete single row from the table: "enum.hardware_finish" */
+  delete_enum_hardware_finish_by_pk?: Maybe<EnumHardwareFinish>;
   /** delete data from the table: "enum.item_class" */
   delete_enum_item_class?: Maybe<EnumItemClassMutationResponse>;
+  /** delete single row from the table: "enum.item_class" */
+  delete_enum_item_class_by_pk?: Maybe<EnumItemClass>;
   /** delete data from the table: "enum.payment_method_type" */
   delete_enum_payment_method_type?: Maybe<EnumPaymentMethodTypeMutationResponse>;
+  /** delete single row from the table: "enum.payment_method_type" */
+  delete_enum_payment_method_type_by_pk?: Maybe<EnumPaymentMethodType>;
   /** delete data from the table: "enum.unit" */
   delete_enum_unit?: Maybe<EnumUnitMutationResponse>;
+  /** delete single row from the table: "enum.unit" */
+  delete_enum_unit_by_pk?: Maybe<EnumUnit>;
   /** delete data from the table: "icon" */
   delete_icon?: Maybe<IconMutationResponse>;
+  /** delete single row from the table: "icon" */
+  delete_icon_by_pk?: Maybe<Icon>;
   /** delete data from the table: "icon_item_category_map" */
   delete_icon_item_category_map?: Maybe<IconItemCategoryMapMutationResponse>;
+  /** delete single row from the table: "icon_item_category_map" */
+  delete_icon_item_category_map_by_pk?: Maybe<IconItemCategoryMap>;
   /** delete data from the table: "icon_label_map" */
   delete_icon_label_map?: Maybe<IconLabelMapMutationResponse>;
+  /** delete single row from the table: "icon_label_map" */
+  delete_icon_label_map_by_pk?: Maybe<IconLabelMap>;
   /** delete data from the table: "item" */
   delete_item?: Maybe<ItemMutationResponse>;
   /** delete data from the table: "item_bundle" */
   delete_item_bundle?: Maybe<ItemBundleMutationResponse>;
+  /** delete single row from the table: "item_bundle" */
+  delete_item_bundle_by_pk?: Maybe<ItemBundle>;
   /** delete data from the table: "item_bundle_map" */
   delete_item_bundle_map?: Maybe<ItemBundleMapMutationResponse>;
+  /** delete single row from the table: "item_bundle_map" */
+  delete_item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
+  /** delete single row from the table: "item" */
+  delete_item_by_pk?: Maybe<Item>;
   /** delete data from the table: "item.hardware_fastener_bolt" */
   delete_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>;
+  /** delete single row from the table: "item.hardware_fastener_bolt" */
+  delete_item_hardware_fastener_bolt_by_pk?: Maybe<ItemHardwareFastenerBolt>;
   /** delete data from the table: "item.hardware_fastener_nut" */
   delete_item_hardware_fastener_nut?: Maybe<ItemHardwareFastenerNutMutationResponse>;
+  /** delete single row from the table: "item.hardware_fastener_nut" */
+  delete_item_hardware_fastener_nut_by_pk?: Maybe<ItemHardwareFastenerNut>;
   /** delete data from the table: "item.hardware_fastener_screw" */
   delete_item_hardware_fastener_screw?: Maybe<ItemHardwareFastenerScrewMutationResponse>;
+  /** delete single row from the table: "item.hardware_fastener_screw" */
+  delete_item_hardware_fastener_screw_by_pk?: Maybe<ItemHardwareFastenerScrew>;
   /** delete data from the table: "label" */
   delete_label?: Maybe<LabelMutationResponse>;
+  /** delete single row from the table: "label" */
+  delete_label_by_pk?: Maybe<Label>;
   /** delete data from the table: "label_item_map" */
   delete_label_item_map?: Maybe<LabelItemMapMutationResponse>;
+  /** delete single row from the table: "label_item_map" */
+  delete_label_item_map_by_pk?: Maybe<LabelItemMap>;
   /** delete data from the table: "label_template_map" */
   delete_label_template_map?: Maybe<LabelTemplateMapMutationResponse>;
+  /** delete single row from the table: "label_template_map" */
+  delete_label_template_map_by_pk?: Maybe<LabelTemplateMap>;
   /** delete data from the table: "manufacturer" */
   delete_manufacturer?: Maybe<ManufacturerMutationResponse>;
+  /** delete single row from the table: "manufacturer" */
+  delete_manufacturer_by_pk?: Maybe<Manufacturer>;
   /** delete data from the table: "manufacturer_item" */
   delete_manufacturer_item?: Maybe<ManufacturerItemMutationResponse>;
+  /** delete single row from the table: "manufacturer_item" */
+  delete_manufacturer_item_by_pk?: Maybe<ManufacturerItem>;
   /** delete data from the table: "order" */
   delete_order?: Maybe<OrderMutationResponse>;
+  /** delete single row from the table: "order" */
+  delete_order_by_pk?: Maybe<Order>;
   /** delete data from the table: "order_item" */
   delete_order_item?: Maybe<OrderItemMutationResponse>;
+  /** delete single row from the table: "order_item" */
+  delete_order_item_by_pk?: Maybe<OrderItem>;
   /** delete data from the table: "payment_method" */
   delete_payment_method?: Maybe<PaymentMethodMutationResponse>;
+  /** delete single row from the table: "payment_method" */
+  delete_payment_method_by_pk?: Maybe<PaymentMethod>;
   /** delete data from the table: "shipment" */
   delete_shipment?: Maybe<ShipmentMutationResponse>;
+  /** delete single row from the table: "shipment" */
+  delete_shipment_by_pk?: Maybe<Shipment>;
   /** delete data from the table: "vendor" */
   delete_vendor?: Maybe<VendorMutationResponse>;
+  /** delete single row from the table: "vendor" */
+  delete_vendor_by_pk?: Maybe<Vendor>;
   /** delete data from the table: "vendor_item" */
   delete_vendor_item?: Maybe<VendorItemMutationResponse>;
+  /** delete single row from the table: "vendor_item" */
+  delete_vendor_item_by_pk?: Maybe<VendorItem>;
   /** insert data into the table: "enum.hardware_fastener_bolt_point" */
   insert_enum_hardware_fastener_bolt_point?: Maybe<EnumHardwareFastenerBoltPointMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_fastener_bolt_point" */
+  insert_enum_hardware_fastener_bolt_point_one?: Maybe<EnumHardwareFastenerBoltPoint>;
   /** insert data into the table: "enum.hardware_fastener_drive" */
   insert_enum_hardware_fastener_drive?: Maybe<EnumHardwareFastenerDriveMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_fastener_drive" */
+  insert_enum_hardware_fastener_drive_one?: Maybe<EnumHardwareFastenerDrive>;
   /** insert data into the table: "enum.hardware_fastener_hardness" */
   insert_enum_hardware_fastener_hardness?: Maybe<EnumHardwareFastenerHardnessMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_fastener_hardness" */
+  insert_enum_hardware_fastener_hardness_one?: Maybe<EnumHardwareFastenerHardness>;
   /** insert data into the table: "enum.hardware_fastener_head" */
   insert_enum_hardware_fastener_head?: Maybe<EnumHardwareFastenerHeadMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_fastener_head" */
+  insert_enum_hardware_fastener_head_one?: Maybe<EnumHardwareFastenerHead>;
   /** insert data into the table: "enum.hardware_fastener_material" */
   insert_enum_hardware_fastener_material?: Maybe<EnumHardwareFastenerMaterialMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_fastener_material" */
+  insert_enum_hardware_fastener_material_one?: Maybe<EnumHardwareFastenerMaterial>;
   /** insert data into the table: "enum.hardware_fastener_strength_class" */
   insert_enum_hardware_fastener_strength_class?: Maybe<EnumHardwareFastenerStrengthClassMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_fastener_strength_class" */
+  insert_enum_hardware_fastener_strength_class_one?: Maybe<EnumHardwareFastenerStrengthClass>;
   /** insert data into the table: "enum.hardware_fastener_thread_direction" */
   insert_enum_hardware_fastener_thread_direction?: Maybe<EnumHardwareFastenerThreadDirectionMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_fastener_thread_direction" */
+  insert_enum_hardware_fastener_thread_direction_one?: Maybe<EnumHardwareFastenerThreadDirection>;
   /** insert data into the table: "enum.hardware_fastener_thread_fit" */
   insert_enum_hardware_fastener_thread_fit?: Maybe<EnumHardwareFastenerThreadFitMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_fastener_thread_fit" */
+  insert_enum_hardware_fastener_thread_fit_one?: Maybe<EnumHardwareFastenerThreadFit>;
   /** insert data into the table: "enum.hardware_fastener_thread_type" */
   insert_enum_hardware_fastener_thread_type?: Maybe<EnumHardwareFastenerThreadTypeMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_fastener_thread_type" */
+  insert_enum_hardware_fastener_thread_type_one?: Maybe<EnumHardwareFastenerThreadType>;
   /** insert data into the table: "enum.hardware_fastener_use_material" */
   insert_enum_hardware_fastener_use_material?: Maybe<EnumHardwareFastenerUseMaterialMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_fastener_use_material" */
+  insert_enum_hardware_fastener_use_material_one?: Maybe<EnumHardwareFastenerUseMaterial>;
   /** insert data into the table: "enum.hardware_finish" */
   insert_enum_hardware_finish?: Maybe<EnumHardwareFinishMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_finish" */
+  insert_enum_hardware_finish_one?: Maybe<EnumHardwareFinish>;
   /** insert data into the table: "enum.item_class" */
   insert_enum_item_class?: Maybe<EnumItemClassMutationResponse>;
+  /** insert a single row into the table: "enum.item_class" */
+  insert_enum_item_class_one?: Maybe<EnumItemClass>;
   /** insert data into the table: "enum.payment_method_type" */
   insert_enum_payment_method_type?: Maybe<EnumPaymentMethodTypeMutationResponse>;
+  /** insert a single row into the table: "enum.payment_method_type" */
+  insert_enum_payment_method_type_one?: Maybe<EnumPaymentMethodType>;
   /** insert data into the table: "enum.unit" */
   insert_enum_unit?: Maybe<EnumUnitMutationResponse>;
+  /** insert a single row into the table: "enum.unit" */
+  insert_enum_unit_one?: Maybe<EnumUnit>;
   /** insert data into the table: "icon" */
   insert_icon?: Maybe<IconMutationResponse>;
   /** insert data into the table: "icon_item_category_map" */
   insert_icon_item_category_map?: Maybe<IconItemCategoryMapMutationResponse>;
+  /** insert a single row into the table: "icon_item_category_map" */
+  insert_icon_item_category_map_one?: Maybe<IconItemCategoryMap>;
   /** insert data into the table: "icon_label_map" */
   insert_icon_label_map?: Maybe<IconLabelMapMutationResponse>;
+  /** insert a single row into the table: "icon_label_map" */
+  insert_icon_label_map_one?: Maybe<IconLabelMap>;
+  /** insert a single row into the table: "icon" */
+  insert_icon_one?: Maybe<Icon>;
   /** insert data into the table: "item" */
   insert_item?: Maybe<ItemMutationResponse>;
   /** insert data into the table: "item_bundle" */
   insert_item_bundle?: Maybe<ItemBundleMutationResponse>;
   /** insert data into the table: "item_bundle_map" */
   insert_item_bundle_map?: Maybe<ItemBundleMapMutationResponse>;
+  /** insert a single row into the table: "item_bundle_map" */
+  insert_item_bundle_map_one?: Maybe<ItemBundleMap>;
+  /** insert a single row into the table: "item_bundle" */
+  insert_item_bundle_one?: Maybe<ItemBundle>;
   /** insert data into the table: "item.hardware_fastener_bolt" */
   insert_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>;
+  /** insert a single row into the table: "item.hardware_fastener_bolt" */
+  insert_item_hardware_fastener_bolt_one?: Maybe<ItemHardwareFastenerBolt>;
   /** insert data into the table: "item.hardware_fastener_nut" */
   insert_item_hardware_fastener_nut?: Maybe<ItemHardwareFastenerNutMutationResponse>;
+  /** insert a single row into the table: "item.hardware_fastener_nut" */
+  insert_item_hardware_fastener_nut_one?: Maybe<ItemHardwareFastenerNut>;
   /** insert data into the table: "item.hardware_fastener_screw" */
   insert_item_hardware_fastener_screw?: Maybe<ItemHardwareFastenerScrewMutationResponse>;
+  /** insert a single row into the table: "item.hardware_fastener_screw" */
+  insert_item_hardware_fastener_screw_one?: Maybe<ItemHardwareFastenerScrew>;
+  /** insert a single row into the table: "item" */
+  insert_item_one?: Maybe<Item>;
   /** insert data into the table: "label" */
   insert_label?: Maybe<LabelMutationResponse>;
   /** insert data into the table: "label_item_map" */
   insert_label_item_map?: Maybe<LabelItemMapMutationResponse>;
+  /** insert a single row into the table: "label_item_map" */
+  insert_label_item_map_one?: Maybe<LabelItemMap>;
+  /** insert a single row into the table: "label" */
+  insert_label_one?: Maybe<Label>;
   /** insert data into the table: "label_template_map" */
   insert_label_template_map?: Maybe<LabelTemplateMapMutationResponse>;
+  /** insert a single row into the table: "label_template_map" */
+  insert_label_template_map_one?: Maybe<LabelTemplateMap>;
   /** insert data into the table: "manufacturer" */
   insert_manufacturer?: Maybe<ManufacturerMutationResponse>;
   /** insert data into the table: "manufacturer_item" */
   insert_manufacturer_item?: Maybe<ManufacturerItemMutationResponse>;
+  /** insert a single row into the table: "manufacturer_item" */
+  insert_manufacturer_item_one?: Maybe<ManufacturerItem>;
+  /** insert a single row into the table: "manufacturer" */
+  insert_manufacturer_one?: Maybe<Manufacturer>;
   /** insert data into the table: "order" */
   insert_order?: Maybe<OrderMutationResponse>;
   /** insert data into the table: "order_item" */
   insert_order_item?: Maybe<OrderItemMutationResponse>;
+  /** insert a single row into the table: "order_item" */
+  insert_order_item_one?: Maybe<OrderItem>;
+  /** insert a single row into the table: "order" */
+  insert_order_one?: Maybe<Order>;
   /** insert data into the table: "payment_method" */
   insert_payment_method?: Maybe<PaymentMethodMutationResponse>;
+  /** insert a single row into the table: "payment_method" */
+  insert_payment_method_one?: Maybe<PaymentMethod>;
   /** insert data into the table: "shipment" */
   insert_shipment?: Maybe<ShipmentMutationResponse>;
+  /** insert a single row into the table: "shipment" */
+  insert_shipment_one?: Maybe<Shipment>;
   /** insert data into the table: "vendor" */
   insert_vendor?: Maybe<VendorMutationResponse>;
   /** insert data into the table: "vendor_item" */
   insert_vendor_item?: Maybe<VendorItemMutationResponse>;
+  /** insert a single row into the table: "vendor_item" */
+  insert_vendor_item_one?: Maybe<VendorItem>;
+  /** insert a single row into the table: "vendor" */
+  insert_vendor_one?: Maybe<Vendor>;
   /**
    * Send a label to be printed
    * Image Buffer / Raster data arranged as [page][column][pixels] of uint8 to the printer
@@ -7208,72 +7567,140 @@ export type MutationRoot = {
   putLabelMonochromeBuffer?: Maybe<OperationResult>;
   /** update data of the table: "enum.hardware_fastener_bolt_point" */
   update_enum_hardware_fastener_bolt_point?: Maybe<EnumHardwareFastenerBoltPointMutationResponse>;
+  /** update single row of the table: "enum.hardware_fastener_bolt_point" */
+  update_enum_hardware_fastener_bolt_point_by_pk?: Maybe<EnumHardwareFastenerBoltPoint>;
   /** update data of the table: "enum.hardware_fastener_drive" */
   update_enum_hardware_fastener_drive?: Maybe<EnumHardwareFastenerDriveMutationResponse>;
+  /** update single row of the table: "enum.hardware_fastener_drive" */
+  update_enum_hardware_fastener_drive_by_pk?: Maybe<EnumHardwareFastenerDrive>;
   /** update data of the table: "enum.hardware_fastener_hardness" */
   update_enum_hardware_fastener_hardness?: Maybe<EnumHardwareFastenerHardnessMutationResponse>;
+  /** update single row of the table: "enum.hardware_fastener_hardness" */
+  update_enum_hardware_fastener_hardness_by_pk?: Maybe<EnumHardwareFastenerHardness>;
   /** update data of the table: "enum.hardware_fastener_head" */
   update_enum_hardware_fastener_head?: Maybe<EnumHardwareFastenerHeadMutationResponse>;
+  /** update single row of the table: "enum.hardware_fastener_head" */
+  update_enum_hardware_fastener_head_by_pk?: Maybe<EnumHardwareFastenerHead>;
   /** update data of the table: "enum.hardware_fastener_material" */
   update_enum_hardware_fastener_material?: Maybe<EnumHardwareFastenerMaterialMutationResponse>;
+  /** update single row of the table: "enum.hardware_fastener_material" */
+  update_enum_hardware_fastener_material_by_pk?: Maybe<EnumHardwareFastenerMaterial>;
   /** update data of the table: "enum.hardware_fastener_strength_class" */
   update_enum_hardware_fastener_strength_class?: Maybe<EnumHardwareFastenerStrengthClassMutationResponse>;
+  /** update single row of the table: "enum.hardware_fastener_strength_class" */
+  update_enum_hardware_fastener_strength_class_by_pk?: Maybe<EnumHardwareFastenerStrengthClass>;
   /** update data of the table: "enum.hardware_fastener_thread_direction" */
   update_enum_hardware_fastener_thread_direction?: Maybe<EnumHardwareFastenerThreadDirectionMutationResponse>;
+  /** update single row of the table: "enum.hardware_fastener_thread_direction" */
+  update_enum_hardware_fastener_thread_direction_by_pk?: Maybe<EnumHardwareFastenerThreadDirection>;
   /** update data of the table: "enum.hardware_fastener_thread_fit" */
   update_enum_hardware_fastener_thread_fit?: Maybe<EnumHardwareFastenerThreadFitMutationResponse>;
+  /** update single row of the table: "enum.hardware_fastener_thread_fit" */
+  update_enum_hardware_fastener_thread_fit_by_pk?: Maybe<EnumHardwareFastenerThreadFit>;
   /** update data of the table: "enum.hardware_fastener_thread_type" */
   update_enum_hardware_fastener_thread_type?: Maybe<EnumHardwareFastenerThreadTypeMutationResponse>;
+  /** update single row of the table: "enum.hardware_fastener_thread_type" */
+  update_enum_hardware_fastener_thread_type_by_pk?: Maybe<EnumHardwareFastenerThreadType>;
   /** update data of the table: "enum.hardware_fastener_use_material" */
   update_enum_hardware_fastener_use_material?: Maybe<EnumHardwareFastenerUseMaterialMutationResponse>;
+  /** update single row of the table: "enum.hardware_fastener_use_material" */
+  update_enum_hardware_fastener_use_material_by_pk?: Maybe<EnumHardwareFastenerUseMaterial>;
   /** update data of the table: "enum.hardware_finish" */
   update_enum_hardware_finish?: Maybe<EnumHardwareFinishMutationResponse>;
+  /** update single row of the table: "enum.hardware_finish" */
+  update_enum_hardware_finish_by_pk?: Maybe<EnumHardwareFinish>;
   /** update data of the table: "enum.item_class" */
   update_enum_item_class?: Maybe<EnumItemClassMutationResponse>;
+  /** update single row of the table: "enum.item_class" */
+  update_enum_item_class_by_pk?: Maybe<EnumItemClass>;
   /** update data of the table: "enum.payment_method_type" */
   update_enum_payment_method_type?: Maybe<EnumPaymentMethodTypeMutationResponse>;
+  /** update single row of the table: "enum.payment_method_type" */
+  update_enum_payment_method_type_by_pk?: Maybe<EnumPaymentMethodType>;
   /** update data of the table: "enum.unit" */
   update_enum_unit?: Maybe<EnumUnitMutationResponse>;
+  /** update single row of the table: "enum.unit" */
+  update_enum_unit_by_pk?: Maybe<EnumUnit>;
   /** update data of the table: "icon" */
   update_icon?: Maybe<IconMutationResponse>;
+  /** update single row of the table: "icon" */
+  update_icon_by_pk?: Maybe<Icon>;
   /** update data of the table: "icon_item_category_map" */
   update_icon_item_category_map?: Maybe<IconItemCategoryMapMutationResponse>;
+  /** update single row of the table: "icon_item_category_map" */
+  update_icon_item_category_map_by_pk?: Maybe<IconItemCategoryMap>;
   /** update data of the table: "icon_label_map" */
   update_icon_label_map?: Maybe<IconLabelMapMutationResponse>;
+  /** update single row of the table: "icon_label_map" */
+  update_icon_label_map_by_pk?: Maybe<IconLabelMap>;
   /** update data of the table: "item" */
   update_item?: Maybe<ItemMutationResponse>;
   /** update data of the table: "item_bundle" */
   update_item_bundle?: Maybe<ItemBundleMutationResponse>;
+  /** update single row of the table: "item_bundle" */
+  update_item_bundle_by_pk?: Maybe<ItemBundle>;
   /** update data of the table: "item_bundle_map" */
   update_item_bundle_map?: Maybe<ItemBundleMapMutationResponse>;
+  /** update single row of the table: "item_bundle_map" */
+  update_item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
+  /** update single row of the table: "item" */
+  update_item_by_pk?: Maybe<Item>;
   /** update data of the table: "item.hardware_fastener_bolt" */
   update_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>;
+  /** update single row of the table: "item.hardware_fastener_bolt" */
+  update_item_hardware_fastener_bolt_by_pk?: Maybe<ItemHardwareFastenerBolt>;
   /** update data of the table: "item.hardware_fastener_nut" */
   update_item_hardware_fastener_nut?: Maybe<ItemHardwareFastenerNutMutationResponse>;
+  /** update single row of the table: "item.hardware_fastener_nut" */
+  update_item_hardware_fastener_nut_by_pk?: Maybe<ItemHardwareFastenerNut>;
   /** update data of the table: "item.hardware_fastener_screw" */
   update_item_hardware_fastener_screw?: Maybe<ItemHardwareFastenerScrewMutationResponse>;
+  /** update single row of the table: "item.hardware_fastener_screw" */
+  update_item_hardware_fastener_screw_by_pk?: Maybe<ItemHardwareFastenerScrew>;
   /** update data of the table: "label" */
   update_label?: Maybe<LabelMutationResponse>;
+  /** update single row of the table: "label" */
+  update_label_by_pk?: Maybe<Label>;
   /** update data of the table: "label_item_map" */
   update_label_item_map?: Maybe<LabelItemMapMutationResponse>;
+  /** update single row of the table: "label_item_map" */
+  update_label_item_map_by_pk?: Maybe<LabelItemMap>;
   /** update data of the table: "label_template_map" */
   update_label_template_map?: Maybe<LabelTemplateMapMutationResponse>;
+  /** update single row of the table: "label_template_map" */
+  update_label_template_map_by_pk?: Maybe<LabelTemplateMap>;
   /** update data of the table: "manufacturer" */
   update_manufacturer?: Maybe<ManufacturerMutationResponse>;
+  /** update single row of the table: "manufacturer" */
+  update_manufacturer_by_pk?: Maybe<Manufacturer>;
   /** update data of the table: "manufacturer_item" */
   update_manufacturer_item?: Maybe<ManufacturerItemMutationResponse>;
+  /** update single row of the table: "manufacturer_item" */
+  update_manufacturer_item_by_pk?: Maybe<ManufacturerItem>;
   /** update data of the table: "order" */
   update_order?: Maybe<OrderMutationResponse>;
+  /** update single row of the table: "order" */
+  update_order_by_pk?: Maybe<Order>;
   /** update data of the table: "order_item" */
   update_order_item?: Maybe<OrderItemMutationResponse>;
+  /** update single row of the table: "order_item" */
+  update_order_item_by_pk?: Maybe<OrderItem>;
   /** update data of the table: "payment_method" */
   update_payment_method?: Maybe<PaymentMethodMutationResponse>;
+  /** update single row of the table: "payment_method" */
+  update_payment_method_by_pk?: Maybe<PaymentMethod>;
   /** update data of the table: "shipment" */
   update_shipment?: Maybe<ShipmentMutationResponse>;
+  /** update single row of the table: "shipment" */
+  update_shipment_by_pk?: Maybe<Shipment>;
   /** update data of the table: "vendor" */
   update_vendor?: Maybe<VendorMutationResponse>;
+  /** update single row of the table: "vendor" */
+  update_vendor_by_pk?: Maybe<Vendor>;
   /** update data of the table: "vendor_item" */
   update_vendor_item?: Maybe<VendorItemMutationResponse>;
+  /** update single row of the table: "vendor_item" */
+  update_vendor_item_by_pk?: Maybe<VendorItem>;
   uploadFiles: Array<Maybe<File>>;
 };
 
@@ -7285,8 +7712,20 @@ export type MutationRootDeleteEnumHardwareFastenerBoltPointArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerBoltPointByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteEnumHardwareFastenerDriveArgs = {
   where: EnumHardwareFastenerDriveBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerDriveByPkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -7297,8 +7736,20 @@ export type MutationRootDeleteEnumHardwareFastenerHardnessArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerHardnessByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteEnumHardwareFastenerHeadArgs = {
   where: EnumHardwareFastenerHeadBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerHeadByPkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -7309,8 +7760,20 @@ export type MutationRootDeleteEnumHardwareFastenerMaterialArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerMaterialByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteEnumHardwareFastenerStrengthClassArgs = {
   where: EnumHardwareFastenerStrengthClassBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerStrengthClassByPkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -7321,8 +7784,20 @@ export type MutationRootDeleteEnumHardwareFastenerThreadDirectionArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerThreadDirectionByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteEnumHardwareFastenerThreadFitArgs = {
   where: EnumHardwareFastenerThreadFitBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerThreadFitByPkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -7333,8 +7808,20 @@ export type MutationRootDeleteEnumHardwareFastenerThreadTypeArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerThreadTypeByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteEnumHardwareFastenerUseMaterialArgs = {
   where: EnumHardwareFastenerUseMaterialBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerUseMaterialByPkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -7345,8 +7832,20 @@ export type MutationRootDeleteEnumHardwareFinishArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteEnumHardwareFinishByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteEnumItemClassArgs = {
   where: EnumItemClassBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumItemClassByPkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -7357,8 +7856,20 @@ export type MutationRootDeleteEnumPaymentMethodTypeArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteEnumPaymentMethodTypeByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteEnumUnitArgs = {
   where: EnumUnitBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumUnitByPkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -7369,14 +7880,35 @@ export type MutationRootDeleteIconArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteIconByPkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteIconItemCategoryMapArgs = {
   where: IconItemCategoryMapBoolExp;
 };
 
 
 /** mutation root */
+export type MutationRootDeleteIconItemCategoryMapByPkArgs = {
+  category: EnumItemClassEnum;
+  icon_id: Scalars['uuid'];
+  sequence: Scalars['smallint'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteIconLabelMapArgs = {
   where: IconLabelMapBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteIconLabelMapByPkArgs = {
+  icon_id: Scalars['uuid'];
+  label_id: Scalars['uuid'];
 };
 
 
@@ -7393,8 +7925,27 @@ export type MutationRootDeleteItemBundleArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteItemBundleByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteItemBundleMapArgs = {
   where: ItemBundleMapBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteItemBundleMapByPkArgs = {
+  item_bundle_id: Scalars['Int'];
+  item_member_id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteItemByPkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -7405,8 +7956,20 @@ export type MutationRootDeleteItemHardwareFastenerBoltArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteItemHardwareFastenerBoltByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteItemHardwareFastenerNutArgs = {
   where: ItemHardwareFastenerNutBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteItemHardwareFastenerNutByPkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -7417,8 +7980,20 @@ export type MutationRootDeleteItemHardwareFastenerScrewArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteItemHardwareFastenerScrewByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteLabelArgs = {
   where: LabelBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteLabelByPkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -7429,8 +8004,23 @@ export type MutationRootDeleteLabelItemMapArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteLabelItemMapByPkArgs = {
+  item_id: Scalars['Int'];
+  label_id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteLabelTemplateMapArgs = {
   where: LabelTemplateMapBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteLabelTemplateMapByPkArgs = {
+  item_class: Scalars['String'];
+  label_id: Scalars['uuid'];
+  sequence: Scalars['smallint'];
 };
 
 
@@ -7441,8 +8031,20 @@ export type MutationRootDeleteManufacturerArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteManufacturerByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteManufacturerItemArgs = {
   where: ManufacturerItemBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteManufacturerItemByPkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -7453,8 +8055,22 @@ export type MutationRootDeleteOrderArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteOrderByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteOrderItemArgs = {
   where: OrderItemBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteOrderItemByPkArgs = {
+  order_id: Scalars['Int'];
+  serial_no: Scalars['String'];
+  vendor_item_id: Scalars['Int'];
 };
 
 
@@ -7465,8 +8081,20 @@ export type MutationRootDeletePaymentMethodArgs = {
 
 
 /** mutation root */
+export type MutationRootDeletePaymentMethodByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteShipmentArgs = {
   where: ShipmentBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteShipmentByPkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -7477,14 +8105,33 @@ export type MutationRootDeleteVendorArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteVendorByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteVendorItemArgs = {
   where: VendorItemBoolExp;
 };
 
 
 /** mutation root */
+export type MutationRootDeleteVendorItemByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type MutationRootInsertEnumHardwareFastenerBoltPointArgs = {
   objects: Array<EnumHardwareFastenerBoltPointInsertInput>;
+  on_conflict?: Maybe<EnumHardwareFastenerBoltPointOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumHardwareFastenerBoltPointOneArgs = {
+  object: EnumHardwareFastenerBoltPointInsertInput;
   on_conflict?: Maybe<EnumHardwareFastenerBoltPointOnConflict>;
 };
 
@@ -7497,8 +8144,22 @@ export type MutationRootInsertEnumHardwareFastenerDriveArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertEnumHardwareFastenerDriveOneArgs = {
+  object: EnumHardwareFastenerDriveInsertInput;
+  on_conflict?: Maybe<EnumHardwareFastenerDriveOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertEnumHardwareFastenerHardnessArgs = {
   objects: Array<EnumHardwareFastenerHardnessInsertInput>;
+  on_conflict?: Maybe<EnumHardwareFastenerHardnessOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumHardwareFastenerHardnessOneArgs = {
+  object: EnumHardwareFastenerHardnessInsertInput;
   on_conflict?: Maybe<EnumHardwareFastenerHardnessOnConflict>;
 };
 
@@ -7511,8 +8172,22 @@ export type MutationRootInsertEnumHardwareFastenerHeadArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertEnumHardwareFastenerHeadOneArgs = {
+  object: EnumHardwareFastenerHeadInsertInput;
+  on_conflict?: Maybe<EnumHardwareFastenerHeadOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertEnumHardwareFastenerMaterialArgs = {
   objects: Array<EnumHardwareFastenerMaterialInsertInput>;
+  on_conflict?: Maybe<EnumHardwareFastenerMaterialOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumHardwareFastenerMaterialOneArgs = {
+  object: EnumHardwareFastenerMaterialInsertInput;
   on_conflict?: Maybe<EnumHardwareFastenerMaterialOnConflict>;
 };
 
@@ -7525,8 +8200,22 @@ export type MutationRootInsertEnumHardwareFastenerStrengthClassArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertEnumHardwareFastenerStrengthClassOneArgs = {
+  object: EnumHardwareFastenerStrengthClassInsertInput;
+  on_conflict?: Maybe<EnumHardwareFastenerStrengthClassOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertEnumHardwareFastenerThreadDirectionArgs = {
   objects: Array<EnumHardwareFastenerThreadDirectionInsertInput>;
+  on_conflict?: Maybe<EnumHardwareFastenerThreadDirectionOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumHardwareFastenerThreadDirectionOneArgs = {
+  object: EnumHardwareFastenerThreadDirectionInsertInput;
   on_conflict?: Maybe<EnumHardwareFastenerThreadDirectionOnConflict>;
 };
 
@@ -7539,8 +8228,22 @@ export type MutationRootInsertEnumHardwareFastenerThreadFitArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertEnumHardwareFastenerThreadFitOneArgs = {
+  object: EnumHardwareFastenerThreadFitInsertInput;
+  on_conflict?: Maybe<EnumHardwareFastenerThreadFitOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertEnumHardwareFastenerThreadTypeArgs = {
   objects: Array<EnumHardwareFastenerThreadTypeInsertInput>;
+  on_conflict?: Maybe<EnumHardwareFastenerThreadTypeOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumHardwareFastenerThreadTypeOneArgs = {
+  object: EnumHardwareFastenerThreadTypeInsertInput;
   on_conflict?: Maybe<EnumHardwareFastenerThreadTypeOnConflict>;
 };
 
@@ -7553,8 +8256,22 @@ export type MutationRootInsertEnumHardwareFastenerUseMaterialArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertEnumHardwareFastenerUseMaterialOneArgs = {
+  object: EnumHardwareFastenerUseMaterialInsertInput;
+  on_conflict?: Maybe<EnumHardwareFastenerUseMaterialOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertEnumHardwareFinishArgs = {
   objects: Array<EnumHardwareFinishInsertInput>;
+  on_conflict?: Maybe<EnumHardwareFinishOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumHardwareFinishOneArgs = {
+  object: EnumHardwareFinishInsertInput;
   on_conflict?: Maybe<EnumHardwareFinishOnConflict>;
 };
 
@@ -7567,6 +8284,13 @@ export type MutationRootInsertEnumItemClassArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertEnumItemClassOneArgs = {
+  object: EnumItemClassInsertInput;
+  on_conflict?: Maybe<EnumItemClassOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertEnumPaymentMethodTypeArgs = {
   objects: Array<EnumPaymentMethodTypeInsertInput>;
   on_conflict?: Maybe<EnumPaymentMethodTypeOnConflict>;
@@ -7574,8 +8298,22 @@ export type MutationRootInsertEnumPaymentMethodTypeArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertEnumPaymentMethodTypeOneArgs = {
+  object: EnumPaymentMethodTypeInsertInput;
+  on_conflict?: Maybe<EnumPaymentMethodTypeOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertEnumUnitArgs = {
   objects: Array<EnumUnitInsertInput>;
+  on_conflict?: Maybe<EnumUnitOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumUnitOneArgs = {
+  object: EnumUnitInsertInput;
   on_conflict?: Maybe<EnumUnitOnConflict>;
 };
 
@@ -7595,9 +8333,30 @@ export type MutationRootInsertIconItemCategoryMapArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertIconItemCategoryMapOneArgs = {
+  object: IconItemCategoryMapInsertInput;
+  on_conflict?: Maybe<IconItemCategoryMapOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertIconLabelMapArgs = {
   objects: Array<IconLabelMapInsertInput>;
   on_conflict?: Maybe<IconLabelMapOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertIconLabelMapOneArgs = {
+  object: IconLabelMapInsertInput;
+  on_conflict?: Maybe<IconLabelMapOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertIconOneArgs = {
+  object: IconInsertInput;
+  on_conflict?: Maybe<IconOnConflict>;
 };
 
 
@@ -7623,8 +8382,29 @@ export type MutationRootInsertItemBundleMapArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertItemBundleMapOneArgs = {
+  object: ItemBundleMapInsertInput;
+  on_conflict?: Maybe<ItemBundleMapOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemBundleOneArgs = {
+  object: ItemBundleInsertInput;
+  on_conflict?: Maybe<ItemBundleOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertItemHardwareFastenerBoltArgs = {
   objects: Array<ItemHardwareFastenerBoltInsertInput>;
+  on_conflict?: Maybe<ItemHardwareFastenerBoltOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemHardwareFastenerBoltOneArgs = {
+  object: ItemHardwareFastenerBoltInsertInput;
   on_conflict?: Maybe<ItemHardwareFastenerBoltOnConflict>;
 };
 
@@ -7637,9 +8417,30 @@ export type MutationRootInsertItemHardwareFastenerNutArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertItemHardwareFastenerNutOneArgs = {
+  object: ItemHardwareFastenerNutInsertInput;
+  on_conflict?: Maybe<ItemHardwareFastenerNutOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertItemHardwareFastenerScrewArgs = {
   objects: Array<ItemHardwareFastenerScrewInsertInput>;
   on_conflict?: Maybe<ItemHardwareFastenerScrewOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemHardwareFastenerScrewOneArgs = {
+  object: ItemHardwareFastenerScrewInsertInput;
+  on_conflict?: Maybe<ItemHardwareFastenerScrewOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemOneArgs = {
+  object: ItemInsertInput;
+  on_conflict?: Maybe<ItemOnConflict>;
 };
 
 
@@ -7658,8 +8459,29 @@ export type MutationRootInsertLabelItemMapArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertLabelItemMapOneArgs = {
+  object: LabelItemMapInsertInput;
+  on_conflict?: Maybe<LabelItemMapOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertLabelOneArgs = {
+  object: LabelInsertInput;
+  on_conflict?: Maybe<LabelOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertLabelTemplateMapArgs = {
   objects: Array<LabelTemplateMapInsertInput>;
+  on_conflict?: Maybe<LabelTemplateMapOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertLabelTemplateMapOneArgs = {
+  object: LabelTemplateMapInsertInput;
   on_conflict?: Maybe<LabelTemplateMapOnConflict>;
 };
 
@@ -7679,6 +8501,20 @@ export type MutationRootInsertManufacturerItemArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertManufacturerItemOneArgs = {
+  object: ManufacturerItemInsertInput;
+  on_conflict?: Maybe<ManufacturerItemOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertManufacturerOneArgs = {
+  object: ManufacturerInsertInput;
+  on_conflict?: Maybe<ManufacturerOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertOrderArgs = {
   objects: Array<OrderInsertInput>;
   on_conflict?: Maybe<OrderOnConflict>;
@@ -7693,6 +8529,20 @@ export type MutationRootInsertOrderItemArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertOrderItemOneArgs = {
+  object: OrderItemInsertInput;
+  on_conflict?: Maybe<OrderItemOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertOrderOneArgs = {
+  object: OrderInsertInput;
+  on_conflict?: Maybe<OrderOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertPaymentMethodArgs = {
   objects: Array<PaymentMethodInsertInput>;
   on_conflict?: Maybe<PaymentMethodOnConflict>;
@@ -7700,8 +8550,22 @@ export type MutationRootInsertPaymentMethodArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertPaymentMethodOneArgs = {
+  object: PaymentMethodInsertInput;
+  on_conflict?: Maybe<PaymentMethodOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertShipmentArgs = {
   objects: Array<ShipmentInsertInput>;
+  on_conflict?: Maybe<ShipmentOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertShipmentOneArgs = {
+  object: ShipmentInsertInput;
   on_conflict?: Maybe<ShipmentOnConflict>;
 };
 
@@ -7721,6 +8585,20 @@ export type MutationRootInsertVendorItemArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertVendorItemOneArgs = {
+  object: VendorItemInsertInput;
+  on_conflict?: Maybe<VendorItemOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertVendorOneArgs = {
+  object: VendorInsertInput;
+  on_conflict?: Maybe<VendorOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootPutLabelMonochromeBufferArgs = {
   imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>;
 };
@@ -7734,9 +8612,23 @@ export type MutationRootUpdateEnumHardwareFastenerBoltPointArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerBoltPointByPkArgs = {
+  _set?: Maybe<EnumHardwareFastenerBoltPointSetInput>;
+  pk_columns: EnumHardwareFastenerBoltPointPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateEnumHardwareFastenerDriveArgs = {
   _set?: Maybe<EnumHardwareFastenerDriveSetInput>;
   where: EnumHardwareFastenerDriveBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerDriveByPkArgs = {
+  _set?: Maybe<EnumHardwareFastenerDriveSetInput>;
+  pk_columns: EnumHardwareFastenerDrivePkColumnsInput;
 };
 
 
@@ -7748,9 +8640,23 @@ export type MutationRootUpdateEnumHardwareFastenerHardnessArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerHardnessByPkArgs = {
+  _set?: Maybe<EnumHardwareFastenerHardnessSetInput>;
+  pk_columns: EnumHardwareFastenerHardnessPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateEnumHardwareFastenerHeadArgs = {
   _set?: Maybe<EnumHardwareFastenerHeadSetInput>;
   where: EnumHardwareFastenerHeadBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerHeadByPkArgs = {
+  _set?: Maybe<EnumHardwareFastenerHeadSetInput>;
+  pk_columns: EnumHardwareFastenerHeadPkColumnsInput;
 };
 
 
@@ -7762,9 +8668,23 @@ export type MutationRootUpdateEnumHardwareFastenerMaterialArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerMaterialByPkArgs = {
+  _set?: Maybe<EnumHardwareFastenerMaterialSetInput>;
+  pk_columns: EnumHardwareFastenerMaterialPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateEnumHardwareFastenerStrengthClassArgs = {
   _set?: Maybe<EnumHardwareFastenerStrengthClassSetInput>;
   where: EnumHardwareFastenerStrengthClassBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerStrengthClassByPkArgs = {
+  _set?: Maybe<EnumHardwareFastenerStrengthClassSetInput>;
+  pk_columns: EnumHardwareFastenerStrengthClassPkColumnsInput;
 };
 
 
@@ -7776,9 +8696,23 @@ export type MutationRootUpdateEnumHardwareFastenerThreadDirectionArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerThreadDirectionByPkArgs = {
+  _set?: Maybe<EnumHardwareFastenerThreadDirectionSetInput>;
+  pk_columns: EnumHardwareFastenerThreadDirectionPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateEnumHardwareFastenerThreadFitArgs = {
   _set?: Maybe<EnumHardwareFastenerThreadFitSetInput>;
   where: EnumHardwareFastenerThreadFitBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerThreadFitByPkArgs = {
+  _set?: Maybe<EnumHardwareFastenerThreadFitSetInput>;
+  pk_columns: EnumHardwareFastenerThreadFitPkColumnsInput;
 };
 
 
@@ -7790,9 +8724,23 @@ export type MutationRootUpdateEnumHardwareFastenerThreadTypeArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerThreadTypeByPkArgs = {
+  _set?: Maybe<EnumHardwareFastenerThreadTypeSetInput>;
+  pk_columns: EnumHardwareFastenerThreadTypePkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateEnumHardwareFastenerUseMaterialArgs = {
   _set?: Maybe<EnumHardwareFastenerUseMaterialSetInput>;
   where: EnumHardwareFastenerUseMaterialBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerUseMaterialByPkArgs = {
+  _set?: Maybe<EnumHardwareFastenerUseMaterialSetInput>;
+  pk_columns: EnumHardwareFastenerUseMaterialPkColumnsInput;
 };
 
 
@@ -7804,9 +8752,23 @@ export type MutationRootUpdateEnumHardwareFinishArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateEnumHardwareFinishByPkArgs = {
+  _set?: Maybe<EnumHardwareFinishSetInput>;
+  pk_columns: EnumHardwareFinishPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateEnumItemClassArgs = {
   _set?: Maybe<EnumItemClassSetInput>;
   where: EnumItemClassBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumItemClassByPkArgs = {
+  _set?: Maybe<EnumItemClassSetInput>;
+  pk_columns: EnumItemClassPkColumnsInput;
 };
 
 
@@ -7818,6 +8780,13 @@ export type MutationRootUpdateEnumPaymentMethodTypeArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateEnumPaymentMethodTypeByPkArgs = {
+  _set?: Maybe<EnumPaymentMethodTypeSetInput>;
+  pk_columns: EnumPaymentMethodTypePkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateEnumUnitArgs = {
   _set?: Maybe<EnumUnitSetInput>;
   where: EnumUnitBoolExp;
@@ -7825,9 +8794,23 @@ export type MutationRootUpdateEnumUnitArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateEnumUnitByPkArgs = {
+  _set?: Maybe<EnumUnitSetInput>;
+  pk_columns: EnumUnitPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateIconArgs = {
   _set?: Maybe<IconSetInput>;
   where: IconBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateIconByPkArgs = {
+  _set?: Maybe<IconSetInput>;
+  pk_columns: IconPkColumnsInput;
 };
 
 
@@ -7845,9 +8828,29 @@ export type MutationRootUpdateIconItemCategoryMapArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateIconItemCategoryMapByPkArgs = {
+  _append?: Maybe<IconItemCategoryMapAppendInput>;
+  _delete_at_path?: Maybe<IconItemCategoryMapDeleteAtPathInput>;
+  _delete_elem?: Maybe<IconItemCategoryMapDeleteElemInput>;
+  _delete_key?: Maybe<IconItemCategoryMapDeleteKeyInput>;
+  _inc?: Maybe<IconItemCategoryMapIncInput>;
+  _prepend?: Maybe<IconItemCategoryMapPrependInput>;
+  _set?: Maybe<IconItemCategoryMapSetInput>;
+  pk_columns: IconItemCategoryMapPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateIconLabelMapArgs = {
   _set?: Maybe<IconLabelMapSetInput>;
   where: IconLabelMapBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateIconLabelMapByPkArgs = {
+  _set?: Maybe<IconLabelMapSetInput>;
+  pk_columns: IconLabelMapPkColumnsInput;
 };
 
 
@@ -7873,10 +8876,39 @@ export type MutationRootUpdateItemBundleArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateItemBundleByPkArgs = {
+  _inc?: Maybe<ItemBundleIncInput>;
+  _set?: Maybe<ItemBundleSetInput>;
+  pk_columns: ItemBundlePkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateItemBundleMapArgs = {
   _inc?: Maybe<ItemBundleMapIncInput>;
   _set?: Maybe<ItemBundleMapSetInput>;
   where: ItemBundleMapBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateItemBundleMapByPkArgs = {
+  _inc?: Maybe<ItemBundleMapIncInput>;
+  _set?: Maybe<ItemBundleMapSetInput>;
+  pk_columns: ItemBundleMapPkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateItemByPkArgs = {
+  _append?: Maybe<ItemAppendInput>;
+  _delete_at_path?: Maybe<ItemDeleteAtPathInput>;
+  _delete_elem?: Maybe<ItemDeleteElemInput>;
+  _delete_key?: Maybe<ItemDeleteKeyInput>;
+  _inc?: Maybe<ItemIncInput>;
+  _prepend?: Maybe<ItemPrependInput>;
+  _set?: Maybe<ItemSetInput>;
+  pk_columns: ItemPkColumnsInput;
 };
 
 
@@ -7894,6 +8926,19 @@ export type MutationRootUpdateItemHardwareFastenerBoltArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateItemHardwareFastenerBoltByPkArgs = {
+  _append?: Maybe<ItemHardwareFastenerBoltAppendInput>;
+  _delete_at_path?: Maybe<ItemHardwareFastenerBoltDeleteAtPathInput>;
+  _delete_elem?: Maybe<ItemHardwareFastenerBoltDeleteElemInput>;
+  _delete_key?: Maybe<ItemHardwareFastenerBoltDeleteKeyInput>;
+  _inc?: Maybe<ItemHardwareFastenerBoltIncInput>;
+  _prepend?: Maybe<ItemHardwareFastenerBoltPrependInput>;
+  _set?: Maybe<ItemHardwareFastenerBoltSetInput>;
+  pk_columns: ItemHardwareFastenerBoltPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateItemHardwareFastenerNutArgs = {
   _inc?: Maybe<ItemHardwareFastenerNutIncInput>;
   _set?: Maybe<ItemHardwareFastenerNutSetInput>;
@@ -7902,10 +8947,26 @@ export type MutationRootUpdateItemHardwareFastenerNutArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateItemHardwareFastenerNutByPkArgs = {
+  _inc?: Maybe<ItemHardwareFastenerNutIncInput>;
+  _set?: Maybe<ItemHardwareFastenerNutSetInput>;
+  pk_columns: ItemHardwareFastenerNutPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateItemHardwareFastenerScrewArgs = {
   _inc?: Maybe<ItemHardwareFastenerScrewIncInput>;
   _set?: Maybe<ItemHardwareFastenerScrewSetInput>;
   where: ItemHardwareFastenerScrewBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateItemHardwareFastenerScrewByPkArgs = {
+  _inc?: Maybe<ItemHardwareFastenerScrewIncInput>;
+  _set?: Maybe<ItemHardwareFastenerScrewSetInput>;
+  pk_columns: ItemHardwareFastenerScrewPkColumnsInput;
 };
 
 
@@ -7923,10 +8984,31 @@ export type MutationRootUpdateLabelArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateLabelByPkArgs = {
+  _append?: Maybe<LabelAppendInput>;
+  _delete_at_path?: Maybe<LabelDeleteAtPathInput>;
+  _delete_elem?: Maybe<LabelDeleteElemInput>;
+  _delete_key?: Maybe<LabelDeleteKeyInput>;
+  _inc?: Maybe<LabelIncInput>;
+  _prepend?: Maybe<LabelPrependInput>;
+  _set?: Maybe<LabelSetInput>;
+  pk_columns: LabelPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateLabelItemMapArgs = {
   _inc?: Maybe<LabelItemMapIncInput>;
   _set?: Maybe<LabelItemMapSetInput>;
   where: LabelItemMapBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateLabelItemMapByPkArgs = {
+  _inc?: Maybe<LabelItemMapIncInput>;
+  _set?: Maybe<LabelItemMapSetInput>;
+  pk_columns: LabelItemMapPkColumnsInput;
 };
 
 
@@ -7944,10 +9026,31 @@ export type MutationRootUpdateLabelTemplateMapArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateLabelTemplateMapByPkArgs = {
+  _append?: Maybe<LabelTemplateMapAppendInput>;
+  _delete_at_path?: Maybe<LabelTemplateMapDeleteAtPathInput>;
+  _delete_elem?: Maybe<LabelTemplateMapDeleteElemInput>;
+  _delete_key?: Maybe<LabelTemplateMapDeleteKeyInput>;
+  _inc?: Maybe<LabelTemplateMapIncInput>;
+  _prepend?: Maybe<LabelTemplateMapPrependInput>;
+  _set?: Maybe<LabelTemplateMapSetInput>;
+  pk_columns: LabelTemplateMapPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateManufacturerArgs = {
   _inc?: Maybe<ManufacturerIncInput>;
   _set?: Maybe<ManufacturerSetInput>;
   where: ManufacturerBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateManufacturerByPkArgs = {
+  _inc?: Maybe<ManufacturerIncInput>;
+  _set?: Maybe<ManufacturerSetInput>;
+  pk_columns: ManufacturerPkColumnsInput;
 };
 
 
@@ -7960,10 +9063,26 @@ export type MutationRootUpdateManufacturerItemArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateManufacturerItemByPkArgs = {
+  _inc?: Maybe<ManufacturerItemIncInput>;
+  _set?: Maybe<ManufacturerItemSetInput>;
+  pk_columns: ManufacturerItemPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateOrderArgs = {
   _inc?: Maybe<OrderIncInput>;
   _set?: Maybe<OrderSetInput>;
   where: OrderBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateOrderByPkArgs = {
+  _inc?: Maybe<OrderIncInput>;
+  _set?: Maybe<OrderSetInput>;
+  pk_columns: OrderPkColumnsInput;
 };
 
 
@@ -7976,10 +9095,26 @@ export type MutationRootUpdateOrderItemArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateOrderItemByPkArgs = {
+  _inc?: Maybe<OrderItemIncInput>;
+  _set?: Maybe<OrderItemSetInput>;
+  pk_columns: OrderItemPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdatePaymentMethodArgs = {
   _inc?: Maybe<PaymentMethodIncInput>;
   _set?: Maybe<PaymentMethodSetInput>;
   where: PaymentMethodBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdatePaymentMethodByPkArgs = {
+  _inc?: Maybe<PaymentMethodIncInput>;
+  _set?: Maybe<PaymentMethodSetInput>;
+  pk_columns: PaymentMethodPkColumnsInput;
 };
 
 
@@ -7992,6 +9127,14 @@ export type MutationRootUpdateShipmentArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateShipmentByPkArgs = {
+  _inc?: Maybe<ShipmentIncInput>;
+  _set?: Maybe<ShipmentSetInput>;
+  pk_columns: ShipmentPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateVendorArgs = {
   _inc?: Maybe<VendorIncInput>;
   _set?: Maybe<VendorSetInput>;
@@ -8000,10 +9143,26 @@ export type MutationRootUpdateVendorArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateVendorByPkArgs = {
+  _inc?: Maybe<VendorIncInput>;
+  _set?: Maybe<VendorSetInput>;
+  pk_columns: VendorPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateVendorItemArgs = {
   _inc?: Maybe<VendorItemIncInput>;
   _set?: Maybe<VendorItemSetInput>;
   where: VendorItemBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateVendorItemByPkArgs = {
+  _inc?: Maybe<VendorItemIncInput>;
+  _set?: Maybe<VendorItemSetInput>;
+  pk_columns: VendorItemPkColumnsInput;
 };
 
 
@@ -8102,14 +9261,20 @@ export type OrderArrRelInsertInput = {
 export type OrderAvgFields = {
    __typename?: 'order_avg_fields';
   id?: Maybe<Scalars['Float']>;
+  items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
+  tax_cost?: Maybe<Scalars['Float']>;
+  total_cost?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "order" */
 export type OrderAvgOrderBy = {
   id?: Maybe<OrderBy>;
+  items_cost?: Maybe<OrderBy>;
   payment_method_id?: Maybe<OrderBy>;
+  tax_cost?: Maybe<OrderBy>;
+  total_cost?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
 };
 
@@ -8153,10 +9318,13 @@ export enum OrderConstraint {
   order_pkey = 'order_pkey'
 }
 
-/** input type for incrementing integer columne in table "order" */
+/** input type for incrementing integer column in table "order" */
 export type OrderIncInput = {
   id?: Maybe<Scalars['Int']>;
+  items_cost?: Maybe<Scalars['money']>;
   payment_method_id?: Maybe<Scalars['Int']>;
+  tax_cost?: Maybe<Scalars['money']>;
+  total_cost?: Maybe<Scalars['money']>;
   vendor_id?: Maybe<Scalars['Int']>;
 };
 
@@ -8251,6 +9419,9 @@ export type OrderItemArrRelInsertInput = {
 /** aggregate avg on columns */
 export type OrderItemAvgFields = {
    __typename?: 'order_item_avg_fields';
+  cost_item?: Maybe<Scalars['Float']>;
+  cost_tax?: Maybe<Scalars['Float']>;
+  cost_total?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -8261,6 +9432,9 @@ export type OrderItemAvgFields = {
 
 /** order by avg() on columns of table "order_item" */
 export type OrderItemAvgOrderBy = {
+  cost_item?: Maybe<OrderBy>;
+  cost_tax?: Maybe<OrderBy>;
+  cost_total?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -8294,11 +9468,15 @@ export enum OrderItemConstraint {
   order_item_vendor_item_id_order_id_serial_no_key = 'order_item_vendor_item_id_order_id_serial_no_key'
 }
 
-/** input type for incrementing integer columne in table "order_item" */
+/** input type for incrementing integer column in table "order_item" */
 export type OrderItemIncInput = {
+  cost_item?: Maybe<Scalars['money']>;
+  cost_tax?: Maybe<Scalars['money']>;
+  cost_total?: Maybe<Scalars['money']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
+  qty?: Maybe<Scalars['numeric']>;
   shipment_id?: Maybe<Scalars['Int']>;
   vendor_item_id?: Maybe<Scalars['Int']>;
 };
@@ -8320,6 +9498,9 @@ export type OrderItemInsertInput = {
 /** aggregate max on columns */
 export type OrderItemMaxFields = {
    __typename?: 'order_item_max_fields';
+  cost_item?: Maybe<Scalars['money']>;
+  cost_tax?: Maybe<Scalars['money']>;
+  cost_total?: Maybe<Scalars['money']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
@@ -8331,6 +9512,9 @@ export type OrderItemMaxFields = {
 
 /** order by max() on columns of table "order_item" */
 export type OrderItemMaxOrderBy = {
+  cost_item?: Maybe<OrderBy>;
+  cost_tax?: Maybe<OrderBy>;
+  cost_total?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -8343,6 +9527,9 @@ export type OrderItemMaxOrderBy = {
 /** aggregate min on columns */
 export type OrderItemMinFields = {
    __typename?: 'order_item_min_fields';
+  cost_item?: Maybe<Scalars['money']>;
+  cost_tax?: Maybe<Scalars['money']>;
+  cost_total?: Maybe<Scalars['money']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
@@ -8354,6 +9541,9 @@ export type OrderItemMinFields = {
 
 /** order by min() on columns of table "order_item" */
 export type OrderItemMinOrderBy = {
+  cost_item?: Maybe<OrderBy>;
+  cost_tax?: Maybe<OrderBy>;
+  cost_total?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -8399,6 +9589,14 @@ export type OrderItemOrderBy = {
   vendor_item_id?: Maybe<OrderBy>;
 };
 
+/** primary key columns input for table: "order_item" */
+export type OrderItemPkColumnsInput = {
+  order_id: Scalars['Int'];
+  /** individual items unique id (as provided by manufacturer) */
+  serial_no: Scalars['String'];
+  vendor_item_id: Scalars['Int'];
+};
+
 /** select columns of table "order_item" */
 export enum OrderItemSelectColumn {
   /** column name */
@@ -8440,6 +9638,9 @@ export type OrderItemSetInput = {
 /** aggregate stddev on columns */
 export type OrderItemStddevFields = {
    __typename?: 'order_item_stddev_fields';
+  cost_item?: Maybe<Scalars['Float']>;
+  cost_tax?: Maybe<Scalars['Float']>;
+  cost_total?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -8450,6 +9651,9 @@ export type OrderItemStddevFields = {
 
 /** order by stddev() on columns of table "order_item" */
 export type OrderItemStddevOrderBy = {
+  cost_item?: Maybe<OrderBy>;
+  cost_tax?: Maybe<OrderBy>;
+  cost_total?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -8461,6 +9665,9 @@ export type OrderItemStddevOrderBy = {
 /** aggregate stddev_pop on columns */
 export type OrderItemStddevPopFields = {
    __typename?: 'order_item_stddev_pop_fields';
+  cost_item?: Maybe<Scalars['Float']>;
+  cost_tax?: Maybe<Scalars['Float']>;
+  cost_total?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -8471,6 +9678,9 @@ export type OrderItemStddevPopFields = {
 
 /** order by stddev_pop() on columns of table "order_item" */
 export type OrderItemStddevPopOrderBy = {
+  cost_item?: Maybe<OrderBy>;
+  cost_tax?: Maybe<OrderBy>;
+  cost_total?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -8482,6 +9692,9 @@ export type OrderItemStddevPopOrderBy = {
 /** aggregate stddev_samp on columns */
 export type OrderItemStddevSampFields = {
    __typename?: 'order_item_stddev_samp_fields';
+  cost_item?: Maybe<Scalars['Float']>;
+  cost_tax?: Maybe<Scalars['Float']>;
+  cost_total?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -8492,6 +9705,9 @@ export type OrderItemStddevSampFields = {
 
 /** order by stddev_samp() on columns of table "order_item" */
 export type OrderItemStddevSampOrderBy = {
+  cost_item?: Maybe<OrderBy>;
+  cost_tax?: Maybe<OrderBy>;
+  cost_total?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -8503,6 +9719,9 @@ export type OrderItemStddevSampOrderBy = {
 /** aggregate sum on columns */
 export type OrderItemSumFields = {
    __typename?: 'order_item_sum_fields';
+  cost_item?: Maybe<Scalars['money']>;
+  cost_tax?: Maybe<Scalars['money']>;
+  cost_total?: Maybe<Scalars['money']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
@@ -8513,6 +9732,9 @@ export type OrderItemSumFields = {
 
 /** order by sum() on columns of table "order_item" */
 export type OrderItemSumOrderBy = {
+  cost_item?: Maybe<OrderBy>;
+  cost_tax?: Maybe<OrderBy>;
+  cost_total?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -8548,6 +9770,9 @@ export enum OrderItemUpdateColumn {
 /** aggregate var_pop on columns */
 export type OrderItemVarPopFields = {
    __typename?: 'order_item_var_pop_fields';
+  cost_item?: Maybe<Scalars['Float']>;
+  cost_tax?: Maybe<Scalars['Float']>;
+  cost_total?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -8558,6 +9783,9 @@ export type OrderItemVarPopFields = {
 
 /** order by var_pop() on columns of table "order_item" */
 export type OrderItemVarPopOrderBy = {
+  cost_item?: Maybe<OrderBy>;
+  cost_tax?: Maybe<OrderBy>;
+  cost_total?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -8569,6 +9797,9 @@ export type OrderItemVarPopOrderBy = {
 /** aggregate var_samp on columns */
 export type OrderItemVarSampFields = {
    __typename?: 'order_item_var_samp_fields';
+  cost_item?: Maybe<Scalars['Float']>;
+  cost_tax?: Maybe<Scalars['Float']>;
+  cost_total?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -8579,6 +9810,9 @@ export type OrderItemVarSampFields = {
 
 /** order by var_samp() on columns of table "order_item" */
 export type OrderItemVarSampOrderBy = {
+  cost_item?: Maybe<OrderBy>;
+  cost_tax?: Maybe<OrderBy>;
+  cost_total?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -8590,6 +9824,9 @@ export type OrderItemVarSampOrderBy = {
 /** aggregate variance on columns */
 export type OrderItemVarianceFields = {
    __typename?: 'order_item_variance_fields';
+  cost_item?: Maybe<Scalars['Float']>;
+  cost_tax?: Maybe<Scalars['Float']>;
+  cost_total?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -8600,6 +9837,9 @@ export type OrderItemVarianceFields = {
 
 /** order by variance() on columns of table "order_item" */
 export type OrderItemVarianceOrderBy = {
+  cost_item?: Maybe<OrderBy>;
+  cost_tax?: Maybe<OrderBy>;
+  cost_total?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -8613,9 +9853,12 @@ export type OrderMaxFields = {
    __typename?: 'order_max_fields';
   fulfilled_date?: Maybe<Scalars['date']>;
   id?: Maybe<Scalars['Int']>;
+  items_cost?: Maybe<Scalars['money']>;
   payment_method_id?: Maybe<Scalars['Int']>;
   placed_date?: Maybe<Scalars['date']>;
   pon?: Maybe<Scalars['String']>;
+  tax_cost?: Maybe<Scalars['money']>;
+  total_cost?: Maybe<Scalars['money']>;
   url?: Maybe<Scalars['String']>;
   vendor_id?: Maybe<Scalars['Int']>;
   vendor_order_id?: Maybe<Scalars['String']>;
@@ -8625,9 +9868,12 @@ export type OrderMaxFields = {
 export type OrderMaxOrderBy = {
   fulfilled_date?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  items_cost?: Maybe<OrderBy>;
   payment_method_id?: Maybe<OrderBy>;
   placed_date?: Maybe<OrderBy>;
   pon?: Maybe<OrderBy>;
+  tax_cost?: Maybe<OrderBy>;
+  total_cost?: Maybe<OrderBy>;
   url?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
   vendor_order_id?: Maybe<OrderBy>;
@@ -8638,9 +9884,12 @@ export type OrderMinFields = {
    __typename?: 'order_min_fields';
   fulfilled_date?: Maybe<Scalars['date']>;
   id?: Maybe<Scalars['Int']>;
+  items_cost?: Maybe<Scalars['money']>;
   payment_method_id?: Maybe<Scalars['Int']>;
   placed_date?: Maybe<Scalars['date']>;
   pon?: Maybe<Scalars['String']>;
+  tax_cost?: Maybe<Scalars['money']>;
+  total_cost?: Maybe<Scalars['money']>;
   url?: Maybe<Scalars['String']>;
   vendor_id?: Maybe<Scalars['Int']>;
   vendor_order_id?: Maybe<Scalars['String']>;
@@ -8650,9 +9899,12 @@ export type OrderMinFields = {
 export type OrderMinOrderBy = {
   fulfilled_date?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  items_cost?: Maybe<OrderBy>;
   payment_method_id?: Maybe<OrderBy>;
   placed_date?: Maybe<OrderBy>;
   pon?: Maybe<OrderBy>;
+  tax_cost?: Maybe<OrderBy>;
+  total_cost?: Maybe<OrderBy>;
   url?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
   vendor_order_id?: Maybe<OrderBy>;
@@ -8693,6 +9945,11 @@ export type OrderOrderBy = {
   url?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
   vendor_order_id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "order" */
+export type OrderPkColumnsInput = {
+  id: Scalars['Int'];
 };
 
 /** select columns of table "order" */
@@ -8740,14 +9997,20 @@ export type OrderSetInput = {
 export type OrderStddevFields = {
    __typename?: 'order_stddev_fields';
   id?: Maybe<Scalars['Float']>;
+  items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
+  tax_cost?: Maybe<Scalars['Float']>;
+  total_cost?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "order" */
 export type OrderStddevOrderBy = {
   id?: Maybe<OrderBy>;
+  items_cost?: Maybe<OrderBy>;
   payment_method_id?: Maybe<OrderBy>;
+  tax_cost?: Maybe<OrderBy>;
+  total_cost?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
 };
 
@@ -8755,14 +10018,20 @@ export type OrderStddevOrderBy = {
 export type OrderStddevPopFields = {
    __typename?: 'order_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
+  items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
+  tax_cost?: Maybe<Scalars['Float']>;
+  total_cost?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "order" */
 export type OrderStddevPopOrderBy = {
   id?: Maybe<OrderBy>;
+  items_cost?: Maybe<OrderBy>;
   payment_method_id?: Maybe<OrderBy>;
+  tax_cost?: Maybe<OrderBy>;
+  total_cost?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
 };
 
@@ -8770,14 +10039,20 @@ export type OrderStddevPopOrderBy = {
 export type OrderStddevSampFields = {
    __typename?: 'order_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
+  items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
+  tax_cost?: Maybe<Scalars['Float']>;
+  total_cost?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "order" */
 export type OrderStddevSampOrderBy = {
   id?: Maybe<OrderBy>;
+  items_cost?: Maybe<OrderBy>;
   payment_method_id?: Maybe<OrderBy>;
+  tax_cost?: Maybe<OrderBy>;
+  total_cost?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
 };
 
@@ -8785,14 +10060,20 @@ export type OrderStddevSampOrderBy = {
 export type OrderSumFields = {
    __typename?: 'order_sum_fields';
   id?: Maybe<Scalars['Int']>;
+  items_cost?: Maybe<Scalars['money']>;
   payment_method_id?: Maybe<Scalars['Int']>;
+  tax_cost?: Maybe<Scalars['money']>;
+  total_cost?: Maybe<Scalars['money']>;
   vendor_id?: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "order" */
 export type OrderSumOrderBy = {
   id?: Maybe<OrderBy>;
+  items_cost?: Maybe<OrderBy>;
   payment_method_id?: Maybe<OrderBy>;
+  tax_cost?: Maybe<OrderBy>;
+  total_cost?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
 };
 
@@ -8826,14 +10107,20 @@ export enum OrderUpdateColumn {
 export type OrderVarPopFields = {
    __typename?: 'order_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
+  items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
+  tax_cost?: Maybe<Scalars['Float']>;
+  total_cost?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "order" */
 export type OrderVarPopOrderBy = {
   id?: Maybe<OrderBy>;
+  items_cost?: Maybe<OrderBy>;
   payment_method_id?: Maybe<OrderBy>;
+  tax_cost?: Maybe<OrderBy>;
+  total_cost?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
 };
 
@@ -8841,14 +10128,20 @@ export type OrderVarPopOrderBy = {
 export type OrderVarSampFields = {
    __typename?: 'order_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
+  items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
+  tax_cost?: Maybe<Scalars['Float']>;
+  total_cost?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "order" */
 export type OrderVarSampOrderBy = {
   id?: Maybe<OrderBy>;
+  items_cost?: Maybe<OrderBy>;
   payment_method_id?: Maybe<OrderBy>;
+  tax_cost?: Maybe<OrderBy>;
+  total_cost?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
 };
 
@@ -8856,14 +10149,20 @@ export type OrderVarSampOrderBy = {
 export type OrderVarianceFields = {
    __typename?: 'order_variance_fields';
   id?: Maybe<Scalars['Float']>;
+  items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
+  tax_cost?: Maybe<Scalars['Float']>;
+  total_cost?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "order" */
 export type OrderVarianceOrderBy = {
   id?: Maybe<OrderBy>;
+  items_cost?: Maybe<OrderBy>;
   payment_method_id?: Maybe<OrderBy>;
+  tax_cost?: Maybe<OrderBy>;
+  total_cost?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
 };
 
@@ -8953,7 +10252,7 @@ export enum PaymentMethodConstraint {
   payment_method_pkey = 'payment_method_pkey'
 }
 
-/** input type for incrementing integer columne in table "payment_method" */
+/** input type for incrementing integer column in table "payment_method" */
 export type PaymentMethodIncInput = {
   id?: Maybe<Scalars['Int']>;
 };
@@ -9018,6 +10317,11 @@ export type PaymentMethodOrderBy = {
   class?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "payment_method" */
+export type PaymentMethodPkColumnsInput = {
+  id: Scalars['Int'];
 };
 
 /** select columns of table "payment_method" */
@@ -10362,7 +11666,7 @@ export enum ShipmentConstraint {
   shipment_pkey = 'shipment_pkey'
 }
 
-/** input type for incrementing integer columne in table "shipment" */
+/** input type for incrementing integer column in table "shipment" */
 export type ShipmentIncInput = {
   id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
@@ -10458,6 +11762,11 @@ export type ShipmentOrderBy = {
   shipping_carrier?: Maybe<OrderBy>;
   tracking_id?: Maybe<OrderBy>;
   vendor_invoice_id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "shipment" */
+export type ShipmentPkColumnsInput = {
+  id: Scalars['Int'];
 };
 
 /** select columns of table "shipment" */
@@ -11897,7 +13206,7 @@ export enum VendorConstraint {
   vendor_pkey = 'vendor_pkey'
 }
 
-/** input type for incrementing integer columne in table "vendor" */
+/** input type for incrementing integer column in table "vendor" */
 export type VendorIncInput = {
   id?: Maybe<Scalars['Int']>;
 };
@@ -12002,7 +13311,7 @@ export enum VendorItemConstraint {
   vendor_item_pkey = 'vendor_item_pkey'
 }
 
-/** input type for incrementing integer columne in table "vendor_item" */
+/** input type for incrementing integer column in table "vendor_item" */
 export type VendorItemIncInput = {
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
@@ -12079,6 +13388,11 @@ export type VendorItemOrderBy = {
   item_id?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
   vendor_sku?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "vendor_item" */
+export type VendorItemPkColumnsInput = {
+  id: Scalars['Int'];
 };
 
 /** select columns of table "vendor_item" */
@@ -12280,6 +13594,11 @@ export type VendorOrderBy = {
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   url?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "vendor" */
+export type VendorPkColumnsInput = {
+  id: Scalars['Int'];
 };
 
 /** select columns of table "vendor" */
@@ -12625,7 +13944,7 @@ export type ItemHardwareFastenerBoltQuery = (
   { __typename?: 'query_root' }
   & { items: Array<(
     { __typename?: 'item_hardware_fastener_bolt' }
-    & Pick<ItemHardwareFastenerBolt, 'id' | 'name' | 'description' | 'unit' | 'thread_length' | 'head_type' | 'drive_type' | 'drive_size' | 'head_diameter' | 'head_height' | 'thread_size' | 'finish' | 'material' | 'thread_direction' | 'countersunk_angle' | 'tensile_strength' | 'specifications_met' | 'thread_fit' | 'point_type' | 'hardness' | 'strength_class'>
+    & Pick<ItemHardwareFastenerBolt, 'id' | 'name' | 'description' | 'unit' | 'thread_length' | 'head_type' | 'drive_type' | 'drive_size' | 'head_diameter' | 'head_height' | 'thread_diameter' | 'finish' | 'material' | 'thread_direction' | 'countersunk_angle' | 'tensile_strength' | 'specifications_met' | 'thread_fit' | 'point_type' | 'hardness' | 'strength_class' | 'use_material'>
   )> }
 );
 
@@ -13432,7 +14751,7 @@ export const ItemHardwareFastenerBoltDocument = gql`
     drive_size
     head_diameter
     head_height
-    thread_size
+    thread_diameter
     finish
     material
     thread_direction
@@ -13443,6 +14762,7 @@ export const ItemHardwareFastenerBoltDocument = gql`
     point_type
     hardness
     strength_class
+    use_material
   }
 }
     `;
@@ -13490,4 +14810,4 @@ export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHo
 export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
 export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
-// graphql typescript defs generated on 2020-04-20T06:52:27-06:00
+// graphql typescript defs generated on 2020-05-02T18:22:15-06:00
