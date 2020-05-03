@@ -3,10 +3,12 @@ import React, { SVGProps, FunctionComponent, ImgHTMLAttributes, FunctionComponen
 import Icon from '@ant-design/icons';
 import { IconComponentProps as IconProps } from '@ant-design/icons/lib/components/Icon';
 
-import CodeIcon from '../icon/Code.svg';
+import CodeIcon from './Code.svg';
 import HexBolt from './HexBolt.png';
+import ScrewThread from './ScrewThread.svg';
 
-export const HexBoltIcon: React.FunctionComponent<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>> = (props) => <img src={HexBolt} {...props} />;
+export const HexBoltIcon: React.FunctionComponent<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>> = ( props ) => <img src={HexBolt} {...props} />;
+// export const ScrewThreadIcon: React.FunctionComponent<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>> = ( props ) => <img src={HexBolt} {...props} />;
     // React.DetailedHTMLProps < React.ImgHTMLAttributes < HTMLImageElement >, HTMLImageElement >
 
 // export const HexBoltIcon: FunctionComponentElement<"img"> = <img src={HexBolt} />;
@@ -18,5 +20,6 @@ export const HexBoltIcon: React.FunctionComponent<React.DetailedHTMLProps<React.
 
 // export * as VaultIcon from './vault.svg';
 export {
-    CodeIcon
+    CodeIcon,
+    ScrewThread as ScrewThreadIcon
 };

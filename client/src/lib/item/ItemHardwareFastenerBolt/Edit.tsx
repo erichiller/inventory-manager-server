@@ -2,7 +2,7 @@ import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'reac
 import { Form, Input, Divider, Tooltip } from 'antd';
 // import { OptionsType } from 'rc-select/lib/Option';
 import { ItemEditFormProps } from '../Item';
-import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerThreadDirectionEnum, EnumHardwareFastenerThreadTypeEnum, EnumHardwareFastenerThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerStrengthClassEnum, EnumUnitEnum } from '../../types/graphql';
+import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerThreadDirectionEnum, EnumHardwareFastenerThreadTypeEnum, EnumHardwareFastenerThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerStrengthClassEnum, EnumUnitEnum, EnumHardwareFastenerUseMaterialEnum } from '../../types/graphql';
 import TextArea from 'antd/lib/input/TextArea';
 
 import { EnumUnitKeys, EnumHardwareFastenerSpecificationsEnum } from './types/types';
@@ -13,6 +13,7 @@ import { ScrewSizeInput, ScrewSizeInputOptionData } from './formComponents/Screw
 import { toMinimumFixed, Union } from '../../UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { ItemHardwareFastenerBolt } from './Index';
+import { ScrewThreadIcon } from '../../../styles/icon';
 
 
 interface ItemHardwareFastenerBoltEditFormProps extends Union<ItemEditFormProps, ItemHardwareFastenerBolt> {
@@ -196,9 +197,10 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
               ********************************************************************************/}
             <div className="col">
                 <Divider key="divider_thread" orientation="left">Thread</Divider>
+                
 
                 <Form.Item name="thread_length" dependencies={[ 'unit' ]}
-                    label={<Tooltip title="The length of the screw that is threaded" ><span>Thread Length</span></Tooltip>}
+                    label={<Tooltip title={<div className="formTooltip"><ScrewThreadIcon /><span>The length of the screw that is threaded. </span></div>} ><span>Thread Length</span></Tooltip>}
                 >
                     <MeasurementInput
                         unit={unit}
@@ -234,14 +236,6 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                 </Form.Item>
 
             </div>
-
-
-            {/* <div style={{
-                flexWrap: 'wrap',
-                border: '1px solid purple',
-                display: 'flex',
-                flexFlow: 'column'
-            }} > */}
 
             <div className="col">
                 {/* Drive */}
@@ -282,7 +276,12 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
 
             <div className="col">
                 <Divider key="divider_miscellaneous" orientation="left">Miscellaneous</Divider>
-                <Form.Item name="point_type" label="Direction">
+                
+                <Form.Item name="use_material" label="Use Material">
+                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerUseMaterialEnum )} placeholder="input placeholder" />
+                </Form.Item>
+
+                <Form.Item name="point_type" label="Point">
                     <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerBoltPointEnum )} placeholder="input placeholder" />
                 </Form.Item>
 

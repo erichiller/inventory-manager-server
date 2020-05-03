@@ -21,5 +21,6 @@ query item_hardware_fastener_bolt {
     point_type
     hardness
     strength_class
+    use_material
   }
 }
