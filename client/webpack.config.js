@@ -35,9 +35,17 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(jpg|png)$/,
-                use: {
-                    loader: 'url-loader',
+                // test: /\.(jpg|png)$/,
+                // use: {
+                    // loader: 'url-loader',
+                // },
+            },
+            {
+                test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+                loader: require.resolve('url-loader'),
+                options: {
+                    limit: 10000, // 10k
+                    name: 'static/media/[name].[hash:8].[ext]',
                 },
             },
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.

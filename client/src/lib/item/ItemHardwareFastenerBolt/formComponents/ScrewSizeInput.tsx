@@ -9,7 +9,7 @@ import { InputProps } from "antd/lib/input";
 import { ThreadOptionT } from '../types/ScrewSizeOption';
 
 import ScrewSizeConfig from '../config/ScrewSizeOptions.json';
-import { eliminateArrayDuplicates, transparentLog } from "../../../UtilityFunctions";
+import { eliminateArrayDuplicates, transparentLog, toTitleCase } from "../../../UtilityFunctions";
 
 console.log( { ScrewSizeConfig} );
 
@@ -146,12 +146,15 @@ function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOpti
     }
     return [];
 }
+
+
 interface ScrewSizeInputProps extends Omit<InputProps, 'value' | 'onChange'> {
     forwardRef?: React.MutableRefObject<Input>;
     unit: EnumUnitKeys;
     value?: ScrewSizeInputOptionData;
     onChange?: ( event: ScrewSizeInputOptionData ) => void;
 }
+
 export const ScrewSizeInput: React.FC<ScrewSizeInputProps> = ( props ) => {
     console.log( { m: 'ScrewSizeInput', f: 'init', props_value: props.value, props } );
     const { onChange, value, unit, ...remainingProps } = props;
@@ -159,7 +162,7 @@ export const ScrewSizeInput: React.FC<ScrewSizeInputProps> = ( props ) => {
     const [ valueText, setValueText ] = useState<string>( 'none' );
     // const [ optionDataArr, setOptionsDataArr ] = useState<ScrewSizeInputOptionData[]>( [] );
 
-    const [ options, setOptions ] = useState<{value: string}[]>( [] );
+    const [ options, setOptions ] = useState<{value: string, label?: string}[]>( [] );
 
     const handleSearch = ( value: string ): void => {
         const parsedValue = parseScrewSizeInputOptionData( value );
@@ -173,17 +176,19 @@ export const ScrewSizeInput: React.FC<ScrewSizeInputProps> = ( props ) => {
         } ) );
         onChange( parsedValue );
     };
-
-
-    // let generatedValue = valueText || constructOptionValue( props.value );
-    // let generatedValue = valueText || props.value.diameter;
-    // let generatedValue = constructOptionValue( props.value ) || valueText;
     console.log( 'TAG', {options} );
     return (
         // TODO: add ability to input fractions
         <React.Fragment>
-            <AutoComplete options={options}>
-                <Input ref={props.forwardRef} spellCheck={false} onChange={e => handleSearch(e.target.value) } />
+            <AutoComplete 
+                options={options}
+                onChange={ ( str, opt ) => handleSearch( str )} 
+                >
+                <Input
+                    ref={props.forwardRef} 
+                    spellCheck={false} 
+                    onChange={e => handleSearch(e.target.value) } 
+                    />
             </AutoComplete>
         </React.Fragment>
     );

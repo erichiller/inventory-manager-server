@@ -1,13 +1,3 @@
-// "m1.6": {
-            pitch: {
-                extra_sizes?: [ 0.x, 0.y ],
-                "extra_fine": 0.2, // these are the "named" sizes
-                "fine": 0.3,
-                "coarse": 0.35
-            }
-        },
-// start actual
-
 {
     "$schema": "./ScrewSizeOptions.schema.json",
     "metric": {

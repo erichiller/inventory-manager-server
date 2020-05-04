@@ -5,21 +5,12 @@ import { IconComponentProps as IconProps } from '@ant-design/icons/lib/component
 
 import CodeIcon from './Code.svg';
 import HexBolt from './HexBolt.png';
-import ScrewThread from './ScrewThread.svg';
 
-export const HexBoltIcon: React.FunctionComponent<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>> = ( props ) => <img src={HexBolt} {...props} />;
-// export const ScrewThreadIcon: React.FunctionComponent<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>> = ( props ) => <img src={HexBolt} {...props} />;
-    // React.DetailedHTMLProps < React.ImgHTMLAttributes < HTMLImageElement >, HTMLImageElement >
+export type PNGReactFC = React.FunctionComponent<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>>;
 
-// export const HexBoltIcon: FunctionComponentElement<"img"> = <img src={HexBolt} />;
-// export * from '@ant-design/icons';
+export type SVGReactFC = React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 
-// let foo: FunctionComponent<SVGP
-
-// export const VaultIcon = ( props: Omit<IconProps, 'component'> ) => <Icon {...props} component={Vault as FunctionComponent<SVGProps<SVGSVGElement>>} />;
-
-// export * as VaultIcon from './vault.svg';
+export const HexBoltIcon: PNGReactFC = ( props ) => <img src={HexBolt} {...props} />;
 export {
     CodeIcon,
-    ScrewThread as ScrewThreadIcon
 };

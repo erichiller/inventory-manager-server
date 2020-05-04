@@ -1,5 +1,5 @@
-import React, { useState, ChangeEvent } from "react";
-import { Select, Input, AutoComplete } from "antd";
+import React, { useState, ChangeEvent, ReactSVGElement, ReactHTMLElement, ReactText, ReactElement } from "react";
+import { Select, Input, AutoComplete, Tooltip } from "antd";
 import { InputProps } from "antd/lib/input";
 import { SelectProps } from 'antd/lib/select';
 
@@ -59,4 +59,22 @@ export function getUnitPrefixAndDiameterFromOptionString ( optionString: string 
 
 /*****************************************************************************/
 
+interface FormIconTooltipProps {
+    // icon: ReactSVGElement;
+    icon: JSX.Element | React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    text: ReactText | ReactElement;
+    label: ReactText | ReactElement;
+    additionalClassNames?: [ string ] | string;
+}
 
+export const FormIconTooltip: React.FC<FormIconTooltipProps> = ( { icon, text, label} ) => {
+    return <Tooltip title={
+        <div className="formTooltip">
+        {icon}
+        <span>{text}</span>
+    </div>}>
+        <span>
+            {label}
+        </span>
+    </Tooltip>
+}
