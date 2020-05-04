@@ -24,3 +24,13 @@ export interface IScrewSizeDefinition {
 export type SchemaDefinition<T> = { $schema: string; } & T;
 
 export type ScrewSizeSchema = SchemaDefinition<IScrewSizeDefinition>;
+
+// "m1.6": {
+        //     pitch: {
+        //         extra_sizes?: [ 0.x, 0.y ],
+        //         "extra_fine": 0.2, // these are the "named" sizes
+        //         "fine": 0.3,
+        //         "coarse": 0.35
+        //     }
+        // },
+// start actual

@@ -34,6 +34,7 @@ div[role="tooltip"] {
         stroke: white;
         fill: white;
         padding-right: 10px;
+        height: max-content;
     }
     & span {
         flex: 1 0 50%;
