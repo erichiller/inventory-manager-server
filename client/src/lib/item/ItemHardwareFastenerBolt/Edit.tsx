@@ -1,5 +1,5 @@
 import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'react';
-import { Form, Input, Divider, Tooltip } from 'antd';
+import { Form, Input, Divider, Tooltip, InputNumber, Switch } from 'antd';
 // import { OptionsType } from 'rc-select/lib/Option';
 import { ItemEditFormProps } from '../Item';
 import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerThreadDirectionEnum, EnumHardwareFastenerThreadTypeEnum, EnumHardwareFastenerThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerStrengthClassEnum, EnumUnitEnum, EnumHardwareFastenerUseMaterialEnum } from '../../types/graphql';
@@ -25,11 +25,18 @@ interface ItemHardwareFastenerBoltEditFormProps extends Union<ItemEditFormProps,
 
 interface FormFields {
     screw_size: ScrewSizeInputOptionData;
+    in_stock: boolean;
 }
 
-
-const setFieldInShouldUpdate = ( field: keyof ScrewSizeInputOptionData, form: FormInstance ) => {
-    // if ( field !== "thread_diameter" ) { return () => false; }
+/**
+* Determines if given `Form.Item` should update based on a specfic trigger.
+*
+* @param field property of `ScrewSizeInputOptionData` to check for a change in.  **_This must match the `name` of the calling `Form.Item`_**
+* @param form `Form` instance that this `Form.Item` is rendered within.
+*
+* @returns boolean where true means do update.
+*/
+const setFieldScrewSizePropertyInShouldUpdate = ( field: keyof ScrewSizeInputOptionData, form: FormInstance ) => {
     return ( prev: FormFields, next: FormFields ) => {
         let currentValue = form.getFieldValue( field );
         console.log( "form", `${ field } shouldUpdate?`, { currentValue, next } );
@@ -44,9 +51,27 @@ const setFieldInShouldUpdate = ( field: keyof ScrewSizeInputOptionData, form: Fo
 };
 
 
+
+// function setFieldInShouldUpdate2<T extends keyof FormFields> ( field: T, form: FormInstance, property: keyof T | null ) {
+//     // if ( field !== "thread_diameter" ) { return () => false; }
+//     return ( prev: FormFields, next: FormFields ) => {
+//         let currentValue = form.getFieldValue( field );
+//         console.log( "form", `${ field } shouldUpdate?`, { currentValue, next } );
+//         let nextValue = next.screw_size && next.screw_size[ field ] ? toMinimumFixed( next.screw_size[ field ], 1 ) : null;
+//         if ( currentValue !== nextValue ) {
+//             console.log( "form", `${ field } shouldUpdate?`, `SETTING ${ field } from screw_size`, `${ currentValue } !== ${ nextValue }` );
+//             form.setFieldsValue( Object.fromEntries( [ [ field, nextValue ] ] ) );
+//             return true;
+//         }
+//         return false;
+//     };
+// };
+
+
 export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBoltEditFormProps> = ( props ) => {
     const { form } = props;
     const [ unit, setUnit ] = useState<EnumUnitKeys>();
+    const [ displayStockQuantity, setDisplayStockQuantity ] = useState<boolean>();
 
     const screwSizeInputRef = useRef<Input>();
 
@@ -75,6 +100,14 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                 <Form.Item name="description" label="Description">
                     <TextArea placeholder="Description, leave empty to auto-generate" autoSize={{ minRows: 2 }} />
                 </Form.Item>
+                <Form.Item name="in_stock" label="In Stock">
+                    <Switch onChange={(val) => setDisplayStockQuantity(val) }/>
+                </Form.Item>
+                { displayStockQuantity ? // TODO: make this a new Form Input custom type
+                <Form.Item name="stock" label="Qty">
+                    <InputNumber placeholder="If known" min={1} step={1} precision={1} />
+                </Form.Item>
+                : null }
                 {/* TODO: then here have a type selector when in the generic add form */}
             </div>
 
@@ -85,7 +118,7 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
             <div className="col">
 
                 <Form.Item name="unit" label="Measurement Unit" required
-                    shouldUpdate={setFieldInShouldUpdate( "unit", form )}
+                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "unit", form )}
                 >
                     <UnitSelect onChange={setUnit} />
                 </Form.Item>
@@ -102,7 +135,7 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                             <pre><span className="highlight">M3</span>-0.5x5</pre>
                         </span>
                     } ><span>Diameter</span></Tooltip>}
-                    shouldUpdate={setFieldInShouldUpdate( "thread_diameter", form )}
+                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_diameter", form )}
                 >
                     <MeasurementInput
                         unit={unit}
@@ -121,7 +154,7 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                             <pre>M3-<span className="highlight">0.5</span>x5</pre>
                         </span>
                     } ><span>Pitch</span></Tooltip>}
-                    shouldUpdate={setFieldInShouldUpdate( "thread_pitch", form )}
+                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_pitch", form )}
                 >
                     <MeasurementInput
                         unit={unit}
@@ -143,7 +176,7 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                             label="Length"
                         />}
                     dependencies={[ 'unit' ]}
-                    shouldUpdate={setFieldInShouldUpdate( "embedded_length", form )}
+                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "embedded_length", form )}
                 >
                     <MeasurementInput
                         unit={unit}

@@ -1,134 +1,133 @@
-"m1.6": {
-            pitch: {
-                "0.2": { // Regex limit these
-                    label: "extra_fine" // limit to extra, fine, coarse
-                },
-                "0.3": {
-                    label: "fine"
-                },
-                "0.35": {
-                    label: "coarse"
-                }
-            },
-            "hardness": {
-                "grade_8"
-            },
-            ,
-        },
-// start actual
-
 {
     "$schema": "./ScrewSizeOptions.schema.json",
     "metric": {
         "m0.25": {
-            pitch: {
+            "pitch": {
                 "0.075": {
-                    label: "coarse"
+                    "label": "coarse"
                 }
             },
-            "hardness": { // example
-                "grade_8"
+            "hardness": {
+                "grade_8": {
+                    
+                }
             }
         },
         "m0.3": {
-            pitch: {
+            "pitch": {
                 "0.08": {
-                    label: "fine"
+                    "label": "fine"
                 },
                 "0.09": {
-                    label: "coarse"
+                    "label": "coarse"
                 }
             },
-            "hardness": { // example
-                "grade_8"
+            "hardness": {
+                "grade_8": {
+                    
+                }
             }
         },
         "m0.35": {
-            pitch: {
+            "pitch": {
                 "0.09": {
-                    label: "coarse"
+                    "label": "coarse"
                 }
             },
-            "hardness": { // example
-                "grade_8"
+            "hardness": {
+                "grade_8": {
+                    
+                }
             }
         },
         "m0.40": {
-            pitch: {
+            "pitch": {
                 "0.1": {
-                    label: "coarse"
+                    "label": "coarse"
                 }
             },
-            "hardness": { // example
-                "grade_8"
+            "hardness": {
+                "grade_8": {
+                    
+                }
             }
         },
         "m0.45": {
-            pitch: {
+            "pitch": {
                 "0.1": {
-                    label: "coarse"
+                    "label": "coarse"
                 }
             },
-            "hardness": { // example
-                "grade_8"
+            "hardness": {
+                "grade_8": {
+                    
+                }
             }
         },
         "m0.50": {
-            pitch: {
+            "pitch": {
                 "0.125": {
-                    label: "coarse"
+                    "label": "coarse"
                 }
             },
-            "hardness": { // example
-                "grade_8"
+            "hardness": {
+                "grade_8": {
+                    
+                }
             }
         },
         "m0.25": {
-            pitch: {
+            "pitch": {
                 "0.2": {
-                    label: "extra_fine"
+                    "label": "extra_fine"
                 },
                 "0.3": {
-                    label: "fine"
+                    "label": "fine"
                 },
                 "0.35": {
-                    label: "coarse"
+                    "label": "coarse"
                 }
             },
-            "hardness": { // example
-                "grade_8"
+            "hardness": {
+                "grade_8": {
+                    
+                }
             }
         },
         "m0.25": {
-            pitch: {
+            "pitch": {
                 "0.2": {
-                    label: "extra_fine"
+                    "label": "extra_fine"
                 },
                 "0.3": {
-                    label: "fine"
+                    "label": "fine"
                 },
                 "0.35": {
-                    label: "coarse"
+                    "label": "coarse"
                 }
             },
-            "hardness": { // example
-                "grade_8"
+            "hardness": {
+                "grade_8": {
+                    
+                }
             }
         },
         "m0.25": {
-            pitch: {
+            "pitch": {
                 "0.2": {
-                    label: "extra_fine"
+                    "label": "extra_fine"
                 },
                 "0.3": {
-                    label: "fine"
+                    "label": "fine"
                 },
                 "0.35": {
-                    label: "coarse"
+                    "label": "coarse"
                 }
             },
-            "hardness": { // example
-                "grade_8"
+            "hardness": {
+                "grade_8": {
+                    
+                }
             }
         },
 
@@ -171,7 +170,7 @@
         "M3": {
             "pitch": {
                 "0.35": {
-                    "label": "fine"
+                    "label": "fine",
                     "6g": {}
                 },
                 "0.5": {
@@ -181,22 +180,22 @@
             "head": {
                 "flat": {
                     "drive": {
-                         "hex_socket": "2mm" // limit this Regex
+                         "hex_socket": "2mm"
                     }
                 },
                 "button": {
                     "drive": {
-                         "hex_socket": "2mm" // limit this Regex
+                         "hex_socket": "2mm"
                     }
                 },
                 "cap": {
                     "drive": {
-                         "hex_socket": "2.5mm" // limit this Regex
+                         "hex_socket": "2.5mm"
                     }
                 },
                 "set": {
                     "drive": {
-                         "hex_socket": "1.5mm" // limit this Regex
+                         "hex_socket": "1.5mm"
                     }
                 }
             }
@@ -369,7 +368,7 @@
         },
         "1/4": {
             "fine": 28,
-            "coarse": 20,
+            "coarse": 20
         },
         "5/16": {
             "fine": 24,
