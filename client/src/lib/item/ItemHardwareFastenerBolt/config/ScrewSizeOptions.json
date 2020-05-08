@@ -1,3 +1,22 @@
+"m1.6": {
+            pitch: {
+                "0.2": { // Regex limit these
+                    label: "extra_fine" // limit to extra, fine, coarse
+                },
+                "0.3": {
+                    label: "fine"
+                },
+                "0.35": {
+                    label: "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8"
+            },
+            ,
+        },
+// start actual
+
 {
     "$schema": "./ScrewSizeOptions.schema.json",
     "metric": {
@@ -206,16 +225,71 @@
 
         },
         "1/4": {
-            "coarse": 28,
-            "fine": 20
+            "fine": 28,
+            "coarse": 20,
         },
         "5/16": {
-            "coarse": 24,
-            "fine": 18
+            "fine": 24,
+            "coarse": 18
         },
         "3/8": {
-            "coarse": 16,
-            "fine": 24
+            "fine": 24,
+            "coarse": 16
+        },
+        "7/16": {
+            "fine": 20,
+            "coarse": 14
+        },
+        "1/2": {
+            "fine": 20,
+            "coarse": 13
+        },
+        "9/16": {
+            "fine+3": 32,
+            "fine+2": 24,
+            "fine+1": 20,
+            "fine": 18,
+            "fine-1": 16,
+            "fine-2": 14,
+            "coarse": 12
+        },
+        "5/8": {
+            "fine": 18,
+            "coarse": 11
+        },
+        "3/4": {
+            "fine": 16,
+            "coarse": 10
+        },
+        "7/8": {
+            "fine": 14,
+            "coarse": 9
+        },
+        "1": {
+            "fine": 12,
+            "coarse": 8
+        },
+        "1+1/8": {
+            "fine": 12,
+            "coarse": 7
+        },
+        "1+1/4": {
+            "fine": 11,
+            "coarse": 7
+        },
+        "1+3/8": {
+            "fine": 12,
+            "coarse": 6
+        },
+        "1+1/2": {
+            "fine": 12,
+            "coarse": 6
+        },
+        "1+3/4": {
+            "coarse": 5
+        },
+        "2": {
+            "coarse": 6
         }
     }
 }
