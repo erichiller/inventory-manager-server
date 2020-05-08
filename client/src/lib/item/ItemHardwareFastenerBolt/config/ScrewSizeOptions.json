@@ -20,6 +20,120 @@
 {
     "$schema": "./ScrewSizeOptions.schema.json",
     "metric": {
+        "m0.25": {
+            pitch: {
+                "0.075": {
+                    label: "coarse"
+                }
+            },
+            "hardness": { // example
+                "grade_8"
+            }
+        },
+        "m0.3": {
+            pitch: {
+                "0.08": {
+                    label: "fine"
+                },
+                "0.09": {
+                    label: "coarse"
+                }
+            },
+            "hardness": { // example
+                "grade_8"
+            }
+        },
+        "m0.35": {
+            pitch: {
+                "0.09": {
+                    label: "coarse"
+                }
+            },
+            "hardness": { // example
+                "grade_8"
+            }
+        },
+        "m0.40": {
+            pitch: {
+                "0.1": {
+                    label: "coarse"
+                }
+            },
+            "hardness": { // example
+                "grade_8"
+            }
+        },
+        "m0.45": {
+            pitch: {
+                "0.1": {
+                    label: "coarse"
+                }
+            },
+            "hardness": { // example
+                "grade_8"
+            }
+        },
+        "m0.50": {
+            pitch: {
+                "0.125": {
+                    label: "coarse"
+                }
+            },
+            "hardness": { // example
+                "grade_8"
+            }
+        },
+        "m0.25": {
+            pitch: {
+                "0.2": {
+                    label: "extra_fine"
+                },
+                "0.3": {
+                    label: "fine"
+                },
+                "0.35": {
+                    label: "coarse"
+                }
+            },
+            "hardness": { // example
+                "grade_8"
+            }
+        },
+        "m0.25": {
+            pitch: {
+                "0.2": {
+                    label: "extra_fine"
+                },
+                "0.3": {
+                    label: "fine"
+                },
+                "0.35": {
+                    label: "coarse"
+                }
+            },
+            "hardness": { // example
+                "grade_8"
+            }
+        },
+        "m0.25": {
+            pitch: {
+                "0.2": {
+                    label: "extra_fine"
+                },
+                "0.3": {
+                    label: "fine"
+                },
+                "0.35": {
+                    label: "coarse"
+                }
+            },
+            "hardness": { // example
+                "grade_8"
+            }
+        },
+
+
+
         "m1.6": {
             "extra_fine": 0.2,
             "fine": 0.3,
@@ -55,8 +169,37 @@
             "coarse": 0.45
         },
         "M3": {
-            "fine": 0.35,
-            "coarse": 0.5
+            "pitch": {
+                "0.35": {
+                    "label": "fine"
+                    "6g": {}
+                },
+                "0.5": {
+                    "label": "coarse"
+                }
+            },
+            "head": {
+                "flat": {
+                    "drive": {
+                         "hex_socket": "2mm" // limit this Regex
+                    }
+                },
+                "button": {
+                    "drive": {
+                         "hex_socket": "2mm" // limit this Regex
+                    }
+                },
+                "cap": {
+                    "drive": {
+                         "hex_socket": "2.5mm" // limit this Regex
+                    }
+                },
+                "set": {
+                    "drive": {
+                         "hex_socket": "1.5mm" // limit this Regex
+                    }
+                }
+            }
         },
         "M3.5": {
             "fine": 0.35,
