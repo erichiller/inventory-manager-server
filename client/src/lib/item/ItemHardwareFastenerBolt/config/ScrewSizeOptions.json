@@ -76,19 +76,9 @@
                 }
             }
         },
-
-
-
-
-        "m0.25": {  // wrong
+        "m0.50": {
             "pitch": {
-                "0.2": {
-                    "label": "extra_fine"
-                },
-                "0.3": {
-                    "label": "fine"
-                },
-                "0.35": {
+                "0.125": {
                     "label": "coarse"
                 }
             },
@@ -98,8 +88,66 @@
                 }
             }
         },
-
-
+        "m0.55": {
+            "pitch": {
+                "0.125": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m0.60": {
+            "pitch": {
+                "0.15": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m0.7": {
+            "pitch": {
+                "0.175": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m0.8": {
+            "pitch": {
+                "0.2": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m0.9": {
+            "pitch": {
+                "0.225": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
         "m1.0": {
             "common": true,
             "pitch": {
@@ -109,6 +157,22 @@
                 "0.25": {
                     "label": "coarse"
                 }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m1.1": {
+            "common": true,
+            "pitch": {
+                "0.2": {
+                    "label": "fine"
+                },
+                "0.25": {
+                    "label": "coarse"
+                },
             },
             "hardness": {
                 "grade_8": {
