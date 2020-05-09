@@ -877,81 +877,164 @@
                     
                 }
             }
-        },
+        }
     },
     "uscs": {
         "#0": {
-            "coarse": 80
+            "pitch": {
+                "80": {
+                    "label": "coarse"
+                }
+            }
         },
         "#1": {
-            "fine": 72,
-            "coarse": 64
-
+            "pitch": {
+                "72": {
+                    "label": "fine"
+                },
+                "64": {
+                    "label": "coarse"
+                }
+            }
         },
         "#2": {
-            "fine": 64,
-            "coarse": 56
-
+            "pitch": {
+                "64": {
+                    "label": "fine"
+                },
+                "56": {
+                    "label": "coarse"
+                }
+            }
         },
         "#3": {
-            "fine": 56,
-            "coarse": 48
-
+            "pitch": {
+                "56": {
+                    "label": "fine"
+                },
+                "48": {
+                    "label": "coarse"
+                }
+            }
         },
         "#4": {
-            "fine": 40,
-            "coarse": 48
-
+            "pitch": {
+                "48": {
+                    "label": "fine"
+                },
+                "40": {
+                    "label": "coarse"
+                }
+            }
         },
         "#5": {
-            "fine": 44,
-            "coarse": 40
-
+            "pitch": {
+                "44": {
+                    "label": "fine"
+                },
+                "40": {
+                    "label": "coarse"
+                }
+            }
         },
         "#6": {
-            "fine": 40,
-            "coarse": 32
+            "pitch": {
+                "40": {
+                    "label": "fine"
+                },
+                "32": {
+                    "label": "coarse"
+                }
+            }
         },
         "#7": {
 
         },
         "#8": {
-            "fine": 36,
-            "coarse": 32
-
+            "pitch": {
+                "36": {
+                    "label": "fine"
+                },
+                "32": {
+                    "label": "coarse"
+                }
+            }
         },
         "#9": {
 
         },
         "#10": {
-            "fine": 32,
-            "coarse": 24
-
+            "pitch": {
+                "32": {
+                    "label": "fine"
+                },
+                "24": {
+                    "label": "coarse"
+                }
+            }
         },
         "#12": {
 
         },
         "1/4": {
-            "fine": 28,
-            "coarse": 20
+            "pitch": {
+                "28": {
+                    "label": "fine"
+                },
+                "20": {
+                    "label": "coarse"
+                }
+            }
         },
         "5/16": {
-            "fine": 24,
-            "coarse": 18
+            "pitch": {
+                "24": {
+                    "label": "fine"
+                },
+                "18": {
+                    "label": "coarse"
+                }
+            }
         },
         "3/8": {
-            "fine": 24,
-            "coarse": 16
+            "pitch": {
+                "24": {
+                    "label": "fine"
+                },
+                "16": {
+                    "label": "coarse"
+                }
+            }
         },
         "7/16": {
-            "fine": 20,
-            "coarse": 14
+            "pitch": {
+                "20": {
+                    "label": "fine"
+                },
+                "14": {
+                    "label": "coarse"
+                }
+            }
         },
         "1/2": {
-            "fine": 20,
-            "coarse": 13
+            "pitch": {
+                "20": {
+                    "label": "fine"
+                },
+                "13": {
+                    "label": "coarse"
+                }
+            }
         },
         "9/16": {
+            "pitch": {
+                "4": {
+                    "label": "fine"
+                },
+                "6": {
+                    "label": "coarse"
+                }
+            }
             "fine+3": 32,
             "fine+2": 24,
             "fine+1": 20,
@@ -961,42 +1044,98 @@
             "coarse": 12
         },
         "5/8": {
-            "fine": 18,
-            "coarse": 11
+            "pitch": {
+                "18": {
+                    "label": "fine"
+                },
+                "11": {
+                    "label": "coarse"
+                }
+            }
         },
         "3/4": {
-            "fine": 16,
-            "coarse": 10
+            "pitch": {
+                "16": {
+                    "label": "fine"
+                },
+                "10": {
+                    "label": "coarse"
+                }
+            }
         },
         "7/8": {
-            "fine": 14,
-            "coarse": 9
+            "pitch": {
+                "14": {
+                    "label": "fine"
+                },
+                "9": {
+                    "label": "coarse"
+                }
+            }
         },
         "1": {
-            "fine": 12,
-            "coarse": 8
+            "pitch": {
+                "12": {
+                    "label": "fine"
+                },
+                "8": {
+                    "label": "coarse"
+                }
+            }
         },
         "1+1/8": {
-            "fine": 12,
-            "coarse": 7
+            "pitch": {
+                "12": {
+                    "label": "fine"
+                },
+                "7": {
+                    "label": "coarse"
+                }
+            }
         },
         "1+1/4": {
-            "fine": 11,
-            "coarse": 7
+            "pitch": {
+                "11": {
+                    "label": "fine"
+                },
+                "7": {
+                    "label": "coarse"
+                }
+            }
         },
         "1+3/8": {
-            "fine": 12,
-            "coarse": 6
+            "pitch": {
+                "12": {
+                    "label": "fine"
+                },
+                "6": {
+                    "label": "coarse"
+                }
+            }
         },
         "1+1/2": {
-            "fine": 12,
-            "coarse": 6
+            "pitch": {
+                "12": {
+                    "label": "fine"
+                },
+                "6": {
+                    "label": "coarse"
+                }
+            }
         },
         "1+3/4": {
-            "coarse": 5
+            "pitch": {
+                "5": {
+                    "label": "coarse"
+                }
+            }
         },
         "2": {
-            "coarse": 6
+            "pitch": {
+                "6": {
+                    "label": "coarse"
+                }
+            }
         }
     }
 }
