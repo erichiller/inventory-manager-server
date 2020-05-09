@@ -1,6 +1,6 @@
 {
     "$schema": "./ScrewSizeOptions.schema.json",
-    "metric": {
+    "iso": {
         "m0.25": {
             "pitch": {
                 "0.075": {
@@ -206,6 +206,13 @@
                     "label": "coarse"
                 },
             },
+            "head": {
+                "cap": {
+                    "drive": {
+                         "hex_socket": "1.25mm"
+                    }
+                }
+            },
             "hardness": {
                 "grade_8": {
                     
@@ -226,6 +233,16 @@
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                         "hex": "3.2mm"
+                    }
+                },
+                "flat": {
+                    "drive": {
+                         "hex_socket": "0.9mm"
+                    }
+                },
                 "cap": {
                     "drive": {
                          "hex_socket": "1.5mm"
@@ -266,6 +283,21 @@
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                         "hex": "4mm"
+                    }
+                },
+                "button": {
+                    "drive": {
+                         "hex": "1.25mm"
+                    }
+                },
+                "flat": {
+                    "drive": {
+                         "hex": "1.25mm"
+                    }
+                },
                 "cap": {
                     "drive": {
                          "hex_socket": "1.5mm"
@@ -309,6 +341,21 @@
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                         "hex": "5mm"
+                    }
+                },
+                "button": {
+                    "drive": {
+                         "hex": "1.5mm"
+                    }
+                },
+                "flat": {
+                    "drive": {
+                         "hex": "1.5mm"
+                    }
+                },
                 "cap": {
                     "drive": {
                          "hex_socket": "2.0mm"
