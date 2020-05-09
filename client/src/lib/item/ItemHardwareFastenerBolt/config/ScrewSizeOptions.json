@@ -1,6 +1,6 @@
 {
     "$schema": "./ScrewSizeOptions.schema.json",
-    "metric": {
+    "iso": {
         "m0.25": {
             "pitch": {
                 "0.075": {
@@ -61,23 +61,164 @@
                 }
             },
             "hardness": {
-                "grade_8": {}
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m0.55": {
+            "pitch": {
+                "0.125": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m0.60": {
+            "pitch": {
+                "0.15": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m0.7": {
+            "pitch": {
+                "0.175": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m0.8": {
+            "pitch": {
+                "0.2": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m0.9": {
+            "pitch": {
+                "0.225": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m1.0": {
+            "common": true,
+            "pitch": {
+                "0.2": {
+                    "label": "fine"
+                },
+                "0.25": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m1.1": {
+            "common": true,
+            "pitch": {
+                "0.2": {
+                    "label": "fine"
+                },
+                "0.25": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m1.2": {
+            "common": true,
+            "pitch": {
+                "0.2": {
+                    "label": "fine"
+                },
+                "0.25": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m1.4": {
+            "common": true,
+            "pitch": {
+                "0.2": {
+                    "label": "fine"
+                },
+                "0.3": {
+                    "label": "coarse"
+                }
+            },
+            "head": {
+                "cap": {
+                    "drive": {
+                         "hex_socket": "1.25mm"
+                    }
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
             }
         },
         "m1.6": {
             "common": true,
             "pitch": {
                 "0.2": {
-                    "label": "extra_fine"
-                },
-                "0.3": {
                     "label": "fine"
                 },
+                "0.3": { },
                 "0.35": {
                     "label": "coarse"
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                         "hex": "3.2mm"
+                    }
+                },
+                "flat": {
+                    "drive": {
+                         "hex_socket": "0.9mm"
+                    }
+                },
                 "cap": {
                     "drive": {
                         "hex_socket": "1.5mm"
@@ -118,6 +259,21 @@
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                         "hex": "4mm"
+                    }
+                },
+                "button": {
+                    "drive": {
+                         "hex": "1.25mm"
+                    }
+                },
+                "flat": {
+                    "drive": {
+                         "hex": "1.25mm"
+                    }
+                },
                 "cap": {
                     "drive": {
                         "hex_socket": "1.5mm"
@@ -161,6 +317,21 @@
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                         "hex": "5mm"
+                    }
+                },
+                "button": {
+                    "drive": {
+                         "hex": "1.5mm"
+                    }
+                },
+                "flat": {
+                    "drive": {
+                         "hex": "1.5mm"
+                    }
+                },
                 "cap": {
                     "drive": {
                         "hex_socket": "2.0mm"
@@ -303,6 +474,9 @@
         "M5.5": {
             "pitch": {
                 "0.5": {
+                    "label": "fine"
+                },
+                "0.9": {
                     "label": "coarse"
                 }
             }
@@ -310,10 +484,12 @@
         "M6": {
             "common": true,
             "pitch": {
-                "0.5": {},
-                "0.7": {},
-                "0.75": {},
-                "0.8": {},
+                "0.5": { },
+                "0.7": { },
+                "0.75": {
+                    "label": "fine"
+                },
+                "0.8": { },
                 "1.0": {
                     "label": "coarse"
                 }
@@ -354,10 +530,14 @@
         "M8": {
             "common": true,
             "pitch": {
-                "0.5": {},
-                "0.75": {},
-                "0.8": {},
-                "1.0": {},
+                "0.5": { },
+                "0.75": {
+                    "label": "extra_fine"
+                },
+                "0.8": { },
+                "1.0": {
+                    "label": "fine"
+                },
                 "1.25": {
                     "label": "coarse"
                 }
@@ -398,11 +578,15 @@
         "M10": {
             "common": true,
             "pitch": {
-                "0.5": {},
-                "0.75": {},
-                "1.0": {},
-                "1.12": {},
-                "1.25": {},
+                "0.5": { },
+                "0.75": { },
+                "1.0": {
+                    "label": "extra_fine"
+                },
+                "1.12": { },
+                "1.25": {
+                    "label": "fine"
+                },
                 "1.5": {
                     "label": "coarse"
                 }
@@ -443,11 +627,15 @@
         "M12": {
             "common": true,
             "pitch": {
-                "0.5": {},
-                "0.75": {},
-                "1.0": {},
-                "1.25": {},
-                "1.5": {},
+                "0.5": { },
+                "0.75": { },
+                "1.0": { },
+                "1.25": {
+                    "label": "extra_fine"
+                },
+                "1.5": {
+                    "label": "fine"
+                },
                 "1.75": {
                     "label": "coarse"
                 }
@@ -476,13 +664,14 @@
             }
         },
         "M14": {
-            "common": true,
             "pitch": {
-                "0.5": {},
-                "0.75": {},
-                "1.0": {},
-                "1.25": {},
-                "1.5": {},
+                "0.5": { },
+                "0.75": { },
+                "1.0": { },
+                "1.25": { },
+                "1.5": {
+                    "label": "fine"
+                },
                 "2.0": {
                     "label": "coarse"
                 }
@@ -513,12 +702,14 @@
         "M16": {
             "common": true,
             "pitch": {
-                "0.5": {},
-                "0.75": {},
-                "1.0": {},
-                "1.25": {},
-                "1.5": {},
-                "1.6": {},
+                "0.5": { },
+                "0.75": { },
+                "1.0": { },
+                "1.25": { },
+                "1.5": {
+                    "label": "fine"
+                },
+                "1.6": { },
                 "2.0": {
                     "label": "coarse"
                 }
@@ -553,20 +744,14 @@
         },
         "M18": {
             "pitch": {
-                "0.5": {},
-                "0.75": {},
-                "1.0": {},
-                "1.25": {},
-                "1.5": {},
-                "2.0": {},
-                "2.5": {
-                    "label": "coarse"
-                }
-            }
-        },
-        "M20": {
-            "pitch": {
+                "0.5": { },
+                "0.75": { },
+                "1.0": { },
+                "1.25": { },
                 "1.5": {
+                    "label": "extra_fine"
+                },
+                "2.0": {
                     "label": "fine"
                 },
                 "2.5": {
@@ -574,7 +759,25 @@
                 }
             }
         },
+        "M20": {
+            "common": true,
+            "pitch": {
+                "1.5": {
+                    "label": "extra_fine"
+                },
+                "2.0": {
+                    "label": "fine"
+                },
+                "2.5": {
+                    "label": "coarse"
+                }
+            }
+        },
+        "M22": {
+            
+        },
         "M24": {
+            "common": true,
             "pitch": {
                 "2.0": {
                     "label": "fine"
@@ -584,11 +787,23 @@
                 }
             }
         },
+        "m27": {
+            "pitch": {
+                "2.0": {
+                    "label": "fine"
+                },
+                "3.0": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
         "M30": {
             "pitch": {
-                "0.2": {
-                    "label": "extra_fine"
-                },
                 "2.0": {
                     "label": "fine"
                 },
@@ -596,113 +811,418 @@
                     "label": "coarse"
                 }
             }
+        },
+        "m33": {
+            "pitch": {
+                "2.0": {
+                    "label": "fine"
+                },
+                "3.5": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m36": {
+            "common": true,
+            "pitch": {
+                "3": {
+                    "label": "fine"
+                },
+                "4": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m39": {
+            "pitch": {
+                "3": {
+                    "label": "fine"
+                },
+                "4": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m42": {
+            "common": true,
+            "pitch": {
+                "3.0": {
+                    "label": "fine"
+                },
+                "4.5": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m45": {
+            "pitch": {
+                "3": {
+                    "label": "fine"
+                },
+                "4.5": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m48": {
+            "common": true,
+            "pitch": {
+                "3": {
+                    "label": "fine"
+                },
+                "5": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m52": {
+            "pitch": {
+                "4": {
+                    "label": "fine"
+                },
+                "5": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m56": {
+            "common": true,
+            "pitch": {
+                "4": {
+                    "label": "fine"
+                },
+                "5.5": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m60": {
+            "pitch": {
+                "4": {
+                    "label": "fine"
+                },
+                "5.5": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
+        },
+        "m64": {
+            "common": true,
+            "pitch": {
+                "4": {
+                    "label": "fine"
+                },
+                "6": {
+                    "label": "coarse"
+                }
+            },
+            "hardness": {
+                "grade_8": {
+                    
+                }
+            }
         }
     },
     "uscs": {
         "#0": {
-            "coarse": 80
+            "pitch": {
+                "80": {
+                    "label": "coarse"
+                }
+            }
         },
         "#1": {
-            "fine": 72,
-            "coarse": 64
+            "pitch": {
+                "72": {
+                    "label": "fine"
+                },
+                "64": {
+                    "label": "coarse"
+                }
+            }
         },
         "#2": {
-            "fine": 64,
-            "coarse": 56
+            "pitch": {
+                "64": {
+                    "label": "fine"
+                },
+                "56": {
+                    "label": "coarse"
+                }
+            }
         },
         "#3": {
-            "fine": 56,
-            "coarse": 48
+            "pitch": {
+                "56": {
+                    "label": "fine"
+                },
+                "48": {
+                    "label": "coarse"
+                }
+            }
         },
         "#4": {
-            "fine": 40,
-            "coarse": 48
+            "pitch": {
+                "48": {
+                    "label": "fine"
+                },
+                "40": {
+                    "label": "coarse"
+                }
+            }
         },
         "#5": {
-            "fine": 44,
-            "coarse": 40
+            "pitch": {
+                "44": {
+                    "label": "fine"
+                },
+                "40": {
+                    "label": "coarse"
+                }
+            }
         },
         "#6": {
-            "fine": 40,
-            "coarse": 32
+            "pitch": {
+                "40": {
+                    "label": "fine"
+                },
+                "32": {
+                    "label": "coarse"
+                }
+            }
         },
         "#7": {},
         "#8": {
-            "fine": 36,
-            "coarse": 32
+            "pitch": {
+                "36": {
+                    "label": "fine"
+                },
+                "32": {
+                    "label": "coarse"
+                }
+            }
+        },
+        "#9": {
+
         },
         "#9": {},
         "#10": {
-            "fine": 32,
-            "coarse": 24
+            "pitch": {
+                "32": {
+                    "label": "fine"
+                },
+                "24": {
+                    "label": "coarse"
+                }
+            }
+        },
+        "#12": {
+
         },
         "#12": {},
         "1/4": {
-            "fine": 28,
-            "coarse": 20
+            "pitch": {
+                "28": {
+                    "label": "fine"
+                },
+                "20": {
+                    "label": "coarse"
+                }
+            }
         },
         "5/16": {
-            "fine": 24,
-            "coarse": 18
+            "pitch": {
+                "24": {
+                    "label": "fine"
+                },
+                "18": {
+                    "label": "coarse"
+                }
+            }
         },
         "3/8": {
-            "fine": 24,
-            "coarse": 16
+            "pitch": {
+                "24": {
+                    "label": "fine"
+                },
+                "16": {
+                    "label": "coarse"
+                }
+            }
         },
         "7/16": {
-            "fine": 20,
-            "coarse": 14
+            "pitch": {
+                "20": {
+                    "label": "fine"
+                },
+                "14": {
+                    "label": "coarse"
+                }
+            }
         },
         "1/2": {
-            "fine": 20,
-            "coarse": 13
+            "pitch": {
+                "20": {
+                    "label": "fine"
+                },
+                "13": {
+                    "label": "coarse"
+                }
+            }
         },
         "9/16": {
-            "fine+3": 32,
-            "fine+2": 24,
-            "fine+1": 20,
-            "fine": 18,
-            "fine-1": 16,
-            "fine-2": 14,
-            "coarse": 12
+            "pitch": {
+                "32": {},
+                "24": {},
+                "20": {},
+                "18": {
+                    "label": "fine"
+                },
+                "16": { },
+                "14": { },
+                "12": {
+                    "label": "coarse"
+                }
+            }
         },
         "5/8": {
-            "fine": 18,
-            "coarse": 11
+            "pitch": {
+                "18": {
+                    "label": "fine"
+                },
+                "11": {
+                    "label": "coarse"
+                }
+            }
         },
         "3/4": {
-            "fine": 16,
-            "coarse": 10
+            "pitch": {
+                "16": {
+                    "label": "fine"
+                },
+                "10": {
+                    "label": "coarse"
+                }
+            }
         },
         "7/8": {
-            "fine": 14,
-            "coarse": 9
+            "pitch": {
+                "14": {
+                    "label": "fine"
+                },
+                "9": {
+                    "label": "coarse"
+                }
+            }
         },
         "1": {
-            "fine": 12,
-            "coarse": 8
+            "pitch": {
+                "12": {
+                    "label": "fine"
+                },
+                "8": {
+                    "label": "coarse"
+                }
+            }
         },
         "1+1/8": {
-            "fine": 12,
-            "coarse": 7
+            "pitch": {
+                "12": {
+                    "label": "fine"
+                },
+                "7": {
+                    "label": "coarse"
+                }
+            }
         },
         "1+1/4": {
-            "fine": 11,
-            "coarse": 7
+            "pitch": {
+                "11": {
+                    "label": "fine"
+                },
+                "7": {
+                    "label": "coarse"
+                }
+            }
         },
         "1+3/8": {
-            "fine": 12,
-            "coarse": 6
+            "pitch": {
+                "12": {
+                    "label": "fine"
+                },
+                "6": {
+                    "label": "coarse"
+                }
+            }
         },
         "1+1/2": {
-            "fine": 12,
-            "coarse": 6
+            "pitch": {
+                "12": {
+                    "label": "fine"
+                },
+                "6": {
+                    "label": "coarse"
+                }
+            }
         },
         "1+3/4": {
-            "coarse": 5
+            "pitch": {
+                "5": {
+                    "label": "coarse"
+                }
+            }
         },
         "2": {
-            "coarse": 6
+            "pitch": {
+                "6": {
+                    "label": "coarse"
+                }
+            }
         }
     }
 }
