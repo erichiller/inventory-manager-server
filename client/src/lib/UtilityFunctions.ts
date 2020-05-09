@@ -5,7 +5,8 @@ export function buf2hex ( buffer: ArrayBuffer ): string { // buffer is an ArrayB
 }
 
 export function toTitleCase ( s: string ): string {
-    if ( [ 'ID', 'id'].includes(s) ){ return s; }
+    if ( [ 'ID', 'id'].includes(s) ){ return s; } // do not change `id`
+    if ( s.toUpperCase() == s ){ return s; } // do not capitalize
     return s.replace( /_/g, ' ' ).split( ' ' ).map( function ( word ) {
         return word.charAt( 0 ).toUpperCase() + word.slice( 1 ).toLowerCase();
     } ).join( ' ' );
