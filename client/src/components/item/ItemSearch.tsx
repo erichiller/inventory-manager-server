@@ -9,8 +9,6 @@ import { Select, Row, Col, Button } from "antd";
 import { SelectValue, LabeledValue } from 'antd/lib/select';
 import { SearchOutlined, TagOutlined, FontSizeOutlined } from '@ant-design/icons';
 import { useSearchItemsQuery, EnumItemClassEnum } from "../../lib/types/graphql";
-import { QueryStore } from "apollo-client/data/queries";
-import { OptionProps } from "rc-select/lib/Option";
 import { IItem } from "../../lib/item/Item";
 
 const { Option } = Select;
@@ -25,11 +23,11 @@ const { Option } = Select;
 //     modal?: React.ReactElement;
 // }
 
-interface pagination {
-    total: number;
-    pageSize: number;
-    current: number;
-}
+// interface pagination {
+//     total: number;
+//     pageSize: number;
+//     current: number;
+// }
 
 
 // interface ItemSearchProps<T> {
@@ -58,11 +56,20 @@ interface Tags {
 
 const tagOptions: Array<React.ReactElement> = filterKeys.map( tag => <Option value={tag}>{tag}:</Option> );
 
+// interface ITagOption extends Partial<Exclude<LabeledValue, 'value'>> {
+    // value?: string;
+// }
+
+interface ITagOption {
+    key?: string;
+    value: string;
+    label: React.ReactNode;
+}
 
 interface SearchState {
     searchString?: string;
     loading?: boolean;
-    value?: LabeledValue[];
+    value?: ITagOption[];
     // value?: SelectValue;
 }
 
@@ -146,7 +153,7 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
                     optionGroupItems[ result.class ] = [];
                 }
                 optionGroupItems[ result.class ].push(
-                    <Option value={result.id}>{result.name}</Option>
+                    <Option value={result.id.toString()}>{result.name}</Option>
                 );
             }
             Object.getOwnPropertyNames( optionGroupItems ).forEach( ( className: QueryResultKeysT ) => {
@@ -197,7 +204,7 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
                 let results = {
                     value: [
                         // ...state.value ?? [],
-                        ...( value as LabeledValue[] ).map( i => {
+                        ...( value as ITagOption[] ).map( i => {
                             console.log( "map value", i );
                             let newLabel = i.label;
                             if ( i.label?.toString().includes( ":" ) ) {
@@ -209,7 +216,7 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
                             return {
                                 key: i.key,
                                 label: newLabel
-                            } as LabeledValue;
+                            } as ITagOption;
                         } ) ]
                 };
                 setState( results );
@@ -225,25 +232,25 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
                 // receives the typed text in "value" and the present or generated "option"
                 console.log( { type: "onSelect", value, option, props: option.props, prior_state: state.value } );
                 return;
-                let i = value;
-                let newLabel = i.label;
-                if ( i.label?.toString().includes( ":" ) ) {
-                    newLabel = i.label?.toString().split( ':', 2 );
-                    newLabel = <span><TagOutlined /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
-                } else {
-                    newLabel = <span><FontSizeOutlined /> <i>{newLabel}</i></span>;
-                }
-                // return;
-                setState( {
-                    value: [
-                        ...( state.value ?? [] ),
-                        {
-                            key: i.key,
-                            label: newLabel
-                        } as LabeledValue
-                    ]
-                } );
-                // option = <React.Fragment>Hello</React.Fragment>;
+                // let i = value;
+                // let newLabel = i.label;
+                // if ( i.label?.toString().includes( ":" ) ) {
+                //     newLabel = i.label?.toString().split( ':', 2 );
+                //     newLabel = <span><TagOutlined /> <b>{newLabel[ 0 ]}</b>:<i>{newLabel[ 1 ]}</i></span>;
+                // } else {
+                //     newLabel = <span><FontSizeOutlined /> <i>{newLabel}</i></span>;
+                // }
+                // // return;
+                // setState( {
+                //     value: [
+                //         ...( state.value ?? [] ),
+                //         {
+                //             key: i.key,
+                //             label: newLabel
+                //         } as LabeledValue
+                //     ]
+                // } );
+                // // option = <React.Fragment>Hello</React.Fragment>;
             }}
 
 

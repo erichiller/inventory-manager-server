@@ -49,6 +49,7 @@ export interface IItemConstructor {
 }
 
 export type CategoryHierarchyT = "Item"
+    | "Bundle"
     | "Hardware"
     | "Fastener"
     | "Bolt"
@@ -99,9 +100,9 @@ export class Item<T extends GenericItem> implements IItem {
             }
         } ).then( result => {
             console.log( { _cls: "Item", method: 'ItemFactory', msg: "loading item from GraphQL", item_data: result } );
-            const data = result.data.item[0]
+            const data = result.data.item;
             let cls = this.getClassForType( data.class || data.__typename as EnumItemClassEnum );
-            let item = new cls( result.data.item[0] );
+            let item = new cls( result.data.item );
             // it._name = result.data.object?.main ? result.data.object.name : "";
             // this._class = result.data.object;
             // this._object = result.data.object;
@@ -127,6 +128,10 @@ export class Item<T extends GenericItem> implements IItem {
         let items: IItem[] = [];
         results.forEach( i => {
             let cls = this.getClassForType( i.class || i.__typename );
+            if ( ! cls ) {
+                throw `class '${ i.class }' (__typename: '${ i.__typename }') is not registered in 'getClassForType', received '${ cls}' `;
+                return null;
+            }
             console.log( { _cls: "Item", method: 'ItemsFactory', msg: "loading class of type", item_class: cls, item_class_name: cls.name } );
             items.push( new cls( i ) );
         } );
@@ -193,8 +198,37 @@ export class Item<T extends GenericItem> implements IItem {
     }
 
     static get icon (): IconComponentT {
+        // return new Promise<IconComponentT>( ( resolve, reject ) => {
+            // resolve( CodeIcon );
+        // });
+        // return new Promise( ( resolve, reject ) => resolve(CodeIcon) );
         return CodeIcon;
     }
+
+    // get dothings () {
+    //     // return <img />;
+    //     apolloClient.query<Icon, GetIconQueryVariables>( {
+    //         query: GetIconDocument,
+    //         variables: { id: 'REPLACE WITH UUID' }
+    //     } ).then( result => {
+    //         message.info( `Saved Successfully` );
+    //     } ).catch( error => {
+    //         console.log( "MUTATE ERROR", error );
+    //         message.error( `Failure during save: ${ error }` );
+    //     } )
+    //     // .finally( () => {
+    //     //     // props.visibleHandler( null );
+    //     // } );
+    //     const result = apolloClient.query<Icon, GetIconQueryVariables>( {
+    //         query: GetIconDocument,
+    //         variables: { id: 'REPLACE WITH UUID' }
+    //     } );
+    //     return result;
+    // }
+
+    // callDoThings () {
+    //     return (await this.dothings).data.data;
+    // }
 
     /**
      * common lookup of icon;
@@ -202,17 +236,25 @@ export class Item<T extends GenericItem> implements IItem {
      */
     get icon (): IconComponentT {
         // return <img />;
-        apolloClient.query<Icon, GetIconQueryVariables>( {
-            query: GetIconDocument,
-            variables: {}
-        } ).then( result => {
-            message.info( `Saved Successfully` );
-        } ).catch( error => {
-            console.log( "MUTATE ERROR", error );
-            message.error( `Failure during save: ${ error }` );
-        } ).finally( () => {
-            // props.visibleHandler( null );
-        } );
+        // apolloClient.query<Icon, GetIconQueryVariables>( {
+        //     query: GetIconDocument,
+        //     variables: {id: 'REPLACE WITH UUID'}
+        // } ).then( result => {
+        //     message.info( `Saved Successfully` );
+        // } ).catch( error => {
+        //     console.log( "MUTATE ERROR", error );
+        //     message.error( `Failure during save: ${ error }` );
+        // } ).finally( () => {
+        //     // props.visibleHandler( null );
+        // } );
+        // return new Promise( (result, reject) => apolloClient.query<Icon, GetIconQueryVariables>( {
+        //     query: GetIconDocument,
+        //     variables: { id: 'REPLACE WITH UUID' }
+        // } ) ).then( result => {
+        //     return CodeIcon;
+        // });
+        // return result;
+        // .then( result => { return () => <img src={result.data.data} />; } );
         /**
          * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
          * 
@@ -226,7 +268,9 @@ export class Item<T extends GenericItem> implements IItem {
          * https://www.apollographql.com/docs/react/api/apollo-client/#ObservableQuery
          * 
          */
-        return null;
+        // return Item.icon;
+        // return Item<T>.getClassForType( this._class ).icon;
+        return Item.getClassForType(this._class).icon;
     }
     get iconMatches (): Icon[] {
         return null;

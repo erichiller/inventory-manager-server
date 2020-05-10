@@ -1,0 +1,13 @@
+.ItemTable {
+    user-select: none;
+    .ant-table-cell:nth-of-type(1) {
+        text-align: center;
+        img {
+            width: 25px;
+        }
+        svg {
+            height: initial;
+            width: 20px;
+        }
+    }
+}

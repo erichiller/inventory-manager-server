@@ -4,7 +4,7 @@ import { Select, Tooltip, Button } from 'antd';
 import { DISPLAY } from '../../../lib/types/enums';
 import React from 'react';
 import { Modal } from 'antd';
-import { withGetIcon, GetIconProps, Icon as CustomIcon } from '../../../lib/types/graphql';
+import { withGetIcon, GetIconProps, Icon as CustomIcon, withGetIcons, GetIconsProps } from '../../../lib/types/graphql';
 import { Item } from '../../../lib/item';
 import { LabelImage } from '../../../lib/LabelConstituent';
 import { DrawContext } from '../LabelDraw';
@@ -24,8 +24,8 @@ interface LabelAddImageState {
 }
 
 
-export default withGetIcon<LabelAddImageProps, LabelAddImageState>()(
-    class LabelAddImageModal extends Component<GetIconProps<LabelAddImageProps>, LabelAddImageState> {
+export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
+    class LabelAddImageModal extends Component<GetIconsProps<LabelAddImageProps>, LabelAddImageState> {
 
         handleCancel = () => {
             /// REMOVE ELEMENT /// REVERT ///

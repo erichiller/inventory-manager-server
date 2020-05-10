@@ -1,0 +1,21 @@
+query GetOrderByDateRange(
+    $date_start_gte: date,
+    $date_end_lte: date
+){
+  order(where: {placed_date: { _gte: $date_start_gte, _lte: $date_end_lte }}) {
+    vendor_order_id
+    vendor {
+        name
+        url
+    }
+    url
+    total_cost
+    tax_cost
+    pon
+    placed_date
+    payment_method_id
+    items_cost
+    id
+    fulfilled_date
+  }
+}

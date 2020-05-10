@@ -76,12 +76,13 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
         }
     }
     // specific props here;
-    get icon (): IconComponentT {
-        return null;
-    }
+    // get icon (): IconComponentT {
+    //     return null;
+    // }
 
     static get icon (): IconComponentT {
         // return null;
+        // return new Promise<IconComponentT>( ( resolve, reject ) => resolve( HexBoltIcon ) );
         return HexBoltIcon;
     }
 
