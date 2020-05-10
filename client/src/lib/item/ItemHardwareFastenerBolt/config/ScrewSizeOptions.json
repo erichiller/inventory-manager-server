@@ -189,6 +189,11 @@
                     "drive": {
                          "hex_socket": "1.25mm"
                     }
+                },
+                "set": {
+                    "drive": {
+                         "hex_socket": "0.7mm"
+                    }
                 }
             },
             "hardness": {
@@ -215,6 +220,11 @@
                     }
                 },
                 "flat": {
+                    "drive": {
+                         "hex_socket": "0.9mm"
+                    }
+                },
+                "button": {
                     "drive": {
                          "hex_socket": "0.9mm"
                     }
@@ -266,12 +276,12 @@
                 },
                 "button": {
                     "drive": {
-                         "hex": "1.25mm"
+                         "hex_socket": "1.25mm"
                     }
                 },
                 "flat": {
                     "drive": {
-                         "hex": "1.25mm"
+                         "hex_socket": "1.25mm"
                     }
                 },
                 "cap": {
@@ -324,12 +334,12 @@
                 },
                 "button": {
                     "drive": {
-                         "hex": "1.5mm"
+                         "hex_socket": "1.5mm"
                     }
                 },
                 "flat": {
                     "drive": {
-                         "hex": "1.5mm"
+                         "hex_socket": "1.5mm"
                     }
                 },
                 "cap": {
@@ -363,6 +373,11 @@
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "5.5mm"
+                    }
+                },
                 "flat": {
                     "drive": {
                         "hex_socket": "2mm"
@@ -393,6 +408,13 @@
                 "0.6": {
                     "label": "coarse"
                 }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "6mm"
+                    }
+                }
             }
         },
         "M4": {
@@ -406,6 +428,11 @@
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "7mm"
+                    }
+                },
                 "flat": {
                     "drive": {
                         "hex_socket": "2.5mm"
@@ -449,6 +476,11 @@
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "8mm"
+                    }
+                },
                 "flat": {
                     "drive": {
                         "hex_socket": "3mm"
@@ -495,6 +527,11 @@
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "10mm"
+                    }
+                },
                 "flat": {
                     "drive": {
                         "hex_socket": "4mm"
@@ -525,6 +562,13 @@
                 "1.0": {
                     "label": "coarse"
                 }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "11mm"
+                    }
+                }
             }
         },
         "M8": {
@@ -543,6 +587,11 @@
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "13mm"
+                    }
+                },
                 "flat": {
                     "drive": {
                         "hex_socket": "5mm"
@@ -592,6 +641,11 @@
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "16mm"
+                    }
+                },
                 "flat": {
                     "drive": {
                         "hex_socket": "6mm"
@@ -641,6 +695,11 @@
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "18mm"
+                    }
+                },
                 "flat": {
                     "drive": {
                         "hex_socket": "8mm"
@@ -677,14 +736,14 @@
                 }
             },
             "head": {
-                "flat": {
+                "hex": {
                     "drive": {
-                        "hex_socket": "10mm"
+                        "hex": "21mm"
                     }
                 },
                 "cap": {
                     "drive": {
-                        "hex_socket": "12mm"
+                        "hex_socket": "10mm"
                     }
                 }
             }
@@ -715,6 +774,11 @@
                 }
             },
             "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "24mm"
+                    }
+                },
                 "flat": {
                     "drive": {
                         "hex_socket": "10mm"
@@ -728,6 +792,11 @@
                 "cap": {
                     "drive": {
                         "hex_socket": "14mm"
+                    }
+                }
+                "set": {
+                    "drive": {
+                        "hex_socket": "8mm"
                     }
                 }
             }
@@ -757,6 +826,28 @@
                 "2.5": {
                     "label": "coarse"
                 }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "27mm"
+                    }
+                },
+                "flat": {
+                    "drive": {
+                        "hex_socket": "12mm"
+                    }
+                },
+                "button": {
+                    "drive": {
+                        "hex_socket": "12mm"
+                    }
+                },
+                "cap": {
+                    "drive": {
+                        "hex_socket": "14mm"
+                    }
+                }
             }
         },
         "M20": {
@@ -771,9 +862,58 @@
                 "2.5": {
                     "label": "coarse"
                 }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "30mm"
+                    }
+                },
+                "flat": {
+                    "drive": {
+                        "hex_socket": "12mm"
+                    }
+                },
+                "button": {
+                    "drive": {
+                        "hex_socket": "12mm"
+                    }
+                },
+                "cap": {
+                    "drive": {
+                        "hex_socket": "17mm"
+                    }
+                }
+                "set": {
+                    "drive": {
+                        "hex_socket": "10mm"
+                    }
+                },
             }
         },
-        "M22": {
+        "M22": {,
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "34mm"
+                    }
+                },
+                "flat": {
+                    "drive": {
+                        "hex_socket": "14mm"
+                    }
+                },
+                "button": {
+                    "drive": {
+                        "hex_socket": "14mm"
+                    }
+                },
+                "cap": {
+                    "drive": {
+                        "hex_socket": "17mm"
+                    }
+                }
+            }
             
         },
         "M24": {
@@ -785,6 +925,33 @@
                 "3.0": {
                     "label": "coarse"
                 }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "36mm"
+                    }
+                },
+                "flat": {
+                    "drive": {
+                        "hex_socket": "14mm"
+                    }
+                },
+                "button": {
+                    "drive": {
+                        "hex_socket": "14mm"
+                    }
+                },
+                "cap": {
+                    "drive": {
+                        "hex_socket": "19mm"
+                    }
+                }
+                "set": {
+                    "drive": {
+                        "hex_socket": "12mm"
+                    }
+                },
             }
         },
         "m27": {
@@ -800,6 +967,33 @@
                 "grade_8": {
                     
                 }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "41mm"
+                    }
+                },
+                "flat": {
+                    "drive": {
+                        "hex_socket": "17mm"
+                    }
+                },
+                "button": {
+                    "drive": {
+                        "hex_socket": "17mm"
+                    }
+                },
+                "cap": {
+                    "drive": {
+                        "hex_socket": "19mm"
+                    }
+                }
+                "set": {
+                    "drive": {
+                        "hex_socket": "14mm"
+                    }
+                },
             }
         },
         "M30": {
@@ -810,6 +1004,33 @@
                 "3.5": {
                     "label": "coarse"
                 }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "46mm"
+                    }
+                },
+                "flat": {
+                    "drive": {
+                        "hex_socket": "17mm"
+                    }
+                },
+                "button": {
+                    "drive": {
+                        "hex_socket": "17mm"
+                    }
+                },
+                "cap": {
+                    "drive": {
+                        "hex_socket": "22mm"
+                    }
+                }
+                "set": {
+                    "drive": {
+                        "hex_socket": "14mm"
+                    }
+                },
             }
         },
         "m33": {
@@ -824,6 +1045,18 @@
             "hardness": {
                 "grade_8": {
                     
+                }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "50mm"
+                    }
+                },
+                "cap": {
+                    "drive": {
+                        "hex_socket": "24mm"
+                    }
                 }
             }
         },
@@ -841,6 +1074,18 @@
                 "grade_8": {
                     
                 }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "55mm"
+                    }
+                },
+                "cap": {
+                    "drive": {
+                        "hex_socket": "27mm"
+                    }
+                }
             }
         },
         "m39": {
@@ -855,6 +1100,13 @@
             "hardness": {
                 "grade_8": {
                     
+                }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "60mm"
+                    }
                 }
             }
         },
@@ -872,6 +1124,18 @@
                 "grade_8": {
                     
                 }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "65mm"
+                    }
+                },
+                "cap": {
+                    "drive": {
+                        "hex_socket": "32mm"
+                    }
+                }
             }
         },
         "m45": {
@@ -886,6 +1150,13 @@
             "hardness": {
                 "grade_8": {
                     
+                }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "70mm"
+                    }
                 }
             }
         },
@@ -903,6 +1174,18 @@
                 "grade_8": {
                     
                 }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "75mm"
+                    }
+                },
+                "cap": {
+                    "drive": {
+                        "hex_socket": "36mm"
+                    }
+                }
             }
         },
         "m52": {
@@ -917,6 +1200,18 @@
             "hardness": {
                 "grade_8": {
                     
+                }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "80mm"
+                    }
+                },
+                "cap": {
+                    "drive": {
+                        "hex_socket": "36mm"
+                    }
                 }
             }
         },
@@ -934,6 +1229,18 @@
                 "grade_8": {
                     
                 }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "85mm"
+                    }
+                },
+                "cap": {
+                    "drive": {
+                        "hex_socket": "41mm"
+                    }
+                }
             }
         },
         "m60": {
@@ -948,6 +1255,13 @@
             "hardness": {
                 "grade_8": {
                     
+                }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "90mm"
+                    }
                 }
             }
         },
@@ -965,8 +1279,83 @@
                 "grade_8": {
                     
                 }
+            },
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "95mm"
+                    }
+                },
+                "cap": {
+                    "drive": {
+                        "hex_socket": "46mm"
+                    }
+                }
             }
         }
+    },
+    "din": {
+        "M1.0": {
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "2.5mm"
+                    }
+                }
+            }
+        },
+        "M1.2": {
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "3mm"
+                    }
+                }
+            }
+        },
+        "M1.4": {
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "3mm"
+                    }
+                }
+            }
+        },
+        "M10": {
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "17mm"
+                    }
+                }
+            }
+        },
+        "M12": {
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "19mm"
+                    }
+                }
+        },
+        "M14": {
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "22mm"
+                    }
+                }
+        },
+        "M22": {,
+            "head": {
+                "hex": {
+                    "drive": {
+                        "hex": "32mm"
+                    }
+                }
+            }
+        },
     },
     "uscs": {
         "#0": {
