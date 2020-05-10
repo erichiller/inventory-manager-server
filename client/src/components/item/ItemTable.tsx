@@ -159,7 +159,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
             {
                 key: 'icon',
                 title: 'icon',
-                render: ( text, record: T ) => { console.log( { q: 'render icon ?', record, icon: record.icon } ); return record.icon; }
+                render: ( text, record: T ) => { console.log( { q: 'render icon ?', record, icon: record.icon } ); return ( record.icon === null ? null : < record.icon />); }
             },
             ...Object.values( columns ?? Item.Columns ),
             ...[
@@ -280,9 +280,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                 }}
             >
                 <Table
-                    style={{
-                        userSelect: 'none'
-                    }}
+                    className="ItemTable"
                     columns={getColumns()}
                     dataSource={data}
                     rowKey={item => item.id.toString()}

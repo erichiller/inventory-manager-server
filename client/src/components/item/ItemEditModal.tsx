@@ -4,6 +4,9 @@ import { Form, Modal, Input, Button } from 'antd';
 import { visibleHandler } from './ItemTable';
 import { Item } from '../../lib/item';
 import { ItemEditFormProps } from '../../lib/item/Item';
+import TextArea from 'antd/lib/input/TextArea';
+import { QtyInput } from '../../lib/item/common/QtyInput';
+import { OrderInput } from '../../lib/item/common/OrderInput';
 
 interface ItemEditModalProps {
     recordEditComponent: React.FC<ItemEditFormProps>;
@@ -45,6 +48,27 @@ export const ItemEditModal: React.FC<ItemEditModalProps> = ( props ) => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             >
+
+            {/********************************************************************************
+              ** GENERAL ITEMS 
+              ********************************************************************************/}
+            <div className="col">
+                {/* TODO: THESE FORM ITEMS ARE FOR **ALL** OBJECTS */}
+                <Form.Item name="name" label="Name">
+                    <Input placeholder="Item name" />
+                </Form.Item>
+                <Form.Item name="description" label="Description">
+                    <TextArea placeholder="Description, leave empty to auto-generate" autoSize={{ minRows: 2 }} />
+                </Form.Item>
+                <Form.Item name="stock" label="Qty">
+                    <QtyInput />
+                </Form.Item>
+                <Form.Item name="order" label="Order">
+                    <OrderInput />
+                </Form.Item>
+                {/* TODO: then here have a type selector when in the generic add form */}
+            </div>
+            
             {/* <Form.Item> */}
             {/* <Form.Item key="aaa" name="bbb" label="Field AA">
                     <Input placeholder="input placeholder" />

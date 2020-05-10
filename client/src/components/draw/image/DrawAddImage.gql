@@ -34,7 +34,23 @@ mutation InsertIcon (
 # }
 
 
-query GetIcon {
+query GetIcon($id: uuid!) {
+  icon: icon_by_pk(id: $id) {
+    data
+    description
+    id
+    title
+    categories {
+        category
+        criteria
+        sequence
+    }
+    labels {
+        label_id
+    }
+  }
+}
+query GetIcons {
   icon {
     data
     description

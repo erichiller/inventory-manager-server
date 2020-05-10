@@ -1941,6 +1941,7 @@ export enum EnumItemClassConstraint {
 }
 
 export enum EnumItemClassEnum {
+  item_bundle = 'item_bundle',
   item_hardware_fastener_bolt = 'item_hardware_fastener_bolt',
   item_hardware_fastener_nut = 'item_hardware_fastener_nut',
   item_hardware_fastener_screw = 'item_hardware_fastener_screw',
@@ -2393,6 +2394,10 @@ export type Icon = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   /** An array relationship */
+  items: Array<IconItemMap>;
+  /** An aggregated array relationship */
+  items_aggregate: IconItemMapAggregate;
+  /** An array relationship */
   labels: Array<IconLabelMap>;
   /** An aggregated array relationship */
   labels_aggregate: IconLabelMapAggregate;
@@ -2427,6 +2432,36 @@ export type IconCategoriesAggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<IconItemCategoryMapOrderBy>>;
   where?: Maybe<IconItemCategoryMapBoolExp>;
+};
+
+
+/**
+ * Image / icon data for labels
+ * 
+ * 
+ * columns and relationships of "icon"
+ */
+export type IconItemsArgs = {
+  distinct_on?: Maybe<Array<IconItemMapSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<IconItemMapOrderBy>>;
+  where?: Maybe<IconItemMapBoolExp>;
+};
+
+
+/**
+ * Image / icon data for labels
+ * 
+ * 
+ * columns and relationships of "icon"
+ */
+export type IconItemsAggregateArgs = {
+  distinct_on?: Maybe<Array<IconItemMapSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<IconItemMapOrderBy>>;
+  where?: Maybe<IconItemMapBoolExp>;
 };
 
 
@@ -2504,6 +2539,7 @@ export type IconBoolExp = {
   data?: Maybe<StringComparisonExp>;
   description?: Maybe<StringComparisonExp>;
   id?: Maybe<UuidComparisonExp>;
+  items?: Maybe<IconItemMapBoolExp>;
   labels?: Maybe<IconLabelMapBoolExp>;
   title?: Maybe<StringComparisonExp>;
 };
@@ -2523,6 +2559,7 @@ export type IconInsertInput = {
   data?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  items?: Maybe<IconItemMapArrRelInsertInput>;
   labels?: Maybe<IconLabelMapArrRelInsertInput>;
   title?: Maybe<Scalars['String']>;
 };
@@ -2842,6 +2879,275 @@ export type IconItemCategoryMapVarianceOrderBy = {
   sequence?: Maybe<OrderBy>;
 };
 
+/**
+ * map icon to specific individual items
+ * 
+ * 
+ * columns and relationships of "icon_item_map"
+ */
+export type IconItemMap = {
+   __typename?: 'icon_item_map';
+  /** An object relationship */
+  icon: Icon;
+  icon_id: Scalars['uuid'];
+  /** An object relationship */
+  item: Item;
+  item_id: Scalars['Int'];
+};
+
+/** aggregated selection of "icon_item_map" */
+export type IconItemMapAggregate = {
+   __typename?: 'icon_item_map_aggregate';
+  aggregate?: Maybe<IconItemMapAggregateFields>;
+  nodes: Array<IconItemMap>;
+};
+
+/** aggregate fields of "icon_item_map" */
+export type IconItemMapAggregateFields = {
+   __typename?: 'icon_item_map_aggregate_fields';
+  avg?: Maybe<IconItemMapAvgFields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<IconItemMapMaxFields>;
+  min?: Maybe<IconItemMapMinFields>;
+  stddev?: Maybe<IconItemMapStddevFields>;
+  stddev_pop?: Maybe<IconItemMapStddevPopFields>;
+  stddev_samp?: Maybe<IconItemMapStddevSampFields>;
+  sum?: Maybe<IconItemMapSumFields>;
+  var_pop?: Maybe<IconItemMapVarPopFields>;
+  var_samp?: Maybe<IconItemMapVarSampFields>;
+  variance?: Maybe<IconItemMapVarianceFields>;
+};
+
+
+/** aggregate fields of "icon_item_map" */
+export type IconItemMapAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<IconItemMapSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "icon_item_map" */
+export type IconItemMapAggregateOrderBy = {
+  avg?: Maybe<IconItemMapAvgOrderBy>;
+  count?: Maybe<OrderBy>;
+  max?: Maybe<IconItemMapMaxOrderBy>;
+  min?: Maybe<IconItemMapMinOrderBy>;
+  stddev?: Maybe<IconItemMapStddevOrderBy>;
+  stddev_pop?: Maybe<IconItemMapStddevPopOrderBy>;
+  stddev_samp?: Maybe<IconItemMapStddevSampOrderBy>;
+  sum?: Maybe<IconItemMapSumOrderBy>;
+  var_pop?: Maybe<IconItemMapVarPopOrderBy>;
+  var_samp?: Maybe<IconItemMapVarSampOrderBy>;
+  variance?: Maybe<IconItemMapVarianceOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "icon_item_map" */
+export type IconItemMapArrRelInsertInput = {
+  data: Array<IconItemMapInsertInput>;
+  on_conflict?: Maybe<IconItemMapOnConflict>;
+};
+
+/** aggregate avg on columns */
+export type IconItemMapAvgFields = {
+   __typename?: 'icon_item_map_avg_fields';
+  item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "icon_item_map" */
+export type IconItemMapAvgOrderBy = {
+  item_id?: Maybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "icon_item_map". All fields are combined with a logical 'AND'. */
+export type IconItemMapBoolExp = {
+  _and?: Maybe<Array<Maybe<IconItemMapBoolExp>>>;
+  _not?: Maybe<IconItemMapBoolExp>;
+  _or?: Maybe<Array<Maybe<IconItemMapBoolExp>>>;
+  icon?: Maybe<IconBoolExp>;
+  icon_id?: Maybe<UuidComparisonExp>;
+  item?: Maybe<ItemBoolExp>;
+  item_id?: Maybe<IntComparisonExp>;
+};
+
+/** unique or primary key constraints on table "icon_item_map" */
+export enum IconItemMapConstraint {
+  /** unique or primary key constraint */
+  icon_item_map_pkey = 'icon_item_map_pkey'
+}
+
+/** input type for incrementing integer column in table "icon_item_map" */
+export type IconItemMapIncInput = {
+  item_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "icon_item_map" */
+export type IconItemMapInsertInput = {
+  icon?: Maybe<IconObjRelInsertInput>;
+  icon_id?: Maybe<Scalars['uuid']>;
+  item?: Maybe<ItemObjRelInsertInput>;
+  item_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type IconItemMapMaxFields = {
+   __typename?: 'icon_item_map_max_fields';
+  icon_id?: Maybe<Scalars['uuid']>;
+  item_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "icon_item_map" */
+export type IconItemMapMaxOrderBy = {
+  icon_id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type IconItemMapMinFields = {
+   __typename?: 'icon_item_map_min_fields';
+  icon_id?: Maybe<Scalars['uuid']>;
+  item_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "icon_item_map" */
+export type IconItemMapMinOrderBy = {
+  icon_id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "icon_item_map" */
+export type IconItemMapMutationResponse = {
+   __typename?: 'icon_item_map_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<IconItemMap>;
+};
+
+/** input type for inserting object relation for remote table "icon_item_map" */
+export type IconItemMapObjRelInsertInput = {
+  data: IconItemMapInsertInput;
+  on_conflict?: Maybe<IconItemMapOnConflict>;
+};
+
+/** on conflict condition type for table "icon_item_map" */
+export type IconItemMapOnConflict = {
+  constraint: IconItemMapConstraint;
+  update_columns: Array<IconItemMapUpdateColumn>;
+  where?: Maybe<IconItemMapBoolExp>;
+};
+
+/** ordering options when selecting data from "icon_item_map" */
+export type IconItemMapOrderBy = {
+  icon?: Maybe<IconOrderBy>;
+  icon_id?: Maybe<OrderBy>;
+  item?: Maybe<ItemOrderBy>;
+  item_id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "icon_item_map" */
+export type IconItemMapPkColumnsInput = {
+  icon_id: Scalars['uuid'];
+  item_id: Scalars['Int'];
+};
+
+/** select columns of table "icon_item_map" */
+export enum IconItemMapSelectColumn {
+  /** column name */
+  icon_id = 'icon_id',
+  /** column name */
+  item_id = 'item_id'
+}
+
+/** input type for updating data in table "icon_item_map" */
+export type IconItemMapSetInput = {
+  icon_id?: Maybe<Scalars['uuid']>;
+  item_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type IconItemMapStddevFields = {
+   __typename?: 'icon_item_map_stddev_fields';
+  item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "icon_item_map" */
+export type IconItemMapStddevOrderBy = {
+  item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_pop on columns */
+export type IconItemMapStddevPopFields = {
+   __typename?: 'icon_item_map_stddev_pop_fields';
+  item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "icon_item_map" */
+export type IconItemMapStddevPopOrderBy = {
+  item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_samp on columns */
+export type IconItemMapStddevSampFields = {
+   __typename?: 'icon_item_map_stddev_samp_fields';
+  item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "icon_item_map" */
+export type IconItemMapStddevSampOrderBy = {
+  item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate sum on columns */
+export type IconItemMapSumFields = {
+   __typename?: 'icon_item_map_sum_fields';
+  item_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "icon_item_map" */
+export type IconItemMapSumOrderBy = {
+  item_id?: Maybe<OrderBy>;
+};
+
+/** update columns of table "icon_item_map" */
+export enum IconItemMapUpdateColumn {
+  /** column name */
+  icon_id = 'icon_id',
+  /** column name */
+  item_id = 'item_id'
+}
+
+/** aggregate var_pop on columns */
+export type IconItemMapVarPopFields = {
+   __typename?: 'icon_item_map_var_pop_fields';
+  item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "icon_item_map" */
+export type IconItemMapVarPopOrderBy = {
+  item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate var_samp on columns */
+export type IconItemMapVarSampFields = {
+   __typename?: 'icon_item_map_var_samp_fields';
+  item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "icon_item_map" */
+export type IconItemMapVarSampOrderBy = {
+  item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type IconItemMapVarianceFields = {
+   __typename?: 'icon_item_map_variance_fields';
+  item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "icon_item_map" */
+export type IconItemMapVarianceOrderBy = {
+  item_id?: Maybe<OrderBy>;
+};
+
 /** columns and relationships of "icon_label_map" */
 export type IconLabelMap = {
    __typename?: 'icon_label_map';
@@ -3059,6 +3365,7 @@ export type IconOrderBy = {
   data?: Maybe<OrderBy>;
   description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  items_aggregate?: Maybe<IconItemMapAggregateOrderBy>;
   labels_aggregate?: Maybe<IconLabelMapAggregateOrderBy>;
   title?: Maybe<OrderBy>;
 };
@@ -3144,6 +3451,8 @@ export type Item = {
   orderItems: Array<OrderItem>;
   /** An aggregated array relationship */
   orderItems_aggregate: OrderItemAggregate;
+  /** null means that there is stock, but of an unknown quantity. */
+  stock?: Maybe<Scalars['smallint']>;
   /** An array relationship */
   vendorItems: Array<VendorItem>;
   /** An aggregated array relationship */
@@ -3336,11 +3645,13 @@ export type ItemArrRelInsertInput = {
 export type ItemAvgFields = {
    __typename?: 'item_avg_fields';
   id?: Maybe<Scalars['Float']>;
+  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "item" */
 export type ItemAvgOrderBy = {
   id?: Maybe<OrderBy>;
+  stock?: Maybe<OrderBy>;
 };
 
 /** Boolean expression to filter rows from the table "item". All fields are combined with a logical 'AND'. */
@@ -3356,6 +3667,7 @@ export type ItemBoolExp = {
   manufacturerItems?: Maybe<ManufacturerItemBoolExp>;
   object?: Maybe<JsonbComparisonExp>;
   orderItems?: Maybe<OrderItemBoolExp>;
+  stock?: Maybe<SmallintComparisonExp>;
   vendorItems?: Maybe<VendorItemBoolExp>;
 };
 
@@ -3363,25 +3675,61 @@ export type ItemBoolExp = {
  * for items purchased as a bundle or kit (a box of screws for example)
  * 
  * 
- * columns and relationships of "item_bundle"
+ * columns and relationships of "item.bundle"
  */
 export type ItemBundle = {
    __typename?: 'item_bundle';
   created_at: Scalars['timestamptz'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  /** An object relationship */
+  item: Item;
+  /** An array relationship */
+  items: Array<ItemBundleMap>;
+  /** An aggregated array relationship */
+  items_aggregate: ItemBundleMapAggregate;
   name: Scalars['String'];
   updated_at: Scalars['timestamptz'];
 };
 
-/** aggregated selection of "item_bundle" */
+
+/**
+ * for items purchased as a bundle or kit (a box of screws for example)
+ * 
+ * 
+ * columns and relationships of "item.bundle"
+ */
+export type ItemBundleItemsArgs = {
+  distinct_on?: Maybe<Array<ItemBundleMapSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemBundleMapOrderBy>>;
+  where?: Maybe<ItemBundleMapBoolExp>;
+};
+
+
+/**
+ * for items purchased as a bundle or kit (a box of screws for example)
+ * 
+ * 
+ * columns and relationships of "item.bundle"
+ */
+export type ItemBundleItemsAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemBundleMapSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemBundleMapOrderBy>>;
+  where?: Maybe<ItemBundleMapBoolExp>;
+};
+
+/** aggregated selection of "item.bundle" */
 export type ItemBundleAggregate = {
    __typename?: 'item_bundle_aggregate';
   aggregate?: Maybe<ItemBundleAggregateFields>;
   nodes: Array<ItemBundle>;
 };
 
-/** aggregate fields of "item_bundle" */
+/** aggregate fields of "item.bundle" */
 export type ItemBundleAggregateFields = {
    __typename?: 'item_bundle_aggregate_fields';
   avg?: Maybe<ItemBundleAvgFields>;
@@ -3398,13 +3746,13 @@ export type ItemBundleAggregateFields = {
 };
 
 
-/** aggregate fields of "item_bundle" */
+/** aggregate fields of "item.bundle" */
 export type ItemBundleAggregateFieldsCountArgs = {
   columns?: Maybe<Array<ItemBundleSelectColumn>>;
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "item_bundle" */
+/** order by aggregate values of table "item.bundle" */
 export type ItemBundleAggregateOrderBy = {
   avg?: Maybe<ItemBundleAvgOrderBy>;
   count?: Maybe<OrderBy>;
@@ -3419,7 +3767,7 @@ export type ItemBundleAggregateOrderBy = {
   variance?: Maybe<ItemBundleVarianceOrderBy>;
 };
 
-/** input type for inserting array relation for remote table "item_bundle" */
+/** input type for inserting array relation for remote table "item.bundle" */
 export type ItemBundleArrRelInsertInput = {
   data: Array<ItemBundleInsertInput>;
   on_conflict?: Maybe<ItemBundleOnConflict>;
@@ -3431,12 +3779,12 @@ export type ItemBundleAvgFields = {
   id?: Maybe<Scalars['Float']>;
 };
 
-/** order by avg() on columns of table "item_bundle" */
+/** order by avg() on columns of table "item.bundle" */
 export type ItemBundleAvgOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
-/** Boolean expression to filter rows from the table "item_bundle". All fields are combined with a logical 'AND'. */
+/** Boolean expression to filter rows from the table "item.bundle". All fields are combined with a logical 'AND'. */
 export type ItemBundleBoolExp = {
   _and?: Maybe<Array<Maybe<ItemBundleBoolExp>>>;
   _not?: Maybe<ItemBundleBoolExp>;
@@ -3444,11 +3792,13 @@ export type ItemBundleBoolExp = {
   created_at?: Maybe<TimestamptzComparisonExp>;
   description?: Maybe<StringComparisonExp>;
   id?: Maybe<IntComparisonExp>;
+  item?: Maybe<ItemBoolExp>;
+  items?: Maybe<ItemBundleMapBoolExp>;
   name?: Maybe<StringComparisonExp>;
   updated_at?: Maybe<TimestamptzComparisonExp>;
 };
 
-/** unique or primary key constraints on table "item_bundle" */
+/** unique or primary key constraints on table "item.bundle" */
 export enum ItemBundleConstraint {
   /** unique or primary key constraint */
   item_bundle_name_key = 'item_bundle_name_key',
@@ -3456,35 +3806,41 @@ export enum ItemBundleConstraint {
   item_bundle_pkey = 'item_bundle_pkey'
 }
 
-/** input type for incrementing integer column in table "item_bundle" */
+/** input type for incrementing integer column in table "item.bundle" */
 export type ItemBundleIncInput = {
   id?: Maybe<Scalars['Int']>;
 };
 
-/** input type for inserting data into table "item_bundle" */
+/** input type for inserting data into table "item.bundle" */
 export type ItemBundleInsertInput = {
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  item?: Maybe<ItemObjRelInsertInput>;
+  items?: Maybe<ItemBundleMapArrRelInsertInput>;
   name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** columns and relationships of "item_bundle_map" */
+/** columns and relationships of "item.bundle_map" */
 export type ItemBundleMap = {
    __typename?: 'item_bundle_map';
+  /** An object relationship */
+  bundle: ItemBundle;
+  /** An object relationship */
+  item: Item;
   item_bundle_id: Scalars['Int'];
   item_member_id: Scalars['Int'];
 };
 
-/** aggregated selection of "item_bundle_map" */
+/** aggregated selection of "item.bundle_map" */
 export type ItemBundleMapAggregate = {
    __typename?: 'item_bundle_map_aggregate';
   aggregate?: Maybe<ItemBundleMapAggregateFields>;
   nodes: Array<ItemBundleMap>;
 };
 
-/** aggregate fields of "item_bundle_map" */
+/** aggregate fields of "item.bundle_map" */
 export type ItemBundleMapAggregateFields = {
    __typename?: 'item_bundle_map_aggregate_fields';
   avg?: Maybe<ItemBundleMapAvgFields>;
@@ -3501,13 +3857,13 @@ export type ItemBundleMapAggregateFields = {
 };
 
 
-/** aggregate fields of "item_bundle_map" */
+/** aggregate fields of "item.bundle_map" */
 export type ItemBundleMapAggregateFieldsCountArgs = {
   columns?: Maybe<Array<ItemBundleMapSelectColumn>>;
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "item_bundle_map" */
+/** order by aggregate values of table "item.bundle_map" */
 export type ItemBundleMapAggregateOrderBy = {
   avg?: Maybe<ItemBundleMapAvgOrderBy>;
   count?: Maybe<OrderBy>;
@@ -3522,7 +3878,7 @@ export type ItemBundleMapAggregateOrderBy = {
   variance?: Maybe<ItemBundleMapVarianceOrderBy>;
 };
 
-/** input type for inserting array relation for remote table "item_bundle_map" */
+/** input type for inserting array relation for remote table "item.bundle_map" */
 export type ItemBundleMapArrRelInsertInput = {
   data: Array<ItemBundleMapInsertInput>;
   on_conflict?: Maybe<ItemBundleMapOnConflict>;
@@ -3535,35 +3891,39 @@ export type ItemBundleMapAvgFields = {
   item_member_id?: Maybe<Scalars['Float']>;
 };
 
-/** order by avg() on columns of table "item_bundle_map" */
+/** order by avg() on columns of table "item.bundle_map" */
 export type ItemBundleMapAvgOrderBy = {
   item_bundle_id?: Maybe<OrderBy>;
   item_member_id?: Maybe<OrderBy>;
 };
 
-/** Boolean expression to filter rows from the table "item_bundle_map". All fields are combined with a logical 'AND'. */
+/** Boolean expression to filter rows from the table "item.bundle_map". All fields are combined with a logical 'AND'. */
 export type ItemBundleMapBoolExp = {
   _and?: Maybe<Array<Maybe<ItemBundleMapBoolExp>>>;
   _not?: Maybe<ItemBundleMapBoolExp>;
   _or?: Maybe<Array<Maybe<ItemBundleMapBoolExp>>>;
+  bundle?: Maybe<ItemBundleBoolExp>;
+  item?: Maybe<ItemBoolExp>;
   item_bundle_id?: Maybe<IntComparisonExp>;
   item_member_id?: Maybe<IntComparisonExp>;
 };
 
-/** unique or primary key constraints on table "item_bundle_map" */
+/** unique or primary key constraints on table "item.bundle_map" */
 export enum ItemBundleMapConstraint {
   /** unique or primary key constraint */
   item_bundle_map_pkey = 'item_bundle_map_pkey'
 }
 
-/** input type for incrementing integer column in table "item_bundle_map" */
+/** input type for incrementing integer column in table "item.bundle_map" */
 export type ItemBundleMapIncInput = {
   item_bundle_id?: Maybe<Scalars['Int']>;
   item_member_id?: Maybe<Scalars['Int']>;
 };
 
-/** input type for inserting data into table "item_bundle_map" */
+/** input type for inserting data into table "item.bundle_map" */
 export type ItemBundleMapInsertInput = {
+  bundle?: Maybe<ItemBundleObjRelInsertInput>;
+  item?: Maybe<ItemObjRelInsertInput>;
   item_bundle_id?: Maybe<Scalars['Int']>;
   item_member_id?: Maybe<Scalars['Int']>;
 };
@@ -3575,7 +3935,7 @@ export type ItemBundleMapMaxFields = {
   item_member_id?: Maybe<Scalars['Int']>;
 };
 
-/** order by max() on columns of table "item_bundle_map" */
+/** order by max() on columns of table "item.bundle_map" */
 export type ItemBundleMapMaxOrderBy = {
   item_bundle_id?: Maybe<OrderBy>;
   item_member_id?: Maybe<OrderBy>;
@@ -3588,13 +3948,13 @@ export type ItemBundleMapMinFields = {
   item_member_id?: Maybe<Scalars['Int']>;
 };
 
-/** order by min() on columns of table "item_bundle_map" */
+/** order by min() on columns of table "item.bundle_map" */
 export type ItemBundleMapMinOrderBy = {
   item_bundle_id?: Maybe<OrderBy>;
   item_member_id?: Maybe<OrderBy>;
 };
 
-/** response of any mutation on the table "item_bundle_map" */
+/** response of any mutation on the table "item.bundle_map" */
 export type ItemBundleMapMutationResponse = {
    __typename?: 'item_bundle_map_mutation_response';
   /** number of affected rows by the mutation */
@@ -3603,32 +3963,34 @@ export type ItemBundleMapMutationResponse = {
   returning: Array<ItemBundleMap>;
 };
 
-/** input type for inserting object relation for remote table "item_bundle_map" */
+/** input type for inserting object relation for remote table "item.bundle_map" */
 export type ItemBundleMapObjRelInsertInput = {
   data: ItemBundleMapInsertInput;
   on_conflict?: Maybe<ItemBundleMapOnConflict>;
 };
 
-/** on conflict condition type for table "item_bundle_map" */
+/** on conflict condition type for table "item.bundle_map" */
 export type ItemBundleMapOnConflict = {
   constraint: ItemBundleMapConstraint;
   update_columns: Array<ItemBundleMapUpdateColumn>;
   where?: Maybe<ItemBundleMapBoolExp>;
 };
 
-/** ordering options when selecting data from "item_bundle_map" */
+/** ordering options when selecting data from "item.bundle_map" */
 export type ItemBundleMapOrderBy = {
+  bundle?: Maybe<ItemBundleOrderBy>;
+  item?: Maybe<ItemOrderBy>;
   item_bundle_id?: Maybe<OrderBy>;
   item_member_id?: Maybe<OrderBy>;
 };
 
-/** primary key columns input for table: "item_bundle_map" */
+/** primary key columns input for table: "item.bundle_map" */
 export type ItemBundleMapPkColumnsInput = {
   item_bundle_id: Scalars['Int'];
   item_member_id: Scalars['Int'];
 };
 
-/** select columns of table "item_bundle_map" */
+/** select columns of table "item.bundle_map" */
 export enum ItemBundleMapSelectColumn {
   /** column name */
   item_bundle_id = 'item_bundle_id',
@@ -3636,7 +3998,7 @@ export enum ItemBundleMapSelectColumn {
   item_member_id = 'item_member_id'
 }
 
-/** input type for updating data in table "item_bundle_map" */
+/** input type for updating data in table "item.bundle_map" */
 export type ItemBundleMapSetInput = {
   item_bundle_id?: Maybe<Scalars['Int']>;
   item_member_id?: Maybe<Scalars['Int']>;
@@ -3649,7 +4011,7 @@ export type ItemBundleMapStddevFields = {
   item_member_id?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev() on columns of table "item_bundle_map" */
+/** order by stddev() on columns of table "item.bundle_map" */
 export type ItemBundleMapStddevOrderBy = {
   item_bundle_id?: Maybe<OrderBy>;
   item_member_id?: Maybe<OrderBy>;
@@ -3662,7 +4024,7 @@ export type ItemBundleMapStddevPopFields = {
   item_member_id?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_pop() on columns of table "item_bundle_map" */
+/** order by stddev_pop() on columns of table "item.bundle_map" */
 export type ItemBundleMapStddevPopOrderBy = {
   item_bundle_id?: Maybe<OrderBy>;
   item_member_id?: Maybe<OrderBy>;
@@ -3675,7 +4037,7 @@ export type ItemBundleMapStddevSampFields = {
   item_member_id?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_samp() on columns of table "item_bundle_map" */
+/** order by stddev_samp() on columns of table "item.bundle_map" */
 export type ItemBundleMapStddevSampOrderBy = {
   item_bundle_id?: Maybe<OrderBy>;
   item_member_id?: Maybe<OrderBy>;
@@ -3688,13 +4050,13 @@ export type ItemBundleMapSumFields = {
   item_member_id?: Maybe<Scalars['Int']>;
 };
 
-/** order by sum() on columns of table "item_bundle_map" */
+/** order by sum() on columns of table "item.bundle_map" */
 export type ItemBundleMapSumOrderBy = {
   item_bundle_id?: Maybe<OrderBy>;
   item_member_id?: Maybe<OrderBy>;
 };
 
-/** update columns of table "item_bundle_map" */
+/** update columns of table "item.bundle_map" */
 export enum ItemBundleMapUpdateColumn {
   /** column name */
   item_bundle_id = 'item_bundle_id',
@@ -3709,7 +4071,7 @@ export type ItemBundleMapVarPopFields = {
   item_member_id?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_pop() on columns of table "item_bundle_map" */
+/** order by var_pop() on columns of table "item.bundle_map" */
 export type ItemBundleMapVarPopOrderBy = {
   item_bundle_id?: Maybe<OrderBy>;
   item_member_id?: Maybe<OrderBy>;
@@ -3722,7 +4084,7 @@ export type ItemBundleMapVarSampFields = {
   item_member_id?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_samp() on columns of table "item_bundle_map" */
+/** order by var_samp() on columns of table "item.bundle_map" */
 export type ItemBundleMapVarSampOrderBy = {
   item_bundle_id?: Maybe<OrderBy>;
   item_member_id?: Maybe<OrderBy>;
@@ -3735,7 +4097,7 @@ export type ItemBundleMapVarianceFields = {
   item_member_id?: Maybe<Scalars['Float']>;
 };
 
-/** order by variance() on columns of table "item_bundle_map" */
+/** order by variance() on columns of table "item.bundle_map" */
 export type ItemBundleMapVarianceOrderBy = {
   item_bundle_id?: Maybe<OrderBy>;
   item_member_id?: Maybe<OrderBy>;
@@ -3751,7 +4113,7 @@ export type ItemBundleMaxFields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by max() on columns of table "item_bundle" */
+/** order by max() on columns of table "item.bundle" */
 export type ItemBundleMaxOrderBy = {
   created_at?: Maybe<OrderBy>;
   description?: Maybe<OrderBy>;
@@ -3770,7 +4132,7 @@ export type ItemBundleMinFields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by min() on columns of table "item_bundle" */
+/** order by min() on columns of table "item.bundle" */
 export type ItemBundleMinOrderBy = {
   created_at?: Maybe<OrderBy>;
   description?: Maybe<OrderBy>;
@@ -3779,7 +4141,7 @@ export type ItemBundleMinOrderBy = {
   updated_at?: Maybe<OrderBy>;
 };
 
-/** response of any mutation on the table "item_bundle" */
+/** response of any mutation on the table "item.bundle" */
 export type ItemBundleMutationResponse = {
    __typename?: 'item_bundle_mutation_response';
   /** number of affected rows by the mutation */
@@ -3788,34 +4150,36 @@ export type ItemBundleMutationResponse = {
   returning: Array<ItemBundle>;
 };
 
-/** input type for inserting object relation for remote table "item_bundle" */
+/** input type for inserting object relation for remote table "item.bundle" */
 export type ItemBundleObjRelInsertInput = {
   data: ItemBundleInsertInput;
   on_conflict?: Maybe<ItemBundleOnConflict>;
 };
 
-/** on conflict condition type for table "item_bundle" */
+/** on conflict condition type for table "item.bundle" */
 export type ItemBundleOnConflict = {
   constraint: ItemBundleConstraint;
   update_columns: Array<ItemBundleUpdateColumn>;
   where?: Maybe<ItemBundleBoolExp>;
 };
 
-/** ordering options when selecting data from "item_bundle" */
+/** ordering options when selecting data from "item.bundle" */
 export type ItemBundleOrderBy = {
   created_at?: Maybe<OrderBy>;
   description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  item?: Maybe<ItemOrderBy>;
+  items_aggregate?: Maybe<ItemBundleMapAggregateOrderBy>;
   name?: Maybe<OrderBy>;
   updated_at?: Maybe<OrderBy>;
 };
 
-/** primary key columns input for table: "item_bundle" */
+/** primary key columns input for table: "item.bundle" */
 export type ItemBundlePkColumnsInput = {
   id: Scalars['Int'];
 };
 
-/** select columns of table "item_bundle" */
+/** select columns of table "item.bundle" */
 export enum ItemBundleSelectColumn {
   /** column name */
   created_at = 'created_at',
@@ -3829,7 +4193,7 @@ export enum ItemBundleSelectColumn {
   updated_at = 'updated_at'
 }
 
-/** input type for updating data in table "item_bundle" */
+/** input type for updating data in table "item.bundle" */
 export type ItemBundleSetInput = {
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
@@ -3844,7 +4208,7 @@ export type ItemBundleStddevFields = {
   id?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev() on columns of table "item_bundle" */
+/** order by stddev() on columns of table "item.bundle" */
 export type ItemBundleStddevOrderBy = {
   id?: Maybe<OrderBy>;
 };
@@ -3855,7 +4219,7 @@ export type ItemBundleStddevPopFields = {
   id?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_pop() on columns of table "item_bundle" */
+/** order by stddev_pop() on columns of table "item.bundle" */
 export type ItemBundleStddevPopOrderBy = {
   id?: Maybe<OrderBy>;
 };
@@ -3866,7 +4230,7 @@ export type ItemBundleStddevSampFields = {
   id?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_samp() on columns of table "item_bundle" */
+/** order by stddev_samp() on columns of table "item.bundle" */
 export type ItemBundleStddevSampOrderBy = {
   id?: Maybe<OrderBy>;
 };
@@ -3877,12 +4241,12 @@ export type ItemBundleSumFields = {
   id?: Maybe<Scalars['Int']>;
 };
 
-/** order by sum() on columns of table "item_bundle" */
+/** order by sum() on columns of table "item.bundle" */
 export type ItemBundleSumOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
-/** update columns of table "item_bundle" */
+/** update columns of table "item.bundle" */
 export enum ItemBundleUpdateColumn {
   /** column name */
   created_at = 'created_at',
@@ -3902,7 +4266,7 @@ export type ItemBundleVarPopFields = {
   id?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_pop() on columns of table "item_bundle" */
+/** order by var_pop() on columns of table "item.bundle" */
 export type ItemBundleVarPopOrderBy = {
   id?: Maybe<OrderBy>;
 };
@@ -3913,7 +4277,7 @@ export type ItemBundleVarSampFields = {
   id?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_samp() on columns of table "item_bundle" */
+/** order by var_samp() on columns of table "item.bundle" */
 export type ItemBundleVarSampOrderBy = {
   id?: Maybe<OrderBy>;
 };
@@ -3924,7 +4288,7 @@ export type ItemBundleVarianceFields = {
   id?: Maybe<Scalars['Float']>;
 };
 
-/** order by variance() on columns of table "item_bundle" */
+/** order by variance() on columns of table "item.bundle" */
 export type ItemBundleVarianceOrderBy = {
   id?: Maybe<OrderBy>;
 };
@@ -5274,6 +5638,7 @@ export type ItemHardwareFastenerScrewVarianceOrderBy = {
 /** input type for incrementing integer column in table "item" */
 export type ItemIncInput = {
   id?: Maybe<Scalars['Int']>;
+  stock?: Maybe<Scalars['smallint']>;
 };
 
 /** input type for inserting data into table "item" */
@@ -5286,6 +5651,7 @@ export type ItemInsertInput = {
   manufacturerItems?: Maybe<ManufacturerItemArrRelInsertInput>;
   object?: Maybe<Scalars['jsonb']>;
   orderItems?: Maybe<OrderItemArrRelInsertInput>;
+  stock?: Maybe<Scalars['smallint']>;
   vendorItems?: Maybe<VendorItemArrRelInsertInput>;
 };
 
@@ -5293,22 +5659,26 @@ export type ItemInsertInput = {
 export type ItemMaxFields = {
    __typename?: 'item_max_fields';
   id?: Maybe<Scalars['Int']>;
+  stock?: Maybe<Scalars['smallint']>;
 };
 
 /** order by max() on columns of table "item" */
 export type ItemMaxOrderBy = {
   id?: Maybe<OrderBy>;
+  stock?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
 export type ItemMinFields = {
    __typename?: 'item_min_fields';
   id?: Maybe<Scalars['Int']>;
+  stock?: Maybe<Scalars['smallint']>;
 };
 
 /** order by min() on columns of table "item" */
 export type ItemMinOrderBy = {
   id?: Maybe<OrderBy>;
+  stock?: Maybe<OrderBy>;
 };
 
 /** response of any mutation on the table "item" */
@@ -5343,6 +5713,7 @@ export type ItemOrderBy = {
   manufacturerItems_aggregate?: Maybe<ManufacturerItemAggregateOrderBy>;
   object?: Maybe<OrderBy>;
   orderItems_aggregate?: Maybe<OrderItemAggregateOrderBy>;
+  stock?: Maybe<OrderBy>;
   vendorItems_aggregate?: Maybe<VendorItemAggregateOrderBy>;
 };
 
@@ -5363,7 +5734,9 @@ export enum ItemSelectColumn {
   /** column name */
   id = 'id',
   /** column name */
-  object = 'object'
+  object = 'object',
+  /** column name */
+  stock = 'stock'
 }
 
 /** input type for updating data in table "item" */
@@ -5371,50 +5744,59 @@ export type ItemSetInput = {
   class?: Maybe<EnumItemClassEnum>;
   id?: Maybe<Scalars['Int']>;
   object?: Maybe<Scalars['jsonb']>;
+  stock?: Maybe<Scalars['smallint']>;
 };
 
 /** aggregate stddev on columns */
 export type ItemStddevFields = {
    __typename?: 'item_stddev_fields';
   id?: Maybe<Scalars['Float']>;
+  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "item" */
 export type ItemStddevOrderBy = {
   id?: Maybe<OrderBy>;
+  stock?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_pop on columns */
 export type ItemStddevPopFields = {
    __typename?: 'item_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
+  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "item" */
 export type ItemStddevPopOrderBy = {
   id?: Maybe<OrderBy>;
+  stock?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_samp on columns */
 export type ItemStddevSampFields = {
    __typename?: 'item_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
+  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "item" */
 export type ItemStddevSampOrderBy = {
   id?: Maybe<OrderBy>;
+  stock?: Maybe<OrderBy>;
 };
 
 /** aggregate sum on columns */
 export type ItemSumFields = {
    __typename?: 'item_sum_fields';
   id?: Maybe<Scalars['Int']>;
+  stock?: Maybe<Scalars['smallint']>;
 };
 
 /** order by sum() on columns of table "item" */
 export type ItemSumOrderBy = {
   id?: Maybe<OrderBy>;
+  stock?: Maybe<OrderBy>;
 };
 
 /** update columns of table "item" */
@@ -5424,40 +5806,48 @@ export enum ItemUpdateColumn {
   /** column name */
   id = 'id',
   /** column name */
-  object = 'object'
+  object = 'object',
+  /** column name */
+  stock = 'stock'
 }
 
 /** aggregate var_pop on columns */
 export type ItemVarPopFields = {
    __typename?: 'item_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
+  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "item" */
 export type ItemVarPopOrderBy = {
   id?: Maybe<OrderBy>;
+  stock?: Maybe<OrderBy>;
 };
 
 /** aggregate var_samp on columns */
 export type ItemVarSampFields = {
    __typename?: 'item_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
+  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "item" */
 export type ItemVarSampOrderBy = {
   id?: Maybe<OrderBy>;
+  stock?: Maybe<OrderBy>;
 };
 
 /** aggregate variance on columns */
 export type ItemVarianceFields = {
    __typename?: 'item_variance_fields';
   id?: Maybe<Scalars['Float']>;
+  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "item" */
 export type ItemVarianceOrderBy = {
   id?: Maybe<OrderBy>;
+  stock?: Maybe<OrderBy>;
 };
 
 
@@ -7352,19 +7742,23 @@ export type MutationRoot = {
   delete_icon_item_category_map?: Maybe<IconItemCategoryMapMutationResponse>;
   /** delete single row from the table: "icon_item_category_map" */
   delete_icon_item_category_map_by_pk?: Maybe<IconItemCategoryMap>;
+  /** delete data from the table: "icon_item_map" */
+  delete_icon_item_map?: Maybe<IconItemMapMutationResponse>;
+  /** delete single row from the table: "icon_item_map" */
+  delete_icon_item_map_by_pk?: Maybe<IconItemMap>;
   /** delete data from the table: "icon_label_map" */
   delete_icon_label_map?: Maybe<IconLabelMapMutationResponse>;
   /** delete single row from the table: "icon_label_map" */
   delete_icon_label_map_by_pk?: Maybe<IconLabelMap>;
   /** delete data from the table: "item" */
   delete_item?: Maybe<ItemMutationResponse>;
-  /** delete data from the table: "item_bundle" */
+  /** delete data from the table: "item.bundle" */
   delete_item_bundle?: Maybe<ItemBundleMutationResponse>;
-  /** delete single row from the table: "item_bundle" */
+  /** delete single row from the table: "item.bundle" */
   delete_item_bundle_by_pk?: Maybe<ItemBundle>;
-  /** delete data from the table: "item_bundle_map" */
+  /** delete data from the table: "item.bundle_map" */
   delete_item_bundle_map?: Maybe<ItemBundleMapMutationResponse>;
-  /** delete single row from the table: "item_bundle_map" */
+  /** delete single row from the table: "item.bundle_map" */
   delete_item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
   /** delete single row from the table: "item" */
   delete_item_by_pk?: Maybe<Item>;
@@ -7486,6 +7880,10 @@ export type MutationRoot = {
   insert_icon_item_category_map?: Maybe<IconItemCategoryMapMutationResponse>;
   /** insert a single row into the table: "icon_item_category_map" */
   insert_icon_item_category_map_one?: Maybe<IconItemCategoryMap>;
+  /** insert data into the table: "icon_item_map" */
+  insert_icon_item_map?: Maybe<IconItemMapMutationResponse>;
+  /** insert a single row into the table: "icon_item_map" */
+  insert_icon_item_map_one?: Maybe<IconItemMap>;
   /** insert data into the table: "icon_label_map" */
   insert_icon_label_map?: Maybe<IconLabelMapMutationResponse>;
   /** insert a single row into the table: "icon_label_map" */
@@ -7494,13 +7892,13 @@ export type MutationRoot = {
   insert_icon_one?: Maybe<Icon>;
   /** insert data into the table: "item" */
   insert_item?: Maybe<ItemMutationResponse>;
-  /** insert data into the table: "item_bundle" */
+  /** insert data into the table: "item.bundle" */
   insert_item_bundle?: Maybe<ItemBundleMutationResponse>;
-  /** insert data into the table: "item_bundle_map" */
+  /** insert data into the table: "item.bundle_map" */
   insert_item_bundle_map?: Maybe<ItemBundleMapMutationResponse>;
-  /** insert a single row into the table: "item_bundle_map" */
+  /** insert a single row into the table: "item.bundle_map" */
   insert_item_bundle_map_one?: Maybe<ItemBundleMap>;
-  /** insert a single row into the table: "item_bundle" */
+  /** insert a single row into the table: "item.bundle" */
   insert_item_bundle_one?: Maybe<ItemBundle>;
   /** insert data into the table: "item.hardware_fastener_bolt" */
   insert_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>;
@@ -7629,19 +8027,23 @@ export type MutationRoot = {
   update_icon_item_category_map?: Maybe<IconItemCategoryMapMutationResponse>;
   /** update single row of the table: "icon_item_category_map" */
   update_icon_item_category_map_by_pk?: Maybe<IconItemCategoryMap>;
+  /** update data of the table: "icon_item_map" */
+  update_icon_item_map?: Maybe<IconItemMapMutationResponse>;
+  /** update single row of the table: "icon_item_map" */
+  update_icon_item_map_by_pk?: Maybe<IconItemMap>;
   /** update data of the table: "icon_label_map" */
   update_icon_label_map?: Maybe<IconLabelMapMutationResponse>;
   /** update single row of the table: "icon_label_map" */
   update_icon_label_map_by_pk?: Maybe<IconLabelMap>;
   /** update data of the table: "item" */
   update_item?: Maybe<ItemMutationResponse>;
-  /** update data of the table: "item_bundle" */
+  /** update data of the table: "item.bundle" */
   update_item_bundle?: Maybe<ItemBundleMutationResponse>;
-  /** update single row of the table: "item_bundle" */
+  /** update single row of the table: "item.bundle" */
   update_item_bundle_by_pk?: Maybe<ItemBundle>;
-  /** update data of the table: "item_bundle_map" */
+  /** update data of the table: "item.bundle_map" */
   update_item_bundle_map?: Maybe<ItemBundleMapMutationResponse>;
-  /** update single row of the table: "item_bundle_map" */
+  /** update single row of the table: "item.bundle_map" */
   update_item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
   /** update single row of the table: "item" */
   update_item_by_pk?: Maybe<Item>;
@@ -7896,6 +8298,19 @@ export type MutationRootDeleteIconItemCategoryMapByPkArgs = {
   category: EnumItemClassEnum;
   icon_id: Scalars['uuid'];
   sequence: Scalars['smallint'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteIconItemMapArgs = {
+  where: IconItemMapBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteIconItemMapByPkArgs = {
+  icon_id: Scalars['uuid'];
+  item_id: Scalars['Int'];
 };
 
 
@@ -8336,6 +8751,20 @@ export type MutationRootInsertIconItemCategoryMapArgs = {
 export type MutationRootInsertIconItemCategoryMapOneArgs = {
   object: IconItemCategoryMapInsertInput;
   on_conflict?: Maybe<IconItemCategoryMapOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertIconItemMapArgs = {
+  objects: Array<IconItemMapInsertInput>;
+  on_conflict?: Maybe<IconItemMapOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertIconItemMapOneArgs = {
+  object: IconItemMapInsertInput;
+  on_conflict?: Maybe<IconItemMapOnConflict>;
 };
 
 
@@ -8841,6 +9270,22 @@ export type MutationRootUpdateIconItemCategoryMapByPkArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateIconItemMapArgs = {
+  _inc?: Maybe<IconItemMapIncInput>;
+  _set?: Maybe<IconItemMapSetInput>;
+  where: IconItemMapBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateIconItemMapByPkArgs = {
+  _inc?: Maybe<IconItemMapIncInput>;
+  _set?: Maybe<IconItemMapSetInput>;
+  pk_columns: IconItemMapPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateIconLabelMapArgs = {
   _set?: Maybe<IconLabelMapSetInput>;
   where: IconLabelMapBoolExp;
@@ -9195,15 +9640,67 @@ export type Order = {
    __typename?: 'order';
   fulfilled_date?: Maybe<Scalars['date']>;
   id: Scalars['Int'];
+  /** An array relationship */
+  items: Array<OrderItem>;
+  /** An aggregated array relationship */
+  items_aggregate: OrderItemAggregate;
   items_cost: Scalars['money'];
+  /** An object relationship */
+  payment_method?: Maybe<PaymentMethod>;
   payment_method_id?: Maybe<Scalars['Int']>;
   placed_date: Scalars['date'];
   pon?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  shipments: Array<Shipment>;
+  /** An aggregated array relationship */
+  shipments_aggregate: ShipmentAggregate;
   tax_cost: Scalars['money'];
   total_cost: Scalars['money'];
   url?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  vendor: Vendor;
   vendor_id: Scalars['Int'];
   vendor_order_id: Scalars['String'];
+};
+
+
+/** columns and relationships of "order" */
+export type OrderItemsArgs = {
+  distinct_on?: Maybe<Array<OrderItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<OrderItemOrderBy>>;
+  where?: Maybe<OrderItemBoolExp>;
+};
+
+
+/** columns and relationships of "order" */
+export type OrderItemsAggregateArgs = {
+  distinct_on?: Maybe<Array<OrderItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<OrderItemOrderBy>>;
+  where?: Maybe<OrderItemBoolExp>;
+};
+
+
+/** columns and relationships of "order" */
+export type OrderShipmentsArgs = {
+  distinct_on?: Maybe<Array<ShipmentSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ShipmentOrderBy>>;
+  where?: Maybe<ShipmentBoolExp>;
+};
+
+
+/** columns and relationships of "order" */
+export type OrderShipmentsAggregateArgs = {
+  distinct_on?: Maybe<Array<ShipmentSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ShipmentOrderBy>>;
+  where?: Maybe<ShipmentBoolExp>;
 };
 
 /** aggregated selection of "order" */
@@ -9285,13 +9782,17 @@ export type OrderBoolExp = {
   _or?: Maybe<Array<Maybe<OrderBoolExp>>>;
   fulfilled_date?: Maybe<DateComparisonExp>;
   id?: Maybe<IntComparisonExp>;
+  items?: Maybe<OrderItemBoolExp>;
   items_cost?: Maybe<MoneyComparisonExp>;
+  payment_method?: Maybe<PaymentMethodBoolExp>;
   payment_method_id?: Maybe<IntComparisonExp>;
   placed_date?: Maybe<DateComparisonExp>;
   pon?: Maybe<StringComparisonExp>;
+  shipments?: Maybe<ShipmentBoolExp>;
   tax_cost?: Maybe<MoneyComparisonExp>;
   total_cost?: Maybe<MoneyComparisonExp>;
   url?: Maybe<StringComparisonExp>;
+  vendor?: Maybe<VendorBoolExp>;
   vendor_id?: Maybe<IntComparisonExp>;
   vendor_order_id?: Maybe<StringComparisonExp>;
 };
@@ -9332,13 +9833,17 @@ export type OrderIncInput = {
 export type OrderInsertInput = {
   fulfilled_date?: Maybe<Scalars['date']>;
   id?: Maybe<Scalars['Int']>;
+  items?: Maybe<OrderItemArrRelInsertInput>;
   items_cost?: Maybe<Scalars['money']>;
+  payment_method?: Maybe<PaymentMethodObjRelInsertInput>;
   payment_method_id?: Maybe<Scalars['Int']>;
   placed_date?: Maybe<Scalars['date']>;
   pon?: Maybe<Scalars['String']>;
+  shipments?: Maybe<ShipmentArrRelInsertInput>;
   tax_cost?: Maybe<Scalars['money']>;
   total_cost?: Maybe<Scalars['money']>;
   url?: Maybe<Scalars['String']>;
+  vendor?: Maybe<VendorObjRelInsertInput>;
   vendor_id?: Maybe<Scalars['Int']>;
   vendor_order_id?: Maybe<Scalars['String']>;
 };
@@ -9936,13 +10441,17 @@ export type OrderOnConflict = {
 export type OrderOrderBy = {
   fulfilled_date?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  items_aggregate?: Maybe<OrderItemAggregateOrderBy>;
   items_cost?: Maybe<OrderBy>;
+  payment_method?: Maybe<PaymentMethodOrderBy>;
   payment_method_id?: Maybe<OrderBy>;
   placed_date?: Maybe<OrderBy>;
   pon?: Maybe<OrderBy>;
+  shipments_aggregate?: Maybe<ShipmentAggregateOrderBy>;
   tax_cost?: Maybe<OrderBy>;
   total_cost?: Maybe<OrderBy>;
   url?: Maybe<OrderBy>;
+  vendor?: Maybe<VendorOrderBy>;
   vendor_id?: Maybe<OrderBy>;
   vendor_order_id?: Maybe<OrderBy>;
 };
@@ -10559,6 +11068,12 @@ export type QueryRoot = {
   icon_item_category_map_aggregate: IconItemCategoryMapAggregate;
   /** fetch data from the table: "icon_item_category_map" using primary key columns */
   icon_item_category_map_by_pk?: Maybe<IconItemCategoryMap>;
+  /** fetch data from the table: "icon_item_map" */
+  icon_item_map: Array<IconItemMap>;
+  /** fetch aggregated fields from the table: "icon_item_map" */
+  icon_item_map_aggregate: IconItemMapAggregate;
+  /** fetch data from the table: "icon_item_map" using primary key columns */
+  icon_item_map_by_pk?: Maybe<IconItemMap>;
   /** fetch data from the table: "icon_label_map" */
   icon_label_map: Array<IconLabelMap>;
   /** fetch aggregated fields from the table: "icon_label_map" */
@@ -10569,17 +11084,17 @@ export type QueryRoot = {
   item: Array<Item>;
   /** fetch aggregated fields from the table: "item" */
   item_aggregate: ItemAggregate;
-  /** fetch data from the table: "item_bundle" */
+  /** fetch data from the table: "item.bundle" */
   item_bundle: Array<ItemBundle>;
-  /** fetch aggregated fields from the table: "item_bundle" */
+  /** fetch aggregated fields from the table: "item.bundle" */
   item_bundle_aggregate: ItemBundleAggregate;
-  /** fetch data from the table: "item_bundle" using primary key columns */
+  /** fetch data from the table: "item.bundle" using primary key columns */
   item_bundle_by_pk?: Maybe<ItemBundle>;
-  /** fetch data from the table: "item_bundle_map" */
+  /** fetch data from the table: "item.bundle_map" */
   item_bundle_map: Array<ItemBundleMap>;
-  /** fetch aggregated fields from the table: "item_bundle_map" */
+  /** fetch aggregated fields from the table: "item.bundle_map" */
   item_bundle_map_aggregate: ItemBundleMapAggregate;
-  /** fetch data from the table: "item_bundle_map" using primary key columns */
+  /** fetch data from the table: "item.bundle_map" using primary key columns */
   item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
   /** fetch data from the table: "item" using primary key columns */
   item_by_pk?: Maybe<Item>;
@@ -11085,6 +11600,33 @@ export type QueryRootIconItemCategoryMapByPkArgs = {
   category: EnumItemClassEnum;
   icon_id: Scalars['uuid'];
   sequence: Scalars['smallint'];
+};
+
+
+/** query root */
+export type QueryRootIconItemMapArgs = {
+  distinct_on?: Maybe<Array<IconItemMapSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<IconItemMapOrderBy>>;
+  where?: Maybe<IconItemMapBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootIconItemMapAggregateArgs = {
+  distinct_on?: Maybe<Array<IconItemMapSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<IconItemMapOrderBy>>;
+  where?: Maybe<IconItemMapBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootIconItemMapByPkArgs = {
+  icon_id: Scalars['uuid'];
+  item_id: Scalars['Int'];
 };
 
 
@@ -12039,6 +12581,12 @@ export type SubscriptionRoot = {
   icon_item_category_map_aggregate: IconItemCategoryMapAggregate;
   /** fetch data from the table: "icon_item_category_map" using primary key columns */
   icon_item_category_map_by_pk?: Maybe<IconItemCategoryMap>;
+  /** fetch data from the table: "icon_item_map" */
+  icon_item_map: Array<IconItemMap>;
+  /** fetch aggregated fields from the table: "icon_item_map" */
+  icon_item_map_aggregate: IconItemMapAggregate;
+  /** fetch data from the table: "icon_item_map" using primary key columns */
+  icon_item_map_by_pk?: Maybe<IconItemMap>;
   /** fetch data from the table: "icon_label_map" */
   icon_label_map: Array<IconLabelMap>;
   /** fetch aggregated fields from the table: "icon_label_map" */
@@ -12049,17 +12597,17 @@ export type SubscriptionRoot = {
   item: Array<Item>;
   /** fetch aggregated fields from the table: "item" */
   item_aggregate: ItemAggregate;
-  /** fetch data from the table: "item_bundle" */
+  /** fetch data from the table: "item.bundle" */
   item_bundle: Array<ItemBundle>;
-  /** fetch aggregated fields from the table: "item_bundle" */
+  /** fetch aggregated fields from the table: "item.bundle" */
   item_bundle_aggregate: ItemBundleAggregate;
-  /** fetch data from the table: "item_bundle" using primary key columns */
+  /** fetch data from the table: "item.bundle" using primary key columns */
   item_bundle_by_pk?: Maybe<ItemBundle>;
-  /** fetch data from the table: "item_bundle_map" */
+  /** fetch data from the table: "item.bundle_map" */
   item_bundle_map: Array<ItemBundleMap>;
-  /** fetch aggregated fields from the table: "item_bundle_map" */
+  /** fetch aggregated fields from the table: "item.bundle_map" */
   item_bundle_map_aggregate: ItemBundleMapAggregate;
-  /** fetch data from the table: "item_bundle_map" using primary key columns */
+  /** fetch data from the table: "item.bundle_map" using primary key columns */
   item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
   /** fetch data from the table: "item" using primary key columns */
   item_by_pk?: Maybe<Item>;
@@ -12565,6 +13113,33 @@ export type SubscriptionRootIconItemCategoryMapByPkArgs = {
   category: EnumItemClassEnum;
   icon_id: Scalars['uuid'];
   sequence: Scalars['smallint'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootIconItemMapArgs = {
+  distinct_on?: Maybe<Array<IconItemMapSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<IconItemMapOrderBy>>;
+  where?: Maybe<IconItemMapBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootIconItemMapAggregateArgs = {
+  distinct_on?: Maybe<Array<IconItemMapSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<IconItemMapOrderBy>>;
+  where?: Maybe<IconItemMapBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootIconItemMapByPkArgs = {
+  icon_id: Scalars['uuid'];
+  item_id: Scalars['Int'];
 };
 
 
@@ -13728,10 +14303,30 @@ export type InsertIconMutation = (
   )> }
 );
 
-export type GetIconQueryVariables = {};
+export type GetIconQueryVariables = {
+  id: Scalars['uuid'];
+};
 
 
 export type GetIconQuery = (
+  { __typename?: 'query_root' }
+  & { icon?: Maybe<(
+    { __typename?: 'icon' }
+    & Pick<Icon, 'data' | 'description' | 'id' | 'title'>
+    & { categories: Array<(
+      { __typename?: 'icon_item_category_map' }
+      & Pick<IconItemCategoryMap, 'category' | 'criteria' | 'sequence'>
+    )>, labels: Array<(
+      { __typename?: 'icon_label_map' }
+      & Pick<IconLabelMap, 'label_id'>
+    )> }
+  )> }
+);
+
+export type GetIconsQueryVariables = {};
+
+
+export type GetIconsQuery = (
   { __typename?: 'query_root' }
   & { icon: Array<(
     { __typename?: 'icon' }
@@ -13873,6 +14468,24 @@ export type EditLabelMutation = (
   )> }
 );
 
+export type GetOrderByDateRangeQueryVariables = {
+  date_start_gte?: Maybe<Scalars['date']>;
+  date_end_lte?: Maybe<Scalars['date']>;
+};
+
+
+export type GetOrderByDateRangeQuery = (
+  { __typename?: 'query_root' }
+  & { order: Array<(
+    { __typename?: 'order' }
+    & Pick<Order, 'vendor_order_id' | 'url' | 'total_cost' | 'tax_cost' | 'pon' | 'placed_date' | 'payment_method_id' | 'items_cost' | 'id' | 'fulfilled_date'>
+    & { vendor: (
+      { __typename?: 'vendor' }
+      & Pick<Vendor, 'name' | 'url'>
+    ) }
+  )> }
+);
+
 export type GetPrinterStatusQueryVariables = {};
 
 
@@ -13931,9 +14544,27 @@ export type GetItemQueryVariables = {
 
 export type GetItemQuery = (
   { __typename?: 'query_root' }
-  & { item: Array<(
+  & { item?: Maybe<(
     { __typename?: 'item' }
     & ItemFieldsFragment
+  )> }
+);
+
+export type ItemBundleQueryVariables = {};
+
+
+export type ItemBundleQuery = (
+  { __typename?: 'query_root' }
+  & { item_bundle: Array<(
+    { __typename?: 'item_bundle' }
+    & Pick<ItemBundle, 'id' | 'name' | 'description'>
+    & { items: Array<(
+      { __typename?: 'item_bundle_map' }
+      & { item: (
+        { __typename?: 'item' }
+        & Pick<Item, 'id'>
+      ) }
+    )> }
   )> }
 );
 
@@ -14027,8 +14658,8 @@ export type InsertIconMutationHookResult = ReturnType<typeof useInsertIconMutati
 export type InsertIconMutationResult = ApolloReactCommon.MutationResult<InsertIconMutation>;
 export type InsertIconMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertIconMutation, InsertIconMutationVariables>;
 export const GetIconDocument = gql`
-    query GetIcon {
-  icon {
+    query GetIcon($id: uuid!) {
+  icon: icon_by_pk(id: $id) {
     data
     description
     id
@@ -14044,7 +14675,7 @@ export const GetIconDocument = gql`
   }
 }
     `;
-export type GetIconComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetIconQuery, GetIconQueryVariables>, 'query'>;
+export type GetIconComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetIconQuery, GetIconQueryVariables>, 'query'> & ({ variables: GetIconQueryVariables; skip?: boolean; } | { skip: boolean; });
 
     export const GetIconComponent = (props: GetIconComponentProps) => (
       <ApolloReactComponents.Query<GetIconQuery, GetIconQueryVariables> query={GetIconDocument} {...props} />
@@ -14076,6 +14707,7 @@ export function withGetIcon<TProps, TChildProps = {}, TDataName extends string =
  * @example
  * const { data, loading, error } = useGetIconQuery({
  *   variables: {
+ *      id: // value for 'id'
  *   },
  * });
  */
@@ -14088,6 +14720,68 @@ export function useGetIconLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHook
 export type GetIconQueryHookResult = ReturnType<typeof useGetIconQuery>;
 export type GetIconLazyQueryHookResult = ReturnType<typeof useGetIconLazyQuery>;
 export type GetIconQueryResult = ApolloReactCommon.QueryResult<GetIconQuery, GetIconQueryVariables>;
+export const GetIconsDocument = gql`
+    query GetIcons {
+  icon {
+    data
+    description
+    id
+    title
+    categories {
+      category
+      criteria
+      sequence
+    }
+    labels {
+      label_id
+    }
+  }
+}
+    `;
+export type GetIconsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetIconsQuery, GetIconsQueryVariables>, 'query'>;
+
+    export const GetIconsComponent = (props: GetIconsComponentProps) => (
+      <ApolloReactComponents.Query<GetIconsQuery, GetIconsQueryVariables> query={GetIconsDocument} {...props} />
+    );
+    
+export type GetIconsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetIconsQuery, GetIconsQueryVariables>
+    } & TChildProps;
+export function withGetIcons<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetIconsQuery,
+  GetIconsQueryVariables,
+  GetIconsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetIconsQuery, GetIconsQueryVariables, GetIconsProps<TChildProps, TDataName>>(GetIconsDocument, {
+      alias: 'getIcons',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetIconsQuery__
+ *
+ * To run a query within a React component, call `useGetIconsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIconsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIconsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetIconsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
+      }
+export function useGetIconsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
+        }
+export type GetIconsQueryHookResult = ReturnType<typeof useGetIconsQuery>;
+export type GetIconsLazyQueryHookResult = ReturnType<typeof useGetIconsLazyQuery>;
+export type GetIconsQueryResult = ApolloReactCommon.QueryResult<GetIconsQuery, GetIconsQueryVariables>;
 export const SearchItemsDocument = gql`
     query SearchItems($containsFilter: jsonb, $hasAnyKeysFilter: [String!]) {
   item(order_by: {class: asc}, where: {object: {_has_keys_any: $hasAnyKeysFilter, _contains: $containsFilter}}) {
@@ -14520,6 +15214,72 @@ export function useEditLabelMutation(baseOptions?: ApolloReactHooks.MutationHook
 export type EditLabelMutationHookResult = ReturnType<typeof useEditLabelMutation>;
 export type EditLabelMutationResult = ApolloReactCommon.MutationResult<EditLabelMutation>;
 export type EditLabelMutationOptions = ApolloReactCommon.BaseMutationOptions<EditLabelMutation, EditLabelMutationVariables>;
+export const GetOrderByDateRangeDocument = gql`
+    query GetOrderByDateRange($date_start_gte: date, $date_end_lte: date) {
+  order(where: {placed_date: {_gte: $date_start_gte, _lte: $date_end_lte}}) {
+    vendor_order_id
+    vendor {
+      name
+      url
+    }
+    url
+    total_cost
+    tax_cost
+    pon
+    placed_date
+    payment_method_id
+    items_cost
+    id
+    fulfilled_date
+  }
+}
+    `;
+export type GetOrderByDateRangeComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetOrderByDateRangeQuery, GetOrderByDateRangeQueryVariables>, 'query'>;
+
+    export const GetOrderByDateRangeComponent = (props: GetOrderByDateRangeComponentProps) => (
+      <ApolloReactComponents.Query<GetOrderByDateRangeQuery, GetOrderByDateRangeQueryVariables> query={GetOrderByDateRangeDocument} {...props} />
+    );
+    
+export type GetOrderByDateRangeProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetOrderByDateRangeQuery, GetOrderByDateRangeQueryVariables>
+    } & TChildProps;
+export function withGetOrderByDateRange<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetOrderByDateRangeQuery,
+  GetOrderByDateRangeQueryVariables,
+  GetOrderByDateRangeProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetOrderByDateRangeQuery, GetOrderByDateRangeQueryVariables, GetOrderByDateRangeProps<TChildProps, TDataName>>(GetOrderByDateRangeDocument, {
+      alias: 'getOrderByDateRange',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetOrderByDateRangeQuery__
+ *
+ * To run a query within a React component, call `useGetOrderByDateRangeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrderByDateRangeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrderByDateRangeQuery({
+ *   variables: {
+ *      date_start_gte: // value for 'date_start_gte'
+ *      date_end_lte: // value for 'date_end_lte'
+ *   },
+ * });
+ */
+export function useGetOrderByDateRangeQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetOrderByDateRangeQuery, GetOrderByDateRangeQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetOrderByDateRangeQuery, GetOrderByDateRangeQueryVariables>(GetOrderByDateRangeDocument, baseOptions);
+      }
+export function useGetOrderByDateRangeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetOrderByDateRangeQuery, GetOrderByDateRangeQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetOrderByDateRangeQuery, GetOrderByDateRangeQueryVariables>(GetOrderByDateRangeDocument, baseOptions);
+        }
+export type GetOrderByDateRangeQueryHookResult = ReturnType<typeof useGetOrderByDateRangeQuery>;
+export type GetOrderByDateRangeLazyQueryHookResult = ReturnType<typeof useGetOrderByDateRangeLazyQuery>;
+export type GetOrderByDateRangeQueryResult = ApolloReactCommon.QueryResult<GetOrderByDateRangeQuery, GetOrderByDateRangeQueryVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
   PrinterStatus {
@@ -14688,7 +15448,7 @@ export type GetItemsLazyQueryHookResult = ReturnType<typeof useGetItemsLazyQuery
 export type GetItemsQueryResult = ApolloReactCommon.QueryResult<GetItemsQuery, GetItemsQueryVariables>;
 export const GetItemDocument = gql`
     query GetItem($id: Int!) {
-  item(where: {id: {_eq: $id}}) {
+  item: item_by_pk(id: $id) {
     ...ItemFields
   }
 }
@@ -14738,6 +15498,64 @@ export function useGetItemLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHook
 export type GetItemQueryHookResult = ReturnType<typeof useGetItemQuery>;
 export type GetItemLazyQueryHookResult = ReturnType<typeof useGetItemLazyQuery>;
 export type GetItemQueryResult = ApolloReactCommon.QueryResult<GetItemQuery, GetItemQueryVariables>;
+export const ItemBundleDocument = gql`
+    query item_bundle {
+  item_bundle {
+    id
+    name
+    description
+    items {
+      item {
+        id
+      }
+    }
+  }
+}
+    `;
+export type ItemBundleComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ItemBundleQuery, ItemBundleQueryVariables>, 'query'>;
+
+    export const ItemBundleComponent = (props: ItemBundleComponentProps) => (
+      <ApolloReactComponents.Query<ItemBundleQuery, ItemBundleQueryVariables> query={ItemBundleDocument} {...props} />
+    );
+    
+export type ItemBundleProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<ItemBundleQuery, ItemBundleQueryVariables>
+    } & TChildProps;
+export function withItemBundle<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ItemBundleQuery,
+  ItemBundleQueryVariables,
+  ItemBundleProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, ItemBundleQuery, ItemBundleQueryVariables, ItemBundleProps<TChildProps, TDataName>>(ItemBundleDocument, {
+      alias: 'itemBundle',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useItemBundleQuery__
+ *
+ * To run a query within a React component, call `useItemBundleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useItemBundleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useItemBundleQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useItemBundleQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ItemBundleQuery, ItemBundleQueryVariables>) {
+        return ApolloReactHooks.useQuery<ItemBundleQuery, ItemBundleQueryVariables>(ItemBundleDocument, baseOptions);
+      }
+export function useItemBundleLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ItemBundleQuery, ItemBundleQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ItemBundleQuery, ItemBundleQueryVariables>(ItemBundleDocument, baseOptions);
+        }
+export type ItemBundleQueryHookResult = ReturnType<typeof useItemBundleQuery>;
+export type ItemBundleLazyQueryHookResult = ReturnType<typeof useItemBundleLazyQuery>;
+export type ItemBundleQueryResult = ApolloReactCommon.QueryResult<ItemBundleQuery, ItemBundleQueryVariables>;
 export const ItemHardwareFastenerBoltDocument = gql`
     query item_hardware_fastener_bolt {
   items: item_hardware_fastener_bolt(order_by: {id: asc}) {
@@ -14810,4 +15628,4 @@ export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHo
 export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
 export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
-// graphql typescript defs generated on 2020-05-03T17:49:51-06:00
+// graphql typescript defs generated on 2020-05-10T08:36:36-06:00

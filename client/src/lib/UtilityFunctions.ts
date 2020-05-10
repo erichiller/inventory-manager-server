@@ -14,9 +14,9 @@ export function toTitleCase ( s: string ): string {
 
 export function filterObject ( o: object, allow: undefined | null | string[], exclude: undefined | null | string[]): object {
 
-    let f: (key) => boolean = allow 
-        ? (key) => allow.includes(key) 
-        : exclude 
+    let f: (key) => boolean = allow
+        ? (key) => allow.includes(key)
+        : exclude
             ? (key) => ! exclude.includes(key)
             : (key) => true;
 
@@ -42,13 +42,13 @@ export function toLowerCamelCase ( s: string ): string {
 
 /**
  * @summary
- * Returns a string that has _at least_ `min` number of digits after the decimal and no more than `max`.  
+ * Returns a string that has _at least_ `min` number of digits after the decimal and no more than `max`.
  * If a string is passed in, it is immediately returned.
- * 
+ *
  * @param n number
  * @param min minimum number of decimal places
  * @param max maximum number of decimal places. Defaults to 4
- * 
+ *
  * @example
  * input: 4.0, 2  => 4.00
  * input: 4.12, 1  => 4.12
@@ -82,3 +82,33 @@ export function transparentLog<T>(logparams: {[key: string]: any}, input: T): T 
     console.log(logparams, input);
     return input;
 }
+
+
+/**
+ * Return number of days in the given month
+ *
+ * @param dateString YYYY-MM-?DD formatted datestring
+ */
+export function getDaysInMonth ( dateString: string ): number;
+/**
+ * Return number of days in the given month
+ *
+ * @param month 1 based month; 1=January, 12=December
+ * @param year year
+ */
+export function getDaysInMonth ( month: number, year: number ): number;
+export function getDaysInMonth ( a: number | string, b?: number ): number {
+    let year: number = 0;
+    let month: number = 1;
+    if ( typeof a === "string" ){
+        let split = a.split('-', 2);
+        month = parseInt(split[1]);
+        year = parseInt(split[0]);
+    } else {
+        month = a;
+        year = b;
+    }
+    // Date is actually based on month 0=January,
+    // but Day 0 is the last day in the previous month
+    return new Date( year, month, 0 ).getDate();
+};

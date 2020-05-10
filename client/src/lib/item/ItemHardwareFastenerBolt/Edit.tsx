@@ -16,6 +16,8 @@ import { ItemHardwareFastenerBolt } from './Index';
 import { ScrewThreadIcon, ScrewEmbeddedLengthIcon, ScrewHeadDiameterIcon, ScrewHeadHeightIcon, ItemHardwareFastenerBoltDriveTypeIconMap } from './icon';
 import { FormIconTooltip } from './formComponents/helpers';
 import { ThreadDirection_RightHandRuleIcon } from './icon';
+import { QtyInput } from '../common/QtyInput';
+import { OrderInput } from '../common/OrderInput';
 
 
 interface ItemHardwareFastenerBoltEditFormProps extends Union<ItemEditFormProps, ItemHardwareFastenerBolt> {
@@ -100,14 +102,12 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                 <Form.Item name="description" label="Description">
                     <TextArea placeholder="Description, leave empty to auto-generate" autoSize={{ minRows: 2 }} />
                 </Form.Item>
-                <Form.Item name="in_stock" label="In Stock">
-                    <Switch onChange={(val) => setDisplayStockQuantity(val) }/>
-                </Form.Item>
-                { displayStockQuantity ? // TODO: make this a new Form Input custom type
                 <Form.Item name="stock" label="Qty">
-                    <InputNumber placeholder="If known" min={1} step={1} precision={1} />
+                    <QtyInput />
                 </Form.Item>
-                : null }
+                <Form.Item name="order" label="Order">
+                    <OrderInput />
+                </Form.Item>
                 {/* TODO: then here have a type selector when in the generic add form */}
             </div>
 

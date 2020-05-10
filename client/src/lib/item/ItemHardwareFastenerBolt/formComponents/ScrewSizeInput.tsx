@@ -182,7 +182,7 @@ export const ScrewSizeInput: React.FC<ScrewSizeInputProps> = ( props ) => {
         <React.Fragment>
             <AutoComplete 
                 options={options}
-                onChange={ ( str, opt ) => handleSearch( str )} 
+                onChange={( str, opt ) => handleSearch( str )}
                 >
                 <Input
                     ref={props.forwardRef} 

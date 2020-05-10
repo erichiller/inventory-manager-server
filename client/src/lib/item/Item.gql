@@ -33,7 +33,7 @@ query GetItems( $categories: [enum_item_class_enum!] ) {
 }
 
 query GetItem($id: Int!) {
-    item(where: { id: { _eq: $id } }) {
+    item: item_by_pk(id: $id ) {
         ...ItemFields
     }
 }
