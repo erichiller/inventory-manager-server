@@ -4,7 +4,7 @@
         "m0.25": {
             "pitch": {
                 "0.075": {
-                    "label": "coarse"
+                    "label": "coarse",
                     "tolerance": {
                         "6g": {
                             "major_diameter": {
