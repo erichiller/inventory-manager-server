@@ -54,6 +54,10 @@ interface IItemTableParams {
     action: "edit"
 }
 
+/**
+ * Set to a React Modal Component or  
+ * Set to `null` to remove the modal from the screen.
+ */
 export type visibleHandler = ( c?: React.ReactElement ) => void;
 
 

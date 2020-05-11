@@ -1,7 +1,6 @@
 import { SelectProps } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
 import { AutoComplete, Input, DatePicker } from "antd";
-import moment from 'moment';
 
 
 
@@ -12,8 +11,9 @@ import { useGetOrderByDateRangeQuery, useGetItemsQuery } from "../../types/graph
 
 
 interface OptionT {
-    value: string;
+    // value: string;
     label?: string | ReactElement;
+    order_id: number;
 }
 // interface ItemInputProps extends InputProps {
 interface ItemInputProps extends Omit<InputProps, 'value' | 'onChange'> {
@@ -26,8 +26,7 @@ interface ItemInputProps extends Omit<InputProps, 'value' | 'onChange'> {
  */
 export const ItemInput: React.FC<ItemInputProps> = ( props ) => {
     const { onChange, value, ...remainingProps } = props;
-    const [ valueText, setValueText ] = useState<string>();
-    const [ dateString, setDateString ] = useState<string>( moment().format( 'YYYY-MM' ) );
+    // const [ valueText, setValueText ] = useState<string>();
     const [ options, setOptions ] = useState<OptionT[]>( [] );
     // const triggerChange = ( value: string, option: OptionsType | OptionData | OptionGroupData ) => {
     //     setValue( value );
@@ -35,29 +34,30 @@ export const ItemInput: React.FC<ItemInputProps> = ( props ) => {
     //         onChange( value, option );
     //     }
     // };
-    console.log( "useGetOrderByDateRangeQuery", dateString );
     const { data, loading, error } = useGetItemsQuery( {
         variables: {
         }
     } );
     useEffect( () => {
         if ( !loading && !error ) {
-            setOptions( data.order.map( v => {
+            setOptions( data.items.map( v => {
                 return {
-                    value: v.id.toString(),
+                    order_id: v.id,
                     label: <span className="orderOption">
-                        {v.vendor && v.vendor.url ? <div><img src={`${ v.vendor?.url }/favicon.ico`} /></div> : null}
-                        <span>{v.vendor.name}</span>
-                        <span>{v.total_cost}</span>
-                        <span>#{v.vendor_order_id}</span>
+                        {/* {<v.icon />} */}
+                        <span>{v.name}</span>
+                        <span>{v.object?.description}</span>
+                        {/* <span>#{v.vendor_order_id}</span> */}
                     </span>
+                    // TODO: Set value to the applicable string, feed value up that is the `order_id`
                 };
             } ) );
         }
     }, [ loading, data ] );
-    const handleSearch = ( value: OptionT ): void => {
+    const handleSearch = ( value: any ): void => {
+        // const handleSearch = ( value: OptionT ): void => {
         // const parsedValue = parseScrewSizeInputOptionData( value );
-        // console.log( { method: 'ScrewSizeInput', f: 'handleSearch', value, parsedValue } );
+        console.log( { method: 'ItemInput', f: 'handleSearch', value } );
         // setValueText( value );
         // setOptionsDataArr( getScrewSizeOptions( parsedValue ) );
         // setOptions( eliminateArrayDuplicates( getScrewSizeOptions( parsedValue ) ).map( d => {
@@ -65,13 +65,13 @@ export const ItemInput: React.FC<ItemInputProps> = ( props ) => {
         // return { value: dStr };
         // return <Select.Option key={dStr} value={dStr}>{dStr}</Select.Option>;
         // } ) );
-        // onChange( parsedValue );
+        onChange( value.value );
     };
     return (
         <div className="ItemInput">
             <AutoComplete
-                options={options}
-                onChange={( str, opt ) => handleSearch( opt as OptionT )}
+                options={options.map( v => { return { label: v.label, value: v.order_id.toString() } })}
+                onChange={( str, opt ) => handleSearch( opt )}
                 dropdownMatchSelectWidth={220}
             >
                 <Input
@@ -80,13 +80,6 @@ export const ItemInput: React.FC<ItemInputProps> = ( props ) => {
                     {...remainingProps}
                 />
             </AutoComplete>
-            <DatePicker.MonthPicker
-                defaultValue={moment()}
-                onChange={( d, dateString ) => {
-                    console.log( "setting dateString to ", dateString );
-                    setDateString( dateString );
-                }}
-            />
         </div>
     );
 };

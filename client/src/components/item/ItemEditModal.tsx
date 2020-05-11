@@ -26,6 +26,11 @@ export const ItemEditModal: React.FC<ItemEditModalProps> = ( props ) => {
 
     const onFinishFailed = ( errorInfo ) => console.error(errorInfo);
 
+    const onFieldsChange = ( changedFields, values ) => {
+        console.log( { class: 'ItemEditModal', method: 'onFieldsChange', changedFields, values } );
+
+    }
+
     return <Modal
         visible={true}
         title={Item.name}
@@ -36,7 +41,7 @@ export const ItemEditModal: React.FC<ItemEditModalProps> = ( props ) => {
         // }}
         className="ItemEditFormModal"
         onOk={e => form.submit()}
-        onCancel={event => props.visibleHandler()}
+        onCancel={event => props.visibleHandler(null)}
     >
         <Form
             name="ItemForm"
@@ -45,6 +50,11 @@ export const ItemEditModal: React.FC<ItemEditModalProps> = ( props ) => {
             labelCol={{span: 8 }}
             wrapperCol={{span: 9 }}
             // name="item-add-edit-delete"
+            onKeyPress={( event ) => {
+                // console.log({ log: "onKeyPress", event, keyCode: event.keyCode, native: event.nativeEvent.keyCode });
+                if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
+            }}
+            onFieldsChange={onFieldsChange}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             >
