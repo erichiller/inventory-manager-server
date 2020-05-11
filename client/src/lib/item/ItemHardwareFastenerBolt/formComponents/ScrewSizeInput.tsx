@@ -159,10 +159,10 @@ export const ScrewSizeInput: React.FC<ScrewSizeInputProps> = ( props ) => {
     console.log( { m: 'ScrewSizeInput', f: 'init', props_value: props.value, props } );
     const { onChange, value, unit, ...remainingProps } = props;
     // const [ value, setValue ] = useState<ScrewSizeInputOptionData>( props.value );
-    const [ valueText, setValueText ] = useState<string>( 'none' );
+    const [ valueText, setValueText ] = useState<string>( 'none' ); // TODO: delete ?
     // const [ optionDataArr, setOptionsDataArr ] = useState<ScrewSizeInputOptionData[]>( [] );
 
-    const [ options, setOptions ] = useState<{value: string, label?: string}[]>( [] );
+    const [ options, setOptions ] = useState<{value: string; label?: string;}[]>( [] );
 
     const handleSearch = ( value: string ): void => {
         const parsedValue = parseScrewSizeInputOptionData( value );

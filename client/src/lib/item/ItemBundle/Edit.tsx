@@ -34,53 +34,43 @@ export const ItemBundleEditForm: React.FC<ItemBundleEditFormProps> = ( props ) =
 
     return (
         <React.Fragment>
-            {/* <div style={{flexBasis: '100%'}} /> */}
             <div className="col">
                 <Divider key="items" orientation="left">Items</Divider>
-                <Form.Item name="name" label="Name">
-                    <Input placeholder="Item name" />
-                </Form.Item>
-
-
                 <Form.List name="items">
                     {( fields, { add, remove } ) => {
-                        /**
-                         * `fields` internal fill with `name`, `key`, `fieldKey` props.
-                         * You can extends this into sub field to support multiple dynamic fields.
-                         */
                         return (
                             <React.Fragment>
                                 {fields.map( ( field, index ) => (
-                                        <Form.Item
-                                            // name={[ field.name, "lastName" ]}
-                                            name="name" label="Name"
-                                            key={field.key} rules={[
-                                                {
-                                                    required: true,
-                                                    whitespace: true,
-                                                    message: "Please input passenger's name or delete this field.",
-                                                },
-                                            ]}
-                                        // noStyle
+                                    <Form.Item
+                                        {...field}
+                                        label="Bundled Item"
+                                        getValueFromEvent={( args ) => {
+                                            console.log( 'form getValueFromEvent (Bundled Item)', { field, index, args} );
+                                            return args;
+                                        }}
                                         >
-                                            <ItemInput placeholder="last name" suffix={
+                                        <ItemInput placeholder="Search for Item"
+                                            suffix={
                                                 <MinusCircleOutlined
                                                     className="dynamic-delete-button"
                                                     onClick={() => {
                                                         remove( field.name );
                                                     }}
                                                 />
-                                            } />
+                                            }
+                                        />
                                         </Form.Item>
                                 ) )}
                                 <Form.Item
-                                    noStyle>
+                                    label=" "
+                                    colon={false}
+                                >
                                     <Button
                                         type="dashed"
                                         onClick={() => {
                                             add();
                                         }}
-                                        style={{ width: "100%" }}
+                                        style={{ width: "100%", textAlign: 'center' }}
                                     >
                                         <PlusOutlined /> Add Item
                                     </Button>
