@@ -88,6 +88,9 @@ div[role="tooltip"] {
     .ant-picker-input input {
         width: 55px
     }
+    & .ant-select .ant-select-selector {
+        height: 55px;
+    }
 }
 
 .ItemEditFormModal {

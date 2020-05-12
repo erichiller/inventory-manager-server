@@ -17,14 +17,16 @@ query GetLabels {
     }
 }
 
-query GetLabelById($label_id: uuid) {
-    label(order_by: { created_at: asc }, where: { id: { _eq: $label_id } }) {
+query GetLabel($label_id: uuid!) {
+    label: label_by_pk(
+        id: $label_id
+    ) {
         ...labelFields
     }
 }
 
 query GetLabelByItemId($item_id: Int) {
-    label(
+    label (
         order_by: { created_at: asc }
         where: { item_id: { _eq: $item_id } }
     ) {
