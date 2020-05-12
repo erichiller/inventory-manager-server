@@ -37,3 +37,7 @@
 
 
 ```
+
+When creating a new Item ; allow to:
+ - create order in separate modal
+ - create manufacturer in separate modal
