@@ -1,18 +1,18 @@
 import { SelectProps } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
-import { AutoComplete, Input, DatePicker } from "antd";
+import { AutoComplete, Input, DatePicker, Select } from "antd";
 import moment from 'moment';
 
 
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
-import { toTitleCase, getDaysInMonth } from "../../UtilityFunctions";
+import { toTitleCase, getDaysInMonth } from "../../lib/UtilityFunctions";
 import { InputProps } from "antd/lib/input";
-import { useGetOrderByDateRangeQuery } from "../../types/graphql";
+import { useGetOrdersByDateRangeQuery } from "../../lib/types/graphql";
 
 
 interface OptionT {
-    value: string;
+    order_id: string;
     label ?: string | ReactElement;
 }
 // interface OrderInputProps extends InputProps {
@@ -35,8 +35,8 @@ export const OrderInput: React.FC<OrderInputProps> = ( props ) => {
     //         onChange( value, option );
     //     }
     // };
-    console.log("useGetOrderByDateRangeQuery", dateString)
-    const { data, loading, error } = useGetOrderByDateRangeQuery( {
+    console.log("useGetOrdersByDateRangeQuery", dateString)
+    const { data, loading, error } = useGetOrdersByDateRangeQuery( {
         variables: {
             date_start_gte: `${ dateString }-01`,
             date_end_lte: `${ dateString }-${ getDaysInMonth( dateString ) }`
@@ -46,7 +46,7 @@ export const OrderInput: React.FC<OrderInputProps> = ( props ) => {
         if ( !loading && !error ) {
             setOptions( data.order.map( v => {
                 return {
-                    value: v.id.toString(),
+                    order_id: v.id.toString(),
                     label: <span className="orderOption">
                         {v.vendor && v.vendor.url ? <div><img src={`${ v.vendor?.url }/favicon.ico`} /></div> : null }
                         <span>{v.vendor.name}</span>
@@ -57,7 +57,7 @@ export const OrderInput: React.FC<OrderInputProps> = ( props ) => {
             } ) );
         }
     }, [ loading, data ] );
-    const handleSearch = ( value: OptionT ): void => {
+    const handleSearch = ( value: any ): void => {
         // const parsedValue = parseScrewSizeInputOptionData( value );
         // console.log( { method: 'ScrewSizeInput', f: 'handleSearch', value, parsedValue } );
         // setValueText( value );
@@ -68,10 +68,11 @@ export const OrderInput: React.FC<OrderInputProps> = ( props ) => {
         // return <Select.Option key={dStr} value={dStr}>{dStr}</Select.Option>;
         // } ) );
         // onChange( parsedValue );
+        onChange( value.value );
     };
     return (
         <div className="OrderInput">
-            <AutoComplete
+            {/* <AutoComplete
                 options={options}
                 onChange={( str, opt ) => handleSearch( opt as OptionT )}
                 dropdownMatchSelectWidth={220}
@@ -80,7 +81,12 @@ export const OrderInput: React.FC<OrderInputProps> = ( props ) => {
                     ref={props.forwardRef}
                     spellCheck={false}
                 />
-            </AutoComplete>
+            </AutoComplete> */}
+
+            <Select
+                options={options.map( v => { return { label: v.label, value: v.order_id.toString() }; } )}
+                onChange={( str, opt ) => handleSearch( opt )}
+            />
             <DatePicker.MonthPicker
                 defaultValue={moment()}
                 onChange={( d, dateString ) => {

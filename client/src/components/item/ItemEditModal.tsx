@@ -6,7 +6,7 @@ import { Item } from '../../lib/item';
 import { ItemEditFormProps } from '../../lib/item/Item';
 import TextArea from 'antd/lib/input/TextArea';
 import { QtyInput } from '../../lib/item/common/QtyInput';
-import { OrderInput } from '../../lib/item/common/OrderInput';
+import { OrderInput } from '../order/OrderInput';
 
 interface ItemEditModalProps {
     recordEditComponent: React.FC<ItemEditFormProps>;

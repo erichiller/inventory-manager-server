@@ -1,19 +1,19 @@
 import { SelectProps } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
-import { AutoComplete, Input, DatePicker } from "antd";
+import { AutoComplete, Input, DatePicker, Select } from "antd";
 
 
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { toTitleCase, getDaysInMonth } from "../../UtilityFunctions";
 import { InputProps } from "antd/lib/input";
-import { useGetOrderByDateRangeQuery, useGetItemsQuery } from "../../types/graphql";
+import { useGetOrdersByDateRangeQuery, useGetItemsQuery } from "../../types/graphql";
 
 
 interface OptionT {
     // value: string;
     label?: string | ReactElement;
-    order_id: number;
+    item_id: number;
 }
 // interface ItemInputProps extends InputProps {
 interface ItemInputProps extends Omit<InputProps, 'value' | 'onChange'> {
@@ -42,7 +42,7 @@ export const ItemInput: React.FC<ItemInputProps> = ( props ) => {
         if ( !loading && !error ) {
             setOptions( data.items.map( v => {
                 return {
-                    order_id: v.id,
+                    item_id: v.id,
                     label: <span className="orderOption">
                         {/* {<v.icon />} */}
                         <span>{v.name}</span>
@@ -69,17 +69,21 @@ export const ItemInput: React.FC<ItemInputProps> = ( props ) => {
     };
     return (
         <div className="ItemInput">
-            <AutoComplete
+            {/* <AutoComplete
                 options={options.map( v => { return { label: v.label, value: v.order_id.toString() } })}
                 onChange={( str, opt ) => handleSearch( opt )}
                 dropdownMatchSelectWidth={220}
-            >
-                <Input
+            > */}
+                {/* <Input
                     ref={props.forwardRef}
                     spellCheck={false}
                     {...remainingProps}
-                />
-            </AutoComplete>
+                /> */}
+            {/* </AutoComplete> */}
+            <Select
+                options={options.map( v => { return { label: v.label, value: v.item_id.toString() }; } )}
+                onChange={( str, opt ) => handleSearch( opt )}
+            />
         </div>
     );
 };

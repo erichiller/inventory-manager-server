@@ -17,7 +17,7 @@ import { ScrewThreadIcon, ScrewEmbeddedLengthIcon, ScrewHeadDiameterIcon, ScrewH
 import { FormIconTooltip } from './formComponents/helpers';
 import { ThreadDirection_RightHandRuleIcon } from './icon';
 import { QtyInput } from '../common/QtyInput';
-import { OrderInput } from '../common/OrderInput';
+import { OrderInput } from '../../../components/order/OrderInput';
 
 
 interface ItemHardwareFastenerBoltEditFormProps extends Union<ItemEditFormProps, ItemHardwareFastenerBolt> {
