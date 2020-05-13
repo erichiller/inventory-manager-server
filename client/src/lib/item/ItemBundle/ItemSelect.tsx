@@ -81,6 +81,7 @@ export const ItemInput: React.FC<ItemInputProps> = ( props ) => {
                 /> */}
             {/* </AutoComplete> */}
             <Select
+                showSearch
                 options={options.map( v => { return { label: v.label, value: v.item_id.toString() }; } )}
                 onChange={( str, opt ) => handleSearch( opt )}
             />

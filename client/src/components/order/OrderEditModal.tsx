@@ -16,7 +16,7 @@ interface OrderEditModalProps extends Union<ItemEditFormProps, ItemBundle> {
 }
 
 
-export const OrderEditModal: React.FC<ItemBundleEditFormProps> = ( props ) => {
+export const OrderEditModal: React.FC<OrderEditModalProps> = ( props ) => {
     const { form } = props;
 
     // useEffect( () => {
