@@ -88,6 +88,7 @@ export const OrderInput: React.FC<OrderInputProps> = ( props ) => {
                 onChange={( str, opt ) => handleSearch( opt )}
             />
             <DatePicker.MonthPicker
+                id="datepicker_monthpicker"
                 defaultValue={moment()}
                 onChange={( d, dateString ) => {
                     console.log("setting dateString to ", dateString);
