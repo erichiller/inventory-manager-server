@@ -171,7 +171,9 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                     title: 'Action',
                     key: 'action',
                     // dataIndex: '',
+                    // TODO: see `responsive` which lets define breakpoints at which to display column
                     className: 'action_no_mouseover',
+
                     render: ( text, record: T ) => (
                         <span onMouseOver={event => event.preventDefault()}>
                             <a onClick={( obj ) => {
