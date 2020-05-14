@@ -10,7 +10,7 @@ import { Item } from '../../lib/item';
 import { DISPLAY } from '../../lib/types/enums';
 import { DrawContextMenu } from './DrawContextMenu';
 import { DrawEditText } from './DrawEditText';
-import DrawAddImage from './image/LabelAddImageModal';
+import { LabelAddImageModal } from './image/LabelAddImageModal';
 
 import { QREditModal } from './QREditModal';
 import { Integer } from '../../lib/types/uint8';
@@ -703,7 +703,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                             labelText={this.state.uncommittedText} />
                         : null}
                     {this.state.displayImageSelectModalStatus ?
-                        <DrawAddImage
+                        <LabelAddImageModal
                             visibleHandler={this.displayImageSelectModal}
                             changeHandler={this.updateLabelImages}
                             item={item}

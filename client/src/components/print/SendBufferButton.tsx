@@ -1,65 +1,42 @@
 import { Spin, Button, message } from "antd";
 import React from "react";
-import { SendBufferComponent } from "../../lib/types/graphql";
 import { PixelMap } from "../../lib/canvasToBuffer";
 import { BaseButtonProps } from "antd/lib/button/button";
 import { PageSpin } from "../shared/PageSpin";
 import { PrinterOutlined } from "@ant-design/icons";
+import { useSendBufferMutation } from "../../lib/types/graphql";
 
 
 
 interface SendBufferButtonProps extends BaseButtonProps {
     value: string;
     buffer: PixelMap[];
-    onClick: (boolean) => void;
+    onClick: ( boolean ) => void;
 }
 
 
-export default class SendBufferButton extends React.Component<SendBufferButtonProps> {
+export const SendBufferButton: React.FC<SendBufferButtonProps> = ( { buffer, value, onClick } ) => {
 
-    render () {
-        const { buffer, value , onClick } = this.props;
 
-        return (
-            <SendBufferComponent onCompleted={() => { message.success("Print sent successfully") ; onClick(false) ; }} >
-                {( sendData, { loading, called, data, error } ) => {
-                    console.group("SendBufferButton - GraphQL operations");
-                    console.log( "init", { loading, data, error, called} );
-                    console.log( "buffer", this.props.buffer);
-                    if ( called != true && this.props.buffer != null) {
-                        console.log( "PointEditModal Component sendData(), sending buffer", buffer );
-                        sendData(
-                            {
-                                variables:
-                                {
-                                    buffer: buffer
-                                    // buffer: buffer.map( col => col.map( row => Array.from( row ) ) )
-                                }
-                            } );
-                        console.log( "called != true", { loading, data, error, called } );
-                        // this.setState({
-                        //     values: undefined
-                        // })
-                        // console.log({ loading, data, error, called, mutate});
+    const [ sendData, { data, loading, error, called } ] = useSendBufferMutation( {
+        onCompleted: () => { message.success( "Print sent successfully" ); onClick( false ); }
+    } );
+    console.log( "init", { loading, data, error, called } );
+    console.log( "buffer", this.props.buffer );
 
-                    }
-                    if ( loading ) {
-                        console.log( "SendBuffer data loading" );
-                    }
-                    if ( data ) {
-                        console.log( "SendBuffer data received", data );
-                    }
-                    console.groupEnd();
-                    return (
-                        < Button {...this.props} 
-                                    icon={<PrinterOutlined />} 
-                                    onClick={() => onClick( true )} id={value} >
-                                        {value}
-                                        <PageSpin spinning={this.props.buffer != null} />
-                                </Button>
-                    );
-                }}
-            </SendBufferComponent >
-        );
-    }
-}
+
+    return < Button {...this.props}
+        icon={<PrinterOutlined />}
+        onClick={() => {
+            onClick( true );
+            sendData( {
+                variables: {
+                    buffer: buffer
+                }
+            } );
+        }}
+        id={value} >
+        {value}
+        <PageSpin spinning={this.props.buffer != null} />
+    </Button>;
+};

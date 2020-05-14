@@ -4,7 +4,6 @@ import { DISPLAY } from '../../lib/types/enums';
 import React from 'react';
 import { Modal, AutoComplete, Form, Checkbox } from 'antd';
 // import CheckboxGroup from 'antd/lib/checkbox/Group';
-import { ItemHardwareFastenerBoltSelectColumn } from '../../lib/types/graphql';
 import { LabelText, FormatOptionsT } from '../../lib/LabelConstituent';
 import { DrawContext } from './LabelDraw';
 import { Item } from '../../lib/item';
@@ -58,7 +57,6 @@ export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
 
     console.log( 'DrawEditText props:\n', props );
 
-    // TODO: NO HARD CODED ITEMHARDWAREFASTENERBOLT !!!
     const autocompleteFieldValues: OptionsType = props.item && props.item.labelProps ? props.item.labelProps.map( col => {
         return {
             value: `{{${ col }}}` 

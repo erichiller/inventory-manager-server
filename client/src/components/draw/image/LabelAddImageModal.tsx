@@ -1,14 +1,15 @@
 import { KonvaEventObject } from 'konva/types/Node';
-import { Component } from 'react';
+import { Component, useState, useEffect } from 'react';
 import { Select, Tooltip, Button } from 'antd';
 import { DISPLAY } from '../../../lib/types/enums';
 import React from 'react';
 import { Modal } from 'antd';
-import { withGetIcon, GetIconProps, Icon as CustomIcon, withGetIcons, GetIconsProps } from '../../../lib/types/graphql';
+import { useGetIconsQuery, GetIconsProps } from '../../../lib/types/graphql';
 import { Item } from '../../../lib/item';
 import { LabelImage } from '../../../lib/LabelConstituent';
 import { DrawContext } from '../LabelDraw';
 import { StopOutlined, UploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { QueryResultTypePlus } from '../../../lib/UtilityFunctions';
 
 
 interface LabelAddImageProps {
@@ -24,150 +25,159 @@ interface LabelAddImageState {
 }
 
 
-export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
-    class LabelAddImageModal extends Component<GetIconsProps<LabelAddImageProps>, LabelAddImageState> {
+// export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
+export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
 
-        handleCancel = () => {
-            /// REMOVE ELEMENT /// REVERT ///
-            this.onClose();
-        };
+    const [ icons, setIcons ] = useState < QueryResultTypePlus<typeof useGetIconsQuery>[]>([]);
 
-        onClose = () => {
-            this.props.visibleHandler( DISPLAY.HIDDEN );
-        };
+    const handleCancel = () => {
+        /// REMOVE ELEMENT /// REVERT ///
+        onClose();
+    };
 
-        getLabelImageSelectedObj ( id: string ): LabelImage {
-            if ( this.props.data.icon ) {
-                for ( let i = 0; i < this.props.data.icon.length; i++ ) {
-                    let icon = this.props.data.icon[ i ];
-                    console.log( "checking labelImage uuid: ", icon.id );
+    const onClose = () => {
+        props.visibleHandler( DISPLAY.HIDDEN );
+    };
 
-                    if ( icon.id == id ) {
-                        console.log( "returning labelImage by uuid: ", icon.id );
+    let { data, loading, error} = useGetIconsQuery( { } );
 
-                        return new LabelImage( {
-                            ...icon,
-                            width: 50,
-                            height: 50
-                        } );
-                    }
-                }
-                // this.props.data.icon.forEach( icon => {
-                //     console.log( "checking labelImage uuid: ", icon.id );
-
-                //     if ( icon.id == id ){
-                //         console.log( "returning labelImage by uuid: ", icon.id );
-
-                //         return icon;
-                //     }
-                // });
-            }
-            console.log( "!! RETURNING NULL !!" );
-            return null;
-
+    useEffect( () => {
+        if ( data ){
+            setIcons(data.icon);
         }
+    }, [ data, loading, error ]);
 
-        onChange = ( value: string ) => {
+    const getLabelImageSelectedObj: ( id: string ) => LabelImage = ( id ) => {
+        if ( data.icon ) {
+            for ( let i = 0; i < data.icon.length; i++ ) {
+                let icon = data.icon[ i ];
+                console.log( "checking labelImage uuid: ", icon.id );
 
-            console.log( "looking up labelImage by value: ", value );
-            this.props.changeHandler(
-                this.getLabelImageSelectedObj( value ),
-                this.props.labelImage
-            );
-        };
+                if ( icon.id == id ) {
+                    console.log( "returning labelImage by uuid: ", icon.id );
 
-        makeSvgElement = ( icon: Partial<CustomIcon> ) => {
-            return <img width={50} src={icon.data} />;
-        };
+                    return new LabelImage( {
+                        ...icon,
+                        width: 50,
+                        height: 50
+                    } );
+                }
+            }
+            // props.data.icon.forEach( icon => {
+            //     console.log( "checking labelImage uuid: ", icon.id );
 
-        render () {
-            const {
-                event,
-                visibleHandler,
-                item,
-                changeHandler,
-                labelImage } = this.props;
+            //     if ( icon.id == id ){
+            //         console.log( "returning labelImage by uuid: ", icon.id );
 
-            let { loading, error } = this.props.data!;
+            //         return icon;
+            //     }
+            // });
+        }
+        console.log( "!! RETURNING NULL !!" );
+        return null;
+
+    };
+
+    const onChange = ( value: string ) => {
+
+        console.log( "looking up labelImage by value: ", value );
+        props.changeHandler(
+            getLabelImageSelectedObj( value ),
+            props.labelImage
+        );
+    };
+
+    const makeSvgElement = ( icon: QueryResultTypePlus<typeof useGetIconsQuery> ) => {
+        // makeSvgElement = ( icon: Partial<CustomIcon> ) => {
+        return <img width={50} src={icon.data} />;
+    };
+
+    const {
+        event,
+        visibleHandler,
+        item,
+        changeHandler,
+        labelImage } = props;
 
 
-            console.log( 'this.props.visible', visibleHandler() );
-            // console.log('this.state.visible', visibleHandler(), this.state.visible == display.VISIBLE ? true : false)
-            console.log( 'this.props.item', item );
-            let drawWidth = 725;
-            return (
-                <DrawContext.Consumer>
-                    {( { commitLabelImage, displayImageUploadModal } ) => {
-                        return (
-                            <Modal
-                                visible
-                                title={"Image"}
-                                onCancel={this.handleCancel}
-                                onOk={() => { commitLabelImage( labelImage ); this.onClose(); }}
-                                footer={[
-                                    <Tooltip placement="top" title="Return to Items">
-                                        <Button key="cancel" danger={true} onClick={this.handleCancel}>
-                                            <StopOutlined />
+
+    console.log( 'props.visible', visibleHandler() );
+    // console.log('state.visible', visibleHandler(), state.visible == display.VISIBLE ? true : false)
+    console.log( 'props.item', item );
+    let drawWidth = 725;
+    return (
+        <DrawContext.Consumer>
+            {( { commitLabelImage, displayImageUploadModal } ) => {
+                return (
+                    <Modal
+                        visible
+                        title={"Image"}
+                        onCancel={handleCancel}
+                        onOk={() => { commitLabelImage( labelImage ); onClose(); }}
+                        footer={[
+                            <Tooltip placement="top" title="Return to Items">
+                                <Button key="cancel" danger={true} onClick={handleCancel}>
+                                    <StopOutlined />
                                             Cancel
                                         </Button>
-                                    </Tooltip >,
-                                    <Tooltip placement="top" title="Add to list for bulk printing later">
-                                        <Button key="Upload Image" type="primary" onClick={() => {
-                                            displayImageUploadModal( DISPLAY.VISIBLE );
-                                            visibleHandler( DISPLAY.HIDDEN );
-                                        }} >
-                                            {/* <Icon type="plus-circle" /> */}
-                                            <UploadOutlined />
+                            </Tooltip >,
+                            <Tooltip placement="top" title="Add to list for bulk printing later">
+                                <Button key="Upload Image" type="primary" onClick={() => {
+                                    displayImageUploadModal( DISPLAY.VISIBLE );
+                                    visibleHandler( DISPLAY.HIDDEN );
+                                }} >
+                                    {/* <Icon type="plus-circle" /> */}
+                                    <UploadOutlined />
                                             Upload New Image
                                         </Button>
-                                    </Tooltip>,
-                                    <Tooltip placement="top" title="Add image to label">
-                                        <Button key="add" type="primary" onClick={() => { commitLabelImage( labelImage ); this.onClose(); }}>
-                                            <PlusCircleOutlined />
+                            </Tooltip>,
+                            <Tooltip placement="top" title="Add image to label">
+                                <Button key="add" type="primary" onClick={() => { commitLabelImage( labelImage ); onClose(); }}>
+                                    <PlusCircleOutlined />
                                             Add
                                         </Button>
-                                    </Tooltip>
-                                ]}
-                                width={420}
-                            >
-                                <Select
-                                    style={{ width: 370, height: 50 }}
-                                    placeholder="Select an Existing Image"
-                                    loading={loading}
-                                    onChange={this.onChange}
-                                    id="image-select"
-                                //                     dropdownRender={menu => (
-                                //                         <div>
-                                //                             {menu}
-                                //                             <Divider style={{ margin: '4px 0' }} />
-                                //                             <div
-                                //                                 style={{ padding: '4px 8px', cursor: 'pointer' }}
-                                //                                 onMouseDown={e => e.preventDefault()}
-                                //                                 onClick={this.commitLabelImage}
+                            </Tooltip>
+                        ]}
+                        width={420}
+                    >
+                        <Select
+                            style={{ width: 370, height: 50 }}
+                            placeholder="Select an Existing Image"
+                            loading={loading}
+                            onChange={onChange}
+                            id="image-select"
+                        //                     dropdownRender={menu => (
+                        //                         <div>
+                        //                             {menu}
+                        //                             <Divider style={{ margin: '4px 0' }} />
+                        //                             <div
+                        //                                 style={{ padding: '4px 8px', cursor: 'pointer' }}
+                        //                                 onMouseDown={e => e.preventDefault()}
+                        //                                 onClick={commitLabelImage}
 
-                                //                             >
-                                //                                 <Icon type="plus" /> Add item
-                                // </div>
-                                //                         </div>
-                                //                     )}
+                        //                             >
+                        //                                 <Icon type="plus" /> Add item
+                        // </div>
+                        //                         </div>
+                        //                     )}
+                        >
+                            {console.log( "DrawAddImage", data )}
+                            {icons.map( icon => (
+                                <Select.Option
+                                    value={icon.id}
+                                    key={icon.id}
+                                // value={`${ icon.id }.${icon.category }.${ icon.label } ${ icon.description }`}
                                 >
-                                    {console.log( "DrawAddImage", this.props.data )}
-                                    {this.props.data.icon ? this.props.data.icon.map( icon => (
-                                        <Select.Option
-                                            value={icon.id}
-                                            key={icon.id}
-                                        // value={`${ icon.id }.${icon.category }.${ icon.label } ${ icon.description }`}
-                                        >
-                                            {/* <Icon type="file-image" /> */}
-                                            {/* <Icon component={icon.data as any} /> */}
-                                            {/* <Icon component={this.makeSvgElement( icon ) as any} /> */}
-                                            {this.makeSvgElement( icon ) }
-                                            {icon.title || icon.description ? `${icon.title} ${icon.description}` : icon.id}
-                                        </Select.Option>
-                                    ) ) : null}
-                                </Select>
+                                    {/* <Icon type="file-image" /> */}
+                                    {/* <Icon component={icon.data as any} /> */}
+                                    {/* <Icon component={makeSvgElement( icon ) as any} /> */}
+                                    {makeSvgElement( icon )}
+                                    {icon.title || icon.description ? `${ icon.title } ${ icon.description }` : icon.id}
+                                </Select.Option>
+                            ) ) }
+                        </Select>
 
-                                {/* <Divider />
+                        {/* <Divider />
                                 <i><Typography.Text type="secondary">Or create a new image</Typography.Text></i><br />
                                 <NewImageUploadModal
                                     changeHandler={changeHandler}
@@ -175,11 +185,9 @@ export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
                                     buttonLabel="Upload Image"
                                     labelImage={labelImage}
                                 /> */}
-                            </Modal>
-                        );
-                    }}
-                </DrawContext.Consumer>
-            );
-        }
-    }
-);
+                    </Modal>
+                );
+            }}
+        </DrawContext.Consumer>
+    );
+};
