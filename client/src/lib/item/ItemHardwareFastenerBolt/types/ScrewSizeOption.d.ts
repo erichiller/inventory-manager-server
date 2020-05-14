@@ -8,20 +8,56 @@
 //     coarse: number;
 // }
 
-import { EnumHardwareFastenerThreadType, EnumHardwareFastenerThreadTypeEnum } from "../../../types/graphql";
+import { EnumHardwareFastenerThreadTypeEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFastenerHeadEnum } from "../../../types/graphql";
 
-export type ThreadOptionT = Record<keyof typeof EnumHardwareFastenerThreadTypeEnum, number | null>;
+// export type ThreadOptionT = Record<keyof typeof EnumHardwareFastenerThreadTypeEnum, number | null>;
+
+/**
+ * @pattern ^[0-9.]+mm$
+ */
+export type MetricUnit = string;
+
+/**
+ * @pattern ^[0-9.]+in$
+ */
+type USCustomarySystemUnit = string;
+
+export type DriveType<U> = Record<keyof typeof EnumHardwareFastenerDriveEnum, U>;
+
+
+type HeadDefinition<U> = Record<keyof typeof EnumHardwareFastenerHeadEnum, {
+    drive: Partial<DriveType<U>>;
+}>;
+
+/**
+ * @propertyNames {"pattern": "^[0-9.]+$"}
+ **/
+type PitchDefinition = { [ pitch: string ]: {
+    label?: EnumHardwareFastenerThreadTypeEnum;
+}}
+
+interface DiameterDefinitionBase<U> {
+    /** whether this diameter appears on the standardized/first choice list */
+    common: boolean;
+    pitch: PitchDefinition;
+    hardness: any; // TODO
+    head: Partial<HeadDefinition<U>>;
+}
 
 /**
  * screw definitions for metric and imperial (uscs)
  **/
 export interface IScrewSizeDefinition {
-    metric: { [ diameter: number ]: Partial<ThreadOptionT>; };
+    /**
+     * ISO
+     * @propertyNames {"pattern": "^[mM][0-9.]+$"}
+     **/
+    iso: { [ diameter: string ]: Partial<DiameterDefinitionBase<MetricUnit>>; };
     /** 
      * United States Customary System 
-     * @propertyNames {"pattern": "^\\d+$"}
+     * @propertyNames {"pattern": "^((#[0-9]{1,2})|([1-9]+(\\+[1-9]+)?(\\/[0-9]+)?))$"}
      **/
-    uscs: { [ diameter: number ]: Partial<ThreadOptionT>; };
+    uscs: { [ diameter: string ]: Partial<DiameterDefinitionBase<USCustomarySystemUnit>>; };
 }
 
 export type SchemaDefinition<T> = { $schema: string; } & T;

@@ -2,36 +2,379 @@
   "$ref": "#/definitions/ScrewSizeSchema",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
+    "EnumHardwareFastenerThreadTypeEnum": {
+      "enum": [
+        "coarse",
+        "extra_fine",
+        "fine"
+      ],
+      "type": "string"
+    },
+    "MetricUnit": {
+      "pattern": "^[0-9.]+mm$",
+      "type": "string"
+    },
+    "PitchDefinition": {
+      "additionalProperties": {
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "$ref": "#/definitions/EnumHardwareFastenerThreadTypeEnum"
+          }
+        },
+        "type": "object"
+      },
+      "propertyNames": {
+        "pattern": "^[0-9.]+$"
+      },
+      "type": "object"
+    },
     "SchemaDefinition<IScrewSizeDefinition>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
           "type": "string"
         },
-        "metric": {
+        "iso": {
           "additionalProperties": {
             "additionalProperties": false,
             "properties": {
-              "coarse": {
-                "type": [
-                  "number",
-                  "null"
-                ]
+              "common": {
+                "description": "whether this diameter appears on the standardized/first choice list",
+                "type": "boolean"
               },
-              "extra_fine": {
-                "type": [
-                  "number",
-                  "null"
-                ]
+              "hardness": {
               },
-              "fine": {
-                "type": [
-                  "number",
-                  "null"
-                ]
+              "head": {
+                "additionalProperties": false,
+                "properties": {
+                  "button": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  },
+                  "cap": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  },
+                  "flat": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  },
+                  "flat_undercut": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  },
+                  "hex": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  },
+                  "oval": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  },
+                  "set": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/MetricUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/MetricUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              },
+              "pitch": {
+                "$ref": "#/definitions/PitchDefinition"
               }
             },
             "type": "object"
+          },
+          "description": "ISO",
+          "propertyNames": {
+            "pattern": "^[mM][0-9.]+$"
           },
           "type": "object"
         },
@@ -39,43 +382,359 @@
           "additionalProperties": {
             "additionalProperties": false,
             "properties": {
-              "coarse": {
-                "type": [
-                  "number",
-                  "null"
-                ]
+              "common": {
+                "description": "whether this diameter appears on the standardized/first choice list",
+                "type": "boolean"
               },
-              "extra_fine": {
-                "type": [
-                  "number",
-                  "null"
-                ]
+              "hardness": {
               },
-              "fine": {
-                "type": [
-                  "number",
-                  "null"
-                ]
+              "head": {
+                "additionalProperties": false,
+                "properties": {
+                  "button": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  },
+                  "cap": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  },
+                  "flat": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  },
+                  "flat_undercut": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  },
+                  "hex": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  },
+                  "oval": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  },
+                  "set": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "drive": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "drilled_spanner": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_socket": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "hex_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "phillips": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "slot": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "square": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_plus": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          },
+                          "torx_tamper_resistant": {
+                            "$ref": "#/definitions/USCustomarySystemUnit"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "drive"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              },
+              "pitch": {
+                "$ref": "#/definitions/PitchDefinition"
               }
             },
             "type": "object"
           },
           "description": "United States Customary System",
           "propertyNames": {
-            "pattern": "^\\d+$"
+            "pattern": "^((#[0-9]{1,2})|([1-9]+(\\+[1-9]+)?(\\/[0-9]+)?))$"
           },
           "type": "object"
         }
       },
       "required": [
         "$schema",
-        "metric",
+        "iso",
         "uscs"
       ],
       "type": "object"
     },
     "ScrewSizeSchema": {
       "$ref": "#/definitions/SchemaDefinition%3CIScrewSizeDefinition%3E"
+    },
+    "USCustomarySystemUnit": {
+      "pattern": "^[0-9.]+in$",
+      "type": "string"
     }
   }
 }

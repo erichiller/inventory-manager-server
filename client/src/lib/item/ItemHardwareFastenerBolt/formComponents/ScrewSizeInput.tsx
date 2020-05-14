@@ -6,8 +6,6 @@ import React, { useState } from "react";
 import { AutoComplete, Input } from "antd";
 import { InputProps } from "antd/lib/input";
 
-import { ThreadOptionT } from '../types/ScrewSizeOption';
-
 import ScrewSizeConfig from '../config/ScrewSizeOptions.json';
 import { eliminateArrayDuplicates, transparentLog, toTitleCase } from "../../../UtilityFunctions";
 
