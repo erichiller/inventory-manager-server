@@ -16,6 +16,7 @@ type ItemHardwareFastenerBoltDriveTypeIconMapT = Record<EnumHardwareFastenerDriv
 export const ItemHardwareFastenerBoltDriveTypeIconMap: ItemHardwareFastenerBoltDriveTypeIconMapT = {
     drilled_spanner: TorxPlusIcon,
     hex: TorxPlusIcon,
+    hex_socket: TorxPlusIcon,
     hex_tamper_resistant: TorxPlusIcon,
     phillips: TorxPlusIcon,
     slot: TorxPlusIcon,

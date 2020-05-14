@@ -281,7 +281,10 @@ export enum EnumHardwareFastenerDriveConstraint {
 export enum EnumHardwareFastenerDriveEnum {
   /** two dots equidistant and opposite each other from center */
   drilled_spanner = 'drilled_spanner',
+  /** external hex (use of crescent wrench) */
   hex = 'hex',
+  /** internal hex ( allen wrench ) */
+  hex_socket = 'hex_socket',
   /** hex with center point preventing normal allen wrench tools from operating */
   hex_tamper_resistant = 'hex_tamper_resistant',
   phillips = 'phillips',
@@ -623,9 +626,15 @@ export enum EnumHardwareFastenerHeadConstraint {
 
 export enum EnumHardwareFastenerHeadEnum {
   button = 'button',
-  flat_standard = 'flat_standard',
+  cap = 'cap',
+  /** countersunk */
+  flat = 'flat',
   flat_undercut = 'flat_undercut',
-  oval = 'oval'
+  /** hexagonal, same as external hex drive */
+  hex = 'hex',
+  oval = 'oval',
+  /** aka grub screw */
+  set = 'set'
 }
 
 /** expression to compare columns of type enum_hardware_fastener_head_enum. All fields are combined with logical 'AND'. */
@@ -17721,4 +17730,4 @@ export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHo
 export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
 export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
-// graphql typescript defs generated on 2020-05-14T06:52:08-06:00
+// graphql typescript defs generated on 2020-05-14T14:47:31-06:00
