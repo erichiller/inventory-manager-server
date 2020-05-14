@@ -368,9 +368,10 @@ export class Item<T extends GenericItem> implements IItem {
 
     /**
      * Component displayed when item moused over in Table
+     * Default is to display all properties EXCEPT `_object`
      */
     get mouseOverRowComponent (): React.FC {
-        return ( props ) => <pre>{JSON.stringify( this, null, 2 )}</pre>;
+        return ( props ) => <pre>{JSON.stringify( Object.fromEntries(Object.entries(this).filter( ([ key, value ]) => key !== '_object')), null, 2 )}</pre>;
     }
 
     // get bundle (): Item {

@@ -1,84 +1,81 @@
 {
-    "$ref": "#/definitions/ScrewSizeSchema",
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "definitions": {
-        "SchemaDefinition<IScrewSizeDefinition>": {
+  "$ref": "#/definitions/ScrewSizeSchema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "SchemaDefinition<IScrewSizeDefinition>": {
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "metric": {
+          "additionalProperties": {
             "additionalProperties": false,
             "properties": {
-                "$schema": {
-                    "type": "string"
-                },
-                "metric": {
-                    "propertyNames": {
-                        "pattern": "^[mM][[0-9.]+$"
-                    },
-                    "additionalProperties": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "coarse": {
-                                "type": [
-                                    "number",
-                                    "null"
-                                ]
-                            },
-                            "extra_fine": {
-                                "type": [
-                                    "number",
-                                    "null"
-                                ]
-                            },
-                            "fine": {
-                                "type": [
-                                    "number",
-                                    "null"
-                                ]
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "type": "object"
-                },
-                "uscs": {
-                    "propertyNames": {
-                        "pattern": "^((#[0-9]{1,2})|([0-9\\/]{3,}))$"
-                    },
-                    "additionalProperties": {
-                        "additionalProperties": false,
-                        "properties": {
-                            "coarse": {
-                                "type": [
-                                    "number",
-                                    "null"
-                                ]
-                            },
-                            "extra_fine": {
-                                "type": [
-                                    "number",
-                                    "null"
-                                ]
-                            },
-                            "fine": {
-                                "type": [
-                                    "number",
-                                    "null"
-                                ]
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "description": "United States Customary System",
-                    "type": "object"
-                }
+              "coarse": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "extra_fine": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "fine": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
             },
-            "required": [
-                "$schema",
-                "metric",
-                "uscs"
-            ],
             "type": "object"
+          },
+          "type": "object"
         },
-        "ScrewSizeSchema": {
-            "$ref": "#/definitions/SchemaDefinition%3CIScrewSizeDefinition%3E"
+        "uscs": {
+          "additionalProperties": {
+            "additionalProperties": false,
+            "properties": {
+              "coarse": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "extra_fine": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "fine": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          },
+          "description": "United States Customary System",
+          "propertyNames": {
+            "pattern": "^\\d+$"
+          },
+          "type": "object"
         }
+      },
+      "required": [
+        "$schema",
+        "metric",
+        "uscs"
+      ],
+      "type": "object"
+    },
+    "ScrewSizeSchema": {
+      "$ref": "#/definitions/SchemaDefinition%3CIScrewSizeDefinition%3E"
     }
+  }
 }

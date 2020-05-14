@@ -17,7 +17,10 @@ export type ThreadOptionT = Record<keyof typeof EnumHardwareFastenerThreadTypeEn
  **/
 export interface IScrewSizeDefinition {
     metric: { [ diameter: number ]: Partial<ThreadOptionT>; };
-    /** United States Customary System */
+    /** 
+     * United States Customary System 
+     * @propertyNames {"pattern": "^\\d+$"}
+     **/
     uscs: { [ diameter: number ]: Partial<ThreadOptionT>; };
 }
 

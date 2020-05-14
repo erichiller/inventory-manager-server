@@ -2377,6 +2377,174 @@ export enum EnumItemClassUpdateColumn {
   id = 'id'
 }
 
+/**
+ * possible <schema>_<table> classes that can be used in object_maps
+ * 
+ * 
+ * columns and relationships of "enum.mapped_class"
+ */
+export type EnumMappedClass = {
+   __typename?: 'enum_mapped_class';
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+};
+
+/** aggregated selection of "enum.mapped_class" */
+export type EnumMappedClassAggregate = {
+   __typename?: 'enum_mapped_class_aggregate';
+  aggregate?: Maybe<EnumMappedClassAggregateFields>;
+  nodes: Array<EnumMappedClass>;
+};
+
+/** aggregate fields of "enum.mapped_class" */
+export type EnumMappedClassAggregateFields = {
+   __typename?: 'enum_mapped_class_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<EnumMappedClassMaxFields>;
+  min?: Maybe<EnumMappedClassMinFields>;
+};
+
+
+/** aggregate fields of "enum.mapped_class" */
+export type EnumMappedClassAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<EnumMappedClassSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "enum.mapped_class" */
+export type EnumMappedClassAggregateOrderBy = {
+  count?: Maybe<OrderBy>;
+  max?: Maybe<EnumMappedClassMaxOrderBy>;
+  min?: Maybe<EnumMappedClassMinOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "enum.mapped_class" */
+export type EnumMappedClassArrRelInsertInput = {
+  data: Array<EnumMappedClassInsertInput>;
+  on_conflict?: Maybe<EnumMappedClassOnConflict>;
+};
+
+/** Boolean expression to filter rows from the table "enum.mapped_class". All fields are combined with a logical 'AND'. */
+export type EnumMappedClassBoolExp = {
+  _and?: Maybe<Array<Maybe<EnumMappedClassBoolExp>>>;
+  _not?: Maybe<EnumMappedClassBoolExp>;
+  _or?: Maybe<Array<Maybe<EnumMappedClassBoolExp>>>;
+  description?: Maybe<StringComparisonExp>;
+  id?: Maybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "enum.mapped_class" */
+export enum EnumMappedClassConstraint {
+  /** unique or primary key constraint */
+  mapped_class_pkey = 'mapped_class_pkey'
+}
+
+export enum EnumMappedClassEnum {
+  item_bundle = 'item_bundle',
+  item_hardware_fastener_bolt = 'item_hardware_fastener_bolt',
+  item_hardware_fastener_nut = 'item_hardware_fastener_nut',
+  item_hardware_fastener_screw = 'item_hardware_fastener_screw',
+  item_hardware_fastener_standoff = 'item_hardware_fastener_standoff',
+  /** Washers */
+  item_hardware_fastener_washer = 'item_hardware_fastener_washer'
+}
+
+/** expression to compare columns of type enum_mapped_class_enum. All fields are combined with logical 'AND'. */
+export type EnumMappedClassEnumComparisonExp = {
+  _eq?: Maybe<EnumMappedClassEnum>;
+  _in?: Maybe<Array<EnumMappedClassEnum>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<EnumMappedClassEnum>;
+  _nin?: Maybe<Array<EnumMappedClassEnum>>;
+};
+
+/** input type for inserting data into table "enum.mapped_class" */
+export type EnumMappedClassInsertInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type EnumMappedClassMaxFields = {
+   __typename?: 'enum_mapped_class_max_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "enum.mapped_class" */
+export type EnumMappedClassMaxOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type EnumMappedClassMinFields = {
+   __typename?: 'enum_mapped_class_min_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "enum.mapped_class" */
+export type EnumMappedClassMinOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "enum.mapped_class" */
+export type EnumMappedClassMutationResponse = {
+   __typename?: 'enum_mapped_class_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<EnumMappedClass>;
+};
+
+/** input type for inserting object relation for remote table "enum.mapped_class" */
+export type EnumMappedClassObjRelInsertInput = {
+  data: EnumMappedClassInsertInput;
+  on_conflict?: Maybe<EnumMappedClassOnConflict>;
+};
+
+/** on conflict condition type for table "enum.mapped_class" */
+export type EnumMappedClassOnConflict = {
+  constraint: EnumMappedClassConstraint;
+  update_columns: Array<EnumMappedClassUpdateColumn>;
+  where?: Maybe<EnumMappedClassBoolExp>;
+};
+
+/** ordering options when selecting data from "enum.mapped_class" */
+export type EnumMappedClassOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "enum.mapped_class" */
+export type EnumMappedClassPkColumnsInput = {
+  id: Scalars['String'];
+};
+
+/** select columns of table "enum.mapped_class" */
+export enum EnumMappedClassSelectColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
+/** input type for updating data in table "enum.mapped_class" */
+export type EnumMappedClassSetInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "enum.mapped_class" */
+export enum EnumMappedClassUpdateColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
 /** columns and relationships of "enum.payment_method_type" */
 export type EnumPaymentMethodType = {
    __typename?: 'enum_payment_method_type';
@@ -4658,15 +4826,15 @@ export type ItemHardwareFastenerBolt = {
   /** Any value here means it is countersunk; A value != the `head_height` means it is only partially countersunk */
   countersunk_height?: Maybe<Scalars['numeric']>;
   description?: Maybe<Scalars['String']>;
-  drive_size: Scalars['String'];
+  drive_size?: Maybe<Scalars['String']>;
   drive_type: EnumHardwareFastenerDriveEnum;
   /** This is what is typically stated as a fastener's length. Length of bolt that is within the material it is screwed into */
   embedded_length: Scalars['numeric'];
   /** Coating */
   finish?: Maybe<EnumHardwareFinishEnum>;
   hardness?: Maybe<EnumHardwareFastenerHardnessEnum>;
-  head_diameter: Scalars['numeric'];
-  head_height: Scalars['numeric'];
+  head_diameter?: Maybe<Scalars['numeric']>;
+  head_height?: Maybe<Scalars['numeric']>;
   head_type: EnumHardwareFastenerHeadEnum;
   id: Scalars['Int'];
   /** Material, such as Zinc coated steel or Stainless Steel */
@@ -4674,7 +4842,7 @@ export type ItemHardwareFastenerBolt = {
   name?: Maybe<Scalars['String']>;
   point_type?: Maybe<EnumHardwareFastenerBoltPointEnum>;
   /** length of the straight part of the thread */
-  shaft_length: Scalars['numeric'];
+  shaft_length?: Maybe<Scalars['numeric']>;
   /**
    * Specifications Met ; array of Organizations that certified this
    * Examples:
@@ -4696,7 +4864,7 @@ export type ItemHardwareFastenerBolt = {
   thread_direction: EnumHardwareFastenerThreadDirectionEnum;
   thread_fit?: Maybe<EnumHardwareFastenerThreadFitEnum>;
   /** if fully threaded, this should be === `shaft_length` */
-  thread_length: Scalars['numeric'];
+  thread_length?: Maybe<Scalars['numeric']>;
   /** TPI for usc, Pitch for metric ; ie. the 0.5 in M3 x 0.5 */
   thread_pitch: Scalars['numeric'];
   thread_type?: Maybe<EnumHardwareFastenerThreadTypeEnum>;
@@ -8634,6 +8802,10 @@ export type MutationRoot = {
   delete_enum_item_class?: Maybe<EnumItemClassMutationResponse>;
   /** delete single row from the table: "enum.item_class" */
   delete_enum_item_class_by_pk?: Maybe<EnumItemClass>;
+  /** delete data from the table: "enum.mapped_class" */
+  delete_enum_mapped_class?: Maybe<EnumMappedClassMutationResponse>;
+  /** delete single row from the table: "enum.mapped_class" */
+  delete_enum_mapped_class_by_pk?: Maybe<EnumMappedClass>;
   /** delete data from the table: "enum.payment_method_type" */
   delete_enum_payment_method_type?: Maybe<EnumPaymentMethodTypeMutationResponse>;
   /** delete single row from the table: "enum.payment_method_type" */
@@ -8790,6 +8962,10 @@ export type MutationRoot = {
   insert_enum_item_class?: Maybe<EnumItemClassMutationResponse>;
   /** insert a single row into the table: "enum.item_class" */
   insert_enum_item_class_one?: Maybe<EnumItemClass>;
+  /** insert data into the table: "enum.mapped_class" */
+  insert_enum_mapped_class?: Maybe<EnumMappedClassMutationResponse>;
+  /** insert a single row into the table: "enum.mapped_class" */
+  insert_enum_mapped_class_one?: Maybe<EnumMappedClass>;
   /** insert data into the table: "enum.payment_method_type" */
   insert_enum_payment_method_type?: Maybe<EnumPaymentMethodTypeMutationResponse>;
   /** insert a single row into the table: "enum.payment_method_type" */
@@ -8951,6 +9127,10 @@ export type MutationRoot = {
   update_enum_item_class?: Maybe<EnumItemClassMutationResponse>;
   /** update single row of the table: "enum.item_class" */
   update_enum_item_class_by_pk?: Maybe<EnumItemClass>;
+  /** update data of the table: "enum.mapped_class" */
+  update_enum_mapped_class?: Maybe<EnumMappedClassMutationResponse>;
+  /** update single row of the table: "enum.mapped_class" */
+  update_enum_mapped_class_by_pk?: Maybe<EnumMappedClass>;
   /** update data of the table: "enum.payment_method_type" */
   update_enum_payment_method_type?: Maybe<EnumPaymentMethodTypeMutationResponse>;
   /** update single row of the table: "enum.payment_method_type" */
@@ -9219,6 +9399,18 @@ export type MutationRootDeleteEnumItemClassArgs = {
 
 /** mutation root */
 export type MutationRootDeleteEnumItemClassByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumMappedClassArgs = {
+  where: EnumMappedClassBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumMappedClassByPkArgs = {
   id: Scalars['String'];
 };
 
@@ -9726,6 +9918,20 @@ export type MutationRootInsertEnumItemClassArgs = {
 export type MutationRootInsertEnumItemClassOneArgs = {
   object: EnumItemClassInsertInput;
   on_conflict?: Maybe<EnumItemClassOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumMappedClassArgs = {
+  objects: Array<EnumMappedClassInsertInput>;
+  on_conflict?: Maybe<EnumMappedClassOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumMappedClassOneArgs = {
+  object: EnumMappedClassInsertInput;
+  on_conflict?: Maybe<EnumMappedClassOnConflict>;
 };
 
 
@@ -10278,6 +10484,20 @@ export type MutationRootUpdateEnumItemClassArgs = {
 export type MutationRootUpdateEnumItemClassByPkArgs = {
   _set?: Maybe<EnumItemClassSetInput>;
   pk_columns: EnumItemClassPkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumMappedClassArgs = {
+  _set?: Maybe<EnumMappedClassSetInput>;
+  where: EnumMappedClassBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumMappedClassByPkArgs = {
+  _set?: Maybe<EnumMappedClassSetInput>;
+  pk_columns: EnumMappedClassPkColumnsInput;
 };
 
 
@@ -12177,6 +12397,12 @@ export type QueryRoot = {
   enum_item_class_aggregate: EnumItemClassAggregate;
   /** fetch data from the table: "enum.item_class" using primary key columns */
   enum_item_class_by_pk?: Maybe<EnumItemClass>;
+  /** fetch data from the table: "enum.mapped_class" */
+  enum_mapped_class: Array<EnumMappedClass>;
+  /** fetch aggregated fields from the table: "enum.mapped_class" */
+  enum_mapped_class_aggregate: EnumMappedClassAggregate;
+  /** fetch data from the table: "enum.mapped_class" using primary key columns */
+  enum_mapped_class_by_pk?: Maybe<EnumMappedClass>;
   /** fetch data from the table: "enum.payment_method_type" */
   enum_payment_method_type: Array<EnumPaymentMethodType>;
   /** fetch aggregated fields from the table: "enum.payment_method_type" */
@@ -12695,6 +12921,32 @@ export type QueryRootEnumItemClassAggregateArgs = {
 
 /** query root */
 export type QueryRootEnumItemClassByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** query root */
+export type QueryRootEnumMappedClassArgs = {
+  distinct_on?: Maybe<Array<EnumMappedClassSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumMappedClassOrderBy>>;
+  where?: Maybe<EnumMappedClassBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootEnumMappedClassAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumMappedClassSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumMappedClassOrderBy>>;
+  where?: Maybe<EnumMappedClassBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootEnumMappedClassByPkArgs = {
   id: Scalars['String'];
 };
 
@@ -13388,11 +13640,12 @@ export type SearchArgs = {
 /** columns and relationships of "search_data" */
 export type SearchData = {
    __typename?: 'search_data';
+  class: EnumMappedClassEnum;
   id: Scalars['bigint'];
   metadata?: Maybe<Scalars['jsonb']>;
   search_vector?: Maybe<Scalars['tsvector']>;
   /** Searchable text */
-  text: Scalars['String'];
+  text?: Maybe<Scalars['String']>;
 };
 
 
@@ -13473,6 +13726,7 @@ export type SearchDataBoolExp = {
   _and?: Maybe<Array<Maybe<SearchDataBoolExp>>>;
   _not?: Maybe<SearchDataBoolExp>;
   _or?: Maybe<Array<Maybe<SearchDataBoolExp>>>;
+  class?: Maybe<EnumMappedClassEnumComparisonExp>;
   id?: Maybe<BigintComparisonExp>;
   metadata?: Maybe<JsonbComparisonExp>;
   search_vector?: Maybe<TsvectorComparisonExp>;
@@ -13510,6 +13764,7 @@ export type SearchDataIncInput = {
 
 /** input type for inserting data into table "search_data" */
 export type SearchDataInsertInput = {
+  class?: Maybe<EnumMappedClassEnum>;
   id?: Maybe<Scalars['bigint']>;
   metadata?: Maybe<Scalars['jsonb']>;
   search_vector?: Maybe<Scalars['tsvector']>;
@@ -13566,6 +13821,7 @@ export type SearchDataOnConflict = {
 
 /** ordering options when selecting data from "search_data" */
 export type SearchDataOrderBy = {
+  class?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   metadata?: Maybe<OrderBy>;
   search_vector?: Maybe<OrderBy>;
@@ -13585,6 +13841,8 @@ export type SearchDataPrependInput = {
 /** select columns of table "search_data" */
 export enum SearchDataSelectColumn {
   /** column name */
+  class = 'class',
+  /** column name */
   id = 'id',
   /** column name */
   metadata = 'metadata',
@@ -13596,6 +13854,7 @@ export enum SearchDataSelectColumn {
 
 /** input type for updating data in table "search_data" */
 export type SearchDataSetInput = {
+  class?: Maybe<EnumMappedClassEnum>;
   id?: Maybe<Scalars['bigint']>;
   metadata?: Maybe<Scalars['jsonb']>;
   search_vector?: Maybe<Scalars['tsvector']>;
@@ -13648,6 +13907,8 @@ export type SearchDataSumOrderBy = {
 
 /** update columns of table "search_data" */
 export enum SearchDataUpdateColumn {
+  /** column name */
+  class = 'class',
   /** column name */
   id = 'id',
   /** column name */
@@ -14156,6 +14417,12 @@ export type SubscriptionRoot = {
   enum_item_class_aggregate: EnumItemClassAggregate;
   /** fetch data from the table: "enum.item_class" using primary key columns */
   enum_item_class_by_pk?: Maybe<EnumItemClass>;
+  /** fetch data from the table: "enum.mapped_class" */
+  enum_mapped_class: Array<EnumMappedClass>;
+  /** fetch aggregated fields from the table: "enum.mapped_class" */
+  enum_mapped_class_aggregate: EnumMappedClassAggregate;
+  /** fetch data from the table: "enum.mapped_class" using primary key columns */
+  enum_mapped_class_by_pk?: Maybe<EnumMappedClass>;
   /** fetch data from the table: "enum.payment_method_type" */
   enum_payment_method_type: Array<EnumPaymentMethodType>;
   /** fetch aggregated fields from the table: "enum.payment_method_type" */
@@ -14673,6 +14940,32 @@ export type SubscriptionRootEnumItemClassAggregateArgs = {
 
 /** subscription root */
 export type SubscriptionRootEnumItemClassByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumMappedClassArgs = {
+  distinct_on?: Maybe<Array<EnumMappedClassSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumMappedClassOrderBy>>;
+  where?: Maybe<EnumMappedClassBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumMappedClassAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumMappedClassSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumMappedClassOrderBy>>;
+  where?: Maybe<EnumMappedClassBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumMappedClassByPkArgs = {
   id: Scalars['String'];
 };
 
@@ -16335,6 +16628,20 @@ export type GetItemQuery = (
   )> }
 );
 
+export type ItemSearchQueryVariables = {
+  search_text: Scalars['String'];
+};
+
+
+export type ItemSearchQuery = (
+  { __typename?: 'query_root' }
+  & { search: Array<(
+    { __typename?: 'search_data' }
+    & Pick<SearchData, 'id' | 'class'>
+    & { name: SearchData['text'] }
+  )> }
+);
+
 export type ItemBundleQueryVariables = {};
 
 
@@ -17248,6 +17555,54 @@ export function useGetItemLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHook
 export type GetItemQueryHookResult = ReturnType<typeof useGetItemQuery>;
 export type GetItemLazyQueryHookResult = ReturnType<typeof useGetItemLazyQuery>;
 export type GetItemQueryResult = ApolloReactCommon.QueryResult<GetItemQuery, GetItemQueryVariables>;
+export const ItemSearchDocument = gql`
+    query ItemSearch($search_text: String!) {
+  search(args: {query_text: $search_text}, where: {class: {}}) {
+    id
+    class
+    name: text
+  }
+}
+    `;
+export type ItemSearchProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<ItemSearchQuery, ItemSearchQueryVariables>
+    } & TChildProps;
+export function withItemSearch<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ItemSearchQuery,
+  ItemSearchQueryVariables,
+  ItemSearchProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, ItemSearchQuery, ItemSearchQueryVariables, ItemSearchProps<TChildProps, TDataName>>(ItemSearchDocument, {
+      alias: 'itemSearch',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useItemSearchQuery__
+ *
+ * To run a query within a React component, call `useItemSearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `useItemSearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useItemSearchQuery({
+ *   variables: {
+ *      search_text: // value for 'search_text'
+ *   },
+ * });
+ */
+export function useItemSearchQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ItemSearchQuery, ItemSearchQueryVariables>) {
+        return ApolloReactHooks.useQuery<ItemSearchQuery, ItemSearchQueryVariables>(ItemSearchDocument, baseOptions);
+      }
+export function useItemSearchLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ItemSearchQuery, ItemSearchQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ItemSearchQuery, ItemSearchQueryVariables>(ItemSearchDocument, baseOptions);
+        }
+export type ItemSearchQueryHookResult = ReturnType<typeof useItemSearchQuery>;
+export type ItemSearchLazyQueryHookResult = ReturnType<typeof useItemSearchLazyQuery>;
+export type ItemSearchQueryResult = ApolloReactCommon.QueryResult<ItemSearchQuery, ItemSearchQueryVariables>;
 export const ItemBundleDocument = gql`
     query item_bundle {
   item_bundle {
@@ -17366,4 +17721,4 @@ export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHo
 export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
 export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
-// graphql typescript defs generated on 2020-05-13T18:19:16-06:00
+// graphql typescript defs generated on 2020-05-14T06:52:08-06:00

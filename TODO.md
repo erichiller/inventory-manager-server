@@ -7,6 +7,7 @@
 
 - [ ] Add `LICENSE.md`
 - [ ] Create templates for labels based on category / type
+- [ ] Try [animations](http://react-component.github.io/tween-one/)
 
 ## Table
 
@@ -21,6 +22,11 @@
   - [ ] button to directly add label to *Print List*
 
 - [ ] Print List button should say "no labels in list" if there are none
+
+
+- [ ] Use Virtual List / Scrolling ; [see _"big data select"_ virtual scrolling && custom tag renderer](https://ant.design/components/select/#components-select-demo-big-data)
+- [ ] multi-column sort.
+- [ ] Nest dataIndex ["order", "date"]
 
 
 ## Drawing
@@ -52,6 +58,12 @@
 - [ ] try disabling perfect drawing ( which just accounts for the width of the border in the overall size ) ; [Disabling Perfect Draw](https://konvajs.org/docs/performance/Disable_Perfect_Draw.html)
 - [ ] there are a bunch of repeated calls, debug this
 - [ ] try not putting history inside labeldraw state.
+
+
+## Data
+
+- [ ] PostgreSQL function to update `enum.item_class` and `enum.mapped_class`
+
 
 ## Completed
 
