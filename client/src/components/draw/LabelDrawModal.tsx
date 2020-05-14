@@ -6,7 +6,7 @@ import React from "react";
 import { LabelDraw } from "./LabelDraw";
 import { PrintContext } from "../print/PrintContextHandler";
 import { LabelExport } from "../../lib/LabelConstituent";
-import SendBufferButton from "../print/SendBufferButton";
+import { SendBufferButton } from "../print/SendBufferButton";
 import { visibleHandler } from "../item/ItemTable";
 import { Item } from "../../lib/item";
 import { StopOutlined, DatabaseOutlined, SaveOutlined } from "@ant-design/icons";

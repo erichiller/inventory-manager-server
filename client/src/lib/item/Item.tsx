@@ -28,7 +28,7 @@ export type GenericItem = Pick<ItemGql, 'id'>
             class: ItemClass;
         }>;
 
-export type ItemClass = keyof typeof EnumItemClassEnum | 'ITEM';
+export type ItemClass = keyof typeof EnumItemClassEnum | 'item';
 
 
 export interface ItemEditFormProps {
@@ -379,4 +379,4 @@ export class Item<T extends GenericItem> implements IItem {
 
 }
 
-Item.RegisterClassType( "ITEM", Item );
+Item.RegisterClassType( "item", Item );

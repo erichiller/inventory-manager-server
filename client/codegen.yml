@@ -23,7 +23,8 @@ config:
         enumValues: keep
     # globalNamespace: true
     # operationResultSuffix: "xxx"
-    withComponent: true
+    # withComponent: true
+    withComponent: false
     withResultType: true
     dedupeOperationSuffix: true
     withHooks: true

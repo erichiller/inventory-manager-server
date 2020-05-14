@@ -17,7 +17,12 @@ export type IQuery = ( baseOptions?: QueryHookOptions<any, any> ) => QueryResult
 
 export type QueryResultReturnKey<Q extends IQuery> = keyof Omit<Exclude<ReturnType<Q>[ 'data' ], undefined>, '__typename'>;
 
-/** Returns Type that is the result of the Query , this is the type when fully unpacked, the result of the GraphQL query. */
+/**
+ * `Q` should be a query of the form `use...Query` from codegen.
+ * Returns Type that is the result of the Query
+ * This is the type when fully unpacked,
+ * the result of the GraphQL query stored within `data.<typename>`
+**/
 export type QueryResultTypePlus<Q extends IQuery> = Unpacked<Exclude<ReturnType<Q>[ 'data' ], undefined>[ QueryResultReturnKey<Q> ]>;
 
 

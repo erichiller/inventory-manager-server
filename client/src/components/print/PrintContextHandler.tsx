@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LabelExport } from '../../lib/LabelConstituent';
 import { PixelMap, canvasToBuffer } from '../../lib/canvasToBuffer';
 
 export const PrintContext = React.createContext( {
 } as {
-    handleAddToPrintList: ( ) => void;
+    handleAddToPrintList: () => void;
     setCurrentLabel: ( currentLabel: LabelExport ) => void;
     getCurrentLabel: () => LabelExport;
     getPrintLabels: () => LabelExport[];
@@ -15,116 +15,120 @@ export const PrintContext = React.createContext( {
 } );
 
 interface PrintContextHandlerState {
-    printLabels: LabelExport [];
+    printLabels: LabelExport[];
     currentLabel: LabelExport;
     shouldSendBuffer: boolean;
 }
 
-export class PrintContextHandler extends React.Component<{},PrintContextHandlerState> {
-    static contextType = PrintContext;
-    declare context: React.ContextType<typeof PrintContext>;
+export const PrintContextHandler: React.FC = ( props ) => {
+    // static contextType = PrintContext;
+    // declare context: React.ContextType<typeof PrintContext>;
 
-    handleAddToPrintList = () => {
+    const handleAddToPrintList = () => {
         console.log( "PrintContextHandler.handleAddToPrintList" );
-        if ( !this.state.printLabels.includes( this.state.currentLabel ) ) {
+        if ( !state.printLabels.includes( state.currentLabel ) ) {
             console.log( "PrintContextHandler.handleAddToPrintList pushing" );
-            this.setState( {
-                printLabels: this.state.printLabels.concat( this.state.currentLabel )
+            setState( {
+                ...state,
+                printLabels: state.printLabels.concat( state.currentLabel )
             } );
         } else {
             console.log( "PrintContextHandler.handleAddToPrintList removing" );
-            this.setState({
-                printLabels: this.state.printLabels.filter( (label) => label === this.state.currentLabel ? false : true)
-            });
+            setState( {
+                ...state,
+                printLabels: state.printLabels.filter( ( label ) => label === state.currentLabel ? false : true )
+            } );
         }
     };
 
     // private _currentLabel: LabelExport;
     // get currentLabel(): LabelExport{
-    //     return this._currentLabel;
+    //     return _currentLabel;
     // }
-    setCurrentLabel = ( currentLabel: LabelExport ) => {
-        if ( !currentLabel ){
-            console.group("setCurrentLabel");
-            console.warn("! currentLabel parameter received.");
+    const setCurrentLabel = ( currentLabel: LabelExport ) => {
+        if ( !currentLabel ) {
+            console.group( "setCurrentLabel" );
+            console.warn( "! currentLabel parameter received." );
             console.trace();
             console.groupEnd();
             return;
         }
-        console.log( `PrintContextHandler printLabels set currentLabel`, currentLabel, {width: currentLabel.width, height: currentLabel.height});
-        if ( this.state.currentLabel === currentLabel ){ return ; }
-        this.setState({
+        console.log( `PrintContextHandler printLabels set currentLabel`, currentLabel, { width: currentLabel.width, height: currentLabel.height } );
+        if ( state.currentLabel === currentLabel ) { return; }
+        setState( {
+            ...state,
             currentLabel: currentLabel
-        });
+        } );
     };
 
-    getCurrentLabel = (): LabelExport => {
-        return this.state.currentLabel;
+    const getCurrentLabel = (): LabelExport => {
+        return state.currentLabel;
     };
 
-    getPrintLabels = (): LabelExport[] => {
-        return this.state.printLabels;
+    const getPrintLabels = (): LabelExport[] => {
+        return state.printLabels;
     };
     /**
      * return `true` if the label was added. else `false`
      */
-    addPrintLabel = (label: LabelExport): boolean => {
-        if ( ! label ){
-            console.warn("Attempt to add null object as label via context addPrintLabel()");
+    const addPrintLabel = ( label: LabelExport ): boolean => {
+        if ( !label ) {
+            console.warn( "Attempt to add null object as label via context addPrintLabel()" );
             return false;
         }
-        if ( this.getPrintLabels().includes(label) ){
+        if ( getPrintLabels().includes( label ) ) {
             return false;
         }
-        this.setState({
-            printLabels: this.getPrintLabels().concat([label])
-        });
+        setState( {
+            ...state,
+            printLabels: getPrintLabels().concat( [ label ] )
+        } );
         return true;
     };
 
-    startSendBuffer = ( shouldSendBuffer: boolean ) => {
+    const startSendBuffer = ( shouldSendBuffer: boolean ) => {
         console.log( "startSendBuffer received", shouldSendBuffer );
-        this.setState( { shouldSendBuffer: shouldSendBuffer } );
+        setState( {
+            ...state,
+            shouldSendBuffer: shouldSendBuffer } );
     };
 
-    currentLabelToBuffer = (): PixelMap => {
-        console.log( `currentLabelToBuffer printLabels set currentLabel\n`, this.state.currentLabel, '\n', {
-            currentLabelWidth: this.state.currentLabel.width,
-            currentLabelHeight: this.state.currentLabel.height, 
-            canvasWidth: this.state.currentLabel.canvas.width, 
-            canvasHeight: this.state.currentLabel.canvas.height 
+    const currentLabelToBuffer = (): PixelMap => {
+        console.log( `currentLabelToBuffer printLabels set currentLabel\n`, state.currentLabel, '\n', {
+            currentLabelWidth: state.currentLabel.width,
+            currentLabelHeight: state.currentLabel.height,
+            canvasWidth: state.currentLabel.canvas.width,
+            canvasHeight: state.currentLabel.canvas.height
         } );
-        return canvasToBuffer( this.state.currentLabel.canvas );
+        return canvasToBuffer( state.currentLabel.canvas );
     };
-    printLabelsToBuffer = (): PixelMap[] => {
-        return this.state.printLabels.map( label => canvasToBuffer(label.canvas));
+    const printLabelsToBuffer = (): PixelMap[] => {
+        return state.printLabels.map( label => canvasToBuffer( label.canvas ) );
     };
 
-    state = {
+    const [ state, setState ] = useState<PrintContextHandlerState>( {
         printLabels: [],
         currentLabel: null,
         shouldSendBuffer: false
-    };
+    } );
 
-    render (){
-        return (
-            <PrintContext.Provider value={{
-                setCurrentLabel: this.setCurrentLabel,
-                getCurrentLabel: this.getCurrentLabel,
-                handleAddToPrintList: this.handleAddToPrintList,
-                getPrintLabels: this.getPrintLabels,
-                startSendBuffer: this.startSendBuffer,
-                currentLabelToBuffer: this.currentLabelToBuffer,
-                shouldSendBuffer: this.state.shouldSendBuffer,
-                printLabelsToBuffer: this.printLabelsToBuffer
-            }}><div>
-                {console.log("PrintContextHandler", {
-                    printLabels: this.state.printLabels,
-                    currentLabel: this.state.currentLabel
-                })}
-                {this.props.children}
-                </div>
-            </PrintContext.Provider>
-        );
-    }
-}
+    return (
+        <PrintContext.Provider value={{
+            setCurrentLabel: setCurrentLabel,
+            getCurrentLabel: getCurrentLabel,
+            handleAddToPrintList: handleAddToPrintList,
+            getPrintLabels: getPrintLabels,
+            startSendBuffer: startSendBuffer,
+            currentLabelToBuffer: currentLabelToBuffer,
+            shouldSendBuffer: state.shouldSendBuffer,
+            printLabelsToBuffer: printLabelsToBuffer
+        }}><div>
+                {console.log( "PrintContextHandler", {
+                    printLabels: state.printLabels,
+                    currentLabel: state.currentLabel
+                } )}
+                {props.children}
+            </div>
+        </PrintContext.Provider>
+    );
+};

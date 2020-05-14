@@ -1,11 +1,8 @@
 import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
-import * as React from 'react';
-import * as ApolloReactComponents from '@apollo/react-components';
 import * as ApolloReactHoc from '@apollo/react-hoc';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -20,9 +17,25 @@ export type Scalars = {
   money: any;
   numeric: any;
   date: any;
+  bigint: any;
+  tsvector: any;
   /** uint8 (unsigned int between 0 and 255) scalar type for Apollo GraphQL */
   uint8: any;
   Upload: any;
+};
+
+
+/** expression to compare columns of type bigint. All fields are combined with logical 'AND'. */
+export type BigintComparisonExp = {
+  _eq?: Maybe<Scalars['bigint']>;
+  _gt?: Maybe<Scalars['bigint']>;
+  _gte?: Maybe<Scalars['bigint']>;
+  _in?: Maybe<Array<Scalars['bigint']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['bigint']>;
+  _lte?: Maybe<Scalars['bigint']>;
+  _neq?: Maybe<Scalars['bigint']>;
+  _nin?: Maybe<Array<Scalars['bigint']>>;
 };
 
 
@@ -8705,6 +8718,10 @@ export type MutationRoot = {
   delete_payment_method?: Maybe<PaymentMethodMutationResponse>;
   /** delete single row from the table: "payment_method" */
   delete_payment_method_by_pk?: Maybe<PaymentMethod>;
+  /** delete data from the table: "search_data" */
+  delete_search_data?: Maybe<SearchDataMutationResponse>;
+  /** delete single row from the table: "search_data" */
+  delete_search_data_by_pk?: Maybe<SearchData>;
   /** delete data from the table: "shipment" */
   delete_shipment?: Maybe<ShipmentMutationResponse>;
   /** delete single row from the table: "shipment" */
@@ -8857,6 +8874,10 @@ export type MutationRoot = {
   insert_payment_method?: Maybe<PaymentMethodMutationResponse>;
   /** insert a single row into the table: "payment_method" */
   insert_payment_method_one?: Maybe<PaymentMethod>;
+  /** insert data into the table: "search_data" */
+  insert_search_data?: Maybe<SearchDataMutationResponse>;
+  /** insert a single row into the table: "search_data" */
+  insert_search_data_one?: Maybe<SearchData>;
   /** insert data into the table: "shipment" */
   insert_shipment?: Maybe<ShipmentMutationResponse>;
   /** insert a single row into the table: "shipment" */
@@ -9014,6 +9035,10 @@ export type MutationRoot = {
   update_payment_method?: Maybe<PaymentMethodMutationResponse>;
   /** update single row of the table: "payment_method" */
   update_payment_method_by_pk?: Maybe<PaymentMethod>;
+  /** update data of the table: "search_data" */
+  update_search_data?: Maybe<SearchDataMutationResponse>;
+  /** update single row of the table: "search_data" */
+  update_search_data_by_pk?: Maybe<SearchData>;
   /** update data of the table: "shipment" */
   update_shipment?: Maybe<ShipmentMutationResponse>;
   /** update single row of the table: "shipment" */
@@ -9457,6 +9482,18 @@ export type MutationRootDeletePaymentMethodArgs = {
 /** mutation root */
 export type MutationRootDeletePaymentMethodByPkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteSearchDataArgs = {
+  where: SearchDataBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteSearchDataByPkArgs = {
+  id: Scalars['bigint'];
 };
 
 
@@ -9983,6 +10020,20 @@ export type MutationRootInsertPaymentMethodArgs = {
 export type MutationRootInsertPaymentMethodOneArgs = {
   object: PaymentMethodInsertInput;
   on_conflict?: Maybe<PaymentMethodOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertSearchDataArgs = {
+  objects: Array<SearchDataInsertInput>;
+  on_conflict?: Maybe<SearchDataOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertSearchDataOneArgs = {
+  object: SearchDataInsertInput;
+  on_conflict?: Maybe<SearchDataOnConflict>;
 };
 
 
@@ -10605,6 +10656,32 @@ export type MutationRootUpdatePaymentMethodByPkArgs = {
   _inc?: Maybe<PaymentMethodIncInput>;
   _set?: Maybe<PaymentMethodSetInput>;
   pk_columns: PaymentMethodPkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateSearchDataArgs = {
+  _append?: Maybe<SearchDataAppendInput>;
+  _delete_at_path?: Maybe<SearchDataDeleteAtPathInput>;
+  _delete_elem?: Maybe<SearchDataDeleteElemInput>;
+  _delete_key?: Maybe<SearchDataDeleteKeyInput>;
+  _inc?: Maybe<SearchDataIncInput>;
+  _prepend?: Maybe<SearchDataPrependInput>;
+  _set?: Maybe<SearchDataSetInput>;
+  where: SearchDataBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateSearchDataByPkArgs = {
+  _append?: Maybe<SearchDataAppendInput>;
+  _delete_at_path?: Maybe<SearchDataDeleteAtPathInput>;
+  _delete_elem?: Maybe<SearchDataDeleteElemInput>;
+  _delete_key?: Maybe<SearchDataDeleteKeyInput>;
+  _inc?: Maybe<SearchDataIncInput>;
+  _prepend?: Maybe<SearchDataPrependInput>;
+  _set?: Maybe<SearchDataSetInput>;
+  pk_columns: SearchDataPkColumnsInput;
 };
 
 
@@ -12227,6 +12304,16 @@ export type QueryRoot = {
   payment_method_aggregate: PaymentMethodAggregate;
   /** fetch data from the table: "payment_method" using primary key columns */
   payment_method_by_pk?: Maybe<PaymentMethod>;
+  /** execute function "search" which returns "search_data" */
+  search: Array<SearchData>;
+  /** execute function "search" and query aggregates on result of table type "search_data" */
+  search_aggregate: SearchDataAggregate;
+  /** fetch data from the table: "search_data" */
+  search_data: Array<SearchData>;
+  /** fetch aggregated fields from the table: "search_data" */
+  search_data_aggregate: SearchDataAggregate;
+  /** fetch data from the table: "search_data" using primary key columns */
+  search_data_by_pk?: Maybe<SearchData>;
   /** fetch data from the table: "shipment" */
   shipment: Array<Shipment>;
   /** fetch aggregated fields from the table: "shipment" */
@@ -13169,6 +13256,54 @@ export type QueryRootPaymentMethodByPkArgs = {
 
 
 /** query root */
+export type QueryRootSearchArgs = {
+  args: SearchArgs;
+  distinct_on?: Maybe<Array<SearchDataSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<SearchDataOrderBy>>;
+  where?: Maybe<SearchDataBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootSearchAggregateArgs = {
+  args: SearchArgs;
+  distinct_on?: Maybe<Array<SearchDataSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<SearchDataOrderBy>>;
+  where?: Maybe<SearchDataBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootSearchDataArgs = {
+  distinct_on?: Maybe<Array<SearchDataSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<SearchDataOrderBy>>;
+  where?: Maybe<SearchDataBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootSearchDataAggregateArgs = {
+  distinct_on?: Maybe<Array<SearchDataSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<SearchDataOrderBy>>;
+  where?: Maybe<SearchDataBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootSearchDataByPkArgs = {
+  id: Scalars['bigint'];
+};
+
+
+/** query root */
 export type QueryRootShipmentArgs = {
   distinct_on?: Maybe<Array<ShipmentSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
@@ -13243,6 +13378,317 @@ export type QueryRootVendorItemAggregateArgs = {
 /** query root */
 export type QueryRootVendorItemByPkArgs = {
   id: Scalars['Int'];
+};
+
+export type SearchArgs = {
+  query_text?: Maybe<Scalars['String']>;
+  return_limit?: Maybe<Scalars['Int']>;
+};
+
+/** columns and relationships of "search_data" */
+export type SearchData = {
+   __typename?: 'search_data';
+  id: Scalars['bigint'];
+  metadata?: Maybe<Scalars['jsonb']>;
+  search_vector?: Maybe<Scalars['tsvector']>;
+  /** Searchable text */
+  text: Scalars['String'];
+};
+
+
+/** columns and relationships of "search_data" */
+export type SearchDataMetadataArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "search_data" */
+export type SearchDataAggregate = {
+   __typename?: 'search_data_aggregate';
+  aggregate?: Maybe<SearchDataAggregateFields>;
+  nodes: Array<SearchData>;
+};
+
+/** aggregate fields of "search_data" */
+export type SearchDataAggregateFields = {
+   __typename?: 'search_data_aggregate_fields';
+  avg?: Maybe<SearchDataAvgFields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<SearchDataMaxFields>;
+  min?: Maybe<SearchDataMinFields>;
+  stddev?: Maybe<SearchDataStddevFields>;
+  stddev_pop?: Maybe<SearchDataStddevPopFields>;
+  stddev_samp?: Maybe<SearchDataStddevSampFields>;
+  sum?: Maybe<SearchDataSumFields>;
+  var_pop?: Maybe<SearchDataVarPopFields>;
+  var_samp?: Maybe<SearchDataVarSampFields>;
+  variance?: Maybe<SearchDataVarianceFields>;
+};
+
+
+/** aggregate fields of "search_data" */
+export type SearchDataAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<SearchDataSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "search_data" */
+export type SearchDataAggregateOrderBy = {
+  avg?: Maybe<SearchDataAvgOrderBy>;
+  count?: Maybe<OrderBy>;
+  max?: Maybe<SearchDataMaxOrderBy>;
+  min?: Maybe<SearchDataMinOrderBy>;
+  stddev?: Maybe<SearchDataStddevOrderBy>;
+  stddev_pop?: Maybe<SearchDataStddevPopOrderBy>;
+  stddev_samp?: Maybe<SearchDataStddevSampOrderBy>;
+  sum?: Maybe<SearchDataSumOrderBy>;
+  var_pop?: Maybe<SearchDataVarPopOrderBy>;
+  var_samp?: Maybe<SearchDataVarSampOrderBy>;
+  variance?: Maybe<SearchDataVarianceOrderBy>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type SearchDataAppendInput = {
+  metadata?: Maybe<Scalars['jsonb']>;
+};
+
+/** input type for inserting array relation for remote table "search_data" */
+export type SearchDataArrRelInsertInput = {
+  data: Array<SearchDataInsertInput>;
+  on_conflict?: Maybe<SearchDataOnConflict>;
+};
+
+/** aggregate avg on columns */
+export type SearchDataAvgFields = {
+   __typename?: 'search_data_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "search_data" */
+export type SearchDataAvgOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "search_data". All fields are combined with a logical 'AND'. */
+export type SearchDataBoolExp = {
+  _and?: Maybe<Array<Maybe<SearchDataBoolExp>>>;
+  _not?: Maybe<SearchDataBoolExp>;
+  _or?: Maybe<Array<Maybe<SearchDataBoolExp>>>;
+  id?: Maybe<BigintComparisonExp>;
+  metadata?: Maybe<JsonbComparisonExp>;
+  search_vector?: Maybe<TsvectorComparisonExp>;
+  text?: Maybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "search_data" */
+export enum SearchDataConstraint {
+  /** unique or primary key constraint */
+  search_pkey = 'search_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type SearchDataDeleteAtPathInput = {
+  metadata?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+/**
+ * delete the array element with specified index (negative integers count from the
+ * end). throws an error if top level container is not an array
+ */
+export type SearchDataDeleteElemInput = {
+  metadata?: Maybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type SearchDataDeleteKeyInput = {
+  metadata?: Maybe<Scalars['String']>;
+};
+
+/** input type for incrementing integer column in table "search_data" */
+export type SearchDataIncInput = {
+  id?: Maybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "search_data" */
+export type SearchDataInsertInput = {
+  id?: Maybe<Scalars['bigint']>;
+  metadata?: Maybe<Scalars['jsonb']>;
+  search_vector?: Maybe<Scalars['tsvector']>;
+  text?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type SearchDataMaxFields = {
+   __typename?: 'search_data_max_fields';
+  id?: Maybe<Scalars['bigint']>;
+  text?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "search_data" */
+export type SearchDataMaxOrderBy = {
+  id?: Maybe<OrderBy>;
+  text?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type SearchDataMinFields = {
+   __typename?: 'search_data_min_fields';
+  id?: Maybe<Scalars['bigint']>;
+  text?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "search_data" */
+export type SearchDataMinOrderBy = {
+  id?: Maybe<OrderBy>;
+  text?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "search_data" */
+export type SearchDataMutationResponse = {
+   __typename?: 'search_data_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<SearchData>;
+};
+
+/** input type for inserting object relation for remote table "search_data" */
+export type SearchDataObjRelInsertInput = {
+  data: SearchDataInsertInput;
+  on_conflict?: Maybe<SearchDataOnConflict>;
+};
+
+/** on conflict condition type for table "search_data" */
+export type SearchDataOnConflict = {
+  constraint: SearchDataConstraint;
+  update_columns: Array<SearchDataUpdateColumn>;
+  where?: Maybe<SearchDataBoolExp>;
+};
+
+/** ordering options when selecting data from "search_data" */
+export type SearchDataOrderBy = {
+  id?: Maybe<OrderBy>;
+  metadata?: Maybe<OrderBy>;
+  search_vector?: Maybe<OrderBy>;
+  text?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "search_data" */
+export type SearchDataPkColumnsInput = {
+  id: Scalars['bigint'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type SearchDataPrependInput = {
+  metadata?: Maybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "search_data" */
+export enum SearchDataSelectColumn {
+  /** column name */
+  id = 'id',
+  /** column name */
+  metadata = 'metadata',
+  /** column name */
+  search_vector = 'search_vector',
+  /** column name */
+  text = 'text'
+}
+
+/** input type for updating data in table "search_data" */
+export type SearchDataSetInput = {
+  id?: Maybe<Scalars['bigint']>;
+  metadata?: Maybe<Scalars['jsonb']>;
+  search_vector?: Maybe<Scalars['tsvector']>;
+  text?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type SearchDataStddevFields = {
+   __typename?: 'search_data_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "search_data" */
+export type SearchDataStddevOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_pop on columns */
+export type SearchDataStddevPopFields = {
+   __typename?: 'search_data_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "search_data" */
+export type SearchDataStddevPopOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_samp on columns */
+export type SearchDataStddevSampFields = {
+   __typename?: 'search_data_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "search_data" */
+export type SearchDataStddevSampOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate sum on columns */
+export type SearchDataSumFields = {
+   __typename?: 'search_data_sum_fields';
+  id?: Maybe<Scalars['bigint']>;
+};
+
+/** order by sum() on columns of table "search_data" */
+export type SearchDataSumOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** update columns of table "search_data" */
+export enum SearchDataUpdateColumn {
+  /** column name */
+  id = 'id',
+  /** column name */
+  metadata = 'metadata',
+  /** column name */
+  search_vector = 'search_vector',
+  /** column name */
+  text = 'text'
+}
+
+/** aggregate var_pop on columns */
+export type SearchDataVarPopFields = {
+   __typename?: 'search_data_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "search_data" */
+export type SearchDataVarPopOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate var_samp on columns */
+export type SearchDataVarSampFields = {
+   __typename?: 'search_data_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "search_data" */
+export type SearchDataVarSampOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type SearchDataVarianceFields = {
+   __typename?: 'search_data_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "search_data" */
+export type SearchDataVarianceOrderBy = {
+  id?: Maybe<OrderBy>;
 };
 
 /**
@@ -13836,6 +14282,16 @@ export type SubscriptionRoot = {
   payment_method_aggregate: PaymentMethodAggregate;
   /** fetch data from the table: "payment_method" using primary key columns */
   payment_method_by_pk?: Maybe<PaymentMethod>;
+  /** execute function "search" which returns "search_data" */
+  search: Array<SearchData>;
+  /** execute function "search" and query aggregates on result of table type "search_data" */
+  search_aggregate: SearchDataAggregate;
+  /** fetch data from the table: "search_data" */
+  search_data: Array<SearchData>;
+  /** fetch aggregated fields from the table: "search_data" */
+  search_data_aggregate: SearchDataAggregate;
+  /** fetch data from the table: "search_data" using primary key columns */
+  search_data_by_pk?: Maybe<SearchData>;
   /** fetch data from the table: "shipment" */
   shipment: Array<Shipment>;
   /** fetch aggregated fields from the table: "shipment" */
@@ -14778,6 +15234,54 @@ export type SubscriptionRootPaymentMethodByPkArgs = {
 
 
 /** subscription root */
+export type SubscriptionRootSearchArgs = {
+  args: SearchArgs;
+  distinct_on?: Maybe<Array<SearchDataSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<SearchDataOrderBy>>;
+  where?: Maybe<SearchDataBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootSearchAggregateArgs = {
+  args: SearchArgs;
+  distinct_on?: Maybe<Array<SearchDataSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<SearchDataOrderBy>>;
+  where?: Maybe<SearchDataBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootSearchDataArgs = {
+  distinct_on?: Maybe<Array<SearchDataSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<SearchDataOrderBy>>;
+  where?: Maybe<SearchDataBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootSearchDataAggregateArgs = {
+  distinct_on?: Maybe<Array<SearchDataSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<SearchDataOrderBy>>;
+  where?: Maybe<SearchDataBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootSearchDataByPkArgs = {
+  id: Scalars['bigint'];
+};
+
+
+/** subscription root */
 export type SubscriptionRootShipmentArgs = {
   distinct_on?: Maybe<Array<ShipmentSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
@@ -14912,6 +15416,20 @@ export type TimestamptzComparisonExp = {
   _lte?: Maybe<Scalars['timestamptz']>;
   _neq?: Maybe<Scalars['timestamptz']>;
   _nin?: Maybe<Array<Scalars['timestamptz']>>;
+};
+
+
+/** expression to compare columns of type tsvector. All fields are combined with logical 'AND'. */
+export type TsvectorComparisonExp = {
+  _eq?: Maybe<Scalars['tsvector']>;
+  _gt?: Maybe<Scalars['tsvector']>;
+  _gte?: Maybe<Scalars['tsvector']>;
+  _in?: Maybe<Array<Scalars['tsvector']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['tsvector']>;
+  _lte?: Maybe<Scalars['tsvector']>;
+  _neq?: Maybe<Scalars['tsvector']>;
+  _nin?: Maybe<Array<Scalars['tsvector']>>;
 };
 
 
@@ -15876,12 +16394,6 @@ export const InsertIconDocument = gql`
 }
     `;
 export type InsertIconMutationFn = ApolloReactCommon.MutationFunction<InsertIconMutation, InsertIconMutationVariables>;
-export type InsertIconComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<InsertIconMutation, InsertIconMutationVariables>, 'mutation'>;
-
-    export const InsertIconComponent = (props: InsertIconComponentProps) => (
-      <ApolloReactComponents.Mutation<InsertIconMutation, InsertIconMutationVariables> mutation={InsertIconDocument} {...props} />
-    );
-    
 export type InsertIconProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
       [key in TDataName]: ApolloReactCommon.MutationFunction<InsertIconMutation, InsertIconMutationVariables>
     } & TChildProps;
@@ -15942,12 +16454,6 @@ export const GetIconDocument = gql`
   }
 }
     `;
-export type GetIconComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetIconQuery, GetIconQueryVariables>, 'query'> & ({ variables: GetIconQueryVariables; skip?: boolean; } | { skip: boolean; });
-
-    export const GetIconComponent = (props: GetIconComponentProps) => (
-      <ApolloReactComponents.Query<GetIconQuery, GetIconQueryVariables> query={GetIconDocument} {...props} />
-    );
-    
 export type GetIconProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetIconQuery, GetIconQueryVariables>
     } & TChildProps;
@@ -16005,12 +16511,6 @@ export const GetIconsDocument = gql`
   }
 }
     `;
-export type GetIconsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetIconsQuery, GetIconsQueryVariables>, 'query'>;
-
-    export const GetIconsComponent = (props: GetIconsComponentProps) => (
-      <ApolloReactComponents.Query<GetIconsQuery, GetIconsQueryVariables> query={GetIconsDocument} {...props} />
-    );
-    
 export type GetIconsProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetIconsQuery, GetIconsQueryVariables>
     } & TChildProps;
@@ -16059,12 +16559,6 @@ export const SearchItemsDocument = gql`
   }
 }
     `;
-export type SearchItemsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<SearchItemsQuery, SearchItemsQueryVariables>, 'query'>;
-
-    export const SearchItemsComponent = (props: SearchItemsComponentProps) => (
-      <ApolloReactComponents.Query<SearchItemsQuery, SearchItemsQueryVariables> query={SearchItemsDocument} {...props} />
-    );
-    
 export type SearchItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<SearchItemsQuery, SearchItemsQueryVariables>
     } & TChildProps;
@@ -16112,12 +16606,6 @@ export const GetLabelsDocument = gql`
   }
 }
     ${LabelFieldsFragmentDoc}`;
-export type GetLabelsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetLabelsQuery, GetLabelsQueryVariables>, 'query'>;
-
-    export const GetLabelsComponent = (props: GetLabelsComponentProps) => (
-      <ApolloReactComponents.Query<GetLabelsQuery, GetLabelsQueryVariables> query={GetLabelsDocument} {...props} />
-    );
-    
 export type GetLabelsProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetLabelsQuery, GetLabelsQueryVariables>
     } & TChildProps;
@@ -16163,12 +16651,6 @@ export const GetLabelDocument = gql`
   }
 }
     ${LabelFieldsFragmentDoc}`;
-export type GetLabelComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetLabelQuery, GetLabelQueryVariables>, 'query'> & ({ variables: GetLabelQueryVariables; skip?: boolean; } | { skip: boolean; });
-
-    export const GetLabelComponent = (props: GetLabelComponentProps) => (
-      <ApolloReactComponents.Query<GetLabelQuery, GetLabelQueryVariables> query={GetLabelDocument} {...props} />
-    );
-    
 export type GetLabelProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetLabelQuery, GetLabelQueryVariables>
     } & TChildProps;
@@ -16215,12 +16697,6 @@ export const GetLabelByItemIdDocument = gql`
   }
 }
     ${LabelFieldsFragmentDoc}`;
-export type GetLabelByItemIdComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>, 'query'>;
-
-    export const GetLabelByItemIdComponent = (props: GetLabelByItemIdComponentProps) => (
-      <ApolloReactComponents.Query<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables> query={GetLabelByItemIdDocument} {...props} />
-    );
-    
 export type GetLabelByItemIdProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>
     } & TChildProps;
@@ -16267,12 +16743,6 @@ export const GetTemplatesDocument = gql`
   }
 }
     ${LabelFieldsFragmentDoc}`;
-export type GetTemplatesComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetTemplatesQuery, GetTemplatesQueryVariables>, 'query'>;
-
-    export const GetTemplatesComponent = (props: GetTemplatesComponentProps) => (
-      <ApolloReactComponents.Query<GetTemplatesQuery, GetTemplatesQueryVariables> query={GetTemplatesDocument} {...props} />
-    );
-    
 export type GetTemplatesProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetTemplatesQuery, GetTemplatesQueryVariables>
     } & TChildProps;
@@ -16318,12 +16788,6 @@ export const GetSingleLabelsDocument = gql`
   }
 }
     `;
-export type GetSingleLabelsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>, 'query'>;
-
-    export const GetSingleLabelsComponent = (props: GetSingleLabelsComponentProps) => (
-      <ApolloReactComponents.Query<GetSingleLabelsQuery, GetSingleLabelsQueryVariables> query={GetSingleLabelsDocument} {...props} />
-    );
-    
 export type GetSingleLabelsProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>
     } & TChildProps;
@@ -16373,12 +16837,6 @@ export const SaveLabelDocument = gql`
 }
     `;
 export type SaveLabelMutationFn = ApolloReactCommon.MutationFunction<SaveLabelMutation, SaveLabelMutationVariables>;
-export type SaveLabelComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<SaveLabelMutation, SaveLabelMutationVariables>, 'mutation'>;
-
-    export const SaveLabelComponent = (props: SaveLabelComponentProps) => (
-      <ApolloReactComponents.Mutation<SaveLabelMutation, SaveLabelMutationVariables> mutation={SaveLabelDocument} {...props} />
-    );
-    
 export type SaveLabelProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
       [key in TDataName]: ApolloReactCommon.MutationFunction<SaveLabelMutation, SaveLabelMutationVariables>
     } & TChildProps;
@@ -16433,12 +16891,6 @@ export const EditLabelDocument = gql`
 }
     `;
 export type EditLabelMutationFn = ApolloReactCommon.MutationFunction<EditLabelMutation, EditLabelMutationVariables>;
-export type EditLabelComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<EditLabelMutation, EditLabelMutationVariables>, 'mutation'>;
-
-    export const EditLabelComponent = (props: EditLabelComponentProps) => (
-      <ApolloReactComponents.Mutation<EditLabelMutation, EditLabelMutationVariables> mutation={EditLabelDocument} {...props} />
-    );
-    
 export type EditLabelProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
       [key in TDataName]: ApolloReactCommon.MutationFunction<EditLabelMutation, EditLabelMutationVariables>
     } & TChildProps;
@@ -16501,12 +16953,6 @@ export const GetOrdersByDateRangeDocument = gql`
   }
 }
     `;
-export type GetOrdersByDateRangeComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>, 'query'>;
-
-    export const GetOrdersByDateRangeComponent = (props: GetOrdersByDateRangeComponentProps) => (
-      <ApolloReactComponents.Query<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables> query={GetOrdersByDateRangeDocument} {...props} />
-    );
-    
 export type GetOrdersByDateRangeProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>
     } & TChildProps;
@@ -16558,12 +17004,6 @@ export const InsertOrderDocument = gql`
 }
     `;
 export type InsertOrderMutationFn = ApolloReactCommon.MutationFunction<InsertOrderMutation, InsertOrderMutationVariables>;
-export type InsertOrderComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<InsertOrderMutation, InsertOrderMutationVariables>, 'mutation'>;
-
-    export const InsertOrderComponent = (props: InsertOrderComponentProps) => (
-      <ApolloReactComponents.Mutation<InsertOrderMutation, InsertOrderMutationVariables> mutation={InsertOrderDocument} {...props} />
-    );
-    
 export type InsertOrderProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
       [key in TDataName]: ApolloReactCommon.MutationFunction<InsertOrderMutation, InsertOrderMutationVariables>
     } & TChildProps;
@@ -16633,12 +17073,6 @@ export const GetPrinterStatusDocument = gql`
   }
 }
     `;
-export type GetPrinterStatusComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>, 'query'>;
-
-    export const GetPrinterStatusComponent = (props: GetPrinterStatusComponentProps) => (
-      <ApolloReactComponents.Query<GetPrinterStatusQuery, GetPrinterStatusQueryVariables> query={GetPrinterStatusDocument} {...props} />
-    );
-    
 export type GetPrinterStatusProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>
     } & TChildProps;
@@ -16685,12 +17119,6 @@ export const SendBufferDocument = gql`
 }
     `;
 export type SendBufferMutationFn = ApolloReactCommon.MutationFunction<SendBufferMutation, SendBufferMutationVariables>;
-export type SendBufferComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<SendBufferMutation, SendBufferMutationVariables>, 'mutation'>;
-
-    export const SendBufferComponent = (props: SendBufferComponentProps) => (
-      <ApolloReactComponents.Mutation<SendBufferMutation, SendBufferMutationVariables> mutation={SendBufferDocument} {...props} />
-    );
-    
 export type SendBufferProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
       [key in TDataName]: ApolloReactCommon.MutationFunction<SendBufferMutation, SendBufferMutationVariables>
     } & TChildProps;
@@ -16735,12 +17163,6 @@ export const GetItemsDocument = gql`
   }
 }
     ${ItemFieldsFragmentDoc}`;
-export type GetItemsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetItemsQuery, GetItemsQueryVariables>, 'query'>;
-
-    export const GetItemsComponent = (props: GetItemsComponentProps) => (
-      <ApolloReactComponents.Query<GetItemsQuery, GetItemsQueryVariables> query={GetItemsDocument} {...props} />
-    );
-    
 export type GetItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetItemsQuery, GetItemsQueryVariables>
     } & TChildProps;
@@ -16787,12 +17209,6 @@ export const GetItemDocument = gql`
   }
 }
     ${ItemFieldsFragmentDoc}`;
-export type GetItemComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetItemQuery, GetItemQueryVariables>, 'query'> & ({ variables: GetItemQueryVariables; skip?: boolean; } | { skip: boolean; });
-
-    export const GetItemComponent = (props: GetItemComponentProps) => (
-      <ApolloReactComponents.Query<GetItemQuery, GetItemQueryVariables> query={GetItemDocument} {...props} />
-    );
-    
 export type GetItemProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetItemQuery, GetItemQueryVariables>
     } & TChildProps;
@@ -16846,12 +17262,6 @@ export const ItemBundleDocument = gql`
   }
 }
     `;
-export type ItemBundleComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ItemBundleQuery, ItemBundleQueryVariables>, 'query'>;
-
-    export const ItemBundleComponent = (props: ItemBundleComponentProps) => (
-      <ApolloReactComponents.Query<ItemBundleQuery, ItemBundleQueryVariables> query={ItemBundleDocument} {...props} />
-    );
-    
 export type ItemBundleProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<ItemBundleQuery, ItemBundleQueryVariables>
     } & TChildProps;
@@ -16918,12 +17328,6 @@ export const ItemHardwareFastenerBoltDocument = gql`
   }
 }
     `;
-export type ItemHardwareFastenerBoltComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>, 'query'>;
-
-    export const ItemHardwareFastenerBoltComponent = (props: ItemHardwareFastenerBoltComponentProps) => (
-      <ApolloReactComponents.Query<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables> query={ItemHardwareFastenerBoltDocument} {...props} />
-    );
-    
 export type ItemHardwareFastenerBoltProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>
     } & TChildProps;
@@ -16962,4 +17366,4 @@ export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHo
 export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
 export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
-// graphql typescript defs generated on 2020-05-12T06:40:19-06:00
+// graphql typescript defs generated on 2020-05-13T18:19:16-06:00
