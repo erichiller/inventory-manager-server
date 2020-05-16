@@ -1,4 +1,4 @@
-import { SelectProps } from "antd/lib/select";
+import { SelectProps, SelectValue, LabeledValue } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
 import { AutoComplete, Input, DatePicker, Select } from "antd";
 
@@ -7,46 +7,43 @@ import { AutoComplete, Input, DatePicker, Select } from "antd";
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { toTitleCase, getDaysInMonth } from "../../UtilityFunctions";
 import { InputProps } from "antd/lib/input";
-import { useGetOrdersByDateRangeQuery, useGetItemsQuery } from "../../types/graphql";
+import { useGetOrdersByDateRangeQuery, useGetItemsQuery, useItemSearchQuery } from "../../types/graphql";
 
 
 interface OptionT {
-    // value: string;
     label?: string | ReactElement;
     item_id: number;
 }
-// interface ItemInputProps extends InputProps {
-interface ItemInputProps extends Omit<InputProps, 'value' | 'onChange'> {
+type VT = SelectValue;
+
+interface ItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
     forwardRef?: React.MutableRefObject<Input>;
-    value?: OptionT;
-    onChange?: ( event: OptionT ) => void;
+    value?: VT;
+    onChange?: ( item_id: number[] ) => void;
 }
 /**
- * Form Select Input for arbitrary ENUM
+ * Form Select Input for Items
  */
-export const ItemInput: React.FC<ItemInputProps> = ( props ) => {
+export const ItemSelect: React.FC<ItemSelectProps> = ( props ) => {
     const { onChange, value, ...remainingProps } = props;
-    // const [ valueText, setValueText ] = useState<string>();
+    const [ searchText, setSearchText ] = useState<string>();
     const [ options, setOptions ] = useState<OptionT[]>( [] );
-    // const triggerChange = ( value: string, option: OptionsType | OptionData | OptionGroupData ) => {
-    //     setValue( value );
-    //     if ( onChange ) {
-    //         onChange( value, option );
-    //     }
-    // };
-    const { data, loading, error } = useGetItemsQuery( {
+    const { data, loading, error } = useItemSearchQuery( {
         variables: {
+            search_text: searchText
         }
     } );
     useEffect( () => {
         if ( !loading && !error ) {
-            setOptions( data.items.map( v => {
+            console.log( { class: "ItemSelect", "action": "useEffect", event: "loading and error ok", data } );
+            setOptions( data.search.map( v => {
+                console.log( "outputting option", v );
                 return {
                     item_id: v.id,
                     label: <span className="orderOption">
                         {/* {<v.icon />} */}
                         <span>{v.name}</span>
-                        <span>{v.object?.description}</span>
+                        <span>{v.metadata?.description}</span>
                         {/* <span>#{v.vendor_order_id}</span> */}
                     </span>
                     // TODO: Set value to the applicable string, feed value up that is the `order_id`
@@ -54,37 +51,32 @@ export const ItemInput: React.FC<ItemInputProps> = ( props ) => {
             } ) );
         }
     }, [ loading, data ] );
-    const handleSearch = ( value: any ): void => {
-        // const handleSearch = ( value: OptionT ): void => {
-        // const parsedValue = parseScrewSizeInputOptionData( value );
-        console.log( { method: 'ItemInput', f: 'handleSearch', value } );
-        // setValueText( value );
-        // setOptionsDataArr( getScrewSizeOptions( parsedValue ) );
-        // setOptions( eliminateArrayDuplicates( getScrewSizeOptions( parsedValue ) ).map( d => {
-        // const dStr = constructOptionValue( d );
-        // return { value: dStr };
-        // return <Select.Option key={dStr} value={dStr}>{dStr}</Select.Option>;
-        // } ) );
-        onChange( value.value );
-    };
     return (
-        <div className="ItemInput">
-            {/* <AutoComplete
-                options={options.map( v => { return { label: v.label, value: v.order_id.toString() } })}
-                onChange={( str, opt ) => handleSearch( opt )}
-                dropdownMatchSelectWidth={220}
-            > */}
-                {/* <Input
-                    ref={props.forwardRef}
-                    spellCheck={false}
-                    {...remainingProps}
-                /> */}
-            {/* </AutoComplete> */}
+        <div className="ItemSelect">
             <Select
-                showSearch
-                options={options.map( v => { return { label: v.label, value: v.item_id.toString() }; } )}
-                onChange={( str, opt ) => handleSearch( opt )}
-            />
+                mode="multiple"
+                filterOption={false}
+                onSearch={value => { console.log( { event: "onSearch", setSearchText: value } ); setSearchText( value ); }}
+                onChange={( value, opt ) => {
+                    console.log( "onChange", { value, opt } );
+                    let arrayOfNumbers: number[] = [];
+                    if ( typeof value === "number" ) {
+                        arrayOfNumbers = [ value ];
+                    } else if ( typeof value === "string" ) {
+                        arrayOfNumbers = [ parseInt( value ) ];
+                    } else if ( "key" in value ) {
+                        arrayOfNumbers = [ typeof value.value === "number" ? value.value : parseInt( value.value ) ];
+                    } else if ( Array.isArray(value) && value.length > 0){
+                        value.forEach( e => typeof e === "number" ? arrayOfNumbers.push(e) : arrayOfNumbers.push(parseInt(e)));
+                    }
+                    onChange( arrayOfNumbers );
+                }}
+            >
+                {...options.map( v => {
+                    console.log( "select with options", v );
+                    return <Select.Option key={v.item_id} value={v.item_id.toString()}>{v.label}</Select.Option>;
+                } )}
+            </Select>
         </div>
     );
 };

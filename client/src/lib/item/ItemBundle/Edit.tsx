@@ -9,7 +9,7 @@ import { toMinimumFixed, Union } from '../../UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { ItemBundle } from './Index';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { ItemInput } from './ItemSelect';
+import { ItemSelect } from './ItemSelect';
 
 
 interface ItemBundleEditFormProps extends Union<ItemEditFormProps, ItemBundle> {
@@ -19,6 +19,11 @@ interface ItemBundleEditFormProps extends Union<ItemEditFormProps, ItemBundle> {
 
 export const ItemBundleEditForm: React.FC<ItemBundleEditFormProps> = ( props ) => {
     const { form } = props;
+
+    /**
+     * console regex search: 
+     * /(onFinish|ItemSelect|onChange)/
+     */
 
     // useEffect( () => {
     //     screwSizeInputRef.current.focus();
@@ -36,7 +41,20 @@ export const ItemBundleEditForm: React.FC<ItemBundleEditFormProps> = ( props ) =
         <React.Fragment>
             <div className="col">
                 <Divider key="items" orientation="left">Items</Divider>
-                <Form.List name="items">
+
+                <Form.Item
+                    label="Bundled Items"
+                    name="items"
+                    getValueFromEvent={( args ) => {
+                        console.log( 'form getValueFromEvent (items)', args );
+                        return args;
+                    }}
+                >
+                    <ItemSelect placeholder="Search for Item" />
+                </Form.Item>
+
+
+                {/* <Form.List name="items">
                     {( fields, { add, remove } ) => {
                         return (
                             <React.Fragment>
@@ -49,15 +67,15 @@ export const ItemBundleEditForm: React.FC<ItemBundleEditFormProps> = ( props ) =
                                             return args;
                                         }}
                                         >
-                                        <ItemInput placeholder="Search for Item"
-                                            suffix={
-                                                <MinusCircleOutlined
-                                                    className="dynamic-delete-button"
-                                                    onClick={() => {
-                                                        remove( field.name );
-                                                    }}
-                                                />
-                                            }
+                                        <ItemSelect placeholder="Search for Item"
+                                            // suffix={
+                                            //     <MinusCircleOutlined
+                                            //         className="dynamic-delete-button"
+                                            //         onClick={() => {
+                                            //             remove( field.name );
+                                            //         }}
+                                            //     />
+                                            // }
                                         />
                                         </Form.Item>
                                 ) )}
@@ -78,7 +96,7 @@ export const ItemBundleEditForm: React.FC<ItemBundleEditFormProps> = ( props ) =
                             </React.Fragment>
                         );
                     }}
-                </Form.List>
+                </Form.List> */}
             </div>
 
         </React.Fragment>

@@ -1,3 +1,6 @@
+import { T } from 'antd/lib/upload/utils';
+import { Integer } from './types/uint8';
+
 export * from './types/UtilityTypes';
 
 export function buf2hex ( buffer: ArrayBuffer ): string { // buffer is an ArrayBuffer
@@ -5,20 +8,26 @@ export function buf2hex ( buffer: ArrayBuffer ): string { // buffer is an ArrayB
 }
 
 export function toTitleCase ( s: string ): string {
-    if ( [ 'ID', 'id'].includes(s) ){ return s; } // do not change `id`
-    if ( s.toUpperCase() == s ){ return s; } // do not capitalize
+    if ( [ 'ID', 'id' ].includes( s ) ) { return s; } // do not change `id`
+    if ( s.toUpperCase() == s ) { return s; } // do not capitalize
     return s.replace( /_/g, ' ' ).split( ' ' ).map( function ( word ) {
         return word.charAt( 0 ).toUpperCase() + word.slice( 1 ).toLowerCase();
     } ).join( ' ' );
 }
 
-export function filterObject ( o: object, allow: undefined | null | string[], exclude: undefined | null | string[]): object {
-
-    let f: (key) => boolean = allow
-        ? (key) => allow.includes(key)
+/**
+ * Filter properties of object returning new object possessing only the requested properties.
+ * `allow` and `exclude` are exclusive, they can not be supplied together. If they are `allow` will always take precedence.
+ * @param o object to filter properties of
+ * @param allow array of propertyname strings that should be **included**
+ * @param exclude array of propertyname strings that should be **excluded**
+ */
+export function filterObject ( o: object, allow: undefined | null | string[], exclude: undefined | null | string[] ): object {
+    let f: ( key ) => boolean = allow
+        ? ( key ) => allow.includes( key )
         : exclude
-            ? (key) => ! exclude.includes(key)
-            : (key) => true;
+            ? ( key ) => !exclude.includes( key )
+            : ( key ) => true;
 
     return Object.keys( o )
         .filter( f )
@@ -26,6 +35,59 @@ export function filterObject ( o: object, allow: undefined | null | string[], ex
             obj[ key ] = o[ key ];
             return obj;
         }, {} );
+}
+
+
+export function filterObjectKeysWithProperty<T extends object> ( o: T, k: keyof T[ keyof T ] ): Array<keyof T> {
+    let filteredObjects: Array<keyof T> = [];
+    (Object.keys( o ) as Array<keyof T>).forEach( propertyValue => {
+        if ( k in o[ propertyValue ] ) {
+            filteredObjects.push( propertyValue );
+        }
+    } );
+    return filteredObjects;
+}
+// should work but unused:
+// export function filterObjectWithProperty<T> ( o: T, k: keyof T[ keyof T ] ): T[ keyof T ][] {
+//     let filteredObjects: T[ keyof T ][] = [];
+//     Object.keys( o ).forEach( propertyValue => {
+//         if ( k in o[ propertyValue ] ) {
+//             filteredObjects.push( o[ propertyValue ] );
+//         }
+//     } );
+//     return filteredObjects;
+// }
+// export function filterObjectWithPropertiesHavingValue<T, V> ( o: T, k: keyof T, v: V ): T[ keyof T ][] {
+//     let filteredObjects: T[ keyof T ][] = [];
+//     Object.keys( o ).forEach( propertyValue => {
+//         if ( k in o[ propertyValue ] ) {
+//             filteredObjects.push( o[ propertyValue ] );
+//         }
+//     } );
+//     return filteredObjects;
+// }
+
+export function firstOfArrayOrNull<T> ( array: T[] ): T | null {
+    if ( Array.isArray( array ) && array.length > 0 ) {
+        return array[ 0 ];
+    }
+    return null;
+}
+
+/**
+ * ParseInt, but it won't error when passed a number
+ */
+export function parseIntSafe ( input: string | number ): Integer {
+    if ( typeof input === "number" ) { return input; }
+    return parseInt( input );
+}
+/**
+ * ParseFloat, but it won't error when passed a number, and it will return default if NaN
+ */
+export function parseFloatSafeWithDefault ( input: string | number, defaultValue: number ): number {
+    if ( typeof input === "number" ) { return input; }
+    let f = parseFloat(input);
+    return f !== NaN ? f : defaultValue;
 }
 
 
@@ -55,12 +117,12 @@ export function toLowerCamelCase ( s: string ): string {
  * input: 4.95672, 2, 3  => 4.956
  */
 export function toMinimumFixed ( n: number | string, min: 0 | 1 | 2 | 3 | 4, max: number = 4 ): string {
-    if ( typeof n !== "number"){ return n; }
-    let curr = n.toFixed(max);
+    if ( typeof n !== "number" ) { return n; }
+    let curr = n.toFixed( max );
     // console.log( { 'f': 'toMinimumFixed', n, min, max, curr, n_type: typeof n } );
     if ( max > min && curr.substr( -1 ) === "0" ) {
         // console.log( { 'f': 'toMinimumFixed calling next', n, min, max, curr, n_type: typeof n, last: curr.substr( -1 ), is_zero: curr.substr( -1 ) === "0" } );
-        return toMinimumFixed(n, min, max - 1);
+        return toMinimumFixed( n, min, max - 1 );
     }
     return curr;
 }
@@ -69,8 +131,8 @@ export function toMinimumFixed ( n: number | string, min: 0 | 1 | 2 | 3 | 4, max
  * Elimnate duplicate elements within an array.
  * @param arr input array
  */
-export function eliminateArrayDuplicates<T>( arr: Array<T> ): Array<T> {
-    return arr.filter( (el, idx) => arr.indexOf(el) === idx );
+export function eliminateArrayDuplicates<T> ( arr: Array<T> ): Array<T> {
+    return arr.filter( ( el, idx ) => arr.indexOf( el ) === idx );
 }
 
 /**
@@ -78,8 +140,8 @@ export function eliminateArrayDuplicates<T>( arr: Array<T> ): Array<T> {
  * @param logparams arbitrary object to add to log message
  * @param input Value which is passed in, printed to the log, and returned unchanges
  */
-export function transparentLog<T>(logparams: {[key: string]: any}, input: T): T {
-    console.log(logparams, input);
+export function transparentLog<T> ( logparams: { [ key: string ]: any; }, input: T ): T {
+    console.log( logparams, input );
     return input;
 }
 
@@ -100,10 +162,10 @@ export function getDaysInMonth ( month: number, year: number ): number;
 export function getDaysInMonth ( a: number | string, b?: number ): number {
     let year: number = 0;
     let month: number = 1;
-    if ( typeof a === "string" ){
-        let split = a.split('-', 2);
-        month = parseInt(split[1]);
-        year = parseInt(split[0]);
+    if ( typeof a === "string" ) {
+        let split = a.split( '-', 2 );
+        month = parseInt( split[ 1 ] );
+        year = parseInt( split[ 0 ] );
     } else {
         month = a;
         year = b;
@@ -111,4 +173,43 @@ export function getDaysInMonth ( a: number | string, b?: number ): number {
     // Date is actually based on month 0=January,
     // but Day 0 is the last day in the previous month
     return new Date( year, month, 0 ).getDate();
-};
+}
+
+
+
+// export function isNumberArray ( arg: any ): arg is number[] {
+//     if ( Array.isArray( arg ) ) {
+//         if ( arg.length !== 0 ) {
+//             if ( typeof arg[ 0 ] === "number" ) {
+//                 return true;
+//             }
+//         }
+//     }
+//     return false;
+// }
+
+
+// export function isStringArray ( arg: any ): arg is string[] {
+//     if ( Array.isArray( arg ) ) {
+//         if ( arg.length !== 0 ) {
+//             if ( typeof arg[ 0 ] === "string" ) {
+//                 return true;
+//             }
+//         }
+//     }
+//     return false;
+// }
+
+// export function isArray<T> ( arg: any, elementType: T ): arg is T[] {
+//     if ( Array.isArray( arg ) ) {
+//         if ( arg.length !== 0 ) {
+//             if ( typeof arg[ 0 ] === typeof elementType ) {
+//                 if ( typeof arg[0] === "object" ){
+//                     return Object.keys(arg[0]) === Object.keys(elementType);
+//                 }
+//                 return true;
+//             }
+//         }
+//     }
+//     return false;
+// }

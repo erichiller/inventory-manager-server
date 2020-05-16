@@ -32,14 +32,14 @@ type HeadDefinition<U> = Record<keyof typeof EnumHardwareFastenerHeadEnum, {
 /**
  * @propertyNames {"pattern": "^[0-9.]+$"}
  **/
-type PitchDefinition = { [ pitch: string ]: {
-    label?: EnumHardwareFastenerThreadTypeEnum;
-}}
+type PitchDefinitions = { [ pitch: string ]: {
+    label: EnumHardwareFastenerThreadTypeEnum;
+};}
 
 interface DiameterDefinitionBase<U> {
     /** whether this diameter appears on the standardized/first choice list */
     common: boolean;
-    pitch: PitchDefinition;
+    pitch: PitchDefinitions;
     hardness: any; // TODO
     head: Partial<HeadDefinition<U>>;
 }
@@ -50,7 +50,7 @@ interface DiameterDefinitionBase<U> {
 export interface IScrewSizeDefinition {
     /**
      * ISO
-     * @propertyNames {"pattern": "^[mM][0-9.]+$"}
+     * @propertyNames {"pattern": "^M[0-9.]+$"}
      **/
     iso: { [ diameter: string ]: Partial<DiameterDefinitionBase<MetricUnit>>; };
     /** 

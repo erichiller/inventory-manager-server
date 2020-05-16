@@ -13,7 +13,7 @@ export interface regexParsedSizeStringI {
 export type EnumUnitKeys = keyof typeof EnumUnitEnum;
 
 
-export type UnitPrefixT = 'M' | 'm' | '#' | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+export type UnitPrefixT = 'M' | '#' | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 
 
 export enum EnumHardwareFastenerSpecificationsEnum {
