@@ -17,8 +17,8 @@ export const screwSizeRegex = /(?<unitPrefix>[mM#]?)(?<diameter>[/0-9\.]*)-?(?<p
  */
 export function getUnitFromUnitSystem ( sys: EnumUnitKeys | EnumUnitEnum ) {
     switch ( sys ) {
-        case EnumUnitEnum.metric:
-        case 'metric':
+        case EnumUnitEnum.iso:
+        case 'iso':
             return "mm";
         case EnumUnitEnum.usc:
         case 'usc':
@@ -35,9 +35,8 @@ export function getUnitSystemFromUnitPrefix ( prefix: UnitPrefixT ): EnumUnitEnu
     prefix = !parseInt( prefix ) ? prefix : '#';
     console.log( { func: 'getUnitSystemFromUnitPrefix', prefix } );
     switch ( prefix ) {
-        case 'm':
         case 'M':
-            return EnumUnitEnum.metric;
+            return EnumUnitEnum.iso;
         case '#':
             return EnumUnitEnum.usc;
     }
@@ -51,7 +50,7 @@ export function getUnitPrefixAndDiameterFromOptionString ( optionString: string 
     let r = screwSizeRegex.exec( optionString );
     if ( r && Object.keys( r ).includes( 'groups' ) ) {
         return { 
-            prefix: r.groups.unitPrefix as UnitPrefixT,
+            prefix: r.groups.unitPrefix.toUpperCase() as UnitPrefixT,
             thread_diameter: parseFloat(r.groups.diameter)
         }
     }

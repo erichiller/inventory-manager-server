@@ -60,6 +60,7 @@ query ItemSearch($search_text: String!) {
         id
         class
         name: text
+        metadata
     }
 }
 

@@ -8,7 +8,7 @@ import TextArea from 'antd/lib/input/TextArea';
 import { toMinimumFixed, Union } from '../../lib/UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { ItemInput } from '../../lib/item/ItemBundle/ItemSelect';
+import { ItemSelect } from '../../lib/item/ItemBundle/ItemSelect';
 
 
 interface OrderEditModalProps extends Union<ItemEditFormProps, ItemBundle> {
@@ -48,15 +48,15 @@ export const OrderEditModal: React.FC<OrderEditModalProps> = ( props ) => {
                                             return args;
                                         }}
                                     >
-                                        <ItemInput placeholder="Search for Item"
-                                            suffix={
-                                                <MinusCircleOutlined
-                                                    className="dynamic-delete-button"
-                                                    onClick={() => {
-                                                        remove( field.name );
-                                                    }}
-                                                />
-                                            }
+                                        <ItemSelect placeholder="Search for Item"
+                                            // suffix={
+                                            //     <MinusCircleOutlined
+                                            //         className="dynamic-delete-button"
+                                            //         onClick={() => {
+                                            //             remove( field.name );
+                                            //         }}
+                                            //     />
+                                            // }
                                         />
                                     </Form.Item>
                                 ) )}

@@ -2778,7 +2778,8 @@ export enum EnumUnitConstraint {
 export enum EnumUnitEnum {
   /** German ISO member, Deutsches Institut für Normung */
   din = 'din',
-  metric = 'metric',
+  /** International Standards Organization. Default metric unit. */
+  iso = 'iso',
   /** United States Customary Measurement System */
   usc = 'usc'
 }
@@ -16646,7 +16647,7 @@ export type ItemSearchQuery = (
   { __typename?: 'query_root' }
   & { search: Array<(
     { __typename?: 'search_data' }
-    & Pick<SearchData, 'id' | 'class'>
+    & Pick<SearchData, 'id' | 'class' | 'metadata'>
     & { name: SearchData['text'] }
   )> }
 );
@@ -17570,6 +17571,7 @@ export const ItemSearchDocument = gql`
     id
     class
     name: text
+    metadata
   }
 }
     `;
@@ -17730,4 +17732,4 @@ export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHo
 export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
 export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
-// graphql typescript defs generated on 2020-05-14T14:47:31-06:00
+// graphql typescript defs generated on 2020-05-16T09:39:02-06:00

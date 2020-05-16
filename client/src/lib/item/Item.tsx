@@ -132,7 +132,7 @@ export class Item<T extends GenericItem> implements IItem {
                 throw `class '${ i.class }' (__typename: '${ i.__typename }') is not registered in 'getClassForType', received '${ cls}' `;
                 return null;
             }
-            console.log( { _cls: "Item", method: 'ItemsFactory', msg: "loading class of type", item_class: cls, item_class_name: cls.name } );
+            // console.log( { _cls: "Item", method: 'ItemsFactory', msg: "loading class of type", item_class: cls, item_class_name: cls.name } );
             items.push( new cls( i ) );
         } );
         return items;
@@ -190,7 +190,7 @@ export class Item<T extends GenericItem> implements IItem {
 
     public static getClassForType ( itemClass: ItemClass ): Union<IItem, IItemConstructor> {
         let itemClassLowerCase = itemClass.toLowerCase();
-        console.log( { class: 'Item', method: 'getClassForType', classTypes: Item._ClassTypes, lookup_key: itemClass } );
+        // console.log( { class: 'Item', method: 'getClassForType', classTypes: Item._ClassTypes, lookup_key: itemClass } );
         // if ( itemClassLowerCase === "item" ) {
         //     return Item;
         // }
