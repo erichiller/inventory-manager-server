@@ -7,9 +7,14 @@ import bodyParser from 'body-parser';
 import getSchema from './schema';
 
 import { execute, subscribe } from 'graphql';
-import { createServer, Server } from 'http';
+import { createServer as createHttpsServer, Server as HttpsServer, ServerOptions } from 'https';
+import { createServer as createHttpServer, Server as HttpServer } from 'http';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import * as url from 'url';
+import * as WebSocket from 'ws';
+import { HandleWebsocketUploadConnection } from './drivers/websocket/documentUpload';
+import { s3FileDownload } from './drivers/storage/S3FileDownload';
+
 
 type ExpressGraphQLOptionsFunction = ( req?: express.Request, res?: express.Response ) => any | Promise<any>;
 
@@ -29,12 +34,12 @@ function graphiqlExpress ( options: GraphiQL.GraphiQLData | ExpressGraphQLOption
     return graphiqlHandler;
 }
 
-export async function startServer ( port: number ): Promise<Server> {
+export async function startServer ( port: number ): Promise<HttpServer | HttpsServer> {
     //   const schema = await getSchema();
     const schema = getSchema;
     const app = express();
 
-    const server: Server = createServer( app );
+    const server: HttpServer = createHttpServer( app );
 
     app.use( '*', cors( { origin: 'http://localhost:3000' } ) );
     app.use( '/public', express.static( 'public' ) );
@@ -48,8 +53,9 @@ export async function startServer ( port: number ): Promise<Server> {
 
     apolloServer.applyMiddleware( { app, path: '/graphql' } );
 
-    // if (module.hot) {
-    console.log( "module is hot" );
+    if (module.hot) {
+        console.log( "module is hot" );
+    }
     app.use(
         '/graphiql',
         graphiqlExpress( {
@@ -63,9 +69,45 @@ export async function startServer ( port: number ): Promise<Server> {
             variables: { subject: 'World' }
         } )
     );
-    // }
 
-    return new Promise<Server>( resolve => {
+
+    app.get( '/file/:doc_file_id', s3FileDownload );
+
+
+    var wsServer = new WebSocket.Server( {
+        noServer: true,
+        maxPayload: 1000000000 // 1 GB
+    } );
+    wsServer.on( 'connection', HandleWebsocketUploadConnection );
+
+    server.on( 'upgrade', function ( request, socket, head ) {
+        console.log( "upgrade" );
+        var pathname = url.parse( request.url ).pathname;
+
+        if ( pathname === '/uploadFile' ) {
+            console.log( "uploadFile" );
+            wsServer.handleUpgrade( request, socket, head, function ( ws ) {
+                console.log( "handleUpgrade for uploadFile" );
+                wsServer.emit( 'connection', ws, request );
+            } );
+        } else if ( pathname === '/subscriptions' ) {
+            console.log( "apollo - /subscriptions" );
+            wsServer.handleUpgrade( request, socket, head, function ( ws ) {
+                console.log( "handleUpgrade for apollo - /subscriptions" );
+                wsServer.emit( 'connection', ws, request );
+            } );
+        } else {
+            socket.destroy();
+        }
+    } );
+
+    var wsApolloServer = new WebSocket.Server( {
+        noServer: true
+    } );
+
+
+
+    return new Promise<HttpServer | HttpsServer>( resolve => {
         server.listen( port, () => {
             // tslint:disable-next-line
             new SubscriptionServer(
@@ -74,10 +116,7 @@ export async function startServer ( port: number ): Promise<Server> {
                     schema,
                     subscribe
                 },
-                {
-                    path: '/subscriptions',
-                    server
-                }
+                wsApolloServer
             );
             resolve( server );
         } );

@@ -30,7 +30,11 @@ config:
     withHooks: true
     # withMutationFn: true
     reactApolloVersion: 3
-    # reactApolloVersion: 2
+# withRefetchFn (boolean, default value: false)
+# https://graphql-code-generator.com/docs/plugins/typescript-react-apollo#documentmode-graphqltag--documentnode--external-default-value-graphqltag
+
+# https://graphql-code-generator.com/docs/plugins/named-operations-object
+
 generates:
     ./src/lib/types/graphql.tsx:
         # documents: ./src/**/*.tsx

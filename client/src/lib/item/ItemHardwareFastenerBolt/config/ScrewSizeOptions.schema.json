@@ -14,7 +14,7 @@
       "pattern": "^[0-9.]+mm$",
       "type": "string"
     },
-    "PitchDefinition": {
+    "PitchDefinitions": {
       "additionalProperties": {
         "additionalProperties": false,
         "properties": {
@@ -22,6 +22,9 @@
             "$ref": "#/definitions/EnumHardwareFastenerThreadTypeEnum"
           }
         },
+        "required": [
+          "label"
+        ],
         "type": "object"
       },
       "propertyNames": {
@@ -367,14 +370,14 @@
                 "type": "object"
               },
               "pitch": {
-                "$ref": "#/definitions/PitchDefinition"
+                "$ref": "#/definitions/PitchDefinitions"
               }
             },
             "type": "object"
           },
           "description": "ISO",
           "propertyNames": {
-            "pattern": "^[mM][0-9.]+$"
+            "pattern": "^M[0-9.]+$"
           },
           "type": "object"
         },
@@ -710,7 +713,7 @@
                 "type": "object"
               },
               "pitch": {
-                "$ref": "#/definitions/PitchDefinition"
+                "$ref": "#/definitions/PitchDefinitions"
               }
             },
             "type": "object"
