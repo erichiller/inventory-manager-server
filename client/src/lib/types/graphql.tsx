@@ -10,19 +10,181 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Upload: any;
+  bigint: any;
+  date: any;
   jsonb: any;
-  uuid: any;
-  smallint: any;
-  timestamptz: any;
   money: any;
   numeric: any;
-  date: any;
-  bigint: any;
+  smallint: any;
+  timestamptz: any;
   tsvector: any;
   /** uint8 (unsigned int between 0 and 255) scalar type for Apollo GraphQL */
   uint8: any;
-  Upload: any;
+  uuid: any;
 };
+
+export type File = {
+  __typename?: 'File';
+  base64: Scalars['String'];
+  name: Scalars['String'];
+  path: Scalars['String'];
+  type: Scalars['String'];
+};
+
+/** expression to compare columns of type Int. All fields are combined with logical 'AND'. */
+export type IntComparisonExp = {
+  _eq?: Maybe<Scalars['Int']>;
+  _gt?: Maybe<Scalars['Int']>;
+  _gte?: Maybe<Scalars['Int']>;
+  _in?: Maybe<Array<Scalars['Int']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['Int']>;
+  _lte?: Maybe<Scalars['Int']>;
+  _neq?: Maybe<Scalars['Int']>;
+  _nin?: Maybe<Array<Scalars['Int']>>;
+};
+
+/** Label characteristics and properties */
+export type LabelCharacteristic = {
+  __typename?: 'LabelCharacteristic';
+  pinsLeft: Scalars['Int'];
+  pinsPrint: Scalars['Int'];
+  pinsRight: Scalars['Int'];
+  widthMillimeters: Scalars['Int'];
+};
+
+export enum MediaType {
+  FABRIC_TAPE = 'FABRIC_TAPE',
+  FLEXIBLE_ID_TAPE = 'FLEXIBLE_ID_TAPE',
+  FLE_TAPE = 'FLE_TAPE',
+  HEAT_SHRINK_TUBE = 'HEAT_SHRINK_TUBE',
+  INCOMPATIBLE_TAPE = 'INCOMPATIBLE_TAPE',
+  LAMINATED_TAPE = 'LAMINATED_TAPE',
+  NON_LAMINATED_TAPE = 'NON_LAMINATED_TAPE',
+  NO_MEDIA = 'NO_MEDIA',
+  SATIN_TAPE = 'SATIN_TAPE'
+}
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  /**
+   * Send a label to be printed
+   * Image Buffer / Raster data arranged as [page][column][pixels] of uint8 to the printer
+   */
+  putLabelMonochromeBuffer?: Maybe<OperationResult>;
+  uploadFiles: Array<Maybe<File>>;
+};
+
+
+export type MutationPutLabelMonochromeBufferArgs = {
+  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>;
+};
+
+
+export type MutationUploadFilesArgs = {
+  files: Array<Maybe<Scalars['Upload']>>;
+};
+
+export type OperationResult = {
+  __typename?: 'OperationResult';
+  result: Scalars['Boolean'];
+};
+
+/** Printer and label status and properies */
+export type PrinterLabelStatus = {
+  __typename?: 'PrinterLabelStatus';
+  labelCharacteristic?: Maybe<LabelCharacteristic>;
+  mediaType?: Maybe<MediaType>;
+  mediaWidth: Scalars['Int'];
+  tapeColor?: Maybe<TapeColor>;
+  textColor?: Maybe<TextColor>;
+};
+
+/** Label characteristics and properties */
+export type PrinterStatus = {
+  __typename?: 'PrinterStatus';
+  firmwareVersion: Scalars['Float'];
+  heightInch?: Maybe<Scalars['Float']>;
+  heightMillimeter?: Maybe<Scalars['Float']>;
+  labelStatus: PrinterLabelStatus;
+  labelType: Scalars['String'];
+  model: Scalars['String'];
+  uptime: Scalars['Int'];
+};
+
+export type Query = {
+  __typename?: 'Query';
+  /** Retrieve Printer and Label status and properties */
+  PrinterStatus?: Maybe<PrinterStatus>;
+  files?: Maybe<Array<Maybe<File>>>;
+};
+
+/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
+export type StringComparisonExp = {
+  _eq?: Maybe<Scalars['String']>;
+  _gt?: Maybe<Scalars['String']>;
+  _gte?: Maybe<Scalars['String']>;
+  _ilike?: Maybe<Scalars['String']>;
+  _in?: Maybe<Array<Scalars['String']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _like?: Maybe<Scalars['String']>;
+  _lt?: Maybe<Scalars['String']>;
+  _lte?: Maybe<Scalars['String']>;
+  _neq?: Maybe<Scalars['String']>;
+  _nilike?: Maybe<Scalars['String']>;
+  _nin?: Maybe<Array<Scalars['String']>>;
+  _nlike?: Maybe<Scalars['String']>;
+  _nsimilar?: Maybe<Scalars['String']>;
+  _similar?: Maybe<Scalars['String']>;
+};
+
+export enum TapeColor {
+  BERRY_PINK = 'BERRY_PINK',
+  BLACK = 'BLACK',
+  BLUE = 'BLUE',
+  BLUE_D = 'BLUE_D',
+  BLUE_F = 'BLUE_F',
+  CLEANING = 'CLEANING',
+  CLEAR = 'CLEAR',
+  CLEAR_WHITE_TEXT = 'CLEAR_WHITE_TEXT',
+  FLOURESCENT_ORANGE = 'FLOURESCENT_ORANGE',
+  FLOURESCENT_YELLOW = 'FLOURESCENT_YELLOW',
+  GREEN = 'GREEN',
+  INCOMPATIBLE = 'INCOMPATIBLE',
+  LIGHT_GRAY = 'LIGHT_GRAY',
+  LIME_GREEN = 'LIME_GREEN',
+  MATTE_CLEAR = 'MATTE_CLEAR',
+  MATTE_SILVER = 'MATTE_SILVER',
+  MATTE_WHITE = 'MATTE_WHITE',
+  OTHER = 'OTHER',
+  PINK_F = 'PINK_F',
+  RED = 'RED',
+  RED_D = 'RED_D',
+  SATIN_GOLD = 'SATIN_GOLD',
+  SATIN_SILVER = 'SATIN_SILVER',
+  STENCIL = 'STENCIL',
+  WHITE = 'WHITE',
+  WHITE_FLEX = 'WHITE_FLEX',
+  WHITE_HSE = 'WHITE_HSE',
+  YELLOW = 'YELLOW',
+  YELLOW_F = 'YELLOW_F',
+  YELLOW_FLEX = 'YELLOW_FLEX'
+}
+
+export enum TextColor {
+  BLACK = 'BLACK',
+  BLUE = 'BLUE',
+  BLUE_F = 'BLUE_F',
+  CLEANING = 'CLEANING',
+  GOLD = 'GOLD',
+  INCOMPATIBLE = 'INCOMPATIBLE',
+  OTHER = 'OTHER',
+  RED = 'RED',
+  STENCIL = 'STENCIL',
+  WHITE = 'WHITE'
+}
+
 
 
 /** expression to compare columns of type bigint. All fields are combined with logical 'AND'. */
@@ -54,21 +216,21 @@ export type DateComparisonExp = {
 
 /** columns and relationships of "enum.hardware_fastener_bolt_point" */
 export type EnumHardwareFastenerBoltPoint = {
-   __typename?: 'enum_hardware_fastener_bolt_point';
+  __typename?: 'enum_hardware_fastener_bolt_point';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.hardware_fastener_bolt_point" */
 export type EnumHardwareFastenerBoltPointAggregate = {
-   __typename?: 'enum_hardware_fastener_bolt_point_aggregate';
+  __typename?: 'enum_hardware_fastener_bolt_point_aggregate';
   aggregate?: Maybe<EnumHardwareFastenerBoltPointAggregateFields>;
   nodes: Array<EnumHardwareFastenerBoltPoint>;
 };
 
 /** aggregate fields of "enum.hardware_fastener_bolt_point" */
 export type EnumHardwareFastenerBoltPointAggregateFields = {
-   __typename?: 'enum_hardware_fastener_bolt_point_aggregate_fields';
+  __typename?: 'enum_hardware_fastener_bolt_point_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumHardwareFastenerBoltPointMaxFields>;
   min?: Maybe<EnumHardwareFastenerBoltPointMinFields>;
@@ -94,10 +256,7 @@ export type EnumHardwareFastenerBoltPointArrRelInsertInput = {
   on_conflict?: Maybe<EnumHardwareFastenerBoltPointOnConflict>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "enum.hardware_fastener_bolt_point". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_bolt_point". All fields are combined with a logical 'AND'. */
 export type EnumHardwareFastenerBoltPointBoolExp = {
   _and?: Maybe<Array<Maybe<EnumHardwareFastenerBoltPointBoolExp>>>;
   _not?: Maybe<EnumHardwareFastenerBoltPointBoolExp>;
@@ -134,7 +293,7 @@ export type EnumHardwareFastenerBoltPointInsertInput = {
 
 /** aggregate max on columns */
 export type EnumHardwareFastenerBoltPointMaxFields = {
-   __typename?: 'enum_hardware_fastener_bolt_point_max_fields';
+  __typename?: 'enum_hardware_fastener_bolt_point_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -147,7 +306,7 @@ export type EnumHardwareFastenerBoltPointMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumHardwareFastenerBoltPointMinFields = {
-   __typename?: 'enum_hardware_fastener_bolt_point_min_fields';
+  __typename?: 'enum_hardware_fastener_bolt_point_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -160,7 +319,7 @@ export type EnumHardwareFastenerBoltPointMinOrderBy = {
 
 /** response of any mutation on the table "enum.hardware_fastener_bolt_point" */
 export type EnumHardwareFastenerBoltPointMutationResponse = {
-   __typename?: 'enum_hardware_fastener_bolt_point_mutation_response';
+  __typename?: 'enum_hardware_fastener_bolt_point_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -220,21 +379,21 @@ export enum EnumHardwareFastenerBoltPointUpdateColumn {
  * columns and relationships of "enum.hardware_fastener_drive"
  */
 export type EnumHardwareFastenerDrive = {
-   __typename?: 'enum_hardware_fastener_drive';
+  __typename?: 'enum_hardware_fastener_drive';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.hardware_fastener_drive" */
 export type EnumHardwareFastenerDriveAggregate = {
-   __typename?: 'enum_hardware_fastener_drive_aggregate';
+  __typename?: 'enum_hardware_fastener_drive_aggregate';
   aggregate?: Maybe<EnumHardwareFastenerDriveAggregateFields>;
   nodes: Array<EnumHardwareFastenerDrive>;
 };
 
 /** aggregate fields of "enum.hardware_fastener_drive" */
 export type EnumHardwareFastenerDriveAggregateFields = {
-   __typename?: 'enum_hardware_fastener_drive_aggregate_fields';
+  __typename?: 'enum_hardware_fastener_drive_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumHardwareFastenerDriveMaxFields>;
   min?: Maybe<EnumHardwareFastenerDriveMinFields>;
@@ -260,10 +419,7 @@ export type EnumHardwareFastenerDriveArrRelInsertInput = {
   on_conflict?: Maybe<EnumHardwareFastenerDriveOnConflict>;
 };
 
-/**
- * Boolean expression to filter rows from the table "enum.hardware_fastener_drive".
- * All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_drive". All fields are combined with a logical 'AND'. */
 export type EnumHardwareFastenerDriveBoolExp = {
   _and?: Maybe<Array<Maybe<EnumHardwareFastenerDriveBoolExp>>>;
   _not?: Maybe<EnumHardwareFastenerDriveBoolExp>;
@@ -314,7 +470,7 @@ export type EnumHardwareFastenerDriveInsertInput = {
 
 /** aggregate max on columns */
 export type EnumHardwareFastenerDriveMaxFields = {
-   __typename?: 'enum_hardware_fastener_drive_max_fields';
+  __typename?: 'enum_hardware_fastener_drive_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -327,7 +483,7 @@ export type EnumHardwareFastenerDriveMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumHardwareFastenerDriveMinFields = {
-   __typename?: 'enum_hardware_fastener_drive_min_fields';
+  __typename?: 'enum_hardware_fastener_drive_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -340,7 +496,7 @@ export type EnumHardwareFastenerDriveMinOrderBy = {
 
 /** response of any mutation on the table "enum.hardware_fastener_drive" */
 export type EnumHardwareFastenerDriveMutationResponse = {
-   __typename?: 'enum_hardware_fastener_drive_mutation_response';
+  __typename?: 'enum_hardware_fastener_drive_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -395,21 +551,21 @@ export enum EnumHardwareFastenerDriveUpdateColumn {
 
 /** columns and relationships of "enum.hardware_fastener_hardness" */
 export type EnumHardwareFastenerHardness = {
-   __typename?: 'enum_hardware_fastener_hardness';
+  __typename?: 'enum_hardware_fastener_hardness';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.hardware_fastener_hardness" */
 export type EnumHardwareFastenerHardnessAggregate = {
-   __typename?: 'enum_hardware_fastener_hardness_aggregate';
+  __typename?: 'enum_hardware_fastener_hardness_aggregate';
   aggregate?: Maybe<EnumHardwareFastenerHardnessAggregateFields>;
   nodes: Array<EnumHardwareFastenerHardness>;
 };
 
 /** aggregate fields of "enum.hardware_fastener_hardness" */
 export type EnumHardwareFastenerHardnessAggregateFields = {
-   __typename?: 'enum_hardware_fastener_hardness_aggregate_fields';
+  __typename?: 'enum_hardware_fastener_hardness_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumHardwareFastenerHardnessMaxFields>;
   min?: Maybe<EnumHardwareFastenerHardnessMinFields>;
@@ -435,10 +591,7 @@ export type EnumHardwareFastenerHardnessArrRelInsertInput = {
   on_conflict?: Maybe<EnumHardwareFastenerHardnessOnConflict>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "enum.hardware_fastener_hardness". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_hardness". All fields are combined with a logical 'AND'. */
 export type EnumHardwareFastenerHardnessBoolExp = {
   _and?: Maybe<Array<Maybe<EnumHardwareFastenerHardnessBoolExp>>>;
   _not?: Maybe<EnumHardwareFastenerHardnessBoolExp>;
@@ -485,7 +638,7 @@ export type EnumHardwareFastenerHardnessInsertInput = {
 
 /** aggregate max on columns */
 export type EnumHardwareFastenerHardnessMaxFields = {
-   __typename?: 'enum_hardware_fastener_hardness_max_fields';
+  __typename?: 'enum_hardware_fastener_hardness_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -498,7 +651,7 @@ export type EnumHardwareFastenerHardnessMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumHardwareFastenerHardnessMinFields = {
-   __typename?: 'enum_hardware_fastener_hardness_min_fields';
+  __typename?: 'enum_hardware_fastener_hardness_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -511,7 +664,7 @@ export type EnumHardwareFastenerHardnessMinOrderBy = {
 
 /** response of any mutation on the table "enum.hardware_fastener_hardness" */
 export type EnumHardwareFastenerHardnessMutationResponse = {
-   __typename?: 'enum_hardware_fastener_hardness_mutation_response';
+  __typename?: 'enum_hardware_fastener_hardness_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -566,21 +719,21 @@ export enum EnumHardwareFastenerHardnessUpdateColumn {
 
 /** columns and relationships of "enum.hardware_fastener_head" */
 export type EnumHardwareFastenerHead = {
-   __typename?: 'enum_hardware_fastener_head';
+  __typename?: 'enum_hardware_fastener_head';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.hardware_fastener_head" */
 export type EnumHardwareFastenerHeadAggregate = {
-   __typename?: 'enum_hardware_fastener_head_aggregate';
+  __typename?: 'enum_hardware_fastener_head_aggregate';
   aggregate?: Maybe<EnumHardwareFastenerHeadAggregateFields>;
   nodes: Array<EnumHardwareFastenerHead>;
 };
 
 /** aggregate fields of "enum.hardware_fastener_head" */
 export type EnumHardwareFastenerHeadAggregateFields = {
-   __typename?: 'enum_hardware_fastener_head_aggregate_fields';
+  __typename?: 'enum_hardware_fastener_head_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumHardwareFastenerHeadMaxFields>;
   min?: Maybe<EnumHardwareFastenerHeadMinFields>;
@@ -606,10 +759,7 @@ export type EnumHardwareFastenerHeadArrRelInsertInput = {
   on_conflict?: Maybe<EnumHardwareFastenerHeadOnConflict>;
 };
 
-/**
- * Boolean expression to filter rows from the table "enum.hardware_fastener_head".
- * All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_head". All fields are combined with a logical 'AND'. */
 export type EnumHardwareFastenerHeadBoolExp = {
   _and?: Maybe<Array<Maybe<EnumHardwareFastenerHeadBoolExp>>>;
   _not?: Maybe<EnumHardwareFastenerHeadBoolExp>;
@@ -654,7 +804,7 @@ export type EnumHardwareFastenerHeadInsertInput = {
 
 /** aggregate max on columns */
 export type EnumHardwareFastenerHeadMaxFields = {
-   __typename?: 'enum_hardware_fastener_head_max_fields';
+  __typename?: 'enum_hardware_fastener_head_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -667,7 +817,7 @@ export type EnumHardwareFastenerHeadMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumHardwareFastenerHeadMinFields = {
-   __typename?: 'enum_hardware_fastener_head_min_fields';
+  __typename?: 'enum_hardware_fastener_head_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -680,7 +830,7 @@ export type EnumHardwareFastenerHeadMinOrderBy = {
 
 /** response of any mutation on the table "enum.hardware_fastener_head" */
 export type EnumHardwareFastenerHeadMutationResponse = {
-   __typename?: 'enum_hardware_fastener_head_mutation_response';
+  __typename?: 'enum_hardware_fastener_head_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -740,21 +890,21 @@ export enum EnumHardwareFastenerHeadUpdateColumn {
  * columns and relationships of "enum.hardware_fastener_material"
  */
 export type EnumHardwareFastenerMaterial = {
-   __typename?: 'enum_hardware_fastener_material';
+  __typename?: 'enum_hardware_fastener_material';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.hardware_fastener_material" */
 export type EnumHardwareFastenerMaterialAggregate = {
-   __typename?: 'enum_hardware_fastener_material_aggregate';
+  __typename?: 'enum_hardware_fastener_material_aggregate';
   aggregate?: Maybe<EnumHardwareFastenerMaterialAggregateFields>;
   nodes: Array<EnumHardwareFastenerMaterial>;
 };
 
 /** aggregate fields of "enum.hardware_fastener_material" */
 export type EnumHardwareFastenerMaterialAggregateFields = {
-   __typename?: 'enum_hardware_fastener_material_aggregate_fields';
+  __typename?: 'enum_hardware_fastener_material_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumHardwareFastenerMaterialMaxFields>;
   min?: Maybe<EnumHardwareFastenerMaterialMinFields>;
@@ -780,10 +930,7 @@ export type EnumHardwareFastenerMaterialArrRelInsertInput = {
   on_conflict?: Maybe<EnumHardwareFastenerMaterialOnConflict>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "enum.hardware_fastener_material". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_material". All fields are combined with a logical 'AND'. */
 export type EnumHardwareFastenerMaterialBoolExp = {
   _and?: Maybe<Array<Maybe<EnumHardwareFastenerMaterialBoolExp>>>;
   _not?: Maybe<EnumHardwareFastenerMaterialBoolExp>;
@@ -827,7 +974,7 @@ export type EnumHardwareFastenerMaterialInsertInput = {
 
 /** aggregate max on columns */
 export type EnumHardwareFastenerMaterialMaxFields = {
-   __typename?: 'enum_hardware_fastener_material_max_fields';
+  __typename?: 'enum_hardware_fastener_material_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -840,7 +987,7 @@ export type EnumHardwareFastenerMaterialMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumHardwareFastenerMaterialMinFields = {
-   __typename?: 'enum_hardware_fastener_material_min_fields';
+  __typename?: 'enum_hardware_fastener_material_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -853,7 +1000,7 @@ export type EnumHardwareFastenerMaterialMinOrderBy = {
 
 /** response of any mutation on the table "enum.hardware_fastener_material" */
 export type EnumHardwareFastenerMaterialMutationResponse = {
-   __typename?: 'enum_hardware_fastener_material_mutation_response';
+  __typename?: 'enum_hardware_fastener_material_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -908,21 +1055,21 @@ export enum EnumHardwareFastenerMaterialUpdateColumn {
 
 /** columns and relationships of "enum.hardware_fastener_standoff_shape" */
 export type EnumHardwareFastenerStandoffShape = {
-   __typename?: 'enum_hardware_fastener_standoff_shape';
+  __typename?: 'enum_hardware_fastener_standoff_shape';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.hardware_fastener_standoff_shape" */
 export type EnumHardwareFastenerStandoffShapeAggregate = {
-   __typename?: 'enum_hardware_fastener_standoff_shape_aggregate';
+  __typename?: 'enum_hardware_fastener_standoff_shape_aggregate';
   aggregate?: Maybe<EnumHardwareFastenerStandoffShapeAggregateFields>;
   nodes: Array<EnumHardwareFastenerStandoffShape>;
 };
 
 /** aggregate fields of "enum.hardware_fastener_standoff_shape" */
 export type EnumHardwareFastenerStandoffShapeAggregateFields = {
-   __typename?: 'enum_hardware_fastener_standoff_shape_aggregate_fields';
+  __typename?: 'enum_hardware_fastener_standoff_shape_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumHardwareFastenerStandoffShapeMaxFields>;
   min?: Maybe<EnumHardwareFastenerStandoffShapeMinFields>;
@@ -948,10 +1095,7 @@ export type EnumHardwareFastenerStandoffShapeArrRelInsertInput = {
   on_conflict?: Maybe<EnumHardwareFastenerStandoffShapeOnConflict>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "enum.hardware_fastener_standoff_shape". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_standoff_shape". All fields are combined with a logical 'AND'. */
 export type EnumHardwareFastenerStandoffShapeBoolExp = {
   _and?: Maybe<Array<Maybe<EnumHardwareFastenerStandoffShapeBoolExp>>>;
   _not?: Maybe<EnumHardwareFastenerStandoffShapeBoolExp>;
@@ -973,10 +1117,7 @@ export enum EnumHardwareFastenerStandoffShapeEnum {
   triangle = 'triangle'
 }
 
-/**
- * expression to compare columns of type
- * enum_hardware_fastener_standoff_shape_enum. All fields are combined with logical 'AND'.
- */
+/** expression to compare columns of type enum_hardware_fastener_standoff_shape_enum. All fields are combined with logical 'AND'. */
 export type EnumHardwareFastenerStandoffShapeEnumComparisonExp = {
   _eq?: Maybe<EnumHardwareFastenerStandoffShapeEnum>;
   _in?: Maybe<Array<EnumHardwareFastenerStandoffShapeEnum>>;
@@ -993,7 +1134,7 @@ export type EnumHardwareFastenerStandoffShapeInsertInput = {
 
 /** aggregate max on columns */
 export type EnumHardwareFastenerStandoffShapeMaxFields = {
-   __typename?: 'enum_hardware_fastener_standoff_shape_max_fields';
+  __typename?: 'enum_hardware_fastener_standoff_shape_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -1006,7 +1147,7 @@ export type EnumHardwareFastenerStandoffShapeMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumHardwareFastenerStandoffShapeMinFields = {
-   __typename?: 'enum_hardware_fastener_standoff_shape_min_fields';
+  __typename?: 'enum_hardware_fastener_standoff_shape_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -1019,7 +1160,7 @@ export type EnumHardwareFastenerStandoffShapeMinOrderBy = {
 
 /** response of any mutation on the table "enum.hardware_fastener_standoff_shape" */
 export type EnumHardwareFastenerStandoffShapeMutationResponse = {
-   __typename?: 'enum_hardware_fastener_standoff_shape_mutation_response';
+  __typename?: 'enum_hardware_fastener_standoff_shape_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -1074,21 +1215,21 @@ export enum EnumHardwareFastenerStandoffShapeUpdateColumn {
 
 /** columns and relationships of "enum.hardware_fastener_strength_class" */
 export type EnumHardwareFastenerStrengthClass = {
-   __typename?: 'enum_hardware_fastener_strength_class';
+  __typename?: 'enum_hardware_fastener_strength_class';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.hardware_fastener_strength_class" */
 export type EnumHardwareFastenerStrengthClassAggregate = {
-   __typename?: 'enum_hardware_fastener_strength_class_aggregate';
+  __typename?: 'enum_hardware_fastener_strength_class_aggregate';
   aggregate?: Maybe<EnumHardwareFastenerStrengthClassAggregateFields>;
   nodes: Array<EnumHardwareFastenerStrengthClass>;
 };
 
 /** aggregate fields of "enum.hardware_fastener_strength_class" */
 export type EnumHardwareFastenerStrengthClassAggregateFields = {
-   __typename?: 'enum_hardware_fastener_strength_class_aggregate_fields';
+  __typename?: 'enum_hardware_fastener_strength_class_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumHardwareFastenerStrengthClassMaxFields>;
   min?: Maybe<EnumHardwareFastenerStrengthClassMinFields>;
@@ -1114,10 +1255,7 @@ export type EnumHardwareFastenerStrengthClassArrRelInsertInput = {
   on_conflict?: Maybe<EnumHardwareFastenerStrengthClassOnConflict>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "enum.hardware_fastener_strength_class". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_strength_class". All fields are combined with a logical 'AND'. */
 export type EnumHardwareFastenerStrengthClassBoolExp = {
   _and?: Maybe<Array<Maybe<EnumHardwareFastenerStrengthClassBoolExp>>>;
   _not?: Maybe<EnumHardwareFastenerStrengthClassBoolExp>;
@@ -1138,10 +1276,7 @@ export enum EnumHardwareFastenerStrengthClassEnum {
   class_8_8 = 'class_8_8'
 }
 
-/**
- * expression to compare columns of type
- * enum_hardware_fastener_strength_class_enum. All fields are combined with logical 'AND'.
- */
+/** expression to compare columns of type enum_hardware_fastener_strength_class_enum. All fields are combined with logical 'AND'. */
 export type EnumHardwareFastenerStrengthClassEnumComparisonExp = {
   _eq?: Maybe<EnumHardwareFastenerStrengthClassEnum>;
   _in?: Maybe<Array<EnumHardwareFastenerStrengthClassEnum>>;
@@ -1158,7 +1293,7 @@ export type EnumHardwareFastenerStrengthClassInsertInput = {
 
 /** aggregate max on columns */
 export type EnumHardwareFastenerStrengthClassMaxFields = {
-   __typename?: 'enum_hardware_fastener_strength_class_max_fields';
+  __typename?: 'enum_hardware_fastener_strength_class_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -1171,7 +1306,7 @@ export type EnumHardwareFastenerStrengthClassMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumHardwareFastenerStrengthClassMinFields = {
-   __typename?: 'enum_hardware_fastener_strength_class_min_fields';
+  __typename?: 'enum_hardware_fastener_strength_class_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -1184,7 +1319,7 @@ export type EnumHardwareFastenerStrengthClassMinOrderBy = {
 
 /** response of any mutation on the table "enum.hardware_fastener_strength_class" */
 export type EnumHardwareFastenerStrengthClassMutationResponse = {
-   __typename?: 'enum_hardware_fastener_strength_class_mutation_response';
+  __typename?: 'enum_hardware_fastener_strength_class_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -1239,21 +1374,21 @@ export enum EnumHardwareFastenerStrengthClassUpdateColumn {
 
 /** columns and relationships of "enum.hardware_fastener_thread_direction" */
 export type EnumHardwareFastenerThreadDirection = {
-   __typename?: 'enum_hardware_fastener_thread_direction';
+  __typename?: 'enum_hardware_fastener_thread_direction';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.hardware_fastener_thread_direction" */
 export type EnumHardwareFastenerThreadDirectionAggregate = {
-   __typename?: 'enum_hardware_fastener_thread_direction_aggregate';
+  __typename?: 'enum_hardware_fastener_thread_direction_aggregate';
   aggregate?: Maybe<EnumHardwareFastenerThreadDirectionAggregateFields>;
   nodes: Array<EnumHardwareFastenerThreadDirection>;
 };
 
 /** aggregate fields of "enum.hardware_fastener_thread_direction" */
 export type EnumHardwareFastenerThreadDirectionAggregateFields = {
-   __typename?: 'enum_hardware_fastener_thread_direction_aggregate_fields';
+  __typename?: 'enum_hardware_fastener_thread_direction_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumHardwareFastenerThreadDirectionMaxFields>;
   min?: Maybe<EnumHardwareFastenerThreadDirectionMinFields>;
@@ -1279,10 +1414,7 @@ export type EnumHardwareFastenerThreadDirectionArrRelInsertInput = {
   on_conflict?: Maybe<EnumHardwareFastenerThreadDirectionOnConflict>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "enum.hardware_fastener_thread_direction". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_thread_direction". All fields are combined with a logical 'AND'. */
 export type EnumHardwareFastenerThreadDirectionBoolExp = {
   _and?: Maybe<Array<Maybe<EnumHardwareFastenerThreadDirectionBoolExp>>>;
   _not?: Maybe<EnumHardwareFastenerThreadDirectionBoolExp>;
@@ -1304,10 +1436,7 @@ export enum EnumHardwareFastenerThreadDirectionEnum {
   right = 'right'
 }
 
-/**
- * expression to compare columns of type
- * enum_hardware_fastener_thread_direction_enum. All fields are combined with logical 'AND'.
- */
+/** expression to compare columns of type enum_hardware_fastener_thread_direction_enum. All fields are combined with logical 'AND'. */
 export type EnumHardwareFastenerThreadDirectionEnumComparisonExp = {
   _eq?: Maybe<EnumHardwareFastenerThreadDirectionEnum>;
   _in?: Maybe<Array<EnumHardwareFastenerThreadDirectionEnum>>;
@@ -1324,7 +1453,7 @@ export type EnumHardwareFastenerThreadDirectionInsertInput = {
 
 /** aggregate max on columns */
 export type EnumHardwareFastenerThreadDirectionMaxFields = {
-   __typename?: 'enum_hardware_fastener_thread_direction_max_fields';
+  __typename?: 'enum_hardware_fastener_thread_direction_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -1337,7 +1466,7 @@ export type EnumHardwareFastenerThreadDirectionMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumHardwareFastenerThreadDirectionMinFields = {
-   __typename?: 'enum_hardware_fastener_thread_direction_min_fields';
+  __typename?: 'enum_hardware_fastener_thread_direction_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -1350,7 +1479,7 @@ export type EnumHardwareFastenerThreadDirectionMinOrderBy = {
 
 /** response of any mutation on the table "enum.hardware_fastener_thread_direction" */
 export type EnumHardwareFastenerThreadDirectionMutationResponse = {
-   __typename?: 'enum_hardware_fastener_thread_direction_mutation_response';
+  __typename?: 'enum_hardware_fastener_thread_direction_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -1405,21 +1534,21 @@ export enum EnumHardwareFastenerThreadDirectionUpdateColumn {
 
 /** columns and relationships of "enum.hardware_fastener_thread_fit" */
 export type EnumHardwareFastenerThreadFit = {
-   __typename?: 'enum_hardware_fastener_thread_fit';
+  __typename?: 'enum_hardware_fastener_thread_fit';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.hardware_fastener_thread_fit" */
 export type EnumHardwareFastenerThreadFitAggregate = {
-   __typename?: 'enum_hardware_fastener_thread_fit_aggregate';
+  __typename?: 'enum_hardware_fastener_thread_fit_aggregate';
   aggregate?: Maybe<EnumHardwareFastenerThreadFitAggregateFields>;
   nodes: Array<EnumHardwareFastenerThreadFit>;
 };
 
 /** aggregate fields of "enum.hardware_fastener_thread_fit" */
 export type EnumHardwareFastenerThreadFitAggregateFields = {
-   __typename?: 'enum_hardware_fastener_thread_fit_aggregate_fields';
+  __typename?: 'enum_hardware_fastener_thread_fit_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumHardwareFastenerThreadFitMaxFields>;
   min?: Maybe<EnumHardwareFastenerThreadFitMinFields>;
@@ -1445,10 +1574,7 @@ export type EnumHardwareFastenerThreadFitArrRelInsertInput = {
   on_conflict?: Maybe<EnumHardwareFastenerThreadFitOnConflict>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "enum.hardware_fastener_thread_fit". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_thread_fit". All fields are combined with a logical 'AND'. */
 export type EnumHardwareFastenerThreadFitBoolExp = {
   _and?: Maybe<Array<Maybe<EnumHardwareFastenerThreadFitBoolExp>>>;
   _not?: Maybe<EnumHardwareFastenerThreadFitBoolExp>;
@@ -1489,7 +1615,7 @@ export type EnumHardwareFastenerThreadFitInsertInput = {
 
 /** aggregate max on columns */
 export type EnumHardwareFastenerThreadFitMaxFields = {
-   __typename?: 'enum_hardware_fastener_thread_fit_max_fields';
+  __typename?: 'enum_hardware_fastener_thread_fit_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -1502,7 +1628,7 @@ export type EnumHardwareFastenerThreadFitMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumHardwareFastenerThreadFitMinFields = {
-   __typename?: 'enum_hardware_fastener_thread_fit_min_fields';
+  __typename?: 'enum_hardware_fastener_thread_fit_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -1515,7 +1641,7 @@ export type EnumHardwareFastenerThreadFitMinOrderBy = {
 
 /** response of any mutation on the table "enum.hardware_fastener_thread_fit" */
 export type EnumHardwareFastenerThreadFitMutationResponse = {
-   __typename?: 'enum_hardware_fastener_thread_fit_mutation_response';
+  __typename?: 'enum_hardware_fastener_thread_fit_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -1575,21 +1701,21 @@ export enum EnumHardwareFastenerThreadFitUpdateColumn {
  * columns and relationships of "enum.hardware_fastener_thread_type"
  */
 export type EnumHardwareFastenerThreadType = {
-   __typename?: 'enum_hardware_fastener_thread_type';
+  __typename?: 'enum_hardware_fastener_thread_type';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.hardware_fastener_thread_type" */
 export type EnumHardwareFastenerThreadTypeAggregate = {
-   __typename?: 'enum_hardware_fastener_thread_type_aggregate';
+  __typename?: 'enum_hardware_fastener_thread_type_aggregate';
   aggregate?: Maybe<EnumHardwareFastenerThreadTypeAggregateFields>;
   nodes: Array<EnumHardwareFastenerThreadType>;
 };
 
 /** aggregate fields of "enum.hardware_fastener_thread_type" */
 export type EnumHardwareFastenerThreadTypeAggregateFields = {
-   __typename?: 'enum_hardware_fastener_thread_type_aggregate_fields';
+  __typename?: 'enum_hardware_fastener_thread_type_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumHardwareFastenerThreadTypeMaxFields>;
   min?: Maybe<EnumHardwareFastenerThreadTypeMinFields>;
@@ -1615,10 +1741,7 @@ export type EnumHardwareFastenerThreadTypeArrRelInsertInput = {
   on_conflict?: Maybe<EnumHardwareFastenerThreadTypeOnConflict>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "enum.hardware_fastener_thread_type". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_thread_type". All fields are combined with a logical 'AND'. */
 export type EnumHardwareFastenerThreadTypeBoolExp = {
   _and?: Maybe<Array<Maybe<EnumHardwareFastenerThreadTypeBoolExp>>>;
   _not?: Maybe<EnumHardwareFastenerThreadTypeBoolExp>;
@@ -1656,7 +1779,7 @@ export type EnumHardwareFastenerThreadTypeInsertInput = {
 
 /** aggregate max on columns */
 export type EnumHardwareFastenerThreadTypeMaxFields = {
-   __typename?: 'enum_hardware_fastener_thread_type_max_fields';
+  __typename?: 'enum_hardware_fastener_thread_type_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -1669,7 +1792,7 @@ export type EnumHardwareFastenerThreadTypeMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumHardwareFastenerThreadTypeMinFields = {
-   __typename?: 'enum_hardware_fastener_thread_type_min_fields';
+  __typename?: 'enum_hardware_fastener_thread_type_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -1682,7 +1805,7 @@ export type EnumHardwareFastenerThreadTypeMinOrderBy = {
 
 /** response of any mutation on the table "enum.hardware_fastener_thread_type" */
 export type EnumHardwareFastenerThreadTypeMutationResponse = {
-   __typename?: 'enum_hardware_fastener_thread_type_mutation_response';
+  __typename?: 'enum_hardware_fastener_thread_type_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -1742,21 +1865,21 @@ export enum EnumHardwareFastenerThreadTypeUpdateColumn {
  * columns and relationships of "enum.hardware_fastener_tolerance"
  */
 export type EnumHardwareFastenerTolerance = {
-   __typename?: 'enum_hardware_fastener_tolerance';
+  __typename?: 'enum_hardware_fastener_tolerance';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.hardware_fastener_tolerance" */
 export type EnumHardwareFastenerToleranceAggregate = {
-   __typename?: 'enum_hardware_fastener_tolerance_aggregate';
+  __typename?: 'enum_hardware_fastener_tolerance_aggregate';
   aggregate?: Maybe<EnumHardwareFastenerToleranceAggregateFields>;
   nodes: Array<EnumHardwareFastenerTolerance>;
 };
 
 /** aggregate fields of "enum.hardware_fastener_tolerance" */
 export type EnumHardwareFastenerToleranceAggregateFields = {
-   __typename?: 'enum_hardware_fastener_tolerance_aggregate_fields';
+  __typename?: 'enum_hardware_fastener_tolerance_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumHardwareFastenerToleranceMaxFields>;
   min?: Maybe<EnumHardwareFastenerToleranceMinFields>;
@@ -1782,10 +1905,7 @@ export type EnumHardwareFastenerToleranceArrRelInsertInput = {
   on_conflict?: Maybe<EnumHardwareFastenerToleranceOnConflict>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "enum.hardware_fastener_tolerance". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_tolerance". All fields are combined with a logical 'AND'. */
 export type EnumHardwareFastenerToleranceBoolExp = {
   _and?: Maybe<Array<Maybe<EnumHardwareFastenerToleranceBoolExp>>>;
   _not?: Maybe<EnumHardwareFastenerToleranceBoolExp>;
@@ -1808,7 +1928,7 @@ export type EnumHardwareFastenerToleranceInsertInput = {
 
 /** aggregate max on columns */
 export type EnumHardwareFastenerToleranceMaxFields = {
-   __typename?: 'enum_hardware_fastener_tolerance_max_fields';
+  __typename?: 'enum_hardware_fastener_tolerance_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -1821,7 +1941,7 @@ export type EnumHardwareFastenerToleranceMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumHardwareFastenerToleranceMinFields = {
-   __typename?: 'enum_hardware_fastener_tolerance_min_fields';
+  __typename?: 'enum_hardware_fastener_tolerance_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -1834,7 +1954,7 @@ export type EnumHardwareFastenerToleranceMinOrderBy = {
 
 /** response of any mutation on the table "enum.hardware_fastener_tolerance" */
 export type EnumHardwareFastenerToleranceMutationResponse = {
-   __typename?: 'enum_hardware_fastener_tolerance_mutation_response';
+  __typename?: 'enum_hardware_fastener_tolerance_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -1894,21 +2014,21 @@ export enum EnumHardwareFastenerToleranceUpdateColumn {
  * columns and relationships of "enum.hardware_fastener_use_material"
  */
 export type EnumHardwareFastenerUseMaterial = {
-   __typename?: 'enum_hardware_fastener_use_material';
+  __typename?: 'enum_hardware_fastener_use_material';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.hardware_fastener_use_material" */
 export type EnumHardwareFastenerUseMaterialAggregate = {
-   __typename?: 'enum_hardware_fastener_use_material_aggregate';
+  __typename?: 'enum_hardware_fastener_use_material_aggregate';
   aggregate?: Maybe<EnumHardwareFastenerUseMaterialAggregateFields>;
   nodes: Array<EnumHardwareFastenerUseMaterial>;
 };
 
 /** aggregate fields of "enum.hardware_fastener_use_material" */
 export type EnumHardwareFastenerUseMaterialAggregateFields = {
-   __typename?: 'enum_hardware_fastener_use_material_aggregate_fields';
+  __typename?: 'enum_hardware_fastener_use_material_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumHardwareFastenerUseMaterialMaxFields>;
   min?: Maybe<EnumHardwareFastenerUseMaterialMinFields>;
@@ -1934,10 +2054,7 @@ export type EnumHardwareFastenerUseMaterialArrRelInsertInput = {
   on_conflict?: Maybe<EnumHardwareFastenerUseMaterialOnConflict>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "enum.hardware_fastener_use_material". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_use_material". All fields are combined with a logical 'AND'. */
 export type EnumHardwareFastenerUseMaterialBoolExp = {
   _and?: Maybe<Array<Maybe<EnumHardwareFastenerUseMaterialBoolExp>>>;
   _not?: Maybe<EnumHardwareFastenerUseMaterialBoolExp>;
@@ -1977,7 +2094,7 @@ export type EnumHardwareFastenerUseMaterialInsertInput = {
 
 /** aggregate max on columns */
 export type EnumHardwareFastenerUseMaterialMaxFields = {
-   __typename?: 'enum_hardware_fastener_use_material_max_fields';
+  __typename?: 'enum_hardware_fastener_use_material_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -1990,7 +2107,7 @@ export type EnumHardwareFastenerUseMaterialMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumHardwareFastenerUseMaterialMinFields = {
-   __typename?: 'enum_hardware_fastener_use_material_min_fields';
+  __typename?: 'enum_hardware_fastener_use_material_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -2003,7 +2120,7 @@ export type EnumHardwareFastenerUseMaterialMinOrderBy = {
 
 /** response of any mutation on the table "enum.hardware_fastener_use_material" */
 export type EnumHardwareFastenerUseMaterialMutationResponse = {
-   __typename?: 'enum_hardware_fastener_use_material_mutation_response';
+  __typename?: 'enum_hardware_fastener_use_material_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -2058,21 +2175,21 @@ export enum EnumHardwareFastenerUseMaterialUpdateColumn {
 
 /** columns and relationships of "enum.hardware_finish" */
 export type EnumHardwareFinish = {
-   __typename?: 'enum_hardware_finish';
+  __typename?: 'enum_hardware_finish';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.hardware_finish" */
 export type EnumHardwareFinishAggregate = {
-   __typename?: 'enum_hardware_finish_aggregate';
+  __typename?: 'enum_hardware_finish_aggregate';
   aggregate?: Maybe<EnumHardwareFinishAggregateFields>;
   nodes: Array<EnumHardwareFinish>;
 };
 
 /** aggregate fields of "enum.hardware_finish" */
 export type EnumHardwareFinishAggregateFields = {
-   __typename?: 'enum_hardware_finish_aggregate_fields';
+  __typename?: 'enum_hardware_finish_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumHardwareFinishMaxFields>;
   min?: Maybe<EnumHardwareFinishMinFields>;
@@ -2142,7 +2259,7 @@ export type EnumHardwareFinishInsertInput = {
 
 /** aggregate max on columns */
 export type EnumHardwareFinishMaxFields = {
-   __typename?: 'enum_hardware_finish_max_fields';
+  __typename?: 'enum_hardware_finish_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -2155,7 +2272,7 @@ export type EnumHardwareFinishMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumHardwareFinishMinFields = {
-   __typename?: 'enum_hardware_finish_min_fields';
+  __typename?: 'enum_hardware_finish_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -2168,7 +2285,7 @@ export type EnumHardwareFinishMinOrderBy = {
 
 /** response of any mutation on the table "enum.hardware_finish" */
 export type EnumHardwareFinishMutationResponse = {
-   __typename?: 'enum_hardware_finish_mutation_response';
+  __typename?: 'enum_hardware_finish_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -2223,21 +2340,21 @@ export enum EnumHardwareFinishUpdateColumn {
 
 /** columns and relationships of "enum.item_class" */
 export type EnumItemClass = {
-   __typename?: 'enum_item_class';
+  __typename?: 'enum_item_class';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.item_class" */
 export type EnumItemClassAggregate = {
-   __typename?: 'enum_item_class_aggregate';
+  __typename?: 'enum_item_class_aggregate';
   aggregate?: Maybe<EnumItemClassAggregateFields>;
   nodes: Array<EnumItemClass>;
 };
 
 /** aggregate fields of "enum.item_class" */
 export type EnumItemClassAggregateFields = {
-   __typename?: 'enum_item_class_aggregate_fields';
+  __typename?: 'enum_item_class_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumItemClassMaxFields>;
   min?: Maybe<EnumItemClassMinFields>;
@@ -2307,7 +2424,7 @@ export type EnumItemClassInsertInput = {
 
 /** aggregate max on columns */
 export type EnumItemClassMaxFields = {
-   __typename?: 'enum_item_class_max_fields';
+  __typename?: 'enum_item_class_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -2320,7 +2437,7 @@ export type EnumItemClassMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumItemClassMinFields = {
-   __typename?: 'enum_item_class_min_fields';
+  __typename?: 'enum_item_class_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -2333,7 +2450,7 @@ export type EnumItemClassMinOrderBy = {
 
 /** response of any mutation on the table "enum.item_class" */
 export type EnumItemClassMutationResponse = {
-   __typename?: 'enum_item_class_mutation_response';
+  __typename?: 'enum_item_class_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -2393,21 +2510,21 @@ export enum EnumItemClassUpdateColumn {
  * columns and relationships of "enum.mapped_class"
  */
 export type EnumMappedClass = {
-   __typename?: 'enum_mapped_class';
+  __typename?: 'enum_mapped_class';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.mapped_class" */
 export type EnumMappedClassAggregate = {
-   __typename?: 'enum_mapped_class_aggregate';
+  __typename?: 'enum_mapped_class_aggregate';
   aggregate?: Maybe<EnumMappedClassAggregateFields>;
   nodes: Array<EnumMappedClass>;
 };
 
 /** aggregate fields of "enum.mapped_class" */
 export type EnumMappedClassAggregateFields = {
-   __typename?: 'enum_mapped_class_aggregate_fields';
+  __typename?: 'enum_mapped_class_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumMappedClassMaxFields>;
   min?: Maybe<EnumMappedClassMinFields>;
@@ -2475,7 +2592,7 @@ export type EnumMappedClassInsertInput = {
 
 /** aggregate max on columns */
 export type EnumMappedClassMaxFields = {
-   __typename?: 'enum_mapped_class_max_fields';
+  __typename?: 'enum_mapped_class_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -2488,7 +2605,7 @@ export type EnumMappedClassMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumMappedClassMinFields = {
-   __typename?: 'enum_mapped_class_min_fields';
+  __typename?: 'enum_mapped_class_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -2501,7 +2618,7 @@ export type EnumMappedClassMinOrderBy = {
 
 /** response of any mutation on the table "enum.mapped_class" */
 export type EnumMappedClassMutationResponse = {
-   __typename?: 'enum_mapped_class_mutation_response';
+  __typename?: 'enum_mapped_class_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -2556,21 +2673,21 @@ export enum EnumMappedClassUpdateColumn {
 
 /** columns and relationships of "enum.payment_method_type" */
 export type EnumPaymentMethodType = {
-   __typename?: 'enum_payment_method_type';
+  __typename?: 'enum_payment_method_type';
   description: Scalars['String'];
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.payment_method_type" */
 export type EnumPaymentMethodTypeAggregate = {
-   __typename?: 'enum_payment_method_type_aggregate';
+  __typename?: 'enum_payment_method_type_aggregate';
   aggregate?: Maybe<EnumPaymentMethodTypeAggregateFields>;
   nodes: Array<EnumPaymentMethodType>;
 };
 
 /** aggregate fields of "enum.payment_method_type" */
 export type EnumPaymentMethodTypeAggregateFields = {
-   __typename?: 'enum_payment_method_type_aggregate_fields';
+  __typename?: 'enum_payment_method_type_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumPaymentMethodTypeMaxFields>;
   min?: Maybe<EnumPaymentMethodTypeMinFields>;
@@ -2639,7 +2756,7 @@ export type EnumPaymentMethodTypeInsertInput = {
 
 /** aggregate max on columns */
 export type EnumPaymentMethodTypeMaxFields = {
-   __typename?: 'enum_payment_method_type_max_fields';
+  __typename?: 'enum_payment_method_type_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -2652,7 +2769,7 @@ export type EnumPaymentMethodTypeMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumPaymentMethodTypeMinFields = {
-   __typename?: 'enum_payment_method_type_min_fields';
+  __typename?: 'enum_payment_method_type_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -2665,7 +2782,7 @@ export type EnumPaymentMethodTypeMinOrderBy = {
 
 /** response of any mutation on the table "enum.payment_method_type" */
 export type EnumPaymentMethodTypeMutationResponse = {
-   __typename?: 'enum_payment_method_type_mutation_response';
+  __typename?: 'enum_payment_method_type_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -2720,21 +2837,21 @@ export enum EnumPaymentMethodTypeUpdateColumn {
 
 /** columns and relationships of "enum.unit" */
 export type EnumUnit = {
-   __typename?: 'enum_unit';
+  __typename?: 'enum_unit';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
 /** aggregated selection of "enum.unit" */
 export type EnumUnitAggregate = {
-   __typename?: 'enum_unit_aggregate';
+  __typename?: 'enum_unit_aggregate';
   aggregate?: Maybe<EnumUnitAggregateFields>;
   nodes: Array<EnumUnit>;
 };
 
 /** aggregate fields of "enum.unit" */
 export type EnumUnitAggregateFields = {
-   __typename?: 'enum_unit_aggregate_fields';
+  __typename?: 'enum_unit_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<EnumUnitMaxFields>;
   min?: Maybe<EnumUnitMinFields>;
@@ -2801,7 +2918,7 @@ export type EnumUnitInsertInput = {
 
 /** aggregate max on columns */
 export type EnumUnitMaxFields = {
-   __typename?: 'enum_unit_max_fields';
+  __typename?: 'enum_unit_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -2814,7 +2931,7 @@ export type EnumUnitMaxOrderBy = {
 
 /** aggregate min on columns */
 export type EnumUnitMinFields = {
-   __typename?: 'enum_unit_min_fields';
+  __typename?: 'enum_unit_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
@@ -2827,7 +2944,7 @@ export type EnumUnitMinOrderBy = {
 
 /** response of any mutation on the table "enum.unit" */
 export type EnumUnitMutationResponse = {
-   __typename?: 'enum_unit_mutation_response';
+  __typename?: 'enum_unit_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -2880,14 +2997,6 @@ export enum EnumUnitUpdateColumn {
   id = 'id'
 }
 
-export type File = {
-   __typename?: 'File';
-  base64: Scalars['String'];
-  name: Scalars['String'];
-  path: Scalars['String'];
-  type: Scalars['String'];
-};
-
 /**
  * Image / icon data for labels
  * 
@@ -2895,7 +3004,7 @@ export type File = {
  * columns and relationships of "icon"
  */
 export type Icon = {
-   __typename?: 'icon';
+  __typename?: 'icon';
   /** An array relationship */
   categories: Array<IconItemCategoryMap>;
   /** An aggregated array relationship */
@@ -3008,14 +3117,14 @@ export type IconLabelsAggregateArgs = {
 
 /** aggregated selection of "icon" */
 export type IconAggregate = {
-   __typename?: 'icon_aggregate';
+  __typename?: 'icon_aggregate';
   aggregate?: Maybe<IconAggregateFields>;
   nodes: Array<Icon>;
 };
 
 /** aggregate fields of "icon" */
 export type IconAggregateFields = {
-   __typename?: 'icon_aggregate_fields';
+  __typename?: 'icon_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<IconMaxFields>;
   min?: Maybe<IconMinFields>;
@@ -3078,7 +3187,7 @@ export type IconInsertInput = {
 
 /** columns and relationships of "icon_item_category_map" */
 export type IconItemCategoryMap = {
-   __typename?: 'icon_item_category_map';
+  __typename?: 'icon_item_category_map';
   category: EnumItemClassEnum;
   /**
    * json rules in the form of:
@@ -3099,14 +3208,14 @@ export type IconItemCategoryMapCriteriaArgs = {
 
 /** aggregated selection of "icon_item_category_map" */
 export type IconItemCategoryMapAggregate = {
-   __typename?: 'icon_item_category_map_aggregate';
+  __typename?: 'icon_item_category_map_aggregate';
   aggregate?: Maybe<IconItemCategoryMapAggregateFields>;
   nodes: Array<IconItemCategoryMap>;
 };
 
 /** aggregate fields of "icon_item_category_map" */
 export type IconItemCategoryMapAggregateFields = {
-   __typename?: 'icon_item_category_map_aggregate_fields';
+  __typename?: 'icon_item_category_map_aggregate_fields';
   avg?: Maybe<IconItemCategoryMapAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<IconItemCategoryMapMaxFields>;
@@ -3155,7 +3264,7 @@ export type IconItemCategoryMapArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type IconItemCategoryMapAvgFields = {
-   __typename?: 'icon_item_category_map_avg_fields';
+  __typename?: 'icon_item_category_map_avg_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
@@ -3188,10 +3297,7 @@ export type IconItemCategoryMapDeleteAtPathInput = {
   criteria?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
-/**
- * delete the array element with specified index (negative integers count from the
- * end). throws an error if top level container is not an array
- */
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type IconItemCategoryMapDeleteElemInput = {
   criteria?: Maybe<Scalars['Int']>;
 };
@@ -3216,7 +3322,7 @@ export type IconItemCategoryMapInsertInput = {
 
 /** aggregate max on columns */
 export type IconItemCategoryMapMaxFields = {
-   __typename?: 'icon_item_category_map_max_fields';
+  __typename?: 'icon_item_category_map_max_fields';
   icon_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
@@ -3229,7 +3335,7 @@ export type IconItemCategoryMapMaxOrderBy = {
 
 /** aggregate min on columns */
 export type IconItemCategoryMapMinFields = {
-   __typename?: 'icon_item_category_map_min_fields';
+  __typename?: 'icon_item_category_map_min_fields';
   icon_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
@@ -3242,7 +3348,7 @@ export type IconItemCategoryMapMinOrderBy = {
 
 /** response of any mutation on the table "icon_item_category_map" */
 export type IconItemCategoryMapMutationResponse = {
-   __typename?: 'icon_item_category_map_mutation_response';
+  __typename?: 'icon_item_category_map_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -3304,7 +3410,7 @@ export type IconItemCategoryMapSetInput = {
 
 /** aggregate stddev on columns */
 export type IconItemCategoryMapStddevFields = {
-   __typename?: 'icon_item_category_map_stddev_fields';
+  __typename?: 'icon_item_category_map_stddev_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
@@ -3315,7 +3421,7 @@ export type IconItemCategoryMapStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type IconItemCategoryMapStddevPopFields = {
-   __typename?: 'icon_item_category_map_stddev_pop_fields';
+  __typename?: 'icon_item_category_map_stddev_pop_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
@@ -3326,7 +3432,7 @@ export type IconItemCategoryMapStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type IconItemCategoryMapStddevSampFields = {
-   __typename?: 'icon_item_category_map_stddev_samp_fields';
+  __typename?: 'icon_item_category_map_stddev_samp_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
@@ -3337,7 +3443,7 @@ export type IconItemCategoryMapStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type IconItemCategoryMapSumFields = {
-   __typename?: 'icon_item_category_map_sum_fields';
+  __typename?: 'icon_item_category_map_sum_fields';
   sequence?: Maybe<Scalars['smallint']>;
 };
 
@@ -3360,7 +3466,7 @@ export enum IconItemCategoryMapUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type IconItemCategoryMapVarPopFields = {
-   __typename?: 'icon_item_category_map_var_pop_fields';
+  __typename?: 'icon_item_category_map_var_pop_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
@@ -3371,7 +3477,7 @@ export type IconItemCategoryMapVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type IconItemCategoryMapVarSampFields = {
-   __typename?: 'icon_item_category_map_var_samp_fields';
+  __typename?: 'icon_item_category_map_var_samp_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
@@ -3382,7 +3488,7 @@ export type IconItemCategoryMapVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type IconItemCategoryMapVarianceFields = {
-   __typename?: 'icon_item_category_map_variance_fields';
+  __typename?: 'icon_item_category_map_variance_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
@@ -3398,7 +3504,7 @@ export type IconItemCategoryMapVarianceOrderBy = {
  * columns and relationships of "icon_item_map"
  */
 export type IconItemMap = {
-   __typename?: 'icon_item_map';
+  __typename?: 'icon_item_map';
   /** An object relationship */
   icon: Icon;
   icon_id: Scalars['uuid'];
@@ -3409,14 +3515,14 @@ export type IconItemMap = {
 
 /** aggregated selection of "icon_item_map" */
 export type IconItemMapAggregate = {
-   __typename?: 'icon_item_map_aggregate';
+  __typename?: 'icon_item_map_aggregate';
   aggregate?: Maybe<IconItemMapAggregateFields>;
   nodes: Array<IconItemMap>;
 };
 
 /** aggregate fields of "icon_item_map" */
 export type IconItemMapAggregateFields = {
-   __typename?: 'icon_item_map_aggregate_fields';
+  __typename?: 'icon_item_map_aggregate_fields';
   avg?: Maybe<IconItemMapAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<IconItemMapMaxFields>;
@@ -3460,7 +3566,7 @@ export type IconItemMapArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type IconItemMapAvgFields = {
-   __typename?: 'icon_item_map_avg_fields';
+  __typename?: 'icon_item_map_avg_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -3501,7 +3607,7 @@ export type IconItemMapInsertInput = {
 
 /** aggregate max on columns */
 export type IconItemMapMaxFields = {
-   __typename?: 'icon_item_map_max_fields';
+  __typename?: 'icon_item_map_max_fields';
   icon_id?: Maybe<Scalars['uuid']>;
   item_id?: Maybe<Scalars['Int']>;
 };
@@ -3514,7 +3620,7 @@ export type IconItemMapMaxOrderBy = {
 
 /** aggregate min on columns */
 export type IconItemMapMinFields = {
-   __typename?: 'icon_item_map_min_fields';
+  __typename?: 'icon_item_map_min_fields';
   icon_id?: Maybe<Scalars['uuid']>;
   item_id?: Maybe<Scalars['Int']>;
 };
@@ -3527,7 +3633,7 @@ export type IconItemMapMinOrderBy = {
 
 /** response of any mutation on the table "icon_item_map" */
 export type IconItemMapMutationResponse = {
-   __typename?: 'icon_item_map_mutation_response';
+  __typename?: 'icon_item_map_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -3577,7 +3683,7 @@ export type IconItemMapSetInput = {
 
 /** aggregate stddev on columns */
 export type IconItemMapStddevFields = {
-   __typename?: 'icon_item_map_stddev_fields';
+  __typename?: 'icon_item_map_stddev_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -3588,7 +3694,7 @@ export type IconItemMapStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type IconItemMapStddevPopFields = {
-   __typename?: 'icon_item_map_stddev_pop_fields';
+  __typename?: 'icon_item_map_stddev_pop_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -3599,7 +3705,7 @@ export type IconItemMapStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type IconItemMapStddevSampFields = {
-   __typename?: 'icon_item_map_stddev_samp_fields';
+  __typename?: 'icon_item_map_stddev_samp_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -3610,7 +3716,7 @@ export type IconItemMapStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type IconItemMapSumFields = {
-   __typename?: 'icon_item_map_sum_fields';
+  __typename?: 'icon_item_map_sum_fields';
   item_id?: Maybe<Scalars['Int']>;
 };
 
@@ -3629,7 +3735,7 @@ export enum IconItemMapUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type IconItemMapVarPopFields = {
-   __typename?: 'icon_item_map_var_pop_fields';
+  __typename?: 'icon_item_map_var_pop_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -3640,7 +3746,7 @@ export type IconItemMapVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type IconItemMapVarSampFields = {
-   __typename?: 'icon_item_map_var_samp_fields';
+  __typename?: 'icon_item_map_var_samp_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -3651,7 +3757,7 @@ export type IconItemMapVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type IconItemMapVarianceFields = {
-   __typename?: 'icon_item_map_variance_fields';
+  __typename?: 'icon_item_map_variance_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -3662,7 +3768,7 @@ export type IconItemMapVarianceOrderBy = {
 
 /** columns and relationships of "icon_label_map" */
 export type IconLabelMap = {
-   __typename?: 'icon_label_map';
+  __typename?: 'icon_label_map';
   /** An object relationship */
   icon: Icon;
   icon_id: Scalars['uuid'];
@@ -3671,14 +3777,14 @@ export type IconLabelMap = {
 
 /** aggregated selection of "icon_label_map" */
 export type IconLabelMapAggregate = {
-   __typename?: 'icon_label_map_aggregate';
+  __typename?: 'icon_label_map_aggregate';
   aggregate?: Maybe<IconLabelMapAggregateFields>;
   nodes: Array<IconLabelMap>;
 };
 
 /** aggregate fields of "icon_label_map" */
 export type IconLabelMapAggregateFields = {
-   __typename?: 'icon_label_map_aggregate_fields';
+  __typename?: 'icon_label_map_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<IconLabelMapMaxFields>;
   min?: Maybe<IconLabelMapMinFields>;
@@ -3729,7 +3835,7 @@ export type IconLabelMapInsertInput = {
 
 /** aggregate max on columns */
 export type IconLabelMapMaxFields = {
-   __typename?: 'icon_label_map_max_fields';
+  __typename?: 'icon_label_map_max_fields';
   icon_id?: Maybe<Scalars['uuid']>;
   label_id?: Maybe<Scalars['uuid']>;
 };
@@ -3742,7 +3848,7 @@ export type IconLabelMapMaxOrderBy = {
 
 /** aggregate min on columns */
 export type IconLabelMapMinFields = {
-   __typename?: 'icon_label_map_min_fields';
+  __typename?: 'icon_label_map_min_fields';
   icon_id?: Maybe<Scalars['uuid']>;
   label_id?: Maybe<Scalars['uuid']>;
 };
@@ -3755,7 +3861,7 @@ export type IconLabelMapMinOrderBy = {
 
 /** response of any mutation on the table "icon_label_map" */
 export type IconLabelMapMutationResponse = {
-   __typename?: 'icon_label_map_mutation_response';
+  __typename?: 'icon_label_map_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -3812,7 +3918,7 @@ export enum IconLabelMapUpdateColumn {
 
 /** aggregate max on columns */
 export type IconMaxFields = {
-   __typename?: 'icon_max_fields';
+  __typename?: 'icon_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   data?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
@@ -3831,7 +3937,7 @@ export type IconMaxOrderBy = {
 
 /** aggregate min on columns */
 export type IconMinFields = {
-   __typename?: 'icon_min_fields';
+  __typename?: 'icon_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   data?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
@@ -3850,7 +3956,7 @@ export type IconMinOrderBy = {
 
 /** response of any mutation on the table "icon" */
 export type IconMutationResponse = {
-   __typename?: 'icon_mutation_response';
+  __typename?: 'icon_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -3924,22 +4030,9 @@ export enum IconUpdateColumn {
   title = 'title'
 }
 
-/** expression to compare columns of type Int. All fields are combined with logical 'AND'. */
-export type IntComparisonExp = {
-  _eq?: Maybe<Scalars['Int']>;
-  _gt?: Maybe<Scalars['Int']>;
-  _gte?: Maybe<Scalars['Int']>;
-  _in?: Maybe<Array<Scalars['Int']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['Int']>;
-  _lte?: Maybe<Scalars['Int']>;
-  _neq?: Maybe<Scalars['Int']>;
-  _nin?: Maybe<Array<Scalars['Int']>>;
-};
-
 /** columns and relationships of "item" */
 export type Item = {
-   __typename?: 'item';
+  __typename?: 'item';
   /** An array relationship */
   bundle: Array<ItemBundleMap>;
   /** An aggregated array relationship */
@@ -4099,14 +4192,14 @@ export type ItemVendorItemsAggregateArgs = {
 
 /** aggregated selection of "item" */
 export type ItemAggregate = {
-   __typename?: 'item_aggregate';
+  __typename?: 'item_aggregate';
   aggregate?: Maybe<ItemAggregateFields>;
   nodes: Array<Item>;
 };
 
 /** aggregate fields of "item" */
 export type ItemAggregateFields = {
-   __typename?: 'item_aggregate_fields';
+  __typename?: 'item_aggregate_fields';
   avg?: Maybe<ItemAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<ItemMaxFields>;
@@ -4155,7 +4248,7 @@ export type ItemArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type ItemAvgFields = {
-   __typename?: 'item_avg_fields';
+  __typename?: 'item_avg_fields';
   id?: Maybe<Scalars['Float']>;
   stock?: Maybe<Scalars['Float']>;
 };
@@ -4190,7 +4283,7 @@ export type ItemBoolExp = {
  * columns and relationships of "item.bundle"
  */
 export type ItemBundle = {
-   __typename?: 'item_bundle';
+  __typename?: 'item_bundle';
   created_at: Scalars['timestamptz'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
@@ -4236,14 +4329,14 @@ export type ItemBundleItemsAggregateArgs = {
 
 /** aggregated selection of "item.bundle" */
 export type ItemBundleAggregate = {
-   __typename?: 'item_bundle_aggregate';
+  __typename?: 'item_bundle_aggregate';
   aggregate?: Maybe<ItemBundleAggregateFields>;
   nodes: Array<ItemBundle>;
 };
 
 /** aggregate fields of "item.bundle" */
 export type ItemBundleAggregateFields = {
-   __typename?: 'item_bundle_aggregate_fields';
+  __typename?: 'item_bundle_aggregate_fields';
   avg?: Maybe<ItemBundleAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<ItemBundleMaxFields>;
@@ -4287,7 +4380,7 @@ export type ItemBundleArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type ItemBundleAvgFields = {
-   __typename?: 'item_bundle_avg_fields';
+  __typename?: 'item_bundle_avg_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -4336,7 +4429,7 @@ export type ItemBundleInsertInput = {
 
 /** columns and relationships of "item.bundle_map" */
 export type ItemBundleMap = {
-   __typename?: 'item_bundle_map';
+  __typename?: 'item_bundle_map';
   /** An object relationship */
   bundle: ItemBundle;
   /** An object relationship */
@@ -4347,14 +4440,14 @@ export type ItemBundleMap = {
 
 /** aggregated selection of "item.bundle_map" */
 export type ItemBundleMapAggregate = {
-   __typename?: 'item_bundle_map_aggregate';
+  __typename?: 'item_bundle_map_aggregate';
   aggregate?: Maybe<ItemBundleMapAggregateFields>;
   nodes: Array<ItemBundleMap>;
 };
 
 /** aggregate fields of "item.bundle_map" */
 export type ItemBundleMapAggregateFields = {
-   __typename?: 'item_bundle_map_aggregate_fields';
+  __typename?: 'item_bundle_map_aggregate_fields';
   avg?: Maybe<ItemBundleMapAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<ItemBundleMapMaxFields>;
@@ -4398,7 +4491,7 @@ export type ItemBundleMapArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type ItemBundleMapAvgFields = {
-   __typename?: 'item_bundle_map_avg_fields';
+  __typename?: 'item_bundle_map_avg_fields';
   item_bundle_id?: Maybe<Scalars['Float']>;
   item_member_id?: Maybe<Scalars['Float']>;
 };
@@ -4442,7 +4535,7 @@ export type ItemBundleMapInsertInput = {
 
 /** aggregate max on columns */
 export type ItemBundleMapMaxFields = {
-   __typename?: 'item_bundle_map_max_fields';
+  __typename?: 'item_bundle_map_max_fields';
   item_bundle_id?: Maybe<Scalars['Int']>;
   item_member_id?: Maybe<Scalars['Int']>;
 };
@@ -4455,7 +4548,7 @@ export type ItemBundleMapMaxOrderBy = {
 
 /** aggregate min on columns */
 export type ItemBundleMapMinFields = {
-   __typename?: 'item_bundle_map_min_fields';
+  __typename?: 'item_bundle_map_min_fields';
   item_bundle_id?: Maybe<Scalars['Int']>;
   item_member_id?: Maybe<Scalars['Int']>;
 };
@@ -4468,7 +4561,7 @@ export type ItemBundleMapMinOrderBy = {
 
 /** response of any mutation on the table "item.bundle_map" */
 export type ItemBundleMapMutationResponse = {
-   __typename?: 'item_bundle_map_mutation_response';
+  __typename?: 'item_bundle_map_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -4518,7 +4611,7 @@ export type ItemBundleMapSetInput = {
 
 /** aggregate stddev on columns */
 export type ItemBundleMapStddevFields = {
-   __typename?: 'item_bundle_map_stddev_fields';
+  __typename?: 'item_bundle_map_stddev_fields';
   item_bundle_id?: Maybe<Scalars['Float']>;
   item_member_id?: Maybe<Scalars['Float']>;
 };
@@ -4531,7 +4624,7 @@ export type ItemBundleMapStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type ItemBundleMapStddevPopFields = {
-   __typename?: 'item_bundle_map_stddev_pop_fields';
+  __typename?: 'item_bundle_map_stddev_pop_fields';
   item_bundle_id?: Maybe<Scalars['Float']>;
   item_member_id?: Maybe<Scalars['Float']>;
 };
@@ -4544,7 +4637,7 @@ export type ItemBundleMapStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type ItemBundleMapStddevSampFields = {
-   __typename?: 'item_bundle_map_stddev_samp_fields';
+  __typename?: 'item_bundle_map_stddev_samp_fields';
   item_bundle_id?: Maybe<Scalars['Float']>;
   item_member_id?: Maybe<Scalars['Float']>;
 };
@@ -4557,7 +4650,7 @@ export type ItemBundleMapStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type ItemBundleMapSumFields = {
-   __typename?: 'item_bundle_map_sum_fields';
+  __typename?: 'item_bundle_map_sum_fields';
   item_bundle_id?: Maybe<Scalars['Int']>;
   item_member_id?: Maybe<Scalars['Int']>;
 };
@@ -4578,7 +4671,7 @@ export enum ItemBundleMapUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type ItemBundleMapVarPopFields = {
-   __typename?: 'item_bundle_map_var_pop_fields';
+  __typename?: 'item_bundle_map_var_pop_fields';
   item_bundle_id?: Maybe<Scalars['Float']>;
   item_member_id?: Maybe<Scalars['Float']>;
 };
@@ -4591,7 +4684,7 @@ export type ItemBundleMapVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type ItemBundleMapVarSampFields = {
-   __typename?: 'item_bundle_map_var_samp_fields';
+  __typename?: 'item_bundle_map_var_samp_fields';
   item_bundle_id?: Maybe<Scalars['Float']>;
   item_member_id?: Maybe<Scalars['Float']>;
 };
@@ -4604,7 +4697,7 @@ export type ItemBundleMapVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type ItemBundleMapVarianceFields = {
-   __typename?: 'item_bundle_map_variance_fields';
+  __typename?: 'item_bundle_map_variance_fields';
   item_bundle_id?: Maybe<Scalars['Float']>;
   item_member_id?: Maybe<Scalars['Float']>;
 };
@@ -4617,7 +4710,7 @@ export type ItemBundleMapVarianceOrderBy = {
 
 /** aggregate max on columns */
 export type ItemBundleMaxFields = {
-   __typename?: 'item_bundle_max_fields';
+  __typename?: 'item_bundle_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
@@ -4636,7 +4729,7 @@ export type ItemBundleMaxOrderBy = {
 
 /** aggregate min on columns */
 export type ItemBundleMinFields = {
-   __typename?: 'item_bundle_min_fields';
+  __typename?: 'item_bundle_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
@@ -4655,7 +4748,7 @@ export type ItemBundleMinOrderBy = {
 
 /** response of any mutation on the table "item.bundle" */
 export type ItemBundleMutationResponse = {
-   __typename?: 'item_bundle_mutation_response';
+  __typename?: 'item_bundle_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -4716,7 +4809,7 @@ export type ItemBundleSetInput = {
 
 /** aggregate stddev on columns */
 export type ItemBundleStddevFields = {
-   __typename?: 'item_bundle_stddev_fields';
+  __typename?: 'item_bundle_stddev_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -4727,7 +4820,7 @@ export type ItemBundleStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type ItemBundleStddevPopFields = {
-   __typename?: 'item_bundle_stddev_pop_fields';
+  __typename?: 'item_bundle_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -4738,7 +4831,7 @@ export type ItemBundleStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type ItemBundleStddevSampFields = {
-   __typename?: 'item_bundle_stddev_samp_fields';
+  __typename?: 'item_bundle_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -4749,7 +4842,7 @@ export type ItemBundleStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type ItemBundleSumFields = {
-   __typename?: 'item_bundle_sum_fields';
+  __typename?: 'item_bundle_sum_fields';
   id?: Maybe<Scalars['Int']>;
 };
 
@@ -4774,7 +4867,7 @@ export enum ItemBundleUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type ItemBundleVarPopFields = {
-   __typename?: 'item_bundle_var_pop_fields';
+  __typename?: 'item_bundle_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -4785,7 +4878,7 @@ export type ItemBundleVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type ItemBundleVarSampFields = {
-   __typename?: 'item_bundle_var_samp_fields';
+  __typename?: 'item_bundle_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -4796,7 +4889,7 @@ export type ItemBundleVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type ItemBundleVarianceFields = {
-   __typename?: 'item_bundle_variance_fields';
+  __typename?: 'item_bundle_variance_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -4816,10 +4909,7 @@ export type ItemDeleteAtPathInput = {
   object?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
-/**
- * delete the array element with specified index (negative integers count from the
- * end). throws an error if top level container is not an array
- */
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type ItemDeleteElemInput = {
   object?: Maybe<Scalars['Int']>;
 };
@@ -4831,7 +4921,7 @@ export type ItemDeleteKeyInput = {
 
 /** columns and relationships of "item.hardware_fastener_bolt" */
 export type ItemHardwareFastenerBolt = {
-   __typename?: 'item_hardware_fastener_bolt';
+  __typename?: 'item_hardware_fastener_bolt';
   countersunk_angle?: Maybe<Scalars['numeric']>;
   /** Any value here means it is countersunk; A value != the `head_height` means it is only partially countersunk */
   countersunk_height?: Maybe<Scalars['numeric']>;
@@ -4892,14 +4982,14 @@ export type ItemHardwareFastenerBoltSpecificationsMetArgs = {
 
 /** aggregated selection of "item.hardware_fastener_bolt" */
 export type ItemHardwareFastenerBoltAggregate = {
-   __typename?: 'item_hardware_fastener_bolt_aggregate';
+  __typename?: 'item_hardware_fastener_bolt_aggregate';
   aggregate?: Maybe<ItemHardwareFastenerBoltAggregateFields>;
   nodes: Array<ItemHardwareFastenerBolt>;
 };
 
 /** aggregate fields of "item.hardware_fastener_bolt" */
 export type ItemHardwareFastenerBoltAggregateFields = {
-   __typename?: 'item_hardware_fastener_bolt_aggregate_fields';
+  __typename?: 'item_hardware_fastener_bolt_aggregate_fields';
   avg?: Maybe<ItemHardwareFastenerBoltAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<ItemHardwareFastenerBoltMaxFields>;
@@ -4948,7 +5038,7 @@ export type ItemHardwareFastenerBoltArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type ItemHardwareFastenerBoltAvgFields = {
-   __typename?: 'item_hardware_fastener_bolt_avg_fields';
+  __typename?: 'item_hardware_fastener_bolt_avg_fields';
   countersunk_angle?: Maybe<Scalars['Float']>;
   countersunk_height?: Maybe<Scalars['Float']>;
   embedded_length?: Maybe<Scalars['Float']>;
@@ -4977,10 +5067,7 @@ export type ItemHardwareFastenerBoltAvgOrderBy = {
   thread_pitch?: Maybe<OrderBy>;
 };
 
-/**
- * Boolean expression to filter rows from the table "item.hardware_fastener_bolt".
- * All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "item.hardware_fastener_bolt". All fields are combined with a logical 'AND'. */
 export type ItemHardwareFastenerBoltBoolExp = {
   _and?: Maybe<Array<Maybe<ItemHardwareFastenerBoltBoolExp>>>;
   _not?: Maybe<ItemHardwareFastenerBoltBoolExp>;
@@ -5025,10 +5112,7 @@ export type ItemHardwareFastenerBoltDeleteAtPathInput = {
   specifications_met?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
-/**
- * delete the array element with specified index (negative integers count from the
- * end). throws an error if top level container is not an array
- */
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type ItemHardwareFastenerBoltDeleteElemInput = {
   specifications_met?: Maybe<Scalars['Int']>;
 };
@@ -5086,7 +5170,7 @@ export type ItemHardwareFastenerBoltInsertInput = {
 
 /** aggregate max on columns */
 export type ItemHardwareFastenerBoltMaxFields = {
-   __typename?: 'item_hardware_fastener_bolt_max_fields';
+  __typename?: 'item_hardware_fastener_bolt_max_fields';
   countersunk_angle?: Maybe<Scalars['numeric']>;
   countersunk_height?: Maybe<Scalars['numeric']>;
   description?: Maybe<Scalars['String']>;
@@ -5123,7 +5207,7 @@ export type ItemHardwareFastenerBoltMaxOrderBy = {
 
 /** aggregate min on columns */
 export type ItemHardwareFastenerBoltMinFields = {
-   __typename?: 'item_hardware_fastener_bolt_min_fields';
+  __typename?: 'item_hardware_fastener_bolt_min_fields';
   countersunk_angle?: Maybe<Scalars['numeric']>;
   countersunk_height?: Maybe<Scalars['numeric']>;
   description?: Maybe<Scalars['String']>;
@@ -5160,7 +5244,7 @@ export type ItemHardwareFastenerBoltMinOrderBy = {
 
 /** response of any mutation on the table "item.hardware_fastener_bolt" */
 export type ItemHardwareFastenerBoltMutationResponse = {
-   __typename?: 'item_hardware_fastener_bolt_mutation_response';
+  __typename?: 'item_hardware_fastener_bolt_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -5312,7 +5396,7 @@ export type ItemHardwareFastenerBoltSetInput = {
 
 /** aggregate stddev on columns */
 export type ItemHardwareFastenerBoltStddevFields = {
-   __typename?: 'item_hardware_fastener_bolt_stddev_fields';
+  __typename?: 'item_hardware_fastener_bolt_stddev_fields';
   countersunk_angle?: Maybe<Scalars['Float']>;
   countersunk_height?: Maybe<Scalars['Float']>;
   embedded_length?: Maybe<Scalars['Float']>;
@@ -5343,7 +5427,7 @@ export type ItemHardwareFastenerBoltStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type ItemHardwareFastenerBoltStddevPopFields = {
-   __typename?: 'item_hardware_fastener_bolt_stddev_pop_fields';
+  __typename?: 'item_hardware_fastener_bolt_stddev_pop_fields';
   countersunk_angle?: Maybe<Scalars['Float']>;
   countersunk_height?: Maybe<Scalars['Float']>;
   embedded_length?: Maybe<Scalars['Float']>;
@@ -5374,7 +5458,7 @@ export type ItemHardwareFastenerBoltStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type ItemHardwareFastenerBoltStddevSampFields = {
-   __typename?: 'item_hardware_fastener_bolt_stddev_samp_fields';
+  __typename?: 'item_hardware_fastener_bolt_stddev_samp_fields';
   countersunk_angle?: Maybe<Scalars['Float']>;
   countersunk_height?: Maybe<Scalars['Float']>;
   embedded_length?: Maybe<Scalars['Float']>;
@@ -5405,7 +5489,7 @@ export type ItemHardwareFastenerBoltStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type ItemHardwareFastenerBoltSumFields = {
-   __typename?: 'item_hardware_fastener_bolt_sum_fields';
+  __typename?: 'item_hardware_fastener_bolt_sum_fields';
   countersunk_angle?: Maybe<Scalars['numeric']>;
   countersunk_height?: Maybe<Scalars['numeric']>;
   embedded_length?: Maybe<Scalars['numeric']>;
@@ -5494,7 +5578,7 @@ export enum ItemHardwareFastenerBoltUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type ItemHardwareFastenerBoltVarPopFields = {
-   __typename?: 'item_hardware_fastener_bolt_var_pop_fields';
+  __typename?: 'item_hardware_fastener_bolt_var_pop_fields';
   countersunk_angle?: Maybe<Scalars['Float']>;
   countersunk_height?: Maybe<Scalars['Float']>;
   embedded_length?: Maybe<Scalars['Float']>;
@@ -5525,7 +5609,7 @@ export type ItemHardwareFastenerBoltVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type ItemHardwareFastenerBoltVarSampFields = {
-   __typename?: 'item_hardware_fastener_bolt_var_samp_fields';
+  __typename?: 'item_hardware_fastener_bolt_var_samp_fields';
   countersunk_angle?: Maybe<Scalars['Float']>;
   countersunk_height?: Maybe<Scalars['Float']>;
   embedded_length?: Maybe<Scalars['Float']>;
@@ -5556,7 +5640,7 @@ export type ItemHardwareFastenerBoltVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type ItemHardwareFastenerBoltVarianceFields = {
-   __typename?: 'item_hardware_fastener_bolt_variance_fields';
+  __typename?: 'item_hardware_fastener_bolt_variance_fields';
   countersunk_angle?: Maybe<Scalars['Float']>;
   countersunk_height?: Maybe<Scalars['Float']>;
   embedded_length?: Maybe<Scalars['Float']>;
@@ -5587,7 +5671,7 @@ export type ItemHardwareFastenerBoltVarianceOrderBy = {
 
 /** columns and relationships of "item.hardware_fastener_nut" */
 export type ItemHardwareFastenerNut = {
-   __typename?: 'item_hardware_fastener_nut';
+  __typename?: 'item_hardware_fastener_nut';
   description: Scalars['String'];
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -5595,14 +5679,14 @@ export type ItemHardwareFastenerNut = {
 
 /** aggregated selection of "item.hardware_fastener_nut" */
 export type ItemHardwareFastenerNutAggregate = {
-   __typename?: 'item_hardware_fastener_nut_aggregate';
+  __typename?: 'item_hardware_fastener_nut_aggregate';
   aggregate?: Maybe<ItemHardwareFastenerNutAggregateFields>;
   nodes: Array<ItemHardwareFastenerNut>;
 };
 
 /** aggregate fields of "item.hardware_fastener_nut" */
 export type ItemHardwareFastenerNutAggregateFields = {
-   __typename?: 'item_hardware_fastener_nut_aggregate_fields';
+  __typename?: 'item_hardware_fastener_nut_aggregate_fields';
   avg?: Maybe<ItemHardwareFastenerNutAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<ItemHardwareFastenerNutMaxFields>;
@@ -5646,7 +5730,7 @@ export type ItemHardwareFastenerNutArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type ItemHardwareFastenerNutAvgFields = {
-   __typename?: 'item_hardware_fastener_nut_avg_fields';
+  __typename?: 'item_hardware_fastener_nut_avg_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -5685,7 +5769,7 @@ export type ItemHardwareFastenerNutInsertInput = {
 
 /** aggregate max on columns */
 export type ItemHardwareFastenerNutMaxFields = {
-   __typename?: 'item_hardware_fastener_nut_max_fields';
+  __typename?: 'item_hardware_fastener_nut_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -5700,7 +5784,7 @@ export type ItemHardwareFastenerNutMaxOrderBy = {
 
 /** aggregate min on columns */
 export type ItemHardwareFastenerNutMinFields = {
-   __typename?: 'item_hardware_fastener_nut_min_fields';
+  __typename?: 'item_hardware_fastener_nut_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -5715,7 +5799,7 @@ export type ItemHardwareFastenerNutMinOrderBy = {
 
 /** response of any mutation on the table "item.hardware_fastener_nut" */
 export type ItemHardwareFastenerNutMutationResponse = {
-   __typename?: 'item_hardware_fastener_nut_mutation_response';
+  __typename?: 'item_hardware_fastener_nut_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -5766,7 +5850,7 @@ export type ItemHardwareFastenerNutSetInput = {
 
 /** aggregate stddev on columns */
 export type ItemHardwareFastenerNutStddevFields = {
-   __typename?: 'item_hardware_fastener_nut_stddev_fields';
+  __typename?: 'item_hardware_fastener_nut_stddev_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -5777,7 +5861,7 @@ export type ItemHardwareFastenerNutStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type ItemHardwareFastenerNutStddevPopFields = {
-   __typename?: 'item_hardware_fastener_nut_stddev_pop_fields';
+  __typename?: 'item_hardware_fastener_nut_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -5788,7 +5872,7 @@ export type ItemHardwareFastenerNutStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type ItemHardwareFastenerNutStddevSampFields = {
-   __typename?: 'item_hardware_fastener_nut_stddev_samp_fields';
+  __typename?: 'item_hardware_fastener_nut_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -5799,7 +5883,7 @@ export type ItemHardwareFastenerNutStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type ItemHardwareFastenerNutSumFields = {
-   __typename?: 'item_hardware_fastener_nut_sum_fields';
+  __typename?: 'item_hardware_fastener_nut_sum_fields';
   id?: Maybe<Scalars['Int']>;
 };
 
@@ -5820,7 +5904,7 @@ export enum ItemHardwareFastenerNutUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type ItemHardwareFastenerNutVarPopFields = {
-   __typename?: 'item_hardware_fastener_nut_var_pop_fields';
+  __typename?: 'item_hardware_fastener_nut_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -5831,7 +5915,7 @@ export type ItemHardwareFastenerNutVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type ItemHardwareFastenerNutVarSampFields = {
-   __typename?: 'item_hardware_fastener_nut_var_samp_fields';
+  __typename?: 'item_hardware_fastener_nut_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -5842,7 +5926,7 @@ export type ItemHardwareFastenerNutVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type ItemHardwareFastenerNutVarianceFields = {
-   __typename?: 'item_hardware_fastener_nut_variance_fields';
+  __typename?: 'item_hardware_fastener_nut_variance_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -5853,7 +5937,7 @@ export type ItemHardwareFastenerNutVarianceOrderBy = {
 
 /** columns and relationships of "item.hardware_fastener_screw" */
 export type ItemHardwareFastenerScrew = {
-   __typename?: 'item_hardware_fastener_screw';
+  __typename?: 'item_hardware_fastener_screw';
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -5864,14 +5948,14 @@ export type ItemHardwareFastenerScrew = {
 
 /** aggregated selection of "item.hardware_fastener_screw" */
 export type ItemHardwareFastenerScrewAggregate = {
-   __typename?: 'item_hardware_fastener_screw_aggregate';
+  __typename?: 'item_hardware_fastener_screw_aggregate';
   aggregate?: Maybe<ItemHardwareFastenerScrewAggregateFields>;
   nodes: Array<ItemHardwareFastenerScrew>;
 };
 
 /** aggregate fields of "item.hardware_fastener_screw" */
 export type ItemHardwareFastenerScrewAggregateFields = {
-   __typename?: 'item_hardware_fastener_screw_aggregate_fields';
+  __typename?: 'item_hardware_fastener_screw_aggregate_fields';
   avg?: Maybe<ItemHardwareFastenerScrewAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<ItemHardwareFastenerScrewMaxFields>;
@@ -5915,7 +5999,7 @@ export type ItemHardwareFastenerScrewArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type ItemHardwareFastenerScrewAvgFields = {
-   __typename?: 'item_hardware_fastener_screw_avg_fields';
+  __typename?: 'item_hardware_fastener_screw_avg_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -5924,10 +6008,7 @@ export type ItemHardwareFastenerScrewAvgOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
-/**
- * Boolean expression to filter rows from the table "item.hardware_fastener_screw".
- * All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "item.hardware_fastener_screw". All fields are combined with a logical 'AND'. */
 export type ItemHardwareFastenerScrewBoolExp = {
   _and?: Maybe<Array<Maybe<ItemHardwareFastenerScrewBoolExp>>>;
   _not?: Maybe<ItemHardwareFastenerScrewBoolExp>;
@@ -5963,7 +6044,7 @@ export type ItemHardwareFastenerScrewInsertInput = {
 
 /** aggregate max on columns */
 export type ItemHardwareFastenerScrewMaxFields = {
-   __typename?: 'item_hardware_fastener_screw_max_fields';
+  __typename?: 'item_hardware_fastener_screw_max_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -5978,7 +6059,7 @@ export type ItemHardwareFastenerScrewMaxOrderBy = {
 
 /** aggregate min on columns */
 export type ItemHardwareFastenerScrewMinFields = {
-   __typename?: 'item_hardware_fastener_screw_min_fields';
+  __typename?: 'item_hardware_fastener_screw_min_fields';
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -5993,7 +6074,7 @@ export type ItemHardwareFastenerScrewMinOrderBy = {
 
 /** response of any mutation on the table "item.hardware_fastener_screw" */
 export type ItemHardwareFastenerScrewMutationResponse = {
-   __typename?: 'item_hardware_fastener_screw_mutation_response';
+  __typename?: 'item_hardware_fastener_screw_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -6056,7 +6137,7 @@ export type ItemHardwareFastenerScrewSetInput = {
 
 /** aggregate stddev on columns */
 export type ItemHardwareFastenerScrewStddevFields = {
-   __typename?: 'item_hardware_fastener_screw_stddev_fields';
+  __typename?: 'item_hardware_fastener_screw_stddev_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -6067,7 +6148,7 @@ export type ItemHardwareFastenerScrewStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type ItemHardwareFastenerScrewStddevPopFields = {
-   __typename?: 'item_hardware_fastener_screw_stddev_pop_fields';
+  __typename?: 'item_hardware_fastener_screw_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -6078,7 +6159,7 @@ export type ItemHardwareFastenerScrewStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type ItemHardwareFastenerScrewStddevSampFields = {
-   __typename?: 'item_hardware_fastener_screw_stddev_samp_fields';
+  __typename?: 'item_hardware_fastener_screw_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -6089,7 +6170,7 @@ export type ItemHardwareFastenerScrewStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type ItemHardwareFastenerScrewSumFields = {
-   __typename?: 'item_hardware_fastener_screw_sum_fields';
+  __typename?: 'item_hardware_fastener_screw_sum_fields';
   id?: Maybe<Scalars['Int']>;
 };
 
@@ -6116,7 +6197,7 @@ export enum ItemHardwareFastenerScrewUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type ItemHardwareFastenerScrewVarPopFields = {
-   __typename?: 'item_hardware_fastener_screw_var_pop_fields';
+  __typename?: 'item_hardware_fastener_screw_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -6127,7 +6208,7 @@ export type ItemHardwareFastenerScrewVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type ItemHardwareFastenerScrewVarSampFields = {
-   __typename?: 'item_hardware_fastener_screw_var_samp_fields';
+  __typename?: 'item_hardware_fastener_screw_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -6138,7 +6219,7 @@ export type ItemHardwareFastenerScrewVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type ItemHardwareFastenerScrewVarianceFields = {
-   __typename?: 'item_hardware_fastener_screw_variance_fields';
+  __typename?: 'item_hardware_fastener_screw_variance_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -6149,35 +6230,40 @@ export type ItemHardwareFastenerScrewVarianceOrderBy = {
 
 /** columns and relationships of "item.hardware_fastener_standoff" */
 export type ItemHardwareFastenerStandoff = {
-   __typename?: 'item_hardware_fastener_standoff';
+  __typename?: 'item_hardware_fastener_standoff';
   description?: Maybe<Scalars['String']>;
   female_length?: Maybe<Scalars['numeric']>;
   female_od?: Maybe<Scalars['numeric']>;
-  female_threaded_length?: Maybe<Scalars['numeric']>;
-  hardness: Scalars['String'];
+  female_thread_diameter?: Maybe<Scalars['numeric']>;
+  /** In a typical male-female standoff, this is usually listed as the item's length */
+  female_thread_length?: Maybe<Scalars['numeric']>;
+  female_thread_pitch?: Maybe<Scalars['numeric']>;
+  female_thread_tolerance?: Maybe<Scalars['String']>;
+  hardness: EnumHardwareFastenerHardnessEnum;
   id: Scalars['Int'];
   male_length?: Maybe<Scalars['numeric']>;
-  male_od?: Maybe<Scalars['numeric']>;
-  male_threaded_length?: Maybe<Scalars['numeric']>;
-  material: Scalars['String'];
+  male_thread_diameter?: Maybe<Scalars['numeric']>;
+  male_thread_length?: Maybe<Scalars['numeric']>;
+  male_thread_pitch?: Maybe<Scalars['numeric']>;
+  male_thread_tolerance?: Maybe<Scalars['String']>;
+  material: EnumHardwareFastenerMaterialEnum;
+  /** Male threads don't have an OD, but there may still be a portion of the spacer that is wider than the female portion ( or there is no female end ) */
+  max_od?: Maybe<Scalars['numeric']>;
   name: Scalars['String'];
   shape: EnumHardwareFastenerStandoffShapeEnum;
-  thread_diameter: Scalars['numeric'];
-  thread_pitch: Scalars['numeric'];
-  thread_tolerance: Scalars['String'];
   unit: EnumUnitEnum;
 };
 
 /** aggregated selection of "item.hardware_fastener_standoff" */
 export type ItemHardwareFastenerStandoffAggregate = {
-   __typename?: 'item_hardware_fastener_standoff_aggregate';
+  __typename?: 'item_hardware_fastener_standoff_aggregate';
   aggregate?: Maybe<ItemHardwareFastenerStandoffAggregateFields>;
   nodes: Array<ItemHardwareFastenerStandoff>;
 };
 
 /** aggregate fields of "item.hardware_fastener_standoff" */
 export type ItemHardwareFastenerStandoffAggregateFields = {
-   __typename?: 'item_hardware_fastener_standoff_aggregate_fields';
+  __typename?: 'item_hardware_fastener_standoff_aggregate_fields';
   avg?: Maybe<ItemHardwareFastenerStandoffAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<ItemHardwareFastenerStandoffMaxFields>;
@@ -6221,35 +6307,36 @@ export type ItemHardwareFastenerStandoffArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type ItemHardwareFastenerStandoffAvgFields = {
-   __typename?: 'item_hardware_fastener_standoff_avg_fields';
+  __typename?: 'item_hardware_fastener_standoff_avg_fields';
   female_length?: Maybe<Scalars['Float']>;
   female_od?: Maybe<Scalars['Float']>;
-  female_threaded_length?: Maybe<Scalars['Float']>;
+  female_thread_diameter?: Maybe<Scalars['Float']>;
+  female_thread_length?: Maybe<Scalars['Float']>;
+  female_thread_pitch?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   male_length?: Maybe<Scalars['Float']>;
-  male_od?: Maybe<Scalars['Float']>;
-  male_threaded_length?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
-  thread_pitch?: Maybe<Scalars['Float']>;
+  male_thread_diameter?: Maybe<Scalars['Float']>;
+  male_thread_length?: Maybe<Scalars['Float']>;
+  male_thread_pitch?: Maybe<Scalars['Float']>;
+  max_od?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "item.hardware_fastener_standoff" */
 export type ItemHardwareFastenerStandoffAvgOrderBy = {
   female_length?: Maybe<OrderBy>;
   female_od?: Maybe<OrderBy>;
-  female_threaded_length?: Maybe<OrderBy>;
+  female_thread_diameter?: Maybe<OrderBy>;
+  female_thread_length?: Maybe<OrderBy>;
+  female_thread_pitch?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   male_length?: Maybe<OrderBy>;
-  male_od?: Maybe<OrderBy>;
-  male_threaded_length?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
-  thread_pitch?: Maybe<OrderBy>;
+  male_thread_diameter?: Maybe<OrderBy>;
+  male_thread_length?: Maybe<OrderBy>;
+  male_thread_pitch?: Maybe<OrderBy>;
+  max_od?: Maybe<OrderBy>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "item.hardware_fastener_standoff". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "item.hardware_fastener_standoff". All fields are combined with a logical 'AND'. */
 export type ItemHardwareFastenerStandoffBoolExp = {
   _and?: Maybe<Array<Maybe<ItemHardwareFastenerStandoffBoolExp>>>;
   _not?: Maybe<ItemHardwareFastenerStandoffBoolExp>;
@@ -6257,18 +6344,21 @@ export type ItemHardwareFastenerStandoffBoolExp = {
   description?: Maybe<StringComparisonExp>;
   female_length?: Maybe<NumericComparisonExp>;
   female_od?: Maybe<NumericComparisonExp>;
-  female_threaded_length?: Maybe<NumericComparisonExp>;
-  hardness?: Maybe<StringComparisonExp>;
+  female_thread_diameter?: Maybe<NumericComparisonExp>;
+  female_thread_length?: Maybe<NumericComparisonExp>;
+  female_thread_pitch?: Maybe<NumericComparisonExp>;
+  female_thread_tolerance?: Maybe<StringComparisonExp>;
+  hardness?: Maybe<EnumHardwareFastenerHardnessEnumComparisonExp>;
   id?: Maybe<IntComparisonExp>;
   male_length?: Maybe<NumericComparisonExp>;
-  male_od?: Maybe<NumericComparisonExp>;
-  male_threaded_length?: Maybe<NumericComparisonExp>;
-  material?: Maybe<StringComparisonExp>;
+  male_thread_diameter?: Maybe<NumericComparisonExp>;
+  male_thread_length?: Maybe<NumericComparisonExp>;
+  male_thread_pitch?: Maybe<NumericComparisonExp>;
+  male_thread_tolerance?: Maybe<StringComparisonExp>;
+  material?: Maybe<EnumHardwareFastenerMaterialEnumComparisonExp>;
+  max_od?: Maybe<NumericComparisonExp>;
   name?: Maybe<StringComparisonExp>;
   shape?: Maybe<EnumHardwareFastenerStandoffShapeEnumComparisonExp>;
-  thread_diameter?: Maybe<NumericComparisonExp>;
-  thread_pitch?: Maybe<NumericComparisonExp>;
-  thread_tolerance?: Maybe<StringComparisonExp>;
   unit?: Maybe<EnumUnitEnumComparisonExp>;
 };
 
@@ -6282,13 +6372,15 @@ export enum ItemHardwareFastenerStandoffConstraint {
 export type ItemHardwareFastenerStandoffIncInput = {
   female_length?: Maybe<Scalars['numeric']>;
   female_od?: Maybe<Scalars['numeric']>;
-  female_threaded_length?: Maybe<Scalars['numeric']>;
+  female_thread_diameter?: Maybe<Scalars['numeric']>;
+  female_thread_length?: Maybe<Scalars['numeric']>;
+  female_thread_pitch?: Maybe<Scalars['numeric']>;
   id?: Maybe<Scalars['Int']>;
   male_length?: Maybe<Scalars['numeric']>;
-  male_od?: Maybe<Scalars['numeric']>;
-  male_threaded_length?: Maybe<Scalars['numeric']>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
-  thread_pitch?: Maybe<Scalars['numeric']>;
+  male_thread_diameter?: Maybe<Scalars['numeric']>;
+  male_thread_length?: Maybe<Scalars['numeric']>;
+  male_thread_pitch?: Maybe<Scalars['numeric']>;
+  max_od?: Maybe<Scalars['numeric']>;
 };
 
 /** input type for inserting data into table "item.hardware_fastener_standoff" */
@@ -6296,38 +6388,42 @@ export type ItemHardwareFastenerStandoffInsertInput = {
   description?: Maybe<Scalars['String']>;
   female_length?: Maybe<Scalars['numeric']>;
   female_od?: Maybe<Scalars['numeric']>;
-  female_threaded_length?: Maybe<Scalars['numeric']>;
-  hardness?: Maybe<Scalars['String']>;
+  female_thread_diameter?: Maybe<Scalars['numeric']>;
+  female_thread_length?: Maybe<Scalars['numeric']>;
+  female_thread_pitch?: Maybe<Scalars['numeric']>;
+  female_thread_tolerance?: Maybe<Scalars['String']>;
+  hardness?: Maybe<EnumHardwareFastenerHardnessEnum>;
   id?: Maybe<Scalars['Int']>;
   male_length?: Maybe<Scalars['numeric']>;
-  male_od?: Maybe<Scalars['numeric']>;
-  male_threaded_length?: Maybe<Scalars['numeric']>;
-  material?: Maybe<Scalars['String']>;
+  male_thread_diameter?: Maybe<Scalars['numeric']>;
+  male_thread_length?: Maybe<Scalars['numeric']>;
+  male_thread_pitch?: Maybe<Scalars['numeric']>;
+  male_thread_tolerance?: Maybe<Scalars['String']>;
+  material?: Maybe<EnumHardwareFastenerMaterialEnum>;
+  max_od?: Maybe<Scalars['numeric']>;
   name?: Maybe<Scalars['String']>;
   shape?: Maybe<EnumHardwareFastenerStandoffShapeEnum>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
-  thread_pitch?: Maybe<Scalars['numeric']>;
-  thread_tolerance?: Maybe<Scalars['String']>;
   unit?: Maybe<EnumUnitEnum>;
 };
 
 /** aggregate max on columns */
 export type ItemHardwareFastenerStandoffMaxFields = {
-   __typename?: 'item_hardware_fastener_standoff_max_fields';
+  __typename?: 'item_hardware_fastener_standoff_max_fields';
   description?: Maybe<Scalars['String']>;
   female_length?: Maybe<Scalars['numeric']>;
   female_od?: Maybe<Scalars['numeric']>;
-  female_threaded_length?: Maybe<Scalars['numeric']>;
-  hardness?: Maybe<Scalars['String']>;
+  female_thread_diameter?: Maybe<Scalars['numeric']>;
+  female_thread_length?: Maybe<Scalars['numeric']>;
+  female_thread_pitch?: Maybe<Scalars['numeric']>;
+  female_thread_tolerance?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   male_length?: Maybe<Scalars['numeric']>;
-  male_od?: Maybe<Scalars['numeric']>;
-  male_threaded_length?: Maybe<Scalars['numeric']>;
-  material?: Maybe<Scalars['String']>;
+  male_thread_diameter?: Maybe<Scalars['numeric']>;
+  male_thread_length?: Maybe<Scalars['numeric']>;
+  male_thread_pitch?: Maybe<Scalars['numeric']>;
+  male_thread_tolerance?: Maybe<Scalars['String']>;
+  max_od?: Maybe<Scalars['numeric']>;
   name?: Maybe<Scalars['String']>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
-  thread_pitch?: Maybe<Scalars['numeric']>;
-  thread_tolerance?: Maybe<Scalars['String']>;
 };
 
 /** order by max() on columns of table "item.hardware_fastener_standoff" */
@@ -6335,36 +6431,38 @@ export type ItemHardwareFastenerStandoffMaxOrderBy = {
   description?: Maybe<OrderBy>;
   female_length?: Maybe<OrderBy>;
   female_od?: Maybe<OrderBy>;
-  female_threaded_length?: Maybe<OrderBy>;
-  hardness?: Maybe<OrderBy>;
+  female_thread_diameter?: Maybe<OrderBy>;
+  female_thread_length?: Maybe<OrderBy>;
+  female_thread_pitch?: Maybe<OrderBy>;
+  female_thread_tolerance?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   male_length?: Maybe<OrderBy>;
-  male_od?: Maybe<OrderBy>;
-  male_threaded_length?: Maybe<OrderBy>;
-  material?: Maybe<OrderBy>;
+  male_thread_diameter?: Maybe<OrderBy>;
+  male_thread_length?: Maybe<OrderBy>;
+  male_thread_pitch?: Maybe<OrderBy>;
+  male_thread_tolerance?: Maybe<OrderBy>;
+  max_od?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
-  thread_pitch?: Maybe<OrderBy>;
-  thread_tolerance?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
 export type ItemHardwareFastenerStandoffMinFields = {
-   __typename?: 'item_hardware_fastener_standoff_min_fields';
+  __typename?: 'item_hardware_fastener_standoff_min_fields';
   description?: Maybe<Scalars['String']>;
   female_length?: Maybe<Scalars['numeric']>;
   female_od?: Maybe<Scalars['numeric']>;
-  female_threaded_length?: Maybe<Scalars['numeric']>;
-  hardness?: Maybe<Scalars['String']>;
+  female_thread_diameter?: Maybe<Scalars['numeric']>;
+  female_thread_length?: Maybe<Scalars['numeric']>;
+  female_thread_pitch?: Maybe<Scalars['numeric']>;
+  female_thread_tolerance?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   male_length?: Maybe<Scalars['numeric']>;
-  male_od?: Maybe<Scalars['numeric']>;
-  male_threaded_length?: Maybe<Scalars['numeric']>;
-  material?: Maybe<Scalars['String']>;
+  male_thread_diameter?: Maybe<Scalars['numeric']>;
+  male_thread_length?: Maybe<Scalars['numeric']>;
+  male_thread_pitch?: Maybe<Scalars['numeric']>;
+  male_thread_tolerance?: Maybe<Scalars['String']>;
+  max_od?: Maybe<Scalars['numeric']>;
   name?: Maybe<Scalars['String']>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
-  thread_pitch?: Maybe<Scalars['numeric']>;
-  thread_tolerance?: Maybe<Scalars['String']>;
 };
 
 /** order by min() on columns of table "item.hardware_fastener_standoff" */
@@ -6372,22 +6470,23 @@ export type ItemHardwareFastenerStandoffMinOrderBy = {
   description?: Maybe<OrderBy>;
   female_length?: Maybe<OrderBy>;
   female_od?: Maybe<OrderBy>;
-  female_threaded_length?: Maybe<OrderBy>;
-  hardness?: Maybe<OrderBy>;
+  female_thread_diameter?: Maybe<OrderBy>;
+  female_thread_length?: Maybe<OrderBy>;
+  female_thread_pitch?: Maybe<OrderBy>;
+  female_thread_tolerance?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   male_length?: Maybe<OrderBy>;
-  male_od?: Maybe<OrderBy>;
-  male_threaded_length?: Maybe<OrderBy>;
-  material?: Maybe<OrderBy>;
+  male_thread_diameter?: Maybe<OrderBy>;
+  male_thread_length?: Maybe<OrderBy>;
+  male_thread_pitch?: Maybe<OrderBy>;
+  male_thread_tolerance?: Maybe<OrderBy>;
+  max_od?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
-  thread_pitch?: Maybe<OrderBy>;
-  thread_tolerance?: Maybe<OrderBy>;
 };
 
 /** response of any mutation on the table "item.hardware_fastener_standoff" */
 export type ItemHardwareFastenerStandoffMutationResponse = {
-   __typename?: 'item_hardware_fastener_standoff_mutation_response';
+  __typename?: 'item_hardware_fastener_standoff_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -6412,18 +6511,21 @@ export type ItemHardwareFastenerStandoffOrderBy = {
   description?: Maybe<OrderBy>;
   female_length?: Maybe<OrderBy>;
   female_od?: Maybe<OrderBy>;
-  female_threaded_length?: Maybe<OrderBy>;
+  female_thread_diameter?: Maybe<OrderBy>;
+  female_thread_length?: Maybe<OrderBy>;
+  female_thread_pitch?: Maybe<OrderBy>;
+  female_thread_tolerance?: Maybe<OrderBy>;
   hardness?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   male_length?: Maybe<OrderBy>;
-  male_od?: Maybe<OrderBy>;
-  male_threaded_length?: Maybe<OrderBy>;
+  male_thread_diameter?: Maybe<OrderBy>;
+  male_thread_length?: Maybe<OrderBy>;
+  male_thread_pitch?: Maybe<OrderBy>;
+  male_thread_tolerance?: Maybe<OrderBy>;
   material?: Maybe<OrderBy>;
+  max_od?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   shape?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
-  thread_pitch?: Maybe<OrderBy>;
-  thread_tolerance?: Maybe<OrderBy>;
   unit?: Maybe<OrderBy>;
 };
 
@@ -6441,7 +6543,13 @@ export enum ItemHardwareFastenerStandoffSelectColumn {
   /** column name */
   female_od = 'female_od',
   /** column name */
-  female_threaded_length = 'female_threaded_length',
+  female_thread_diameter = 'female_thread_diameter',
+  /** column name */
+  female_thread_length = 'female_thread_length',
+  /** column name */
+  female_thread_pitch = 'female_thread_pitch',
+  /** column name */
+  female_thread_tolerance = 'female_thread_tolerance',
   /** column name */
   hardness = 'hardness',
   /** column name */
@@ -6449,21 +6557,21 @@ export enum ItemHardwareFastenerStandoffSelectColumn {
   /** column name */
   male_length = 'male_length',
   /** column name */
-  male_od = 'male_od',
+  male_thread_diameter = 'male_thread_diameter',
   /** column name */
-  male_threaded_length = 'male_threaded_length',
+  male_thread_length = 'male_thread_length',
+  /** column name */
+  male_thread_pitch = 'male_thread_pitch',
+  /** column name */
+  male_thread_tolerance = 'male_thread_tolerance',
   /** column name */
   material = 'material',
+  /** column name */
+  max_od = 'max_od',
   /** column name */
   name = 'name',
   /** column name */
   shape = 'shape',
-  /** column name */
-  thread_diameter = 'thread_diameter',
-  /** column name */
-  thread_pitch = 'thread_pitch',
-  /** column name */
-  thread_tolerance = 'thread_tolerance',
   /** column name */
   unit = 'unit'
 }
@@ -6473,127 +6581,146 @@ export type ItemHardwareFastenerStandoffSetInput = {
   description?: Maybe<Scalars['String']>;
   female_length?: Maybe<Scalars['numeric']>;
   female_od?: Maybe<Scalars['numeric']>;
-  female_threaded_length?: Maybe<Scalars['numeric']>;
-  hardness?: Maybe<Scalars['String']>;
+  female_thread_diameter?: Maybe<Scalars['numeric']>;
+  female_thread_length?: Maybe<Scalars['numeric']>;
+  female_thread_pitch?: Maybe<Scalars['numeric']>;
+  female_thread_tolerance?: Maybe<Scalars['String']>;
+  hardness?: Maybe<EnumHardwareFastenerHardnessEnum>;
   id?: Maybe<Scalars['Int']>;
   male_length?: Maybe<Scalars['numeric']>;
-  male_od?: Maybe<Scalars['numeric']>;
-  male_threaded_length?: Maybe<Scalars['numeric']>;
-  material?: Maybe<Scalars['String']>;
+  male_thread_diameter?: Maybe<Scalars['numeric']>;
+  male_thread_length?: Maybe<Scalars['numeric']>;
+  male_thread_pitch?: Maybe<Scalars['numeric']>;
+  male_thread_tolerance?: Maybe<Scalars['String']>;
+  material?: Maybe<EnumHardwareFastenerMaterialEnum>;
+  max_od?: Maybe<Scalars['numeric']>;
   name?: Maybe<Scalars['String']>;
   shape?: Maybe<EnumHardwareFastenerStandoffShapeEnum>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
-  thread_pitch?: Maybe<Scalars['numeric']>;
-  thread_tolerance?: Maybe<Scalars['String']>;
   unit?: Maybe<EnumUnitEnum>;
 };
 
 /** aggregate stddev on columns */
 export type ItemHardwareFastenerStandoffStddevFields = {
-   __typename?: 'item_hardware_fastener_standoff_stddev_fields';
+  __typename?: 'item_hardware_fastener_standoff_stddev_fields';
   female_length?: Maybe<Scalars['Float']>;
   female_od?: Maybe<Scalars['Float']>;
-  female_threaded_length?: Maybe<Scalars['Float']>;
+  female_thread_diameter?: Maybe<Scalars['Float']>;
+  female_thread_length?: Maybe<Scalars['Float']>;
+  female_thread_pitch?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   male_length?: Maybe<Scalars['Float']>;
-  male_od?: Maybe<Scalars['Float']>;
-  male_threaded_length?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
-  thread_pitch?: Maybe<Scalars['Float']>;
+  male_thread_diameter?: Maybe<Scalars['Float']>;
+  male_thread_length?: Maybe<Scalars['Float']>;
+  male_thread_pitch?: Maybe<Scalars['Float']>;
+  max_od?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "item.hardware_fastener_standoff" */
 export type ItemHardwareFastenerStandoffStddevOrderBy = {
   female_length?: Maybe<OrderBy>;
   female_od?: Maybe<OrderBy>;
-  female_threaded_length?: Maybe<OrderBy>;
+  female_thread_diameter?: Maybe<OrderBy>;
+  female_thread_length?: Maybe<OrderBy>;
+  female_thread_pitch?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   male_length?: Maybe<OrderBy>;
-  male_od?: Maybe<OrderBy>;
-  male_threaded_length?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
-  thread_pitch?: Maybe<OrderBy>;
+  male_thread_diameter?: Maybe<OrderBy>;
+  male_thread_length?: Maybe<OrderBy>;
+  male_thread_pitch?: Maybe<OrderBy>;
+  max_od?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_pop on columns */
 export type ItemHardwareFastenerStandoffStddevPopFields = {
-   __typename?: 'item_hardware_fastener_standoff_stddev_pop_fields';
+  __typename?: 'item_hardware_fastener_standoff_stddev_pop_fields';
   female_length?: Maybe<Scalars['Float']>;
   female_od?: Maybe<Scalars['Float']>;
-  female_threaded_length?: Maybe<Scalars['Float']>;
+  female_thread_diameter?: Maybe<Scalars['Float']>;
+  female_thread_length?: Maybe<Scalars['Float']>;
+  female_thread_pitch?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   male_length?: Maybe<Scalars['Float']>;
-  male_od?: Maybe<Scalars['Float']>;
-  male_threaded_length?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
-  thread_pitch?: Maybe<Scalars['Float']>;
+  male_thread_diameter?: Maybe<Scalars['Float']>;
+  male_thread_length?: Maybe<Scalars['Float']>;
+  male_thread_pitch?: Maybe<Scalars['Float']>;
+  max_od?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "item.hardware_fastener_standoff" */
 export type ItemHardwareFastenerStandoffStddevPopOrderBy = {
   female_length?: Maybe<OrderBy>;
   female_od?: Maybe<OrderBy>;
-  female_threaded_length?: Maybe<OrderBy>;
+  female_thread_diameter?: Maybe<OrderBy>;
+  female_thread_length?: Maybe<OrderBy>;
+  female_thread_pitch?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   male_length?: Maybe<OrderBy>;
-  male_od?: Maybe<OrderBy>;
-  male_threaded_length?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
-  thread_pitch?: Maybe<OrderBy>;
+  male_thread_diameter?: Maybe<OrderBy>;
+  male_thread_length?: Maybe<OrderBy>;
+  male_thread_pitch?: Maybe<OrderBy>;
+  max_od?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_samp on columns */
 export type ItemHardwareFastenerStandoffStddevSampFields = {
-   __typename?: 'item_hardware_fastener_standoff_stddev_samp_fields';
+  __typename?: 'item_hardware_fastener_standoff_stddev_samp_fields';
   female_length?: Maybe<Scalars['Float']>;
   female_od?: Maybe<Scalars['Float']>;
-  female_threaded_length?: Maybe<Scalars['Float']>;
+  female_thread_diameter?: Maybe<Scalars['Float']>;
+  female_thread_length?: Maybe<Scalars['Float']>;
+  female_thread_pitch?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   male_length?: Maybe<Scalars['Float']>;
-  male_od?: Maybe<Scalars['Float']>;
-  male_threaded_length?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
-  thread_pitch?: Maybe<Scalars['Float']>;
+  male_thread_diameter?: Maybe<Scalars['Float']>;
+  male_thread_length?: Maybe<Scalars['Float']>;
+  male_thread_pitch?: Maybe<Scalars['Float']>;
+  max_od?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "item.hardware_fastener_standoff" */
 export type ItemHardwareFastenerStandoffStddevSampOrderBy = {
   female_length?: Maybe<OrderBy>;
   female_od?: Maybe<OrderBy>;
-  female_threaded_length?: Maybe<OrderBy>;
+  female_thread_diameter?: Maybe<OrderBy>;
+  female_thread_length?: Maybe<OrderBy>;
+  female_thread_pitch?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   male_length?: Maybe<OrderBy>;
-  male_od?: Maybe<OrderBy>;
-  male_threaded_length?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
-  thread_pitch?: Maybe<OrderBy>;
+  male_thread_diameter?: Maybe<OrderBy>;
+  male_thread_length?: Maybe<OrderBy>;
+  male_thread_pitch?: Maybe<OrderBy>;
+  max_od?: Maybe<OrderBy>;
 };
 
 /** aggregate sum on columns */
 export type ItemHardwareFastenerStandoffSumFields = {
-   __typename?: 'item_hardware_fastener_standoff_sum_fields';
+  __typename?: 'item_hardware_fastener_standoff_sum_fields';
   female_length?: Maybe<Scalars['numeric']>;
   female_od?: Maybe<Scalars['numeric']>;
-  female_threaded_length?: Maybe<Scalars['numeric']>;
+  female_thread_diameter?: Maybe<Scalars['numeric']>;
+  female_thread_length?: Maybe<Scalars['numeric']>;
+  female_thread_pitch?: Maybe<Scalars['numeric']>;
   id?: Maybe<Scalars['Int']>;
   male_length?: Maybe<Scalars['numeric']>;
-  male_od?: Maybe<Scalars['numeric']>;
-  male_threaded_length?: Maybe<Scalars['numeric']>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
-  thread_pitch?: Maybe<Scalars['numeric']>;
+  male_thread_diameter?: Maybe<Scalars['numeric']>;
+  male_thread_length?: Maybe<Scalars['numeric']>;
+  male_thread_pitch?: Maybe<Scalars['numeric']>;
+  max_od?: Maybe<Scalars['numeric']>;
 };
 
 /** order by sum() on columns of table "item.hardware_fastener_standoff" */
 export type ItemHardwareFastenerStandoffSumOrderBy = {
   female_length?: Maybe<OrderBy>;
   female_od?: Maybe<OrderBy>;
-  female_threaded_length?: Maybe<OrderBy>;
+  female_thread_diameter?: Maybe<OrderBy>;
+  female_thread_length?: Maybe<OrderBy>;
+  female_thread_pitch?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   male_length?: Maybe<OrderBy>;
-  male_od?: Maybe<OrderBy>;
-  male_threaded_length?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
-  thread_pitch?: Maybe<OrderBy>;
+  male_thread_diameter?: Maybe<OrderBy>;
+  male_thread_length?: Maybe<OrderBy>;
+  male_thread_pitch?: Maybe<OrderBy>;
+  max_od?: Maybe<OrderBy>;
 };
 
 /** update columns of table "item.hardware_fastener_standoff" */
@@ -6605,7 +6732,13 @@ export enum ItemHardwareFastenerStandoffUpdateColumn {
   /** column name */
   female_od = 'female_od',
   /** column name */
-  female_threaded_length = 'female_threaded_length',
+  female_thread_diameter = 'female_thread_diameter',
+  /** column name */
+  female_thread_length = 'female_thread_length',
+  /** column name */
+  female_thread_pitch = 'female_thread_pitch',
+  /** column name */
+  female_thread_tolerance = 'female_thread_tolerance',
   /** column name */
   hardness = 'hardness',
   /** column name */
@@ -6613,104 +6746,116 @@ export enum ItemHardwareFastenerStandoffUpdateColumn {
   /** column name */
   male_length = 'male_length',
   /** column name */
-  male_od = 'male_od',
+  male_thread_diameter = 'male_thread_diameter',
   /** column name */
-  male_threaded_length = 'male_threaded_length',
+  male_thread_length = 'male_thread_length',
+  /** column name */
+  male_thread_pitch = 'male_thread_pitch',
+  /** column name */
+  male_thread_tolerance = 'male_thread_tolerance',
   /** column name */
   material = 'material',
+  /** column name */
+  max_od = 'max_od',
   /** column name */
   name = 'name',
   /** column name */
   shape = 'shape',
-  /** column name */
-  thread_diameter = 'thread_diameter',
-  /** column name */
-  thread_pitch = 'thread_pitch',
-  /** column name */
-  thread_tolerance = 'thread_tolerance',
   /** column name */
   unit = 'unit'
 }
 
 /** aggregate var_pop on columns */
 export type ItemHardwareFastenerStandoffVarPopFields = {
-   __typename?: 'item_hardware_fastener_standoff_var_pop_fields';
+  __typename?: 'item_hardware_fastener_standoff_var_pop_fields';
   female_length?: Maybe<Scalars['Float']>;
   female_od?: Maybe<Scalars['Float']>;
-  female_threaded_length?: Maybe<Scalars['Float']>;
+  female_thread_diameter?: Maybe<Scalars['Float']>;
+  female_thread_length?: Maybe<Scalars['Float']>;
+  female_thread_pitch?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   male_length?: Maybe<Scalars['Float']>;
-  male_od?: Maybe<Scalars['Float']>;
-  male_threaded_length?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
-  thread_pitch?: Maybe<Scalars['Float']>;
+  male_thread_diameter?: Maybe<Scalars['Float']>;
+  male_thread_length?: Maybe<Scalars['Float']>;
+  male_thread_pitch?: Maybe<Scalars['Float']>;
+  max_od?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "item.hardware_fastener_standoff" */
 export type ItemHardwareFastenerStandoffVarPopOrderBy = {
   female_length?: Maybe<OrderBy>;
   female_od?: Maybe<OrderBy>;
-  female_threaded_length?: Maybe<OrderBy>;
+  female_thread_diameter?: Maybe<OrderBy>;
+  female_thread_length?: Maybe<OrderBy>;
+  female_thread_pitch?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   male_length?: Maybe<OrderBy>;
-  male_od?: Maybe<OrderBy>;
-  male_threaded_length?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
-  thread_pitch?: Maybe<OrderBy>;
+  male_thread_diameter?: Maybe<OrderBy>;
+  male_thread_length?: Maybe<OrderBy>;
+  male_thread_pitch?: Maybe<OrderBy>;
+  max_od?: Maybe<OrderBy>;
 };
 
 /** aggregate var_samp on columns */
 export type ItemHardwareFastenerStandoffVarSampFields = {
-   __typename?: 'item_hardware_fastener_standoff_var_samp_fields';
+  __typename?: 'item_hardware_fastener_standoff_var_samp_fields';
   female_length?: Maybe<Scalars['Float']>;
   female_od?: Maybe<Scalars['Float']>;
-  female_threaded_length?: Maybe<Scalars['Float']>;
+  female_thread_diameter?: Maybe<Scalars['Float']>;
+  female_thread_length?: Maybe<Scalars['Float']>;
+  female_thread_pitch?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   male_length?: Maybe<Scalars['Float']>;
-  male_od?: Maybe<Scalars['Float']>;
-  male_threaded_length?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
-  thread_pitch?: Maybe<Scalars['Float']>;
+  male_thread_diameter?: Maybe<Scalars['Float']>;
+  male_thread_length?: Maybe<Scalars['Float']>;
+  male_thread_pitch?: Maybe<Scalars['Float']>;
+  max_od?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "item.hardware_fastener_standoff" */
 export type ItemHardwareFastenerStandoffVarSampOrderBy = {
   female_length?: Maybe<OrderBy>;
   female_od?: Maybe<OrderBy>;
-  female_threaded_length?: Maybe<OrderBy>;
+  female_thread_diameter?: Maybe<OrderBy>;
+  female_thread_length?: Maybe<OrderBy>;
+  female_thread_pitch?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   male_length?: Maybe<OrderBy>;
-  male_od?: Maybe<OrderBy>;
-  male_threaded_length?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
-  thread_pitch?: Maybe<OrderBy>;
+  male_thread_diameter?: Maybe<OrderBy>;
+  male_thread_length?: Maybe<OrderBy>;
+  male_thread_pitch?: Maybe<OrderBy>;
+  max_od?: Maybe<OrderBy>;
 };
 
 /** aggregate variance on columns */
 export type ItemHardwareFastenerStandoffVarianceFields = {
-   __typename?: 'item_hardware_fastener_standoff_variance_fields';
+  __typename?: 'item_hardware_fastener_standoff_variance_fields';
   female_length?: Maybe<Scalars['Float']>;
   female_od?: Maybe<Scalars['Float']>;
-  female_threaded_length?: Maybe<Scalars['Float']>;
+  female_thread_diameter?: Maybe<Scalars['Float']>;
+  female_thread_length?: Maybe<Scalars['Float']>;
+  female_thread_pitch?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   male_length?: Maybe<Scalars['Float']>;
-  male_od?: Maybe<Scalars['Float']>;
-  male_threaded_length?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
-  thread_pitch?: Maybe<Scalars['Float']>;
+  male_thread_diameter?: Maybe<Scalars['Float']>;
+  male_thread_length?: Maybe<Scalars['Float']>;
+  male_thread_pitch?: Maybe<Scalars['Float']>;
+  max_od?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "item.hardware_fastener_standoff" */
 export type ItemHardwareFastenerStandoffVarianceOrderBy = {
   female_length?: Maybe<OrderBy>;
   female_od?: Maybe<OrderBy>;
-  female_threaded_length?: Maybe<OrderBy>;
+  female_thread_diameter?: Maybe<OrderBy>;
+  female_thread_length?: Maybe<OrderBy>;
+  female_thread_pitch?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   male_length?: Maybe<OrderBy>;
-  male_od?: Maybe<OrderBy>;
-  male_threaded_length?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
-  thread_pitch?: Maybe<OrderBy>;
+  male_thread_diameter?: Maybe<OrderBy>;
+  male_thread_length?: Maybe<OrderBy>;
+  male_thread_pitch?: Maybe<OrderBy>;
+  max_od?: Maybe<OrderBy>;
 };
 
 /** input type for incrementing integer column in table "item" */
@@ -6735,7 +6880,7 @@ export type ItemInsertInput = {
 
 /** aggregate max on columns */
 export type ItemMaxFields = {
-   __typename?: 'item_max_fields';
+  __typename?: 'item_max_fields';
   id?: Maybe<Scalars['Int']>;
   stock?: Maybe<Scalars['smallint']>;
 };
@@ -6748,7 +6893,7 @@ export type ItemMaxOrderBy = {
 
 /** aggregate min on columns */
 export type ItemMinFields = {
-   __typename?: 'item_min_fields';
+  __typename?: 'item_min_fields';
   id?: Maybe<Scalars['Int']>;
   stock?: Maybe<Scalars['smallint']>;
 };
@@ -6761,7 +6906,7 @@ export type ItemMinOrderBy = {
 
 /** response of any mutation on the table "item" */
 export type ItemMutationResponse = {
-   __typename?: 'item_mutation_response';
+  __typename?: 'item_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -6827,7 +6972,7 @@ export type ItemSetInput = {
 
 /** aggregate stddev on columns */
 export type ItemStddevFields = {
-   __typename?: 'item_stddev_fields';
+  __typename?: 'item_stddev_fields';
   id?: Maybe<Scalars['Float']>;
   stock?: Maybe<Scalars['Float']>;
 };
@@ -6840,7 +6985,7 @@ export type ItemStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type ItemStddevPopFields = {
-   __typename?: 'item_stddev_pop_fields';
+  __typename?: 'item_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
   stock?: Maybe<Scalars['Float']>;
 };
@@ -6853,7 +6998,7 @@ export type ItemStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type ItemStddevSampFields = {
-   __typename?: 'item_stddev_samp_fields';
+  __typename?: 'item_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
   stock?: Maybe<Scalars['Float']>;
 };
@@ -6866,7 +7011,7 @@ export type ItemStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type ItemSumFields = {
-   __typename?: 'item_sum_fields';
+  __typename?: 'item_sum_fields';
   id?: Maybe<Scalars['Int']>;
   stock?: Maybe<Scalars['smallint']>;
 };
@@ -6891,7 +7036,7 @@ export enum ItemUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type ItemVarPopFields = {
-   __typename?: 'item_var_pop_fields';
+  __typename?: 'item_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
   stock?: Maybe<Scalars['Float']>;
 };
@@ -6904,7 +7049,7 @@ export type ItemVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type ItemVarSampFields = {
-   __typename?: 'item_var_samp_fields';
+  __typename?: 'item_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
   stock?: Maybe<Scalars['Float']>;
 };
@@ -6917,7 +7062,7 @@ export type ItemVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type ItemVarianceFields = {
-   __typename?: 'item_variance_fields';
+  __typename?: 'item_variance_fields';
   id?: Maybe<Scalars['Float']>;
   stock?: Maybe<Scalars['Float']>;
 };
@@ -6959,7 +7104,7 @@ export type JsonbComparisonExp = {
  * columns and relationships of "label"
  */
 export type Label = {
-   __typename?: 'label';
+  __typename?: 'label';
   content: Scalars['jsonb'];
   created_at: Scalars['timestamptz'];
   /** An object relationship */
@@ -7056,14 +7201,14 @@ export type LabelTemplateItemsAggregateArgs = {
 
 /** aggregated selection of "label" */
 export type LabelAggregate = {
-   __typename?: 'label_aggregate';
+  __typename?: 'label_aggregate';
   aggregate?: Maybe<LabelAggregateFields>;
   nodes: Array<Label>;
 };
 
 /** aggregate fields of "label" */
 export type LabelAggregateFields = {
-   __typename?: 'label_aggregate_fields';
+  __typename?: 'label_aggregate_fields';
   avg?: Maybe<LabelAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<LabelMaxFields>;
@@ -7112,7 +7257,7 @@ export type LabelArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type LabelAvgFields = {
-   __typename?: 'label_avg_fields';
+  __typename?: 'label_avg_fields';
   height?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   width?: Maybe<Scalars['Float']>;
@@ -7158,10 +7303,7 @@ export type LabelDeleteAtPathInput = {
   content?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
-/**
- * delete the array element with specified index (negative integers count from the
- * end). throws an error if top level container is not an array
- */
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type LabelDeleteElemInput = {
   content?: Maybe<Scalars['Int']>;
 };
@@ -7197,21 +7339,21 @@ export type LabelInsertInput = {
 
 /** columns and relationships of "label_item_map" */
 export type LabelItemMap = {
-   __typename?: 'label_item_map';
+  __typename?: 'label_item_map';
   item_id: Scalars['Int'];
   label_id: Scalars['uuid'];
 };
 
 /** aggregated selection of "label_item_map" */
 export type LabelItemMapAggregate = {
-   __typename?: 'label_item_map_aggregate';
+  __typename?: 'label_item_map_aggregate';
   aggregate?: Maybe<LabelItemMapAggregateFields>;
   nodes: Array<LabelItemMap>;
 };
 
 /** aggregate fields of "label_item_map" */
 export type LabelItemMapAggregateFields = {
-   __typename?: 'label_item_map_aggregate_fields';
+  __typename?: 'label_item_map_aggregate_fields';
   avg?: Maybe<LabelItemMapAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<LabelItemMapMaxFields>;
@@ -7255,7 +7397,7 @@ export type LabelItemMapArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type LabelItemMapAvgFields = {
-   __typename?: 'label_item_map_avg_fields';
+  __typename?: 'label_item_map_avg_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -7292,7 +7434,7 @@ export type LabelItemMapInsertInput = {
 
 /** aggregate max on columns */
 export type LabelItemMapMaxFields = {
-   __typename?: 'label_item_map_max_fields';
+  __typename?: 'label_item_map_max_fields';
   item_id?: Maybe<Scalars['Int']>;
   label_id?: Maybe<Scalars['uuid']>;
 };
@@ -7305,7 +7447,7 @@ export type LabelItemMapMaxOrderBy = {
 
 /** aggregate min on columns */
 export type LabelItemMapMinFields = {
-   __typename?: 'label_item_map_min_fields';
+  __typename?: 'label_item_map_min_fields';
   item_id?: Maybe<Scalars['Int']>;
   label_id?: Maybe<Scalars['uuid']>;
 };
@@ -7318,7 +7460,7 @@ export type LabelItemMapMinOrderBy = {
 
 /** response of any mutation on the table "label_item_map" */
 export type LabelItemMapMutationResponse = {
-   __typename?: 'label_item_map_mutation_response';
+  __typename?: 'label_item_map_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -7366,7 +7508,7 @@ export type LabelItemMapSetInput = {
 
 /** aggregate stddev on columns */
 export type LabelItemMapStddevFields = {
-   __typename?: 'label_item_map_stddev_fields';
+  __typename?: 'label_item_map_stddev_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -7377,7 +7519,7 @@ export type LabelItemMapStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type LabelItemMapStddevPopFields = {
-   __typename?: 'label_item_map_stddev_pop_fields';
+  __typename?: 'label_item_map_stddev_pop_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -7388,7 +7530,7 @@ export type LabelItemMapStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type LabelItemMapStddevSampFields = {
-   __typename?: 'label_item_map_stddev_samp_fields';
+  __typename?: 'label_item_map_stddev_samp_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -7399,7 +7541,7 @@ export type LabelItemMapStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type LabelItemMapSumFields = {
-   __typename?: 'label_item_map_sum_fields';
+  __typename?: 'label_item_map_sum_fields';
   item_id?: Maybe<Scalars['Int']>;
 };
 
@@ -7418,7 +7560,7 @@ export enum LabelItemMapUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type LabelItemMapVarPopFields = {
-   __typename?: 'label_item_map_var_pop_fields';
+  __typename?: 'label_item_map_var_pop_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -7429,7 +7571,7 @@ export type LabelItemMapVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type LabelItemMapVarSampFields = {
-   __typename?: 'label_item_map_var_samp_fields';
+  __typename?: 'label_item_map_var_samp_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -7440,7 +7582,7 @@ export type LabelItemMapVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type LabelItemMapVarianceFields = {
-   __typename?: 'label_item_map_variance_fields';
+  __typename?: 'label_item_map_variance_fields';
   item_id?: Maybe<Scalars['Float']>;
 };
 
@@ -7451,7 +7593,7 @@ export type LabelItemMapVarianceOrderBy = {
 
 /** aggregate max on columns */
 export type LabelMaxFields = {
-   __typename?: 'label_max_fields';
+  __typename?: 'label_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   edit_of_id?: Maybe<Scalars['uuid']>;
   height?: Maybe<Scalars['Int']>;
@@ -7476,7 +7618,7 @@ export type LabelMaxOrderBy = {
 
 /** aggregate min on columns */
 export type LabelMinFields = {
-   __typename?: 'label_min_fields';
+  __typename?: 'label_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   edit_of_id?: Maybe<Scalars['uuid']>;
   height?: Maybe<Scalars['Int']>;
@@ -7501,7 +7643,7 @@ export type LabelMinOrderBy = {
 
 /** response of any mutation on the table "label" */
 export type LabelMutationResponse = {
-   __typename?: 'label_mutation_response';
+  __typename?: 'label_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -7585,7 +7727,7 @@ export type LabelSetInput = {
 
 /** aggregate stddev on columns */
 export type LabelStddevFields = {
-   __typename?: 'label_stddev_fields';
+  __typename?: 'label_stddev_fields';
   height?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   width?: Maybe<Scalars['Float']>;
@@ -7600,7 +7742,7 @@ export type LabelStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type LabelStddevPopFields = {
-   __typename?: 'label_stddev_pop_fields';
+  __typename?: 'label_stddev_pop_fields';
   height?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   width?: Maybe<Scalars['Float']>;
@@ -7615,7 +7757,7 @@ export type LabelStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type LabelStddevSampFields = {
-   __typename?: 'label_stddev_samp_fields';
+  __typename?: 'label_stddev_samp_fields';
   height?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   width?: Maybe<Scalars['Float']>;
@@ -7630,7 +7772,7 @@ export type LabelStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type LabelSumFields = {
-   __typename?: 'label_sum_fields';
+  __typename?: 'label_sum_fields';
   height?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   width?: Maybe<Scalars['Int']>;
@@ -7650,7 +7792,7 @@ export type LabelSumOrderBy = {
  * columns and relationships of "label_template_map"
  */
 export type LabelTemplateMap = {
-   __typename?: 'label_template_map';
+  __typename?: 'label_template_map';
   /**
    * json rules in the form of:
    *             { [propKey: keyof item_class]: regex }
@@ -7679,14 +7821,14 @@ export type LabelTemplateMapCriteriaArgs = {
 
 /** aggregated selection of "label_template_map" */
 export type LabelTemplateMapAggregate = {
-   __typename?: 'label_template_map_aggregate';
+  __typename?: 'label_template_map_aggregate';
   aggregate?: Maybe<LabelTemplateMapAggregateFields>;
   nodes: Array<LabelTemplateMap>;
 };
 
 /** aggregate fields of "label_template_map" */
 export type LabelTemplateMapAggregateFields = {
-   __typename?: 'label_template_map_aggregate_fields';
+  __typename?: 'label_template_map_aggregate_fields';
   avg?: Maybe<LabelTemplateMapAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<LabelTemplateMapMaxFields>;
@@ -7735,7 +7877,7 @@ export type LabelTemplateMapArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type LabelTemplateMapAvgFields = {
-   __typename?: 'label_template_map_avg_fields';
+  __typename?: 'label_template_map_avg_fields';
   item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
@@ -7772,10 +7914,7 @@ export type LabelTemplateMapDeleteAtPathInput = {
   criteria?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
-/**
- * delete the array element with specified index (negative integers count from the
- * end). throws an error if top level container is not an array
- */
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type LabelTemplateMapDeleteElemInput = {
   criteria?: Maybe<Scalars['Int']>;
 };
@@ -7803,7 +7942,7 @@ export type LabelTemplateMapInsertInput = {
 
 /** aggregate max on columns */
 export type LabelTemplateMapMaxFields = {
-   __typename?: 'label_template_map_max_fields';
+  __typename?: 'label_template_map_max_fields';
   item_class?: Maybe<Scalars['String']>;
   item_id?: Maybe<Scalars['Int']>;
   label_id?: Maybe<Scalars['uuid']>;
@@ -7820,7 +7959,7 @@ export type LabelTemplateMapMaxOrderBy = {
 
 /** aggregate min on columns */
 export type LabelTemplateMapMinFields = {
-   __typename?: 'label_template_map_min_fields';
+  __typename?: 'label_template_map_min_fields';
   item_class?: Maybe<Scalars['String']>;
   item_id?: Maybe<Scalars['Int']>;
   label_id?: Maybe<Scalars['uuid']>;
@@ -7837,7 +7976,7 @@ export type LabelTemplateMapMinOrderBy = {
 
 /** response of any mutation on the table "label_template_map" */
 export type LabelTemplateMapMutationResponse = {
-   __typename?: 'label_template_map_mutation_response';
+  __typename?: 'label_template_map_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -7904,7 +8043,7 @@ export type LabelTemplateMapSetInput = {
 
 /** aggregate stddev on columns */
 export type LabelTemplateMapStddevFields = {
-   __typename?: 'label_template_map_stddev_fields';
+  __typename?: 'label_template_map_stddev_fields';
   item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
@@ -7917,7 +8056,7 @@ export type LabelTemplateMapStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type LabelTemplateMapStddevPopFields = {
-   __typename?: 'label_template_map_stddev_pop_fields';
+  __typename?: 'label_template_map_stddev_pop_fields';
   item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
@@ -7930,7 +8069,7 @@ export type LabelTemplateMapStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type LabelTemplateMapStddevSampFields = {
-   __typename?: 'label_template_map_stddev_samp_fields';
+  __typename?: 'label_template_map_stddev_samp_fields';
   item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
@@ -7943,7 +8082,7 @@ export type LabelTemplateMapStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type LabelTemplateMapSumFields = {
-   __typename?: 'label_template_map_sum_fields';
+  __typename?: 'label_template_map_sum_fields';
   item_id?: Maybe<Scalars['Int']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
@@ -7970,7 +8109,7 @@ export enum LabelTemplateMapUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type LabelTemplateMapVarPopFields = {
-   __typename?: 'label_template_map_var_pop_fields';
+  __typename?: 'label_template_map_var_pop_fields';
   item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
@@ -7983,7 +8122,7 @@ export type LabelTemplateMapVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type LabelTemplateMapVarSampFields = {
-   __typename?: 'label_template_map_var_samp_fields';
+  __typename?: 'label_template_map_var_samp_fields';
   item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
@@ -7996,7 +8135,7 @@ export type LabelTemplateMapVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type LabelTemplateMapVarianceFields = {
-   __typename?: 'label_template_map_variance_fields';
+  __typename?: 'label_template_map_variance_fields';
   item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
@@ -8031,7 +8170,7 @@ export enum LabelUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type LabelVarPopFields = {
-   __typename?: 'label_var_pop_fields';
+  __typename?: 'label_var_pop_fields';
   height?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   width?: Maybe<Scalars['Float']>;
@@ -8046,7 +8185,7 @@ export type LabelVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type LabelVarSampFields = {
-   __typename?: 'label_var_samp_fields';
+  __typename?: 'label_var_samp_fields';
   height?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   width?: Maybe<Scalars['Float']>;
@@ -8061,7 +8200,7 @@ export type LabelVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type LabelVarianceFields = {
-   __typename?: 'label_variance_fields';
+  __typename?: 'label_variance_fields';
   height?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   width?: Maybe<Scalars['Float']>;
@@ -8074,18 +8213,9 @@ export type LabelVarianceOrderBy = {
   width?: Maybe<OrderBy>;
 };
 
-/** Label characteristics and properties */
-export type LabelCharacteristic = {
-   __typename?: 'LabelCharacteristic';
-  pinsLeft: Scalars['Int'];
-  pinsPrint: Scalars['Int'];
-  pinsRight: Scalars['Int'];
-  widthMillimeters: Scalars['Int'];
-};
-
 /** columns and relationships of "manufacturer" */
 export type Manufacturer = {
-   __typename?: 'manufacturer';
+  __typename?: 'manufacturer';
   id: Scalars['Int'];
   name: Scalars['String'];
   url: Scalars['String'];
@@ -8094,14 +8224,14 @@ export type Manufacturer = {
 
 /** aggregated selection of "manufacturer" */
 export type ManufacturerAggregate = {
-   __typename?: 'manufacturer_aggregate';
+  __typename?: 'manufacturer_aggregate';
   aggregate?: Maybe<ManufacturerAggregateFields>;
   nodes: Array<Manufacturer>;
 };
 
 /** aggregate fields of "manufacturer" */
 export type ManufacturerAggregateFields = {
-   __typename?: 'manufacturer_aggregate_fields';
+  __typename?: 'manufacturer_aggregate_fields';
   avg?: Maybe<ManufacturerAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<ManufacturerMaxFields>;
@@ -8145,7 +8275,7 @@ export type ManufacturerArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type ManufacturerAvgFields = {
-   __typename?: 'manufacturer_avg_fields';
+  __typename?: 'manufacturer_avg_fields';
   id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
@@ -8191,7 +8321,7 @@ export type ManufacturerInsertInput = {
 
 /** columns and relationships of "manufacturer_item" */
 export type ManufacturerItem = {
-   __typename?: 'manufacturer_item';
+  __typename?: 'manufacturer_item';
   id: Scalars['Int'];
   item_id: Scalars['Int'];
   manufacturer_id: Scalars['Int'];
@@ -8201,14 +8331,14 @@ export type ManufacturerItem = {
 
 /** aggregated selection of "manufacturer_item" */
 export type ManufacturerItemAggregate = {
-   __typename?: 'manufacturer_item_aggregate';
+  __typename?: 'manufacturer_item_aggregate';
   aggregate?: Maybe<ManufacturerItemAggregateFields>;
   nodes: Array<ManufacturerItem>;
 };
 
 /** aggregate fields of "manufacturer_item" */
 export type ManufacturerItemAggregateFields = {
-   __typename?: 'manufacturer_item_aggregate_fields';
+  __typename?: 'manufacturer_item_aggregate_fields';
   avg?: Maybe<ManufacturerItemAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<ManufacturerItemMaxFields>;
@@ -8252,7 +8382,7 @@ export type ManufacturerItemArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type ManufacturerItemAvgFields = {
-   __typename?: 'manufacturer_item_avg_fields';
+  __typename?: 'manufacturer_item_avg_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_id?: Maybe<Scalars['Float']>;
@@ -8301,7 +8431,7 @@ export type ManufacturerItemInsertInput = {
 
 /** aggregate max on columns */
 export type ManufacturerItemMaxFields = {
-   __typename?: 'manufacturer_item_max_fields';
+  __typename?: 'manufacturer_item_max_fields';
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_id?: Maybe<Scalars['Int']>;
@@ -8320,7 +8450,7 @@ export type ManufacturerItemMaxOrderBy = {
 
 /** aggregate min on columns */
 export type ManufacturerItemMinFields = {
-   __typename?: 'manufacturer_item_min_fields';
+  __typename?: 'manufacturer_item_min_fields';
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_id?: Maybe<Scalars['Int']>;
@@ -8339,7 +8469,7 @@ export type ManufacturerItemMinOrderBy = {
 
 /** response of any mutation on the table "manufacturer_item" */
 export type ManufacturerItemMutationResponse = {
-   __typename?: 'manufacturer_item_mutation_response';
+  __typename?: 'manufacturer_item_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -8398,7 +8528,7 @@ export type ManufacturerItemSetInput = {
 
 /** aggregate stddev on columns */
 export type ManufacturerItemStddevFields = {
-   __typename?: 'manufacturer_item_stddev_fields';
+  __typename?: 'manufacturer_item_stddev_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_id?: Maybe<Scalars['Float']>;
@@ -8413,7 +8543,7 @@ export type ManufacturerItemStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type ManufacturerItemStddevPopFields = {
-   __typename?: 'manufacturer_item_stddev_pop_fields';
+  __typename?: 'manufacturer_item_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_id?: Maybe<Scalars['Float']>;
@@ -8428,7 +8558,7 @@ export type ManufacturerItemStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type ManufacturerItemStddevSampFields = {
-   __typename?: 'manufacturer_item_stddev_samp_fields';
+  __typename?: 'manufacturer_item_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_id?: Maybe<Scalars['Float']>;
@@ -8443,7 +8573,7 @@ export type ManufacturerItemStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type ManufacturerItemSumFields = {
-   __typename?: 'manufacturer_item_sum_fields';
+  __typename?: 'manufacturer_item_sum_fields';
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_id?: Maybe<Scalars['Int']>;
@@ -8472,7 +8602,7 @@ export enum ManufacturerItemUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type ManufacturerItemVarPopFields = {
-   __typename?: 'manufacturer_item_var_pop_fields';
+  __typename?: 'manufacturer_item_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_id?: Maybe<Scalars['Float']>;
@@ -8487,7 +8617,7 @@ export type ManufacturerItemVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type ManufacturerItemVarSampFields = {
-   __typename?: 'manufacturer_item_var_samp_fields';
+  __typename?: 'manufacturer_item_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_id?: Maybe<Scalars['Float']>;
@@ -8502,7 +8632,7 @@ export type ManufacturerItemVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type ManufacturerItemVarianceFields = {
-   __typename?: 'manufacturer_item_variance_fields';
+  __typename?: 'manufacturer_item_variance_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_id?: Maybe<Scalars['Float']>;
@@ -8517,7 +8647,7 @@ export type ManufacturerItemVarianceOrderBy = {
 
 /** aggregate max on columns */
 export type ManufacturerMaxFields = {
-   __typename?: 'manufacturer_max_fields';
+  __typename?: 'manufacturer_max_fields';
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
@@ -8534,7 +8664,7 @@ export type ManufacturerMaxOrderBy = {
 
 /** aggregate min on columns */
 export type ManufacturerMinFields = {
-   __typename?: 'manufacturer_min_fields';
+  __typename?: 'manufacturer_min_fields';
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
@@ -8551,7 +8681,7 @@ export type ManufacturerMinOrderBy = {
 
 /** response of any mutation on the table "manufacturer" */
 export type ManufacturerMutationResponse = {
-   __typename?: 'manufacturer_mutation_response';
+  __typename?: 'manufacturer_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -8606,7 +8736,7 @@ export type ManufacturerSetInput = {
 
 /** aggregate stddev on columns */
 export type ManufacturerStddevFields = {
-   __typename?: 'manufacturer_stddev_fields';
+  __typename?: 'manufacturer_stddev_fields';
   id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
@@ -8619,7 +8749,7 @@ export type ManufacturerStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type ManufacturerStddevPopFields = {
-   __typename?: 'manufacturer_stddev_pop_fields';
+  __typename?: 'manufacturer_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
@@ -8632,7 +8762,7 @@ export type ManufacturerStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type ManufacturerStddevSampFields = {
-   __typename?: 'manufacturer_stddev_samp_fields';
+  __typename?: 'manufacturer_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
@@ -8645,7 +8775,7 @@ export type ManufacturerStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type ManufacturerSumFields = {
-   __typename?: 'manufacturer_sum_fields';
+  __typename?: 'manufacturer_sum_fields';
   id?: Maybe<Scalars['Int']>;
   vendor_id?: Maybe<Scalars['Int']>;
 };
@@ -8670,7 +8800,7 @@ export enum ManufacturerUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type ManufacturerVarPopFields = {
-   __typename?: 'manufacturer_var_pop_fields';
+  __typename?: 'manufacturer_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
@@ -8683,7 +8813,7 @@ export type ManufacturerVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type ManufacturerVarSampFields = {
-   __typename?: 'manufacturer_var_samp_fields';
+  __typename?: 'manufacturer_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
@@ -8696,7 +8826,7 @@ export type ManufacturerVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type ManufacturerVarianceFields = {
-   __typename?: 'manufacturer_variance_fields';
+  __typename?: 'manufacturer_variance_fields';
   id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
 };
@@ -8706,18 +8836,6 @@ export type ManufacturerVarianceOrderBy = {
   id?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
 };
-
-export enum MediaType {
-  FABRIC_TAPE = 'FABRIC_TAPE',
-  FLEXIBLE_ID_TAPE = 'FLEXIBLE_ID_TAPE',
-  FLE_TAPE = 'FLE_TAPE',
-  HEAT_SHRINK_TUBE = 'HEAT_SHRINK_TUBE',
-  INCOMPATIBLE_TAPE = 'INCOMPATIBLE_TAPE',
-  LAMINATED_TAPE = 'LAMINATED_TAPE',
-  NON_LAMINATED_TAPE = 'NON_LAMINATED_TAPE',
-  NO_MEDIA = 'NO_MEDIA',
-  SATIN_TAPE = 'SATIN_TAPE'
-}
 
 
 /** expression to compare columns of type money. All fields are combined with logical 'AND'. */
@@ -8733,29 +8851,9 @@ export type MoneyComparisonExp = {
   _nin?: Maybe<Array<Scalars['money']>>;
 };
 
-export type Mutation = {
-   __typename?: 'Mutation';
-  /**
-   * Send a label to be printed
-   * Image Buffer / Raster data arranged as [page][column][pixels] of uint8 to the printer
-   */
-  putLabelMonochromeBuffer?: Maybe<OperationResult>;
-  uploadFiles: Array<Maybe<File>>;
-};
-
-
-export type MutationPutLabelMonochromeBufferArgs = {
-  imageBuffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>;
-};
-
-
-export type MutationUploadFilesArgs = {
-  files: Array<Maybe<Scalars['Upload']>>;
-};
-
 /** mutation root */
 export type MutationRoot = {
-   __typename?: 'mutation_root';
+  __typename?: 'mutation_root';
   /** delete data from the table: "enum.hardware_fastener_bolt_point" */
   delete_enum_hardware_fastener_bolt_point?: Maybe<EnumHardwareFastenerBoltPointMutationResponse>;
   /** delete single row from the table: "enum.hardware_fastener_bolt_point" */
@@ -10982,14 +11080,9 @@ export type NumericComparisonExp = {
   _nin?: Maybe<Array<Scalars['numeric']>>;
 };
 
-export type OperationResult = {
-   __typename?: 'OperationResult';
-  result: Scalars['Boolean'];
-};
-
 /** columns and relationships of "order" */
 export type Order = {
-   __typename?: 'order';
+  __typename?: 'order';
   fulfilled_date?: Maybe<Scalars['date']>;
   id: Scalars['Int'];
   /** An array relationship */
@@ -11057,14 +11150,14 @@ export type OrderShipmentsAggregateArgs = {
 
 /** aggregated selection of "order" */
 export type OrderAggregate = {
-   __typename?: 'order_aggregate';
+  __typename?: 'order_aggregate';
   aggregate?: Maybe<OrderAggregateFields>;
   nodes: Array<Order>;
 };
 
 /** aggregate fields of "order" */
 export type OrderAggregateFields = {
-   __typename?: 'order_aggregate_fields';
+  __typename?: 'order_aggregate_fields';
   avg?: Maybe<OrderAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<OrderMaxFields>;
@@ -11108,7 +11201,7 @@ export type OrderArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type OrderAvgFields = {
-   __typename?: 'order_avg_fields';
+  __typename?: 'order_avg_fields';
   id?: Maybe<Scalars['Float']>;
   items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
@@ -11207,7 +11300,7 @@ export type OrderInsertInput = {
  * columns and relationships of "order_item"
  */
 export type OrderItem = {
-   __typename?: 'order_item';
+  __typename?: 'order_item';
   cost_item: Scalars['money'];
   cost_tax?: Maybe<Scalars['money']>;
   cost_total?: Maybe<Scalars['money']>;
@@ -11224,14 +11317,14 @@ export type OrderItem = {
 
 /** aggregated selection of "order_item" */
 export type OrderItemAggregate = {
-   __typename?: 'order_item_aggregate';
+  __typename?: 'order_item_aggregate';
   aggregate?: Maybe<OrderItemAggregateFields>;
   nodes: Array<OrderItem>;
 };
 
 /** aggregate fields of "order_item" */
 export type OrderItemAggregateFields = {
-   __typename?: 'order_item_aggregate_fields';
+  __typename?: 'order_item_aggregate_fields';
   avg?: Maybe<OrderItemAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<OrderItemMaxFields>;
@@ -11275,7 +11368,7 @@ export type OrderItemArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type OrderItemAvgFields = {
-   __typename?: 'order_item_avg_fields';
+  __typename?: 'order_item_avg_fields';
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
@@ -11354,7 +11447,7 @@ export type OrderItemInsertInput = {
 
 /** aggregate max on columns */
 export type OrderItemMaxFields = {
-   __typename?: 'order_item_max_fields';
+  __typename?: 'order_item_max_fields';
   cost_item?: Maybe<Scalars['money']>;
   cost_tax?: Maybe<Scalars['money']>;
   cost_total?: Maybe<Scalars['money']>;
@@ -11383,7 +11476,7 @@ export type OrderItemMaxOrderBy = {
 
 /** aggregate min on columns */
 export type OrderItemMinFields = {
-   __typename?: 'order_item_min_fields';
+  __typename?: 'order_item_min_fields';
   cost_item?: Maybe<Scalars['money']>;
   cost_tax?: Maybe<Scalars['money']>;
   cost_total?: Maybe<Scalars['money']>;
@@ -11412,7 +11505,7 @@ export type OrderItemMinOrderBy = {
 
 /** response of any mutation on the table "order_item" */
 export type OrderItemMutationResponse = {
-   __typename?: 'order_item_mutation_response';
+  __typename?: 'order_item_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -11494,7 +11587,7 @@ export type OrderItemSetInput = {
 
 /** aggregate stddev on columns */
 export type OrderItemStddevFields = {
-   __typename?: 'order_item_stddev_fields';
+  __typename?: 'order_item_stddev_fields';
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
@@ -11521,7 +11614,7 @@ export type OrderItemStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type OrderItemStddevPopFields = {
-   __typename?: 'order_item_stddev_pop_fields';
+  __typename?: 'order_item_stddev_pop_fields';
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
@@ -11548,7 +11641,7 @@ export type OrderItemStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type OrderItemStddevSampFields = {
-   __typename?: 'order_item_stddev_samp_fields';
+  __typename?: 'order_item_stddev_samp_fields';
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
@@ -11575,7 +11668,7 @@ export type OrderItemStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type OrderItemSumFields = {
-   __typename?: 'order_item_sum_fields';
+  __typename?: 'order_item_sum_fields';
   cost_item?: Maybe<Scalars['money']>;
   cost_tax?: Maybe<Scalars['money']>;
   cost_total?: Maybe<Scalars['money']>;
@@ -11626,7 +11719,7 @@ export enum OrderItemUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type OrderItemVarPopFields = {
-   __typename?: 'order_item_var_pop_fields';
+  __typename?: 'order_item_var_pop_fields';
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
@@ -11653,7 +11746,7 @@ export type OrderItemVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type OrderItemVarSampFields = {
-   __typename?: 'order_item_var_samp_fields';
+  __typename?: 'order_item_var_samp_fields';
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
@@ -11680,7 +11773,7 @@ export type OrderItemVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type OrderItemVarianceFields = {
-   __typename?: 'order_item_variance_fields';
+  __typename?: 'order_item_variance_fields';
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
@@ -11707,7 +11800,7 @@ export type OrderItemVarianceOrderBy = {
 
 /** aggregate max on columns */
 export type OrderMaxFields = {
-   __typename?: 'order_max_fields';
+  __typename?: 'order_max_fields';
   fulfilled_date?: Maybe<Scalars['date']>;
   id?: Maybe<Scalars['Int']>;
   items_cost?: Maybe<Scalars['money']>;
@@ -11738,7 +11831,7 @@ export type OrderMaxOrderBy = {
 
 /** aggregate min on columns */
 export type OrderMinFields = {
-   __typename?: 'order_min_fields';
+  __typename?: 'order_min_fields';
   fulfilled_date?: Maybe<Scalars['date']>;
   id?: Maybe<Scalars['Int']>;
   items_cost?: Maybe<Scalars['money']>;
@@ -11769,7 +11862,7 @@ export type OrderMinOrderBy = {
 
 /** response of any mutation on the table "order" */
 export type OrderMutationResponse = {
-   __typename?: 'order_mutation_response';
+  __typename?: 'order_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -11856,7 +11949,7 @@ export type OrderSetInput = {
 
 /** aggregate stddev on columns */
 export type OrderStddevFields = {
-   __typename?: 'order_stddev_fields';
+  __typename?: 'order_stddev_fields';
   id?: Maybe<Scalars['Float']>;
   items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
@@ -11877,7 +11970,7 @@ export type OrderStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type OrderStddevPopFields = {
-   __typename?: 'order_stddev_pop_fields';
+  __typename?: 'order_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
   items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
@@ -11898,7 +11991,7 @@ export type OrderStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type OrderStddevSampFields = {
-   __typename?: 'order_stddev_samp_fields';
+  __typename?: 'order_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
   items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
@@ -11919,7 +12012,7 @@ export type OrderStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type OrderSumFields = {
-   __typename?: 'order_sum_fields';
+  __typename?: 'order_sum_fields';
   id?: Maybe<Scalars['Int']>;
   items_cost?: Maybe<Scalars['money']>;
   payment_method_id?: Maybe<Scalars['Int']>;
@@ -11966,7 +12059,7 @@ export enum OrderUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type OrderVarPopFields = {
-   __typename?: 'order_var_pop_fields';
+  __typename?: 'order_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
   items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
@@ -11987,7 +12080,7 @@ export type OrderVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type OrderVarSampFields = {
-   __typename?: 'order_var_samp_fields';
+  __typename?: 'order_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
   items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
@@ -12008,7 +12101,7 @@ export type OrderVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type OrderVarianceFields = {
-   __typename?: 'order_variance_fields';
+  __typename?: 'order_variance_fields';
   id?: Maybe<Scalars['Float']>;
   items_cost?: Maybe<Scalars['Float']>;
   payment_method_id?: Maybe<Scalars['Float']>;
@@ -12029,7 +12122,7 @@ export type OrderVarianceOrderBy = {
 
 /** columns and relationships of "payment_method" */
 export type PaymentMethod = {
-   __typename?: 'payment_method';
+  __typename?: 'payment_method';
   class: EnumPaymentMethodTypeEnum;
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -12037,14 +12130,14 @@ export type PaymentMethod = {
 
 /** aggregated selection of "payment_method" */
 export type PaymentMethodAggregate = {
-   __typename?: 'payment_method_aggregate';
+  __typename?: 'payment_method_aggregate';
   aggregate?: Maybe<PaymentMethodAggregateFields>;
   nodes: Array<PaymentMethod>;
 };
 
 /** aggregate fields of "payment_method" */
 export type PaymentMethodAggregateFields = {
-   __typename?: 'payment_method_aggregate_fields';
+  __typename?: 'payment_method_aggregate_fields';
   avg?: Maybe<PaymentMethodAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<PaymentMethodMaxFields>;
@@ -12088,7 +12181,7 @@ export type PaymentMethodArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type PaymentMethodAvgFields = {
-   __typename?: 'payment_method_avg_fields';
+  __typename?: 'payment_method_avg_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -12127,7 +12220,7 @@ export type PaymentMethodInsertInput = {
 
 /** aggregate max on columns */
 export type PaymentMethodMaxFields = {
-   __typename?: 'payment_method_max_fields';
+  __typename?: 'payment_method_max_fields';
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
 };
@@ -12140,7 +12233,7 @@ export type PaymentMethodMaxOrderBy = {
 
 /** aggregate min on columns */
 export type PaymentMethodMinFields = {
-   __typename?: 'payment_method_min_fields';
+  __typename?: 'payment_method_min_fields';
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
 };
@@ -12153,7 +12246,7 @@ export type PaymentMethodMinOrderBy = {
 
 /** response of any mutation on the table "payment_method" */
 export type PaymentMethodMutationResponse = {
-   __typename?: 'payment_method_mutation_response';
+  __typename?: 'payment_method_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -12204,7 +12297,7 @@ export type PaymentMethodSetInput = {
 
 /** aggregate stddev on columns */
 export type PaymentMethodStddevFields = {
-   __typename?: 'payment_method_stddev_fields';
+  __typename?: 'payment_method_stddev_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -12215,7 +12308,7 @@ export type PaymentMethodStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type PaymentMethodStddevPopFields = {
-   __typename?: 'payment_method_stddev_pop_fields';
+  __typename?: 'payment_method_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -12226,7 +12319,7 @@ export type PaymentMethodStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type PaymentMethodStddevSampFields = {
-   __typename?: 'payment_method_stddev_samp_fields';
+  __typename?: 'payment_method_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -12237,7 +12330,7 @@ export type PaymentMethodStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type PaymentMethodSumFields = {
-   __typename?: 'payment_method_sum_fields';
+  __typename?: 'payment_method_sum_fields';
   id?: Maybe<Scalars['Int']>;
 };
 
@@ -12258,7 +12351,7 @@ export enum PaymentMethodUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type PaymentMethodVarPopFields = {
-   __typename?: 'payment_method_var_pop_fields';
+  __typename?: 'payment_method_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -12269,7 +12362,7 @@ export type PaymentMethodVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type PaymentMethodVarSampFields = {
-   __typename?: 'payment_method_var_samp_fields';
+  __typename?: 'payment_method_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -12280,7 +12373,7 @@ export type PaymentMethodVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type PaymentMethodVarianceFields = {
-   __typename?: 'payment_method_variance_fields';
+  __typename?: 'payment_method_variance_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -12289,38 +12382,9 @@ export type PaymentMethodVarianceOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
-/** Printer and label status and properies */
-export type PrinterLabelStatus = {
-   __typename?: 'PrinterLabelStatus';
-  labelCharacteristic?: Maybe<LabelCharacteristic>;
-  mediaType?: Maybe<MediaType>;
-  mediaWidth: Scalars['Int'];
-  tapeColor?: Maybe<TapeColor>;
-  textColor?: Maybe<TextColor>;
-};
-
-/** Label characteristics and properties */
-export type PrinterStatus = {
-   __typename?: 'PrinterStatus';
-  firmwareVersion: Scalars['Float'];
-  heightInch?: Maybe<Scalars['Float']>;
-  heightMillimeter?: Maybe<Scalars['Float']>;
-  labelStatus: PrinterLabelStatus;
-  labelType: Scalars['String'];
-  model: Scalars['String'];
-  uptime: Scalars['Int'];
-};
-
-export type Query = {
-   __typename?: 'Query';
-  /** Retrieve Printer and Label status and properties */
-  PrinterStatus?: Maybe<PrinterStatus>;
-  files?: Maybe<Array<Maybe<File>>>;
-};
-
 /** query root */
 export type QueryRoot = {
-   __typename?: 'query_root';
+  __typename?: 'query_root';
   /** Retrieve Printer and Label status and properties */
   PrinterStatus?: Maybe<PrinterStatus>;
   /** fetch data from the table: "enum.hardware_fastener_bolt_point" */
@@ -13649,7 +13713,7 @@ export type SearchArgs = {
 
 /** columns and relationships of "search_data" */
 export type SearchData = {
-   __typename?: 'search_data';
+  __typename?: 'search_data';
   class: EnumMappedClassEnum;
   id: Scalars['bigint'];
   metadata?: Maybe<Scalars['jsonb']>;
@@ -13666,14 +13730,14 @@ export type SearchDataMetadataArgs = {
 
 /** aggregated selection of "search_data" */
 export type SearchDataAggregate = {
-   __typename?: 'search_data_aggregate';
+  __typename?: 'search_data_aggregate';
   aggregate?: Maybe<SearchDataAggregateFields>;
   nodes: Array<SearchData>;
 };
 
 /** aggregate fields of "search_data" */
 export type SearchDataAggregateFields = {
-   __typename?: 'search_data_aggregate_fields';
+  __typename?: 'search_data_aggregate_fields';
   avg?: Maybe<SearchDataAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<SearchDataMaxFields>;
@@ -13722,7 +13786,7 @@ export type SearchDataArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type SearchDataAvgFields = {
-   __typename?: 'search_data_avg_fields';
+  __typename?: 'search_data_avg_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -13754,10 +13818,7 @@ export type SearchDataDeleteAtPathInput = {
   metadata?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
-/**
- * delete the array element with specified index (negative integers count from the
- * end). throws an error if top level container is not an array
- */
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type SearchDataDeleteElemInput = {
   metadata?: Maybe<Scalars['Int']>;
 };
@@ -13783,7 +13844,7 @@ export type SearchDataInsertInput = {
 
 /** aggregate max on columns */
 export type SearchDataMaxFields = {
-   __typename?: 'search_data_max_fields';
+  __typename?: 'search_data_max_fields';
   id?: Maybe<Scalars['bigint']>;
   text?: Maybe<Scalars['String']>;
 };
@@ -13796,7 +13857,7 @@ export type SearchDataMaxOrderBy = {
 
 /** aggregate min on columns */
 export type SearchDataMinFields = {
-   __typename?: 'search_data_min_fields';
+  __typename?: 'search_data_min_fields';
   id?: Maybe<Scalars['bigint']>;
   text?: Maybe<Scalars['String']>;
 };
@@ -13809,7 +13870,7 @@ export type SearchDataMinOrderBy = {
 
 /** response of any mutation on the table "search_data" */
 export type SearchDataMutationResponse = {
-   __typename?: 'search_data_mutation_response';
+  __typename?: 'search_data_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -13873,7 +13934,7 @@ export type SearchDataSetInput = {
 
 /** aggregate stddev on columns */
 export type SearchDataStddevFields = {
-   __typename?: 'search_data_stddev_fields';
+  __typename?: 'search_data_stddev_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -13884,7 +13945,7 @@ export type SearchDataStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type SearchDataStddevPopFields = {
-   __typename?: 'search_data_stddev_pop_fields';
+  __typename?: 'search_data_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -13895,7 +13956,7 @@ export type SearchDataStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type SearchDataStddevSampFields = {
-   __typename?: 'search_data_stddev_samp_fields';
+  __typename?: 'search_data_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -13906,7 +13967,7 @@ export type SearchDataStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type SearchDataSumFields = {
-   __typename?: 'search_data_sum_fields';
+  __typename?: 'search_data_sum_fields';
   id?: Maybe<Scalars['bigint']>;
 };
 
@@ -13931,7 +13992,7 @@ export enum SearchDataUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type SearchDataVarPopFields = {
-   __typename?: 'search_data_var_pop_fields';
+  __typename?: 'search_data_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -13942,7 +14003,7 @@ export type SearchDataVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type SearchDataVarSampFields = {
-   __typename?: 'search_data_var_samp_fields';
+  __typename?: 'search_data_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -13953,7 +14014,7 @@ export type SearchDataVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type SearchDataVarianceFields = {
-   __typename?: 'search_data_variance_fields';
+  __typename?: 'search_data_variance_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -13969,7 +14030,7 @@ export type SearchDataVarianceOrderBy = {
  * columns and relationships of "shipment"
  */
 export type Shipment = {
-   __typename?: 'shipment';
+  __typename?: 'shipment';
   id: Scalars['Int'];
   /** An object relationship */
   order?: Maybe<Order>;
@@ -13983,14 +14044,14 @@ export type Shipment = {
 
 /** aggregated selection of "shipment" */
 export type ShipmentAggregate = {
-   __typename?: 'shipment_aggregate';
+  __typename?: 'shipment_aggregate';
   aggregate?: Maybe<ShipmentAggregateFields>;
   nodes: Array<Shipment>;
 };
 
 /** aggregate fields of "shipment" */
 export type ShipmentAggregateFields = {
-   __typename?: 'shipment_aggregate_fields';
+  __typename?: 'shipment_aggregate_fields';
   avg?: Maybe<ShipmentAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<ShipmentMaxFields>;
@@ -14034,7 +14095,7 @@ export type ShipmentArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type ShipmentAvgFields = {
-   __typename?: 'shipment_avg_fields';
+  __typename?: 'shipment_avg_fields';
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
@@ -14086,7 +14147,7 @@ export type ShipmentInsertInput = {
 
 /** aggregate max on columns */
 export type ShipmentMaxFields = {
-   __typename?: 'shipment_max_fields';
+  __typename?: 'shipment_max_fields';
   id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
   received_date?: Maybe<Scalars['date']>;
@@ -14109,7 +14170,7 @@ export type ShipmentMaxOrderBy = {
 
 /** aggregate min on columns */
 export type ShipmentMinFields = {
-   __typename?: 'shipment_min_fields';
+  __typename?: 'shipment_min_fields';
   id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
   received_date?: Maybe<Scalars['date']>;
@@ -14132,7 +14193,7 @@ export type ShipmentMinOrderBy = {
 
 /** response of any mutation on the table "shipment" */
 export type ShipmentMutationResponse = {
-   __typename?: 'shipment_mutation_response';
+  __typename?: 'shipment_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -14200,7 +14261,7 @@ export type ShipmentSetInput = {
 
 /** aggregate stddev on columns */
 export type ShipmentStddevFields = {
-   __typename?: 'shipment_stddev_fields';
+  __typename?: 'shipment_stddev_fields';
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
@@ -14213,7 +14274,7 @@ export type ShipmentStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type ShipmentStddevPopFields = {
-   __typename?: 'shipment_stddev_pop_fields';
+  __typename?: 'shipment_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
@@ -14226,7 +14287,7 @@ export type ShipmentStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type ShipmentStddevSampFields = {
-   __typename?: 'shipment_stddev_samp_fields';
+  __typename?: 'shipment_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
@@ -14239,7 +14300,7 @@ export type ShipmentStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type ShipmentSumFields = {
-   __typename?: 'shipment_sum_fields';
+  __typename?: 'shipment_sum_fields';
   id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
 };
@@ -14270,7 +14331,7 @@ export enum ShipmentUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type ShipmentVarPopFields = {
-   __typename?: 'shipment_var_pop_fields';
+  __typename?: 'shipment_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
@@ -14283,7 +14344,7 @@ export type ShipmentVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type ShipmentVarSampFields = {
-   __typename?: 'shipment_var_samp_fields';
+  __typename?: 'shipment_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
@@ -14296,7 +14357,7 @@ export type ShipmentVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type ShipmentVarianceFields = {
-   __typename?: 'shipment_variance_fields';
+  __typename?: 'shipment_variance_fields';
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
@@ -14321,28 +14382,9 @@ export type SmallintComparisonExp = {
   _nin?: Maybe<Array<Scalars['smallint']>>;
 };
 
-/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
-export type StringComparisonExp = {
-  _eq?: Maybe<Scalars['String']>;
-  _gt?: Maybe<Scalars['String']>;
-  _gte?: Maybe<Scalars['String']>;
-  _ilike?: Maybe<Scalars['String']>;
-  _in?: Maybe<Array<Scalars['String']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _like?: Maybe<Scalars['String']>;
-  _lt?: Maybe<Scalars['String']>;
-  _lte?: Maybe<Scalars['String']>;
-  _neq?: Maybe<Scalars['String']>;
-  _nilike?: Maybe<Scalars['String']>;
-  _nin?: Maybe<Array<Scalars['String']>>;
-  _nlike?: Maybe<Scalars['String']>;
-  _nsimilar?: Maybe<Scalars['String']>;
-  _similar?: Maybe<Scalars['String']>;
-};
-
 /** subscription root */
 export type SubscriptionRoot = {
-   __typename?: 'subscription_root';
+  __typename?: 'subscription_root';
   /** fetch data from the table: "enum.hardware_fastener_bolt_point" */
   enum_hardware_fastener_bolt_point: Array<EnumHardwareFastenerBoltPoint>;
   /** fetch aggregated fields from the table: "enum.hardware_fastener_bolt_point" */
@@ -15661,52 +15703,6 @@ export type SubscriptionRootVendorItemByPkArgs = {
   id: Scalars['Int'];
 };
 
-export enum TapeColor {
-  BERRY_PINK = 'BERRY_PINK',
-  BLACK = 'BLACK',
-  BLUE = 'BLUE',
-  BLUE_D = 'BLUE_D',
-  BLUE_F = 'BLUE_F',
-  CLEANING = 'CLEANING',
-  CLEAR = 'CLEAR',
-  CLEAR_WHITE_TEXT = 'CLEAR_WHITE_TEXT',
-  FLOURESCENT_ORANGE = 'FLOURESCENT_ORANGE',
-  FLOURESCENT_YELLOW = 'FLOURESCENT_YELLOW',
-  GREEN = 'GREEN',
-  INCOMPATIBLE = 'INCOMPATIBLE',
-  LIGHT_GRAY = 'LIGHT_GRAY',
-  LIME_GREEN = 'LIME_GREEN',
-  MATTE_CLEAR = 'MATTE_CLEAR',
-  MATTE_SILVER = 'MATTE_SILVER',
-  MATTE_WHITE = 'MATTE_WHITE',
-  OTHER = 'OTHER',
-  PINK_F = 'PINK_F',
-  RED = 'RED',
-  RED_D = 'RED_D',
-  SATIN_GOLD = 'SATIN_GOLD',
-  SATIN_SILVER = 'SATIN_SILVER',
-  STENCIL = 'STENCIL',
-  WHITE = 'WHITE',
-  WHITE_FLEX = 'WHITE_FLEX',
-  WHITE_HSE = 'WHITE_HSE',
-  YELLOW = 'YELLOW',
-  YELLOW_F = 'YELLOW_F',
-  YELLOW_FLEX = 'YELLOW_FLEX'
-}
-
-export enum TextColor {
-  BLACK = 'BLACK',
-  BLUE = 'BLUE',
-  BLUE_F = 'BLUE_F',
-  CLEANING = 'CLEANING',
-  GOLD = 'GOLD',
-  INCOMPATIBLE = 'INCOMPATIBLE',
-  OTHER = 'OTHER',
-  RED = 'RED',
-  STENCIL = 'STENCIL',
-  WHITE = 'WHITE'
-}
-
 
 /** expression to compare columns of type timestamptz. All fields are combined with logical 'AND'. */
 export type TimestamptzComparisonExp = {
@@ -15737,7 +15733,6 @@ export type TsvectorComparisonExp = {
 
 
 
-
 /** expression to compare columns of type uuid. All fields are combined with logical 'AND'. */
 export type UuidComparisonExp = {
   _eq?: Maybe<Scalars['uuid']>;
@@ -15753,7 +15748,7 @@ export type UuidComparisonExp = {
 
 /** columns and relationships of "vendor" */
 export type Vendor = {
-   __typename?: 'vendor';
+  __typename?: 'vendor';
   account_id?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -15762,14 +15757,14 @@ export type Vendor = {
 
 /** aggregated selection of "vendor" */
 export type VendorAggregate = {
-   __typename?: 'vendor_aggregate';
+  __typename?: 'vendor_aggregate';
   aggregate?: Maybe<VendorAggregateFields>;
   nodes: Array<Vendor>;
 };
 
 /** aggregate fields of "vendor" */
 export type VendorAggregateFields = {
-   __typename?: 'vendor_aggregate_fields';
+  __typename?: 'vendor_aggregate_fields';
   avg?: Maybe<VendorAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<VendorMaxFields>;
@@ -15813,7 +15808,7 @@ export type VendorArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type VendorAvgFields = {
-   __typename?: 'vendor_avg_fields';
+  __typename?: 'vendor_avg_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -15854,7 +15849,7 @@ export type VendorInsertInput = {
 
 /** columns and relationships of "vendor_item" */
 export type VendorItem = {
-   __typename?: 'vendor_item';
+  __typename?: 'vendor_item';
   id: Scalars['Int'];
   item_id: Scalars['Int'];
   vendor_id: Scalars['Int'];
@@ -15863,14 +15858,14 @@ export type VendorItem = {
 
 /** aggregated selection of "vendor_item" */
 export type VendorItemAggregate = {
-   __typename?: 'vendor_item_aggregate';
+  __typename?: 'vendor_item_aggregate';
   aggregate?: Maybe<VendorItemAggregateFields>;
   nodes: Array<VendorItem>;
 };
 
 /** aggregate fields of "vendor_item" */
 export type VendorItemAggregateFields = {
-   __typename?: 'vendor_item_aggregate_fields';
+  __typename?: 'vendor_item_aggregate_fields';
   avg?: Maybe<VendorItemAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<VendorItemMaxFields>;
@@ -15914,7 +15909,7 @@ export type VendorItemArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type VendorItemAvgFields = {
-   __typename?: 'vendor_item_avg_fields';
+  __typename?: 'vendor_item_avg_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
@@ -15961,7 +15956,7 @@ export type VendorItemInsertInput = {
 
 /** aggregate max on columns */
 export type VendorItemMaxFields = {
-   __typename?: 'vendor_item_max_fields';
+  __typename?: 'vendor_item_max_fields';
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   vendor_id?: Maybe<Scalars['Int']>;
@@ -15978,7 +15973,7 @@ export type VendorItemMaxOrderBy = {
 
 /** aggregate min on columns */
 export type VendorItemMinFields = {
-   __typename?: 'vendor_item_min_fields';
+  __typename?: 'vendor_item_min_fields';
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   vendor_id?: Maybe<Scalars['Int']>;
@@ -15995,7 +15990,7 @@ export type VendorItemMinOrderBy = {
 
 /** response of any mutation on the table "vendor_item" */
 export type VendorItemMutationResponse = {
-   __typename?: 'vendor_item_mutation_response';
+  __typename?: 'vendor_item_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -16050,7 +16045,7 @@ export type VendorItemSetInput = {
 
 /** aggregate stddev on columns */
 export type VendorItemStddevFields = {
-   __typename?: 'vendor_item_stddev_fields';
+  __typename?: 'vendor_item_stddev_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
@@ -16065,7 +16060,7 @@ export type VendorItemStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type VendorItemStddevPopFields = {
-   __typename?: 'vendor_item_stddev_pop_fields';
+  __typename?: 'vendor_item_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
@@ -16080,7 +16075,7 @@ export type VendorItemStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type VendorItemStddevSampFields = {
-   __typename?: 'vendor_item_stddev_samp_fields';
+  __typename?: 'vendor_item_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
@@ -16095,7 +16090,7 @@ export type VendorItemStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type VendorItemSumFields = {
-   __typename?: 'vendor_item_sum_fields';
+  __typename?: 'vendor_item_sum_fields';
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   vendor_id?: Maybe<Scalars['Int']>;
@@ -16122,7 +16117,7 @@ export enum VendorItemUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type VendorItemVarPopFields = {
-   __typename?: 'vendor_item_var_pop_fields';
+  __typename?: 'vendor_item_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
@@ -16137,7 +16132,7 @@ export type VendorItemVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type VendorItemVarSampFields = {
-   __typename?: 'vendor_item_var_samp_fields';
+  __typename?: 'vendor_item_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
@@ -16152,7 +16147,7 @@ export type VendorItemVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type VendorItemVarianceFields = {
-   __typename?: 'vendor_item_variance_fields';
+  __typename?: 'vendor_item_variance_fields';
   id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   vendor_id?: Maybe<Scalars['Float']>;
@@ -16167,7 +16162,7 @@ export type VendorItemVarianceOrderBy = {
 
 /** aggregate max on columns */
 export type VendorMaxFields = {
-   __typename?: 'vendor_max_fields';
+  __typename?: 'vendor_max_fields';
   account_id?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -16184,7 +16179,7 @@ export type VendorMaxOrderBy = {
 
 /** aggregate min on columns */
 export type VendorMinFields = {
-   __typename?: 'vendor_min_fields';
+  __typename?: 'vendor_min_fields';
   account_id?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -16201,7 +16196,7 @@ export type VendorMinOrderBy = {
 
 /** response of any mutation on the table "vendor" */
 export type VendorMutationResponse = {
-   __typename?: 'vendor_mutation_response';
+  __typename?: 'vendor_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -16256,7 +16251,7 @@ export type VendorSetInput = {
 
 /** aggregate stddev on columns */
 export type VendorStddevFields = {
-   __typename?: 'vendor_stddev_fields';
+  __typename?: 'vendor_stddev_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -16267,7 +16262,7 @@ export type VendorStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type VendorStddevPopFields = {
-   __typename?: 'vendor_stddev_pop_fields';
+  __typename?: 'vendor_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -16278,7 +16273,7 @@ export type VendorStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type VendorStddevSampFields = {
-   __typename?: 'vendor_stddev_samp_fields';
+  __typename?: 'vendor_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -16289,7 +16284,7 @@ export type VendorStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type VendorSumFields = {
-   __typename?: 'vendor_sum_fields';
+  __typename?: 'vendor_sum_fields';
   id?: Maybe<Scalars['Int']>;
 };
 
@@ -16312,7 +16307,7 @@ export enum VendorUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type VendorVarPopFields = {
-   __typename?: 'vendor_var_pop_fields';
+  __typename?: 'vendor_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -16323,7 +16318,7 @@ export type VendorVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type VendorVarSampFields = {
-   __typename?: 'vendor_var_samp_fields';
+  __typename?: 'vendor_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -16334,7 +16329,7 @@ export type VendorVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type VendorVarianceFields = {
-   __typename?: 'vendor_variance_fields';
+  __typename?: 'vendor_variance_fields';
   id?: Maybe<Scalars['Float']>;
 };
 
@@ -17732,4 +17727,4 @@ export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHo
 export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
 export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
-// graphql typescript defs generated on 2020-05-16T09:39:02-06:00
+// graphql typescript defs generated on 2020-05-20T16:45:39-06:00

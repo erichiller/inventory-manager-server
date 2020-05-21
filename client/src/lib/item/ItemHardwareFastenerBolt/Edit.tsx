@@ -88,14 +88,15 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
         }
         form.setFieldsValue( initProps );
     } );
+    // TODO: then here have a type selector when in the generic add form
+    // TODO: THESE FORM ITEMS ARE FOR **ALL** OBJECTS
 
     return (
         <React.Fragment>
             {/********************************************************************************
               ** GENERAL ITEMS 
               ********************************************************************************/}
-            <div className="col">
-                {/* TODO: THESE FORM ITEMS ARE FOR **ALL** OBJECTS */}
+            {/* <div className="col">
                 <Form.Item name="name" label="Name">
                     <Input placeholder="Item name" />
                 </Form.Item>
@@ -108,8 +109,7 @@ export const ItemHardwareFastenerBoltEditForm: React.FC<ItemHardwareFastenerBolt
                 <Form.Item name="order" label="Order">
                     <OrderInput />
                 </Form.Item>
-                {/* TODO: then here have a type selector when in the generic add form */}
-            </div>
+            </div> */}
 
 
             {/********************************************************************************
