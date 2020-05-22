@@ -16665,6 +16665,11 @@ export type ItemBundleQuery = (
   )> }
 );
 
+export type ItemHardwareFastenerBoltFieldsFragment = (
+  { __typename?: 'item_hardware_fastener_bolt' }
+  & Pick<ItemHardwareFastenerBolt, 'id' | 'name' | 'description' | 'unit' | 'thread_length' | 'head_type' | 'drive_type' | 'drive_size' | 'head_diameter' | 'head_height' | 'thread_diameter' | 'finish' | 'material' | 'thread_direction' | 'countersunk_angle' | 'tensile_strength' | 'specifications_met' | 'thread_fit' | 'point_type' | 'hardness' | 'strength_class' | 'use_material'>
+);
+
 export type ItemHardwareFastenerBoltQueryVariables = {};
 
 
@@ -16672,7 +16677,46 @@ export type ItemHardwareFastenerBoltQuery = (
   { __typename?: 'query_root' }
   & { items: Array<(
     { __typename?: 'item_hardware_fastener_bolt' }
-    & Pick<ItemHardwareFastenerBolt, 'id' | 'name' | 'description' | 'unit' | 'thread_length' | 'head_type' | 'drive_type' | 'drive_size' | 'head_diameter' | 'head_height' | 'thread_diameter' | 'finish' | 'material' | 'thread_direction' | 'countersunk_angle' | 'tensile_strength' | 'specifications_met' | 'thread_fit' | 'point_type' | 'hardness' | 'strength_class' | 'use_material'>
+    & ItemHardwareFastenerBoltFieldsFragment
+  )> }
+);
+
+export type InsertItemHardwareFastenerBoltMutationVariables = {
+  countersunk_angle?: Maybe<Scalars['numeric']>;
+  countersunk_height?: Maybe<Scalars['numeric']>;
+  description?: Maybe<Scalars['String']>;
+  drive_size?: Maybe<Scalars['String']>;
+  drive_type?: Maybe<EnumHardwareFastenerDriveEnum>;
+  embedded_length?: Maybe<Scalars['numeric']>;
+  finish?: Maybe<EnumHardwareFinishEnum>;
+  hardness?: Maybe<EnumHardwareFastenerHardnessEnum>;
+  head_diameter?: Maybe<Scalars['numeric']>;
+  head_height?: Maybe<Scalars['numeric']>;
+  head_type?: Maybe<EnumHardwareFastenerHeadEnum>;
+  id?: Maybe<Scalars['Int']>;
+  material?: Maybe<EnumHardwareFastenerMaterialEnum>;
+  name?: Maybe<Scalars['String']>;
+  point_type?: Maybe<EnumHardwareFastenerBoltPointEnum>;
+  shaft_length?: Maybe<Scalars['numeric']>;
+  specifications_met?: Maybe<Scalars['jsonb']>;
+  strength_class?: Maybe<EnumHardwareFastenerStrengthClassEnum>;
+  tensile_strength?: Maybe<Scalars['numeric']>;
+  thread_diameter?: Maybe<Scalars['numeric']>;
+  thread_direction?: Maybe<EnumHardwareFastenerThreadDirectionEnum>;
+  thread_fit?: Maybe<EnumHardwareFastenerThreadFitEnum>;
+  thread_length?: Maybe<Scalars['numeric']>;
+  thread_pitch?: Maybe<Scalars['numeric']>;
+  thread_type?: Maybe<EnumHardwareFastenerThreadTypeEnum>;
+  unit?: Maybe<EnumUnitEnum>;
+  use_material?: Maybe<EnumHardwareFastenerUseMaterialEnum>;
+};
+
+
+export type InsertItemHardwareFastenerBoltMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_item_hardware_fastener_bolt_one?: Maybe<(
+    { __typename?: 'item_hardware_fastener_bolt' }
+    & ItemHardwareFastenerBoltFieldsFragment
   )> }
 );
 
@@ -16696,6 +16740,32 @@ export const ItemFieldsFragmentDoc = gql`
   class
   name: object(path: "name")
   object
+}
+    `;
+export const ItemHardwareFastenerBoltFieldsFragmentDoc = gql`
+    fragment ItemHardwareFastenerBoltFields on item_hardware_fastener_bolt {
+  id
+  name
+  description
+  unit
+  thread_length
+  head_type
+  drive_type
+  drive_size
+  head_diameter
+  head_height
+  thread_diameter
+  finish
+  material
+  thread_direction
+  countersunk_angle
+  tensile_strength
+  specifications_met
+  thread_fit
+  point_type
+  hardness
+  strength_class
+  use_material
 }
     `;
 export const InsertIconDocument = gql`
@@ -17664,31 +17734,10 @@ export type ItemBundleQueryResult = ApolloReactCommon.QueryResult<ItemBundleQuer
 export const ItemHardwareFastenerBoltDocument = gql`
     query item_hardware_fastener_bolt {
   items: item_hardware_fastener_bolt(order_by: {id: asc}) {
-    id
-    name
-    description
-    unit
-    thread_length
-    head_type
-    drive_type
-    drive_size
-    head_diameter
-    head_height
-    thread_diameter
-    finish
-    material
-    thread_direction
-    countersunk_angle
-    tensile_strength
-    specifications_met
-    thread_fit
-    point_type
-    hardness
-    strength_class
-    use_material
+    ...ItemHardwareFastenerBoltFields
   }
 }
-    `;
+    ${ItemHardwareFastenerBoltFieldsFragmentDoc}`;
 export type ItemHardwareFastenerBoltProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>
     } & TChildProps;
@@ -17727,4 +17776,75 @@ export function useItemHardwareFastenerBoltLazyQuery(baseOptions?: ApolloReactHo
 export type ItemHardwareFastenerBoltQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltQuery>;
 export type ItemHardwareFastenerBoltLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerBoltLazyQuery>;
 export type ItemHardwareFastenerBoltQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerBoltQuery, ItemHardwareFastenerBoltQueryVariables>;
-// graphql typescript defs generated on 2020-05-20T16:45:39-06:00
+export const InsertItemHardwareFastenerBoltDocument = gql`
+    mutation InsertItemHardwareFastenerBolt($countersunk_angle: numeric, $countersunk_height: numeric, $description: String, $drive_size: String, $drive_type: enum_hardware_fastener_drive_enum, $embedded_length: numeric, $finish: enum_hardware_finish_enum, $hardness: enum_hardware_fastener_hardness_enum, $head_diameter: numeric, $head_height: numeric, $head_type: enum_hardware_fastener_head_enum, $id: Int, $material: enum_hardware_fastener_material_enum, $name: String, $point_type: enum_hardware_fastener_bolt_point_enum, $shaft_length: numeric, $specifications_met: jsonb, $strength_class: enum_hardware_fastener_strength_class_enum, $tensile_strength: numeric, $thread_diameter: numeric, $thread_direction: enum_hardware_fastener_thread_direction_enum, $thread_fit: enum_hardware_fastener_thread_fit_enum, $thread_length: numeric, $thread_pitch: numeric, $thread_type: enum_hardware_fastener_thread_type_enum, $unit: enum_unit_enum, $use_material: enum_hardware_fastener_use_material_enum) {
+  insert_item_hardware_fastener_bolt_one(object: {countersunk_angle: $countersunk_angle, countersunk_height: $countersunk_height, description: $description, drive_size: $drive_size, drive_type: $drive_type, embedded_length: $embedded_length, finish: $finish, hardness: $hardness, head_diameter: $head_diameter, head_height: $head_height, head_type: $head_type, material: $material, name: $name, point_type: $point_type, shaft_length: $shaft_length, specifications_met: $specifications_met, strength_class: $strength_class, tensile_strength: $tensile_strength, thread_diameter: $thread_diameter, thread_direction: $thread_direction, thread_fit: $thread_fit, thread_length: $thread_length, thread_pitch: $thread_pitch, thread_type: $thread_type, unit: $unit, use_material: $use_material}) {
+    ...ItemHardwareFastenerBoltFields
+  }
+}
+    ${ItemHardwareFastenerBoltFieldsFragmentDoc}`;
+export type InsertItemHardwareFastenerBoltMutationFn = ApolloReactCommon.MutationFunction<InsertItemHardwareFastenerBoltMutation, InsertItemHardwareFastenerBoltMutationVariables>;
+export type InsertItemHardwareFastenerBoltProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertItemHardwareFastenerBoltMutation, InsertItemHardwareFastenerBoltMutationVariables>
+    } & TChildProps;
+export function withInsertItemHardwareFastenerBolt<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  InsertItemHardwareFastenerBoltMutation,
+  InsertItemHardwareFastenerBoltMutationVariables,
+  InsertItemHardwareFastenerBoltProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, InsertItemHardwareFastenerBoltMutation, InsertItemHardwareFastenerBoltMutationVariables, InsertItemHardwareFastenerBoltProps<TChildProps, TDataName>>(InsertItemHardwareFastenerBoltDocument, {
+      alias: 'insertItemHardwareFastenerBolt',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useInsertItemHardwareFastenerBoltMutation__
+ *
+ * To run a mutation, you first call `useInsertItemHardwareFastenerBoltMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertItemHardwareFastenerBoltMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertItemHardwareFastenerBoltMutation, { data, loading, error }] = useInsertItemHardwareFastenerBoltMutation({
+ *   variables: {
+ *      countersunk_angle: // value for 'countersunk_angle'
+ *      countersunk_height: // value for 'countersunk_height'
+ *      description: // value for 'description'
+ *      drive_size: // value for 'drive_size'
+ *      drive_type: // value for 'drive_type'
+ *      embedded_length: // value for 'embedded_length'
+ *      finish: // value for 'finish'
+ *      hardness: // value for 'hardness'
+ *      head_diameter: // value for 'head_diameter'
+ *      head_height: // value for 'head_height'
+ *      head_type: // value for 'head_type'
+ *      id: // value for 'id'
+ *      material: // value for 'material'
+ *      name: // value for 'name'
+ *      point_type: // value for 'point_type'
+ *      shaft_length: // value for 'shaft_length'
+ *      specifications_met: // value for 'specifications_met'
+ *      strength_class: // value for 'strength_class'
+ *      tensile_strength: // value for 'tensile_strength'
+ *      thread_diameter: // value for 'thread_diameter'
+ *      thread_direction: // value for 'thread_direction'
+ *      thread_fit: // value for 'thread_fit'
+ *      thread_length: // value for 'thread_length'
+ *      thread_pitch: // value for 'thread_pitch'
+ *      thread_type: // value for 'thread_type'
+ *      unit: // value for 'unit'
+ *      use_material: // value for 'use_material'
+ *   },
+ * });
+ */
+export function useInsertItemHardwareFastenerBoltMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertItemHardwareFastenerBoltMutation, InsertItemHardwareFastenerBoltMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertItemHardwareFastenerBoltMutation, InsertItemHardwareFastenerBoltMutationVariables>(InsertItemHardwareFastenerBoltDocument, baseOptions);
+      }
+export type InsertItemHardwareFastenerBoltMutationHookResult = ReturnType<typeof useInsertItemHardwareFastenerBoltMutation>;
+export type InsertItemHardwareFastenerBoltMutationResult = ApolloReactCommon.MutationResult<InsertItemHardwareFastenerBoltMutation>;
+export type InsertItemHardwareFastenerBoltMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertItemHardwareFastenerBoltMutation, InsertItemHardwareFastenerBoltMutationVariables>;
+// graphql typescript defs generated on 2020-05-22T09:08:59-06:00

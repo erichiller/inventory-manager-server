@@ -19,7 +19,7 @@ import { GenericItem } from '../../lib/item/Item';
 import { EditOutlined, PrinterOutlined, DeleteOutlined, TagOutlined } from '@ant-design/icons';
 import { PageSpinGQL } from '../shared/PageSpin';
 import { ItemTableMouseOver } from './ItemTableMouseOver';
-import { ItemEditModal } from './ItemEditModal';
+import { ItemFormModal } from './ItemFormModal';
 import { useLocation, useParams } from 'react-router-dom';
 // import DocumentNode from 'graphql-tag';
 
@@ -133,11 +133,12 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     }
 
     const getRecordEditModal = ( record: Item<any> ): React.ReactElement => {
-        return <ItemEditModal
+        return <ItemFormModal
             item={currentRecord}
             // item={currentRecord.current}
             visibleHandler={() => setModal( null )}
             recordEditComponent={record.editComponent}
+            mutationHandler={record.mutationHandler}
         />;
         // switch ( record.class ) {
         //     // TODO: replace this with an edit modal defined within the Item subclass

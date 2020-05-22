@@ -27,6 +27,11 @@ export const EnumSelect = ( props: EnumSelectProps<string> ) => {
         <React.Fragment>
             <Select
                 showSearch
+                onKeyDown={( e ) => {
+                    if ( e.nativeEvent.keyCode === 13 ){
+                        e.preventDefault(); // keep Enter from submitting form within Selects so that autofill options can be triggered and selected.
+                    } 
+                }}
                 onChange={triggerChange}
                 options={enumKeys.map( k => { 
                     let Icon = iconMap ? iconMap[ k ] : null;
