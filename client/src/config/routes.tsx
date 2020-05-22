@@ -3,7 +3,7 @@ import { matchPath } from 'react-router-dom';
 import { ItemTable } from '../components/item/ItemTable';
 import { LabelTable } from '../components/label/LabelTable';
 import { ItemIndex } from '../components/item/Index';
-import { ItemEditModal } from '../components/item/ItemEditModal';
+import { ItemFormModal } from '../components/item/ItemFormModal';
 
 type ReactFunctionComponent = ( ( route?: RouteEntry, match?: RouterMatch ) => JSX.Element );
 

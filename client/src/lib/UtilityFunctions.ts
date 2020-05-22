@@ -90,14 +90,20 @@ export function parseFloatSafeWithDefault ( input: string | number, defaultValue
     return f !== NaN ? f : defaultValue;
 }
 
-
-
+/**
+ * Split at word boundaries and underscores, then rejoined in **`UpperCamelCase`** style.
+ * @param s input string which (may) container underscores and spaces.
+ */
 export function toUpperCamelCase ( s: string ): string {
-    return s.split( '_' ).join( ' ' ).split( ' ' ).map( function ( word ) {
+    return s.split( /[_ ]/ ).map( function ( word ) {
         return word.charAt( 0 ).toUpperCase() + word.slice( 1 ).toLowerCase();
     } ).join( '' );
 }
 
+/**
+ * Split at word boundaries and underscores, then rejoined in **`lowerCamelCase`** style.
+ * @param s input string which (may) container underscores and spaces.
+ */
 export function toLowerCamelCase ( s: string ): string {
     return toUpperCamelCase( s ).charAt( 0 ).toLowerCase() + toUpperCamelCase( s ).substr( 1 );
 }

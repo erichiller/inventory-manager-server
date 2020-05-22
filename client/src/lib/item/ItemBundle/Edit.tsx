@@ -1,7 +1,7 @@
 import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'react';
 import { Form, Input, Divider, Tooltip, InputNumber, Switch, Row, Col, Button } from 'antd';
 // import { OptionsType } from 'rc-select/lib/Option';
-import { ItemEditFormProps } from '../Item';
+import { ItemFormProps } from '../Item';
 import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerThreadDirectionEnum, EnumHardwareFastenerThreadTypeEnum, EnumHardwareFastenerThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerStrengthClassEnum, EnumUnitEnum, EnumHardwareFastenerUseMaterialEnum } from '../../types/graphql';
 import TextArea from 'antd/lib/input/TextArea';
 
@@ -12,7 +12,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ItemSelect } from './ItemSelect';
 
 
-interface ItemBundleEditFormProps extends Union<ItemEditFormProps, ItemBundle> {
+interface ItemBundleEditFormProps extends Union<ItemFormProps, ItemBundle> {
 
 }
 

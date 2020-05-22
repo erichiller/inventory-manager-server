@@ -1,11 +1,12 @@
-import { Item, IconComponentT, CategoryHierarchyT, ItemClass, IItem, GenericItem } from '../Item';
+import { Item, IconComponentT, CategoryHierarchyT, ItemClass, IItem, GenericItem, FormMutationHandler } from '../Item';
 import { Item as ItemGql, ItemHardwareFastenerBolt as ItemHardwareFastenerBoltGql, ItemHardwareFastenerBoltSelectColumn, Maybe, Scalars, EnumUnitEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerHeadEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerStrengthClassEnum, EnumHardwareFastenerThreadDirectionEnum, EnumHardwareFastenerThreadFitEnum, EnumHardwareFastenerThreadTypeEnum } from "../../types/graphql";
 import React from 'react';
 import { Integer } from '../../types/uint8';
 import { HexBoltIcon } from '../../../styles/icon';
 import { ColumnProps } from 'antd/lib/table';
 import { toTitleCase } from '../../UtilityFunctions';
-import { ItemHardwareFastenerBoltEditForm } from './Edit';
+import { ItemHardwareFastenerBoltForm } from './Form';
+import { ItemHardwareFastenerBoltEditMutationHandler } from './Edit';
 
 
 type ItemPlusClassT<T extends GenericItem, C extends ItemClass> = Exclude<ItemHardwareFastenerBoltGql, 'class'>;
@@ -128,7 +129,10 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
     }
 
     get editComponent (): React.FC {
-        return ItemHardwareFastenerBoltEditForm;
+        return ItemHardwareFastenerBoltForm;
+    }
+    get mutationHandler (): React.FC<FormMutationHandler> {
+        return ItemHardwareFastenerBoltEditMutationHandler;
     }
 }
 
