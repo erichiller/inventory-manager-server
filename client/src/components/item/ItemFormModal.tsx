@@ -27,7 +27,9 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
         setFormSubmitted(true);
     };
 
-    const onFinishFailed = ( errorInfo ) => console.error(errorInfo);
+    const onFinishFailed = ( errorInfo ) => {
+        console.error( { class: 'ItemEditModal', method: 'onFinishFailed', errorInfo } );
+    };
 
     const onFieldsChange = ( changedFields, values ) => {
         console.log( { class: 'ItemEditModal', method: 'onFieldsChange', changedFields, values } );
@@ -35,7 +37,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
 
     const mutationCompleteCallback: ( success: boolean ) => void = ( success: boolean ) => {
         if ( ! success ){
-            setFormSubmitted(false)
+            setFormSubmitted(false);
         }
     }
 
@@ -48,7 +50,10 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
         //     maxHeight: '80vh'
         // }}
         className="ItemEditFormModal"
-        onOk={e => form.submit()}
+        onOk={e => {
+            console.log( { class: 'ItemEditModal', method: 'onOk', e, values: form.getFieldsValue() } );
+            form.submit();
+        }}
         onCancel={event => props.visibleHandler(null)}
     >
         <Form
