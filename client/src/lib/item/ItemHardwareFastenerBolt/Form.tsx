@@ -38,14 +38,17 @@ interface FormFields {
 *
 * @returns boolean where true means do update.
 */
-const setFieldScrewSizePropertyInShouldUpdate = ( field: keyof ScrewSizeInputOptionData, form: FormInstance ) => {
+const setFieldScrewSizePropertyInShouldUpdate = ( field: keyof ScrewSizeInputOptionData, form: FormInstance, setFieldState?: (any) => void ) => {
     return ( prev: FormFields, next: FormFields ) => {
         let currentValue = form.getFieldValue( field );
         console.log( "form", `${ field } shouldUpdate?`, { currentValue, next } );
         let nextValue = next.screw_size && next.screw_size[ field ] ? toMinimumFixed( next.screw_size[ field ], 1 ) : null;
-        if ( currentValue !== nextValue ) {
-            console.log( "form", `${ field } shouldUpdate?`, `SETTING ${ field } from screw_size`, `${ currentValue } !== ${ nextValue }` );
+        if ( nextValue && currentValue !== nextValue ) {
+            console.log( "form", `${ field } shouldUpdate?`, `SETTING ${ field } from screw_size`, `current ${ currentValue } !== next ${ nextValue }` );
             form.setFieldsValue( Object.fromEntries( [ [ field, nextValue ] ] ) );
+            if ( setFieldState ){
+                setFieldState( nextValue );
+            }
             return true;
         }
         return false;
@@ -93,24 +96,6 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
 
     return (
         <React.Fragment>
-            {/********************************************************************************
-              ** GENERAL ITEMS 
-              ********************************************************************************/}
-            {/* <div className="col">
-                <Form.Item name="name" label="Name">
-                    <Input placeholder="Item name" />
-                </Form.Item>
-                <Form.Item name="description" label="Description">
-                    <TextArea placeholder="Description, leave empty to auto-generate" autoSize={{ minRows: 2 }} />
-                </Form.Item>
-                <Form.Item name="stock" label="Qty">
-                    <QtyInput />
-                </Form.Item>
-                <Form.Item name="order" label="Order">
-                    <OrderInput />
-                </Form.Item>
-            </div> */}
-
 
             {/********************************************************************************
               ** AUTO-FILL ITEMS ( these should be filled when ScrewSizeInput is done )
@@ -118,7 +103,7 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
             <div className="col">
 
                 <Form.Item name="unit" label="Measurement Unit" required
-                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "unit", form )}
+                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "unit", form, setUnit )}
                 >
                     <UnitSelect onChange={setUnit} />
                 </Form.Item>

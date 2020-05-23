@@ -8,8 +8,6 @@ export const ItemHardwareFastenerBoltEditMutationHandler: React.FC<FormMutationH
     const { form, submitted, completeCallback } = props;
     const [ insertItemHardwareFastenerBoltMutation, { data, loading, error } ] = useInsertItemHardwareFastenerBoltMutation();
 
-    const _logFields = 
-
     useEffect(() => {
         if ( submitted === true ) {
             console.log( { c: "ItemHardwareFastenerBoltEditMutationHandler", f: 'useEffect', cond: 'submitted === true' }, form.getFieldsValue() );
