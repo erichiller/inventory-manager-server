@@ -232,6 +232,13 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                 <Divider key="divider_thread" orientation="left">Thread</Divider>
 
 
+                <Form.Item name="shaft_length" dependencies={[ 'unit' ]}
+                    label={<Tooltip title="Size of drive. For example, if `drive_type` is `hex_socket` then the `drive_size` would be the size of the allen wrench needed." ><span>Shaft Length</span></Tooltip>}
+                >
+                    <MeasurementInput
+                        unit={unit}
+                        maxLength={6} />
+                </Form.Item>
                 <Form.Item name="thread_length" dependencies={[ 'unit' ]}
                     label={<Tooltip title={<div className="formTooltip"><ScrewThreadIcon /><span>The length of the screw that is threaded. </span></div>} ><span>Thread Length</span></Tooltip>}
                 >
@@ -371,12 +378,6 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                         placeholder="input placeholder"
                     />
                 </Form.Item>
-
-                {/* <Form.Item name="shaft_length" label="Length" dependencies={[ 'unit' ]}>
-                    <MeasurementInput
-                        unit={unit}
-                        maxLength={6} />
-                </Form.Item> */}
 
             </div>
 

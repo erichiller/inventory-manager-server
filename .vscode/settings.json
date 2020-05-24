@@ -26,5 +26,6 @@
     ],
     "files.associations": {
         "**/client/src/lib/item/ItemHardwareFastenerBolt/*.json": "jsonc"
-    }
+    },
+    "svg.preview.background": "transparent"
 }
