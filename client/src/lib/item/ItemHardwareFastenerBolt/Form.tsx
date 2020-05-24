@@ -14,7 +14,7 @@ import { toMinimumFixed, Union } from '../../UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { ItemHardwareFastenerBolt } from './Index';
 import { ScrewThreadIcon, ScrewEmbeddedLengthIcon, ScrewHeadDiameterIcon, ScrewHeadHeightIcon, ItemHardwareFastenerBoltDriveTypeIconMap } from './icon';
-import { FormIconTooltip } from './formComponents/helpers';
+import { FormIconTooltip, getUnitPrefixFromUnitSystem } from './formComponents/helpers';
 import { ThreadDirection_RightHandRuleIcon } from './icon';
 import { QtyInput } from '../common/QtyInput';
 import { OrderInput } from '../../../components/order/OrderInput';
@@ -91,8 +91,22 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
         }
         form.setFieldsValue( initProps );
     } );
+
     // TODO: then here have a type selector when in the generic add form
-    // TODO: THESE FORM ITEMS ARE FOR **ALL** OBJECTS
+
+    const updateName = () => {
+        const f = ( f: string, prefix?: string ) => {
+            let v = form.getFieldValue( f );
+            return v ? `${ prefix ? prefix : '' }${ v.replace( /[.0]*$/, '' )}`: '';
+        }
+        /**
+         * Set Name
+         * Machine screws, Phillips pan head, Stainless steel 18-8, #12-24 x 1"
+         * <Fastener type> <Drive Types> <Head Styles> <Material> <Diameter><Thread Count,pitch><Length>
+         */
+        let valueString = `${ f( 'use_material' ) }${ f( 'drive_type', ' ' ) }${ f( 'head_type', ', ' ) }${ f( 'material_type', ', ' ) }${ getUnitPrefixFromUnitSystem( form.getFieldValue( 'unit' ) ) }${ f( 'thread_diameter' ) }${ f( 'thread_pitch', '-' ) }${ f( 'embedded_length', 'x' ) } `;
+        form.setFieldsValue( Object.fromEntries( [ [ 'name', valueString ] ] ) );
+    }
 
     return (
         <React.Fragment>
@@ -139,7 +153,7 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                             <pre>M3-<span className="highlight">0.5</span>x5</pre>
                         </span>
                     } ><span>Pitch</span></Tooltip>}
-                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_pitch", form )}
+                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_pitch", form, updateName )}
                 >
                     <MeasurementInput
                         unit={unit}
