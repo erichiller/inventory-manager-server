@@ -1,13 +1,12 @@
 # ToDo
 
-
-
-
 ## General
 
 - [ ] Add `LICENSE.md`
 - [ ] Create templates for labels based on category / type
 - [ ] Try [animations](http://react-component.github.io/tween-one/)
+- [ ] Make use of additional linter: [tslint-react-hooks](https://www.npmjs.com/package/tslint-react-hooks) or `eslint-plugin-react-hooks`
+  - [ ] Use the `exhaustive-deps` rule. It warns of incorrect dependencies
 
 ## Table
 
@@ -23,6 +22,7 @@
 
 - [ ] Print List button should say "no labels in list" if there are none
 
+### For Consideration
 
 - [ ] Use Virtual List / Scrolling ; [see _"big data select"_ virtual scrolling && custom tag renderer](https://ant.design/components/select/#components-select-demo-big-data)
 - [ ] multi-column sort.
@@ -64,6 +64,9 @@
 
 - [ ] PostgreSQL function to update `enum.item_class` and `enum.mapped_class`
 
+- [ ] Setup _min.io_ S3 store
+
+********************************************************************************
 
 ## Completed
 

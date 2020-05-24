@@ -41,6 +41,20 @@ export function getUnitSystemFromUnitPrefix ( prefix: UnitPrefixT ): EnumUnitEnu
             return EnumUnitEnum.usc;
     }
 }
+/**
+ * Convert Unit to its prefixed representation
+ */
+export function getUnitPrefixFromUnitSystem ( unit: EnumUnitEnum ): UnitPrefixT {
+    console.log( { func: 'getUnitPrefixFromUnitSystem', unit } );
+    switch ( unit ) {
+        case EnumUnitEnum.iso:
+        case EnumUnitEnum.din:
+        case EnumUnitEnum.metric:
+            return 'M';
+        default:
+            return null;
+    }
+}
 
 /**
  * Accept an option string and return the unit prefix and diameter

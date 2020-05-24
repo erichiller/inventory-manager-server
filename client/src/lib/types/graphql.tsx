@@ -2897,6 +2897,7 @@ export enum EnumUnitEnum {
   din = 'din',
   /** International Standards Organization. Default metric unit. */
   iso = 'iso',
+  metric = 'metric',
   /** United States Customary Measurement System */
   usc = 'usc'
 }
@@ -17847,4 +17848,4 @@ export function useInsertItemHardwareFastenerBoltMutation(baseOptions?: ApolloRe
 export type InsertItemHardwareFastenerBoltMutationHookResult = ReturnType<typeof useInsertItemHardwareFastenerBoltMutation>;
 export type InsertItemHardwareFastenerBoltMutationResult = ApolloReactCommon.MutationResult<InsertItemHardwareFastenerBoltMutation>;
 export type InsertItemHardwareFastenerBoltMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertItemHardwareFastenerBoltMutation, InsertItemHardwareFastenerBoltMutationVariables>;
-// graphql typescript defs generated on 2020-05-22T09:08:59-06:00
+// graphql typescript defs generated on 2020-05-24T08:55:34-06:00
