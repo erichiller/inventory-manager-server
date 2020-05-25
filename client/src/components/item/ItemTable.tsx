@@ -51,7 +51,7 @@ type ItemTableProps<T, Q extends typeof useGetItemsQuery> = {
 interface IItemTableParams {
     /** item_id is Int as string */
     item_id: string;
-    action: "edit"
+    action: "edit";
 }
 
 /**
@@ -70,7 +70,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     let location = useLocation();
     let params = useParams < IItemTableParams >();
 
-    console.log( { location, cls: 'ItemTable', params})
+    console.log( { location, cls: 'ItemTable', params});
     
     // return <ItemSearch />;
 
@@ -94,14 +94,14 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                 })
                 .catch( error => console.log("error"));
         }
-    }, [ params.item_id ])
+    }, [ params.item_id ]);
 
     useEffect( () => {
         console.log( { _cls: "ItemTable", method: 'useEffect for currentRecord & params.action', currentRecord, msg: "run", params_action: params.action } );
         if ( params.action == "edit" && currentRecord ) {
             setModal( getRecordEditModal( currentRecord ) );
         }
-    }, [ currentRecord, params.action ] )
+    }, [ currentRecord, params.action ] );
 
 
 
@@ -189,7 +189,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                             <a onClick={( obj ) => {
                                 obj.preventDefault();
                                 // currentRecord = { current: record };
-                                setCurrentRecord(record)
+                                setCurrentRecord(record);
                                 setModal( getLabelDrawModal( record ) );
                             }
                             }><TagOutlined className="IconButton" /></a>

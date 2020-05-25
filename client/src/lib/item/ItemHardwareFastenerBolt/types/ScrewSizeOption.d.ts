@@ -8,7 +8,7 @@
 //     coarse: number;
 // }
 
-import { EnumHardwareFastenerThreadTypeEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFastenerHeadEnum } from "../../../types/graphql";
+import { EnumHardwareFastenerThreadLabelEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFastenerHeadEnum } from "../../../types/graphql";
 
 // export type ThreadOptionT = Record<keyof typeof EnumHardwareFastenerThreadTypeEnum, number | null>;
 
@@ -33,8 +33,8 @@ type HeadDefinition<U> = Record<keyof typeof EnumHardwareFastenerHeadEnum, {
  * @propertyNames {"pattern": "^[0-9.]+$"}
  **/
 type PitchDefinitions = { [ pitch: string ]: {
-    label: EnumHardwareFastenerThreadTypeEnum;
-};}
+    label: EnumHardwareFastenerThreadLabelEnum;
+};};
 
 interface DiameterDefinitionBase<U> {
     /** whether this diameter appears on the standardized/first choice list */

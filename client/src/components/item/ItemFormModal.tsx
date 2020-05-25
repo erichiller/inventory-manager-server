@@ -39,7 +39,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
         if ( ! success ){
             setFormSubmitted(false);
         }
-    }
+    };
 
     return <Modal
         visible={true}

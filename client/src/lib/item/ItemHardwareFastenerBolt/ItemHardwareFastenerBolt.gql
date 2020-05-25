@@ -51,10 +51,11 @@ mutation InsertItemHardwareFastenerBolt(
     $tensile_strength: numeric
     $thread_diameter: numeric
     $thread_direction: enum_hardware_fastener_thread_direction_enum
-    $thread_fit: enum_hardware_fastener_thread_fit_enum
+    $thread_fit: enum_hardware_fastener_bolt_thread_fit_enum
     $thread_length: numeric
+    $thread_label: enum_hardware_fastener_thread_label_enum
     $thread_pitch: numeric
-    $thread_type: enum_hardware_fastener_thread_type_enum
+    $thread_standard: enum_hardware_fastener_thread_standard_enum
     $unit: enum_unit_enum
     $use_material: enum_hardware_fastener_use_material_enum
 ) {
@@ -81,9 +82,10 @@ mutation InsertItemHardwareFastenerBolt(
             thread_diameter: $thread_diameter
             thread_direction: $thread_direction
             thread_fit: $thread_fit
+            thread_label: $thread_label
             thread_length: $thread_length
             thread_pitch: $thread_pitch
-            thread_type: $thread_type
+            thread_standard: $thread_standard
             unit: $unit
             use_material: $use_material
         }

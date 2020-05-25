@@ -14,7 +14,7 @@ export const ItemHardwareFastenerBoltEditMutationHandler: React.FC<FormMutationH
             insertItemHardwareFastenerBoltMutation( {
                 variables: form.getFieldsValue( true, ( meta ) => {
                     // console.log( { c: "ItemHardwareFastenerBoltEditMutationHandler", f: 'meta'}, meta.name );
-                    return ! meta.name.includes('screw_size')
+                    return ! meta.name.includes('screw_size');
                     return true;
                 })
             } );
@@ -30,8 +30,8 @@ export const ItemHardwareFastenerBoltEditMutationHandler: React.FC<FormMutationH
             return () => {
                 form.resetFields();
             };
-        };
+        }
     }, [data, loading, error]);
 
     return null;
-}
+};

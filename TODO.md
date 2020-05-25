@@ -28,6 +28,20 @@
 - [ ] multi-column sort.
 - [ ] Nest dataIndex ["order", "date"]
 
+## Item add / edit form
+
+- [x] changes to the unit made in `ScrewSizeInput` should be shown in the unit select as well and propogate to the entire form.
+- [x] Auto-create name
+- [ ] Edit form, Insert should be edit
+- [ ] Ensure required values
+- [ ] closing form modal should return to `/item`
+- [ ] clicking _Edit_ on an item in the table should:
+  - [ ] use the `item/<id>/edit` url
+  - [ ] pre-populate the form
+  - [ ] load appropriate edit component, rather than add component
+- [ ] autocomplete `shaft_length` based on `head_type` and `length`
+- [ ] drive size ? (autocomplete?)
+
 
 ## Drawing
 

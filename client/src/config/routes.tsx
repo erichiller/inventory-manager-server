@@ -14,7 +14,7 @@ export interface RouteEntry {
     breadcrumbName: string | ReactFunctionComponent;
     path: string | string[];
     exact?: boolean;
-    AppMenuEntry?: ( props?: { [ key: string ]: any } ) => React.ReactElement;
+    AppMenuEntry?: ( props?: { [ key: string ]: any; } ) => React.ReactElement;
     AppMenuIcon?: () => React.ReactElement;
     ModeMenu?: () => React.ReactElement;
     main: ReactElementProvider;
@@ -24,7 +24,7 @@ export interface RouteEntry {
 
 export interface RouterMatch {
     isExact: boolean;
-    params: { [ key: string ]: React.ReactElement };
+    params: { [ key: string ]: React.ReactElement; };
     path: string;
     url: string;
 }

@@ -121,4 +121,4 @@ export async function startServer ( port: number ): Promise<HttpServer | HttpsSe
             resolve( server );
         } );
     } );
-};
+}

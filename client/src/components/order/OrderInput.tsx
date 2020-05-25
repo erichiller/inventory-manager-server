@@ -35,7 +35,7 @@ export const OrderInput: React.FC<OrderInputProps> = ( props ) => {
     //         onChange( value, option );
     //     }
     // };
-    console.log("useGetOrdersByDateRangeQuery", dateString)
+    console.log("useGetOrdersByDateRangeQuery", dateString);
     const { data, loading, error } = useGetOrdersByDateRangeQuery( {
         variables: {
             date_start_gte: `${ dateString }-01`,

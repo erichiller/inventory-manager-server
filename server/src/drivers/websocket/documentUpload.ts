@@ -67,7 +67,7 @@ export function HandleWebsocketUploadConnection ( ws: WebSocket, req: HttpIncomi
                 body: fileData
             } )
                 .then( res => {
-                    if ( !res.ok ) { console.error( res.ok, res.headers ); return; };
+                    if ( !res.ok ) { console.error( res.ok, res.headers ); return; }
                     res.json().then( metadata => {
                         console.log( { event: 'json() received', metadata } );
                         fetch( `${ TIKA_URL }/tika`, {
@@ -78,7 +78,7 @@ export function HandleWebsocketUploadConnection ( ws: WebSocket, req: HttpIncomi
                             body: fileData
                         } )
                             .then( res => {
-                                if ( !res.ok ) { console.error( res.ok, res.headers ); return; };
+                                if ( !res.ok ) { console.error( res.ok, res.headers ); return; }
                                 res.text().then( content => {
                                     console.log( { event: 'text() received', content } );
                                     CreateDocumentGql( fileId, header, fileData.byteLength, content, metadata );
