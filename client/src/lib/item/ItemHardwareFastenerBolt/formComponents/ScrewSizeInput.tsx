@@ -1,4 +1,4 @@
-import { EnumUnitEnum, EnumHardwareFastenerThreadTypeEnum } from "../../../types/graphql";
+import { EnumUnitEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerThreadLabelEnum } from "../../../types/graphql";
 import { getUnitSystemFromUnitPrefix, getUnitPrefixAndDiameterFromOptionString, screwSizeRegex } from "./helpers";
 import { UnitPrefixT, EnumUnitKeys } from "../types/types";
 import { SelectProps } from "antd/lib/select";
@@ -7,7 +7,7 @@ import { AutoComplete, Input } from "antd";
 import { InputProps } from "antd/lib/input";
 
 import ScrewSizeConfig from '../config/ScrewSizeOptions.json';
-import { eliminateArrayDuplicates, transparentLog, toTitleCase, filterObjectKeysWithProperty, firstOfArrayOrNull, parseIntSafe, parseFloatSafeWithDefault } from "../../../UtilityFunctions";
+import { eliminateArrayDuplicates, transparentLog, toTitleCase, filterObjectKeysWithProperty, matchFirstOfArrayOrNull, parseIntSafe, parseFloatSafeWithDefault } from "../../../UtilityFunctions";
 import { PitchDefinitions, DiameterDefinitionBase } from "../types/ScrewSizeOption";
 
 console.log( { ScrewSizeConfig} );
@@ -22,7 +22,8 @@ export class ScrewSizeInputOptionData {
     thread_pitch: number;
     numerator?: number;
     denominator?: number;
-    thread_type?: EnumHardwareFastenerThreadTypeEnum;
+    thread_standard?: EnumHardwareFastenerThreadStandardEnum;
+    thread_label?: EnumHardwareFastenerThreadLabelEnum;
 }
 
 /**
@@ -36,7 +37,7 @@ function getDefaultPitch (
     prefix: UnitPrefixT,
     unit: EnumUnitEnum, 
     diameter: number, 
-    thread_type: EnumHardwareFastenerThreadTypeEnum = EnumHardwareFastenerThreadTypeEnum.coarse 
+    thread_label: EnumHardwareFastenerThreadLabelEnum = EnumHardwareFastenerThreadLabelEnum.coarse 
 ): number {
     console.log( { f: "getDefaultPitch", unit: unit, prefix: prefix, diameter: diameter, compound_diameter: `${ prefix }${ diameter }` } );
     if ( !validateScrewSizeElements(unit, prefix, diameter )){ return null;}
@@ -45,8 +46,9 @@ function getDefaultPitch (
     // return ScrewSizeConfig[ 'iso']["M1.8"].pitch["0.2"].label;
     return transparentLog(
         {f: "getDefaultPitch"},
-            parseIntSafe(firstOfArrayOrNull(
+        parseIntSafe( matchFirstOfArrayOrNull(
         filterObjectKeysWithProperty( getPitchDefinitions(unit, prefix, diameter), 'label' ) 
+            , thread_label
     ) )
     );
 }
@@ -54,18 +56,18 @@ function getPitchDefinitions(unit: EnumUnitEnum, prefix: UnitPrefixT, diameter: 
     if ( !validateScrewSizeElements( unit, prefix, diameter ) ) { return null; }
     return ScrewSizeConfig[ unit ][ `${ prefix }${ diameter }` ].pitch as PitchDefinitions;
 }
-function getThreadType (
+function getThreadLabel (
     prefix: UnitPrefixT,
     unit: EnumUnitEnum,
     diameter: number, 
     pitch: number
-): EnumHardwareFastenerThreadTypeEnum {
+): EnumHardwareFastenerThreadLabelEnum {
     console.log( { f: "getThreadType", unit: unit, prefix: prefix, diameter: diameter, compound_diameter: `${ prefix }${ diameter }`});
     let pitchDefs = getPitchDefinitions(unit, prefix, diameter);
-    if ( ! pitchDefs ) { return EnumHardwareFastenerThreadTypeEnum.coarse; } // return default
+    if ( !pitchDefs ) { return EnumHardwareFastenerThreadLabelEnum.coarse; } // return default
     for( let pitchOption in ScrewSizeConfig[ unit ][ `${ prefix }${ diameter }` ].pitch ){
         if ( ScrewSizeConfig[ unit ][ `${ prefix }${ diameter }` ].pitch[pitchOption] === pitch){
-            return pitchOption as EnumHardwareFastenerThreadTypeEnum;
+            return pitchOption as EnumHardwareFastenerThreadLabelEnum;
         }
     }
 }
@@ -96,7 +98,7 @@ const parseScrewSizeInputOptionData: ( s: string ) => ScrewSizeInputOptionData =
             thread_diameter: diameter,
             embedded_length: length,
             thread_pitch: pitch,
-            thread_type: getThreadType( prefix, unit, diameter, pitch)
+            thread_type: getThreadLabel( prefix, unit, diameter, pitch)
         };
     }
     return null;
@@ -109,8 +111,8 @@ function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOpti
             if ( v.thread_pitch ){
                 return [v]; // this is as specific as we can get
             }
-            if ( v.thread_type ){
-                return [{ ...v, thread_pitch: getDefaultPitch( v.prefix, v.unit, v.thread_diameter, v.thread_type ) }];
+            if ( v.thread_label ){
+                return [{ ...v, thread_pitch: getDefaultPitch( v.prefix, v.unit, v.thread_diameter, v.thread_label ) }];
             }
             console.log( "TAG", {
                 v,
@@ -133,7 +135,7 @@ function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOpti
                                 thread_pitch: parseFloatSafeWithDefault( thread_pitch, undefined ),
                                 thread_type: ScrewSizeConfig[ v.unit ][ thread_diameter_with_prefix ][ "pitch" ][ thread_pitch ].label ?? undefined,
                                 embedded_length: null
-                            } 
+                            }; 
                         } )
                     )
             )
@@ -157,7 +159,7 @@ function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOpti
                         thread_type: ScrewSizeConfig[ v.unit ][ prefixed_thread_diameter ][ "pitch" ][ thread_pitch ].label ?? undefined,
                         embedded_length: null
                     };
-            } )
+            } );
         } )
         )
         ;

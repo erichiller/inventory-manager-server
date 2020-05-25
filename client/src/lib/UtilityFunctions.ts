@@ -67,11 +67,27 @@ export function filterObjectKeysWithProperty<T extends object> ( o: T, k: keyof 
 //     return filteredObjects;
 // }
 
-export function firstOfArrayOrNull<T> ( array: T[] ): T | null {
-    if ( Array.isArray( array ) && array.length > 0 ) {
-        return array[ 0 ];
+// export function firstOfArrayOrNull<T> ( array: T[] ): T | null {
+//     if ( Array.isArray( array ) && array.length > 0 ) {
+//         return array[ 0 ];
+//     }
+//     return null;
+// }
+/**
+ * If length of array is 0, return null
+ * If match is specified, return the first element that matches.
+ * If no match is found or match is not specified return the first element
+ * @param array array to search
+ * @param match element match
+ */
+export function matchFirstOfArrayOrNull<T> ( array: T[], match?: T ): T | null {
+    if ( ! Array.isArray( array ) || array.length === 0 ) {
+        return null;
     }
-    return null;
+    if ( match ) {
+        return array.find( el => el === match ) || array[0];
+    }
+    return array[ 0 ];
 }
 
 /**

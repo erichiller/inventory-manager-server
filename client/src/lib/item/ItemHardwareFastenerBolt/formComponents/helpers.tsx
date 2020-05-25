@@ -17,8 +17,8 @@ export const screwSizeRegex = /(?<unitPrefix>[mM#]?)(?<diameter>[/0-9\.]*)-?(?<p
  */
 export function getUnitFromUnitSystem ( sys: EnumUnitKeys | EnumUnitEnum ) {
     switch ( sys ) {
-        case EnumUnitEnum.iso:
-        case 'iso':
+        case EnumUnitEnum.metric:
+        case 'metric':
             return "mm";
         case EnumUnitEnum.usc:
         case 'usc':
@@ -36,7 +36,7 @@ export function getUnitSystemFromUnitPrefix ( prefix: UnitPrefixT ): EnumUnitEnu
     console.log( { func: 'getUnitSystemFromUnitPrefix', prefix } );
     switch ( prefix ) {
         case 'M':
-            return EnumUnitEnum.iso;
+            return EnumUnitEnum.metric;
         case '#':
             return EnumUnitEnum.usc;
     }
@@ -47,8 +47,6 @@ export function getUnitSystemFromUnitPrefix ( prefix: UnitPrefixT ): EnumUnitEnu
 export function getUnitPrefixFromUnitSystem ( unit: EnumUnitEnum ): UnitPrefixT {
     console.log( { func: 'getUnitPrefixFromUnitSystem', unit } );
     switch ( unit ) {
-        case EnumUnitEnum.iso:
-        case EnumUnitEnum.din:
         case EnumUnitEnum.metric:
             return 'M';
         default:
@@ -66,7 +64,7 @@ export function getUnitPrefixAndDiameterFromOptionString ( optionString: string 
         return { 
             prefix: r.groups.unitPrefix.toUpperCase() as UnitPrefixT,
             thread_diameter: parseFloat(r.groups.diameter)
-        }
+        };
     }
 }
 
@@ -89,5 +87,5 @@ export const FormIconTooltip: React.FC<FormIconTooltipProps> = ( { icon, text, l
         <span>
             {label}
         </span>
-    </Tooltip>
-}
+    </Tooltip>;
+};
