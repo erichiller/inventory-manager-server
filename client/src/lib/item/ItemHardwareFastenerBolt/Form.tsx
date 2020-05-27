@@ -2,7 +2,7 @@ import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'reac
 import { Form, Input, Divider, Tooltip, InputNumber, Switch } from 'antd';
 // import { OptionsType } from 'rc-select/lib/Option';
 import { ItemFormProps } from '../Item';
-import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerThreadDirectionEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerStrengthClassEnum, EnumUnitEnum, EnumHardwareFastenerUseMaterialEnum, EnumHardwareFastenerThreadLabelEnum } from '../../types/graphql';
+import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHandednessEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerStrengthClassEnum, EnumUnitEnum, EnumHardwareUseMaterialEnum, EnumHardwareFastenerThreadLabelEnum } from '../../types/graphql';
 import TextArea from 'antd/lib/input/TextArea';
 
 import { EnumUnitKeys, EnumHardwareFastenerSpecificationsEnum } from './types/types';
@@ -13,7 +13,7 @@ import { ScrewSizeInput, ScrewSizeInputOptionData } from './formComponents/Screw
 import { toMinimumFixed, Union } from '../../UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { ItemHardwareFastenerBolt } from './Index';
-import { ScrewThreadIcon, ScrewEmbeddedLengthIcon, ScrewHeadDiameterIcon, ScrewHeadHeightIcon, ItemHardwareFastenerBoltDriveTypeIconMap } from './icon';
+import { ScrewThreadIcon, ScrewEmbeddedLengthIcon, ScrewHeadDiameterIcon, ScrewHeadHeightIcon, ItemHardwareFastenerBoltDriveTypeIconMap, ItemHardwareFastenerBoltPointIconMap } from './icon';
 import { FormIconTooltip, getUnitPrefixFromUnitSystem } from './formComponents/helpers';
 import { ThreadDirection_RightHandRuleIcon } from './icon';
 import { QtyInput } from '../common/QtyInput';
@@ -86,9 +86,9 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
 
     useEffect( () => {
         let initProps: Partial<ItemHardwareFastenerBolt> = {};
-        if ( !props.thread_direction ) {
-            initProps.thread_direction = EnumHardwareFastenerThreadDirectionEnum.right;
-        }
+        // if ( !props.thread_direction ) {
+        //     initProps.thread_direction = EnumHandednessEnum.right;
+        // }
         form.setFieldsValue( initProps );
     } );
 
@@ -121,8 +121,9 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                 >
                     <UnitSelect onChange={setUnit} />
                 </Form.Item>
+
                 {/* Thread Standard */}
-                <Form.Item name="thread_standard" label="Thread"
+                <Form.Item name="thread_standard" label="Standard"
                     shouldUpdate={( prev: FormFields, next: FormFields ) => {
                         let currentValue = form.getFieldValue( 'thread_standard' );
                         if ( ( next.screw_size && next.screw_size.thread_standard && currentValue !== next.screw_size.thread_standard ) ) {
@@ -131,13 +132,14 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                         }
                         return false;
                     }}
+                    required
                 >
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerThreadStandardEnum )} placeholder="input placeholder"
+                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerThreadStandardEnum )}
                     />
                 </Form.Item>
 
                 {/* DIAMETER */}
-                <Form.Item name="thread_diameter" dependencies={[ 'unit' ]}
+                <Form.Item name="thread_diameter" dependencies={[ 'unit' ]} required
                     label={<Tooltip title={
                         <span className="tooltip-with-example">
                             <header>Thread dimensions. </header>
@@ -168,6 +170,7 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                         </span>
                     } ><span>Pitch</span></Tooltip>}
                     shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_pitch", form, updateName )}
+                    required
                 >
                     <MeasurementInput
                         unit={unit}
@@ -190,6 +193,7 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                         />}
                     dependencies={[ 'unit' ]}
                     shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "embedded_length", form )}
+                    required
                 >
                     <MeasurementInput
                         unit={unit}
@@ -197,7 +201,7 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                 </Form.Item>
 
                 {/* TODO: this should ultimately have a lookup table of applicable threads. */}
-                <Form.Item name="thread_label" label="Thread"
+                <Form.Item name="thread_label" label="Thread Label"
                     shouldUpdate={( prev: FormFields, next: FormFields ) => {
                         let currentValue = form.getFieldValue( 'thread_label' );
                         if ( ( next.screw_size && next.screw_size.thread_label && currentValue !== next.screw_size.thread_label ) ) {
@@ -207,7 +211,7 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                         return false;
                     }}
                 >
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerThreadLabelEnum )} placeholder="input placeholder"
+                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerThreadLabelEnum )}
                     />
                 </Form.Item>
             </div>
@@ -234,20 +238,20 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
             </div>
 
             <div className="col">
-                <Form.Item name="head_type" label="Head">
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerHeadEnum )} placeholder="input placeholder" />
+                <Form.Item name="head_type" label="Head" required>
+                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerHeadEnum )} />
                 </Form.Item>
 
-                <Form.Item name="drive_type" label="Drive">
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerDriveEnum )} iconMap={ItemHardwareFastenerBoltDriveTypeIconMap} placeholder="input placeholder" />
+                <Form.Item name="drive_type" label="Drive" required>
+                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerDriveEnum )} iconMap={ItemHardwareFastenerBoltDriveTypeIconMap} />
                 </Form.Item>
 
                 <Form.Item name="finish" label="Finish">
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFinishEnum )} placeholder="input placeholder" />
+                    <EnumSelect enumKeys={Object.keys( EnumHardwareFinishEnum )} />
                 </Form.Item>
 
                 <Form.Item name="material" label="Material">
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerMaterialEnum )} placeholder="input placeholder" />
+                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerMaterialEnum )} />
                 </Form.Item>
             </div>
 
@@ -259,24 +263,15 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
             <div className="col">
                 <Divider key="divider_thread" orientation="left">Thread</Divider>
 
-
-                <Form.Item name="shaft_length" dependencies={[ 'unit' ]}
-                    label={<Tooltip title="Size of drive. For example, if `drive_type` is `hex_socket` then the `drive_size` would be the size of the allen wrench needed." ><span>Shaft Length</span></Tooltip>}
-                >
-                    <MeasurementInput
-                        unit={unit}
-                        maxLength={6} />
-                </Form.Item>
                 <Form.Item name="thread_length" dependencies={[ 'unit' ]}
                     label={<Tooltip title={<div className="formTooltip"><ScrewThreadIcon /><span>The length of the screw that is threaded. </span></div>} ><span>Thread Length</span></Tooltip>}
                 >
                     <MeasurementInput
                         unit={unit}
                         maxLength={6}
-                    // placeholder=""
                     />
                 </Form.Item>
-                <Form.Item name="thread_direction"
+                <Form.Item name="thread_direction" required
                     label={
                         <FormIconTooltip
                             icon={<ThreadDirection_RightHandRuleIcon />}
@@ -288,10 +283,18 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                             label="Handedness"
                         />}
                 >
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerThreadDirectionEnum )} placeholder="Right" />
+                    <EnumSelect enumKeys={Object.keys( EnumHandednessEnum )} placeholder="Right" />
                 </Form.Item>
                 <Form.Item name="thread_fit" label="Fit">
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerBoltThreadFitEnum )} placeholder="input placeholder" />
+                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerBoltThreadFitEnum ).filter( el => {
+                        if ( unit === "metric") {
+                            return /[gh]/.exec( el ) !== null;
+                        }
+                        if ( unit === "usc"){
+                            return /[0-9][AB]/.exec( el ) !== null;
+                        }
+                        return true;
+                    })} />
                 </Form.Item>
             </div>
 
@@ -375,19 +378,19 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
             <div className="col">
                 <Divider key="divider_miscellaneous" orientation="left">Miscellaneous</Divider>
 
-                <Form.Item name="use_material" label="Use Material">
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerUseMaterialEnum )} placeholder="input placeholder" />
+                <Form.Item name="use_material" label="Use Material" required>
+                    <EnumSelect enumKeys={Object.keys( EnumHardwareUseMaterialEnum )} placeholder="Machine" />
                 </Form.Item>
 
                 <Form.Item name="point_type" label="Point">
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerBoltPointEnum )} placeholder="input placeholder" />
+                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerBoltPointEnum )} placeholder="Bolt Flat" iconMap={ItemHardwareFastenerBoltPointIconMap} />
                 </Form.Item>
 
                 <Form.Item name="hardness" label="Hardness">
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerHardnessEnum )} placeholder="input placeholder" />
+                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerHardnessEnum )} />
                 </Form.Item>
                 <Form.Item name="strength_class" label="Stength Class">
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerStrengthClassEnum )} placeholder="input placeholder" />
+                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerStrengthClassEnum )} />
                 </Form.Item>
 
                 <Form.Item name="tensile_strength" label="Tensile Strength">
@@ -403,7 +406,6 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                     <EnumSelect
                         mode='multiple'
                         enumKeys={Object.keys( EnumHardwareFastenerSpecificationsEnum )}
-                        placeholder="input placeholder"
                     />
                 </Form.Item>
 

@@ -2,7 +2,7 @@ import { Item, IconComponentT, CategoryHierarchyT, ItemClass, IItem, GenericItem
 import { 
     Item as ItemGql, 
     ItemBundle as ItemBundleGql, 
-    ItemBundleSelectColumn, Maybe, Scalars, EnumUnitEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerHeadEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerStrengthClassEnum, EnumHardwareFastenerThreadDirectionEnum, EnumHardwareFastenerBoltThreadFitEnum, ItemBundleMap } from "../../types/graphql";
+    ItemBundleSelectColumn, Maybe, Scalars, EnumUnitEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerHeadEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerStrengthClassEnum, EnumHandednessEnum, EnumHardwareFastenerBoltThreadFitEnum, ItemBundleMap } from "../../types/graphql";
 import React from 'react';
 import { Integer } from '../../types/uint8';
 import { HexBoltIcon } from '../../../styles/icon';

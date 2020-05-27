@@ -8,7 +8,7 @@
 //     coarse: number;
 // }
 
-import { EnumHardwareFastenerThreadLabelEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFastenerHeadEnum } from "../../../types/graphql";
+import { EnumHardwareFastenerThreadLabelEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFastenerHeadEnum, EnumHardwareFastenerThreadStandardEnum } from "../../../types/graphql";
 
 // export type ThreadOptionT = Record<keyof typeof EnumHardwareFastenerThreadTypeEnum, number | null>;
 
@@ -33,15 +33,17 @@ type HeadDefinition<U> = Record<keyof typeof EnumHardwareFastenerHeadEnum, {
  * @propertyNames {"pattern": "^[0-9.]+$"}
  **/
 type PitchDefinitions = { [ pitch: string ]: {
-    label: EnumHardwareFastenerThreadLabelEnum;
+    label?: EnumHardwareFastenerThreadLabelEnum;
+    tolerance?: any; // TODO
 };};
 
 interface DiameterDefinitionBase<U> {
     /** whether this diameter appears on the standardized/first choice list */
     common: boolean;
     pitch: PitchDefinitions;
-    hardness: any; // TODO
+    hardness?: any; // TODO
     head: Partial<HeadDefinition<U>>;
+    standard: EnumHardwareFastenerThreadStandardEnum;
 }
 
 /**
@@ -52,7 +54,7 @@ export interface IScrewSizeDefinition {
      * ISO
      * @propertyNames {"pattern": "^M[0-9.]+$"}
      **/
-    iso: { [ diameter: string ]: Partial<DiameterDefinitionBase<MetricUnit>>; };
+    metric: { [ diameter: string ]: Partial<DiameterDefinitionBase<MetricUnit>>; };
     /** 
      * United States Customary System 
      * @propertyNames {"pattern": "^((#[0-9]{1,2})|([1-9]+(\\+[1-9]+)?(\\/[0-9]+)?))$"}

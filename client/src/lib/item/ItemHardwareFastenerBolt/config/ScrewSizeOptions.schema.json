@@ -2,11 +2,22 @@
   "$ref": "#/definitions/ScrewSizeSchema",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "EnumHardwareFastenerThreadTypeEnum": {
+    "EnumHardwareFastenerThreadLabelEnum": {
       "enum": [
         "coarse",
         "extra_fine",
         "fine"
+      ],
+      "type": "string"
+    },
+    "EnumHardwareFastenerThreadStandardEnum": {
+      "enum": [
+        "DIN",
+        "ISO",
+        "UNC",
+        "UNEF",
+        "UNF",
+        "UNS"
       ],
       "type": "string"
     },
@@ -19,11 +30,13 @@
         "additionalProperties": false,
         "properties": {
           "label": {
-            "$ref": "#/definitions/EnumHardwareFastenerThreadTypeEnum"
+            "$ref": "#/definitions/EnumHardwareFastenerThreadLabelEnum"
+          },
+          "tolerance": {
           }
         },
         "required": [
-          "label"
+          "tolerance"
         ],
         "type": "object"
       },
@@ -38,7 +51,7 @@
         "$schema": {
           "type": "string"
         },
-        "iso": {
+        "metric": {
           "additionalProperties": {
             "additionalProperties": false,
             "properties": {
@@ -371,6 +384,9 @@
               },
               "pitch": {
                 "$ref": "#/definitions/PitchDefinitions"
+              },
+              "standard": {
+                "$ref": "#/definitions/EnumHardwareFastenerThreadStandardEnum"
               }
             },
             "type": "object"
@@ -714,6 +730,9 @@
               },
               "pitch": {
                 "$ref": "#/definitions/PitchDefinitions"
+              },
+              "standard": {
+                "$ref": "#/definitions/EnumHardwareFastenerThreadStandardEnum"
               }
             },
             "type": "object"
@@ -727,7 +746,7 @@
       },
       "required": [
         "$schema",
-        "iso",
+        "metric",
         "uscs"
       ],
       "type": "object"

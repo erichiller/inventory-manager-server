@@ -33,7 +33,6 @@
 - [x] changes to the unit made in `ScrewSizeInput` should be shown in the unit select as well and propogate to the entire form.
 - [x] Auto-create name
 - [ ] Edit form, Insert should be edit
-- [ ] Ensure required values
 - [ ] closing form modal should return to `/item`
 - [ ] clicking _Edit_ on an item in the table should:
   - [ ] use the `item/<id>/edit` url
@@ -41,6 +40,8 @@
   - [ ] load appropriate edit component, rather than add component
 - [ ] autocomplete `shaft_length` based on `head_type` and `length`
 - [ ] drive size ? (autocomplete?)
+- [ ] Ensure required values
+- [ ] run form _verify_ on submit
 
 
 ## Drawing
@@ -79,6 +80,9 @@
 - [ ] PostgreSQL function to update `enum.item_class` and `enum.mapped_class`
 
 - [ ] Setup _min.io_ S3 store
+
+- [ ] hide certain columns using permissions in Hasura
+- [ ] use Hasura generated columns for properties like `shaft_length` and `drive_size`
 
 ********************************************************************************
 
@@ -128,3 +132,4 @@
   - [x] Text
   - [x] QR
   - [x] Image
+- [x] Format images properly in `EnumSelect`

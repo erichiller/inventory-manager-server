@@ -2,7 +2,7 @@ import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'reac
 import { Form, Input, Divider, Tooltip, InputNumber, Switch, Row, Col, Button } from 'antd';
 // import { OptionsType } from 'rc-select/lib/Option';
 import { ItemFormProps } from '../Item';
-import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerThreadDirectionEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerStrengthClassEnum, EnumUnitEnum, EnumHardwareFastenerUseMaterialEnum } from '../../types/graphql';
+import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHandednessEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerStrengthClassEnum, EnumUnitEnum, EnumHardwareUseMaterialEnum } from '../../types/graphql';
 import TextArea from 'antd/lib/input/TextArea';
 
 import { toMinimumFixed, Union } from '../../UtilityFunctions';
@@ -32,7 +32,7 @@ export const ItemBundleEditForm: React.FC<ItemBundleEditFormProps> = ( props ) =
     // useEffect( () => {
     //     let initProps: Partial<ItemBundle> = {};
     //     if ( !props.thread_direction ) {
-    //         initProps.thread_direction = EnumHardwareFastenerThreadDirectionEnum.right;
+    //         initProps.thread_direction = EnumHandednessEnum.right;
     //     }
     //     form.setFieldsValue( initProps );
     // } );

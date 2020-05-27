@@ -8,8 +8,12 @@ export function buf2hex ( buffer: ArrayBuffer ): string { // buffer is an ArrayB
 }
 
 export function toTitleCase ( s: string ): string {
-    if ( [ 'ID', 'id' ].includes( s ) ) { return s; } // do not change `id`
-    if ( s.toUpperCase() == s ) { return s; } // do not capitalize
+    /** do not change `id` or `ID` */
+    if ( [ 'ID', 'id' ].includes( s ) ) { return s; }
+    /** string takes the form _0 (underscore, numeric) then this is assumed to be an ENUM with an underscore prefix to allow for starting numbers */
+    if ( s.length >= 2 && s[0] === "_" && /[0-9]/.exec(s[1]) !== null){ return s.replace( /_/g, '' ); }
+    /** if string is ALL CAPS return as is */
+    if ( s.toUpperCase() === s ) { return s; }
     return s.replace( /_/g, ' ' ).split( ' ' ).map( function ( word ) {
         return word.charAt( 0 ).toUpperCase() + word.slice( 1 ).toLowerCase();
     } ).join( ' ' );
