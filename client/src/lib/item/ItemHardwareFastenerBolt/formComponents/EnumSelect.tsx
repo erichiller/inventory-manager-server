@@ -38,7 +38,7 @@ export const EnumSelect = ( props: EnumSelectProps<string> ) => {
                     console.log({cls: 'EnumSelect', enumKeys, iconMap, k});
                     return { 
                         value: k, 
-                        label: <span className="enumSelectOption"><div>{Icon ? <Icon /> : null}</div><span>{toTitleCase( k )}</span></span>,
+                        label: <span className={iconMap ? "enumIconSelectOption" : ""}><div>{Icon ? <Icon /> : null}</div><span>{toTitleCase( k )}</span></span>,
                     }; 
                 } ) }
                 {...remainingProps}

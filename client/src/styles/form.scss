@@ -41,11 +41,16 @@ div[role="tooltip"] {
     }
 }
 
-.enumSelectOption {
+.enumIconSelectOption {
     display: grid;
-    grid-template-columns: 70px auto;
+    grid-template-columns: 40px auto;
     grid-template-rows: 40px;
     align-items: center;
+
+    & img , svg {
+        width: 35px;
+        align-self: center;
+    }
 }
 
 .orderOption {
