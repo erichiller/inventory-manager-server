@@ -1,6 +1,6 @@
 {
     "$schema": "./ScrewSizeOptions.schema.json",
-    "iso": {
+    "metric": {
         "M0.25": {
             "pitch": {
                 "0.075": {

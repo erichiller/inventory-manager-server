@@ -1,5 +1,5 @@
 import { Item, IconComponentT, CategoryHierarchyT, ItemClass, IItem, GenericItem, FormMutationHandler } from '../Item';
-import { Item as ItemGql, ItemHardwareFastenerBolt as ItemHardwareFastenerBoltGql, ItemHardwareFastenerBoltSelectColumn, Maybe, Scalars, EnumUnitEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerHeadEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerStrengthClassEnum, EnumHardwareFastenerThreadDirectionEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerThreadLabelEnum } from "../../types/graphql";
+import { Item as ItemGql, ItemHardwareFastenerBolt as ItemHardwareFastenerBoltGql, ItemHardwareFastenerBoltSelectColumn, Maybe, Scalars, EnumUnitEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerHeadEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerStrengthClassEnum, EnumHandednessEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerThreadLabelEnum } from "../../types/graphql";
 import React from 'react';
 import { Integer } from '../../types/uint8';
 import { HexBoltIcon } from '../../../styles/icon';
@@ -52,7 +52,7 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
     strength_class?: Maybe<EnumHardwareFastenerStrengthClassEnum>;
     /** psi */
     tensile_strength?: Maybe<Scalars[ 'numeric' ]>;
-    thread_direction: EnumHardwareFastenerThreadDirectionEnum;
+    thread_direction: EnumHandednessEnum;
     thread_fit?: Maybe<EnumHardwareFastenerBoltThreadFitEnum>;
     /** if fully threaded, this should be === `shaft_length` */
     thread_length: Scalars[ 'numeric' ];

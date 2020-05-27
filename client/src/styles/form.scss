@@ -41,6 +41,13 @@ div[role="tooltip"] {
     }
 }
 
+.enumSelectOption {
+    display: grid;
+    grid-template-columns: 70px auto;
+    grid-template-rows: 40px;
+    align-items: center;
+}
+
 .orderOption {
     // vertical-align: middle;
     // display: flex;

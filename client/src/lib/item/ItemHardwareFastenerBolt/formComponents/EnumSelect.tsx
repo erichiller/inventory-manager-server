@@ -7,9 +7,9 @@ import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interfac
 import { toTitleCase } from "../../../UtilityFunctions";
 import { IconMapT } from "../icon";
 
-interface EnumSelectProps<T> extends SelectProps<T> {
+interface EnumSelectProps<T extends string> extends SelectProps<T> {
     enumKeys: string[];
-    iconMap?: IconMapT;
+    iconMap?: IconMapT<T>;
 }
 /**
  * Form Select Input for arbitrary ENUM
@@ -38,7 +38,7 @@ export const EnumSelect = ( props: EnumSelectProps<string> ) => {
                     console.log({cls: 'EnumSelect', enumKeys, iconMap, k});
                     return { 
                         value: k, 
-                        label: <span>{Icon ? <Icon /> : null}{toTitleCase( k )} </span>,
+                        label: <span className="enumSelectOption"><div>{Icon ? <Icon /> : null}</div><span>{toTitleCase( k )}</span></span>,
                     }; 
                 } ) }
                 {...remainingProps}
