@@ -42,7 +42,7 @@ export function TransformableQR ( props: QrImageProps ): React.ReactElement<Konv
         // if ( trRef && trRef.current ) {
         if ( isSelected && trRef && trRef.current){
             console.log( { cls: 'TransformableQR', method: 'useEffect', op: 'willoperate', trRef, curr: trRef.current } );
-            trRef.current.setNode( nodeRef.current );
+            trRef.current.nodes( [ nodeRef.current ] );
             trRef.current.getLayer().batchDraw();
         } else {
             console.log( { cls: 'TransformableQR', method: 'useEffect', op: 'DETACH' } );

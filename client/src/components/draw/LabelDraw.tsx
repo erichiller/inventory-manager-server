@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
-import nunjucks from 'nunjucks';
-import { Stage, Text, Image } from 'react-konva';
+import { Stage } from 'react-konva';
 import { KonvaEventObject } from 'konva/types/Node';
 import { Button, Tooltip, message } from 'antd';
 import { MedicineBoxOutlined, FontSizeOutlined, QrcodeOutlined, PictureOutlined, PlusCircleOutlined } from '@ant-design/icons';
@@ -23,7 +22,6 @@ import { CodeIcon } from '../../styles/icon';
 import { EditableText } from './konvaElements/EditableText';
 import { TransformableImage } from './konvaElements/TransformableImage';
 import { TransformableQR } from './konvaElements/TransformableQR';
-import { DebugRectangles } from './DebugRectangles';
 
 
 
@@ -574,7 +572,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
     /*
      * type React.Ref = ((instance: T) => void) | React.RefObject
     **/
-    setRef = ( ref: Stage ): void => { // FIXME
+    setRef = ( ref: Stage ): void => {
         console.log( "SETTING REF FOR canvas", ref );
         if ( !this.state.stageRef ) {
             console.log( "SETTING REF FOR CANVAS -- SAVED TO STATE" );
@@ -761,7 +759,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                                 console.log( "expanding canvas\n", { was: this.state.stageRef.getStage().width()})
                                 // console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
                                 // console.log( this.context.currentLabelToBuffer() );
-                                this.props.updateWidth( this.state.stageRef.getStage().width() + 50); // FIXME
+                                this.props.updateWidth( this.state.stageRef.getStage().width() + 50);
                                 // this.state.stageRef.getStage().width( this.state.stageRef.getStage().width() + 50 );
                                 // this.state.stageRef.getStage().height( this.state.stageRef.getStage().width() + 50 );
                                 }} id="EXPAND_CANVAS" />
@@ -769,7 +767,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                     </div>
 
                     <LabelComponent {...this.props} selectedShapeName={this.state.selectedShapeName}>
-                        < DebugRectangles />
+                        {/* < DebugRectangles /> */}
                         {/* TEXT */}
                         {this.state.texts.map( labelText => {
                             console.log("Drawing EditableText");

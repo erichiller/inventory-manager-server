@@ -49,7 +49,7 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
         // if ( trRef && trRef.current ) {
         if ( isSelected && trRef && trRef.current ) {
             console.log( { cls: 'EditableText', method: 'useEffect', op: 'willoperate', trRef, curr: trRef.current } );
-            trRef.current.setNode( textNodeRef.current );
+            trRef.current.nodes( [ textNodeRef.current ] );
             trRef.current.getLayer().batchDraw();
         } else {
             console.log( { cls: 'EditableText', method: 'useEffect', op: 'DETACH' } );

@@ -95,3 +95,9 @@ mutation InsertItemHardwareFastenerBolt(
             ...ItemHardwareFastenerBoltFields
         }
 }
+query GetEnumHardwareFastenerThreadStandard {
+  enum_hardware_fastener_thread_standard {
+    id
+    description
+  }
+}
