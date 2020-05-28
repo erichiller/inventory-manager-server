@@ -2935,7 +2935,12 @@ export enum EnumHardwareFastenerStandoffShapeUpdateColumn {
   id = 'id'
 }
 
-/** columns and relationships of "enum.hardware_fastener_strength_class" */
+/**
+ * Generally a higher number means a stronger, more hardened part, but also more brittle. US units use Grade and Metric uses Class
+ * 
+ * 
+ * columns and relationships of "enum.hardware_fastener_strength_class"
+ */
 export type EnumHardwareFastenerStrengthClass = {
   __typename?: 'enum_hardware_fastener_strength_class';
   description?: Maybe<Scalars['String']>;
@@ -2995,7 +3000,13 @@ export enum EnumHardwareFastenerStrengthClassConstraint {
 export enum EnumHardwareFastenerStrengthClassEnum {
   class_10_9 = 'class_10_9',
   class_12_9 = 'class_12_9',
-  class_8_8 = 'class_8_8'
+  class_8_8 = 'class_8_8',
+  /** USC */
+  grade_5 = 'grade_5',
+  /** USC */
+  grade_8 = 'grade_8',
+  /** USC */
+  low_carbon = 'low_carbon'
 }
 
 /** expression to compare columns of type enum_hardware_fastener_strength_class_enum. All fields are combined with logical 'AND'. */
@@ -3426,6 +3437,507 @@ export type EnumHardwareFastenerThreadStandardSetInput = {
 
 /** update columns of table "enum.hardware_fastener_thread_standard" */
 export enum EnumHardwareFastenerThreadStandardUpdateColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
+/**
+ * Shape of the washer
+ * 
+ * 
+ * columns and relationships of "enum.hardware_fastener_washer_form"
+ */
+export type EnumHardwareFastenerWasherForm = {
+  __typename?: 'enum_hardware_fastener_washer_form';
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+};
+
+/** aggregated selection of "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormAggregate = {
+  __typename?: 'enum_hardware_fastener_washer_form_aggregate';
+  aggregate?: Maybe<EnumHardwareFastenerWasherFormAggregateFields>;
+  nodes: Array<EnumHardwareFastenerWasherForm>;
+};
+
+/** aggregate fields of "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormAggregateFields = {
+  __typename?: 'enum_hardware_fastener_washer_form_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<EnumHardwareFastenerWasherFormMaxFields>;
+  min?: Maybe<EnumHardwareFastenerWasherFormMinFields>;
+};
+
+
+/** aggregate fields of "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<EnumHardwareFastenerWasherFormSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormAggregateOrderBy = {
+  count?: Maybe<OrderBy>;
+  max?: Maybe<EnumHardwareFastenerWasherFormMaxOrderBy>;
+  min?: Maybe<EnumHardwareFastenerWasherFormMinOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormArrRelInsertInput = {
+  data: Array<EnumHardwareFastenerWasherFormInsertInput>;
+  on_conflict?: Maybe<EnumHardwareFastenerWasherFormOnConflict>;
+};
+
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_washer_form". All fields are combined with a logical 'AND'. */
+export type EnumHardwareFastenerWasherFormBoolExp = {
+  _and?: Maybe<Array<Maybe<EnumHardwareFastenerWasherFormBoolExp>>>;
+  _not?: Maybe<EnumHardwareFastenerWasherFormBoolExp>;
+  _or?: Maybe<Array<Maybe<EnumHardwareFastenerWasherFormBoolExp>>>;
+  description?: Maybe<StringComparisonExp>;
+  id?: Maybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "enum.hardware_fastener_washer_form" */
+export enum EnumHardwareFastenerWasherFormConstraint {
+  /** unique or primary key constraint */
+  hardware_fastener_washer_form_pkey = 'hardware_fastener_washer_form_pkey'
+}
+
+export enum EnumHardwareFastenerWasherFormEnum {
+  /** A washer used to obtain a finished look. Usually used with rounded head fasteners. */
+  finishing = 'finishing',
+  /** Used to distribute load. see also: pattern */
+  flat = 'flat',
+  /** Used to prevent nuts and bolts from backing out. see also: lock_mechanism. */
+  lock = 'lock',
+  /** Thick, large diameter, cast iron washers with a curved or sculpted appearance. Typically used in dock and wood construction. */
+  ogee = 'ogee',
+  square = 'square'
+}
+
+/** expression to compare columns of type enum_hardware_fastener_washer_form_enum. All fields are combined with logical 'AND'. */
+export type EnumHardwareFastenerWasherFormEnumComparisonExp = {
+  _eq?: Maybe<EnumHardwareFastenerWasherFormEnum>;
+  _in?: Maybe<Array<EnumHardwareFastenerWasherFormEnum>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<EnumHardwareFastenerWasherFormEnum>;
+  _nin?: Maybe<Array<EnumHardwareFastenerWasherFormEnum>>;
+};
+
+/** input type for inserting data into table "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormInsertInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type EnumHardwareFastenerWasherFormMaxFields = {
+  __typename?: 'enum_hardware_fastener_washer_form_max_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormMaxOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type EnumHardwareFastenerWasherFormMinFields = {
+  __typename?: 'enum_hardware_fastener_washer_form_min_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormMinOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormMutationResponse = {
+  __typename?: 'enum_hardware_fastener_washer_form_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<EnumHardwareFastenerWasherForm>;
+};
+
+/** input type for inserting object relation for remote table "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormObjRelInsertInput = {
+  data: EnumHardwareFastenerWasherFormInsertInput;
+  on_conflict?: Maybe<EnumHardwareFastenerWasherFormOnConflict>;
+};
+
+/** on conflict condition type for table "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormOnConflict = {
+  constraint: EnumHardwareFastenerWasherFormConstraint;
+  update_columns: Array<EnumHardwareFastenerWasherFormUpdateColumn>;
+  where?: Maybe<EnumHardwareFastenerWasherFormBoolExp>;
+};
+
+/** ordering options when selecting data from "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormPkColumnsInput = {
+  id: Scalars['String'];
+};
+
+/** select columns of table "enum.hardware_fastener_washer_form" */
+export enum EnumHardwareFastenerWasherFormSelectColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
+/** input type for updating data in table "enum.hardware_fastener_washer_form" */
+export type EnumHardwareFastenerWasherFormSetInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "enum.hardware_fastener_washer_form" */
+export enum EnumHardwareFastenerWasherFormUpdateColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
+/** columns and relationships of "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanism = {
+  __typename?: 'enum_hardware_fastener_washer_lock_mechanism';
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+};
+
+/** aggregated selection of "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismAggregate = {
+  __typename?: 'enum_hardware_fastener_washer_lock_mechanism_aggregate';
+  aggregate?: Maybe<EnumHardwareFastenerWasherLockMechanismAggregateFields>;
+  nodes: Array<EnumHardwareFastenerWasherLockMechanism>;
+};
+
+/** aggregate fields of "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismAggregateFields = {
+  __typename?: 'enum_hardware_fastener_washer_lock_mechanism_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<EnumHardwareFastenerWasherLockMechanismMaxFields>;
+  min?: Maybe<EnumHardwareFastenerWasherLockMechanismMinFields>;
+};
+
+
+/** aggregate fields of "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<EnumHardwareFastenerWasherLockMechanismSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismAggregateOrderBy = {
+  count?: Maybe<OrderBy>;
+  max?: Maybe<EnumHardwareFastenerWasherLockMechanismMaxOrderBy>;
+  min?: Maybe<EnumHardwareFastenerWasherLockMechanismMinOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismArrRelInsertInput = {
+  data: Array<EnumHardwareFastenerWasherLockMechanismInsertInput>;
+  on_conflict?: Maybe<EnumHardwareFastenerWasherLockMechanismOnConflict>;
+};
+
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_washer_lock_mechanism". All fields are combined with a logical 'AND'. */
+export type EnumHardwareFastenerWasherLockMechanismBoolExp = {
+  _and?: Maybe<Array<Maybe<EnumHardwareFastenerWasherLockMechanismBoolExp>>>;
+  _not?: Maybe<EnumHardwareFastenerWasherLockMechanismBoolExp>;
+  _or?: Maybe<Array<Maybe<EnumHardwareFastenerWasherLockMechanismBoolExp>>>;
+  description?: Maybe<StringComparisonExp>;
+  id?: Maybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "enum.hardware_fastener_washer_lock_mechanism" */
+export enum EnumHardwareFastenerWasherLockMechanismConstraint {
+  /** unique or primary key constraint */
+  hardware_fastener_washer_lock_mechanism_pkey = 'hardware_fastener_washer_lock_mechanism_pkey'
+}
+
+export enum EnumHardwareFastenerWasherLockMechanismEnum {
+  /** washer with external teeth */
+  external_tooth = 'external_tooth',
+  /** washer with internal teeth */
+  internal_tooth = 'internal_tooth',
+  /** the most common lock method */
+  split = 'split'
+}
+
+/** expression to compare columns of type enum_hardware_fastener_washer_lock_mechanism_enum. All fields are combined with logical 'AND'. */
+export type EnumHardwareFastenerWasherLockMechanismEnumComparisonExp = {
+  _eq?: Maybe<EnumHardwareFastenerWasherLockMechanismEnum>;
+  _in?: Maybe<Array<EnumHardwareFastenerWasherLockMechanismEnum>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<EnumHardwareFastenerWasherLockMechanismEnum>;
+  _nin?: Maybe<Array<EnumHardwareFastenerWasherLockMechanismEnum>>;
+};
+
+/** input type for inserting data into table "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismInsertInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type EnumHardwareFastenerWasherLockMechanismMaxFields = {
+  __typename?: 'enum_hardware_fastener_washer_lock_mechanism_max_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismMaxOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type EnumHardwareFastenerWasherLockMechanismMinFields = {
+  __typename?: 'enum_hardware_fastener_washer_lock_mechanism_min_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismMinOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismMutationResponse = {
+  __typename?: 'enum_hardware_fastener_washer_lock_mechanism_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<EnumHardwareFastenerWasherLockMechanism>;
+};
+
+/** input type for inserting object relation for remote table "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismObjRelInsertInput = {
+  data: EnumHardwareFastenerWasherLockMechanismInsertInput;
+  on_conflict?: Maybe<EnumHardwareFastenerWasherLockMechanismOnConflict>;
+};
+
+/** on conflict condition type for table "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismOnConflict = {
+  constraint: EnumHardwareFastenerWasherLockMechanismConstraint;
+  update_columns: Array<EnumHardwareFastenerWasherLockMechanismUpdateColumn>;
+  where?: Maybe<EnumHardwareFastenerWasherLockMechanismBoolExp>;
+};
+
+/** ordering options when selecting data from "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismPkColumnsInput = {
+  id: Scalars['String'];
+};
+
+/** select columns of table "enum.hardware_fastener_washer_lock_mechanism" */
+export enum EnumHardwareFastenerWasherLockMechanismSelectColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
+/** input type for updating data in table "enum.hardware_fastener_washer_lock_mechanism" */
+export type EnumHardwareFastenerWasherLockMechanismSetInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "enum.hardware_fastener_washer_lock_mechanism" */
+export enum EnumHardwareFastenerWasherLockMechanismUpdateColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
+/**
+ * For Flat washers: Washer patterns define the outer diameter of the washer.
+ * 
+ * 
+ * columns and relationships of "enum.hardware_fastener_washer_pattern"
+ */
+export type EnumHardwareFastenerWasherPattern = {
+  __typename?: 'enum_hardware_fastener_washer_pattern';
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+};
+
+/** aggregated selection of "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternAggregate = {
+  __typename?: 'enum_hardware_fastener_washer_pattern_aggregate';
+  aggregate?: Maybe<EnumHardwareFastenerWasherPatternAggregateFields>;
+  nodes: Array<EnumHardwareFastenerWasherPattern>;
+};
+
+/** aggregate fields of "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternAggregateFields = {
+  __typename?: 'enum_hardware_fastener_washer_pattern_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<EnumHardwareFastenerWasherPatternMaxFields>;
+  min?: Maybe<EnumHardwareFastenerWasherPatternMinFields>;
+};
+
+
+/** aggregate fields of "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<EnumHardwareFastenerWasherPatternSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternAggregateOrderBy = {
+  count?: Maybe<OrderBy>;
+  max?: Maybe<EnumHardwareFastenerWasherPatternMaxOrderBy>;
+  min?: Maybe<EnumHardwareFastenerWasherPatternMinOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternArrRelInsertInput = {
+  data: Array<EnumHardwareFastenerWasherPatternInsertInput>;
+  on_conflict?: Maybe<EnumHardwareFastenerWasherPatternOnConflict>;
+};
+
+/** Boolean expression to filter rows from the table "enum.hardware_fastener_washer_pattern". All fields are combined with a logical 'AND'. */
+export type EnumHardwareFastenerWasherPatternBoolExp = {
+  _and?: Maybe<Array<Maybe<EnumHardwareFastenerWasherPatternBoolExp>>>;
+  _not?: Maybe<EnumHardwareFastenerWasherPatternBoolExp>;
+  _or?: Maybe<Array<Maybe<EnumHardwareFastenerWasherPatternBoolExp>>>;
+  description?: Maybe<StringComparisonExp>;
+  id?: Maybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "enum.hardware_fastener_washer_pattern" */
+export enum EnumHardwareFastenerWasherPatternConstraint {
+  /** unique or primary key constraint */
+  hardware_fastener_washer_pattern_pkey = 'hardware_fastener_washer_pattern_pkey'
+}
+
+export enum EnumHardwareFastenerWasherPatternEnum {
+  /** very large outer diameter */
+  Fender = 'Fender',
+  /** narrow outer diameter */
+  SAE = 'SAE',
+  /** wide outer diameter */
+  USS = 'USS',
+  /** Large outer diameter and thicker */
+  dock = 'dock'
+}
+
+/** expression to compare columns of type enum_hardware_fastener_washer_pattern_enum. All fields are combined with logical 'AND'. */
+export type EnumHardwareFastenerWasherPatternEnumComparisonExp = {
+  _eq?: Maybe<EnumHardwareFastenerWasherPatternEnum>;
+  _in?: Maybe<Array<EnumHardwareFastenerWasherPatternEnum>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<EnumHardwareFastenerWasherPatternEnum>;
+  _nin?: Maybe<Array<EnumHardwareFastenerWasherPatternEnum>>;
+};
+
+/** input type for inserting data into table "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternInsertInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type EnumHardwareFastenerWasherPatternMaxFields = {
+  __typename?: 'enum_hardware_fastener_washer_pattern_max_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternMaxOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type EnumHardwareFastenerWasherPatternMinFields = {
+  __typename?: 'enum_hardware_fastener_washer_pattern_min_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternMinOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternMutationResponse = {
+  __typename?: 'enum_hardware_fastener_washer_pattern_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<EnumHardwareFastenerWasherPattern>;
+};
+
+/** input type for inserting object relation for remote table "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternObjRelInsertInput = {
+  data: EnumHardwareFastenerWasherPatternInsertInput;
+  on_conflict?: Maybe<EnumHardwareFastenerWasherPatternOnConflict>;
+};
+
+/** on conflict condition type for table "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternOnConflict = {
+  constraint: EnumHardwareFastenerWasherPatternConstraint;
+  update_columns: Array<EnumHardwareFastenerWasherPatternUpdateColumn>;
+  where?: Maybe<EnumHardwareFastenerWasherPatternBoolExp>;
+};
+
+/** ordering options when selecting data from "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternPkColumnsInput = {
+  id: Scalars['String'];
+};
+
+/** select columns of table "enum.hardware_fastener_washer_pattern" */
+export enum EnumHardwareFastenerWasherPatternSelectColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
+/** input type for updating data in table "enum.hardware_fastener_washer_pattern" */
+export type EnumHardwareFastenerWasherPatternSetInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "enum.hardware_fastener_washer_pattern" */
+export enum EnumHardwareFastenerWasherPatternUpdateColumn {
   /** column name */
   description = 'description',
   /** column name */
@@ -6977,7 +7489,7 @@ export type ItemHardwareFastenerBolt = {
   strength_class?: Maybe<EnumHardwareFastenerStrengthClassEnum>;
   /** psi */
   tensile_strength?: Maybe<Scalars['numeric']>;
-  /** ie. M3 or #6 */
+  /** ie. M3 or #6. Measure of the outer diameter. For US items, diameters smaller than ¼" get #<numbers> */
   thread_diameter: Scalars['numeric'];
   thread_direction?: Maybe<EnumHandednessEnum>;
   thread_fit?: Maybe<EnumHardwareFastenerBoltThreadFitEnum>;
@@ -7686,7 +8198,12 @@ export type ItemHardwareFastenerBoltVarianceOrderBy = {
   thread_pitch?: Maybe<OrderBy>;
 };
 
-/** columns and relationships of "item.hardware_fastener_nut" */
+/**
+ * Nuts are used to fasten machine threaded fasteners in through-hole applications. Lock nuts help prevent loosening.
+ * 
+ * 
+ * columns and relationships of "item.hardware_fastener_nut"
+ */
 export type ItemHardwareFastenerNut = {
   __typename?: 'item_hardware_fastener_nut';
   description: Scalars['String'];
@@ -8873,6 +9390,451 @@ export type ItemHardwareFastenerStandoffVarianceOrderBy = {
   male_thread_length?: Maybe<OrderBy>;
   male_thread_pitch?: Maybe<OrderBy>;
   max_od?: Maybe<OrderBy>;
+};
+
+/**
+ * Washers spread the load over a greater surface area when tightening a bolt, screw, or nut. Lock washers help prevent loosening.
+ * 
+ * 
+ * columns and relationships of "item.hardware_fastener_washer"
+ */
+export type ItemHardwareFastenerWasher = {
+  __typename?: 'item_hardware_fastener_washer';
+  description?: Maybe<Scalars['String']>;
+  diameter_inner?: Maybe<Scalars['numeric']>;
+  diameter_outer?: Maybe<Scalars['numeric']>;
+  diameter_use: Scalars['numeric'];
+  finish?: Maybe<EnumHardwareFinishEnum>;
+  form: EnumHardwareFastenerWasherFormEnum;
+  id: Scalars['Int'];
+  lock_method?: Maybe<EnumHardwareFastenerWasherLockMechanismEnum>;
+  material?: Maybe<EnumHardwareFastenerMaterialEnum>;
+  name: Scalars['String'];
+  pattern?: Maybe<EnumHardwareFastenerWasherPatternEnum>;
+  thickness?: Maybe<Scalars['numeric']>;
+  unit: EnumUnitEnum;
+};
+
+/** aggregated selection of "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherAggregate = {
+  __typename?: 'item_hardware_fastener_washer_aggregate';
+  aggregate?: Maybe<ItemHardwareFastenerWasherAggregateFields>;
+  nodes: Array<ItemHardwareFastenerWasher>;
+};
+
+/** aggregate fields of "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherAggregateFields = {
+  __typename?: 'item_hardware_fastener_washer_aggregate_fields';
+  avg?: Maybe<ItemHardwareFastenerWasherAvgFields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<ItemHardwareFastenerWasherMaxFields>;
+  min?: Maybe<ItemHardwareFastenerWasherMinFields>;
+  stddev?: Maybe<ItemHardwareFastenerWasherStddevFields>;
+  stddev_pop?: Maybe<ItemHardwareFastenerWasherStddevPopFields>;
+  stddev_samp?: Maybe<ItemHardwareFastenerWasherStddevSampFields>;
+  sum?: Maybe<ItemHardwareFastenerWasherSumFields>;
+  var_pop?: Maybe<ItemHardwareFastenerWasherVarPopFields>;
+  var_samp?: Maybe<ItemHardwareFastenerWasherVarSampFields>;
+  variance?: Maybe<ItemHardwareFastenerWasherVarianceFields>;
+};
+
+
+/** aggregate fields of "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<ItemHardwareFastenerWasherSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherAggregateOrderBy = {
+  avg?: Maybe<ItemHardwareFastenerWasherAvgOrderBy>;
+  count?: Maybe<OrderBy>;
+  max?: Maybe<ItemHardwareFastenerWasherMaxOrderBy>;
+  min?: Maybe<ItemHardwareFastenerWasherMinOrderBy>;
+  stddev?: Maybe<ItemHardwareFastenerWasherStddevOrderBy>;
+  stddev_pop?: Maybe<ItemHardwareFastenerWasherStddevPopOrderBy>;
+  stddev_samp?: Maybe<ItemHardwareFastenerWasherStddevSampOrderBy>;
+  sum?: Maybe<ItemHardwareFastenerWasherSumOrderBy>;
+  var_pop?: Maybe<ItemHardwareFastenerWasherVarPopOrderBy>;
+  var_samp?: Maybe<ItemHardwareFastenerWasherVarSampOrderBy>;
+  variance?: Maybe<ItemHardwareFastenerWasherVarianceOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherArrRelInsertInput = {
+  data: Array<ItemHardwareFastenerWasherInsertInput>;
+  on_conflict?: Maybe<ItemHardwareFastenerWasherOnConflict>;
+};
+
+/** aggregate avg on columns */
+export type ItemHardwareFastenerWasherAvgFields = {
+  __typename?: 'item_hardware_fastener_washer_avg_fields';
+  diameter_inner?: Maybe<Scalars['Float']>;
+  diameter_outer?: Maybe<Scalars['Float']>;
+  diameter_use?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  thickness?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherAvgOrderBy = {
+  diameter_inner?: Maybe<OrderBy>;
+  diameter_outer?: Maybe<OrderBy>;
+  diameter_use?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  thickness?: Maybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "item.hardware_fastener_washer". All fields are combined with a logical 'AND'. */
+export type ItemHardwareFastenerWasherBoolExp = {
+  _and?: Maybe<Array<Maybe<ItemHardwareFastenerWasherBoolExp>>>;
+  _not?: Maybe<ItemHardwareFastenerWasherBoolExp>;
+  _or?: Maybe<Array<Maybe<ItemHardwareFastenerWasherBoolExp>>>;
+  description?: Maybe<StringComparisonExp>;
+  diameter_inner?: Maybe<NumericComparisonExp>;
+  diameter_outer?: Maybe<NumericComparisonExp>;
+  diameter_use?: Maybe<NumericComparisonExp>;
+  finish?: Maybe<EnumHardwareFinishEnumComparisonExp>;
+  form?: Maybe<EnumHardwareFastenerWasherFormEnumComparisonExp>;
+  id?: Maybe<IntComparisonExp>;
+  lock_method?: Maybe<EnumHardwareFastenerWasherLockMechanismEnumComparisonExp>;
+  material?: Maybe<EnumHardwareFastenerMaterialEnumComparisonExp>;
+  name?: Maybe<StringComparisonExp>;
+  pattern?: Maybe<EnumHardwareFastenerWasherPatternEnumComparisonExp>;
+  thickness?: Maybe<NumericComparisonExp>;
+  unit?: Maybe<EnumUnitEnumComparisonExp>;
+};
+
+/** unique or primary key constraints on table "item.hardware_fastener_washer" */
+export enum ItemHardwareFastenerWasherConstraint {
+  /** unique or primary key constraint */
+  hardware_fastener_washer_pkey = 'hardware_fastener_washer_pkey'
+}
+
+/** input type for incrementing integer column in table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherIncInput = {
+  diameter_inner?: Maybe<Scalars['numeric']>;
+  diameter_outer?: Maybe<Scalars['numeric']>;
+  diameter_use?: Maybe<Scalars['numeric']>;
+  id?: Maybe<Scalars['Int']>;
+  thickness?: Maybe<Scalars['numeric']>;
+};
+
+/** input type for inserting data into table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherInsertInput = {
+  description?: Maybe<Scalars['String']>;
+  diameter_inner?: Maybe<Scalars['numeric']>;
+  diameter_outer?: Maybe<Scalars['numeric']>;
+  diameter_use?: Maybe<Scalars['numeric']>;
+  finish?: Maybe<EnumHardwareFinishEnum>;
+  form?: Maybe<EnumHardwareFastenerWasherFormEnum>;
+  id?: Maybe<Scalars['Int']>;
+  lock_method?: Maybe<EnumHardwareFastenerWasherLockMechanismEnum>;
+  material?: Maybe<EnumHardwareFastenerMaterialEnum>;
+  name?: Maybe<Scalars['String']>;
+  pattern?: Maybe<EnumHardwareFastenerWasherPatternEnum>;
+  thickness?: Maybe<Scalars['numeric']>;
+  unit?: Maybe<EnumUnitEnum>;
+};
+
+/** aggregate max on columns */
+export type ItemHardwareFastenerWasherMaxFields = {
+  __typename?: 'item_hardware_fastener_washer_max_fields';
+  description?: Maybe<Scalars['String']>;
+  diameter_inner?: Maybe<Scalars['numeric']>;
+  diameter_outer?: Maybe<Scalars['numeric']>;
+  diameter_use?: Maybe<Scalars['numeric']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  thickness?: Maybe<Scalars['numeric']>;
+};
+
+/** order by max() on columns of table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherMaxOrderBy = {
+  description?: Maybe<OrderBy>;
+  diameter_inner?: Maybe<OrderBy>;
+  diameter_outer?: Maybe<OrderBy>;
+  diameter_use?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+  thickness?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type ItemHardwareFastenerWasherMinFields = {
+  __typename?: 'item_hardware_fastener_washer_min_fields';
+  description?: Maybe<Scalars['String']>;
+  diameter_inner?: Maybe<Scalars['numeric']>;
+  diameter_outer?: Maybe<Scalars['numeric']>;
+  diameter_use?: Maybe<Scalars['numeric']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  thickness?: Maybe<Scalars['numeric']>;
+};
+
+/** order by min() on columns of table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherMinOrderBy = {
+  description?: Maybe<OrderBy>;
+  diameter_inner?: Maybe<OrderBy>;
+  diameter_outer?: Maybe<OrderBy>;
+  diameter_use?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+  thickness?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherMutationResponse = {
+  __typename?: 'item_hardware_fastener_washer_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<ItemHardwareFastenerWasher>;
+};
+
+/** input type for inserting object relation for remote table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherObjRelInsertInput = {
+  data: ItemHardwareFastenerWasherInsertInput;
+  on_conflict?: Maybe<ItemHardwareFastenerWasherOnConflict>;
+};
+
+/** on conflict condition type for table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherOnConflict = {
+  constraint: ItemHardwareFastenerWasherConstraint;
+  update_columns: Array<ItemHardwareFastenerWasherUpdateColumn>;
+  where?: Maybe<ItemHardwareFastenerWasherBoolExp>;
+};
+
+/** ordering options when selecting data from "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherOrderBy = {
+  description?: Maybe<OrderBy>;
+  diameter_inner?: Maybe<OrderBy>;
+  diameter_outer?: Maybe<OrderBy>;
+  diameter_use?: Maybe<OrderBy>;
+  finish?: Maybe<OrderBy>;
+  form?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  lock_method?: Maybe<OrderBy>;
+  material?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+  pattern?: Maybe<OrderBy>;
+  thickness?: Maybe<OrderBy>;
+  unit?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherPkColumnsInput = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "item.hardware_fastener_washer" */
+export enum ItemHardwareFastenerWasherSelectColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  diameter_inner = 'diameter_inner',
+  /** column name */
+  diameter_outer = 'diameter_outer',
+  /** column name */
+  diameter_use = 'diameter_use',
+  /** column name */
+  finish = 'finish',
+  /** column name */
+  form = 'form',
+  /** column name */
+  id = 'id',
+  /** column name */
+  lock_method = 'lock_method',
+  /** column name */
+  material = 'material',
+  /** column name */
+  name = 'name',
+  /** column name */
+  pattern = 'pattern',
+  /** column name */
+  thickness = 'thickness',
+  /** column name */
+  unit = 'unit'
+}
+
+/** input type for updating data in table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherSetInput = {
+  description?: Maybe<Scalars['String']>;
+  diameter_inner?: Maybe<Scalars['numeric']>;
+  diameter_outer?: Maybe<Scalars['numeric']>;
+  diameter_use?: Maybe<Scalars['numeric']>;
+  finish?: Maybe<EnumHardwareFinishEnum>;
+  form?: Maybe<EnumHardwareFastenerWasherFormEnum>;
+  id?: Maybe<Scalars['Int']>;
+  lock_method?: Maybe<EnumHardwareFastenerWasherLockMechanismEnum>;
+  material?: Maybe<EnumHardwareFastenerMaterialEnum>;
+  name?: Maybe<Scalars['String']>;
+  pattern?: Maybe<EnumHardwareFastenerWasherPatternEnum>;
+  thickness?: Maybe<Scalars['numeric']>;
+  unit?: Maybe<EnumUnitEnum>;
+};
+
+/** aggregate stddev on columns */
+export type ItemHardwareFastenerWasherStddevFields = {
+  __typename?: 'item_hardware_fastener_washer_stddev_fields';
+  diameter_inner?: Maybe<Scalars['Float']>;
+  diameter_outer?: Maybe<Scalars['Float']>;
+  diameter_use?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  thickness?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherStddevOrderBy = {
+  diameter_inner?: Maybe<OrderBy>;
+  diameter_outer?: Maybe<OrderBy>;
+  diameter_use?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  thickness?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ItemHardwareFastenerWasherStddevPopFields = {
+  __typename?: 'item_hardware_fastener_washer_stddev_pop_fields';
+  diameter_inner?: Maybe<Scalars['Float']>;
+  diameter_outer?: Maybe<Scalars['Float']>;
+  diameter_use?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  thickness?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherStddevPopOrderBy = {
+  diameter_inner?: Maybe<OrderBy>;
+  diameter_outer?: Maybe<OrderBy>;
+  diameter_use?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  thickness?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ItemHardwareFastenerWasherStddevSampFields = {
+  __typename?: 'item_hardware_fastener_washer_stddev_samp_fields';
+  diameter_inner?: Maybe<Scalars['Float']>;
+  diameter_outer?: Maybe<Scalars['Float']>;
+  diameter_use?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  thickness?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherStddevSampOrderBy = {
+  diameter_inner?: Maybe<OrderBy>;
+  diameter_outer?: Maybe<OrderBy>;
+  diameter_use?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  thickness?: Maybe<OrderBy>;
+};
+
+/** aggregate sum on columns */
+export type ItemHardwareFastenerWasherSumFields = {
+  __typename?: 'item_hardware_fastener_washer_sum_fields';
+  diameter_inner?: Maybe<Scalars['numeric']>;
+  diameter_outer?: Maybe<Scalars['numeric']>;
+  diameter_use?: Maybe<Scalars['numeric']>;
+  id?: Maybe<Scalars['Int']>;
+  thickness?: Maybe<Scalars['numeric']>;
+};
+
+/** order by sum() on columns of table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherSumOrderBy = {
+  diameter_inner?: Maybe<OrderBy>;
+  diameter_outer?: Maybe<OrderBy>;
+  diameter_use?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  thickness?: Maybe<OrderBy>;
+};
+
+/** update columns of table "item.hardware_fastener_washer" */
+export enum ItemHardwareFastenerWasherUpdateColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  diameter_inner = 'diameter_inner',
+  /** column name */
+  diameter_outer = 'diameter_outer',
+  /** column name */
+  diameter_use = 'diameter_use',
+  /** column name */
+  finish = 'finish',
+  /** column name */
+  form = 'form',
+  /** column name */
+  id = 'id',
+  /** column name */
+  lock_method = 'lock_method',
+  /** column name */
+  material = 'material',
+  /** column name */
+  name = 'name',
+  /** column name */
+  pattern = 'pattern',
+  /** column name */
+  thickness = 'thickness',
+  /** column name */
+  unit = 'unit'
+}
+
+/** aggregate var_pop on columns */
+export type ItemHardwareFastenerWasherVarPopFields = {
+  __typename?: 'item_hardware_fastener_washer_var_pop_fields';
+  diameter_inner?: Maybe<Scalars['Float']>;
+  diameter_outer?: Maybe<Scalars['Float']>;
+  diameter_use?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  thickness?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherVarPopOrderBy = {
+  diameter_inner?: Maybe<OrderBy>;
+  diameter_outer?: Maybe<OrderBy>;
+  diameter_use?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  thickness?: Maybe<OrderBy>;
+};
+
+/** aggregate var_samp on columns */
+export type ItemHardwareFastenerWasherVarSampFields = {
+  __typename?: 'item_hardware_fastener_washer_var_samp_fields';
+  diameter_inner?: Maybe<Scalars['Float']>;
+  diameter_outer?: Maybe<Scalars['Float']>;
+  diameter_use?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  thickness?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherVarSampOrderBy = {
+  diameter_inner?: Maybe<OrderBy>;
+  diameter_outer?: Maybe<OrderBy>;
+  diameter_use?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  thickness?: Maybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type ItemHardwareFastenerWasherVarianceFields = {
+  __typename?: 'item_hardware_fastener_washer_variance_fields';
+  diameter_inner?: Maybe<Scalars['Float']>;
+  diameter_outer?: Maybe<Scalars['Float']>;
+  diameter_use?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  thickness?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "item.hardware_fastener_washer" */
+export type ItemHardwareFastenerWasherVarianceOrderBy = {
+  diameter_inner?: Maybe<OrderBy>;
+  diameter_outer?: Maybe<OrderBy>;
+  diameter_use?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  thickness?: Maybe<OrderBy>;
 };
 
 /** input type for incrementing integer column in table "item" */
@@ -10947,6 +11909,18 @@ export type MutationRoot = {
   delete_enum_hardware_fastener_thread_standard?: Maybe<EnumHardwareFastenerThreadStandardMutationResponse>;
   /** delete single row from the table: "enum.hardware_fastener_thread_standard" */
   delete_enum_hardware_fastener_thread_standard_by_pk?: Maybe<EnumHardwareFastenerThreadStandard>;
+  /** delete data from the table: "enum.hardware_fastener_washer_form" */
+  delete_enum_hardware_fastener_washer_form?: Maybe<EnumHardwareFastenerWasherFormMutationResponse>;
+  /** delete single row from the table: "enum.hardware_fastener_washer_form" */
+  delete_enum_hardware_fastener_washer_form_by_pk?: Maybe<EnumHardwareFastenerWasherForm>;
+  /** delete data from the table: "enum.hardware_fastener_washer_lock_mechanism" */
+  delete_enum_hardware_fastener_washer_lock_mechanism?: Maybe<EnumHardwareFastenerWasherLockMechanismMutationResponse>;
+  /** delete single row from the table: "enum.hardware_fastener_washer_lock_mechanism" */
+  delete_enum_hardware_fastener_washer_lock_mechanism_by_pk?: Maybe<EnumHardwareFastenerWasherLockMechanism>;
+  /** delete data from the table: "enum.hardware_fastener_washer_pattern" */
+  delete_enum_hardware_fastener_washer_pattern?: Maybe<EnumHardwareFastenerWasherPatternMutationResponse>;
+  /** delete single row from the table: "enum.hardware_fastener_washer_pattern" */
+  delete_enum_hardware_fastener_washer_pattern_by_pk?: Maybe<EnumHardwareFastenerWasherPattern>;
   /** delete data from the table: "enum.hardware_finish" */
   delete_enum_hardware_finish?: Maybe<EnumHardwareFinishMutationResponse>;
   /** delete single row from the table: "enum.hardware_finish" */
@@ -11019,6 +11993,10 @@ export type MutationRoot = {
   delete_item_hardware_fastener_standoff?: Maybe<ItemHardwareFastenerStandoffMutationResponse>;
   /** delete single row from the table: "item.hardware_fastener_standoff" */
   delete_item_hardware_fastener_standoff_by_pk?: Maybe<ItemHardwareFastenerStandoff>;
+  /** delete data from the table: "item.hardware_fastener_washer" */
+  delete_item_hardware_fastener_washer?: Maybe<ItemHardwareFastenerWasherMutationResponse>;
+  /** delete single row from the table: "item.hardware_fastener_washer" */
+  delete_item_hardware_fastener_washer_by_pk?: Maybe<ItemHardwareFastenerWasher>;
   /** delete data from the table: "label" */
   delete_label?: Maybe<LabelMutationResponse>;
   /** delete single row from the table: "label" */
@@ -11143,6 +12121,18 @@ export type MutationRoot = {
   insert_enum_hardware_fastener_thread_standard?: Maybe<EnumHardwareFastenerThreadStandardMutationResponse>;
   /** insert a single row into the table: "enum.hardware_fastener_thread_standard" */
   insert_enum_hardware_fastener_thread_standard_one?: Maybe<EnumHardwareFastenerThreadStandard>;
+  /** insert data into the table: "enum.hardware_fastener_washer_form" */
+  insert_enum_hardware_fastener_washer_form?: Maybe<EnumHardwareFastenerWasherFormMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_fastener_washer_form" */
+  insert_enum_hardware_fastener_washer_form_one?: Maybe<EnumHardwareFastenerWasherForm>;
+  /** insert data into the table: "enum.hardware_fastener_washer_lock_mechanism" */
+  insert_enum_hardware_fastener_washer_lock_mechanism?: Maybe<EnumHardwareFastenerWasherLockMechanismMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_fastener_washer_lock_mechanism" */
+  insert_enum_hardware_fastener_washer_lock_mechanism_one?: Maybe<EnumHardwareFastenerWasherLockMechanism>;
+  /** insert data into the table: "enum.hardware_fastener_washer_pattern" */
+  insert_enum_hardware_fastener_washer_pattern?: Maybe<EnumHardwareFastenerWasherPatternMutationResponse>;
+  /** insert a single row into the table: "enum.hardware_fastener_washer_pattern" */
+  insert_enum_hardware_fastener_washer_pattern_one?: Maybe<EnumHardwareFastenerWasherPattern>;
   /** insert data into the table: "enum.hardware_finish" */
   insert_enum_hardware_finish?: Maybe<EnumHardwareFinishMutationResponse>;
   /** insert a single row into the table: "enum.hardware_finish" */
@@ -11213,6 +12203,10 @@ export type MutationRoot = {
   insert_item_hardware_fastener_standoff?: Maybe<ItemHardwareFastenerStandoffMutationResponse>;
   /** insert a single row into the table: "item.hardware_fastener_standoff" */
   insert_item_hardware_fastener_standoff_one?: Maybe<ItemHardwareFastenerStandoff>;
+  /** insert data into the table: "item.hardware_fastener_washer" */
+  insert_item_hardware_fastener_washer?: Maybe<ItemHardwareFastenerWasherMutationResponse>;
+  /** insert a single row into the table: "item.hardware_fastener_washer" */
+  insert_item_hardware_fastener_washer_one?: Maybe<ItemHardwareFastenerWasher>;
   /** insert a single row into the table: "item" */
   insert_item_one?: Maybe<Item>;
   /** insert data into the table: "label" */
@@ -11344,6 +12338,18 @@ export type MutationRoot = {
   update_enum_hardware_fastener_thread_standard?: Maybe<EnumHardwareFastenerThreadStandardMutationResponse>;
   /** update single row of the table: "enum.hardware_fastener_thread_standard" */
   update_enum_hardware_fastener_thread_standard_by_pk?: Maybe<EnumHardwareFastenerThreadStandard>;
+  /** update data of the table: "enum.hardware_fastener_washer_form" */
+  update_enum_hardware_fastener_washer_form?: Maybe<EnumHardwareFastenerWasherFormMutationResponse>;
+  /** update single row of the table: "enum.hardware_fastener_washer_form" */
+  update_enum_hardware_fastener_washer_form_by_pk?: Maybe<EnumHardwareFastenerWasherForm>;
+  /** update data of the table: "enum.hardware_fastener_washer_lock_mechanism" */
+  update_enum_hardware_fastener_washer_lock_mechanism?: Maybe<EnumHardwareFastenerWasherLockMechanismMutationResponse>;
+  /** update single row of the table: "enum.hardware_fastener_washer_lock_mechanism" */
+  update_enum_hardware_fastener_washer_lock_mechanism_by_pk?: Maybe<EnumHardwareFastenerWasherLockMechanism>;
+  /** update data of the table: "enum.hardware_fastener_washer_pattern" */
+  update_enum_hardware_fastener_washer_pattern?: Maybe<EnumHardwareFastenerWasherPatternMutationResponse>;
+  /** update single row of the table: "enum.hardware_fastener_washer_pattern" */
+  update_enum_hardware_fastener_washer_pattern_by_pk?: Maybe<EnumHardwareFastenerWasherPattern>;
   /** update data of the table: "enum.hardware_finish" */
   update_enum_hardware_finish?: Maybe<EnumHardwareFinishMutationResponse>;
   /** update single row of the table: "enum.hardware_finish" */
@@ -11416,6 +12422,10 @@ export type MutationRoot = {
   update_item_hardware_fastener_standoff?: Maybe<ItemHardwareFastenerStandoffMutationResponse>;
   /** update single row of the table: "item.hardware_fastener_standoff" */
   update_item_hardware_fastener_standoff_by_pk?: Maybe<ItemHardwareFastenerStandoff>;
+  /** update data of the table: "item.hardware_fastener_washer" */
+  update_item_hardware_fastener_washer?: Maybe<ItemHardwareFastenerWasherMutationResponse>;
+  /** update single row of the table: "item.hardware_fastener_washer" */
+  update_item_hardware_fastener_washer_by_pk?: Maybe<ItemHardwareFastenerWasher>;
   /** update data of the table: "label" */
   update_label?: Maybe<LabelMutationResponse>;
   /** update single row of the table: "label" */
@@ -11699,6 +12709,42 @@ export type MutationRootDeleteEnumHardwareFastenerThreadStandardByPkArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerWasherFormArgs = {
+  where: EnumHardwareFastenerWasherFormBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerWasherFormByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerWasherLockMechanismArgs = {
+  where: EnumHardwareFastenerWasherLockMechanismBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerWasherLockMechanismByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerWasherPatternArgs = {
+  where: EnumHardwareFastenerWasherPatternBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumHardwareFastenerWasherPatternByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteEnumHardwareFinishArgs = {
   where: EnumHardwareFinishBoolExp;
 };
@@ -11915,6 +12961,18 @@ export type MutationRootDeleteItemHardwareFastenerStandoffArgs = {
 
 /** mutation root */
 export type MutationRootDeleteItemHardwareFastenerStandoffByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteItemHardwareFastenerWasherArgs = {
+  where: ItemHardwareFastenerWasherBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteItemHardwareFastenerWasherByPkArgs = {
   id: Scalars['Int'];
 };
 
@@ -12335,6 +13393,48 @@ export type MutationRootInsertEnumHardwareFastenerThreadStandardOneArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertEnumHardwareFastenerWasherFormArgs = {
+  objects: Array<EnumHardwareFastenerWasherFormInsertInput>;
+  on_conflict?: Maybe<EnumHardwareFastenerWasherFormOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumHardwareFastenerWasherFormOneArgs = {
+  object: EnumHardwareFastenerWasherFormInsertInput;
+  on_conflict?: Maybe<EnumHardwareFastenerWasherFormOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumHardwareFastenerWasherLockMechanismArgs = {
+  objects: Array<EnumHardwareFastenerWasherLockMechanismInsertInput>;
+  on_conflict?: Maybe<EnumHardwareFastenerWasherLockMechanismOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumHardwareFastenerWasherLockMechanismOneArgs = {
+  object: EnumHardwareFastenerWasherLockMechanismInsertInput;
+  on_conflict?: Maybe<EnumHardwareFastenerWasherLockMechanismOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumHardwareFastenerWasherPatternArgs = {
+  objects: Array<EnumHardwareFastenerWasherPatternInsertInput>;
+  on_conflict?: Maybe<EnumHardwareFastenerWasherPatternOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumHardwareFastenerWasherPatternOneArgs = {
+  object: EnumHardwareFastenerWasherPatternInsertInput;
+  on_conflict?: Maybe<EnumHardwareFastenerWasherPatternOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertEnumHardwareFinishArgs = {
   objects: Array<EnumHardwareFinishInsertInput>;
   on_conflict?: Maybe<EnumHardwareFinishOnConflict>;
@@ -12576,6 +13676,20 @@ export type MutationRootInsertItemHardwareFastenerStandoffArgs = {
 export type MutationRootInsertItemHardwareFastenerStandoffOneArgs = {
   object: ItemHardwareFastenerStandoffInsertInput;
   on_conflict?: Maybe<ItemHardwareFastenerStandoffOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemHardwareFastenerWasherArgs = {
+  objects: Array<ItemHardwareFastenerWasherInsertInput>;
+  on_conflict?: Maybe<ItemHardwareFastenerWasherOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemHardwareFastenerWasherOneArgs = {
+  object: ItemHardwareFastenerWasherInsertInput;
+  on_conflict?: Maybe<ItemHardwareFastenerWasherOnConflict>;
 };
 
 
@@ -13029,6 +14143,48 @@ export type MutationRootUpdateEnumHardwareFastenerThreadStandardByPkArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerWasherFormArgs = {
+  _set?: Maybe<EnumHardwareFastenerWasherFormSetInput>;
+  where: EnumHardwareFastenerWasherFormBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerWasherFormByPkArgs = {
+  _set?: Maybe<EnumHardwareFastenerWasherFormSetInput>;
+  pk_columns: EnumHardwareFastenerWasherFormPkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerWasherLockMechanismArgs = {
+  _set?: Maybe<EnumHardwareFastenerWasherLockMechanismSetInput>;
+  where: EnumHardwareFastenerWasherLockMechanismBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerWasherLockMechanismByPkArgs = {
+  _set?: Maybe<EnumHardwareFastenerWasherLockMechanismSetInput>;
+  pk_columns: EnumHardwareFastenerWasherLockMechanismPkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerWasherPatternArgs = {
+  _set?: Maybe<EnumHardwareFastenerWasherPatternSetInput>;
+  where: EnumHardwareFastenerWasherPatternBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumHardwareFastenerWasherPatternByPkArgs = {
+  _set?: Maybe<EnumHardwareFastenerWasherPatternSetInput>;
+  pk_columns: EnumHardwareFastenerWasherPatternPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateEnumHardwareFinishArgs = {
   _set?: Maybe<EnumHardwareFinishSetInput>;
   where: EnumHardwareFinishBoolExp;
@@ -13337,6 +14493,22 @@ export type MutationRootUpdateItemHardwareFastenerStandoffByPkArgs = {
   _inc?: Maybe<ItemHardwareFastenerStandoffIncInput>;
   _set?: Maybe<ItemHardwareFastenerStandoffSetInput>;
   pk_columns: ItemHardwareFastenerStandoffPkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateItemHardwareFastenerWasherArgs = {
+  _inc?: Maybe<ItemHardwareFastenerWasherIncInput>;
+  _set?: Maybe<ItemHardwareFastenerWasherSetInput>;
+  where: ItemHardwareFastenerWasherBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateItemHardwareFastenerWasherByPkArgs = {
+  _inc?: Maybe<ItemHardwareFastenerWasherIncInput>;
+  _set?: Maybe<ItemHardwareFastenerWasherSetInput>;
+  pk_columns: ItemHardwareFastenerWasherPkColumnsInput;
 };
 
 
@@ -15002,6 +16174,24 @@ export type QueryRoot = {
   enum_hardware_fastener_thread_standard_aggregate: EnumHardwareFastenerThreadStandardAggregate;
   /** fetch data from the table: "enum.hardware_fastener_thread_standard" using primary key columns */
   enum_hardware_fastener_thread_standard_by_pk?: Maybe<EnumHardwareFastenerThreadStandard>;
+  /** fetch data from the table: "enum.hardware_fastener_washer_form" */
+  enum_hardware_fastener_washer_form: Array<EnumHardwareFastenerWasherForm>;
+  /** fetch aggregated fields from the table: "enum.hardware_fastener_washer_form" */
+  enum_hardware_fastener_washer_form_aggregate: EnumHardwareFastenerWasherFormAggregate;
+  /** fetch data from the table: "enum.hardware_fastener_washer_form" using primary key columns */
+  enum_hardware_fastener_washer_form_by_pk?: Maybe<EnumHardwareFastenerWasherForm>;
+  /** fetch data from the table: "enum.hardware_fastener_washer_lock_mechanism" */
+  enum_hardware_fastener_washer_lock_mechanism: Array<EnumHardwareFastenerWasherLockMechanism>;
+  /** fetch aggregated fields from the table: "enum.hardware_fastener_washer_lock_mechanism" */
+  enum_hardware_fastener_washer_lock_mechanism_aggregate: EnumHardwareFastenerWasherLockMechanismAggregate;
+  /** fetch data from the table: "enum.hardware_fastener_washer_lock_mechanism" using primary key columns */
+  enum_hardware_fastener_washer_lock_mechanism_by_pk?: Maybe<EnumHardwareFastenerWasherLockMechanism>;
+  /** fetch data from the table: "enum.hardware_fastener_washer_pattern" */
+  enum_hardware_fastener_washer_pattern: Array<EnumHardwareFastenerWasherPattern>;
+  /** fetch aggregated fields from the table: "enum.hardware_fastener_washer_pattern" */
+  enum_hardware_fastener_washer_pattern_aggregate: EnumHardwareFastenerWasherPatternAggregate;
+  /** fetch data from the table: "enum.hardware_fastener_washer_pattern" using primary key columns */
+  enum_hardware_fastener_washer_pattern_by_pk?: Maybe<EnumHardwareFastenerWasherPattern>;
   /** fetch data from the table: "enum.hardware_finish" */
   enum_hardware_finish: Array<EnumHardwareFinish>;
   /** fetch aggregated fields from the table: "enum.hardware_finish" */
@@ -15111,6 +16301,12 @@ export type QueryRoot = {
   item_hardware_fastener_standoff_aggregate: ItemHardwareFastenerStandoffAggregate;
   /** fetch data from the table: "item.hardware_fastener_standoff" using primary key columns */
   item_hardware_fastener_standoff_by_pk?: Maybe<ItemHardwareFastenerStandoff>;
+  /** fetch data from the table: "item.hardware_fastener_washer" */
+  item_hardware_fastener_washer: Array<ItemHardwareFastenerWasher>;
+  /** fetch aggregated fields from the table: "item.hardware_fastener_washer" */
+  item_hardware_fastener_washer_aggregate: ItemHardwareFastenerWasherAggregate;
+  /** fetch data from the table: "item.hardware_fastener_washer" using primary key columns */
+  item_hardware_fastener_washer_by_pk?: Maybe<ItemHardwareFastenerWasher>;
   /** fetch data from the table: "label" */
   label: Array<Label>;
   /** fetch aggregated fields from the table: "label" */
@@ -15687,6 +16883,84 @@ export type QueryRootEnumHardwareFastenerThreadStandardByPkArgs = {
 
 
 /** query root */
+export type QueryRootEnumHardwareFastenerWasherFormArgs = {
+  distinct_on?: Maybe<Array<EnumHardwareFastenerWasherFormSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumHardwareFastenerWasherFormOrderBy>>;
+  where?: Maybe<EnumHardwareFastenerWasherFormBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootEnumHardwareFastenerWasherFormAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumHardwareFastenerWasherFormSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumHardwareFastenerWasherFormOrderBy>>;
+  where?: Maybe<EnumHardwareFastenerWasherFormBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootEnumHardwareFastenerWasherFormByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** query root */
+export type QueryRootEnumHardwareFastenerWasherLockMechanismArgs = {
+  distinct_on?: Maybe<Array<EnumHardwareFastenerWasherLockMechanismSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumHardwareFastenerWasherLockMechanismOrderBy>>;
+  where?: Maybe<EnumHardwareFastenerWasherLockMechanismBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootEnumHardwareFastenerWasherLockMechanismAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumHardwareFastenerWasherLockMechanismSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumHardwareFastenerWasherLockMechanismOrderBy>>;
+  where?: Maybe<EnumHardwareFastenerWasherLockMechanismBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootEnumHardwareFastenerWasherLockMechanismByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** query root */
+export type QueryRootEnumHardwareFastenerWasherPatternArgs = {
+  distinct_on?: Maybe<Array<EnumHardwareFastenerWasherPatternSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumHardwareFastenerWasherPatternOrderBy>>;
+  where?: Maybe<EnumHardwareFastenerWasherPatternBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootEnumHardwareFastenerWasherPatternAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumHardwareFastenerWasherPatternSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumHardwareFastenerWasherPatternOrderBy>>;
+  where?: Maybe<EnumHardwareFastenerWasherPatternBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootEnumHardwareFastenerWasherPatternByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** query root */
 export type QueryRootEnumHardwareFinishArgs = {
   distinct_on?: Maybe<Array<EnumHardwareFinishSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
@@ -16155,6 +17429,32 @@ export type QueryRootItemHardwareFastenerStandoffAggregateArgs = {
 
 /** query root */
 export type QueryRootItemHardwareFastenerStandoffByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** query root */
+export type QueryRootItemHardwareFastenerWasherArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareFastenerWasherSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemHardwareFastenerWasherOrderBy>>;
+  where?: Maybe<ItemHardwareFastenerWasherBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootItemHardwareFastenerWasherAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareFastenerWasherSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemHardwareFastenerWasherOrderBy>>;
+  where?: Maybe<ItemHardwareFastenerWasherBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootItemHardwareFastenerWasherByPkArgs = {
   id: Scalars['Int'];
 };
 
@@ -17290,6 +18590,24 @@ export type SubscriptionRoot = {
   enum_hardware_fastener_thread_standard_aggregate: EnumHardwareFastenerThreadStandardAggregate;
   /** fetch data from the table: "enum.hardware_fastener_thread_standard" using primary key columns */
   enum_hardware_fastener_thread_standard_by_pk?: Maybe<EnumHardwareFastenerThreadStandard>;
+  /** fetch data from the table: "enum.hardware_fastener_washer_form" */
+  enum_hardware_fastener_washer_form: Array<EnumHardwareFastenerWasherForm>;
+  /** fetch aggregated fields from the table: "enum.hardware_fastener_washer_form" */
+  enum_hardware_fastener_washer_form_aggregate: EnumHardwareFastenerWasherFormAggregate;
+  /** fetch data from the table: "enum.hardware_fastener_washer_form" using primary key columns */
+  enum_hardware_fastener_washer_form_by_pk?: Maybe<EnumHardwareFastenerWasherForm>;
+  /** fetch data from the table: "enum.hardware_fastener_washer_lock_mechanism" */
+  enum_hardware_fastener_washer_lock_mechanism: Array<EnumHardwareFastenerWasherLockMechanism>;
+  /** fetch aggregated fields from the table: "enum.hardware_fastener_washer_lock_mechanism" */
+  enum_hardware_fastener_washer_lock_mechanism_aggregate: EnumHardwareFastenerWasherLockMechanismAggregate;
+  /** fetch data from the table: "enum.hardware_fastener_washer_lock_mechanism" using primary key columns */
+  enum_hardware_fastener_washer_lock_mechanism_by_pk?: Maybe<EnumHardwareFastenerWasherLockMechanism>;
+  /** fetch data from the table: "enum.hardware_fastener_washer_pattern" */
+  enum_hardware_fastener_washer_pattern: Array<EnumHardwareFastenerWasherPattern>;
+  /** fetch aggregated fields from the table: "enum.hardware_fastener_washer_pattern" */
+  enum_hardware_fastener_washer_pattern_aggregate: EnumHardwareFastenerWasherPatternAggregate;
+  /** fetch data from the table: "enum.hardware_fastener_washer_pattern" using primary key columns */
+  enum_hardware_fastener_washer_pattern_by_pk?: Maybe<EnumHardwareFastenerWasherPattern>;
   /** fetch data from the table: "enum.hardware_finish" */
   enum_hardware_finish: Array<EnumHardwareFinish>;
   /** fetch aggregated fields from the table: "enum.hardware_finish" */
@@ -17398,6 +18716,12 @@ export type SubscriptionRoot = {
   item_hardware_fastener_standoff_aggregate: ItemHardwareFastenerStandoffAggregate;
   /** fetch data from the table: "item.hardware_fastener_standoff" using primary key columns */
   item_hardware_fastener_standoff_by_pk?: Maybe<ItemHardwareFastenerStandoff>;
+  /** fetch data from the table: "item.hardware_fastener_washer" */
+  item_hardware_fastener_washer: Array<ItemHardwareFastenerWasher>;
+  /** fetch aggregated fields from the table: "item.hardware_fastener_washer" */
+  item_hardware_fastener_washer_aggregate: ItemHardwareFastenerWasherAggregate;
+  /** fetch data from the table: "item.hardware_fastener_washer" using primary key columns */
+  item_hardware_fastener_washer_by_pk?: Maybe<ItemHardwareFastenerWasher>;
   /** fetch data from the table: "label" */
   label: Array<Label>;
   /** fetch aggregated fields from the table: "label" */
@@ -17974,6 +19298,84 @@ export type SubscriptionRootEnumHardwareFastenerThreadStandardByPkArgs = {
 
 
 /** subscription root */
+export type SubscriptionRootEnumHardwareFastenerWasherFormArgs = {
+  distinct_on?: Maybe<Array<EnumHardwareFastenerWasherFormSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumHardwareFastenerWasherFormOrderBy>>;
+  where?: Maybe<EnumHardwareFastenerWasherFormBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumHardwareFastenerWasherFormAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumHardwareFastenerWasherFormSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumHardwareFastenerWasherFormOrderBy>>;
+  where?: Maybe<EnumHardwareFastenerWasherFormBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumHardwareFastenerWasherFormByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumHardwareFastenerWasherLockMechanismArgs = {
+  distinct_on?: Maybe<Array<EnumHardwareFastenerWasherLockMechanismSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumHardwareFastenerWasherLockMechanismOrderBy>>;
+  where?: Maybe<EnumHardwareFastenerWasherLockMechanismBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumHardwareFastenerWasherLockMechanismAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumHardwareFastenerWasherLockMechanismSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumHardwareFastenerWasherLockMechanismOrderBy>>;
+  where?: Maybe<EnumHardwareFastenerWasherLockMechanismBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumHardwareFastenerWasherLockMechanismByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumHardwareFastenerWasherPatternArgs = {
+  distinct_on?: Maybe<Array<EnumHardwareFastenerWasherPatternSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumHardwareFastenerWasherPatternOrderBy>>;
+  where?: Maybe<EnumHardwareFastenerWasherPatternBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumHardwareFastenerWasherPatternAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumHardwareFastenerWasherPatternSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumHardwareFastenerWasherPatternOrderBy>>;
+  where?: Maybe<EnumHardwareFastenerWasherPatternBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumHardwareFastenerWasherPatternByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** subscription root */
 export type SubscriptionRootEnumHardwareFinishArgs = {
   distinct_on?: Maybe<Array<EnumHardwareFinishSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
@@ -18442,6 +19844,32 @@ export type SubscriptionRootItemHardwareFastenerStandoffAggregateArgs = {
 
 /** subscription root */
 export type SubscriptionRootItemHardwareFastenerStandoffByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemHardwareFastenerWasherArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareFastenerWasherSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemHardwareFastenerWasherOrderBy>>;
+  where?: Maybe<ItemHardwareFastenerWasherBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemHardwareFastenerWasherAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareFastenerWasherSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemHardwareFastenerWasherOrderBy>>;
+  where?: Maybe<ItemHardwareFastenerWasherBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemHardwareFastenerWasherByPkArgs = {
   id: Scalars['Int'];
 };
 
@@ -19801,6 +21229,17 @@ export type InsertItemHardwareFastenerBoltMutation = (
   )> }
 );
 
+export type GetEnumHardwareFastenerThreadStandardQueryVariables = {};
+
+
+export type GetEnumHardwareFastenerThreadStandardQuery = (
+  { __typename?: 'query_root' }
+  & { enum_hardware_fastener_thread_standard: Array<(
+    { __typename?: 'enum_hardware_fastener_thread_standard' }
+    & Pick<EnumHardwareFastenerThreadStandard, 'id' | 'description'>
+  )> }
+);
+
 export const LabelFieldsFragmentDoc = gql`
     fragment labelFields on label {
   id
@@ -20928,4 +22367,50 @@ export function useInsertItemHardwareFastenerBoltMutation(baseOptions?: ApolloRe
 export type InsertItemHardwareFastenerBoltMutationHookResult = ReturnType<typeof useInsertItemHardwareFastenerBoltMutation>;
 export type InsertItemHardwareFastenerBoltMutationResult = ApolloReactCommon.MutationResult<InsertItemHardwareFastenerBoltMutation>;
 export type InsertItemHardwareFastenerBoltMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertItemHardwareFastenerBoltMutation, InsertItemHardwareFastenerBoltMutationVariables>;
-// graphql typescript defs generated on 2020-05-27T07:04:02-06:00
+export const GetEnumHardwareFastenerThreadStandardDocument = gql`
+    query GetEnumHardwareFastenerThreadStandard {
+  enum_hardware_fastener_thread_standard {
+    id
+    description
+  }
+}
+    `;
+export type GetEnumHardwareFastenerThreadStandardProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetEnumHardwareFastenerThreadStandardQuery, GetEnumHardwareFastenerThreadStandardQueryVariables>
+    } & TChildProps;
+export function withGetEnumHardwareFastenerThreadStandard<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetEnumHardwareFastenerThreadStandardQuery,
+  GetEnumHardwareFastenerThreadStandardQueryVariables,
+  GetEnumHardwareFastenerThreadStandardProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetEnumHardwareFastenerThreadStandardQuery, GetEnumHardwareFastenerThreadStandardQueryVariables, GetEnumHardwareFastenerThreadStandardProps<TChildProps, TDataName>>(GetEnumHardwareFastenerThreadStandardDocument, {
+      alias: 'getEnumHardwareFastenerThreadStandard',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetEnumHardwareFastenerThreadStandardQuery__
+ *
+ * To run a query within a React component, call `useGetEnumHardwareFastenerThreadStandardQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEnumHardwareFastenerThreadStandardQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEnumHardwareFastenerThreadStandardQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetEnumHardwareFastenerThreadStandardQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetEnumHardwareFastenerThreadStandardQuery, GetEnumHardwareFastenerThreadStandardQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetEnumHardwareFastenerThreadStandardQuery, GetEnumHardwareFastenerThreadStandardQueryVariables>(GetEnumHardwareFastenerThreadStandardDocument, baseOptions);
+      }
+export function useGetEnumHardwareFastenerThreadStandardLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetEnumHardwareFastenerThreadStandardQuery, GetEnumHardwareFastenerThreadStandardQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetEnumHardwareFastenerThreadStandardQuery, GetEnumHardwareFastenerThreadStandardQueryVariables>(GetEnumHardwareFastenerThreadStandardDocument, baseOptions);
+        }
+export type GetEnumHardwareFastenerThreadStandardQueryHookResult = ReturnType<typeof useGetEnumHardwareFastenerThreadStandardQuery>;
+export type GetEnumHardwareFastenerThreadStandardLazyQueryHookResult = ReturnType<typeof useGetEnumHardwareFastenerThreadStandardLazyQuery>;
+export type GetEnumHardwareFastenerThreadStandardQueryResult = ApolloReactCommon.QueryResult<GetEnumHardwareFastenerThreadStandardQuery, GetEnumHardwareFastenerThreadStandardQueryVariables>;
+// graphql typescript defs generated on 2020-05-28T09:25:04-06:00

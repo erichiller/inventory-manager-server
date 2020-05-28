@@ -48,7 +48,7 @@ export function TransformableImage ( props: ImageProps ): React.ReactElement<Kon
         // if ( trRef && trRef.current ) {
         if ( isSelected && trRef && trRef.current ) {
             console.log( { cls: 'TransformableImage', method: 'useEffect', op: 'willoperate', trRef, curr: trRef.current } );
-            trRef.current.setNode( nodeRef.current );
+            trRef.current.nodes( [ nodeRef.current ] );
             trRef.current.getLayer().batchDraw();
         } else {
             console.log( { cls: 'TransformableImage', method: 'useEffect', op: 'DETACH' } );

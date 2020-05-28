@@ -2,7 +2,7 @@ import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'reac
 import { Form, Input, Divider, Tooltip, InputNumber, Switch } from 'antd';
 // import { OptionsType } from 'rc-select/lib/Option';
 import { ItemFormProps } from '../Item';
-import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHandednessEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerStrengthClassEnum, EnumUnitEnum, EnumHardwareUseMaterialEnum, EnumHardwareFastenerThreadLabelEnum } from '../../types/graphql';
+import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHandednessEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerStrengthClassEnum, useGetEnumHardwareFastenerThreadStandardQuery, EnumHardwareUseMaterialEnum, EnumHardwareFastenerThreadLabelEnum } from '../../types/graphql';
 import TextArea from 'antd/lib/input/TextArea';
 
 import { EnumUnitKeys, EnumHardwareFastenerSpecificationsEnum } from './types/types';
@@ -134,9 +134,10 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                     //     return false;
                     // }}
                     shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_standard", form )}
-                    label={<Tooltip title={<DescriptionTable tableData={{
-                        ISO: 'International Standards Organization'
-                    }} />} ><span>Standard</span></Tooltip>}
+                    label={<DescriptionTable query={useGetEnumHardwareFastenerThreadStandardQuery} title="Standard" />}
+                    // label={<Tooltip title={<DescriptionTable tableData={{
+                    //     ISO: 'International Standards Organization'
+                    // }} />} ><span>Standard</span></Tooltip>}
                     required
                 >
                     <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerThreadStandardEnum )}
