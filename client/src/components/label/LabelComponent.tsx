@@ -9,7 +9,6 @@ import { Spin, InputNumber, Input } from "antd";
 
 import { GetPrinterStatusQuery, GetPrinterStatusDocument } from "../../lib/types/graphql";
 import { DrawContext } from "../draw/LabelDraw";
-import e from 'cors';
 import { KonvaEventObject } from 'konva/types/Node';
 import { TapeColorMap } from '../../lib/types/labelCanvasColors';
 import { LabelQR, LabelText, LabelImage } from '../../lib/LabelConstituent';
@@ -140,7 +139,8 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( { 
             <div style={{ position: 'relative' }}>
                 <Rnd
                     disableDragging={true}
-                    minConstraints={[ 100, height ]} maxConstraints={[ 4000, height ]}
+                    minWidth={100} minHeight={height}
+                    maxWidth={4000} maxHeight={height}
                     enableResizing={{ top: false, right: true, bottom: false, left: false, topRight: false, bottomRight: false, bottomLeft: false, topLeft: false }}
                     onResize={
                         (

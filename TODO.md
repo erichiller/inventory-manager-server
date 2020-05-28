@@ -38,10 +38,12 @@
   - [ ] use the `item/<id>/edit` url
   - [ ] pre-populate the form
   - [ ] load appropriate edit component, rather than add component
-- [ ] autocomplete `shaft_length` based on `head_type` and `length`
-- [ ] drive size ? (autocomplete?)
+- ~~ autocomplete `shaft_length` based on `head_type` and `length`~~
+- [ ] `drive_size` -> generated default
 - [ ] Ensure required values
 - [ ] run form _verify_ on submit
+- [ ] fix loading/listing of Item properties / fields in label create
+- [ ] fix label send buffer
 
 
 ## Drawing

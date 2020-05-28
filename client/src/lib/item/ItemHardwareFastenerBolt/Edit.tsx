@@ -1,5 +1,5 @@
 import { ItemFormProps, FormMutationHandler } from "../Item";
-import { useInsertItemHardwareFastenerBoltMutation, EnumHandednessEnum, EnumHardwareUseMaterialEnum } from "../../types/graphql";
+import { useInsertItemHardwareFastenerBoltMutation, EnumHandednessEnum, EnumHardwareUseMaterialEnum, ItemHardwareFastenerBoltInsertInput, EnumHardwareFastenerBoltPointEnum } from "../../types/graphql";
 import { useEffect } from "react";
 import { message } from "antd";
 import { Store, StoreValue } from "antd/lib/form/interface";
@@ -10,7 +10,7 @@ export const ItemHardwareFastenerBoltEditMutationHandler: React.FC<FormMutationH
     const [ insertItemHardwareFastenerBoltMutation, { data, loading, error } ] = useInsertItemHardwareFastenerBoltMutation(); // TODO
 
     // TODO: edit must REMOVE defaults if they are explicitly set.
-    const applyDefaults: ( fieldValues: Store, defaults: Store ) => Store = ( fieldValues: Store, defaults: Store ) => {
+    const applyDefaults: ( fieldValues: Store, defaults: Partial<ItemHardwareFastenerBoltInsertInput> ) => Store = ( fieldValues: Store, defaults: Store ) => {
         fieldValues.default_fields = Array.isArray( fieldValues.default_fields ) ? fieldValues.default_fields : [];
         Object.keys(defaults).forEach( key => {
             if ( !fieldValues[key] ){
@@ -31,7 +31,8 @@ export const ItemHardwareFastenerBoltEditMutationHandler: React.FC<FormMutationH
                 }),
                 { // TODO: could make this a property on the item class
                     thread_direction: EnumHandednessEnum.right,
-                    use_material: EnumHardwareUseMaterialEnum.machine
+                    use_material: EnumHardwareUseMaterialEnum.machine,
+                    point_type: EnumHardwareFastenerBoltPointEnum.flat
                 })
             } );
         }
