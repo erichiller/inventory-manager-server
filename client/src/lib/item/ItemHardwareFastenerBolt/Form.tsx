@@ -18,6 +18,7 @@ import { FormIconTooltip, getUnitPrefixFromUnitSystem } from './formComponents/h
 import { ThreadDirection_RightHandRuleIcon } from './icon';
 import { QtyInput } from '../common/QtyInput';
 import { OrderInput } from '../../../components/order/OrderInput';
+import { DescriptionTable } from './formComponents/DescriptionTable';
 
 
 interface ItemHardwareFastenerBoltFormProps extends Union<ItemFormProps, ItemHardwareFastenerBolt> {
@@ -123,15 +124,19 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                 </Form.Item>
 
                 {/* Thread Standard */}
-                <Form.Item name="thread_standard" label="Standard"
-                    shouldUpdate={( prev: FormFields, next: FormFields ) => {
-                        let currentValue = form.getFieldValue( 'thread_standard' );
-                        if ( ( next.screw_size && next.screw_size.thread_standard && currentValue !== next.screw_size.thread_standard ) ) {
-                            form.setFieldsValue( { 'thread_standard': next.screw_size.thread_standard } );
-                            return true;
-                        }
-                        return false;
-                    }}
+                <Form.Item name="thread_standard"
+                    // shouldUpdate={( prev: FormFields, next: FormFields ) => {
+                    //     let currentValue = form.getFieldValue( 'thread_standard' );
+                    //     if ( ( next.screw_size && next.screw_size.thread_standard && currentValue !== next.screw_size.thread_standard ) ) {
+                    //         form.setFieldsValue( { 'thread_standard': next.screw_size.thread_standard } );
+                    //         return true;
+                    //     }
+                    //     return false;
+                    // }}
+                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_standard", form )}
+                    label={<Tooltip title={<DescriptionTable tableData={{
+                        ISO: 'International Standards Organization'
+                    }} />} ><span>Standard</span></Tooltip>}
                     required
                 >
                     <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerThreadStandardEnum )}
@@ -382,7 +387,9 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                     <EnumSelect enumKeys={Object.keys( EnumHardwareUseMaterialEnum )} placeholder="Machine" />
                 </Form.Item>
 
-                <Form.Item name="point_type" label="Point">
+                <Form.Item name="point_type"
+                    label={<Tooltip title="Style of the point of this fastener. Bolts default to `Flat`" ><span>Point</span></Tooltip>}
+                >
                     <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerBoltPointEnum )} placeholder="Bolt Flat" iconMap={ItemHardwareFastenerBoltPointIconMap} />
                 </Form.Item>
 

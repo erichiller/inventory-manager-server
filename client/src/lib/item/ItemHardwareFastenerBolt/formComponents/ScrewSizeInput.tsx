@@ -71,6 +71,28 @@ function getThreadLabel (
         }
     }
 }
+function getThreadStandard (
+    s: string,
+    unit?: EnumUnitEnum,
+    diameter?: number,
+    pitch?: number,
+    pitch_label?: EnumHardwareFastenerThreadLabelEnum
+): EnumHardwareFastenerThreadStandardEnum {
+    if ( typeof s === "string" ){
+        // TODO: parse for user-entered standard (ie. DIN)
+        // return null;
+    }
+    if ( unit === EnumUnitEnum.metric){
+        // TODO: use pitch to check for non-ISO standard pitch and assign to JIS, DIN, etc.
+        return EnumHardwareFastenerThreadStandardEnum.ISO;
+    }
+    if ( unit === EnumUnitEnum.usc ){
+        // TODO: use pitch_label to select correct UNx (c, f, ef)
+        return EnumHardwareFastenerThreadStandardEnum.UNC;
+    }
+    return null; // should never happen
+}
+
 const parseScrewSizeInputOptionData: ( s: string ) => ScrewSizeInputOptionData = ( s ) => {
     if ( !s || typeof s !== "string" || s.length < 1 ) { return null; }
     let r = screwSizeRegex.exec( s );
@@ -91,10 +113,12 @@ const parseScrewSizeInputOptionData: ( s: string ) => ScrewSizeInputOptionData =
         }
         let length = parseFloat( r.groups.length );
         let pitch = parseFloatSafeWithDefault( r.groups.pitch , getDefaultPitch( prefix, unit, diameter ) );
+        let thread_standard = getThreadStandard( s, unit, diameter, pitch ); // TODO: add pitch label
         console.log( { method: 'parseScrewSizeInputOptionData', diameter, unit, length, pitch, s, r } );
         return {
             prefix,
             unit,
+            thread_standard,
             thread_diameter: diameter,
             embedded_length: length,
             thread_pitch: pitch,

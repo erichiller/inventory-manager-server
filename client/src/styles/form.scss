@@ -41,13 +41,35 @@ div[role="tooltip"] {
     }
 }
 
+.descriptionTable {
+    display: grid;
+    grid-template-columns: 40px auto;
+    grid-template-rows: 40px;
+    align-items: center;
+    & span:nth-of-type(1) {
+        border-right: 1px solid silver;
+    }
+    & span:nth-of-type(2) {
+        margin-left: 10px;
+    }
+}
+
+.enumIconSelect {
+    display: flex;
+    & .ant-select .ant-select-selector {
+        height: 46px;
+        padding-top:3px;
+    }
+}
+
 .enumIconSelectOption {
     display: grid;
     grid-template-columns: 40px auto;
     grid-template-rows: 40px;
     align-items: center;
 
-    & img , svg {
+    & img,
+    svg {
         width: 35px;
         align-self: center;
     }
@@ -98,7 +120,7 @@ div[role="tooltip"] {
 .OrderInput {
     display: flex;
     .ant-picker-input input {
-        width: 55px
+        width: 55px;
     }
     & .ant-select .ant-select-selector {
         height: 55px;

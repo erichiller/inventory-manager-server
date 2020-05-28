@@ -162,9 +162,11 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
 
                 <Tooltip key="print" placement="top" title="Send to Label Maker">
                     <SendBufferButton 
+                        key="SendBufferButton_Print"
                         type="primary" 
                         value="Print" 
-                        onClick={context.startSendBuffer} buffer={context.shouldSendBuffer ? [ context.currentLabelToBuffer() ] : null} 
+                        startSendBuffer={context.startSendBuffer}
+                        buffer={context.shouldSendBuffer ? [ context.currentLabelToBuffer() ] : null} 
                         />
                 </Tooltip>,
 
