@@ -9,10 +9,10 @@ export const MainMenu: React.FC<{}> = ( props ) => {
     const location = useLocation();
     return <Menu mode="horizontal" selectedKeys={[ location.pathname ]} >
         <Menu.Item key="/"><Link to="/"><DashboardOutlined />Summary</Link></Menu.Item>
-        <Menu.Item key="/items"><Link to="/items"><ContainerOutlined />Items</Link></Menu.Item>
-        <Menu.Item key="/networks"><Link to="/networks"><ShareAltOutlined />Network</Link></Menu.Item>
-        <Menu.Item key="/labels"><Link to="/labels"><TagOutlined />Labels</Link></Menu.Item>
-        <Menu.Item key="/purchases"><Link to="/purchases"><ShoppingCartOutlined />Purchases</Link></Menu.Item>
+        <Menu.Item key="/item"><Link to="/item"><ContainerOutlined />Items</Link></Menu.Item>
+        <Menu.Item key="/network"><Link to="/network"><ShareAltOutlined />Network</Link></Menu.Item>
+        <Menu.Item key="/label"><Link to="/label"><TagOutlined />Labels</Link></Menu.Item>
+        <Menu.Item key="/purchase"><Link to="/purchase"><ShoppingCartOutlined />Purchases</Link></Menu.Item>
         <PrintListButton key="PrintListButton" style={{ float: 'right' }} />
     </Menu>;
 };

@@ -7,10 +7,11 @@ import { ItemFormProps, FormMutationHandler } from '../../lib/item/Item';
 import TextArea from 'antd/lib/input/TextArea';
 import { QtyInput } from '../../lib/item/common/QtyInput';
 import { OrderInput } from '../order/OrderInput';
+import { useHistory } from 'react-router-dom';
 
 interface ItemFormModalProps {
     recordEditComponent: React.FC<ItemFormProps>;
-    visibleHandler: visibleHandler;
+    // visibleHandler: visibleHandler;
     item: Item<any>;
     mutationHandler: React.FC<FormMutationHandler>;
 }
@@ -19,6 +20,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
     const [ form ] = useForm();
     console.log( { class: 'ItemEditModal', msg: 'load FC', props } );
     const [ formSubmitted, setFormSubmitted ] = useState<boolean>(false);
+    const history = useHistory();
 
     const onFinish = ( values: {
         [ name: string ]: any;
@@ -54,7 +56,10 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
             console.log( { class: 'ItemEditModal', method: 'onOk', e, values: form.getFieldsValue() } );
             form.submit();
         }}
-        onCancel={event => props.visibleHandler(null)}
+        onCancel={event => {
+            console.log("cancelling modal, history.goBack, history is currently", {history})
+            history.goBack();
+        }}
     >
         <Form
             name="ItemForm"
