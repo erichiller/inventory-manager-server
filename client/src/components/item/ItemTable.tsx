@@ -20,7 +20,7 @@ import { EditOutlined, PrinterOutlined, DeleteOutlined, TagOutlined } from '@ant
 import { PageSpinGQL } from '../shared/PageSpin';
 import { ItemTableMouseOver } from './ItemTableMouseOver';
 import { ItemFormModal } from './ItemFormModal';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, Link } from 'react-router-dom';
 // import DocumentNode from 'graphql-tag';
 
 
@@ -67,10 +67,10 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     let loading = true;
     let result: QueryResult<GetItemsQuery, GetItemsQueryVariables>;
 
-    let location = useLocation();
+    // let location = useLocation();
     let params = useParams < IItemTableParams >();
 
-    console.log( { location, cls: 'ItemTable', params});
+    // console.log( { location, cls: 'ItemTable', params});
     
     // return <ItemSearch />;
 
@@ -84,24 +84,27 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     const mouseOverRef = React.useRef<HTMLDivElement>();
     const [ modal, setModal ] = useState<React.ReactElement>();
 
-    /** Load item into currentRecord is  */
     useEffect( () => {
-        if (params.item_id){
-            Item.ItemFactory( { id: parseInt( params.item_id ) } )
-                .then( item => {
-                    console.info("loaded item from ItemFactory", item);
-                    setCurrentRecord( item as T );
-                })
-                .catch( error => console.log("error"));
+        switch ( params.action ){
+            case "edit":
+                if ( params.item_id && !currentRecord ) {
+                    Item.ItemFactory( { id: parseInt( params.item_id ) } )
+                        .then( item => {
+                            console.info( "loaded item from ItemFactory", item );
+                            setModal( getRecordEditModal( item as T ) );
+                            setCurrentRecord( item as T );
+                        } )
+                        .catch( error => console.log( "error" ) );
+                } else if ( currentRecord ) {
+                    console.log( { _cls: "ItemTable", method: 'useEffect for currentRecord & params.action', currentRecord, msg: "run", params_action: params.action } );
+                    setModal( getRecordEditModal( currentRecord ) );
+                }
+                break;
+            default:
+                setModal(null);
+                break;
         }
-    }, [ params.item_id ]);
-
-    useEffect( () => {
-        console.log( { _cls: "ItemTable", method: 'useEffect for currentRecord & params.action', currentRecord, msg: "run", params_action: params.action } );
-        if ( params.action == "edit" && currentRecord ) {
-            setModal( getRecordEditModal( currentRecord ) );
-        }
-    }, [ currentRecord, params.action ] );
+    }, [ params.item_id, params.action ] );
 
 
 
@@ -136,7 +139,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
         return <ItemFormModal
             item={currentRecord}
             // item={currentRecord.current}
-            visibleHandler={() => setModal( null )}
+            // visibleHandler={() => setModal( null )}
             recordEditComponent={record.editComponent}
             mutationHandler={record.mutationHandler}
         />;
@@ -177,12 +180,13 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
 
                     render: ( text, record: T ) => (
                         <span onMouseOver={event => event.preventDefault()}>
-                            <a onClick={( obj ) => {
-                                obj.preventDefault();
-                                setCurrentRecord( record );
-                                setModal( getRecordEditModal( record ) );
-                            }
-                            }><EditOutlined className="IconButton" /></a>
+                            <Link to={`/item/${record.id}/edit`} 
+                            // onClick={( obj ) => {
+                            //     // obj.preventDefault();
+                            //     setCurrentRecord( record );
+                            //     // setModal( getRecordEditModal( record ) );
+                            // }}
+                            ><EditOutlined className="IconButton" /></Link>
 
                             <Divider type="vertical" />
 
