@@ -681,7 +681,6 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
     };
 
     render () {
-        // TODO: Why isnt `props.item` showing up ??
         const { item } = this.props;
         console.log( `LabelDraw.render() with props:\n`, this.props );
         return (

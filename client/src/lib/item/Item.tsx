@@ -14,7 +14,7 @@ import { apolloClient } from '../../index';
 import { message, Tooltip } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Union, Unpacked } from "../UtilityFunctions";
+import { toTitleCase, Union, Unpacked, enumerable } from "../UtilityFunctions";
 import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { resolve } from "url";
@@ -74,8 +74,6 @@ export type IconComponentT =
     | React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 
 
-
-// export class Item<T extends GenericItem> implements IItem {
 export class Item<T extends GenericItem> implements IItem {
     __typename: string;
     id: Integer;
@@ -150,9 +148,7 @@ export class Item<T extends GenericItem> implements IItem {
         return this._class;
     }
 
-    set name (nameVal: string) {
-        this._name = nameVal;
-    }
+    @enumerable( true )
     get name (): string {
         if ( this._name ) {
             return this._name;
@@ -164,6 +160,9 @@ export class Item<T extends GenericItem> implements IItem {
             // should this warn?
             return "";
         }
+    }
+    set name (nameVal: string) {
+        this._name = nameVal;
     }
 
 
@@ -298,8 +297,8 @@ export class Item<T extends GenericItem> implements IItem {
      * Props which should be included in label (default) 
      * Optionally defined on subclasses
      */
-    get labelProps (): Array<Record<keyof T, string>> {
-        return null;
+    get labelProps (): Array<keyof T> {
+        return [ "name" ];
     }
     /**
      * Props to use as display columns (default)

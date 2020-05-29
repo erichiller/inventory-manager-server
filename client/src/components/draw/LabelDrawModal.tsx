@@ -118,10 +118,12 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     const description = () => {
         const { item, label } = props;
         if ( props.item ) {
+            console.log( { item, keys: Object.getOwnPropertyNames( item ) } );
             return <div>
                 {item.name}
                 <Descriptions title="Properties" column={1} bordered={true}>
-                    {Object.keys( item ).map( key => {
+                    {item.labelProps.map( key => {
+                        key = key as string;
                         let value = item[ key ];
                         if ( ![ "__typename" ].includes( key ) && value ) {
                             let stringValue = ["string", "number"].includes(typeof value) ? value : 
