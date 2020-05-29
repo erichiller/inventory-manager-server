@@ -2,17 +2,12 @@ import * as React from 'react';
 import {
     Router,
     Route,
-    // BrowserRouter as Router, 
-    Link
 } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import './styles/app.scss';
-import { Menu } from 'antd';
 import { flatRoutes, singularFullPath } from './config/routes';
-import { PrintListButton } from './components/print/PrintListButton';
 import { PrintContextHandler } from './components/print/PrintContextHandler';
-import { DashboardOutlined, ContainerOutlined, ShareAltOutlined, TagOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import { ItemIndex } from './components/item/Index';
+import { MainMenu } from './components/shared/Menu';
 
 export const history = createBrowserHistory( {
     basename: '', // The base URL of the app (see below)
@@ -23,28 +18,22 @@ export const history = createBrowserHistory( {
 } );
 
 
-export const _history: string[] = [];
+// export const _history: string[] = [];
 
-history.listen( ( location, action ) => {
-    console.log(
-        `The current URL is ${ location.pathname }${ location.search }${ location.hash }`
-    );
-    console.log( `The last navigation action was ${ action }` );
-    _history.push( "eric was here" );
-} );
+// history.listen( ( location, action ) => {
+//     console.log(
+//         `The current URL is ${ location.pathname }${ location.search }${ location.hash }`
+//     );
+//     console.log( `The last navigation action was ${ action }` );
+//     _history.push( "eric was here" );
+// } );
 
 const App = () => {
     return (
         <Router history={history} >
             <PrintContextHandler>
-                <Menu mode="horizontal" >
-                    <Menu.Item><Link to="/"><DashboardOutlined />Summary</Link></Menu.Item>
-                    <Menu.Item><Link to="/items"><ContainerOutlined />Items</Link></Menu.Item>
-                    <Menu.Item><Link to="/networks"><ShareAltOutlined />Network</Link></Menu.Item>
-                    <Menu.Item><Link to="/labels"><TagOutlined />Labels</Link></Menu.Item>
-                    <Menu.Item><Link to="/purchases"><ShoppingCartOutlined />Purchases</Link></Menu.Item>
-                    <PrintListButton key="PrintListButton" style={{ float: 'right' }} />
-                </Menu>
+                <MainMenu />
+                
                 <div style={{
                     width: '98%',
                     margin: '0 auto'
