@@ -18,7 +18,7 @@ import { FormIconTooltip, getUnitPrefixFromUnitSystem } from './formComponents/h
 import { ThreadDirection_RightHandRuleIcon } from './icon';
 import { QtyInput } from '../common/QtyInput';
 import { OrderInput } from '../../../components/order/OrderInput';
-import { DescriptionTable } from './formComponents/DescriptionTable';
+import { DescriptionTableTooltip } from './formComponents/DescriptionTableTooltip';
 
 
 interface ItemHardwareFastenerBoltFormProps extends Union<ItemFormProps, ItemHardwareFastenerBolt> {
@@ -134,10 +134,7 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                     //     return false;
                     // }}
                     shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_standard", form )}
-                    label={<DescriptionTable query={useGetEnumHardwareFastenerThreadStandardQuery} title="Standard" />}
-                    // label={<Tooltip title={<DescriptionTable tableData={{
-                    //     ISO: 'International Standards Organization'
-                    // }} />} ><span>Standard</span></Tooltip>}
+                    label={<DescriptionTableTooltip query={useGetEnumHardwareFastenerThreadStandardQuery} title="Standard" />}
                     required
                 >
                     <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerThreadStandardEnum )}

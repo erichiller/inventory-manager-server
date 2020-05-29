@@ -5,36 +5,27 @@ import { toTitleCase, IQuery } from "../../../UtilityFunctions";
 import { Query } from "../../../types/graphql";
 import { Spin, Tooltip } from "antd";
 
-// type DescriptionTableProps = {
-//     query: IQuery;
-// } | {
-//     tableData: Record<string, string | React.ReactElement>;
-// } & {
-//     width?: number;
-//     };
-interface DescriptionTablePropsWithQuery  {
+interface DescriptionTableTooltipPropsWithQuery  {
     query: IQuery;
     width?: number;
-    tableData?: undefined;
+    tableData?: false;
     title: string;
 }
-interface DescriptionTablePropsWithTableData {
+interface DescriptionTableTooltipPropsWithTableData {
     tableData: Record<string, string | React.ReactElement>;
     width?: number;
-    query?: undefined;
+    query?: false;
     title: string;
 }
 
-type DescriptionTableProps = DescriptionTablePropsWithQuery | DescriptionTablePropsWithTableData;
+type DescriptionTableTooltipProps = DescriptionTableTooltipPropsWithQuery | DescriptionTableTooltipPropsWithTableData;
 /**
  * Simple table listing out keys to values for defining data
  */
-export const DescriptionTable = ( props: DescriptionTableProps ) => {
+export const DescriptionTableTooltip = ( props: DescriptionTableTooltipProps ) => {
     const { title } = props;
-    let width: number = props.width ?? 500;
-    // TODO: rename to DescriptionTableTooltip;
-    // TODO: get bordered between elements 1 -> length -1 (in between not on top, bottom of whole div)
-    const [ tableData, setTableData ] = useState<Record<string, string | React.ReactElement>>({});
+    let width: number = props.width ?? 550;
+    const [ tableData, setTableData ] = useState<Record<string, string | React.ReactElement>>(props.tableData ? props.tableData : {});
     if ( props.query ){
         const { data, error, loading } = props.query();
         console.log(data);
@@ -52,8 +43,8 @@ export const DescriptionTable = ( props: DescriptionTableProps ) => {
         }, [data] );
     }
     if ( ! tableData ){ 
-        return <Spin spinning={true} />
+        return <Spin spinning={true} />;
     }
     console.log({tableData});
-    return <Tooltip overlayStyle={{maxWidth: width+5 }} title={() => <div className="descriptionTable" style={{ width: width }}>{Object.keys( tableData ).map( el => [ <span>{el}</span>,<span>{tableData[el]}</span>])}</div>} ><span>{title}</span></Tooltip>;
+    return <Tooltip overlayStyle={{maxWidth: width+5 }} title={() => <div className="descriptionTable" style={{ width: width }}>{Object.keys( tableData ).map( el => [ <span key={`id_${el}`}>{el}</span>,<span key={`data_${el}`}>{tableData[el]}</span>])}</div>} ><span>{title}</span></Tooltip>;
 };
