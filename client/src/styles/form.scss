@@ -43,20 +43,29 @@ div[role="tooltip"] {
 
 .descriptionTable {
     display: grid;
-    grid-template-columns: 40px auto;
-    grid-template-rows: 40px;
+    grid-template-columns: max-content auto;
+    grid-template-rows: max-content;
     align-items: center;
     & span:nth-of-type(odd) {
         border-right: 1px solid silver;
+        padding-left: 5px;
+        padding-right: 5px;
     }
     & span:nth-of-type(even) {
-        margin-left: 10px;
+        padding-left: 10px;
     }
+    // & :not(span:nth-last-of-type(2)) {
+    // & :not(:last-child) {
+    & span {
+        border-bottom: 1px solid silver;
+    }
+    & span:nth-last-of-type(2), & span:nth-last-of-type(1) {
+        border-bottom: initial;
+    }
+    // & :not(span:nth-of-type(-1)) {
+    //     border-bottom: 1px solid silver;
+    // }
 }
-
-// .ant-tooltip {
-//     max-width: initial !important;
-// }
 
 .enumIconSelect {
     display: flex;
