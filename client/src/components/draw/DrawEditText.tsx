@@ -59,7 +59,7 @@ export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
 
     const autocompleteFieldValues: OptionsType = props.item && props.item.labelProps ? props.item.labelProps.map( col => {
         return {
-            value: `{{${ col }}}` 
+            value: `{{${ col.toString() }}}` 
     }}) : [];
 
     const drawContext = useContext( DrawContext );

@@ -4,7 +4,7 @@ import React from 'react';
 import { Integer } from '../../types/uint8';
 import { HexBoltIcon } from '../../../styles/icon';
 import { ColumnProps } from 'antd/lib/table';
-import { toTitleCase } from '../../UtilityFunctions';
+import { toTitleCase, enumerable } from '../../UtilityFunctions';
 import { ItemHardwareFastenerBoltForm } from './Form';
 import { ItemHardwareFastenerBoltEditMutationHandler } from './Edit';
 
@@ -136,6 +136,11 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
     }
     get mutationHandler (): React.FC<FormMutationHandler> {
         return ItemHardwareFastenerBoltEditMutationHandler;
+    }
+
+    @enumerable(true)
+    get FOO_THIS (): string {
+        return "FOO_THIS_VALUE";
     }
 }
 
