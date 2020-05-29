@@ -60,6 +60,10 @@ interface IItemTableParams {
  */
 export type visibleHandler = ( c?: React.ReactElement ) => void;
 
+function computeDefaultPagination (): number {
+    return (window.innerHeight - 50) / 22 ; 
+}
+
 
 
 
@@ -342,7 +346,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                             }
                         };
                     }}
-                    pagination={{ hideOnSinglePage: true }}
+                    pagination={{ hideOnSinglePage: true, defaultPageSize: computeDefaultPagination() }}
                     loading={loading}
                     onChange={onChange}
                 >

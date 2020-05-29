@@ -3,7 +3,7 @@
 ## General
 
 - [ ] Add `LICENSE.md`
-- [ ] Create templates for labels based on category / type
+- [ ] Create templates for labels based on category / type #URGENT
 - [ ] Try [animations](http://react-component.github.io/tween-one/)
 - [ ] Make use of additional linter: [tslint-react-hooks](https://www.npmjs.com/package/tslint-react-hooks) or `eslint-plugin-react-hooks`
   - [ ] Use the `exhaustive-deps` rule. It warns of incorrect dependencies
@@ -32,18 +32,18 @@
 
 - [x] changes to the unit made in `ScrewSizeInput` should be shown in the unit select as well and propogate to the entire form.
 - [x] Auto-create name
-- [ ] Edit form, Insert should be edit
-- [ ] closing form modal should return to `/item`
+- [ ] Edit form, Insert should be edit #URGENT
+- [x] closing form modal should return to `/item`
 - [ ] clicking _Edit_ on an item in the table should:
-  - [ ] use the `item/<id>/edit` url
+  - [x] use the `item/<id>/edit` url
   - [ ] pre-populate the form
   - [ ] load appropriate edit component, rather than add component
 - ~~ autocomplete `shaft_length` based on `head_type` and `length`~~
 - [ ] `drive_size` -> generated default
-- [ ] Ensure required values
+- [x] Ensure required values
 - [ ] run form _verify_ on submit
-- [ ] fix loading/listing of Item properties / fields in label create
-- [ ] fix label send buffer
+- [ ] fix loading/listing of Item properties / fields in label create #URGENT
+- [x] fix label send buffer
 
 
 ## Drawing
