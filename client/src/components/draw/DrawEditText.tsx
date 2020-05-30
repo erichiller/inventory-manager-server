@@ -2,7 +2,7 @@ import { KonvaEventObject } from 'konva/types/Node';
 import { Component, useContext, useState } from 'react';
 import { DISPLAY } from '../../lib/types/enums';
 import React from 'react';
-import { Modal, AutoComplete, Form, Checkbox } from 'antd';
+import { Modal, AutoComplete, Form, Checkbox, Mentions } from 'antd';
 // import CheckboxGroup from 'antd/lib/checkbox/Group';
 import { LabelText, FormatOptionsT } from '../../lib/LabelConstituent';
 import { DrawContext } from './LabelDraw';
@@ -54,22 +54,42 @@ const formatOptions = [
 export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
     // const { event, visibleHandler, item, changeHandler, labelText } = props;
 
+    const defaultTextSize: number = 36;
+    const prefixTrigger = '{{';
+    let prefixTriggers: string[] = [ prefixTrigger ];
+    for( let i = 0; i<prefixTrigger.length; i++){
+        prefixTriggers.push( prefixTrigger.substring(0, i+1));
+    }
 
     console.log( 'DrawEditText props:\n', props );
 
-    const autocompleteFieldValues: OptionsType = props.item && props.item.labelProps ? props.item.labelProps.map( col => {
-        return {
-            value: `{{${ col.toString() }}}` 
-    }}) : [];
+    // const autocompleteFieldValues: OptionsType = props.item && props.item.labelProps ? props.item.labelProps.map( col => {
+    //     return {
+    //         value: `{{${ col.toString() }}}` 
+    // }}) : [];
 
     const drawContext = useContext( DrawContext );
 
     const [ currentFormatOptions, setCurrentFormatOptions ] = useState<CheckedFormatOptionsT>();
 
-    const [ labelText, setLabelText ] = useState<LabelText>(props.labelText);
+    const [ labelText, setLabelText ] = useState<LabelText>( props.labelText );
+    const [ currentMentionPrefix, setCurrentMentionPrefix ] = useState<string>('');
 
     const onCancel = () => {
         props.visibleHandler( DISPLAY.HIDDEN );
+    };
+
+
+    const onChange = ( currentValue ) => {
+        if ( currentValue.length > 1 && currentValue.substr(-2) == '{{'){
+            // found {{
+            setCurrentMentionPrefix( '{{' );
+            console.log( 'onChange, setPrefix to {{', currentValue );
+        } else if ( currentValue.length > 0 && currentValue.substr( -1 ) == '{' ) {
+            // found {
+            setCurrentMentionPrefix( '{' );
+            console.log( 'onChange, setPrefix to {', currentValue );
+        }
     };
 
     let drawWidth = 725;
@@ -81,23 +101,66 @@ export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
         onOk={() => { drawContext.commitLabelText( labelText ); onCancel(); }}
         width={drawWidth + 25}
     >
-
         <Form
-            layout="inline"
+            // layout="inline"
             name="basic"
-            initialValues={{ format_options: currentFormatOptions }}
+            initialValues={{ format_options: currentFormatOptions, text_size: defaultTextSize }}
             onValuesChange={(changedValues) => props.changeHandler(changedValues, props.labelText)}
+            layout="horizontal"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 9 }}
         // onFinish={onFinish}
         // onFinishFailed={onFinishFailed}
         >
             <Form.Item
-                rules={[ { required: true, message: 'Please enter text' } ]}
                 name="text"
-                label="Text" >
-                <AutoComplete
+                label="Text"
+                rules={[ { required: true, message: 'Enter text, use {{prop}} to enter an item property' } ]} 
+                
+            >
+                <Mentions
+                    rows={3}
+                    placeholder="Enter text, use {{prop}} to enter an item property"
+                    style={{ width: '100%' }}
+                    prefix='{'
+                    // prefix={prefixTriggers}
+                    split=''
+                    // split="}}"
+                    autoFocus
+                    // placeholder="input @ to mention people, # to mention tag"
+                    // prefix={[ '@', '#' ]}
+                    // onSearch={onSearch}
+                    // filterOption={p => { console.log( { filterOptionFuncp: p } ); return true; }}
+                    // onChange={p => { console.log( { onChange: p } ); return true; }}
+                    onChange={onChange}
+                >
+                    {( props.item.labelProps || []).map( key =>
+                        <Mentions.Option key={key.toString()} value={
+                            prefixTrigger.substring(currentMentionPrefix.length,prefixTrigger.length)
+                            // + currentMentionPrefix
+                            // + '>> {'
+                            // + currentMentionPrefix.length
+                            // + '} {'
+                            // + prefixTrigger.length
+                            // + '} '
+                             + key.toString()
+                             + '}}'
+                            // + '(' + JSON.stringify({
+                            //     prefix: prefixTrigger.substring( currentMentionPrefix.length, prefixTrigger.length),
+                            //     currentMentionPrefix_length: currentMentionPrefix.length,
+                            //     prefixTrigger_length: prefixTrigger.length,
+                            //     currentMentionPrefix
+                            // })
+                        }>
+                            {/* <Select.Option key={key} value={props.item[ key ]}> */}
+                            <b>{key.toString()}</b>: <i>{props.item[key]}</i>
+                        </Mentions.Option>
+                    )}
+                </Mentions>
+                {/* <AutoComplete
                     style={{ width: 400 }}
                     options={autocompleteFieldValues}
-                />
+                /> */}
             </Form.Item>
             <Form.Item name="text_size" label="Text Size">
                 <AutoComplete

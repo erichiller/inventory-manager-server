@@ -1,17 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useState }  from 'react';
 import Konva from "konva";
-// import { Stage } from "konva/types/Stage";
 import ReactKonva, { KonvaNodeComponent, Transformer } from 'react-konva';
-// import { Text } from "konva/types/shapes/Text";
-import { Node, NodeConfig, KonvaEventObject } from "konva/types/Node";
-import { BaseLayer } from "konva/types/BaseLayer";
+import { KonvaEventObject } from "konva/types/Node";
 import { LabelText } from '../../../lib/LabelConstituent';
-// client / node_modules / konva / types / Node.d.ts
-// import { Stage } from "react-konva";
-// import { Stage } from "react-konva";
-import nunjucks from 'nunjucks';
 import { Item } from '../../../lib/item';
 import { DrawContext } from '../LabelDraw';
+import { stringTemplateRender } from '../../../lib/stringTemplates';
 
 
 interface EditableTextProps extends Pick<DrawContext, 'displayContextMenu' | 'selectedShapeName' | 'updateHistory' | 'setSelectedShapeName'> {
@@ -36,6 +30,7 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
     const labelText = props.labelText;
     const item = props.item;
 
+    const [ { renderedString, wasModified }, setRenderedString ] = useState<{ renderedString: string; wasModified: boolean; }>( stringTemplateRender( labelText.text, item ) );
 
     const textNodeRef = React.useRef<Konva.Text>();
     const trRef = React.useRef<Konva.Transformer>();
@@ -58,10 +53,15 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
         }
     }, [ isSelected, trRef, trRef.current, props.selectedShapeName ] );
 
+    React.useEffect( () => {
+        setRenderedString(stringTemplateRender( labelText.text, item ));
+    }, [labelText.text] );
+
     function onSelect ( e: KonvaEventObject<MouseEvent> ) {
         console.log( "EditableText onSelect setSelectedShapeName", {e, name: e.target.name()} );
         props.setSelectedShapeName( e.target.name() );
     }
+
 
     return <React.Fragment>
         <Transformer
@@ -79,11 +79,11 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
             textObject={labelText}
             key={labelText.id}
             name={labelText.id}
-            text={nunjucks.renderString( labelText.text, item )}
+            text={renderedString}
             fontStyle={labelText.bold ? "bold" : labelText.italic ? "italic" : "normal"}
             textDecoration={labelText.underline ? "underline" : ""}
             fontSize={labelText.fontSize}
-            fill={labelText.text.includes( "{{" ) ? 'red' : 'black'}
+            fill={wasModified ? 'red' : 'black'}
             onContextMenu={props.displayContextMenu}
             x={labelText.x}
             y={labelText.y}
