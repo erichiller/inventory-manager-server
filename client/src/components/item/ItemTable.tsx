@@ -286,11 +286,15 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                     }
                     if ( mouseOverRef && mouseOverRef.current ) {
                         let newX: number = event.pageX + 3;
+                        let newY: number = event.pageY + 3;
                         if ( newX > mouseOverRef.current.offsetWidth - 3 ){
                             newX = newX - mouseOverRef.current.offsetWidth - 3; 
                         }
+                        if ( newY > mouseOverRef.current.offsetHeight - 3 ) {
+                            newY = newY - mouseOverRef.current.offsetHeight - 3; 
+                        }
                         mouseOverRef.current.style.left = `${ newX.toString() }px`;
-                        mouseOverRef.current.style.top = `${ event.pageY.toString() }px`;
+                        mouseOverRef.current.style.top = `${ newY.toString() }px`;
                     }
                 }}
             >

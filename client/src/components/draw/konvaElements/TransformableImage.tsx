@@ -1,14 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Konva from "konva";
-// import { Stage } from "konva/types/Stage";
-import ReactKonva, { KonvaNodeComponent, Transformer, Image } from 'react-konva';
-// import { Text } from "konva/types/shapes/Text";
-import { Node, NodeConfig, KonvaEventObject } from "konva/types/Node";
-import { BaseLayer } from "konva/types/BaseLayer";
-// client / node_modules / konva / types / Node.d.ts
-// import { Stage } from "react-konva";
-// import { Stage } from "react-konva";
-import nunjucks from 'nunjucks';
+import ReactKonva, { KonvaNodeComponent, Transformer } from 'react-konva';
+import { KonvaEventObject } from "konva/types/Node";
 import { Item } from '../../../lib/item';
 import { DrawContext } from '../LabelDraw';
 import { LabelImage } from '../../../lib/LabelConstituent';
