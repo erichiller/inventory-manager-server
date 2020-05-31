@@ -1,4 +1,4 @@
-import { Item, IconComponentT, CategoryHierarchyT, ItemClass, GenericItem } from '../Item';
+import { Item, IconComponentT, CategoryHierarchyT, ItemGqlTypename, GenericItem } from '../Item';
 import { 
     Item as ItemGql, 
     ItemBundle as ItemBundleGql, 
@@ -10,7 +10,7 @@ import { ItemBundleEditForm } from './Edit';
 import { GroupOutlined } from '@ant-design/icons';
 
 
-type ItemPlusClassT<T extends GenericItem, C extends ItemClass> = Exclude<ItemBundleGql, 'class'>;
+type ItemPlusClassT<T extends GenericItem, C extends ItemGqlTypename> = Exclude<ItemBundleGql, 'class'>;
 
 
 export class ItemBundle extends Item<ItemPlusClassT<ItemBundleGql, 'item_bundle'>> {

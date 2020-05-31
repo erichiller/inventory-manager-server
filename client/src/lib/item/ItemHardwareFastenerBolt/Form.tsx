@@ -2,7 +2,7 @@ import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'reac
 import { Form, Input, Divider, Tooltip, InputNumber, Switch } from 'antd';
 // import { OptionsType } from 'rc-select/lib/Option';
 import { ItemFormProps } from '../Item';
-import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHandednessEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerStrengthClassEnum, useGetEnumHardwareFastenerThreadStandardQuery, EnumHardwareUseMaterialEnum, EnumHardwareFastenerThreadLabelEnum } from '../../types/graphql';
+import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHandednessEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerBoltStrengthEnum, useGetEnumHardwareFastenerThreadStandardQuery, EnumHardwareUseMaterialEnum, EnumHardwareFastenerThreadLabelEnum } from '../../types/graphql';
 import TextArea from 'antd/lib/input/TextArea';
 
 import { EnumUnitKeys, EnumHardwareFastenerSpecificationsEnum } from './types/types';
@@ -10,7 +10,7 @@ import { UnitSelect } from './formComponents/UnitSelect';
 import { MeasurementInput } from './formComponents/MeasurementInput';
 import { EnumSelect } from './formComponents/EnumSelect';
 import { ScrewSizeInput, ScrewSizeInputOptionData } from './formComponents/ScrewSizeInput';
-import { toMinimumFixed, Union } from '../../UtilityFunctions';
+import { toMinimumFixed, Union, toTitleCase } from '../../UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { ItemHardwareFastenerBolt } from './Index';
 import { ScrewThreadIcon, ScrewEmbeddedLengthIcon, ScrewHeadDiameterIcon, ScrewHeadHeightIcon, ItemHardwareFastenerBoltDriveTypeIconMap, ItemHardwareFastenerBoltPointIconMap } from './icon';
@@ -85,19 +85,19 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
         screwSizeInputRef.current.focus();
     }, [ screwSizeInputRef ] );
 
-    useEffect( () => {
-        let initProps: Partial<ItemHardwareFastenerBolt> = {};
-        // if ( !props.thread_direction ) {
-        //     initProps.thread_direction = EnumHandednessEnum.right;
-        // }
-        form.setFieldsValue( initProps );
-    } );
+    // useEffect( () => {
+    //     let initProps: Partial<ItemHardwareFastenerBolt> = {};
+    //     // if ( !props.thread_direction ) {
+    //     //     initProps.thread_direction = EnumHandednessEnum.right;
+    //     // }
+    //     form.setFieldsValue( initProps );
+    // } );
 
     // TODO: then here have a type selector when in the generic add form
 
     const updateName = () => {
         const f = ( f: string, prefix?: string ) => {
-            let v = form.getFieldValue( f );
+            let v = toTitleCase(form.getFieldValue( f ));
             return v ? `${ prefix ? prefix : '' }${ v.replace( /[.0]*$/, '' )}`: '';
         };
         /**
@@ -105,7 +105,8 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
          * Machine screws, Phillips pan head, Stainless steel 18-8, #12-24 x 1"
          * <Fastener type> <Drive Types> <Head Styles> <Material> <Diameter><Thread Count,pitch><Length>
          */
-        let valueString = `${ f( 'use_material' ) }${ f( 'drive_type', ' ' ) }${ f( 'head_type', ', ' ) }${ f( 'material_type', ', ' ) }${ getUnitPrefixFromUnitSystem( form.getFieldValue( 'unit' ) ) }${ f( 'thread_diameter' ) }${ f( 'thread_pitch', '-' ) }${ f( 'embedded_length', 'x' ) } `;
+        let descriptorPrefix = `${ f( 'use_material' ) }${ f( 'drive_type', ' ' ) }${ f( 'head_type', ', ' ) }${ f( 'material_type', ', ' ) }`;
+        let valueString = `${descriptorPrefix ? descriptorPrefix + ' ': ''}${ getUnitPrefixFromUnitSystem( form.getFieldValue( 'unit' ) ) }${ f( 'thread_diameter' ) }${ f( 'thread_pitch', '-' ) }${ f( 'embedded_length', 'x' ) } `;
         form.setFieldsValue( Object.fromEntries( [ [ 'name', valueString ] ] ) );
     };
 
@@ -395,7 +396,16 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                     <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerHardnessEnum )} />
                 </Form.Item>
                 <Form.Item name="strength_class" label="Stength Class">
-                    <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerStrengthClassEnum )} />
+                    <EnumSelect 
+                        enumKeys={Object.keys( EnumHardwareFastenerBoltStrengthEnum ).filter( el => {
+                            if ( unit === "metric" ) {
+                                return /(class|A_2)/.exec( el ) !== null;
+                            }
+                            if ( unit === "usc" ) {
+                                return /(grade|A325|18_8)/.exec( el ) !== null;
+                            }
+                            return true;
+                        } )} />
                 </Form.Item>
 
                 <Form.Item name="tensile_strength" label="Tensile Strength">

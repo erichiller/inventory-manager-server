@@ -1,5 +1,6 @@
-import { T } from 'antd/lib/upload/utils';
 import { Integer } from './types/uint8';
+import { Store } from 'antd/lib/form/interface';
+import { Item } from './item';
 
 export * from './types/UtilityTypes';
 
@@ -8,6 +9,8 @@ export function buf2hex ( buffer: ArrayBuffer ): string { // buffer is an ArrayB
 }
 
 export function toTitleCase ( s: string ): string {
+    /** if null return blank string */
+    if ( !s ) { return ''; }
     /** do not change `id` or `ID` */
     if ( [ 'ID', 'id' ].includes( s ) ) { return s; }
     /** string takes the form _0 (underscore, numeric) then this is assumed to be an ENUM with an underscore prefix to allow for starting numbers */
@@ -249,4 +252,16 @@ export function enumerable ( value: boolean ) {
         descriptor.enumerable = value;
     };
 }
+
+
+export function applyDefaults<T extends Item<any>>( fieldValues: Store, defaults: Partial<T> ): Store {
+        fieldValues.default_fields = Array.isArray( fieldValues.default_fields ) ? fieldValues.default_fields : [];
+        Object.keys( defaults ).forEach( key => {
+            if ( !fieldValues[ key ] ) {
+                fieldValues[ key ] = defaults[ key ];
+                fieldValues.default_fields.push( key );
+            }
+        } );
+        return fieldValues;
+    };
 
