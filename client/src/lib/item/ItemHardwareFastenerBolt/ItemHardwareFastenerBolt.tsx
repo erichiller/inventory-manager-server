@@ -1,4 +1,4 @@
-import { Item, IconComponentT, CategoryHierarchyT, ItemClass, IItem, GenericItem, FormMutationHandler } from '../Item';
+import { Item, IconComponentT, CategoryHierarchyT, ItemClass, GenericItem, FormMutationHandler } from '../Item';
 import { Item as ItemGql, ItemHardwareFastenerBolt as ItemHardwareFastenerBoltGql, ItemHardwareFastenerBoltSelectColumn, Maybe, Scalars, EnumUnitEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerHeadEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerStrengthClassEnum, EnumHandednessEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerThreadLabelEnum } from "../../types/graphql";
 import React from 'react';
 import { Integer } from '../../types/uint8';
@@ -7,6 +7,7 @@ import { ColumnProps } from 'antd/lib/table';
 import { toTitleCase, enumerable } from '../../UtilityFunctions';
 import { ItemHardwareFastenerBoltForm } from './Form';
 import { ItemHardwareFastenerBoltEditMutationHandler } from './Edit';
+import { ItemHardwareFastenerBoltAddMutationHandler } from './Add';
 
 
 type ItemPlusClassT<T extends GenericItem, C extends ItemClass> = Exclude<ItemHardwareFastenerBoltGql, 'class'>;
@@ -131,16 +132,18 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
         return ItemHardwareFastenerBolt.Columns as ColumnProps<ItemHardwareFastenerBoltGql>[];
     }
 
+    static get addComponent (): React.FC {
+        return ItemHardwareFastenerBoltForm;
+    }
+    static get addHandler (): React.FC<FormMutationHandler> {
+        return ItemHardwareFastenerBoltAddMutationHandler;
+    }
+
     get editComponent (): React.FC {
         return ItemHardwareFastenerBoltForm;
     }
-    get mutationHandler (): React.FC<FormMutationHandler> {
+    get editHandler (): React.FC<FormMutationHandler> {
         return ItemHardwareFastenerBoltEditMutationHandler;
-    }
-
-    @enumerable(true)
-    get FOO_THIS (): string {
-        return "FOO_THIS_VALUE";
     }
 }
 

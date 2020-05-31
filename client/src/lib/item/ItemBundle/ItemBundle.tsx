@@ -1,11 +1,9 @@
-import { Item, IconComponentT, CategoryHierarchyT, ItemClass, IItem, GenericItem } from '../Item';
+import { Item, IconComponentT, CategoryHierarchyT, ItemClass, GenericItem } from '../Item';
 import { 
     Item as ItemGql, 
     ItemBundle as ItemBundleGql, 
-    ItemBundleSelectColumn, Maybe, Scalars, EnumUnitEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerHeadEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerStrengthClassEnum, EnumHandednessEnum, EnumHardwareFastenerBoltThreadFitEnum, ItemBundleMap } from "../../types/graphql";
+    ItemBundleSelectColumn, Maybe, Scalars, ItemBundleMap } from "../../types/graphql";
 import React from 'react';
-import { Integer } from '../../types/uint8';
-import { HexBoltIcon } from '../../../styles/icon';
 import { ColumnProps } from 'antd/lib/table';
 import { toTitleCase } from '../../UtilityFunctions';
 import { ItemBundleEditForm } from './Edit';
@@ -16,6 +14,7 @@ type ItemPlusClassT<T extends GenericItem, C extends ItemClass> = Exclude<ItemBu
 
 
 export class ItemBundle extends Item<ItemPlusClassT<ItemBundleGql, 'item_bundle'>> {
+
 
     __typename: 'item_bundle';
     id: Scalars[ 'Int' ];

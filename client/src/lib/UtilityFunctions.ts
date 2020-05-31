@@ -240,6 +240,10 @@ export function getDaysInMonth ( a: number | string, b?: number ): number {
 //     return false;
 // }
 
+/**
+ * NOTE: `enumerable` on a property only controls whether it will appear in `for ... in` and does not add it to `Object.keys()`
+ * @param value whether the wrapped property should be enumerable
+ */
 export function enumerable ( value: boolean ) {
     return function ( target: any, propertyKey: string, descriptor: PropertyDescriptor ) {
         descriptor.enumerable = value;

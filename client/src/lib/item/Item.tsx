@@ -42,18 +42,8 @@ export interface FormMutationHandler extends ItemFormProps {
     completeCallback: ( submitted: boolean ) => void;
 }
 
-type IEnumIItemMap = { [ key in ItemClass ]: Union<IItem, new () => Item<GenericItem>> };
+type IEnumItemMap = { [ key in ItemClass ]: typeof Item };
 
-
-export interface IItem {
-    icon: IconComponentT;
-    name: string;
-    categories: CategoryHierarchyT[];
-}
-export interface IItemConstructor {
-    // new( ): IItem;
-    new( params: GenericItem ): IItem;
-}
 
 export type CategoryHierarchyT = "Item"
     | "Bundle"
@@ -74,13 +64,13 @@ export type IconComponentT =
     | React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 
 
-export class Item<T extends GenericItem> implements IItem {
+export class Item<T extends GenericItem> {
     __typename: string;
     id: Integer;
 
-    _name?: string;
-    _object: Object;
-    _class: keyof Record<ItemClass, string>;
+    private _name?: string;
+    private _object: Object;
+    private _class: keyof Record<ItemClass, string>;
 
     item: ItemGql;
 
@@ -96,7 +86,16 @@ export class Item<T extends GenericItem> implements IItem {
         console.log( "Item class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
     }
 
-    static async ItemFactory<Q extends typeof GetItemDocument> ( variables: GetItemQueryVariables, query: Q = GetItemDocument as Q ): Promise<IItem> {
+    static [ Symbol.hasInstance ] ( instance: object ) {
+        // TODO: apply to other Item subclasses
+        // TODO: use `constructor.name` ??
+        if ( '__typename' in instance && instance['__typename'] === 'Item' ) {
+            return true;
+        }
+        return false;
+    }
+
+    static async ItemFactory<Q extends typeof GetItemDocument> ( variables: GetItemQueryVariables, query: Q = GetItemDocument as Q ): Promise<Item<any>> {
 
         return new Promise( ( resolve, reject ) => apolloClient.query<GetItemQuery, GetItemQueryVariables>( {
             query: GetItemDocument,
@@ -128,9 +127,9 @@ export class Item<T extends GenericItem> implements IItem {
      * Return an array of items from input Gql results
      * @param results Output from Item GraphQL query (data)
      */
-    static ItemsFactory ( results: GenericItem[] ): IItem[] {
+    static ItemsFactory ( results: GenericItem[] ): Array<Item<any>> {
         // static ItemFactory ( results: GenericItem[] ): Item<GenericItem>[] {
-        let items: IItem[] = [];
+        let items: Item<any>[] = [];
         results.forEach( i => {
             let cls = this.getClassForType( i.class || i.__typename );
             if ( ! cls ) {
@@ -182,7 +181,7 @@ export class Item<T extends GenericItem> implements IItem {
 
 
     // static _ClassTypes: Partial< IEnumItemMap< ItemExtender<any> > > = {};
-    static _ClassTypes: IEnumIItemMap;
+    static _ClassTypes: IEnumItemMap;
 
     static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T>; }> (
         itemClass: ItemClass,
@@ -194,7 +193,7 @@ export class Item<T extends GenericItem> implements IItem {
         };
     }
 
-    public static getClassForType ( itemClass: ItemClass ): Union<IItem, IItemConstructor> {
+    public static getClassForType ( itemClass: ItemClass ): typeof Item {
         let itemClassLowerCase = itemClass.toLowerCase();
         // console.log( { class: 'Item', method: 'getClassForType', classTypes: Item._ClassTypes, lookup_key: itemClass } );
         // if ( itemClassLowerCase === "item" ) {
@@ -360,15 +359,27 @@ export class Item<T extends GenericItem> implements IItem {
         return null;
     }
     /**
+     * Form to add Item
+     */
+    static get addComponent (): React.FC {
+        return null;
+    }
+    /**
+     * addHandler process and sends mutation to graphql
+     */
+    static get addHandler (): React.FC<FormMutationHandler> {
+        return null;
+    }
+    /**
      * Form to edit Item
      */
     get editComponent (): React.FC {
         return null;
     }
     /**
-     * MutationHandler process and sends mutation to graphql
+     * editHandler process and sends mutation to graphql
      */
-    get mutationHandler (): React.FC<FormMutationHandler> {
+    get editHandler (): React.FC<FormMutationHandler> {
         return null;
     }
     /**
@@ -383,6 +394,7 @@ export class Item<T extends GenericItem> implements IItem {
      * Default is to display all properties EXCEPT `_object`
      */
     get mouseOverRowComponent (): React.FC {
+        // TODO: use for ... in so that enumerable properties are shown
         return ( props ) => <pre>{JSON.stringify( Object.fromEntries(Object.entries(this).filter( ([ key, value ]) => key !== '_object')), null, 2 )}</pre>;
     }
 

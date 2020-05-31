@@ -9,12 +9,17 @@ import { QtyInput } from '../../lib/item/common/QtyInput';
 import { OrderInput } from '../order/OrderInput';
 import { useHistory } from 'react-router-dom';
 
-interface ItemFormModalProps {
-    recordEditComponent: React.FC<ItemFormProps>;
-    // visibleHandler: visibleHandler;
-    item: Item<any>;
+type ItemFormModalProps = {
     mutationHandler: React.FC<FormMutationHandler>;
-}
+} & ( {
+    recordEditComponent: React.FC<ItemFormProps>;
+    item: Item<any>;
+    addComponent?: false;
+} | {
+    addComponent: React.FC<ItemFormProps>;
+    item?: false;
+    recordEditComponent?: false;
+} );
 
 export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
     const [ form ] = useForm();
@@ -104,6 +109,9 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
             {/* </Form.Item> */}
             {props && props.recordEditComponent ?
                 <props.recordEditComponent form={form} />
+                : null}
+            {props && props.addComponent ?
+                <props.addComponent form={form} />
                 : null}
             {props && props.mutationHandler ?
                 <props.mutationHandler form={form} submitted={formSubmitted} completeCallback={mutationCompleteCallback} />

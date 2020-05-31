@@ -55,18 +55,8 @@ export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
     // const { event, visibleHandler, item, changeHandler, labelText } = props;
 
     const defaultTextSize: number = 36;
-    const prefixTrigger = '{{';
-    let prefixTriggers: string[] = [ prefixTrigger ];
-    for( let i = 0; i<prefixTrigger.length; i++){
-        prefixTriggers.push( prefixTrigger.substring(0, i+1));
-    }
 
     console.log( 'DrawEditText props:\n', props );
-
-    // const autocompleteFieldValues: OptionsType = props.item && props.item.labelProps ? props.item.labelProps.map( col => {
-    //     return {
-    //         value: `{{${ col.toString() }}}` 
-    // }}) : [];
 
     const drawContext = useContext( DrawContext );
 
@@ -102,15 +92,12 @@ export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
         width={drawWidth + 25}
     >
         <Form
-            // layout="inline"
             name="basic"
             initialValues={{ format_options: currentFormatOptions, text_size: defaultTextSize }}
             onValuesChange={(changedValues) => props.changeHandler(changedValues, props.labelText)}
             layout="horizontal"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 9 }}
-        // onFinish={onFinish}
-        // onFinishFailed={onFinishFailed}
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 15 }}
         >
             <Form.Item
                 name="text"
@@ -123,36 +110,16 @@ export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
                     placeholder="Enter text, use {{prop}} to enter an item property"
                     style={{ width: '100%' }}
                     prefix='{'
-                    // prefix={prefixTriggers}
                     split=''
-                    // split="}}"
                     autoFocus
-                    // placeholder="input @ to mention people, # to mention tag"
-                    // prefix={[ '@', '#' ]}
-                    // onSearch={onSearch}
-                    // filterOption={p => { console.log( { filterOptionFuncp: p } ); return true; }}
-                    // onChange={p => { console.log( { onChange: p } ); return true; }}
                     onChange={onChange}
                 >
                     {( props.item.labelProps || []).map( key =>
                         <Mentions.Option key={key.toString()} value={
-                            prefixTrigger.substring(currentMentionPrefix.length,prefixTrigger.length)
-                            // + currentMentionPrefix
-                            // + '>> {'
-                            // + currentMentionPrefix.length
-                            // + '} {'
-                            // + prefixTrigger.length
-                            // + '} '
+                            '{{'.substring(currentMentionPrefix.length, 2)
                              + key.toString()
                              + '}}'
-                            // + '(' + JSON.stringify({
-                            //     prefix: prefixTrigger.substring( currentMentionPrefix.length, prefixTrigger.length),
-                            //     currentMentionPrefix_length: currentMentionPrefix.length,
-                            //     prefixTrigger_length: prefixTrigger.length,
-                            //     currentMentionPrefix
-                            // })
                         }>
-                            {/* <Select.Option key={key} value={props.item[ key ]}> */}
                             <b>{key.toString()}</b>: <i>{props.item[key]}</i>
                         </Mentions.Option>
                     )}
