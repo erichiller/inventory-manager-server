@@ -1,5 +1,5 @@
-import { Item, IconComponentT, CategoryHierarchyT, ItemClass, GenericItem, FormMutationHandler } from '../Item';
-import { Item as ItemGql, ItemHardwareFastenerBolt as ItemHardwareFastenerBoltGql, ItemHardwareFastenerBoltSelectColumn, Maybe, Scalars, EnumUnitEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerHeadEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerStrengthClassEnum, EnumHandednessEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerThreadLabelEnum } from "../../types/graphql";
+import { Item, IconComponentT, CategoryHierarchyT, ItemGqlTypename, GenericItem, FormMutationHandler } from '../Item';
+import { Item as ItemGql, ItemHardwareFastenerBolt as ItemHardwareFastenerBoltGql, ItemHardwareFastenerBoltSelectColumn, Maybe, Scalars, EnumUnitEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerHeadEnum, EnumHardwareFastenerMaterialEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerBoltStrengthEnum, EnumHandednessEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerThreadLabelEnum, EnumHardwareUseMaterialEnum } from "../../types/graphql";
 import React from 'react';
 import { Integer } from '../../types/uint8';
 import { HexBoltIcon } from '../../../styles/icon';
@@ -10,7 +10,7 @@ import { ItemHardwareFastenerBoltEditMutationHandler } from './Edit';
 import { ItemHardwareFastenerBoltAddMutationHandler } from './Add';
 
 
-type ItemPlusClassT<T extends GenericItem, C extends ItemClass> = Exclude<ItemHardwareFastenerBoltGql, 'class'>;
+type ItemPlusClassT<T extends GenericItem, C extends ItemGqlTypename> = Exclude<ItemHardwareFastenerBoltGql, 'class'>;
 
 
 export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFastenerBoltGql, 'item_hardware_fastener_bolt'>> {
@@ -50,7 +50,7 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
      * JIS
      */
     specifications_met?: Maybe<Scalars[ 'jsonb' ]>;
-    strength_class?: Maybe<EnumHardwareFastenerStrengthClassEnum>;
+    strength_class?: Maybe<EnumHardwareFastenerBoltStrengthEnum>;
     /** psi */
     tensile_strength?: Maybe<Scalars[ 'numeric' ]>;
     thread_direction: EnumHandednessEnum;
@@ -67,6 +67,8 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
     thread_label?: Maybe<EnumHardwareFastenerThreadLabelEnum>;
     /** ENUM:Unit */
     unit: EnumUnitEnum;
+    /** Material this fastener is meant to thread into. */
+    use_material?: Maybe<EnumHardwareUseMaterialEnum>;
 
     constructor ( props: ItemHardwareFastenerBoltGql | ItemGql ) {
         super( props as ItemHardwareFastenerBoltGql );

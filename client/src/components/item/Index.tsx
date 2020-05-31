@@ -1,15 +1,13 @@
 
-import { Table, Divider, message, Row, Col, Button } from 'antd';
 import React, { useState } from 'react';
 import { EnumItemClassEnum, useGetItemsQuery } from '../../lib/types/graphql';
-import { Item, ItemHardwareFastenerBolt } from '../../lib/item';
+import { Item } from '../../lib/item';
 import { ItemSearch } from './ItemSearch';
 import {
     useLocation
 } from "react-router-dom";
 import { ItemTable } from './ItemTable';
 import { ItemCategoryTree } from './ItemCategoryTree';
-import { PlusCircleOutlined } from '@ant-design/icons';
 import { EventDataNode, DataNode } from 'rc-tree/lib/interface';
 // import DocumentNode from 'graphql-tag';
 

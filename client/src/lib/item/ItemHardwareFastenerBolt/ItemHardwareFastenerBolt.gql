@@ -1,26 +1,26 @@
 fragment ItemHardwareFastenerBoltFields on item_hardware_fastener_bolt {
-        id
-        name
-        description
-        unit
-        thread_length
-        head_type
-        drive_type
-        drive_size
-        head_diameter
-        head_height
-        thread_diameter
-        finish
-        material
-        thread_direction
-        countersunk_angle
-        tensile_strength
-        specifications_met
-        thread_fit
-        point_type
-        hardness
-        strength_class
-        use_material
+    id
+    name
+    description
+    unit
+    thread_length
+    head_type
+    drive_type
+    drive_size
+    head_diameter
+    head_height
+    thread_diameter
+    finish
+    material
+    thread_direction
+    countersunk_angle
+    tensile_strength
+    specifications_met
+    thread_fit
+    point_type
+    hardness
+    strength_class
+    use_material
 }
 
 query item_hardware_fastener_bolt {
@@ -33,7 +33,7 @@ mutation InsertItemHardwareFastenerBolt(
     $countersunk_angle: numeric
     $countersunk_height: numeric
     $description: String
-    # $drive_size: String
+    $drive_size: String
     $default_fields: jsonb
     $drive_type: enum_hardware_fastener_drive_enum
     $embedded_length: numeric
@@ -46,9 +46,8 @@ mutation InsertItemHardwareFastenerBolt(
     $material: enum_hardware_fastener_material_enum
     $name: String
     $point_type: enum_hardware_fastener_bolt_point_enum
-    # $shaft_length: numeric
     $specifications_met: jsonb
-    $strength_class: enum_hardware_fastener_strength_class_enum
+    $strength_class: enum_hardware_fastener_bolt_strength_enum
     $tensile_strength: numeric
     $thread_diameter: numeric
     $thread_direction: enum_handedness_enum
@@ -65,7 +64,7 @@ mutation InsertItemHardwareFastenerBolt(
             countersunk_angle: $countersunk_angle
             countersunk_height: $countersunk_height
             description: $description
-            # drive_size: $drive_size
+            drive_size: $drive_size
             default_fields: $default_fields
             drive_type: $drive_type
             embedded_length: $embedded_length
@@ -77,7 +76,6 @@ mutation InsertItemHardwareFastenerBolt(
             material: $material
             name: $name
             point_type: $point_type
-            # shaft_length: $shaft_length
             specifications_met: $specifications_met
             strength_class: $strength_class
             tensile_strength: $tensile_strength
@@ -92,12 +90,78 @@ mutation InsertItemHardwareFastenerBolt(
             use_material: $use_material
         }
     ) {
-            ...ItemHardwareFastenerBoltFields
-        }
+        ...ItemHardwareFastenerBoltFields
+    }
 }
 query GetEnumHardwareFastenerThreadStandard {
-  enum_hardware_fastener_thread_standard {
-    id
-    description
-  }
+    enum_hardware_fastener_thread_standard {
+        id
+        description
+    }
+}
+
+mutation UpdateItemHardwareFastenerBolt(
+    $countersunk_angle: numeric
+    $countersunk_height: numeric
+    $description: String
+    $drive_size: String
+    $default_fields: jsonb
+    $drive_type: enum_hardware_fastener_drive_enum
+    $embedded_length: numeric
+    $finish: enum_hardware_finish_enum
+    $hardness: enum_hardware_fastener_hardness_enum
+    $head_diameter: numeric
+    $head_height: numeric
+    $head_type: enum_hardware_fastener_head_enum
+    $id: Int
+    $material: enum_hardware_fastener_material_enum
+    $name: String
+    $point_type: enum_hardware_fastener_bolt_point_enum
+    $specifications_met: jsonb
+    $strength_class: enum_hardware_fastener_bolt_strength_enum
+    $tensile_strength: numeric
+    $thread_diameter: numeric
+    $thread_direction: enum_handedness_enum
+    $thread_fit: enum_hardware_fastener_bolt_thread_fit_enum
+    $thread_length: numeric
+    $thread_label: enum_hardware_fastener_thread_label_enum
+    $thread_pitch: numeric
+    $thread_standard: enum_hardware_fastener_thread_standard_enum
+    $unit: enum_unit_enum
+    $use_material: enum_hardware_use_material_enum
+) {
+    update_item_hardware_fastener_bolt_by_pk(
+        pk_columns: { id: 10 }
+        _set: {
+            use_material: $use_material
+            unit: $unit
+            thread_standard: $thread_standard
+            thread_pitch: $thread_pitch
+            thread_length: $thread_length
+            thread_label: $thread_label
+            thread_fit: $thread_fit
+            thread_direction: $thread_direction
+            thread_diameter: $thread_diameter
+            tensile_strength: $tensile_strength
+            strength_class: $strength_class
+            specifications_met: $specifications_met
+            point_type: $point_type
+            name: $name
+            material: $material
+            head_type: $head_type
+            head_height: $head_height
+            head_diameter: $head_diameter
+            hardness: $hardness
+            finish: $finish
+            embedded_length: $embedded_length
+            drive_type: $drive_type
+            description: $description
+            drive_size: $drive_size
+            default_fields: $default_fields
+            countersunk_height: $countersunk_height
+            countersunk_angle: $countersunk_angle
+        }
+    ) {
+        ...ItemHardwareFastenerBoltFields
+    }
 }

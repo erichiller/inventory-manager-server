@@ -24,11 +24,11 @@ export type GenericItem = Pick<ItemGql, 'id'>
     & Partial<Pick<ItemGql, | 'object'>
         & {
             name?: string;
-            __typename: ItemClass;
-            class: ItemClass;
+            __typename: ItemGqlTypename;
+            class: ItemGqlTypename;
         }>;
 
-export type ItemClass = keyof typeof EnumItemClassEnum | 'item';
+export type ItemGqlTypename = keyof typeof EnumItemClassEnum | 'item';
 
 
 export interface ItemFormProps {
@@ -42,7 +42,7 @@ export interface FormMutationHandler extends ItemFormProps {
     completeCallback: ( submitted: boolean ) => void;
 }
 
-type IEnumItemMap = { [ key in ItemClass ]: typeof Item };
+type IEnumItemMap = { [ key in ItemGqlTypename ]: typeof Item };
 
 
 export type CategoryHierarchyT = "Item"
@@ -70,7 +70,7 @@ export class Item<T extends GenericItem> {
 
     private _name?: string;
     private _object: Object;
-    private _class: keyof Record<ItemClass, string>;
+    private _class: ItemGqlTypename;
 
     item: ItemGql;
 
@@ -142,9 +142,21 @@ export class Item<T extends GenericItem> {
         return items;
     }
 
-    get class (): keyof Record<ItemClass, string> {
-        // return this.__typename;
+    /**
+     * The GraphQL `__typename`
+     */
+    get class (): ItemGqlTypename {
         return this._class;
+    }
+    /**
+     * Returns self as a simple object. `get prop(): string` converted to `{ prop: string }`
+     */
+    get simpleObject (): T {
+        let simpleObject: {[key: string]: any; } = {};
+        for( let propertyKey in this){
+            simpleObject[propertyKey] = this[propertyKey];
+        }
+        return simpleObject as T;
     }
 
     @enumerable( true )
@@ -165,8 +177,10 @@ export class Item<T extends GenericItem> {
     }
 
 
+
     static get categories (): CategoryHierarchyT[] {
-        return [ "Item", "Hardware", "Fastener", "Bolt" ];
+        // TODO: this needs to calculate on the fly from `class`
+        return [ "Item" ];
     }
     get categories (): CategoryHierarchyT[] {
         return [ "Item" ];
@@ -184,7 +198,7 @@ export class Item<T extends GenericItem> {
     static _ClassTypes: IEnumItemMap;
 
     static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T>; }> (
-        itemClass: ItemClass,
+        itemClass: ItemGqlTypename,
         typeClass: T
     ) {
         Item._ClassTypes = {
@@ -193,8 +207,12 @@ export class Item<T extends GenericItem> {
         };
     }
 
-    public static getClassForType ( itemClass: ItemClass ): typeof Item {
-        let itemClassLowerCase = itemClass.toLowerCase();
+    /**
+     * Return the class for an input GraphQL `__typename`
+     * @param itemTypename The GraphQL type for an Item class, this is what is found in `__typename` and is of the form `item_category1_category2_classname`
+     */
+    public static getClassForType ( itemTypename: ItemGqlTypename ): typeof Item {
+        let itemClassLowerCase = itemTypename.toLowerCase();
         // console.log( { class: 'Item', method: 'getClassForType', classTypes: Item._ClassTypes, lookup_key: itemClass } );
         // if ( itemClassLowerCase === "item" ) {
         //     return Item;

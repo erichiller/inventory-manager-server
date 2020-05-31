@@ -2,8 +2,6 @@ import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'reac
 import { Form, Input, Divider, Tooltip, InputNumber, Switch, Row, Col, Button } from 'antd';
 // import { OptionsType } from 'rc-select/lib/Option';
 import { ItemFormProps } from '../Item';
-import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHandednessEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerStrengthClassEnum, EnumUnitEnum, EnumHardwareUseMaterialEnum } from '../../types/graphql';
-import TextArea from 'antd/lib/input/TextArea';
 
 import { toMinimumFixed, Union } from '../../UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
@@ -36,6 +34,8 @@ export const ItemBundleEditForm: React.FC<ItemBundleEditFormProps> = ( props ) =
     //     }
     //     form.setFieldsValue( initProps );
     // } );
+
+    
 
     return (
         <React.Fragment>

@@ -1,5 +1,5 @@
 import { EnumUnitEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerThreadLabelEnum } from "../../../types/graphql";
-import { getUnitSystemFromUnitPrefix, getUnitPrefixAndDiameterFromOptionString, screwSizeRegex } from "./helpers";
+import { getUnitSystemFromUnitPrefix, getUnitPrefixAndDiameterFromOptionString, screwSizeRegex, getUnitPrefixFromUnitSystem } from "./helpers";
 import { UnitPrefixT, EnumUnitKeys } from "../types/types";
 import { SelectProps } from "antd/lib/select";
 import React, { useState } from "react";
@@ -194,7 +194,7 @@ const constructOptionValue = ( optionData: ScrewSizeInputOptionData ): string =>
     console.log( { method: 'ScrewSizeInput', f: 'constructOptionValue', ...optionData } );
     if ( !optionData ) { return null; }
     // const abbrevUnit = getPrefix( optionData.unit );
-    return `${ optionData.prefix.toUpperCase() }${ optionData.thread_diameter ?? '' }` +
+    return `${ (optionData.prefix ?? getUnitPrefixFromUnitSystem(optionData.unit)).toUpperCase() }${ optionData.thread_diameter ?? '' }` +
         `${ optionData.thread_pitch ? `-${ optionData.thread_pitch }` : '' }` +
         `${ optionData.embedded_length ? `x${ optionData.embedded_length }` : '' }`;
 };
@@ -213,15 +213,21 @@ export const ScrewSizeInput: React.FC<ScrewSizeInputProps> = ( props ) => {
     console.log( { m: 'ScrewSizeInput', f: 'init', props_value: props.value, props } );
     const { onChange, value, unit, ...remainingProps } = props;
     // const [ value, setValue ] = useState<ScrewSizeInputOptionData>( props.value );
-    const [ valueText, setValueText ] = useState<string>( 'none' ); // TODO: delete ?
+    // const [ valueText, setValueText ] = useState<string>( 'none' );
     // const [ optionDataArr, setOptionsDataArr ] = useState<ScrewSizeInputOptionData[]>( [] );
 
-    const [ options, setOptions ] = useState<{value: string; label?: string;}[]>( [] );
+    const [ options, setOptions ] = useState<{ value: string; label?: string; }[]>( [] );
+    // const [ options, setOptions ] = useState<{ value: string; label?: string; selected?: boolean }[]>( [
+    //     {
+    //         value: 'foo',
+    //         selected: true
+    //     }
+    // ] );
 
     const handleSearch = ( value: string ): void => {
         const parsedValue = parseScrewSizeInputOptionData( value );
         console.log( { method: 'ScrewSizeInput', f: 'handleSearch', value, parsedValue } );
-        setValueText( value );
+        // setValueText( value );
         // setOptionsDataArr( getScrewSizeOptions( parsedValue ) );
         setOptions( eliminateArrayDuplicates( getScrewSizeOptions( parsedValue ) ).map( d => {
             const dStr = constructOptionValue( d );
@@ -230,13 +236,16 @@ export const ScrewSizeInput: React.FC<ScrewSizeInputProps> = ( props ) => {
         } ) );
         onChange( parsedValue );
     };
-    console.log( 'TAG', {options} );
+    console.log( 'TAG', { options, defaultValue: constructOptionValue( props.value )} );
     return (
         // TODO: add ability to input fractions
+        // TODO: add prefix as `backfill` 
         <React.Fragment>
             <AutoComplete 
                 options={options}
                 onChange={( str, opt ) => handleSearch( str )}
+                defaultValue={'monkeys'}
+                // defaultValue={constructOptionValue( props.value )}
                 >
                 <Input
                     ref={props.forwardRef} 

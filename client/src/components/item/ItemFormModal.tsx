@@ -14,11 +14,11 @@ type ItemFormModalProps = {
 } & ( {
     recordEditComponent: React.FC<ItemFormProps>;
     item: Item<any>;
-    addComponent?: false;
+    addComponent?: null;
 } | {
     addComponent: React.FC<ItemFormProps>;
-    item?: false;
-    recordEditComponent?: false;
+    item?: null;
+    recordEditComponent?: null;
 } );
 
 export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
@@ -45,8 +45,17 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
     const mutationCompleteCallback: ( success: boolean ) => void = ( success: boolean ) => {
         if ( ! success ){
             setFormSubmitted(false);
+        } else {
+            exitModal();
         }
     };
+
+    const exitModal = () => {
+        console.log( "cancelling modal, history.goBack, history is currently", { history } );
+        history.goBack();
+    }
+
+    console.log( { item: props.item, "initialValues=": props.item ? props.item.simpleObject : {} })
 
     return <Modal
         visible={true}
@@ -61,10 +70,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
             console.log( { class: 'ItemEditModal', method: 'onOk', e, values: form.getFieldsValue() } );
             form.submit();
         }}
-        onCancel={event => {
-            console.log("cancelling modal, history.goBack, history is currently", {history})
-            history.goBack();
-        }}
+        onCancel={event => exitModal()}
     >
         <Form
             name="ItemForm"
@@ -77,6 +83,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
                 console.log({ log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode });
                 if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
             }}
+            initialValues={props.item ? props.item.simpleObject : {}}
             onFieldsChange={onFieldsChange}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}

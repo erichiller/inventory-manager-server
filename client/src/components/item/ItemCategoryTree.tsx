@@ -2,7 +2,7 @@ import { Item } from "../../lib/item";
 import React, { useState } from "react";
 import { Tree, Popover, Menu } from "antd";
 import { DataNode } from 'rc-tree/lib/interface';
-import { DownOutlined } from "@ant-design/icons";
+import { DownOutlined, PlusOutlined } from "@ant-design/icons";
 import { EnumItemClassEnum } from "../../lib/types/graphql";
 import { TreeProps } from "antd/lib/tree";
 import { toTitleCase } from "../../lib/UtilityFunctions";
@@ -47,23 +47,25 @@ export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: Re
             let path: string[] = [];
             categories.forEach( cat => {
                 path.push( cat );
-                let pathString = path.join('_').toLowerCase();
+                let pathString = path.join( '_' ).toLowerCase();
                 if ( !editLevel.find( node => node.key === pathString ) ) {
                     let cls = Item.getClassForType( pathString as keyof typeof EnumItemClassEnum );
-                    console.log({cls});
+                    console.log( { cls } );
                     let newNode = {
                         key: pathString,
                         title: <Popover
-                                placement="bottomRight"
-                                trigger="contextMenu"
-                                content={<Menu>
-                                    <Menu.Item onClick={() => setModal( getAddModal( cls ) )}>Add {cls}</Menu.Item>
+                            placement="bottomRight"
+                            trigger="contextMenu"
+                            overlayClassName="ItemCategoryContextMenu"
+                            content={
+                                <Menu>
+                                    <Menu.Item icon={<PlusOutlined />} onClick={() => setModal( getAddModal( cls ) )}>Add {toTitleCase( cat )}</Menu.Item>
                                 </Menu>}
-                                title="actions">
-                                    <span>
-                                        {cls ? < cls.icon /> : null}{toTitleCase( cat )}
-                                    </span>
-                                </Popover>,
+                        >
+                            <span>
+                                {cls ? < cls.icon /> : null}{toTitleCase( cat )}
+                            </span>
+                        </Popover>,
                         // icon: 
                         children: []
                     } as DataNode;
@@ -92,19 +94,22 @@ export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: Re
 
 
 
-    return <Tree
-        showIcon
-        defaultExpandAll
-        selectable
-        multiple
-        // defaultSelectedKeys={[ '0-0-0' ]}
-        switcherIcon={<DownOutlined />}
-        onSelect={props.onSelect}
-        // onRightClick={ ( info ) =>  } // TODO: context menu
-        // showLine
-        className="ItemCategoryTree ant-tree-show-line"
-        treeData={state.data}
-        />;
+    return <React.Fragment>
+        <Tree
+            showIcon
+            defaultExpandAll
+            selectable
+            multiple
+            // defaultSelectedKeys={[ '0-0-0' ]}
+            switcherIcon={<DownOutlined />}
+            onSelect={props.onSelect}
+            // onRightClick={ ( info ) =>  } // TODO: context menu
+            // showLine
+            className="ItemCategoryTree ant-tree-show-line"
+            treeData={state.data}
+        />
+        {modal}
+    </React.Fragment>;
 };
 
 

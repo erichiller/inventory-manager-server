@@ -1,34 +1,33 @@
 import { ItemFormProps, FormMutationHandler } from "../Item";
-import { useInsertItemHardwareFastenerBoltMutation, EnumHandednessEnum } from "../../types/graphql";
+import { useInsertItemHardwareFastenerBoltMutation, EnumHandednessEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareUseMaterialEnum } from "../../types/graphql";
 import { useEffect } from "react";
 import { message } from "antd";
 import { Store } from "antd/lib/form/interface";
+import { applyDefaults } from "../../UtilityFunctions";
+import { ItemHardwareFastenerBolt } from "..";
 
 
 export const ItemHardwareFastenerBoltAddMutationHandler: React.FC<FormMutationHandler> = ( props ) => {
     const { form, submitted, completeCallback } = props;
     const [ insertItemHardwareFastenerBoltMutation, { data, loading, error } ] = useInsertItemHardwareFastenerBoltMutation();
 
-    // TODO: edit must REMOVE defaults if they are explicitly set.
-    const applyDefaults: ( fieldValues: Store ) => Store = ( v: Store ) => {
-        if ( !v.thread_direction ){
-            v.thread_direction = EnumHandednessEnum.right;
-        }
-        return v;
-    };
-
-    useEffect(() => {
+    useEffect( () => {
         if ( submitted === true ) {
-            console.log( { c: "ItemHardwareFastenerBoltAddMutationHandler", f: 'useEffect', cond: 'submitted === true' }, form.getFieldsValue() );
+            console.log( { c: "ItemHardwareFastenerBoltEditMutationHandler", f: 'useEffect', cond: 'submitted === true' }, form.getFieldsValue() );
             insertItemHardwareFastenerBoltMutation( {
-                // filter
-                variables: applyDefaults(form.getFieldsValue( true, ( meta ) => {
-                    // console.log( { c: "ItemHardwareFastenerBoltAddMutationHandler", f: 'meta'}, meta.name );
-                    return ! meta.name.includes('screw_size');
-                }))
+                variables: applyDefaults<ItemHardwareFastenerBolt>( form.getFieldsValue( true, ( meta ) => {
+                    // console.log( { c: "ItemHardwareFastenerBoltEditMutationHandler", f: 'meta'}, meta.name );
+                    return !meta.name.includes( 'screw_size' );
+                } ),
+                // TODO: put defaults in the class
+                    {
+                        thread_direction: EnumHandednessEnum.right,
+                        use_material: EnumHardwareUseMaterialEnum.machine,
+                        point_type: EnumHardwareFastenerBoltPointEnum.flat
+                    } )
             } );
         }
-    }, [submitted]);
+    }, [ submitted ] );
 
     useEffect(() => {
         if (error){

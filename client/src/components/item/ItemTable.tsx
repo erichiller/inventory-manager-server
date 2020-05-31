@@ -1,6 +1,6 @@
 import { Table, Divider, message, Spin } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { ColumnProps } from 'antd/es/table';
+import { ColumnProps, TablePaginationConfig } from 'antd/es/table';
 import {
     // withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, ItemHardwareFastenerBoltSelectColumn, useItemHardwareFastenerBoltQuery, useGetIconQuery, 
     useGetItemsQuery, GetItemsQueryVariables, GetItemsQuery,
@@ -14,6 +14,8 @@ import { EditOutlined, PrinterOutlined, DeleteOutlined, TagOutlined } from '@ant
 import { ItemTableMouseOver } from './ItemTableMouseOver';
 import { ItemFormModal } from './ItemFormModal';
 import { useParams, Link } from 'react-router-dom';
+import { PaginationConfig } from 'antd/lib/pagination';
+import { SorterResult, TableCurrentDataSource } from 'antd/lib/table/interface';
 // import DocumentNode from 'graphql-tag';
 
 
@@ -134,7 +136,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
 
     const getRecordEditModal = ( record: Item<any> ): React.ReactElement => {
         return <ItemFormModal
-            item={currentRecord}
+            item={record}
             // item={currentRecord.current}
             // visibleHandler={() => setModal( null )}
             recordEditComponent={record.editComponent}
@@ -216,8 +218,8 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     //     } );
     // };
 
-    const onChange = ( pagination, filters, sorter ) => {
-        console.log( 'params', pagination, filters, sorter );
+    const onChange = ( pagination: TablePaginationConfig, filters: Record<string, React.ReactText[]>, sorter: SorterResult<T> | SorterResult<T>[], extra: TableCurrentDataSource<T> ) => {
+        console.log( {action: 'onChange params', pagination, filters, sorter, extra });
     };
     // const setMouseOverRef: React.LegacyRef<HTMLDivElement> = ( ref ) => {
     //     console.log({method: 'setMouseOverRef'})
