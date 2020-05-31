@@ -1,26 +1,19 @@
-import { Table, Divider, message, Alert, Popover, Pagination, Modal, Spin } from 'antd';
+import { Table, Divider, message, Spin } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { ColumnProps } from 'antd/es/table';
 import {
     // withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, ItemHardwareFastenerBoltSelectColumn, useItemHardwareFastenerBoltQuery, useGetIconQuery, 
-    useGetItemsQuery, GetItemQuery, GetItemsQueryVariables, GetItemsQuery,
+    useGetItemsQuery, GetItemsQueryVariables, GetItemsQuery,
     // ItemSelectColumn 
 } from '../../lib/types/graphql';
 import { LabelDrawModal } from '../draw/LabelDrawModal';
-import { Item, ItemHardwareFastenerBolt } from '../../lib/item';
-import { DISPLAY } from '../../lib/types/enums';
-import { toTitleCase, QueryResultTypePlus } from '../../lib/UtilityFunctions';
+import { Item } from '../../lib/item';
 
-import { QueryHookOptions, useQuery } from '@apollo/react-hooks';
 import { QueryResult } from '@apollo/react-common';
-import { render } from 'react-dom';
-import { ItemSearch } from './ItemSearch';
-import { GenericItem } from '../../lib/item/Item';
 import { EditOutlined, PrinterOutlined, DeleteOutlined, TagOutlined } from '@ant-design/icons';
-import { PageSpinGQL } from '../shared/PageSpin';
 import { ItemTableMouseOver } from './ItemTableMouseOver';
 import { ItemFormModal } from './ItemFormModal';
-import { useLocation, useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 // import DocumentNode from 'graphql-tag';
 
 
@@ -145,14 +138,8 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
             // item={currentRecord.current}
             // visibleHandler={() => setModal( null )}
             recordEditComponent={record.editComponent}
-            mutationHandler={record.mutationHandler}
+            mutationHandler={record.editHandler}
         />;
-        // switch ( record.class ) {
-        //     // TODO: replace this with an edit modal defined within the Item subclass
-        //     case "item_hardware_fastener_bolt":
-        //         return <EditHardwareFastenerBolt visibleHandler={setModal} item={record as ItemHardwareFastenerBolt} />;
-        //         break;
-        // }
     };
 
     const getLabelDrawModal = ( record: T ): React.ReactElement => {

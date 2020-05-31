@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { EnumItemClassEnum, useGetItemsQuery } from '../../lib/types/graphql';
 import { Item, ItemHardwareFastenerBolt } from '../../lib/item';
 import { ItemSearch } from './ItemSearch';
-import { IItem } from '../../lib/item/Item';
 import {
     useLocation
 } from "react-router-dom";
@@ -41,7 +40,7 @@ export type visibleHandler = ( c?: React.ReactElement ) => void;
 
 interface ItemIndexState {
     // TODO: this should be category: CategoryEnum
-    searchResults: { [ category: string ]: IItem[]; };
+    searchResults: { [ category: string ]: Array<typeof Item>; };
     // categoryFilters: Array<keyof typeof EnumItemClassEnum>;
     categoryFilters: Array<keyof Record<EnumItemClassEnum, string>>;
 }
@@ -103,7 +102,7 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
             </div>
             <div className="fillFlex">
                 <div style={{ display: 'flex', padding: 10 }}>
-                    <Button><PlusCircleOutlined />New Item</Button>
+                    {/* <Button><PlusCircleOutlined />New Item</Button> */}
                     {/* </div>
                 <div style={{ display: 'flex' }}> */}
                     <div

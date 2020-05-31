@@ -9,7 +9,6 @@ import { Select, Row, Col, Button } from "antd";
 import { SelectValue, LabeledValue } from 'antd/lib/select';
 import { SearchOutlined, TagOutlined, FontSizeOutlined } from '@ant-design/icons';
 import { useSearchItemsQuery, EnumItemClassEnum } from "../../lib/types/graphql";
-import { IItem } from "../../lib/item/Item";
 
 const { Option } = Select;
 
@@ -104,7 +103,7 @@ interface ItemSearchProps {
      * callback called when results are present for search.  
      * a parent component can use this to render a table, etc.
      */
-    onSearchCallback?: ( results: { [ category: string ]: IItem[]; } ) => void;
+    onSearchCallback?: ( results: { [ category: string ]: Array<typeof Item>; } ) => void;
 }
 
 

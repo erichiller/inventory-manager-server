@@ -1,12 +1,12 @@
-import { Item, ItemHardwareFastenerBolt } from "../../lib/item";
+import { Item } from "../../lib/item";
 import React, { useState } from "react";
-import { Tree, message, Popover, Menu } from "antd";
+import { Tree, Popover, Menu } from "antd";
 import { DataNode } from 'rc-tree/lib/interface';
 import { DownOutlined } from "@ant-design/icons";
-import { useGetItemsQuery, EnumItemClassEnum } from "../../lib/types/graphql";
+import { EnumItemClassEnum } from "../../lib/types/graphql";
 import { TreeProps } from "antd/lib/tree";
 import { toTitleCase } from "../../lib/UtilityFunctions";
-import { IconComponentT } from "../../lib/item/Item";
+import { ItemFormModal } from "./ItemFormModal";
 
 const { TreeNode } = Tree;
 
@@ -29,6 +29,15 @@ export type visibleHandler = ( c?: React.ReactElement ) => void;
 
 export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: React.ReactNode; } ) => {
     // let loading = false;
+    const [ modal, setModal ] = useState<React.ReactElement>();
+
+
+    function getAddModal<T extends typeof Item> ( cls: T ): React.ReactElement {
+        return <ItemFormModal
+            addComponent={cls.addComponent}
+            mutationHandler={cls.addHandler}
+        />;
+    };
 
     let hiData: DataNode[] = [];
     ( props.data ?? Object.getOwnPropertyNames( EnumItemClassEnum ) ).forEach(
@@ -47,7 +56,9 @@ export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: Re
                         title: <Popover
                                 placement="bottomRight"
                                 trigger="contextMenu"
-                                content={<span>content</span>}
+                                content={<Menu>
+                                    <Menu.Item onClick={() => setModal( getAddModal( cls ) )}>Add {cls}</Menu.Item>
+                                </Menu>}
                                 title="actions">
                                     <span>
                                         {cls ? < cls.icon /> : null}{toTitleCase( cat )}
