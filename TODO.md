@@ -7,8 +7,8 @@
 - [ ] Try [animations](http://react-component.github.io/tween-one/)
 - [ ] Make use of additional linter: [tslint-react-hooks](https://www.npmjs.com/package/tslint-react-hooks) or `eslint-plugin-react-hooks`
   - [ ] Use the `exhaustive-deps` rule. It warns of incorrect dependencies
-- [x] fix enumerability of property accessors (getters/ setters)
 - [ ] `ItemSearch` should only search when input is entered.
+- [ ] Print List button should say "no labels in list" if there are none
 
 ## Table
 
@@ -24,48 +24,28 @@
   - [ ] Show image in table (of saved labels) (or `onMouseOver`)
   - [ ] button to directly add label to *Print List*
 
-- [ ] Print List button should say "no labels in list" if there are none
-
 ### For Consideration
 
 - [ ] Use Virtual List / Scrolling ; [see _"big data select"_ virtual scrolling && custom tag renderer](https://ant.design/components/select/#components-select-demo-big-data)
 - [ ] multi-column sort.
 - [ ] Nest dataIndex ["order", "date"]
 
+
 ## Item add / edit form
 
-- [x] changes to the unit made in `ScrewSizeInput` should be shown in the unit select as well and propogate to the entire form.
-- [x] Auto-create name
-- [ ] Edit form, Insert should be edit #URGENT
-- [x] closing form modal should return to `/item`
-- [x] clicking _Edit_ on an item in the table should:
-  - [x] use the `item/<id>/edit` url
-  - [x] pre-populate the form
-  - [x] load appropriate edit component, rather than add component
-- ~~ autocomplete `shaft_length` based on `head_type` and `length`~~
 - [ ] `drive_size` -> generated default
-- [x] Ensure required values
 - [ ] run form _verify_ on submit
-- [x] fix label send buffer
 - [ ] figure out how to store and display USC values (UNx), store as absolute diameter (in inches?) store as string? Both?
 - [ ] trailing 0 is removed when creating name in `ItemHardwareFastenerBolt` Form
 
 
 ## Drawing
 
-- [x] `QREditModal` needs to be completed
-  - [x] pick properties. checkbox ?
-  - [x] `onCancel` should remove `LabelQR` object from `Label`
-  - [x] As **SVG** ?
-- [ ] Print in modal leads to endless spooling (and can't print again)
-- [x] Multi-line text entry for labels
-- [x] Draggable right border for resizing label
-- [ ] Speed / Performance issues in `LabelDraw` modal ( see below )
-  - [ ] Async GraphQL ? - do not block Konva drawing
-- [x] Delete Label components with keyboard `[Delete]` ; see <https://konvajs.org/docs/events/Keyboard_Events.html>
 - [ ] clicking cancel in `DrawEditText` should remove the text from the label.
-- [ ] fix loading/listing of Item properties / fields in label create #URGENT
-  - [ ] Why doesn't `countersunk_height` work?
+- [ ] `QREditModal` - clicking cancel on a new QR code will remove the existing one
+- [ ] `QREditModal` - `JSON.stringify()` objects.
+- [ ] `QREditModal` - set a minimal default set of properties, or start blank.
+- [ ] Print in modal leads to endless spooling (and can't print again)
 
 
 - [ ] _maybe:_ Undo / Redo → <https://konvajs.org/docs/react/Undo-Redo.html>
@@ -75,10 +55,11 @@
   - [ ] undo with normal keyboard shortcuts: `Ctrl+Z` for undo ; `Ctrl+Y` for redo
 
 - [ ] context menu for text should allow size, decoration changes
-- [x] QR Code Strangeness upon first modal render. Something to do with the dragging code.
 
 ### Performance
 
+- [ ] Speed / Performance issues in `LabelDraw` modal ( see below )
+  - [ ] Async GraphQL ? - do not block Konva drawing
 - [ ] try `shape.draw` (not `layer.draw`) ; [Shape Redraw](https://konvajs.org/docs/performance/Shape_Redraw.html) ; side effects? OR seperate objects with layers, only the moved redraw (prefer shape.draw ) [Layer Management](https://konvajs.org/docs/performance/Layer_Management.html)
 - [ ] try disabling perfect drawing ( which just accounts for the width of the border in the overall size ) ; [Disabling Perfect Draw](https://konvajs.org/docs/performance/Disable_Perfect_Draw.html)
 - [ ] there are a bunch of repeated calls, debug this
@@ -143,3 +124,25 @@
   - [x] QR
   - [x] Image
 - [x] Format images properly in `EnumSelect`
+- [x] Delete Label components with keyboard `[Delete]` ; see <https://konvajs.org/docs/events/Keyboard_Events.html>
+- [x] fix loading/listing of Item properties / fields in label create
+  - [x] Why doesn't `countersunk_height` work?
+- [x] `QREditModal` needs to be completed
+  - [x] pick properties. checkbox ?
+  - [x] `onCancel` should remove `LabelQR` object from `Label`
+  - [x] As **SVG** ?
+- [x] Multi-line text entry for labels
+- [x] Draggable right border for resizing label
+- [x] QR Code Strangeness upon first modal render. Something to do with the dragging code.
+- [x] changes to the unit made in `ScrewSizeInput` should be shown in the unit select as well and propogate to the entire form.
+- [x] Auto-create name
+- [x] Edit form, Insert should be edit
+- [x] closing form modal should return to `/item`
+- [x] clicking _Edit_ on an item in the table should:
+  - [x] use the `item/<id>/edit` url
+  - [x] pre-populate the form
+  - [x] load appropriate edit component, rather than add component
+- ~~ autocomplete `shaft_length` based on `head_type` and `length`~~
+- [x] fix enumerability of property accessors (getters/ setters)
+- [x] Ensure required values
+- [x] fix label send buffer

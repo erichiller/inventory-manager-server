@@ -24,7 +24,6 @@
         outline: none;
     }
 }
-$alternateRow: #fafafa;
 .LabelPropertiesDescription {
     & .ant-descriptions-row {
         & th, td {
@@ -36,9 +35,6 @@ $alternateRow: #fafafa;
         }
     }
     & .ant-descriptions-row:nth-of-type(odd) {
-        background-color: $alternateRow;
-        // & .ant-descriptions-item-label {
-        //     background-color: $alternateRow;
-        // }
+        background-color: #fafafa;
     }
 }

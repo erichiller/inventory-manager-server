@@ -4,6 +4,7 @@ import { ItemTable } from '../components/item/ItemTable';
 import { LabelTable } from '../components/label/LabelTable';
 import { ItemIndex } from '../components/item/Index';
 import { ItemFormModal } from '../components/item/ItemFormModal';
+import { OrderTable } from '../components/order/OrderTable';
 
 type ReactFunctionComponent = ( ( route?: RouteEntry, match?: RouterMatch ) => JSX.Element );
 
@@ -56,6 +57,19 @@ export const routes: RouteEntry[] = [
         // ModeMenu: () => <ProjectModeMenu />,
         main: () => {
             return <LabelTable />;
+        }
+    },
+    {
+        title: "Orders",
+        subtitle: "View or add orders",
+        breadcrumbName: "Orders",
+        path: [ "/order", "/order/:order_id" ],
+        exact: true,
+        // AppMenuIcon: () => <Icon component={DiggingIcon as any} />,
+        // AppMenuEntry: () => <ProjectSubMenu key="ProjectsubMenu" />,
+        // ModeMenu: () => <ProjectModeMenu />,
+        main: () => {
+            return <OrderTable />;
         }
     },
 ];

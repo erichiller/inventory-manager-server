@@ -22082,6 +22082,15 @@ export type EditLabelMutation = (
   )> }
 );
 
+export type OrderFieldsFragment = (
+  { __typename?: 'order' }
+  & Pick<Order, 'vendor_order_id' | 'url' | 'total_cost' | 'tax_cost' | 'pon' | 'placed_date' | 'payment_method_id' | 'items_cost' | 'id' | 'fulfilled_date'>
+  & { vendor: (
+    { __typename?: 'vendor' }
+    & Pick<Vendor, 'name' | 'url'>
+  ) }
+);
+
 export type GetOrdersByDateRangeQueryVariables = {
   date_start_gte?: Maybe<Scalars['date']>;
   date_end_lte?: Maybe<Scalars['date']>;
@@ -22092,11 +22101,7 @@ export type GetOrdersByDateRangeQuery = (
   { __typename?: 'query_root' }
   & { order: Array<(
     { __typename?: 'order' }
-    & Pick<Order, 'vendor_order_id' | 'url' | 'total_cost' | 'tax_cost' | 'pon' | 'placed_date' | 'payment_method_id' | 'items_cost' | 'id' | 'fulfilled_date'>
-    & { vendor: (
-      { __typename?: 'vendor' }
-      & Pick<Vendor, 'name' | 'url'>
-    ) }
+    & OrderFieldsFragment
   )> }
 );
 
@@ -22127,6 +22132,17 @@ export type InsertOrderMutation = (
       { __typename?: 'order' }
       & Pick<Order, 'id'>
     )> }
+  )> }
+);
+
+export type GetOrdersQueryVariables = {};
+
+
+export type GetOrdersQuery = (
+  { __typename?: 'query_root' }
+  & { order: Array<(
+    { __typename?: 'order' }
+    & OrderFieldsFragment
   )> }
 );
 
@@ -22345,6 +22361,24 @@ export const LabelFieldsFragmentDoc = gql`
     id
     class
   }
+}
+    `;
+export const OrderFieldsFragmentDoc = gql`
+    fragment orderFields on order {
+  vendor_order_id
+  vendor {
+    name
+    url
+  }
+  url
+  total_cost
+  tax_cost
+  pon
+  placed_date
+  payment_method_id
+  items_cost
+  id
+  fulfilled_date
 }
     `;
 export const ItemFieldsFragmentDoc = gql`
@@ -22931,23 +22965,10 @@ export type EditLabelMutationOptions = ApolloReactCommon.BaseMutationOptions<Edi
 export const GetOrdersByDateRangeDocument = gql`
     query GetOrdersByDateRange($date_start_gte: date, $date_end_lte: date) {
   order(where: {placed_date: {_gte: $date_start_gte, _lte: $date_end_lte}}) {
-    vendor_order_id
-    vendor {
-      name
-      url
-    }
-    url
-    total_cost
-    tax_cost
-    pon
-    placed_date
-    payment_method_id
-    items_cost
-    id
-    fulfilled_date
+    ...orderFields
   }
 }
-    `;
+    ${OrderFieldsFragmentDoc}`;
 export type GetOrdersByDateRangeProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>
     } & TChildProps;
@@ -23049,6 +23070,51 @@ export function useInsertOrderMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type InsertOrderMutationHookResult = ReturnType<typeof useInsertOrderMutation>;
 export type InsertOrderMutationResult = ApolloReactCommon.MutationResult<InsertOrderMutation>;
 export type InsertOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertOrderMutation, InsertOrderMutationVariables>;
+export const GetOrdersDocument = gql`
+    query GetOrders {
+  order(order_by: {placed_date: asc}) {
+    ...orderFields
+  }
+}
+    ${OrderFieldsFragmentDoc}`;
+export type GetOrdersProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetOrdersQuery, GetOrdersQueryVariables>
+    } & TChildProps;
+export function withGetOrders<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetOrdersQuery,
+  GetOrdersQueryVariables,
+  GetOrdersProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetOrdersQuery, GetOrdersQueryVariables, GetOrdersProps<TChildProps, TDataName>>(GetOrdersDocument, {
+      alias: 'getOrders',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetOrdersQuery__
+ *
+ * To run a query within a React component, call `useGetOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrdersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetOrdersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetOrdersQuery, GetOrdersQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetOrdersQuery, GetOrdersQueryVariables>(GetOrdersDocument, baseOptions);
+      }
+export function useGetOrdersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetOrdersQuery, GetOrdersQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetOrdersQuery, GetOrdersQueryVariables>(GetOrdersDocument, baseOptions);
+        }
+export type GetOrdersQueryHookResult = ReturnType<typeof useGetOrdersQuery>;
+export type GetOrdersLazyQueryHookResult = ReturnType<typeof useGetOrdersLazyQuery>;
+export type GetOrdersQueryResult = ApolloReactCommon.QueryResult<GetOrdersQuery, GetOrdersQueryVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
   PrinterStatus {
@@ -23579,4 +23645,4 @@ export function useUpdateItemHardwareFastenerBoltMutation(baseOptions?: ApolloRe
 export type UpdateItemHardwareFastenerBoltMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerBoltMutation>;
 export type UpdateItemHardwareFastenerBoltMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerBoltMutation>;
 export type UpdateItemHardwareFastenerBoltMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerBoltMutation, UpdateItemHardwareFastenerBoltMutationVariables>;
-// graphql typescript defs generated on 2020-05-31T08:14:24-06:00
+// graphql typescript defs generated on 2020-06-01T09:58:43-06:00
