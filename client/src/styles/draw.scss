@@ -24,3 +24,21 @@
         outline: none;
     }
 }
+$alternateRow: #fafafa;
+.LabelPropertiesDescription {
+    & .ant-descriptions-row {
+        & th, td {
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+        & .ant-descriptions-item-label{
+            background-color: initial;
+        }
+    }
+    & .ant-descriptions-row:nth-of-type(odd) {
+        background-color: $alternateRow;
+        // & .ant-descriptions-item-label {
+        //     background-color: $alternateRow;
+        // }
+    }
+}

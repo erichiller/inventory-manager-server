@@ -5,7 +5,8 @@ import {
     ItemSelectColumn,
     GetItemQueryVariables,
     GetItemDocument,
-    GetItemQuery
+    GetItemQuery,
+    Scalars
 } from "../types/graphql";
 
 import { Integer } from '../types/uint8';
@@ -66,7 +67,7 @@ export type IconComponentT =
 
 export class Item<T extends GenericItem> {
     __typename: string;
-    id: Integer;
+    id: Scalars[ 'Int' ];
 
     private _name?: string;
     private _object: Object;
@@ -315,8 +316,12 @@ export class Item<T extends GenericItem> {
      * Optionally defined on subclasses
      */
     get labelProps (): Array<keyof T> {
-        return [ "name" ];
+        return Object.keys(this) as Array<keyof T>;
     }
+    // static get labelProps (): Array<string> {
+    //     console.log( {keysOfThisCls: Object.keys( this ), keysOfItemCls: Object.keys(Item) });
+    //     return Object.keys( this ) as Array<Extract<keyof GenericItem, string>>;
+    // }
     /**
      * Props to use as display columns (default)
      * Ordered
