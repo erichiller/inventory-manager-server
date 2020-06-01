@@ -401,6 +401,12 @@ export class Item<T extends GenericItem> {
         return null;
     }
     /**
+     * editFormInitialValues control what data is loaded into edit form upon render
+     */
+    get editFormInitialValues (): GenericItem {
+        return null;
+    }
+    /**
      * Single, detailed view
      */
     get detailComponent (): React.FC {

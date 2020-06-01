@@ -1,5 +1,5 @@
 import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'react';
-import { Form, Input, Divider, Tooltip, InputNumber, Switch } from 'antd';
+import { Form, Input, Divider, Tooltip, InputNumber, Switch, Select } from 'antd';
 // import { OptionsType } from 'rc-select/lib/Option';
 import { ItemFormProps } from '../Item';
 import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHandednessEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerBoltStrengthEnum, useGetEnumHardwareFastenerThreadStandardQuery, EnumHardwareUseMaterialEnum, EnumHardwareFastenerThreadLabelEnum } from '../../types/graphql';
@@ -19,6 +19,7 @@ import { ThreadDirection_RightHandRuleIcon } from './icon';
 import { QtyInput } from '../common/QtyInput';
 import { OrderInput } from '../../../components/order/OrderInput';
 import { DescriptionTableTooltip } from './formComponents/DescriptionTableTooltip';
+import { SelectValue } from 'antd/lib/select';
 
 
 interface ItemHardwareFastenerBoltFormProps extends Union<ItemFormProps, ItemHardwareFastenerBolt> {

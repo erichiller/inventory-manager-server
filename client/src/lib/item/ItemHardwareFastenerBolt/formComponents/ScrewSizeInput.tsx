@@ -1,7 +1,7 @@
 import { EnumUnitEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerThreadLabelEnum } from "../../../types/graphql";
 import { getUnitSystemFromUnitPrefix, getUnitPrefixAndDiameterFromOptionString, screwSizeRegex, getUnitPrefixFromUnitSystem } from "./helpers";
 import { UnitPrefixT, EnumUnitKeys } from "../types/types";
-import { SelectProps } from "antd/lib/select";
+import Select, { SelectProps, SelectValue } from "antd/lib/select";
 import React, { useState } from "react";
 import { AutoComplete, Input } from "antd";
 import { InputProps } from "antd/lib/input";
@@ -191,10 +191,10 @@ function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOpti
     return [];
 }
 const constructOptionValue = ( optionData: ScrewSizeInputOptionData ): string => {
-    console.log( { method: 'ScrewSizeInput', f: 'constructOptionValue', ...optionData } );
+    console.log( { method: 'ScrewSizeInput', f: 'constructOptionValue', optionData, calculatedPrefix: getUnitPrefixFromUnitSystem( optionData.unit ), unit: optionData.unit } );
     if ( !optionData ) { return null; }
     // const abbrevUnit = getPrefix( optionData.unit );
-    return `${ (optionData.prefix ?? getUnitPrefixFromUnitSystem(optionData.unit)).toUpperCase() }${ optionData.thread_diameter ?? '' }` +
+    return `${ optionData.prefix ? optionData.prefix.toUpperCase() : getUnitPrefixFromUnitSystem( optionData.unit ) }${ optionData.thread_diameter ?? '' }` +
         `${ optionData.thread_pitch ? `-${ optionData.thread_pitch }` : '' }` +
         `${ optionData.embedded_length ? `x${ optionData.embedded_length }` : '' }`;
 };
@@ -203,6 +203,7 @@ const constructOptionValue = ( optionData: ScrewSizeInputOptionData ): string =>
 
 
 interface ScrewSizeInputProps extends Omit<InputProps, 'value' | 'onChange'> {
+    // forwardRef?: React.MutableRefObject<Select<SelectValue>>;
     forwardRef?: React.MutableRefObject<Input>;
     unit: EnumUnitKeys;
     value?: ScrewSizeInputOptionData;
@@ -241,10 +242,11 @@ export const ScrewSizeInput: React.FC<ScrewSizeInputProps> = ( props ) => {
         // TODO: add ability to input fractions
         // TODO: add prefix as `backfill` 
         <React.Fragment>
-            <AutoComplete 
+            <AutoComplete
                 options={options}
                 onChange={( str, opt ) => handleSearch( str )}
-                defaultValue={'monkeys'}
+                {...( value ? { defaultValue: constructOptionValue( props.value )} : {}) }
+                // defaultValue={'monkeys'}
                 // defaultValue={constructOptionValue( props.value )}
                 >
                 <Input
