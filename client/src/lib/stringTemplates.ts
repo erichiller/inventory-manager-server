@@ -7,7 +7,7 @@
  * @returns { renderedString: string, wasModified: boolean } where `renderedString` is the new string with replacements applied and `wasModified` is set to true if any template strings were found
  */
 export function stringTemplateRender ( str: string, obj: object ): { renderedString: string; wasModified: boolean; } {
-    let parts = str.split( /({{([0-9a-zA-Z]*)}})/g );
+    let parts = str.split( /({{([0-9a-zA-Z_]*)}})/g );
     str = "";
     let is_template: boolean = false;
     let wasModified: boolean = false;
@@ -20,11 +20,11 @@ export function stringTemplateRender ( str: string, obj: object ): { renderedStr
                 is_template = false;
                 wasModified = true;
             }
-            // console.log( key, part );
+            // console.log( {cls: 'stringTemplateRender', key, part });
             str += part;
         }
     } );
-    // console.log( { str } )}
+    // console.log( { cls: 'stringTemplateRender', str } );
     return {
         renderedString: str,
         wasModified

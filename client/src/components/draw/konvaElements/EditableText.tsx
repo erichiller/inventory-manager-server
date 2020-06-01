@@ -61,7 +61,7 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
         console.log( "EditableText onSelect setSelectedShapeName", {e, name: e.target.name()} );
         props.setSelectedShapeName( e.target.name() );
     }
-
+    console.log( { class: 'EditableText', text: labelText.text, item, renderedString});
 
     return <React.Fragment>
         <Transformer

@@ -121,7 +121,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
         if ( props.item ) {
             console.log( { item, keys: Object.getOwnPropertyNames( item ) } );
             return <div>
-                {item.name}
+                <h1>{item.name}</h1>
                 <Descriptions className="LabelPropertiesDescription" title="Properties" column={1} bordered={true}>
                     {item.labelProps.map( key => {
                         key = key as string;
