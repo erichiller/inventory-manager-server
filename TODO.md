@@ -8,6 +8,7 @@
 - [ ] Make use of additional linter: [tslint-react-hooks](https://www.npmjs.com/package/tslint-react-hooks) or `eslint-plugin-react-hooks`
   - [ ] Use the `exhaustive-deps` rule. It warns of incorrect dependencies
 - [x] fix enumerability of property accessors (getters/ setters)
+- [ ] `ItemSearch` should only search when input is entered.
 
 ## Table
 
@@ -47,6 +48,7 @@
 - [ ] run form _verify_ on submit
 - [x] fix label send buffer
 - [ ] figure out how to store and display USC values (UNx), store as absolute diameter (in inches?) store as string? Both?
+- [ ] trailing 0 is removed when creating name in `ItemHardwareFastenerBolt` Form
 
 
 ## Drawing
