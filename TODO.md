@@ -12,6 +12,8 @@
 ## Table
 
 - [ ] Filter / search on table
+- [ ] customizable column renderer on Item ; ie. images/icons , `toTitleCase`, append unit, etc.
+- [ ] provide a column priority, so that some can be eliminated when in mobile mode.
 
 - [ ] Item data
   - [ ] Add Item form
@@ -35,15 +37,14 @@
 - [x] Auto-create name
 - [ ] Edit form, Insert should be edit #URGENT
 - [x] closing form modal should return to `/item`
-- [ ] clicking _Edit_ on an item in the table should:
+- [x] clicking _Edit_ on an item in the table should:
   - [x] use the `item/<id>/edit` url
-  - [ ] pre-populate the form
-  - [ ] load appropriate edit component, rather than add component
+  - [x] pre-populate the form
+  - [x] load appropriate edit component, rather than add component
 - ~~ autocomplete `shaft_length` based on `head_type` and `length`~~
 - [ ] `drive_size` -> generated default
 - [x] Ensure required values
 - [ ] run form _verify_ on submit
-- [ ] fix loading/listing of Item properties / fields in label create #URGENT
 - [x] fix label send buffer
 - [ ] figure out how to store and display USC values (UNx), store as absolute diameter (in inches?) store as string? Both?
 
@@ -60,6 +61,9 @@
 - [ ] Speed / Performance issues in `LabelDraw` modal ( see below )
   - [ ] Async GraphQL ? - do not block Konva drawing
 - [x] Delete Label components with keyboard `[Delete]` ; see <https://konvajs.org/docs/events/Keyboard_Events.html>
+- [ ] clicking cancel in `DrawEditText` should remove the text from the label.
+- [ ] fix loading/listing of Item properties / fields in label create #URGENT
+  - [ ] Why doesn't `countersunk_height` work?
 
 
 - [ ] _maybe:_ Undo / Redo → <https://konvajs.org/docs/react/Undo-Redo.html>

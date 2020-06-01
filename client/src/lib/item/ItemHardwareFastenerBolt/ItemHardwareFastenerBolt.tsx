@@ -94,7 +94,7 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
         return [ "Item", "Hardware", "Fastener", "Bolt" ];
     }
 
-    static get labelProps (): Array<keyof typeof ItemHardwareFastenerBoltSelectColumn> {
+    get labelProps (): Array<keyof typeof ItemHardwareFastenerBoltSelectColumn> {
         return Object.keys( ItemHardwareFastenerBoltSelectColumn ) as Array<keyof typeof ItemHardwareFastenerBoltSelectColumn>;
     }
 

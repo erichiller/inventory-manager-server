@@ -10,6 +10,7 @@ import { SendBufferButton } from "../print/SendBufferButton";
 import { visibleHandler } from "../item/ItemTable";
 import { Item } from "../../lib/item";
 import { StopOutlined, DatabaseOutlined, SaveOutlined } from "@ant-design/icons";
+import { toTitleCase } from "../../lib/UtilityFunctions";
 
 type LabelDrawModalProps = {
     visibleHandler: visibleHandler;
@@ -121,7 +122,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
             console.log( { item, keys: Object.getOwnPropertyNames( item ) } );
             return <div>
                 {item.name}
-                <Descriptions title="Properties" column={1} bordered={true}>
+                <Descriptions className="LabelPropertiesDescription" title="Properties" column={1} bordered={true}>
                     {item.labelProps.map( key => {
                         key = key as string;
                         let value = item[ key ];
@@ -130,7 +131,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                                                 typeof value === typeof {} ? `${JSON.stringify(value, null, 2)}` :
                                                 'error';
                             console.log( `property of item ${ key } = ${ value }` );
-                            return <Descriptions.Item key={key} label={key}><pre>{stringValue}</pre></Descriptions.Item>;
+                            return <Descriptions.Item key={key} label={toTitleCase(key)}><pre>{stringValue}</pre></Descriptions.Item>;
                         }
                     } )}
                 </Descriptions>
