@@ -45,15 +45,15 @@ export const ItemHardwareFastenerBoltEditMutationHandler: React.FC<FormMutationH
     }, [data, loading, error]);
 
 
-    useEffect( () => {
-        let initProps = {
-            screw_size: form.getFieldsValue()
-        };
-        // if ( !props.thread_direction ) {
-        //     initProps.thread_direction = EnumHandednessEnum.right;
-        // }
-        form.setFieldsValue( initProps );
-    } );
+    // useEffect( () => {
+    //     let initProps = {
+    //         screw_size: form.getFieldsValue()
+    //     };
+    //     // if ( !props.thread_direction ) {
+    //     //     initProps.thread_direction = EnumHandednessEnum.right;
+    //     // }
+    //     form.setFieldsValue( initProps );
+    // } );
 
     return null;
 };

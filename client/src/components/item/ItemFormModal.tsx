@@ -55,7 +55,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
         history.goBack();
     }
 
-    console.log( { item: props.item, "initialValues=": props.item ? props.item.simpleObject : {} })
+    console.log( { item: props.item, "initialValues=": props.item ? props.item.simpleObject : {} });
 
     return <Modal
         visible={true}
@@ -83,7 +83,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
                 console.log({ log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode });
                 if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
             }}
-            initialValues={props.item ? props.item.simpleObject : {}}
+            initialValues={props.item?.editFormInitialValues}
             onFieldsChange={onFieldsChange}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}

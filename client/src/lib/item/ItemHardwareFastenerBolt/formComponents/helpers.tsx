@@ -44,13 +44,13 @@ export function getUnitSystemFromUnitPrefix ( prefix: UnitPrefixT ): EnumUnitEnu
 /**
  * Convert Unit to its prefixed representation
  */
-export function getUnitPrefixFromUnitSystem ( unit: EnumUnitEnum ): UnitPrefixT {
+export function getUnitPrefixFromUnitSystem ( unit: EnumUnitEnum ): UnitPrefixT | '' {
     console.log( { func: 'getUnitPrefixFromUnitSystem', unit } );
     switch ( unit ) {
         case EnumUnitEnum.metric:
             return 'M';
         default:
-            return null;
+            return '';
     }
 }
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { Integer } from '../../types/uint8';
 import { HexBoltIcon } from '../../../styles/icon';
 import { ColumnProps } from 'antd/lib/table';
-import { toTitleCase, enumerable } from '../../UtilityFunctions';
+import { toTitleCase, enumerable, Union } from '../../UtilityFunctions';
 import { ItemHardwareFastenerBoltForm } from './Form';
 import { ItemHardwareFastenerBoltEditMutationHandler } from './Edit';
 import { ItemHardwareFastenerBoltAddMutationHandler } from './Add';
@@ -19,24 +19,23 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
     countersunk_angle?: Maybe<Scalars[ 'numeric' ]>;
     /** Any value here means it is countersunk; A value != the `head_height` means it is only partially countersunk */
     countersunk_height?: Maybe<Scalars[ 'numeric' ]>;
+    default_fields?: Maybe<Scalars[ 'jsonb' ]>;
     description?: Maybe<Scalars[ 'String' ]>;
-    drive_size: Scalars[ 'String' ];
+    drive_size?: Maybe<Scalars[ 'String' ]>;
     drive_type: EnumHardwareFastenerDriveEnum;
     /** This is what is typically stated as a fastener's length. Length of bolt that is within the material it is screwed into */
     embedded_length: Scalars[ 'numeric' ];
     /** Coating */
     finish?: Maybe<EnumHardwareFinishEnum>;
     hardness?: Maybe<EnumHardwareFastenerHardnessEnum>;
-    head_diameter: Scalars[ 'numeric' ];
-    head_height: Scalars[ 'numeric' ];
+    head_diameter?: Maybe<Scalars[ 'numeric' ]>;
+    head_height?: Maybe<Scalars[ 'numeric' ]>;
     head_type: EnumHardwareFastenerHeadEnum;
     id: Scalars[ 'Int' ];
     /** Material, such as Zinc coated steel or Stainless Steel */
     material?: Maybe<EnumHardwareFastenerMaterialEnum>;
-    name: Maybe<Scalars[ 'String' ]>;
+    name: Scalars[ 'String' ];
     point_type?: Maybe<EnumHardwareFastenerBoltPointEnum>;
-    /** length of the straight part of the thread */
-    shaft_length: Scalars[ 'numeric' ];
     /**
      * Specifications Met ; array of Organizations that certified this
      * Examples:
@@ -53,18 +52,16 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
     strength_class?: Maybe<EnumHardwareFastenerBoltStrengthEnum>;
     /** psi */
     tensile_strength?: Maybe<Scalars[ 'numeric' ]>;
-    thread_direction: EnumHandednessEnum;
+    /** ie. M3 or #6. Measure of the outer diameter. For US items, diameters smaller than ¼" get #<numbers> */
+    thread_diameter: Scalars[ 'numeric' ];
+    thread_direction?: Maybe<EnumHandednessEnum>;
     thread_fit?: Maybe<EnumHardwareFastenerBoltThreadFitEnum>;
+    thread_label?: Maybe<EnumHardwareFastenerThreadLabelEnum>;
     /** if fully threaded, this should be === `shaft_length` */
-    thread_length: Scalars[ 'numeric' ];
+    thread_length?: Maybe<Scalars[ 'numeric' ]>;
     /** TPI for usc, Pitch for metric ; ie. the 0.5 in M3 x 0.5 */
     thread_pitch: Scalars[ 'numeric' ];
-    /** ie. M3 or #6 */
-    thread_size: Scalars[ 'numeric' ];
-    /** iso, din, unc, unf, unef */
-    thread_standard?: Maybe<EnumHardwareFastenerThreadStandardEnum>;
-    /** coarse, fine, extra_fine */
-    thread_label?: Maybe<EnumHardwareFastenerThreadLabelEnum>;
+    thread_standard: EnumHardwareFastenerThreadStandardEnum;
     /** ENUM:Unit */
     unit: EnumUnitEnum;
     /** Material this fastener is meant to thread into. */
@@ -73,13 +70,13 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
     constructor ( props: ItemHardwareFastenerBoltGql | ItemGql ) {
         super( props as ItemHardwareFastenerBoltGql );
         // console.log({class: 'ItemHardwareFastenerBolt', method: 'constructor', props});
-        if ( Object.keys(props).includes('object') && (props as ItemGql).object ){
+        if ( Object.keys( props ).includes( 'object' ) && ( props as ItemGql ).object ) {
             // console.log( { class: 'ItemHardwareFastenerBolt', method: 'constructor', action: 'props contains "object"', props_object: (props as ItemGql).object } );
 
             Object.keys( ( props as ItemGql ).object ).forEach( key => {
                 // console.log( { class: 'ItemHardwareFastenerBolt', method: 'constructor', action: 'adding props to this', key } );
-                this[key] = (props as ItemGql).object[key];
-            });
+                this[ key ] = ( props as ItemGql ).object[ key ];
+            } );
         }
     }
     // specific props here;
@@ -123,7 +120,7 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
                     dataIndex: ItemHardwareFastenerBoltSelectColumn[ key ] ?? key,
                 };
             }
-            if ( typeof key === 'object'){
+            if ( typeof key === 'object' ) {
                 return key;
             }
 
@@ -146,6 +143,15 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
     }
     get editHandler (): React.FC<FormMutationHandler> {
         return ItemHardwareFastenerBoltEditMutationHandler;
+    }
+    get editFormInitialValues (): Union<ItemHardwareFastenerBoltGql, { screw_size: ItemHardwareFastenerBoltGql; }> {
+        return Object.assign(
+            {}, 
+            {
+                screw_size: this.simpleObject
+            },
+            this.simpleObject
+        );
     }
 }
 

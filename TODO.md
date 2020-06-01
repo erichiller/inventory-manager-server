@@ -45,6 +45,7 @@
 - [ ] run form _verify_ on submit
 - [ ] fix loading/listing of Item properties / fields in label create #URGENT
 - [x] fix label send buffer
+- [ ] figure out how to store and display USC values (UNx), store as absolute diameter (in inches?) store as string? Both?
 
 
 ## Drawing
