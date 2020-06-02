@@ -30,7 +30,7 @@ export const ItemSelect: React.FC<ItemSelectProps> = ( props ) => {
     const [ options, setOptions ] = useState<OptionT[]>( [] );
     const { data, loading, error } = useItemSearchQuery( {
         variables: {
-            search_text: searchText
+            search_text: `*${searchText}*`
         }
     } );
     useEffect( () => {
