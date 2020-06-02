@@ -2179,18 +2179,29 @@ export enum EnumHardwareFastenerDriveConstraint {
 export enum EnumHardwareFastenerDriveEnum {
   /** two dots equidistant and opposite each other from center */
   drilled_spanner = 'drilled_spanner',
+  /** Similar to Phillips, but less prove to cam-out. Has the notable advantage of working even without the correct drive size. */
+  frearson = 'frearson',
   /** external hex (use of crescent wrench) */
   hex = 'hex',
+  /** An external hex head with a slot. */
+  hex_slot = 'hex_slot',
   /** internal hex ( allen wrench ) */
   hex_socket = 'hex_socket',
   /** hex with center point preventing normal allen wrench tools from operating */
   hex_tamper_resistant = 'hex_tamper_resistant',
+  /** Installs with a normal slotted driver but can not be removed without special tools */
+  one_way = 'one_way',
+  /** X shaped drive. Abbreviated PH */
   phillips = 'phillips',
-  /** Aka: Regular, Flathead */
+  /** combination drive that has both Phillips and Slot drives */
+  phillips_slot = 'phillips_slot',
+  /** Similar to Phillips, but less prove to cam-out */
+  pozidriv = 'pozidriv',
+  /** Aka: Regular, Flathead. Abbreviated SL */
   slot = 'slot',
-  /** aka Robertson Square Drive */
+  /** aka Robertson Square Drive. Abbreviated SQ or SD */
   square = 'square',
-  /** aka star */
+  /** aka star, 6-pointed star */
   torx = 'torx',
   torx_plus = 'torx_plus',
   /** torx with center point preventing normal torx wrench tools from operating */
@@ -2519,16 +2530,35 @@ export enum EnumHardwareFastenerHeadConstraint {
 }
 
 export enum EnumHardwareFastenerHeadEnum {
+  /** A low-profile rounded head using a socket (Allen) drive */
   button = 'button',
+  /** A small cylindrical head using a socket (Allen) drive */
   cap = 'cap',
-  /** countersunk */
+  carriage = 'carriage',
+  /**
+   * A countersunk head with a flat top. 
+   * Abbreviated FH.
+   */
   flat = 'flat',
   flat_undercut = 'flat_undercut',
-  /** hexagonal, same as external hex drive */
+  /**
+   * hexagonal, same as external hex drive. 
+   * Abbreviated HH or HX
+   */
   hex = 'hex',
+  /** A hex head with a built in flange. */
+  hex_flanged = 'hex_flanged',
+  /** A countersunk head with a rounded top. Abbreviated OH or OV */
   oval = 'oval',
-  /** aka grub screw */
-  set = 'set'
+  /** A slightly rounded head with short vertical sides. Abbreviated PN. */
+  pan = 'pan',
+  /** A domed head. Abbreviated RH */
+  round = 'round',
+  /** aka grub screw. Machine screws with no head, only a socket (Allen) in the center of the shaft. Made for screwing all the way into holes. */
+  set = 'set',
+  timber = 'timber',
+  /** An extremely wide head with a rounded top */
+  truss = 'truss'
 }
 
 /** expression to compare columns of type enum_hardware_fastener_head_enum. All fields are combined with logical 'AND'. */
@@ -2692,19 +2722,26 @@ export enum EnumHardwareFastenerMaterialConstraint {
 }
 
 export enum EnumHardwareFastenerMaterialEnum {
+  /** Highly hardened and usually coated with Black Oxide and/or Oil which offer little corrosion resistance. */
+  alloy_steel = 'alloy_steel',
+  /** Aluminum is a light, soft, corrosion resistant metal. Like stainless steel, aluminum's corrosion resistance is inherent to the material. Therefore, scratches and nicks will not effect the corrosion resistance. */
   aluminum = 'aluminum',
+  /** Brass is an alloy of primarily copper and zinc. Brass is highly corrosion resistant and electrically conductive. However, its use as a fastener is somewhat limited due to its relative softness. It is used primarily for its appearance. */
   brass = 'brass',
   plastic = 'plastic',
   /** Often referred to as simply 'bronze' */
   silicon_bronze = 'silicon_bronze',
   /** Stainless Steel of Unknown Property */
   stainless_steel = 'stainless_steel',
-  /** 18-8 */
+  /** 18-8 refers to any stainless steel containing approximately 18% chromium and 8% nickel. This is the most common stainless designation for hardware.  */
   stainless_steel_18_8 = 'stainless_steel_18_8',
   /** Type 304 Stainless Steel */
   stainless_steel_304 = 'stainless_steel_304',
+  /** A highly corrosion resistant grade of stainless steel. Ideal in salt water and chlorine environments. More expensive than 18-8. */
   stainless_steel_316 = 'stainless_steel_316',
+  /** A stainless alloy that is harder than 18-8 stainless steel, but not as resistant to corrosion. */
   stainless_steel_410 = 'stainless_steel_410',
+  /** Steel is the most common fastener material. Steel fasteners are available plain as well as with various surface treatments such as zinc plating, galvanization, and chrome plating. See Strengths. (Grades and Classes) */
   steel = 'steel',
   titanium = 'titanium'
 }
@@ -3895,6 +3932,8 @@ export enum EnumHardwareFastenerWasherFormEnum {
   lock = 'lock',
   /** Thick, large diameter, cast iron washers with a curved or sculpted appearance. Typically used in dock and wood construction. */
   ogee = 'ogee',
+  /** A neoprene washer bonded to a metal backing. Used to seal out air/water or dampen noise and vibration. */
+  sealing = 'sealing',
   square = 'square'
 }
 
@@ -4393,13 +4432,21 @@ export enum EnumHardwareFinishEnum {
   blue_dyed = 'blue_dyed',
   cadmium_plated = 'cadmium_plated',
   /** Fasteners are chrome plated and polished for appearance. Chrome plating provides similar corrosion resistance to zinc plating. */
-  chrome = 'chrome',
-  /** Galvanizing is another coating involving the application of a layer of zinc. Hot dip galvanizing puts the thickest possible coating on the metal, resulting in superior corrosion resistance. */
+  chrome_plated = 'chrome_plated',
+  /**
+   * Galvanizing is another coating involving the application of a layer of zinc. Hot dip galvanizing puts the thickest possible coating on the metal, resulting in superior corrosion resistance.
+   * Because of the thick coating, only galvanized nuts and washers will fit. Typically a rough, dull gray.
+   */
   hot_dip_galvanized = 'hot_dip_galvanized',
+  /** Moderate corrosion resistance similar to Zinc-plated */
+  nickel_plated = 'nickel_plated',
   painted = 'painted',
   passivated = 'passivated',
   ptfe_coated = 'ptfe_coated',
-  /** electroplated with zinc for better corrosion resistance. */
+  /**
+   * electroplated with zinc for moderate corrosion resistance suitable for (dry) indoor use. 
+   * Can be either blue or yellow tinted depending on the process.
+   */
   zinc_plated = 'zinc_plated'
 }
 
@@ -7252,6 +7299,1085 @@ export type ItemBundleVarianceOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
+/**
+ * A cable consists of one or more sheathed wires
+ * 
+ * 
+ * columns and relationships of "item.cable"
+ */
+export type ItemCable = {
+  __typename?: 'item_cable';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
+/** aggregated selection of "item.cable" */
+export type ItemCableAggregate = {
+  __typename?: 'item_cable_aggregate';
+  aggregate?: Maybe<ItemCableAggregateFields>;
+  nodes: Array<ItemCable>;
+};
+
+/** aggregate fields of "item.cable" */
+export type ItemCableAggregateFields = {
+  __typename?: 'item_cable_aggregate_fields';
+  avg?: Maybe<ItemCableAvgFields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<ItemCableMaxFields>;
+  min?: Maybe<ItemCableMinFields>;
+  stddev?: Maybe<ItemCableStddevFields>;
+  stddev_pop?: Maybe<ItemCableStddevPopFields>;
+  stddev_samp?: Maybe<ItemCableStddevSampFields>;
+  sum?: Maybe<ItemCableSumFields>;
+  var_pop?: Maybe<ItemCableVarPopFields>;
+  var_samp?: Maybe<ItemCableVarSampFields>;
+  variance?: Maybe<ItemCableVarianceFields>;
+};
+
+
+/** aggregate fields of "item.cable" */
+export type ItemCableAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<ItemCableSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "item.cable" */
+export type ItemCableAggregateOrderBy = {
+  avg?: Maybe<ItemCableAvgOrderBy>;
+  count?: Maybe<OrderBy>;
+  max?: Maybe<ItemCableMaxOrderBy>;
+  min?: Maybe<ItemCableMinOrderBy>;
+  stddev?: Maybe<ItemCableStddevOrderBy>;
+  stddev_pop?: Maybe<ItemCableStddevPopOrderBy>;
+  stddev_samp?: Maybe<ItemCableStddevSampOrderBy>;
+  sum?: Maybe<ItemCableSumOrderBy>;
+  var_pop?: Maybe<ItemCableVarPopOrderBy>;
+  var_samp?: Maybe<ItemCableVarSampOrderBy>;
+  variance?: Maybe<ItemCableVarianceOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "item.cable" */
+export type ItemCableArrRelInsertInput = {
+  data: Array<ItemCableInsertInput>;
+  on_conflict?: Maybe<ItemCableOnConflict>;
+};
+
+/** aggregate avg on columns */
+export type ItemCableAvgFields = {
+  __typename?: 'item_cable_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "item.cable" */
+export type ItemCableAvgOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "item.cable". All fields are combined with a logical 'AND'. */
+export type ItemCableBoolExp = {
+  _and?: Maybe<Array<Maybe<ItemCableBoolExp>>>;
+  _not?: Maybe<ItemCableBoolExp>;
+  _or?: Maybe<Array<Maybe<ItemCableBoolExp>>>;
+  id?: Maybe<IntComparisonExp>;
+  name?: Maybe<StringComparisonExp>;
+};
+
+/**
+ * electrically conductive cables (cables consist of multiple wires) 
+ * 
+ * 
+ * columns and relationships of "item_cable.conductive"
+ */
+export type ItemCableConductive = {
+  __typename?: 'item_cable_conductive';
+  cable_diameter?: Maybe<Scalars['numeric']>;
+  cable_sheath_material?: Maybe<Scalars['String']>;
+  conductor_count: Scalars['Int'];
+  conductor_diameter?: Maybe<Scalars['numeric']>;
+  conductor_diameter_label?: Maybe<Scalars['String']>;
+  conductor_material?: Maybe<Scalars['String']>;
+  conductor_sheath_material?: Maybe<Scalars['String']>;
+  connector_a: Scalars['String'];
+  connector_b: Scalars['String'];
+  connector_extra?: Maybe<Scalars['jsonb']>;
+  fire_rating?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  length?: Maybe<Scalars['numeric']>;
+  max_frequency?: Maybe<Scalars['Int']>;
+  name: Scalars['String'];
+  sheath_max_temperature?: Maybe<Scalars['numeric']>;
+  sheath_type?: Maybe<Scalars['String']>;
+  shield_material?: Maybe<Scalars['String']>;
+  smoke_rating?: Maybe<Scalars['String']>;
+  standards_met?: Maybe<Scalars['jsonb']>;
+  strand_count?: Maybe<Scalars['Int']>;
+  unit: EnumUnitEnum;
+};
+
+
+/**
+ * electrically conductive cables (cables consist of multiple wires) 
+ * 
+ * 
+ * columns and relationships of "item_cable.conductive"
+ */
+export type ItemCableConductiveConnectorExtraArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+
+/**
+ * electrically conductive cables (cables consist of multiple wires) 
+ * 
+ * 
+ * columns and relationships of "item_cable.conductive"
+ */
+export type ItemCableConductiveStandardsMetArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "item_cable.conductive" */
+export type ItemCableConductiveAggregate = {
+  __typename?: 'item_cable_conductive_aggregate';
+  aggregate?: Maybe<ItemCableConductiveAggregateFields>;
+  nodes: Array<ItemCableConductive>;
+};
+
+/** aggregate fields of "item_cable.conductive" */
+export type ItemCableConductiveAggregateFields = {
+  __typename?: 'item_cable_conductive_aggregate_fields';
+  avg?: Maybe<ItemCableConductiveAvgFields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<ItemCableConductiveMaxFields>;
+  min?: Maybe<ItemCableConductiveMinFields>;
+  stddev?: Maybe<ItemCableConductiveStddevFields>;
+  stddev_pop?: Maybe<ItemCableConductiveStddevPopFields>;
+  stddev_samp?: Maybe<ItemCableConductiveStddevSampFields>;
+  sum?: Maybe<ItemCableConductiveSumFields>;
+  var_pop?: Maybe<ItemCableConductiveVarPopFields>;
+  var_samp?: Maybe<ItemCableConductiveVarSampFields>;
+  variance?: Maybe<ItemCableConductiveVarianceFields>;
+};
+
+
+/** aggregate fields of "item_cable.conductive" */
+export type ItemCableConductiveAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<ItemCableConductiveSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "item_cable.conductive" */
+export type ItemCableConductiveAggregateOrderBy = {
+  avg?: Maybe<ItemCableConductiveAvgOrderBy>;
+  count?: Maybe<OrderBy>;
+  max?: Maybe<ItemCableConductiveMaxOrderBy>;
+  min?: Maybe<ItemCableConductiveMinOrderBy>;
+  stddev?: Maybe<ItemCableConductiveStddevOrderBy>;
+  stddev_pop?: Maybe<ItemCableConductiveStddevPopOrderBy>;
+  stddev_samp?: Maybe<ItemCableConductiveStddevSampOrderBy>;
+  sum?: Maybe<ItemCableConductiveSumOrderBy>;
+  var_pop?: Maybe<ItemCableConductiveVarPopOrderBy>;
+  var_samp?: Maybe<ItemCableConductiveVarSampOrderBy>;
+  variance?: Maybe<ItemCableConductiveVarianceOrderBy>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type ItemCableConductiveAppendInput = {
+  connector_extra?: Maybe<Scalars['jsonb']>;
+  standards_met?: Maybe<Scalars['jsonb']>;
+};
+
+/** input type for inserting array relation for remote table "item_cable.conductive" */
+export type ItemCableConductiveArrRelInsertInput = {
+  data: Array<ItemCableConductiveInsertInput>;
+  on_conflict?: Maybe<ItemCableConductiveOnConflict>;
+};
+
+/** aggregate avg on columns */
+export type ItemCableConductiveAvgFields = {
+  __typename?: 'item_cable_conductive_avg_fields';
+  cable_diameter?: Maybe<Scalars['Float']>;
+  conductor_count?: Maybe<Scalars['Float']>;
+  conductor_diameter?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  length?: Maybe<Scalars['Float']>;
+  max_frequency?: Maybe<Scalars['Float']>;
+  sheath_max_temperature?: Maybe<Scalars['Float']>;
+  strand_count?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "item_cable.conductive" */
+export type ItemCableConductiveAvgOrderBy = {
+  cable_diameter?: Maybe<OrderBy>;
+  conductor_count?: Maybe<OrderBy>;
+  conductor_diameter?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  length?: Maybe<OrderBy>;
+  max_frequency?: Maybe<OrderBy>;
+  sheath_max_temperature?: Maybe<OrderBy>;
+  strand_count?: Maybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "item_cable.conductive". All fields are combined with a logical 'AND'. */
+export type ItemCableConductiveBoolExp = {
+  _and?: Maybe<Array<Maybe<ItemCableConductiveBoolExp>>>;
+  _not?: Maybe<ItemCableConductiveBoolExp>;
+  _or?: Maybe<Array<Maybe<ItemCableConductiveBoolExp>>>;
+  cable_diameter?: Maybe<NumericComparisonExp>;
+  cable_sheath_material?: Maybe<StringComparisonExp>;
+  conductor_count?: Maybe<IntComparisonExp>;
+  conductor_diameter?: Maybe<NumericComparisonExp>;
+  conductor_diameter_label?: Maybe<StringComparisonExp>;
+  conductor_material?: Maybe<StringComparisonExp>;
+  conductor_sheath_material?: Maybe<StringComparisonExp>;
+  connector_a?: Maybe<StringComparisonExp>;
+  connector_b?: Maybe<StringComparisonExp>;
+  connector_extra?: Maybe<JsonbComparisonExp>;
+  fire_rating?: Maybe<StringComparisonExp>;
+  id?: Maybe<IntComparisonExp>;
+  length?: Maybe<NumericComparisonExp>;
+  max_frequency?: Maybe<IntComparisonExp>;
+  name?: Maybe<StringComparisonExp>;
+  sheath_max_temperature?: Maybe<NumericComparisonExp>;
+  sheath_type?: Maybe<StringComparisonExp>;
+  shield_material?: Maybe<StringComparisonExp>;
+  smoke_rating?: Maybe<StringComparisonExp>;
+  standards_met?: Maybe<JsonbComparisonExp>;
+  strand_count?: Maybe<IntComparisonExp>;
+  unit?: Maybe<EnumUnitEnumComparisonExp>;
+};
+
+/** unique or primary key constraints on table "item_cable.conductive" */
+export enum ItemCableConductiveConstraint {
+  /** unique or primary key constraint */
+  conductive_pkey = 'conductive_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type ItemCableConductiveDeleteAtPathInput = {
+  connector_extra?: Maybe<Array<Maybe<Scalars['String']>>>;
+  standards_met?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type ItemCableConductiveDeleteElemInput = {
+  connector_extra?: Maybe<Scalars['Int']>;
+  standards_met?: Maybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type ItemCableConductiveDeleteKeyInput = {
+  connector_extra?: Maybe<Scalars['String']>;
+  standards_met?: Maybe<Scalars['String']>;
+};
+
+/** input type for incrementing integer column in table "item_cable.conductive" */
+export type ItemCableConductiveIncInput = {
+  cable_diameter?: Maybe<Scalars['numeric']>;
+  conductor_count?: Maybe<Scalars['Int']>;
+  conductor_diameter?: Maybe<Scalars['numeric']>;
+  id?: Maybe<Scalars['Int']>;
+  length?: Maybe<Scalars['numeric']>;
+  max_frequency?: Maybe<Scalars['Int']>;
+  sheath_max_temperature?: Maybe<Scalars['numeric']>;
+  strand_count?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "item_cable.conductive" */
+export type ItemCableConductiveInsertInput = {
+  cable_diameter?: Maybe<Scalars['numeric']>;
+  cable_sheath_material?: Maybe<Scalars['String']>;
+  conductor_count?: Maybe<Scalars['Int']>;
+  conductor_diameter?: Maybe<Scalars['numeric']>;
+  conductor_diameter_label?: Maybe<Scalars['String']>;
+  conductor_material?: Maybe<Scalars['String']>;
+  conductor_sheath_material?: Maybe<Scalars['String']>;
+  connector_a?: Maybe<Scalars['String']>;
+  connector_b?: Maybe<Scalars['String']>;
+  connector_extra?: Maybe<Scalars['jsonb']>;
+  fire_rating?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  length?: Maybe<Scalars['numeric']>;
+  max_frequency?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  sheath_max_temperature?: Maybe<Scalars['numeric']>;
+  sheath_type?: Maybe<Scalars['String']>;
+  shield_material?: Maybe<Scalars['String']>;
+  smoke_rating?: Maybe<Scalars['String']>;
+  standards_met?: Maybe<Scalars['jsonb']>;
+  strand_count?: Maybe<Scalars['Int']>;
+  unit?: Maybe<EnumUnitEnum>;
+};
+
+/** aggregate max on columns */
+export type ItemCableConductiveMaxFields = {
+  __typename?: 'item_cable_conductive_max_fields';
+  cable_diameter?: Maybe<Scalars['numeric']>;
+  cable_sheath_material?: Maybe<Scalars['String']>;
+  conductor_count?: Maybe<Scalars['Int']>;
+  conductor_diameter?: Maybe<Scalars['numeric']>;
+  conductor_diameter_label?: Maybe<Scalars['String']>;
+  conductor_material?: Maybe<Scalars['String']>;
+  conductor_sheath_material?: Maybe<Scalars['String']>;
+  connector_a?: Maybe<Scalars['String']>;
+  connector_b?: Maybe<Scalars['String']>;
+  fire_rating?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  length?: Maybe<Scalars['numeric']>;
+  max_frequency?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  sheath_max_temperature?: Maybe<Scalars['numeric']>;
+  sheath_type?: Maybe<Scalars['String']>;
+  shield_material?: Maybe<Scalars['String']>;
+  smoke_rating?: Maybe<Scalars['String']>;
+  strand_count?: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "item_cable.conductive" */
+export type ItemCableConductiveMaxOrderBy = {
+  cable_diameter?: Maybe<OrderBy>;
+  cable_sheath_material?: Maybe<OrderBy>;
+  conductor_count?: Maybe<OrderBy>;
+  conductor_diameter?: Maybe<OrderBy>;
+  conductor_diameter_label?: Maybe<OrderBy>;
+  conductor_material?: Maybe<OrderBy>;
+  conductor_sheath_material?: Maybe<OrderBy>;
+  connector_a?: Maybe<OrderBy>;
+  connector_b?: Maybe<OrderBy>;
+  fire_rating?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  length?: Maybe<OrderBy>;
+  max_frequency?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+  sheath_max_temperature?: Maybe<OrderBy>;
+  sheath_type?: Maybe<OrderBy>;
+  shield_material?: Maybe<OrderBy>;
+  smoke_rating?: Maybe<OrderBy>;
+  strand_count?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type ItemCableConductiveMinFields = {
+  __typename?: 'item_cable_conductive_min_fields';
+  cable_diameter?: Maybe<Scalars['numeric']>;
+  cable_sheath_material?: Maybe<Scalars['String']>;
+  conductor_count?: Maybe<Scalars['Int']>;
+  conductor_diameter?: Maybe<Scalars['numeric']>;
+  conductor_diameter_label?: Maybe<Scalars['String']>;
+  conductor_material?: Maybe<Scalars['String']>;
+  conductor_sheath_material?: Maybe<Scalars['String']>;
+  connector_a?: Maybe<Scalars['String']>;
+  connector_b?: Maybe<Scalars['String']>;
+  fire_rating?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  length?: Maybe<Scalars['numeric']>;
+  max_frequency?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  sheath_max_temperature?: Maybe<Scalars['numeric']>;
+  sheath_type?: Maybe<Scalars['String']>;
+  shield_material?: Maybe<Scalars['String']>;
+  smoke_rating?: Maybe<Scalars['String']>;
+  strand_count?: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "item_cable.conductive" */
+export type ItemCableConductiveMinOrderBy = {
+  cable_diameter?: Maybe<OrderBy>;
+  cable_sheath_material?: Maybe<OrderBy>;
+  conductor_count?: Maybe<OrderBy>;
+  conductor_diameter?: Maybe<OrderBy>;
+  conductor_diameter_label?: Maybe<OrderBy>;
+  conductor_material?: Maybe<OrderBy>;
+  conductor_sheath_material?: Maybe<OrderBy>;
+  connector_a?: Maybe<OrderBy>;
+  connector_b?: Maybe<OrderBy>;
+  fire_rating?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  length?: Maybe<OrderBy>;
+  max_frequency?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+  sheath_max_temperature?: Maybe<OrderBy>;
+  sheath_type?: Maybe<OrderBy>;
+  shield_material?: Maybe<OrderBy>;
+  smoke_rating?: Maybe<OrderBy>;
+  strand_count?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "item_cable.conductive" */
+export type ItemCableConductiveMutationResponse = {
+  __typename?: 'item_cable_conductive_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<ItemCableConductive>;
+};
+
+/** input type for inserting object relation for remote table "item_cable.conductive" */
+export type ItemCableConductiveObjRelInsertInput = {
+  data: ItemCableConductiveInsertInput;
+  on_conflict?: Maybe<ItemCableConductiveOnConflict>;
+};
+
+/** on conflict condition type for table "item_cable.conductive" */
+export type ItemCableConductiveOnConflict = {
+  constraint: ItemCableConductiveConstraint;
+  update_columns: Array<ItemCableConductiveUpdateColumn>;
+  where?: Maybe<ItemCableConductiveBoolExp>;
+};
+
+/** ordering options when selecting data from "item_cable.conductive" */
+export type ItemCableConductiveOrderBy = {
+  cable_diameter?: Maybe<OrderBy>;
+  cable_sheath_material?: Maybe<OrderBy>;
+  conductor_count?: Maybe<OrderBy>;
+  conductor_diameter?: Maybe<OrderBy>;
+  conductor_diameter_label?: Maybe<OrderBy>;
+  conductor_material?: Maybe<OrderBy>;
+  conductor_sheath_material?: Maybe<OrderBy>;
+  connector_a?: Maybe<OrderBy>;
+  connector_b?: Maybe<OrderBy>;
+  connector_extra?: Maybe<OrderBy>;
+  fire_rating?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  length?: Maybe<OrderBy>;
+  max_frequency?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+  sheath_max_temperature?: Maybe<OrderBy>;
+  sheath_type?: Maybe<OrderBy>;
+  shield_material?: Maybe<OrderBy>;
+  smoke_rating?: Maybe<OrderBy>;
+  standards_met?: Maybe<OrderBy>;
+  strand_count?: Maybe<OrderBy>;
+  unit?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "item_cable.conductive" */
+export type ItemCableConductivePkColumnsInput = {
+  id: Scalars['Int'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type ItemCableConductivePrependInput = {
+  connector_extra?: Maybe<Scalars['jsonb']>;
+  standards_met?: Maybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "item_cable.conductive" */
+export enum ItemCableConductiveSelectColumn {
+  /** column name */
+  cable_diameter = 'cable_diameter',
+  /** column name */
+  cable_sheath_material = 'cable_sheath_material',
+  /** column name */
+  conductor_count = 'conductor_count',
+  /** column name */
+  conductor_diameter = 'conductor_diameter',
+  /** column name */
+  conductor_diameter_label = 'conductor_diameter_label',
+  /** column name */
+  conductor_material = 'conductor_material',
+  /** column name */
+  conductor_sheath_material = 'conductor_sheath_material',
+  /** column name */
+  connector_a = 'connector_a',
+  /** column name */
+  connector_b = 'connector_b',
+  /** column name */
+  connector_extra = 'connector_extra',
+  /** column name */
+  fire_rating = 'fire_rating',
+  /** column name */
+  id = 'id',
+  /** column name */
+  length = 'length',
+  /** column name */
+  max_frequency = 'max_frequency',
+  /** column name */
+  name = 'name',
+  /** column name */
+  sheath_max_temperature = 'sheath_max_temperature',
+  /** column name */
+  sheath_type = 'sheath_type',
+  /** column name */
+  shield_material = 'shield_material',
+  /** column name */
+  smoke_rating = 'smoke_rating',
+  /** column name */
+  standards_met = 'standards_met',
+  /** column name */
+  strand_count = 'strand_count',
+  /** column name */
+  unit = 'unit'
+}
+
+/** input type for updating data in table "item_cable.conductive" */
+export type ItemCableConductiveSetInput = {
+  cable_diameter?: Maybe<Scalars['numeric']>;
+  cable_sheath_material?: Maybe<Scalars['String']>;
+  conductor_count?: Maybe<Scalars['Int']>;
+  conductor_diameter?: Maybe<Scalars['numeric']>;
+  conductor_diameter_label?: Maybe<Scalars['String']>;
+  conductor_material?: Maybe<Scalars['String']>;
+  conductor_sheath_material?: Maybe<Scalars['String']>;
+  connector_a?: Maybe<Scalars['String']>;
+  connector_b?: Maybe<Scalars['String']>;
+  connector_extra?: Maybe<Scalars['jsonb']>;
+  fire_rating?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  length?: Maybe<Scalars['numeric']>;
+  max_frequency?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  sheath_max_temperature?: Maybe<Scalars['numeric']>;
+  sheath_type?: Maybe<Scalars['String']>;
+  shield_material?: Maybe<Scalars['String']>;
+  smoke_rating?: Maybe<Scalars['String']>;
+  standards_met?: Maybe<Scalars['jsonb']>;
+  strand_count?: Maybe<Scalars['Int']>;
+  unit?: Maybe<EnumUnitEnum>;
+};
+
+/** aggregate stddev on columns */
+export type ItemCableConductiveStddevFields = {
+  __typename?: 'item_cable_conductive_stddev_fields';
+  cable_diameter?: Maybe<Scalars['Float']>;
+  conductor_count?: Maybe<Scalars['Float']>;
+  conductor_diameter?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  length?: Maybe<Scalars['Float']>;
+  max_frequency?: Maybe<Scalars['Float']>;
+  sheath_max_temperature?: Maybe<Scalars['Float']>;
+  strand_count?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "item_cable.conductive" */
+export type ItemCableConductiveStddevOrderBy = {
+  cable_diameter?: Maybe<OrderBy>;
+  conductor_count?: Maybe<OrderBy>;
+  conductor_diameter?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  length?: Maybe<OrderBy>;
+  max_frequency?: Maybe<OrderBy>;
+  sheath_max_temperature?: Maybe<OrderBy>;
+  strand_count?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ItemCableConductiveStddevPopFields = {
+  __typename?: 'item_cable_conductive_stddev_pop_fields';
+  cable_diameter?: Maybe<Scalars['Float']>;
+  conductor_count?: Maybe<Scalars['Float']>;
+  conductor_diameter?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  length?: Maybe<Scalars['Float']>;
+  max_frequency?: Maybe<Scalars['Float']>;
+  sheath_max_temperature?: Maybe<Scalars['Float']>;
+  strand_count?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "item_cable.conductive" */
+export type ItemCableConductiveStddevPopOrderBy = {
+  cable_diameter?: Maybe<OrderBy>;
+  conductor_count?: Maybe<OrderBy>;
+  conductor_diameter?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  length?: Maybe<OrderBy>;
+  max_frequency?: Maybe<OrderBy>;
+  sheath_max_temperature?: Maybe<OrderBy>;
+  strand_count?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ItemCableConductiveStddevSampFields = {
+  __typename?: 'item_cable_conductive_stddev_samp_fields';
+  cable_diameter?: Maybe<Scalars['Float']>;
+  conductor_count?: Maybe<Scalars['Float']>;
+  conductor_diameter?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  length?: Maybe<Scalars['Float']>;
+  max_frequency?: Maybe<Scalars['Float']>;
+  sheath_max_temperature?: Maybe<Scalars['Float']>;
+  strand_count?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "item_cable.conductive" */
+export type ItemCableConductiveStddevSampOrderBy = {
+  cable_diameter?: Maybe<OrderBy>;
+  conductor_count?: Maybe<OrderBy>;
+  conductor_diameter?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  length?: Maybe<OrderBy>;
+  max_frequency?: Maybe<OrderBy>;
+  sheath_max_temperature?: Maybe<OrderBy>;
+  strand_count?: Maybe<OrderBy>;
+};
+
+/** aggregate sum on columns */
+export type ItemCableConductiveSumFields = {
+  __typename?: 'item_cable_conductive_sum_fields';
+  cable_diameter?: Maybe<Scalars['numeric']>;
+  conductor_count?: Maybe<Scalars['Int']>;
+  conductor_diameter?: Maybe<Scalars['numeric']>;
+  id?: Maybe<Scalars['Int']>;
+  length?: Maybe<Scalars['numeric']>;
+  max_frequency?: Maybe<Scalars['Int']>;
+  sheath_max_temperature?: Maybe<Scalars['numeric']>;
+  strand_count?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "item_cable.conductive" */
+export type ItemCableConductiveSumOrderBy = {
+  cable_diameter?: Maybe<OrderBy>;
+  conductor_count?: Maybe<OrderBy>;
+  conductor_diameter?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  length?: Maybe<OrderBy>;
+  max_frequency?: Maybe<OrderBy>;
+  sheath_max_temperature?: Maybe<OrderBy>;
+  strand_count?: Maybe<OrderBy>;
+};
+
+/** update columns of table "item_cable.conductive" */
+export enum ItemCableConductiveUpdateColumn {
+  /** column name */
+  cable_diameter = 'cable_diameter',
+  /** column name */
+  cable_sheath_material = 'cable_sheath_material',
+  /** column name */
+  conductor_count = 'conductor_count',
+  /** column name */
+  conductor_diameter = 'conductor_diameter',
+  /** column name */
+  conductor_diameter_label = 'conductor_diameter_label',
+  /** column name */
+  conductor_material = 'conductor_material',
+  /** column name */
+  conductor_sheath_material = 'conductor_sheath_material',
+  /** column name */
+  connector_a = 'connector_a',
+  /** column name */
+  connector_b = 'connector_b',
+  /** column name */
+  connector_extra = 'connector_extra',
+  /** column name */
+  fire_rating = 'fire_rating',
+  /** column name */
+  id = 'id',
+  /** column name */
+  length = 'length',
+  /** column name */
+  max_frequency = 'max_frequency',
+  /** column name */
+  name = 'name',
+  /** column name */
+  sheath_max_temperature = 'sheath_max_temperature',
+  /** column name */
+  sheath_type = 'sheath_type',
+  /** column name */
+  shield_material = 'shield_material',
+  /** column name */
+  smoke_rating = 'smoke_rating',
+  /** column name */
+  standards_met = 'standards_met',
+  /** column name */
+  strand_count = 'strand_count',
+  /** column name */
+  unit = 'unit'
+}
+
+/** aggregate var_pop on columns */
+export type ItemCableConductiveVarPopFields = {
+  __typename?: 'item_cable_conductive_var_pop_fields';
+  cable_diameter?: Maybe<Scalars['Float']>;
+  conductor_count?: Maybe<Scalars['Float']>;
+  conductor_diameter?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  length?: Maybe<Scalars['Float']>;
+  max_frequency?: Maybe<Scalars['Float']>;
+  sheath_max_temperature?: Maybe<Scalars['Float']>;
+  strand_count?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "item_cable.conductive" */
+export type ItemCableConductiveVarPopOrderBy = {
+  cable_diameter?: Maybe<OrderBy>;
+  conductor_count?: Maybe<OrderBy>;
+  conductor_diameter?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  length?: Maybe<OrderBy>;
+  max_frequency?: Maybe<OrderBy>;
+  sheath_max_temperature?: Maybe<OrderBy>;
+  strand_count?: Maybe<OrderBy>;
+};
+
+/** aggregate var_samp on columns */
+export type ItemCableConductiveVarSampFields = {
+  __typename?: 'item_cable_conductive_var_samp_fields';
+  cable_diameter?: Maybe<Scalars['Float']>;
+  conductor_count?: Maybe<Scalars['Float']>;
+  conductor_diameter?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  length?: Maybe<Scalars['Float']>;
+  max_frequency?: Maybe<Scalars['Float']>;
+  sheath_max_temperature?: Maybe<Scalars['Float']>;
+  strand_count?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "item_cable.conductive" */
+export type ItemCableConductiveVarSampOrderBy = {
+  cable_diameter?: Maybe<OrderBy>;
+  conductor_count?: Maybe<OrderBy>;
+  conductor_diameter?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  length?: Maybe<OrderBy>;
+  max_frequency?: Maybe<OrderBy>;
+  sheath_max_temperature?: Maybe<OrderBy>;
+  strand_count?: Maybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type ItemCableConductiveVarianceFields = {
+  __typename?: 'item_cable_conductive_variance_fields';
+  cable_diameter?: Maybe<Scalars['Float']>;
+  conductor_count?: Maybe<Scalars['Float']>;
+  conductor_diameter?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  length?: Maybe<Scalars['Float']>;
+  max_frequency?: Maybe<Scalars['Float']>;
+  sheath_max_temperature?: Maybe<Scalars['Float']>;
+  strand_count?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "item_cable.conductive" */
+export type ItemCableConductiveVarianceOrderBy = {
+  cable_diameter?: Maybe<OrderBy>;
+  conductor_count?: Maybe<OrderBy>;
+  conductor_diameter?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  length?: Maybe<OrderBy>;
+  max_frequency?: Maybe<OrderBy>;
+  sheath_max_temperature?: Maybe<OrderBy>;
+  strand_count?: Maybe<OrderBy>;
+};
+
+/** columns and relationships of "item_cable.connector" */
+export type ItemCableConnector = {
+  __typename?: 'item_cable_connector';
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+};
+
+/** aggregated selection of "item_cable.connector" */
+export type ItemCableConnectorAggregate = {
+  __typename?: 'item_cable_connector_aggregate';
+  aggregate?: Maybe<ItemCableConnectorAggregateFields>;
+  nodes: Array<ItemCableConnector>;
+};
+
+/** aggregate fields of "item_cable.connector" */
+export type ItemCableConnectorAggregateFields = {
+  __typename?: 'item_cable_connector_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<ItemCableConnectorMaxFields>;
+  min?: Maybe<ItemCableConnectorMinFields>;
+};
+
+
+/** aggregate fields of "item_cable.connector" */
+export type ItemCableConnectorAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<ItemCableConnectorSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "item_cable.connector" */
+export type ItemCableConnectorAggregateOrderBy = {
+  count?: Maybe<OrderBy>;
+  max?: Maybe<ItemCableConnectorMaxOrderBy>;
+  min?: Maybe<ItemCableConnectorMinOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "item_cable.connector" */
+export type ItemCableConnectorArrRelInsertInput = {
+  data: Array<ItemCableConnectorInsertInput>;
+  on_conflict?: Maybe<ItemCableConnectorOnConflict>;
+};
+
+/** Boolean expression to filter rows from the table "item_cable.connector". All fields are combined with a logical 'AND'. */
+export type ItemCableConnectorBoolExp = {
+  _and?: Maybe<Array<Maybe<ItemCableConnectorBoolExp>>>;
+  _not?: Maybe<ItemCableConnectorBoolExp>;
+  _or?: Maybe<Array<Maybe<ItemCableConnectorBoolExp>>>;
+  description?: Maybe<StringComparisonExp>;
+  id?: Maybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "item_cable.connector" */
+export enum ItemCableConnectorConstraint {
+  /** unique or primary key constraint */
+  connector_pkey = 'connector_pkey'
+}
+
+/** input type for inserting data into table "item_cable.connector" */
+export type ItemCableConnectorInsertInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type ItemCableConnectorMaxFields = {
+  __typename?: 'item_cable_connector_max_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "item_cable.connector" */
+export type ItemCableConnectorMaxOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type ItemCableConnectorMinFields = {
+  __typename?: 'item_cable_connector_min_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "item_cable.connector" */
+export type ItemCableConnectorMinOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "item_cable.connector" */
+export type ItemCableConnectorMutationResponse = {
+  __typename?: 'item_cable_connector_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<ItemCableConnector>;
+};
+
+/** input type for inserting object relation for remote table "item_cable.connector" */
+export type ItemCableConnectorObjRelInsertInput = {
+  data: ItemCableConnectorInsertInput;
+  on_conflict?: Maybe<ItemCableConnectorOnConflict>;
+};
+
+/** on conflict condition type for table "item_cable.connector" */
+export type ItemCableConnectorOnConflict = {
+  constraint: ItemCableConnectorConstraint;
+  update_columns: Array<ItemCableConnectorUpdateColumn>;
+  where?: Maybe<ItemCableConnectorBoolExp>;
+};
+
+/** ordering options when selecting data from "item_cable.connector" */
+export type ItemCableConnectorOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "item_cable.connector" */
+export type ItemCableConnectorPkColumnsInput = {
+  id: Scalars['String'];
+};
+
+/** select columns of table "item_cable.connector" */
+export enum ItemCableConnectorSelectColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
+/** input type for updating data in table "item_cable.connector" */
+export type ItemCableConnectorSetInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "item_cable.connector" */
+export enum ItemCableConnectorUpdateColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
+/** unique or primary key constraints on table "item.cable" */
+export enum ItemCableConstraint {
+  /** unique or primary key constraint */
+  cable_pkey = 'cable_pkey'
+}
+
+/** input type for incrementing integer column in table "item.cable" */
+export type ItemCableIncInput = {
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "item.cable" */
+export type ItemCableInsertInput = {
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type ItemCableMaxFields = {
+  __typename?: 'item_cable_max_fields';
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "item.cable" */
+export type ItemCableMaxOrderBy = {
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type ItemCableMinFields = {
+  __typename?: 'item_cable_min_fields';
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "item.cable" */
+export type ItemCableMinOrderBy = {
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "item.cable" */
+export type ItemCableMutationResponse = {
+  __typename?: 'item_cable_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<ItemCable>;
+};
+
+/** input type for inserting object relation for remote table "item.cable" */
+export type ItemCableObjRelInsertInput = {
+  data: ItemCableInsertInput;
+  on_conflict?: Maybe<ItemCableOnConflict>;
+};
+
+/** on conflict condition type for table "item.cable" */
+export type ItemCableOnConflict = {
+  constraint: ItemCableConstraint;
+  update_columns: Array<ItemCableUpdateColumn>;
+  where?: Maybe<ItemCableBoolExp>;
+};
+
+/** ordering options when selecting data from "item.cable" */
+export type ItemCableOrderBy = {
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "item.cable" */
+export type ItemCablePkColumnsInput = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "item.cable" */
+export enum ItemCableSelectColumn {
+  /** column name */
+  id = 'id',
+  /** column name */
+  name = 'name'
+}
+
+/** input type for updating data in table "item.cable" */
+export type ItemCableSetInput = {
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type ItemCableStddevFields = {
+  __typename?: 'item_cable_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "item.cable" */
+export type ItemCableStddevOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ItemCableStddevPopFields = {
+  __typename?: 'item_cable_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "item.cable" */
+export type ItemCableStddevPopOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ItemCableStddevSampFields = {
+  __typename?: 'item_cable_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "item.cable" */
+export type ItemCableStddevSampOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate sum on columns */
+export type ItemCableSumFields = {
+  __typename?: 'item_cable_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "item.cable" */
+export type ItemCableSumOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** update columns of table "item.cable" */
+export enum ItemCableUpdateColumn {
+  /** column name */
+  id = 'id',
+  /** column name */
+  name = 'name'
+}
+
+/** aggregate var_pop on columns */
+export type ItemCableVarPopFields = {
+  __typename?: 'item_cable_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "item.cable" */
+export type ItemCableVarPopOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate var_samp on columns */
+export type ItemCableVarSampFields = {
+  __typename?: 'item_cable_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "item.cable" */
+export type ItemCableVarSampOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type ItemCableVarianceFields = {
+  __typename?: 'item_cable_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "item.cable" */
+export type ItemCableVarianceOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
 /** unique or primary key constraints on table "item" */
 export enum ItemConstraint {
   /** unique or primary key constraint */
@@ -8607,6 +9733,259 @@ export type ItemHardwareFastenerBoltVarianceOrderBy = {
   thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
+};
+
+/** columns and relationships of "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsert = {
+  __typename?: 'item_hardware_fastener_insert';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
+/** aggregated selection of "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertAggregate = {
+  __typename?: 'item_hardware_fastener_insert_aggregate';
+  aggregate?: Maybe<ItemHardwareFastenerInsertAggregateFields>;
+  nodes: Array<ItemHardwareFastenerInsert>;
+};
+
+/** aggregate fields of "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertAggregateFields = {
+  __typename?: 'item_hardware_fastener_insert_aggregate_fields';
+  avg?: Maybe<ItemHardwareFastenerInsertAvgFields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<ItemHardwareFastenerInsertMaxFields>;
+  min?: Maybe<ItemHardwareFastenerInsertMinFields>;
+  stddev?: Maybe<ItemHardwareFastenerInsertStddevFields>;
+  stddev_pop?: Maybe<ItemHardwareFastenerInsertStddevPopFields>;
+  stddev_samp?: Maybe<ItemHardwareFastenerInsertStddevSampFields>;
+  sum?: Maybe<ItemHardwareFastenerInsertSumFields>;
+  var_pop?: Maybe<ItemHardwareFastenerInsertVarPopFields>;
+  var_samp?: Maybe<ItemHardwareFastenerInsertVarSampFields>;
+  variance?: Maybe<ItemHardwareFastenerInsertVarianceFields>;
+};
+
+
+/** aggregate fields of "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<ItemHardwareFastenerInsertSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertAggregateOrderBy = {
+  avg?: Maybe<ItemHardwareFastenerInsertAvgOrderBy>;
+  count?: Maybe<OrderBy>;
+  max?: Maybe<ItemHardwareFastenerInsertMaxOrderBy>;
+  min?: Maybe<ItemHardwareFastenerInsertMinOrderBy>;
+  stddev?: Maybe<ItemHardwareFastenerInsertStddevOrderBy>;
+  stddev_pop?: Maybe<ItemHardwareFastenerInsertStddevPopOrderBy>;
+  stddev_samp?: Maybe<ItemHardwareFastenerInsertStddevSampOrderBy>;
+  sum?: Maybe<ItemHardwareFastenerInsertSumOrderBy>;
+  var_pop?: Maybe<ItemHardwareFastenerInsertVarPopOrderBy>;
+  var_samp?: Maybe<ItemHardwareFastenerInsertVarSampOrderBy>;
+  variance?: Maybe<ItemHardwareFastenerInsertVarianceOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertArrRelInsertInput = {
+  data: Array<ItemHardwareFastenerInsertInsertInput>;
+  on_conflict?: Maybe<ItemHardwareFastenerInsertOnConflict>;
+};
+
+/** aggregate avg on columns */
+export type ItemHardwareFastenerInsertAvgFields = {
+  __typename?: 'item_hardware_fastener_insert_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertAvgOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "item.hardware_fastener_insert". All fields are combined with a logical 'AND'. */
+export type ItemHardwareFastenerInsertBoolExp = {
+  _and?: Maybe<Array<Maybe<ItemHardwareFastenerInsertBoolExp>>>;
+  _not?: Maybe<ItemHardwareFastenerInsertBoolExp>;
+  _or?: Maybe<Array<Maybe<ItemHardwareFastenerInsertBoolExp>>>;
+  id?: Maybe<IntComparisonExp>;
+  name?: Maybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "item.hardware_fastener_insert" */
+export enum ItemHardwareFastenerInsertConstraint {
+  /** unique or primary key constraint */
+  hardware_fastener_insert_pkey = 'hardware_fastener_insert_pkey'
+}
+
+/** input type for incrementing integer column in table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertIncInput = {
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertInsertInput = {
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type ItemHardwareFastenerInsertMaxFields = {
+  __typename?: 'item_hardware_fastener_insert_max_fields';
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertMaxOrderBy = {
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type ItemHardwareFastenerInsertMinFields = {
+  __typename?: 'item_hardware_fastener_insert_min_fields';
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertMinOrderBy = {
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertMutationResponse = {
+  __typename?: 'item_hardware_fastener_insert_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<ItemHardwareFastenerInsert>;
+};
+
+/** input type for inserting object relation for remote table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertObjRelInsertInput = {
+  data: ItemHardwareFastenerInsertInsertInput;
+  on_conflict?: Maybe<ItemHardwareFastenerInsertOnConflict>;
+};
+
+/** on conflict condition type for table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertOnConflict = {
+  constraint: ItemHardwareFastenerInsertConstraint;
+  update_columns: Array<ItemHardwareFastenerInsertUpdateColumn>;
+  where?: Maybe<ItemHardwareFastenerInsertBoolExp>;
+};
+
+/** ordering options when selecting data from "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertOrderBy = {
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertPkColumnsInput = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "item.hardware_fastener_insert" */
+export enum ItemHardwareFastenerInsertSelectColumn {
+  /** column name */
+  id = 'id',
+  /** column name */
+  name = 'name'
+}
+
+/** input type for updating data in table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertSetInput = {
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type ItemHardwareFastenerInsertStddevFields = {
+  __typename?: 'item_hardware_fastener_insert_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertStddevOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ItemHardwareFastenerInsertStddevPopFields = {
+  __typename?: 'item_hardware_fastener_insert_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertStddevPopOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ItemHardwareFastenerInsertStddevSampFields = {
+  __typename?: 'item_hardware_fastener_insert_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertStddevSampOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate sum on columns */
+export type ItemHardwareFastenerInsertSumFields = {
+  __typename?: 'item_hardware_fastener_insert_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertSumOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** update columns of table "item.hardware_fastener_insert" */
+export enum ItemHardwareFastenerInsertUpdateColumn {
+  /** column name */
+  id = 'id',
+  /** column name */
+  name = 'name'
+}
+
+/** aggregate var_pop on columns */
+export type ItemHardwareFastenerInsertVarPopFields = {
+  __typename?: 'item_hardware_fastener_insert_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertVarPopOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate var_samp on columns */
+export type ItemHardwareFastenerInsertVarSampFields = {
+  __typename?: 'item_hardware_fastener_insert_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertVarSampOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type ItemHardwareFastenerInsertVarianceFields = {
+  __typename?: 'item_hardware_fastener_insert_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "item.hardware_fastener_insert" */
+export type ItemHardwareFastenerInsertVarianceOrderBy = {
+  id?: Maybe<OrderBy>;
 };
 
 /**
@@ -12428,6 +13807,18 @@ export type MutationRoot = {
   delete_item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
   /** delete single row from the table: "item" */
   delete_item_by_pk?: Maybe<Item>;
+  /** delete data from the table: "item.cable" */
+  delete_item_cable?: Maybe<ItemCableMutationResponse>;
+  /** delete single row from the table: "item.cable" */
+  delete_item_cable_by_pk?: Maybe<ItemCable>;
+  /** delete data from the table: "item_cable.conductive" */
+  delete_item_cable_conductive?: Maybe<ItemCableConductiveMutationResponse>;
+  /** delete single row from the table: "item_cable.conductive" */
+  delete_item_cable_conductive_by_pk?: Maybe<ItemCableConductive>;
+  /** delete data from the table: "item_cable.connector" */
+  delete_item_cable_connector?: Maybe<ItemCableConnectorMutationResponse>;
+  /** delete single row from the table: "item_cable.connector" */
+  delete_item_cable_connector_by_pk?: Maybe<ItemCableConnector>;
   /** delete data from the table: "item.hardware_drill_bit" */
   delete_item_hardware_drill_bit?: Maybe<ItemHardwareDrillBitMutationResponse>;
   /** delete single row from the table: "item.hardware_drill_bit" */
@@ -12436,6 +13827,10 @@ export type MutationRoot = {
   delete_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>;
   /** delete single row from the table: "item.hardware_fastener_bolt" */
   delete_item_hardware_fastener_bolt_by_pk?: Maybe<ItemHardwareFastenerBolt>;
+  /** delete data from the table: "item.hardware_fastener_insert" */
+  delete_item_hardware_fastener_insert?: Maybe<ItemHardwareFastenerInsertMutationResponse>;
+  /** delete single row from the table: "item.hardware_fastener_insert" */
+  delete_item_hardware_fastener_insert_by_pk?: Maybe<ItemHardwareFastenerInsert>;
   /** delete data from the table: "item.hardware_fastener_nut" */
   delete_item_hardware_fastener_nut?: Maybe<ItemHardwareFastenerNutMutationResponse>;
   /** delete single row from the table: "item.hardware_fastener_nut" */
@@ -12650,6 +14045,18 @@ export type MutationRoot = {
   insert_item_bundle_map_one?: Maybe<ItemBundleMap>;
   /** insert a single row into the table: "item.bundle" */
   insert_item_bundle_one?: Maybe<ItemBundle>;
+  /** insert data into the table: "item.cable" */
+  insert_item_cable?: Maybe<ItemCableMutationResponse>;
+  /** insert data into the table: "item_cable.conductive" */
+  insert_item_cable_conductive?: Maybe<ItemCableConductiveMutationResponse>;
+  /** insert a single row into the table: "item_cable.conductive" */
+  insert_item_cable_conductive_one?: Maybe<ItemCableConductive>;
+  /** insert data into the table: "item_cable.connector" */
+  insert_item_cable_connector?: Maybe<ItemCableConnectorMutationResponse>;
+  /** insert a single row into the table: "item_cable.connector" */
+  insert_item_cable_connector_one?: Maybe<ItemCableConnector>;
+  /** insert a single row into the table: "item.cable" */
+  insert_item_cable_one?: Maybe<ItemCable>;
   /** insert data into the table: "item.hardware_drill_bit" */
   insert_item_hardware_drill_bit?: Maybe<ItemHardwareDrillBitMutationResponse>;
   /** insert a single row into the table: "item.hardware_drill_bit" */
@@ -12658,6 +14065,10 @@ export type MutationRoot = {
   insert_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>;
   /** insert a single row into the table: "item.hardware_fastener_bolt" */
   insert_item_hardware_fastener_bolt_one?: Maybe<ItemHardwareFastenerBolt>;
+  /** insert data into the table: "item.hardware_fastener_insert" */
+  insert_item_hardware_fastener_insert?: Maybe<ItemHardwareFastenerInsertMutationResponse>;
+  /** insert a single row into the table: "item.hardware_fastener_insert" */
+  insert_item_hardware_fastener_insert_one?: Maybe<ItemHardwareFastenerInsert>;
   /** insert data into the table: "item.hardware_fastener_nut" */
   insert_item_hardware_fastener_nut?: Maybe<ItemHardwareFastenerNutMutationResponse>;
   /** insert a single row into the table: "item.hardware_fastener_nut" */
@@ -12881,6 +14292,18 @@ export type MutationRoot = {
   update_item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
   /** update single row of the table: "item" */
   update_item_by_pk?: Maybe<Item>;
+  /** update data of the table: "item.cable" */
+  update_item_cable?: Maybe<ItemCableMutationResponse>;
+  /** update single row of the table: "item.cable" */
+  update_item_cable_by_pk?: Maybe<ItemCable>;
+  /** update data of the table: "item_cable.conductive" */
+  update_item_cable_conductive?: Maybe<ItemCableConductiveMutationResponse>;
+  /** update single row of the table: "item_cable.conductive" */
+  update_item_cable_conductive_by_pk?: Maybe<ItemCableConductive>;
+  /** update data of the table: "item_cable.connector" */
+  update_item_cable_connector?: Maybe<ItemCableConnectorMutationResponse>;
+  /** update single row of the table: "item_cable.connector" */
+  update_item_cable_connector_by_pk?: Maybe<ItemCableConnector>;
   /** update data of the table: "item.hardware_drill_bit" */
   update_item_hardware_drill_bit?: Maybe<ItemHardwareDrillBitMutationResponse>;
   /** update single row of the table: "item.hardware_drill_bit" */
@@ -12889,6 +14312,10 @@ export type MutationRoot = {
   update_item_hardware_fastener_bolt?: Maybe<ItemHardwareFastenerBoltMutationResponse>;
   /** update single row of the table: "item.hardware_fastener_bolt" */
   update_item_hardware_fastener_bolt_by_pk?: Maybe<ItemHardwareFastenerBolt>;
+  /** update data of the table: "item.hardware_fastener_insert" */
+  update_item_hardware_fastener_insert?: Maybe<ItemHardwareFastenerInsertMutationResponse>;
+  /** update single row of the table: "item.hardware_fastener_insert" */
+  update_item_hardware_fastener_insert_by_pk?: Maybe<ItemHardwareFastenerInsert>;
   /** update data of the table: "item.hardware_fastener_nut" */
   update_item_hardware_fastener_nut?: Maybe<ItemHardwareFastenerNutMutationResponse>;
   /** update single row of the table: "item.hardware_fastener_nut" */
@@ -13413,6 +14840,42 @@ export type MutationRootDeleteItemByPkArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteItemCableArgs = {
+  where: ItemCableBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteItemCableByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteItemCableConductiveArgs = {
+  where: ItemCableConductiveBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteItemCableConductiveByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteItemCableConnectorArgs = {
+  where: ItemCableConnectorBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteItemCableConnectorByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteItemHardwareDrillBitArgs = {
   where: ItemHardwareDrillBitBoolExp;
 };
@@ -13432,6 +14895,18 @@ export type MutationRootDeleteItemHardwareFastenerBoltArgs = {
 
 /** mutation root */
 export type MutationRootDeleteItemHardwareFastenerBoltByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteItemHardwareFastenerInsertArgs = {
+  where: ItemHardwareFastenerInsertBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteItemHardwareFastenerInsertByPkArgs = {
   id: Scalars['Int'];
 };
 
@@ -14157,6 +15632,48 @@ export type MutationRootInsertItemBundleOneArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertItemCableArgs = {
+  objects: Array<ItemCableInsertInput>;
+  on_conflict?: Maybe<ItemCableOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemCableConductiveArgs = {
+  objects: Array<ItemCableConductiveInsertInput>;
+  on_conflict?: Maybe<ItemCableConductiveOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemCableConductiveOneArgs = {
+  object: ItemCableConductiveInsertInput;
+  on_conflict?: Maybe<ItemCableConductiveOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemCableConnectorArgs = {
+  objects: Array<ItemCableConnectorInsertInput>;
+  on_conflict?: Maybe<ItemCableConnectorOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemCableConnectorOneArgs = {
+  object: ItemCableConnectorInsertInput;
+  on_conflict?: Maybe<ItemCableConnectorOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemCableOneArgs = {
+  object: ItemCableInsertInput;
+  on_conflict?: Maybe<ItemCableOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertItemHardwareDrillBitArgs = {
   objects: Array<ItemHardwareDrillBitInsertInput>;
   on_conflict?: Maybe<ItemHardwareDrillBitOnConflict>;
@@ -14181,6 +15698,20 @@ export type MutationRootInsertItemHardwareFastenerBoltArgs = {
 export type MutationRootInsertItemHardwareFastenerBoltOneArgs = {
   object: ItemHardwareFastenerBoltInsertInput;
   on_conflict?: Maybe<ItemHardwareFastenerBoltOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemHardwareFastenerInsertArgs = {
+  objects: Array<ItemHardwareFastenerInsertInsertInput>;
+  on_conflict?: Maybe<ItemHardwareFastenerInsertOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertItemHardwareFastenerInsertOneArgs = {
+  object: ItemHardwareFastenerInsertInsertInput;
+  on_conflict?: Maybe<ItemHardwareFastenerInsertOnConflict>;
 };
 
 
@@ -14986,6 +16517,62 @@ export type MutationRootUpdateItemByPkArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateItemCableArgs = {
+  _inc?: Maybe<ItemCableIncInput>;
+  _set?: Maybe<ItemCableSetInput>;
+  where: ItemCableBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateItemCableByPkArgs = {
+  _inc?: Maybe<ItemCableIncInput>;
+  _set?: Maybe<ItemCableSetInput>;
+  pk_columns: ItemCablePkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateItemCableConductiveArgs = {
+  _append?: Maybe<ItemCableConductiveAppendInput>;
+  _delete_at_path?: Maybe<ItemCableConductiveDeleteAtPathInput>;
+  _delete_elem?: Maybe<ItemCableConductiveDeleteElemInput>;
+  _delete_key?: Maybe<ItemCableConductiveDeleteKeyInput>;
+  _inc?: Maybe<ItemCableConductiveIncInput>;
+  _prepend?: Maybe<ItemCableConductivePrependInput>;
+  _set?: Maybe<ItemCableConductiveSetInput>;
+  where: ItemCableConductiveBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateItemCableConductiveByPkArgs = {
+  _append?: Maybe<ItemCableConductiveAppendInput>;
+  _delete_at_path?: Maybe<ItemCableConductiveDeleteAtPathInput>;
+  _delete_elem?: Maybe<ItemCableConductiveDeleteElemInput>;
+  _delete_key?: Maybe<ItemCableConductiveDeleteKeyInput>;
+  _inc?: Maybe<ItemCableConductiveIncInput>;
+  _prepend?: Maybe<ItemCableConductivePrependInput>;
+  _set?: Maybe<ItemCableConductiveSetInput>;
+  pk_columns: ItemCableConductivePkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateItemCableConnectorArgs = {
+  _set?: Maybe<ItemCableConnectorSetInput>;
+  where: ItemCableConnectorBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateItemCableConnectorByPkArgs = {
+  _set?: Maybe<ItemCableConnectorSetInput>;
+  pk_columns: ItemCableConnectorPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateItemHardwareDrillBitArgs = {
   _append?: Maybe<ItemHardwareDrillBitAppendInput>;
   _delete_at_path?: Maybe<ItemHardwareDrillBitDeleteAtPathInput>;
@@ -15034,6 +16621,22 @@ export type MutationRootUpdateItemHardwareFastenerBoltByPkArgs = {
   _prepend?: Maybe<ItemHardwareFastenerBoltPrependInput>;
   _set?: Maybe<ItemHardwareFastenerBoltSetInput>;
   pk_columns: ItemHardwareFastenerBoltPkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateItemHardwareFastenerInsertArgs = {
+  _inc?: Maybe<ItemHardwareFastenerInsertIncInput>;
+  _set?: Maybe<ItemHardwareFastenerInsertSetInput>;
+  where: ItemHardwareFastenerInsertBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateItemHardwareFastenerInsertByPkArgs = {
+  _inc?: Maybe<ItemHardwareFastenerInsertIncInput>;
+  _set?: Maybe<ItemHardwareFastenerInsertSetInput>;
+  pk_columns: ItemHardwareFastenerInsertPkColumnsInput;
 };
 
 
@@ -16888,6 +18491,24 @@ export type QueryRoot = {
   item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
   /** fetch data from the table: "item" using primary key columns */
   item_by_pk?: Maybe<Item>;
+  /** fetch data from the table: "item.cable" */
+  item_cable: Array<ItemCable>;
+  /** fetch aggregated fields from the table: "item.cable" */
+  item_cable_aggregate: ItemCableAggregate;
+  /** fetch data from the table: "item.cable" using primary key columns */
+  item_cable_by_pk?: Maybe<ItemCable>;
+  /** fetch data from the table: "item_cable.conductive" */
+  item_cable_conductive: Array<ItemCableConductive>;
+  /** fetch aggregated fields from the table: "item_cable.conductive" */
+  item_cable_conductive_aggregate: ItemCableConductiveAggregate;
+  /** fetch data from the table: "item_cable.conductive" using primary key columns */
+  item_cable_conductive_by_pk?: Maybe<ItemCableConductive>;
+  /** fetch data from the table: "item_cable.connector" */
+  item_cable_connector: Array<ItemCableConnector>;
+  /** fetch aggregated fields from the table: "item_cable.connector" */
+  item_cable_connector_aggregate: ItemCableConnectorAggregate;
+  /** fetch data from the table: "item_cable.connector" using primary key columns */
+  item_cable_connector_by_pk?: Maybe<ItemCableConnector>;
   /** fetch data from the table: "item.hardware_drill_bit" */
   item_hardware_drill_bit: Array<ItemHardwareDrillBit>;
   /** fetch aggregated fields from the table: "item.hardware_drill_bit" */
@@ -16900,6 +18521,12 @@ export type QueryRoot = {
   item_hardware_fastener_bolt_aggregate: ItemHardwareFastenerBoltAggregate;
   /** fetch data from the table: "item.hardware_fastener_bolt" using primary key columns */
   item_hardware_fastener_bolt_by_pk?: Maybe<ItemHardwareFastenerBolt>;
+  /** fetch data from the table: "item.hardware_fastener_insert" */
+  item_hardware_fastener_insert: Array<ItemHardwareFastenerInsert>;
+  /** fetch aggregated fields from the table: "item.hardware_fastener_insert" */
+  item_hardware_fastener_insert_aggregate: ItemHardwareFastenerInsertAggregate;
+  /** fetch data from the table: "item.hardware_fastener_insert" using primary key columns */
+  item_hardware_fastener_insert_by_pk?: Maybe<ItemHardwareFastenerInsert>;
   /** fetch data from the table: "item.hardware_fastener_nut" */
   item_hardware_fastener_nut: Array<ItemHardwareFastenerNut>;
   /** fetch aggregated fields from the table: "item.hardware_fastener_nut" */
@@ -17979,6 +19606,84 @@ export type QueryRootItemByPkArgs = {
 
 
 /** query root */
+export type QueryRootItemCableArgs = {
+  distinct_on?: Maybe<Array<ItemCableSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemCableOrderBy>>;
+  where?: Maybe<ItemCableBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootItemCableAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemCableSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemCableOrderBy>>;
+  where?: Maybe<ItemCableBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootItemCableByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** query root */
+export type QueryRootItemCableConductiveArgs = {
+  distinct_on?: Maybe<Array<ItemCableConductiveSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemCableConductiveOrderBy>>;
+  where?: Maybe<ItemCableConductiveBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootItemCableConductiveAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemCableConductiveSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemCableConductiveOrderBy>>;
+  where?: Maybe<ItemCableConductiveBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootItemCableConductiveByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** query root */
+export type QueryRootItemCableConnectorArgs = {
+  distinct_on?: Maybe<Array<ItemCableConnectorSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemCableConnectorOrderBy>>;
+  where?: Maybe<ItemCableConnectorBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootItemCableConnectorAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemCableConnectorSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemCableConnectorOrderBy>>;
+  where?: Maybe<ItemCableConnectorBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootItemCableConnectorByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** query root */
 export type QueryRootItemHardwareDrillBitArgs = {
   distinct_on?: Maybe<Array<ItemHardwareDrillBitSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
@@ -18026,6 +19731,32 @@ export type QueryRootItemHardwareFastenerBoltAggregateArgs = {
 
 /** query root */
 export type QueryRootItemHardwareFastenerBoltByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** query root */
+export type QueryRootItemHardwareFastenerInsertArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareFastenerInsertSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemHardwareFastenerInsertOrderBy>>;
+  where?: Maybe<ItemHardwareFastenerInsertBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootItemHardwareFastenerInsertAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareFastenerInsertSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemHardwareFastenerInsertOrderBy>>;
+  where?: Maybe<ItemHardwareFastenerInsertBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootItemHardwareFastenerInsertByPkArgs = {
   id: Scalars['Int'];
 };
 
@@ -19399,6 +21130,24 @@ export type SubscriptionRoot = {
   item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
   /** fetch data from the table: "item" using primary key columns */
   item_by_pk?: Maybe<Item>;
+  /** fetch data from the table: "item.cable" */
+  item_cable: Array<ItemCable>;
+  /** fetch aggregated fields from the table: "item.cable" */
+  item_cable_aggregate: ItemCableAggregate;
+  /** fetch data from the table: "item.cable" using primary key columns */
+  item_cable_by_pk?: Maybe<ItemCable>;
+  /** fetch data from the table: "item_cable.conductive" */
+  item_cable_conductive: Array<ItemCableConductive>;
+  /** fetch aggregated fields from the table: "item_cable.conductive" */
+  item_cable_conductive_aggregate: ItemCableConductiveAggregate;
+  /** fetch data from the table: "item_cable.conductive" using primary key columns */
+  item_cable_conductive_by_pk?: Maybe<ItemCableConductive>;
+  /** fetch data from the table: "item_cable.connector" */
+  item_cable_connector: Array<ItemCableConnector>;
+  /** fetch aggregated fields from the table: "item_cable.connector" */
+  item_cable_connector_aggregate: ItemCableConnectorAggregate;
+  /** fetch data from the table: "item_cable.connector" using primary key columns */
+  item_cable_connector_by_pk?: Maybe<ItemCableConnector>;
   /** fetch data from the table: "item.hardware_drill_bit" */
   item_hardware_drill_bit: Array<ItemHardwareDrillBit>;
   /** fetch aggregated fields from the table: "item.hardware_drill_bit" */
@@ -19411,6 +21160,12 @@ export type SubscriptionRoot = {
   item_hardware_fastener_bolt_aggregate: ItemHardwareFastenerBoltAggregate;
   /** fetch data from the table: "item.hardware_fastener_bolt" using primary key columns */
   item_hardware_fastener_bolt_by_pk?: Maybe<ItemHardwareFastenerBolt>;
+  /** fetch data from the table: "item.hardware_fastener_insert" */
+  item_hardware_fastener_insert: Array<ItemHardwareFastenerInsert>;
+  /** fetch aggregated fields from the table: "item.hardware_fastener_insert" */
+  item_hardware_fastener_insert_aggregate: ItemHardwareFastenerInsertAggregate;
+  /** fetch data from the table: "item.hardware_fastener_insert" using primary key columns */
+  item_hardware_fastener_insert_by_pk?: Maybe<ItemHardwareFastenerInsert>;
   /** fetch data from the table: "item.hardware_fastener_nut" */
   item_hardware_fastener_nut: Array<ItemHardwareFastenerNut>;
   /** fetch aggregated fields from the table: "item.hardware_fastener_nut" */
@@ -20490,6 +22245,84 @@ export type SubscriptionRootItemByPkArgs = {
 
 
 /** subscription root */
+export type SubscriptionRootItemCableArgs = {
+  distinct_on?: Maybe<Array<ItemCableSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemCableOrderBy>>;
+  where?: Maybe<ItemCableBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemCableAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemCableSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemCableOrderBy>>;
+  where?: Maybe<ItemCableBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemCableByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemCableConductiveArgs = {
+  distinct_on?: Maybe<Array<ItemCableConductiveSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemCableConductiveOrderBy>>;
+  where?: Maybe<ItemCableConductiveBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemCableConductiveAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemCableConductiveSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemCableConductiveOrderBy>>;
+  where?: Maybe<ItemCableConductiveBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemCableConductiveByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemCableConnectorArgs = {
+  distinct_on?: Maybe<Array<ItemCableConnectorSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemCableConnectorOrderBy>>;
+  where?: Maybe<ItemCableConnectorBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemCableConnectorAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemCableConnectorSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemCableConnectorOrderBy>>;
+  where?: Maybe<ItemCableConnectorBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemCableConnectorByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** subscription root */
 export type SubscriptionRootItemHardwareDrillBitArgs = {
   distinct_on?: Maybe<Array<ItemHardwareDrillBitSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
@@ -20537,6 +22370,32 @@ export type SubscriptionRootItemHardwareFastenerBoltAggregateArgs = {
 
 /** subscription root */
 export type SubscriptionRootItemHardwareFastenerBoltByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemHardwareFastenerInsertArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareFastenerInsertSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemHardwareFastenerInsertOrderBy>>;
+  where?: Maybe<ItemHardwareFastenerInsertBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemHardwareFastenerInsertAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemHardwareFastenerInsertSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemHardwareFastenerInsertOrderBy>>;
+  where?: Maybe<ItemHardwareFastenerInsertBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemHardwareFastenerInsertByPkArgs = {
   id: Scalars['Int'];
 };
 
@@ -22146,6 +24005,41 @@ export type GetOrdersQuery = (
   )> }
 );
 
+export type GetOrderQueryVariables = {
+  id: Scalars['Int'];
+};
+
+
+export type GetOrderQuery = (
+  { __typename?: 'query_root' }
+  & { order?: Maybe<(
+    { __typename?: 'order' }
+    & Pick<Order, 'vendor_order_id' | 'vendor_id' | 'url' | 'total_cost' | 'tax_cost' | 'pon' | 'placed_date' | 'payment_method_id' | 'items_cost' | 'id' | 'fulfilled_date'>
+    & { items: Array<(
+      { __typename?: 'order_item' }
+      & Pick<OrderItem, 'cost_item' | 'cost_tax' | 'cost_total' | 'item_id' | 'manufacturer_item_id' | 'order_id' | 'quantity' | 'serial_no' | 'shipment_id' | 'vendor_item_id'>
+    )>, items_aggregate: (
+      { __typename?: 'order_item_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'order_item_aggregate_fields' }
+        & Pick<OrderItemAggregateFields, 'count'>
+      )> }
+    ), vendor: (
+      { __typename?: 'vendor' }
+      & Pick<Vendor, 'account_id' | 'id' | 'name' | 'url'>
+    ), shipments: Array<(
+      { __typename?: 'shipment' }
+      & Pick<Shipment, 'id' | 'order_id' | 'received_date' | 'shipped_date' | 'shipping_carrier' | 'tracking_id' | 'vendor_invoice_id'>
+    )>, shipments_aggregate: (
+      { __typename?: 'shipment_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'shipment_aggregate_fields' }
+        & Pick<ShipmentAggregateFields, 'count'>
+      )> }
+    ) }
+  )> }
+);
+
 export type GetPrinterStatusQueryVariables = {};
 
 
@@ -23115,6 +25009,99 @@ export function useGetOrdersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type GetOrdersQueryHookResult = ReturnType<typeof useGetOrdersQuery>;
 export type GetOrdersLazyQueryHookResult = ReturnType<typeof useGetOrdersLazyQuery>;
 export type GetOrdersQueryResult = ApolloReactCommon.QueryResult<GetOrdersQuery, GetOrdersQueryVariables>;
+export const GetOrderDocument = gql`
+    query GetOrder($id: Int!) {
+  order: order_by_pk(id: $id) {
+    vendor_order_id
+    vendor_id
+    url
+    total_cost
+    tax_cost
+    pon
+    placed_date
+    payment_method_id
+    items_cost
+    id
+    fulfilled_date
+    items {
+      cost_item
+      cost_tax
+      cost_total
+      item_id
+      manufacturer_item_id
+      order_id
+      quantity
+      serial_no
+      shipment_id
+      vendor_item_id
+    }
+    items_aggregate {
+      aggregate {
+        count
+      }
+    }
+    vendor {
+      account_id
+      id
+      name
+      url
+    }
+    shipments(distinct_on: id, limit: 10, offset: 10) {
+      id
+      order_id
+      received_date
+      shipped_date
+      shipping_carrier
+      tracking_id
+      vendor_invoice_id
+    }
+    shipments_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+    `;
+export type GetOrderProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetOrderQuery, GetOrderQueryVariables>
+    } & TChildProps;
+export function withGetOrder<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetOrderQuery,
+  GetOrderQueryVariables,
+  GetOrderProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetOrderQuery, GetOrderQueryVariables, GetOrderProps<TChildProps, TDataName>>(GetOrderDocument, {
+      alias: 'getOrder',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetOrderQuery__
+ *
+ * To run a query within a React component, call `useGetOrderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrderQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetOrderQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetOrderQuery, GetOrderQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetOrderQuery, GetOrderQueryVariables>(GetOrderDocument, baseOptions);
+      }
+export function useGetOrderLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetOrderQuery, GetOrderQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetOrderQuery, GetOrderQueryVariables>(GetOrderDocument, baseOptions);
+        }
+export type GetOrderQueryHookResult = ReturnType<typeof useGetOrderQuery>;
+export type GetOrderLazyQueryHookResult = ReturnType<typeof useGetOrderLazyQuery>;
+export type GetOrderQueryResult = ApolloReactCommon.QueryResult<GetOrderQuery, GetOrderQueryVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
   PrinterStatus {
@@ -23645,4 +25632,4 @@ export function useUpdateItemHardwareFastenerBoltMutation(baseOptions?: ApolloRe
 export type UpdateItemHardwareFastenerBoltMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerBoltMutation>;
 export type UpdateItemHardwareFastenerBoltMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerBoltMutation>;
 export type UpdateItemHardwareFastenerBoltMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerBoltMutation, UpdateItemHardwareFastenerBoltMutationVariables>;
-// graphql typescript defs generated on 2020-06-01T09:58:43-06:00
+// graphql typescript defs generated on 2020-06-02T06:19:20-06:00

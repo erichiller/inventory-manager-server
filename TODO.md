@@ -9,6 +9,7 @@
   - [ ] Use the `exhaustive-deps` rule. It warns of incorrect dependencies
 - [x] `ItemSearch` should only search when input is entered.
 - [ ] Print List button should say "no labels in list" if there are none
+- [ ] _Order_ in `Menu` always shows highlighted.
 
 ## Table
 
@@ -62,8 +63,8 @@
   - [ ] Async GraphQL ? - do not block Konva drawing
 - [ ] try `shape.draw` (not `layer.draw`) ; [Shape Redraw](https://konvajs.org/docs/performance/Shape_Redraw.html) ; side effects? OR seperate objects with layers, only the moved redraw (prefer shape.draw ) [Layer Management](https://konvajs.org/docs/performance/Layer_Management.html)
 - [ ] try disabling perfect drawing ( which just accounts for the width of the border in the overall size ) ; [Disabling Perfect Draw](https://konvajs.org/docs/performance/Disable_Perfect_Draw.html)
-- [ ] there are a bunch of repeated calls, debug this
-- [ ] try not putting history inside labeldraw state.
+- [ ] there are a bunch of repeated calls, debug this. **ESPECIALLY** to `exportLabel`
+  - [ ] try not putting history inside labeldraw state.
 
 
 ## Data

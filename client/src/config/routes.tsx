@@ -63,7 +63,7 @@ export const routes: RouteEntry[] = [
         title: "Orders",
         subtitle: "View or add orders",
         breadcrumbName: "Orders",
-        path: [ "/order", "/order/:order_id" ],
+        path: [ "/order", "/order/:order_id", "/order/:order_id/:action" ], // action can be either 'edit' or 'add'
         exact: true,
         // AppMenuIcon: () => <Icon component={DiggingIcon as any} />,
         // AppMenuEntry: () => <ProjectSubMenu key="ProjectsubMenu" />,
