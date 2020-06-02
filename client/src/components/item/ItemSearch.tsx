@@ -8,7 +8,7 @@ import { Select, Row, Col, Button } from "antd";
 // import * as ReactRouter from 'react-router';
 import { SelectValue, LabeledValue } from 'antd/lib/select';
 import { SearchOutlined, TagOutlined, FontSizeOutlined } from '@ant-design/icons';
-import { useSearchItemsQuery, EnumItemClassEnum } from "../../lib/types/graphql";
+import { useSearchItemsQuery, EnumItemClassEnum, useSearchItemsLazyQuery } from "../../lib/types/graphql";
 
 const { Option } = Select;
 
@@ -118,7 +118,7 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
     } );
 
     // Execute query
-    const queryResults = useSearchItemsQuery( {
+    const [ runSearchQuery, { called, data, error, loading } ] = useSearchItemsLazyQuery( {
         variables: {
             containsFilter: {}
         },
@@ -126,25 +126,25 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
         returnPartialData: true,
         // skip: state.loading
     } );
-    type QueryResultKeysT = Exclude<keyof typeof queryResults[ 'data' ], '__typename'>;
+    type QueryResultKeysT = Exclude<keyof typeof data, '__typename'>;
 
-    console.debug( { "called?": queryResults.called, "error?": queryResults.error, "data?": queryResults.data, searchstring: state.searchString } );
+    console.debug( { "called?": called, "error?": error, "data?": data, searchstring: state.searchString } );
 
     let options: Array<React.ReactElement> = [];
     console.group( "Constructing Search Options" );
-    if ( !queryResults.error && !queryResults.loading && queryResults.data ) {
-        Object.keys( queryResults.data ).forEach( ( typeString: QueryResultKeysT ) => {
+    if ( !error && !loading && data ) {
+        Object.keys( data ).forEach( ( typeString: QueryResultKeysT ) => {
             console.log( `typeString: ${ typeString }` );
-            // let type = queryResults.data ? queryResults.data[ typeString ] : [];
-            let priorClass = queryResults.data[ typeString ][ 0 ].class;
+            // let type = data ? data[ typeString ] : [];
+            let priorClass = data[ typeString ][ 0 ].class;
             // let optionGroupItems: { [ key in QueryResultKeysT ]: ( typeof Option )[] };
             let optionGroupItems: { [ key in keyof Record<EnumItemClassEnum, string> ]: ( React.ReactElement )[] };
 
             // optionGroupItems = "item_hardware_fastener_bolt";
-            for ( let i = 0; i < queryResults.data[ typeString ].length; i++ ) {
-                let result = new Item( queryResults.data.item[ i ] ); // just to ease the typing
-                if ( queryResults.data.item[ i ].class != priorClass ) {
-                    priorClass = queryResults.data.item[ i ].class;
+            for ( let i = 0; i < data[ typeString ].length; i++ ) {
+                let result = new Item( data.item[ i ] ); // just to ease the typing
+                if ( data.item[ i ].class != priorClass ) {
+                    priorClass = data.item[ i ].class;
                 }
                 console.log( { optionGroupItems } );
                 if ( !optionGroupItems || !Object.keys( optionGroupItems ).includes( result.class ) ) {
@@ -162,7 +162,7 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
         } );
     }
     console.groupEnd();
-    // if( queryResults.loading ){
+    // if( loading ){
     //     setState({loading: true, searchString: state.searchString})
     // }
     console.log( "options length is now", options.length );
@@ -176,7 +176,7 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
             style={{ width: 450, ...props.style }}
             tokenSeparators={[ ',' ]}
             // suffixIcon={<SearchOutlined />}
-            loading={queryResults.loading}
+            loading={loading}
             value={state.value}
             labelInValue={true}
             className={props.className}
@@ -257,6 +257,7 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
                 // onSearch gets the value of the latest typed text, meaning that which is not in a "tag"
                 console.log( { type: "onSearch", value } );
                 setState( { searchString: value, value: state.value } );
+                runSearchQuery(); // TODO: filter in GraphQL. NOT client side
             }}
 
             filterOption={( inputData, option ) => {
