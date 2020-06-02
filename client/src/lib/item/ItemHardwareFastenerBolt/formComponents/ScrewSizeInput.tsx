@@ -191,7 +191,12 @@ function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOpti
     return [];
 }
 const constructOptionValue = ( optionData: ScrewSizeInputOptionData ): string => {
-    console.log( { method: 'ScrewSizeInput', f: 'constructOptionValue', optionData, calculatedPrefix: getUnitPrefixFromUnitSystem( optionData.unit ), unit: optionData.unit } );
+    console.log( 
+        { 
+            method: 'ScrewSizeInput', f: 'constructOptionValue', optionData, 
+    // calculatedPrefix: getUnitPrefixFromUnitSystem( optionData.unit ), unit: optionData.unit 
+        } 
+    );
     if ( !optionData ) { return null; }
     // const abbrevUnit = getPrefix( optionData.unit );
     return `${ optionData.prefix ? optionData.prefix.toUpperCase() : getUnitPrefixFromUnitSystem( optionData.unit ) }${ optionData.thread_diameter ?? '' }` +
