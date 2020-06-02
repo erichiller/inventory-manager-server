@@ -77,7 +77,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
             form={form}
             layout="horizontal"
             labelCol={{span: 8 }}
-            wrapperCol={{span: 9 }}
+            // wrapperCol={{span: 9 }}
             // name="item-add-edit-delete"
             onKeyPress={( event ) => {
                 console.log({ log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode });
