@@ -9,15 +9,20 @@ import { toMinimumFixed, Union } from '../../lib/UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ItemSelect } from '../../lib/item/ItemBundle/ItemSelect';
+import { useForm } from 'antd/lib/form/Form';
 
 
-interface ItemBundleEditFormProps extends Union<ItemFormProps, ItemBundle> {
+interface OrderItemEditFormProps {
 
 }
 
-
-export const OrderItemEditForm: React.FC<ItemBundleEditFormProps> = ( props ) => {
-    const { form } = props;
+/**
+ * This Modal is for controlling the OrderItem entry
+ * @param props ItemBundleEditFormProps
+ */
+export const OrderItemEditForm: React.FC<OrderItemEditFormProps> = ( props ) => {
+    // const { form } = props;
+    const form = useForm();
 
     // useEffect( () => {
     //     screwSizeInputRef.current.focus();

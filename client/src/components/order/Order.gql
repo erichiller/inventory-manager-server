@@ -70,3 +70,61 @@ query GetOrders {
         ...orderFields
     }
 }
+
+query GetOrder (
+    $id: Int!
+) {
+  order: order_by_pk(id: $id) {
+    vendor_order_id
+    vendor_id
+    url
+    total_cost
+    tax_cost
+    pon
+    placed_date
+    payment_method_id
+    items_cost
+    id
+    fulfilled_date
+    items {
+      cost_item
+      cost_tax
+      cost_total
+      item_id
+      manufacturer_item_id
+      order_id
+      quantity
+      serial_no
+      shipment_id
+      vendor_item_id
+    }
+    items_aggregate {
+      aggregate {
+        count
+      }
+    }
+    vendor {
+      account_id
+      id
+      name
+      url
+    }
+    shipments(distinct_on: id, limit: 10, offset: 10) {
+      id
+      order_id
+      received_date
+      shipped_date
+      shipping_carrier
+      tracking_id
+      vendor_invoice_id
+    }
+
+    shipments_aggregate {
+      aggregate {
+        count
+      }
+    }
+
+    
+  }
+}

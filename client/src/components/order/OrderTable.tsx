@@ -1,13 +1,12 @@
 import { Table, Divider } from 'antd';
 import * as React from 'react';
-import { useGetLabelsQuery, OrderSelectColumn, Label, GetLabelsQuery, useGetOrdersQuery } from '../../lib/types/graphql';
-import { LabelDrawModal } from '../draw/LabelDrawModal';
+import { OrderSelectColumn, useGetOrdersQuery, GetOrdersQuery, Order } from '../../lib/types/graphql';
 import { Item } from '../../lib/item';
-import { DISPLAY } from '../../lib/types/enums';
 import { toTitleCase } from '../../lib/UtilityFunctions';
-import { get } from 'http';
-import { render } from 'bwip-js';
 import { ColumnProps } from 'antd/lib/table';
+import { Link, useParams } from 'react-router-dom';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { OrderEditModal } from './OrderEditModal';
 
 
 
@@ -20,7 +19,7 @@ interface OrderTableState {
     data?: Item<any>[];
     pagination: pagination;
     loading: boolean;
-    clickedLabel: Label;
+    clickedRecord: Order;
     modal: React.ReactElement;
 }
 
@@ -30,21 +29,45 @@ interface pagination {
     current: number;
 }
 
+interface IOrderTableParams {
+    /** item_id is Int as string */
+    order_id: string;
+    action: "edit" | 'add';
+}
+
 export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
     const [ state, setState ] = React.useState<OrderTableState>( {
         data: undefined,
         pagination: { total: 0, pageSize: 100, current: 0 },
         loading: false,
-        clickedLabel: undefined,
+        clickedRecord: undefined,
         modal: null
     } );
+    let params = useParams<IOrderTableParams>();
+
+    React.useEffect( () => {
+        switch ( params.action ) {
+            case "edit":
+                if ( params.order_id ) {
+                    setModal( <OrderEditModal orderId={parseInt( params.order_id )} /> );
+                }
+                break;
+            case "add":
+                if ( params.order_id ) {
+                    setModal( <OrderEditModal /> );
+                }
+                break;
+            default:
+                setModal( null );
+                break;
+        }
+    }, [ params.order_id, params.action ] );
 
     const { data, loading, error } = useGetOrdersQuery();
 
 
 
-    // get Columns (): ColumnProps<Omit<GetLabelsQuery, '__typename'>>[] {
-    const columns: ColumnProps<Extract<GetLabelsQuery, 'label'>>[] = [
+    const columns: ColumnProps<Extract<GetOrdersQuery, 'order'>>[] = [
         ...( Object.keys( OrderSelectColumn ).filter(
             key => [ "ID" ].includes( key ) ? false : key ).map(
                 key => {
@@ -61,49 +84,22 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
                 // dataIndex: '',
                 render: ( text, record ) => (
                     <span>
-                        <a onClick={( obj ) => {
-                            obj.preventDefault();
-                            // setState({
-                            //   clickedItem: record,
-                            //   // printModal: display.VISIBLE
-                            // })
-                            setModal( <LabelDrawModal
-                                label={state.clickedLabel}
-                                visibleHandler={setModal} />
-                                , record );
-                        }
-                        }> Print</a>
+                        <Link to={`/order/${ record.id }/edit`}><EditOutlined className="IconButton" /></Link>
                         <Divider type="vertical" />
-                        <a>Edit</a>
-                        <Divider type="vertical" />
-                        <a>Delete</a>
+                        {/* TODO */}
+                        <a><DeleteOutlined className="IconButton" /></a>
                     </span >
                 ),
             }
         ]
     ];
 
-    // viewPrintModal = ( change?: DISPLAY, clickedLabel?: Label ) => {
-    //     console.log( "viewPrintModal () ? received", change );
-    //     if ( change !== undefined && change != state.printModal ) {
-    //         setState( {
-    //             printModal: change,
-    //             clickedLabel: clickedLabel
-    //         } );
-    //         console.log( "viewPrintModal () ? change detected; returning:", change == DISPLAY.VISIBLE );
-    //         return change == DISPLAY.VISIBLE;
-    //     }
-    //     console.log( "viewPrintModal () ? NO change detected; returning:", state.printModal == DISPLAY.VISIBLE );
-    //     return state.printModal == DISPLAY.VISIBLE;
-    // }
-
-
-    const setModal = ( modal: React.ReactElement, clickedLabel?: Label ) => {
-        console.log( "viewPrintModal () ? received", modal, clickedLabel );
+    const setModal = ( modal: React.ReactElement, clickedRecord?: Order ) => {
+        console.log( "viewPrintModal () ? received", modal, clickedRecord );
         if ( !modal ) {
             setState( {
                 ...state,
-                clickedLabel: clickedLabel,
+                clickedRecord: clickedRecord,
                 modal: null
             } );
             console.log( "viewPrintModal(null) removing modal" );
@@ -112,7 +108,7 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
         setState( {
             ...state,
             modal: modal,
-            clickedLabel: clickedLabel
+            clickedRecord: clickedRecord
         } );
         console.log( "viewPrintModal () ? provided new modal" );
         return;
