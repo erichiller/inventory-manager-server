@@ -1,9 +1,7 @@
-import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'react';
-import { Form, Input, Divider, Tooltip, InputNumber, Switch, Select } from 'antd';
-// import { OptionsType } from 'rc-select/lib/Option';
+import React, { useState, useRef, useEffect } from 'react';
+import { Form, Input, Divider, Tooltip } from 'antd';
 import { ItemFormProps } from '../Item';
 import { EnumHardwareFastenerHeadEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFinishEnum, EnumHardwareFastenerMaterialEnum, EnumHandednessEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerBoltThreadFitEnum, EnumHardwareFastenerBoltPointEnum, EnumHardwareFastenerHardnessEnum, EnumHardwareFastenerBoltStrengthEnum, useGetEnumHardwareFastenerThreadStandardQuery, EnumHardwareUseMaterialEnum, EnumHardwareFastenerThreadLabelEnum } from '../../types/graphql';
-import TextArea from 'antd/lib/input/TextArea';
 
 import { EnumUnitKeys, EnumHardwareFastenerSpecificationsEnum } from './types/types';
 import { UnitSelect } from './formComponents/UnitSelect';
@@ -16,10 +14,7 @@ import { ItemHardwareFastenerBolt } from './Index';
 import { ScrewThreadIcon, ScrewEmbeddedLengthIcon, ScrewHeadDiameterIcon, ScrewHeadHeightIcon, ItemHardwareFastenerBoltDriveTypeIconMap, ItemHardwareFastenerBoltPointIconMap } from './icon';
 import { FormIconTooltip, getUnitPrefixFromUnitSystem } from './formComponents/helpers';
 import { ThreadDirection_RightHandRuleIcon } from './icon';
-import { QtyInput } from '../common/QtyInput';
-import { OrderInput } from '../../../components/order/OrderInput';
 import { DescriptionTableTooltip } from './formComponents/DescriptionTableTooltip';
-import { SelectValue } from 'antd/lib/select';
 
 
 interface ItemHardwareFastenerBoltFormProps extends Union<ItemFormProps, ItemHardwareFastenerBolt> {
