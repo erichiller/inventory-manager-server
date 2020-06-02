@@ -7,7 +7,7 @@
 - [ ] Try [animations](http://react-component.github.io/tween-one/)
 - [ ] Make use of additional linter: [tslint-react-hooks](https://www.npmjs.com/package/tslint-react-hooks) or `eslint-plugin-react-hooks`
   - [ ] Use the `exhaustive-deps` rule. It warns of incorrect dependencies
-- [ ] `ItemSearch` should only search when input is entered.
+- [x] `ItemSearch` should only search when input is entered.
 - [ ] Print List button should say "no labels in list" if there are none
 
 ## Table
