@@ -373,7 +373,6 @@ export class Item<T extends GenericItem> {
         //         '_object'
         //     ];
         // return Object.keys( Item ).filter( val => !exclude.includes( val as keyof ItemHardwareFastenerBolt ) ) as Array<keyof ItemHardwareFastenerBolt>;
-        console.log( "Item itemProperties labelProps", Object.keys( typeof ItemSelectColumn ) );
         return [];
     }
     // static get labelProps (): Array<string> {
