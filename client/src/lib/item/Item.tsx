@@ -20,6 +20,7 @@ import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { resolve } from "url";
 import { rejects } from "assert";
+import { ItemSelect } from "./ItemBundle/ItemSelect";
 
 export type GenericItem = Pick<ItemGql, 'id'>
     & Partial<Pick<ItemGql, | 'object'>
@@ -90,7 +91,7 @@ export class Item<T extends GenericItem> {
     static [ Symbol.hasInstance ] ( instance: object ) {
         // TODO: apply to other Item subclasses
         // TODO: use `constructor.name` ??
-        if ( '__typename' in instance && instance['__typename'] === 'Item' ) {
+        if ( '__typename' in instance && instance['__typename'] === 'item' ) {
             return true;
         }
         return false;
@@ -302,26 +303,6 @@ export class Item<T extends GenericItem> {
     get icons (): React.ReactElement[] {
         return null;
     }
-    get labelTemplate (): Label {
-        return null;
-    }
-    get labelTemplateMatches (): Label[] {
-        return null;
-    }
-    get labelTemplates (): Label[] {
-        return null;
-    }
-    /**
-     * Props which should be included in label (default) 
-     * Optionally defined on subclasses
-     */
-    get labelProps (): Array<keyof T> {
-        return Object.keys(this) as Array<keyof T>;
-    }
-    // static get labelProps (): Array<string> {
-    //     console.log( {keysOfThisCls: Object.keys( this ), keysOfItemCls: Object.keys(Item) });
-    //     return Object.keys( this ) as Array<Extract<keyof GenericItem, string>>;
-    // }
     /**
      * Props to use as display columns (default)
      * Ordered
@@ -343,6 +324,10 @@ export class Item<T extends GenericItem> {
     }
     get Columns (): ColumnProps<T>[] {
         return Item.Columns as ColumnProps<T>[];
+    }
+    // TODO: am I actually using this ??
+    get tableRowComponent (): React.FC {
+        return null;
     }
     /**
      * Props which should be included in search (default)
@@ -368,19 +353,42 @@ export class Item<T extends GenericItem> {
     get sortProps (): ( keyof T )[] {
         return null;
     }
+    get labelTemplate (): Label {
+        return null;
+    }
+    get labelTemplateMatches (): Label[] {
+        return null;
+    }
+    get labelTemplates (): Label[] {
+        return null;
+    }
+    /**
+     * Props which should be included in label (default) 
+     * These are also the properties that can possibly be added to LabelQR
+     * Optionally defined on subclasses
+     */
+    get labelProps (): ( Extract<keyof T, string> )[] {
+        // return Object.keys(this) as Array<keyof T>;
+        //     const exclude: Array<Partial< keyof Item<T> >> =[
+        //         '_object'
+        //     ];
+        // return Object.keys( Item ).filter( val => !exclude.includes( val as keyof ItemHardwareFastenerBolt ) ) as Array<keyof ItemHardwareFastenerBolt>;
+        console.log( "Item itemProperties labelProps", Object.keys( typeof ItemSelectColumn ) );
+        return [];
+    }
+    // static get labelProps (): Array<string> {
+    //     console.log( {keysOfThisCls: Object.keys( this ), keysOfItemCls: Object.keys(Item) });
+    //     return Object.keys( this ) as Array<Extract<keyof GenericItem, string>>;
+    // }
     /**
      * Props to default to in QR Code (default)
      * Ordered
      * Optionally defined on subclasses
      */
-    get defaultQrProps (): ( keyof T )[] {
-        return null;
+    get defaultQrProps (): ( Extract<keyof T, string> )[] {
+        return [];
     }
 
-    // TODO: am I actually using this ??
-    get tableRowComponent (): React.FC {
-        return null;
-    }
     /**
      * Form to add Item
      */

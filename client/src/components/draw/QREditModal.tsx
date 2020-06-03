@@ -27,6 +27,7 @@ export const QREditModal: React.FC<QREditModalProps> = ( props ) => {
     const [ modalRef, setModalRef ] = useState<any>();
     const onCancel = () => {
         /// REMOVE ELEMENT /// REVERT ///
+        // BUG: this removes all labelQR!
         props.changeHandler( false, props.labelQR );
         onClose();
     };
@@ -66,21 +67,21 @@ export const QREditModal: React.FC<QREditModalProps> = ( props ) => {
     console.log( 'props.visible', props.visibleHandler() );
     // console.log('state.visible', visibleHandler(), state.visible == display.VISIBLE ? true : false)
     console.log( 'props.item', props.item );
-    let pxWidth = 325;
+    let pxWidth = 375;
     let mmHeight = 20;
 
-    type mouseMoveOriginT = { x: number; y: number; top: number, left: number; } | false;
-    type modalPositionT = { top: number; left: number | false; };
+    // type mouseMoveOriginT = { x: number; y: number; top: number, left: number; } | false;
+    // type modalPositionT = { top: number; left: number | false; };
 
     // const [ mouseMoveOrigin, setMouseMoveOrigin ] = useState<mouseMoveOriginT>( false );
     // const [ modalPosition, setModalPosition ] = useState<modalPositionT>( { top: 100, left: false } );
 
-    let mouseMoveOrigin: mouseMoveOriginT = false;
+    // let mouseMoveOrigin: mouseMoveOriginT = false;
 
-    let modalPosition: modalPositionT = { top: 100, left: false };
+    // let modalPosition: modalPositionT = { top: 100, left: false };
 
-    const setMouseMoveOrigin =  v => mouseMoveOrigin = v;
-    const setModalPosition = p => modalPosition = p;
+    // const setMouseMoveOrigin =  v => mouseMoveOrigin = v;
+    // const setModalPosition = p => modalPosition = p;
 
 
 
@@ -107,9 +108,9 @@ export const QREditModal: React.FC<QREditModalProps> = ( props ) => {
     //     window.removeEventListener( 'mouseup', mouseUp );
     // }
 
-        console.log( "labelQR properties map", props.labelQR.properties.map( key => {
-            return { label: key, value: props.labelQR.item[ key ], defaultChecked: true };
-        } ).filter( n => n.value !== null ) );
+        // console.log( "labelQR properties map", props.labelQR.properties.map( key => {
+        //     return { label: key, value: props.labelQR.item[ key ], defaultChecked: true };
+        // } ).filter( n => n.value !== null ) );
     return (
 
         <DraggableModal

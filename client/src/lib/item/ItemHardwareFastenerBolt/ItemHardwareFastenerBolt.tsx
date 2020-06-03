@@ -94,8 +94,29 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
         return [ "Item", "Hardware", "Fastener", "Bolt" ];
     }
 
+    get defaultQrProps (): Array<keyof typeof ItemHardwareFastenerBoltSelectColumn> {
+        return [
+            'id',
+            'name',
+            'material',
+            'finish',
+            'use_material',
+            'drive_size',
+            'countersunk_angle',
+            'hardness',
+            'tensile_strength',
+            'strength_class',
+            'thread_fit'
+        ];
+    }
+
     get labelProps (): Array<keyof typeof ItemHardwareFastenerBoltSelectColumn> {
-        return Object.keys( ItemHardwareFastenerBoltSelectColumn ) as Array<keyof typeof ItemHardwareFastenerBoltSelectColumn>;
+        const exclude: Array<Partial<keyof typeof ItemHardwareFastenerBoltSelectColumn>> = [
+            // ,
+            'default_fields'
+        ];
+        console.log( "itemProperties labelProps", Object.keys( typeof ItemHardwareFastenerBoltSelectColumn ))
+        return Object.keys( ItemHardwareFastenerBoltSelectColumn ).filter( val => !exclude.includes( val as any ) ) as Array<keyof typeof ItemHardwareFastenerBoltSelectColumn>;
     }
 
     /**
