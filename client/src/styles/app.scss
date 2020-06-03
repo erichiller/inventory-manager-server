@@ -22,6 +22,20 @@ code {
     monospace;
 }
 
+.MainMenu {
+    .ant-menu-submenu {
+        a {
+            color: rgba(0, 0, 0, 0.65);
+        }
+    }
+    .ant-menu-submenu.ant-menu-submenu-selected {
+        a {
+            color: #1890ff;
+        }
+    }
+
+}
+
 // %ContentText {
 //   font-size: 14px;
 //   font-variant: tabular-nums;

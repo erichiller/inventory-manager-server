@@ -9,7 +9,8 @@
   - [ ] Use the `exhaustive-deps` rule. It warns of incorrect dependencies
 - [x] `ItemSearch` should only search when input is entered.
 - [ ] Print List button should say "no labels in list" if there are none
-- [ ] _Order_ in `Menu` always shows highlighted.
+- [x] _Order_ in `Menu` always shows highlighted.
+- [ ] Move the search bar in Item/Index to be in the top menu bar
 
 ## Table
 
