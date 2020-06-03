@@ -130,7 +130,7 @@ const parseScrewSizeInputOptionData: ( s: string ) => ScrewSizeInputOptionData =
 function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOptionData[] {
     if (v && v.unit){ 
         if ( v.prefix ){ v.prefix = v.prefix.toUpperCase() as UnitPrefixT; } // toUpperCase for more certain matching
-        ScrewSizeConfig[v.unit] = Object.fromEntries( Object.keys(ScrewSizeConfig[v.unit]).map( thread_diameter => [thread_diameter.toUpperCase(), ScrewSizeConfig[v.unit][thread_diameter]]) );
+        ScrewSizeConfig[ v.unit ] = Object.fromEntries( Object.keys( ScrewSizeConfig[ v.unit ] ).map( thread_diameter => [ thread_diameter.toUpperCase(), ScrewSizeConfig[ v.unit ][ thread_diameter ] ] ) ) as any;
         if ( v.thread_diameter ) { 
             if ( v.thread_pitch ){
                 return [v]; // this is as specific as we can get
