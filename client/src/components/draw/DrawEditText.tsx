@@ -54,8 +54,6 @@ const formatOptions = [
 export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
     // const { event, visibleHandler, item, changeHandler, labelText } = props;
 
-    const defaultTextSize: number = 36;
-
     console.log( 'DrawEditText props:\n', props );
 
     const drawContext = useContext( DrawContext );
@@ -93,7 +91,7 @@ export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
     >
         <Form
             name="basic"
-            initialValues={{ format_options: currentFormatOptions, text_size: defaultTextSize }}
+            initialValues={labelText}
             onValuesChange={(changedValues) => props.changeHandler(changedValues, props.labelText)}
             layout="horizontal"
             labelCol={{ span: 5 }}

@@ -242,7 +242,7 @@ class LabelConstituent extends DrawAttrs {
 
 export class LabelText extends LabelConstituent {
     text: string = "";
-    _fontSize: Integer;
+    _fontSize: Integer = 36; // default is 36
     bold: boolean;
     italic: boolean;
     underline: boolean;
@@ -335,6 +335,9 @@ export class LabelQR extends LabelConstituent {
     // get properties() {
     //     return this.
     // }
+    /**
+     * `properties` are the CURRENT properties that constitute the text of the QR Image
+     */
     properties: string[] = [];
     canvasElement: HTMLCanvasElement | HTMLOrSVGImageElement;
     dataURL: string;
@@ -345,12 +348,16 @@ export class LabelQR extends LabelConstituent {
         const { item } = options;
         this.item = item;
         if ( item ) {
-            this.properties = Object.getOwnPropertyNames( item );
+            this.properties = item.defaultQrProps;
         }
     }
 
+    /**
+     * `itemProperties` are the full set of possible properties of the item that can be in the QR Image
+     */
     get itemProperties (): string[] {
-        return Object.getOwnPropertyNames( this.item );
+        console.log( "LabelQR itemProperties\n", this.item.labelProps, {getOwnPropertyNames: Object.getOwnPropertyNames( this.item )})
+        return this.item.labelProps;
     }
 
 
