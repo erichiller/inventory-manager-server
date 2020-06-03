@@ -10,11 +10,11 @@ export function buf2hex ( buffer: ArrayBuffer ): string { // buffer is an ArrayB
 
 export function toTitleCase ( s: string ): string {
     /** if null return blank string */
-    if ( !s ) { return ''; }
+    if ( !s || typeof s !== 'string' ) { return ''; }
     /** do not change `id` or `ID` */
     if ( [ 'ID', 'id' ].includes( s ) ) { return s; }
     /** string takes the form _0 (underscore, numeric) then this is assumed to be an ENUM with an underscore prefix to allow for starting numbers */
-    if ( s.length >= 2 && s[0] === "_" && /[0-9]/.exec(s[1]) !== null){ return s.replace( /_/g, '' ); }
+    if ( s.length >= 2 && s[ 0 ] === "_" && /[0-9]/.exec( s[ 1 ] ) !== null ) { return s.replace( /_/g, '' ); }
     /** if string is ALL CAPS return as is */
     if ( s.toUpperCase() === s ) { return s; }
     return s.replace( /_/g, ' ' ).split( ' ' ).map( function ( word ) {
@@ -47,7 +47,7 @@ export function filterObject ( o: object, allow: undefined | null | string[], ex
 
 export function filterObjectKeysWithProperty<T extends object> ( o: T, k: keyof T[ keyof T ] ): Array<keyof T> {
     let filteredObjects: Array<keyof T> = [];
-    (Object.keys( o ) as Array<keyof T>).forEach( propertyValue => {
+    ( Object.keys( o ) as Array<keyof T> ).forEach( propertyValue => {
         if ( k in o[ propertyValue ] ) {
             filteredObjects.push( propertyValue );
         }
@@ -88,11 +88,11 @@ export function filterObjectKeysWithProperty<T extends object> ( o: T, k: keyof 
  * @param match element match
  */
 export function matchFirstOfArrayOrNull<T> ( array: T[], match?: T ): T | null {
-    if ( ! Array.isArray( array ) || array.length === 0 ) {
+    if ( !Array.isArray( array ) || array.length === 0 ) {
         return null;
     }
     if ( match ) {
-        return array.find( el => el === match ) || array[0];
+        return array.find( el => el === match ) || array[ 0 ];
     }
     return array[ 0 ];
 }
@@ -109,7 +109,7 @@ export function parseIntSafe ( input: string | number ): Integer {
  */
 export function parseFloatSafeWithDefault ( input: string | number, defaultValue: number ): number {
     if ( typeof input === "number" ) { return input; }
-    let f = parseFloat(input);
+    let f = parseFloat( input );
     return f !== NaN ? f : defaultValue;
 }
 
@@ -254,14 +254,13 @@ export function enumerable ( value: boolean ) {
 }
 
 
-export function applyDefaults<T extends Item<any>>( fieldValues: Store, defaults: Partial<T> ): Store {
-        fieldValues.default_fields = Array.isArray( fieldValues.default_fields ) ? fieldValues.default_fields : [];
-        Object.keys( defaults ).forEach( key => {
-            if ( !fieldValues[ key ] ) {
-                fieldValues[ key ] = defaults[ key ];
-                fieldValues.default_fields.push( key );
-            }
-        } );
-        return fieldValues;
-    };
-
+export function applyDefaults<T extends Item<any>> ( fieldValues: Store, defaults: Partial<T> ): Store {
+    fieldValues.default_fields = Array.isArray( fieldValues.default_fields ) ? fieldValues.default_fields : [];
+    Object.keys( defaults ).forEach( key => {
+        if ( !fieldValues[ key ] ) {
+            fieldValues[ key ] = defaults[ key ];
+            fieldValues.default_fields.push( key );
+        }
+    } );
+    return fieldValues;
+}
