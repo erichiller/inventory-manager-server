@@ -112,12 +112,17 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
         if ( !variables.categories || variables.categories.length === 0 ) {
             variables.categories = null;
         }
+        console.log({cls: 'ItemTable', action: "!props.data", result},'\ndata:', result?.data);
         result = props.query( {
             variables: props.variables
         } );
         loading = result.loading;
 
         useEffect( () => {
+            console.log( { cls: 'ItemTable', action: "!props.data useEffect", result }, "\ndata:", result?.data );
+            if ( data ){
+                return;
+            }
             if ( result.error ) {
                 message.error( result.error );
             }
@@ -130,6 +135,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                 }
             }
         }, [ result.data, result.error ] );
+
     } else {
         console.debug( `data received in props ${ props.data } not running GraphQL` );
     }
