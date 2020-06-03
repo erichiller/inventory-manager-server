@@ -1,12 +1,13 @@
 import { Table, Divider } from 'antd';
 import * as React from 'react';
-import { OrderSelectColumn, useGetOrdersQuery, GetOrdersQuery, Order } from '../../lib/types/graphql';
+import { OrderSelectColumn, useGetOrdersQuery, GetOrdersQuery, Order as OrderGql } from '../../lib/types/graphql';
 import { Item } from '../../lib/item';
 import { toTitleCase } from '../../lib/UtilityFunctions';
 import { ColumnProps } from 'antd/lib/table';
 import { Link, useParams } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { OrderEditModal } from './OrderEditModal';
+import { Order } from '../../lib/order/Order';
 
 
 
@@ -68,15 +69,7 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
 
 
     const columns: ColumnProps<Extract<GetOrdersQuery, 'order'>>[] = [
-        ...( Object.keys( OrderSelectColumn ).filter(
-            key => [ "ID" ].includes( key ) ? false : key ).map(
-                key => {
-                    return {
-                        key: key,
-                        title: toTitleCase( key ),
-                        dataIndex: OrderSelectColumn[ key ],
-                    };
-                } ) ),
+        ...Order.Columns,
         ...[
             {
                 title: 'Action',
