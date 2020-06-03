@@ -37,7 +37,7 @@
 - [ ] `drive_size` -> generated default
 - [ ] run form _verify_ on submit
 - [ ] figure out how to store and display USC values (UNx), store as absolute diameter (in inches?) store as string? Both?
-- [ ] trailing 0 is removed when creating name in `ItemHardwareFastenerBolt` Form
+- [x] trailing 0 is removed when creating name in `ItemHardwareFastenerBolt` Form
 
 
 ## Drawing

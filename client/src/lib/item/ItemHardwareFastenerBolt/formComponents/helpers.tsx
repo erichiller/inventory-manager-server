@@ -72,7 +72,7 @@ export function getUnitPrefixAndDiameterFromOptionString ( optionString: string 
 
 interface FormIconTooltipProps {
     // icon: ReactSVGElement;
-    icon: JSX.Element | React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    icon?: JSX.Element | React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     text: ReactText | ReactElement;
     label: ReactText | ReactElement;
     additionalClassNames?: [ string ] | string;
@@ -84,8 +84,10 @@ export const FormIconTooltip: React.FC<FormIconTooltipProps> = ( { icon, text, l
         {icon}
         <span>{text}</span>
     </div>}>
-        <span>
+        <span style={{ cursor: 'help' }}>
             {label}
         </span>
     </Tooltip>;
 };
+
+// export const HelpTooltipLabel

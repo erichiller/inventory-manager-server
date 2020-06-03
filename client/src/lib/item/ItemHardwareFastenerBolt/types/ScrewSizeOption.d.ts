@@ -59,7 +59,7 @@ export interface IScrewSizeDefinition {
      * United States Customary System 
      * @propertyNames {"pattern": "^((#[0-9]{1,2})|([1-9]+(\\+[1-9]+)?(\\/[0-9]+)?))$"}
      **/
-    uscs: { [ diameter: string ]: Partial<DiameterDefinitionBase<USCustomarySystemUnit>>; };
+    usc: { [ diameter: string ]: Partial<DiameterDefinitionBase<USCustomarySystemUnit>>; };
 }
 
 export type SchemaDefinition<T> = { $schema: string; } & T;
