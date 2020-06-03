@@ -35,7 +35,7 @@ interface FormFields {
 *
 * @returns boolean where true means do update.
 */
-const setFieldScrewSizePropertyInShouldUpdate = ( field: keyof ScrewSizeInputOptionData, form: FormInstance, setFieldState?: (any) => void ) => {
+const setFieldScrewSizePropertyInShouldUpdate = ( field: keyof ScrewSizeInputOptionData, form: FormInstance, setFieldState?: ( any ) => void ) => {
     return ( prev: FormFields, next: FormFields ) => {
         let currentValue = form.getFieldValue( field );
         console.log( "form", `${ field } shouldUpdate?`, { currentValue, next } );
@@ -43,7 +43,7 @@ const setFieldScrewSizePropertyInShouldUpdate = ( field: keyof ScrewSizeInputOpt
         if ( nextValue && currentValue !== nextValue ) {
             console.log( "form", `${ field } shouldUpdate?`, `SETTING ${ field } from screw_size`, `current ${ currentValue } !== next ${ nextValue }` );
             form.setFieldsValue( Object.fromEntries( [ [ field, nextValue ] ] ) );
-            if ( setFieldState ){
+            if ( setFieldState ) {
                 setFieldState( nextValue );
             }
             return true;
@@ -91,10 +91,12 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
 
     // TODO: then here have a type selector when in the generic add form
 
-    const updateName = () => {
+    const updateName = (newValue?: {[field: string]: string}) => {
         const f = ( f: string, prefix?: string ) => {
-            let v = toTitleCase(form.getFieldValue( f ));
-            return v ? `${ prefix ? prefix : '' }${ v.replace( /[.0]*$/, '' )}`: '';
+            let s = newValue && Object.keys( newValue ).includes( f ) ? newValue[ f ] : form.getFieldValue( f );
+            console.log({action: 'updateName', f, newValue, s})
+            let v = toTitleCase( s );
+            return v ? `${ prefix ? prefix : '' }${ v.replace( /\.[0]*$/, '' ) }` : '';
         };
         /**
          * Set Name
@@ -102,7 +104,7 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
          * <Fastener type> <Drive Types> <Head Styles> <Material> <Diameter><Thread Count,pitch><Length>
          */
         let descriptorPrefix = `${ f( 'use_material' ) }${ f( 'drive_type', ' ' ) }${ f( 'head_type', ', ' ) }${ f( 'material_type', ', ' ) }`;
-        let valueString = `${descriptorPrefix ? descriptorPrefix + ' ': ''}${ getUnitPrefixFromUnitSystem( form.getFieldValue( 'unit' ) ) }${ f( 'thread_diameter' ) }${ f( 'thread_pitch', '-' ) }${ f( 'embedded_length', 'x' ) } `;
+        let valueString = `${ descriptorPrefix ? descriptorPrefix + ' ' : '' }${ getUnitPrefixFromUnitSystem( form.getFieldValue( 'unit' ) ) }${ f( 'thread_diameter' ) }${ f( 'thread_pitch', '-' ) }${ f( 'embedded_length', 'x' ) } `;
         form.setFieldsValue( Object.fromEntries( [ [ 'name', valueString ] ] ) );
     };
 
@@ -140,7 +142,7 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
 
                 {/* DIAMETER */}
                 <Form.Item name="thread_diameter" dependencies={[ 'unit' ]} required
-                    label={<Tooltip title={
+                    label={<FormIconTooltip text={
                         <span className="tooltip-with-example">
                             <header>Thread dimensions. </header>
                         TPI if US unit, Pitch if metric.
@@ -149,8 +151,8 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                             <b>Metric:</b>
                             <pre><span className="highlight">M3</span>-0.5x5</pre>
                         </span>
-                    } ><span>Diameter</span></Tooltip>}
-                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_diameter", form )}
+                    } label="Diameter" />}
+                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_diameter", form, updateName )}
                 >
                     <MeasurementInput
                         unit={unit}
@@ -159,16 +161,19 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
 
                 {/* Thread Pitch */}
                 <Form.Item name="thread_pitch"
-                    label={<Tooltip title={
-                        <span className="tooltip-with-example">
-                            <header>Thread dimensions. </header>
-                        TPI if US unit, Pitch if metric.
-                        <b>US Customary Unit:</b>
-                            <pre>#6-<span className="highlight">32</span>x1</pre>
-                            <b>Metric:</b>
-                            <pre>M3-<span className="highlight">0.5</span>x5</pre>
-                        </span>
-                    } ><span>Pitch</span></Tooltip>}
+                    label={<FormIconTooltip
+                        text={
+                            <span className="tooltip-with-example">
+                                <header>Thread dimensions. </header>
+                            TPI if US unit, Pitch if metric.
+                            <b>US Customary Unit:</b>
+                                <pre>#6-<span className="highlight">32</span>x1</pre>
+                                <b>Metric:</b>
+                                <pre>M3-<span className="highlight">0.5</span>x5</pre>
+                            </span>
+                        }
+                        label="Pitch"
+                    />}
                     shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_pitch", form, updateName )}
                     required
                 >
@@ -184,15 +189,15 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                         <FormIconTooltip
                             icon={<ScrewEmbeddedLengthIcon />}
                             text={
-                            <span>
+                                <span>
                                     <p>Embedded Length is the length of the fastener that (at maximum) will be into the use material.</p>
                                     <p>The method of measurement differs for different Head Types</p>
-                            </span>
-                                }
+                                </span>
+                            }
                             label="Length"
                         />}
                     dependencies={[ 'unit' ]}
-                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "embedded_length", form )}
+                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "embedded_length", form, updateName )}
                     required
                 >
                     <MeasurementInput
@@ -238,11 +243,11 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
             </div>
 
             <div className="col">
-                <Form.Item name="head_type" label="Head" required>
+                <Form.Item name="head_type" label="Head" getValueFromEvent={( args ) => { console.log( 'head_type getValueFromEvent', args ); updateName( { head_type: args } ); return args; }}  required>
                     <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerHeadEnum )} />
                 </Form.Item>
 
-                <Form.Item name="drive_type" label="Drive" required>
+                <Form.Item name="drive_type" label="Drive" getValueFromEvent={( args ) => { console.log('drive_type getValueFromEvent', args); updateName({drive_type: args}); return args; }} required>
                     <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerDriveEnum )} iconMap={ItemHardwareFastenerBoltDriveTypeIconMap} />
                 </Form.Item>
 
@@ -264,7 +269,10 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                 <Divider key="divider_thread" orientation="left">Thread</Divider>
 
                 <Form.Item name="thread_length" dependencies={[ 'unit' ]}
-                    label={<Tooltip title={<div className="formTooltip"><ScrewThreadIcon /><span>The length of the screw that is threaded. </span></div>} ><span>Thread Length</span></Tooltip>}
+                    label={<FormIconTooltip 
+                            icon={<ScrewThreadIcon />} 
+                            text="The length of the screw that is threaded" 
+                            label="Thread Length" />}
                 >
                     <MeasurementInput
                         unit={unit}
@@ -287,14 +295,14 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                 </Form.Item>
                 <Form.Item name="thread_fit" label="Fit">
                     <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerBoltThreadFitEnum ).filter( el => {
-                        if ( unit === "metric") {
+                        if ( unit === "metric" ) {
                             return /[gh]/.exec( el ) !== null;
                         }
-                        if ( unit === "usc"){
+                        if ( unit === "usc" ) {
                             return /[0-9][AB]/.exec( el ) !== null;
                         }
                         return true;
-                    })} />
+                    } )} />
                 </Form.Item>
             </div>
 
@@ -304,7 +312,7 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
               ********************************************************************************/}
             <div className="col">
                 <Divider key="divider_head" orientation="left">Head</Divider>
-                <Form.Item name="head_diameter" dependencies={[ 'unit' ]} 
+                <Form.Item name="head_diameter" dependencies={[ 'unit' ]}
                     label={
                         <FormIconTooltip
                             icon={<ScrewHeadDiameterIcon />}
@@ -342,7 +350,7 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                 {/* Drive */}
                 <Divider key="divider_drive" orientation="left">Drive</Divider>
                 <Form.Item name="drive_size" dependencies={[ 'unit' ]}
-                    label={<Tooltip title="Size of drive. For example, if `drive_type` is `hex_socket` then the `drive_size` would be the size of the allen wrench needed." ><span>Size</span></Tooltip>}
+                    label={<FormIconTooltip text="Size of drive. For example, if `drive_type` is `hex_socket` then the `drive_size` would be the size of the allen wrench needed." label="Size" />}
                 >
                     <MeasurementInput
                         unit={unit}
@@ -383,7 +391,7 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                 </Form.Item>
 
                 <Form.Item name="point_type"
-                    label={<Tooltip title="Style of the point of this fastener. Bolts default to `Flat`" ><span>Point</span></Tooltip>}
+                    label={<FormIconTooltip text="Style of the point of this fastener. Bolts default to `Flat`" label="Point" />}
                 >
                     <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerBoltPointEnum )} placeholder="Bolt Flat" iconMap={ItemHardwareFastenerBoltPointIconMap} />
                 </Form.Item>
@@ -392,7 +400,7 @@ export const ItemHardwareFastenerBoltForm: React.FC<ItemHardwareFastenerBoltForm
                     <EnumSelect enumKeys={Object.keys( EnumHardwareFastenerHardnessEnum )} />
                 </Form.Item>
                 <Form.Item name="strength_class" label="Stength Class">
-                    <EnumSelect 
+                    <EnumSelect
                         enumKeys={Object.keys( EnumHardwareFastenerBoltStrengthEnum ).filter( el => {
                             if ( unit === "metric" ) {
                                 return /(class|A_2)/.exec( el ) !== null;
