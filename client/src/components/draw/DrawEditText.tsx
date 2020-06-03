@@ -60,7 +60,7 @@ export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
 
     const [ currentFormatOptions, setCurrentFormatOptions ] = useState<CheckedFormatOptionsT>();
 
-    const [ labelText, setLabelText ] = useState<LabelText>( props.labelText );
+    const [ labelText, setLabelText ] = useState<LabelText>( props.labelText.simpleObject as LabelText);
     const [ currentMentionPrefix, setCurrentMentionPrefix ] = useState<string>('');
 
     const onCancel = () => {
@@ -79,6 +79,8 @@ export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
             console.log( 'onChange, setPrefix to {', currentValue );
         }
     };
+
+    console.log("labelText", labelText)
 
     let drawWidth = 725;
     return <Modal

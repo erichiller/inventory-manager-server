@@ -115,7 +115,6 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
             // ,
             'default_fields'
         ];
-        console.log( "itemProperties labelProps", Object.keys( typeof ItemHardwareFastenerBoltSelectColumn ))
         return Object.keys( ItemHardwareFastenerBoltSelectColumn ).filter( val => !exclude.includes( val as any ) ) as Array<keyof typeof ItemHardwareFastenerBoltSelectColumn>;
     }
 

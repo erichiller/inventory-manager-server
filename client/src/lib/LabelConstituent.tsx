@@ -9,6 +9,7 @@ import { Item } from "./item";
 import bwipjs from 'bwip-js';
 import { DrawingSVG } from './BwipJsSvg';
 import { message, Alert } from 'antd';
+import { enumerable } from './UtilityFunctions';
 
 
 
@@ -236,6 +237,17 @@ class LabelConstituent extends DrawAttrs {
         return ( "x" in input ) && ( "y" in input ) && ( "scaleX" in input ) && ( "scaleY" in input ) && ( "rotation" in input );
     }
 
+    /**
+     * Returns self as a simple object. `get prop(): string` converted to `{ prop: string }`
+     */
+    get simpleObject () { // TODO: to add type information I will have to make LabelConstituent generic
+        let simpleObject: { [ key: string ]: any; } = {};
+        for ( let propertyKey in this ) {
+            simpleObject[ propertyKey ] = this[ propertyKey ];
+        }
+        return simpleObject;
+    }
+
 }
 
 
@@ -247,6 +259,7 @@ export class LabelText extends LabelConstituent {
     italic: boolean;
     underline: boolean;
 
+    @enumerable(true)
     get fontSize (): Integer {
         return this._fontSize;
     }
@@ -263,6 +276,7 @@ export class LabelText extends LabelConstituent {
     get signature () {
         return `${ this.text }-${ this.fontSize }-${ this.bold }-${ this.italic }-${ this.underline }-${ this.x }-${ this.y }`;
     }
+    @enumerable(true)
     get formatOptions (): FormatOptionsT[] {
         let opts: FormatOptionsT[] = [];
         if ( this.bold ) { opts.push( "bold" ); }
@@ -356,7 +370,6 @@ export class LabelQR extends LabelConstituent {
      * `itemProperties` are the full set of possible properties of the item that can be in the QR Image
      */
     get itemProperties (): string[] {
-        console.log( "LabelQR itemProperties\n", this.item.labelProps, {getOwnPropertyNames: Object.getOwnPropertyNames( this.item )})
         return this.item.labelProps;
     }
 
