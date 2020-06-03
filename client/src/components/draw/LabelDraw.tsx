@@ -29,8 +29,8 @@ import { TransformableQR } from './konvaElements/TransformableQR';
 
 interface ChangedValueTextI {
     text?: ChangedValueI;
-    format_options?: FormatOptionsT[];
-    text_size?: number;
+    formatOptions?: FormatOptionsT[];
+    fontSize?: number;
 }
 
 interface ChangedValueImageI {
@@ -295,14 +295,14 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         if ( changedValue.text ) {
             console.log( "setting text to", changedValue.text );
             labelText.text = changedValue.text;
-        } else if ( changedValue.format_options && changedValue.format_options ) {
-            console.log( "setting format_options to", { format_options: changedValue, value: changedValue.format_options } );
+        } else if ( changedValue.formatOptions && changedValue.formatOptions ) {
+            console.log( "setting formatOptions to", { formatOptions: changedValue, value: changedValue.formatOptions } );
             // if changedValue.
-            labelText.bold = ( changedValue.format_options as FormatOptionsT[] ).includes( "bold" );
-            labelText.underline = ( changedValue.format_options as FormatOptionsT[] ).includes( "underline" );
-            labelText.italic = ( changedValue.format_options as FormatOptionsT[] ).includes( "italic" );
-        } else if ( changedValue.text_size ) {
-            labelText.fontSize = changedValue.text_size;
+            labelText.bold = ( changedValue.formatOptions as FormatOptionsT[] ).includes( "bold" );
+            labelText.underline = ( changedValue.formatOptions as FormatOptionsT[] ).includes( "underline" );
+            labelText.italic = ( changedValue.formatOptions as FormatOptionsT[] ).includes( "italic" );
+        } else if ( changedValue.fontSize ) {
+            labelText.fontSize = changedValue.fontSize;
         } else {
             console.warn( "no match found for field", changedValue );
         }

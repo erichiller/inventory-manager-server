@@ -98,15 +98,15 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
         return [
             'id',
             'name',
-            'material',
-            'finish',
-            'use_material',
-            'drive_size',
-            'countersunk_angle',
-            'hardness',
-            'tensile_strength',
-            'strength_class',
-            'thread_fit'
+            // 'material',
+            // 'finish',
+            // 'use_material',
+            // 'drive_size',
+            // 'countersunk_angle',
+            // 'hardness',
+            // 'tensile_strength',
+            // 'strength_class',
+            // 'thread_fit'
         ];
     }
 
