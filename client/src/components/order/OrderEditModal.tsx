@@ -92,7 +92,7 @@ export const OrderEditModal: React.FC<OrderEditModalProps> = ( props ) => {
     return <Modal
         visible={true}
         title="Order"
-        width={null}
+        // width={null}
         className="OrderFormModal"
         onOk={e => {
             console.log( { class: 'OrderEditModal', method: 'onOk', e, values: form.getFieldsValue() } );
