@@ -127,13 +127,13 @@ export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
                     options={autocompleteFieldValues}
                 /> */}
             </Form.Item>
-            <Form.Item name="text_size" label="Text Size">
+            <Form.Item name="fontSize" label="Text Size">
                 <AutoComplete
                     style={{ width: 100 }}
                     options={textSizeOptions}
                 />
             </Form.Item>
-            <Form.Item name="format_options" label="Format Options" >
+            <Form.Item name="formatOptions" label="Format Options" >
                 <Checkbox.Group
                     options={formatOptions}
                 // disabled
