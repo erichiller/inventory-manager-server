@@ -4,7 +4,7 @@
 
 - [ ] Add `LICENSE.md`
 - [ ] Create templates for labels based on category / type #URGENT
-- [ ] Try [animations](http://react-component.github.io/tween-one/)
+- [ ] Try [animations](http://react-component.github.io/tween-one/) ; or <https://reacttraining.com/react-router/web/example/animated-transitions>
 - [ ] Make use of additional linter: [tslint-react-hooks](https://www.npmjs.com/package/tslint-react-hooks) or `eslint-plugin-react-hooks`
   - [ ] Use the `exhaustive-deps` rule. It warns of incorrect dependencies
 - [x] `ItemSearch` should only search when input is entered.
