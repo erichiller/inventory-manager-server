@@ -94,10 +94,11 @@ export class ItemHardwareFastenerBolt extends Item<ItemPlusClassT<ItemHardwareFa
         return [ "Item", "Hardware", "Fastener", "Bolt" ];
     }
 
-    get defaultQrProps (): Array<keyof typeof ItemHardwareFastenerBoltSelectColumn> {
+    get defaultQrProps (): Array<keyof ItemHardwareFastenerBolt> {
         return [
-            'id',
-            'name',
+            // 'id',
+            // 'name',
+            'url',
             // 'material',
             // 'finish',
             // 'use_material',

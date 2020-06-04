@@ -178,6 +178,10 @@ export class Item<T extends GenericItem> {
         this._name = nameVal;
     }
 
+    @enumerable( true )
+    get url (): string {
+        return `http://inventory/${this.id}`;
+    }
 
 
     static get categories (): CategoryHierarchyT[] {
@@ -384,7 +388,7 @@ export class Item<T extends GenericItem> {
      * Ordered
      * Optionally defined on subclasses
      */
-    get defaultQrProps (): ( Extract<keyof T, string> )[] {
+    get defaultQrProps (): ( Extract<keyof Union<Item<T>,T>, string> )[] {
         return [];
     }
 
