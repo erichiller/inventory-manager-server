@@ -387,7 +387,7 @@ export class LabelQR extends LabelConstituent {
         if ( text === true ) {
             text = this.encodedText;
             el = ( this.canvasElement as HTMLCanvasElement ) ?? null;
-            scale = 2;
+            scale = 2; // TODO: try with scale = 1
         }
         return bwipjs.toCanvas( el, {
             bcid: 'datamatrix',       // Barcode type
@@ -435,14 +435,20 @@ export class LabelQR extends LabelConstituent {
     }
 
     get encodedText (): string {
+        let result: string = "";
         if ( this.properties ) {
-            let result = this.properties.map( p => {
-                console.log( "QRCanvas is adding props from labelQR", { property: p, value: this.item[ p ] } );
-                return `${ p }: ${ this.item[ p ] }`;
-            } ).join( '\n' ).replace( '_', ' ' );
-            console.log( "LabelQR.encodeText()", result );
-            return result;
+            if ( this.properties.length === 1 && this.properties.includes('url')){
+                result = this.item['url'];
+            } else {
+                result = this.properties.map( p => {
+                    console.log( "QRCanvas is adding props from labelQR", { property: p, value: this.item[ p ] } );
+                    return `${ p }: ${ this.item[ p ] }`;
+                } ).join( '\n' ).replace( '_', ' ' );
+            }
         }
+        console.log( "LabelQR.encodeText()", result, 
+                        "\nfrom Properties: ", this.properties );
+        return result;
     }
 
     static is ( input: any ): input is LabelQR {

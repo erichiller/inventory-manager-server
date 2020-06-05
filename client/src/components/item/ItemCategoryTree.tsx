@@ -119,7 +119,7 @@ export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: Re
 
 
 // enum EnumItemClassEnum {
-//     ITEM_HARDWARE_FASTENER_BOLT = "item_hardware_fastener_bolt",
+//     item_hardware_fastener_screw_machine = "item_hardware_fastener_screw_machine",
 //     ITEM_HARDWARE_FASTENER_SCREW = "item_hardware_fastener_screw",
 //     ITEM_HARDWARE_FASTENER_WASHER = "item_hardware_fastener_washer",
 //     ITEM_TOOL_CONSUMABLES_SAW = "item_tool_consumables_saw",

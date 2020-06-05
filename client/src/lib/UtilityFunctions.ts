@@ -264,3 +264,12 @@ export function applyDefaults<T extends Item<any>> ( fieldValues: Store, default
     } );
     return fieldValues;
 }
+
+
+/**
+ * VERY basic function to ROUGHLY compute the number of items per page in table.  
+ * **NOTE**: this math is entirely rough
+ */
+export function computeDefaultPagination (): number {
+    return ( window.innerHeight - 50 ) / 22;
+}

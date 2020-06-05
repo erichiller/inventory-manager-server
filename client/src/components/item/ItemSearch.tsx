@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Item, ItemHardwareFastenerBolt } from '../../lib/item';
+import { Item, ItemHardwareFastenerScrewMachine } from '../../lib/item';
 // import Search from "antd/lib/input/Search";
 import { Select, Row, Col, Button } from "antd";
 
@@ -140,7 +140,7 @@ export const ItemSearch: React.FC<ItemSearchProps> = ( props ) => {
             // let optionGroupItems: { [ key in QueryResultKeysT ]: ( typeof Option )[] };
             let optionGroupItems: { [ key in keyof Record<EnumItemClassEnum, string> ]: ( React.ReactElement )[] };
 
-            // optionGroupItems = "item_hardware_fastener_bolt";
+            // optionGroupItems = "item_hardware_fastener_screw_machine";
             for ( let i = 0; i < data[ typeString ].length; i++ ) {
                 let result = new Item( data.item[ i ] ); // just to ease the typing
                 if ( data.item[ i ].class != priorClass ) {

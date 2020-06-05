@@ -31,7 +31,7 @@ export const OrderItemEditForm: React.FC<OrderItemEditFormProps> = ( props ) => 
     // useEffect( () => {
     //     let initProps: Partial<ItemBundle> = {};
     //     if ( !props.thread_direction ) {
-    //         initProps.thread_direction = EnumHandednessEnum.right;
+    //         initProps.thread_direction = EnumItemHandednessEnum.right;
     //     }
     //     form.setFieldsValue( initProps );
     // } );

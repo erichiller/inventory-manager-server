@@ -1,4 +1,4 @@
-import { EnumUnitEnum, EnumHardwareFastenerThreadStandardEnum, EnumHardwareFastenerThreadLabelEnum } from "../../../types/graphql";
+import { EnumUnitEnum, EnumItemHardwareFastenerThreadStandardEnum, EnumItemHardwareFastenerThreadLabelEnum } from "../../../types/graphql";
 import { getUnitSystemFromUnitPrefix, getUnitPrefixAndDiameterFromOptionString, screwSizeRegex, getUnitPrefixFromUnitSystem } from "./helpers";
 import { UnitPrefixT, EnumUnitKeys } from "../types/types";
 import Select, { SelectProps, SelectValue } from "antd/lib/select";
@@ -22,8 +22,8 @@ export class ScrewSizeInputOptionData {
     thread_pitch: number;
     numerator?: number;
     denominator?: number;
-    thread_standard?: EnumHardwareFastenerThreadStandardEnum;
-    thread_label?: EnumHardwareFastenerThreadLabelEnum;
+    thread_standard?: EnumItemHardwareFastenerThreadStandardEnum;
+    thread_label?: EnumItemHardwareFastenerThreadLabelEnum;
 }
 
 /**
@@ -37,7 +37,7 @@ function getDefaultPitch (
     prefix: UnitPrefixT,
     unit: EnumUnitEnum, 
     diameter: number, 
-    thread_label: EnumHardwareFastenerThreadLabelEnum = EnumHardwareFastenerThreadLabelEnum.coarse 
+    thread_label: EnumItemHardwareFastenerThreadLabelEnum = EnumItemHardwareFastenerThreadLabelEnum.coarse 
 ): number {
     console.log( { f: "getDefaultPitch", unit: unit, prefix: prefix, diameter: diameter, compound_diameter: `${ prefix }${ diameter }` } );
     if ( !validateScrewSizeElements(unit, prefix, diameter )){ return null;}
@@ -61,13 +61,13 @@ function getThreadLabel (
     unit: EnumUnitEnum,
     diameter: number, 
     pitch: number
-): EnumHardwareFastenerThreadLabelEnum {
+): EnumItemHardwareFastenerThreadLabelEnum {
     console.log( { f: "getThreadType", unit: unit, prefix: prefix, diameter: diameter, compound_diameter: `${ prefix }${ diameter }`});
     let pitchDefs = getPitchDefinitions(unit, prefix, diameter);
-    if ( !pitchDefs ) { return EnumHardwareFastenerThreadLabelEnum.coarse; } // return default
+    if ( !pitchDefs ) { return EnumItemHardwareFastenerThreadLabelEnum.coarse; } // return default
     for( let pitchOption in ScrewSizeConfig[ unit ][ `${ prefix }${ diameter }` ].pitch ){
         if ( ScrewSizeConfig[ unit ][ `${ prefix }${ diameter }` ].pitch[pitchOption] === pitch){
-            return pitchOption as EnumHardwareFastenerThreadLabelEnum;
+            return pitchOption as EnumItemHardwareFastenerThreadLabelEnum;
         }
     }
 }
@@ -76,19 +76,19 @@ function getThreadStandard (
     unit?: EnumUnitEnum,
     diameter?: number,
     pitch?: number,
-    pitch_label?: EnumHardwareFastenerThreadLabelEnum
-): EnumHardwareFastenerThreadStandardEnum {
+    pitch_label?: EnumItemHardwareFastenerThreadLabelEnum
+): EnumItemHardwareFastenerThreadStandardEnum {
     if ( typeof s === "string" ){
         // TODO: parse for user-entered standard (ie. DIN)
         // return null;
     }
     if ( unit === EnumUnitEnum.metric){
         // TODO: use pitch to check for non-ISO standard pitch and assign to JIS, DIN, etc.
-        return EnumHardwareFastenerThreadStandardEnum.ISO;
+        return EnumItemHardwareFastenerThreadStandardEnum.ISO;
     }
     if ( unit === EnumUnitEnum.usc ){
         // TODO: use pitch_label to select correct UNx (c, f, ef)
-        return EnumHardwareFastenerThreadStandardEnum.UNC;
+        return EnumItemHardwareFastenerThreadStandardEnum.UNC;
     }
     return null; // should never happen
 }

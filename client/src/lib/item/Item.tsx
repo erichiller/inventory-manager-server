@@ -371,12 +371,12 @@ export class Item<T extends GenericItem> {
      * These are also the properties that can possibly be added to LabelQR
      * Optionally defined on subclasses
      */
-    get labelProps (): ( Extract<keyof T, string> )[] {
+    get labelProps (): Array<Extract<keyof Union<Item<T>, T>, string>> {
         // return Object.keys(this) as Array<keyof T>;
         //     const exclude: Array<Partial< keyof Item<T> >> =[
         //         '_object'
         //     ];
-        // return Object.keys( Item ).filter( val => !exclude.includes( val as keyof ItemHardwareFastenerBolt ) ) as Array<keyof ItemHardwareFastenerBolt>;
+        // return Object.keys( Item ).filter( val => !exclude.includes( val as keyof ItemHardwareFastenerScrewMachine ) ) as Array<keyof ItemHardwareFastenerScrewMachine>;
         return [];
     }
     // static get labelProps (): Array<string> {
@@ -388,7 +388,7 @@ export class Item<T extends GenericItem> {
      * Ordered
      * Optionally defined on subclasses
      */
-    get defaultQrProps (): ( Extract<keyof Union<Item<T>,T>, string> )[] {
+    get defaultQrProps (): Array<Extract<keyof Union<Item<T>,T>, string>> {
         return [];
     }
 

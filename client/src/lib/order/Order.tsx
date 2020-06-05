@@ -23,7 +23,7 @@ import { apolloClient } from '../../index';
 import { message, Tooltip } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Union, Unpacked, enumerable } from "../UtilityFunctions";
+import { toTitleCase, Union, Unpacked, enumerable, ObjectColumnProperty } from "../UtilityFunctions";
 import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { resolve } from "url";
@@ -304,7 +304,7 @@ export class Order implements OrderDataProps {
      * Ordered
      * Optionally defined on subclasses
      */
-    static get Columns (): ColumnProps<Order>[] {
+    static get Columns (): ColumnProps<ObjectColumnProperty<Order>>[] {
         // TODO: order columns sensibly
         // let cols: ColumnProps<Order>[] = ( [ ...Object.keys( OrderSelectColumn ), 'name' ].filter(
         //     key => [ "OBJECT" ].includes( key ) ? false : key ).map(
@@ -316,23 +316,38 @@ export class Order implements OrderDataProps {
         //                 dataIndex: OrderSelectColumn[ key ] ?? key,
         //             };
         //         } ) );
-        const keys: Partial<keyof Order>[] = [
+        const keys: ObjectColumnProperty<Order>[] = [
             'id',
+            [ 'vendor', 'name'],
+            'vendor_order_id',
+            'placed_date',
             'fulfilled_date',
-            'vendor',
-            'total_cost'
+            'total_cost',
         ];
-        const cols: ColumnProps<Order>[] = keys.map( key => {
-            return {
-                key: key,
-                title: toTitleCase( key ),
-                dataIndex: OrderSelectColumn[ key ] ?? key,
-            };
+        const cols: ColumnProps<ObjectColumnProperty<Order>>[] = keys.map( key => {
+            if ( typeof key === 'string' ) {
+                return {
+                    key: key,
+                    title: toTitleCase( key ),
+                    dataIndex: OrderSelectColumn[ key ] ?? key,
+                } as ColumnProps<ObjectColumnProperty<Order>>;
+            }
+
+            if ( Array.isArray(key) ) {
+                return {
+                    key: `${key[0]}_${key[1]}`,
+                    title: toTitleCase( `${ key[ 0 ] }_${ key[ 1 ] }` ),
+                    dataIndex: key,
+                } as ColumnProps<ObjectColumnProperty<Order>>;
+            }
+            if ( typeof key === 'object' ) {
+                return key as ColumnProps<ObjectColumnProperty<Order>>;
+            }
         } );
         return cols;
     }
-    get Columns (): ColumnProps<Order>[] {
-        return Order.Columns as ColumnProps<Order>[];
+    get Columns (): ColumnProps<ObjectColumnProperty<Order>>[] {
+        return Order.Columns;
     }
     /**
      * Props which should be included in search (default)

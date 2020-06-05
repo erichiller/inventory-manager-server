@@ -30,7 +30,7 @@ export const ItemBundleEditForm: React.FC<ItemBundleEditFormProps> = ( props ) =
     // useEffect( () => {
     //     let initProps: Partial<ItemBundle> = {};
     //     if ( !props.thread_direction ) {
-    //         initProps.thread_direction = EnumHandednessEnum.right;
+    //         initProps.thread_direction = EnumItemHandednessEnum.right;
     //     }
     //     form.setFieldsValue( initProps );
     // } );

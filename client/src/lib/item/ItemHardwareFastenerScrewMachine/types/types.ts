@@ -16,7 +16,7 @@ export type EnumUnitKeys = keyof typeof EnumUnitEnum;
 export type UnitPrefixT = 'M' | '#' | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 
 
-export enum EnumHardwareFastenerSpecificationsEnum {
+export enum EnumItemHardwareFastenerSpecificationsEnum {
     ASME = "ASME",
     DIN = "DIN",
     ISO = "ISO",

@@ -2,7 +2,7 @@ import { Table, Divider, message, Spin } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { ColumnProps, TablePaginationConfig } from 'antd/es/table';
 import {
-    // withItemHardwareFastenerBolt, ItemHardwareFastenerBoltProps, ItemHardwareFastenerBoltSelectColumn, useItemHardwareFastenerBoltQuery, useGetIconQuery, 
+    // withItemHardwareFastenerScrewMachine, ItemHardwareFastenerScrewMachineProps, ItemHardwareFastenerScrewMachineSelectColumn, useItemHardwareFastenerScrewMachineQuery, useGetIconQuery, 
     useGetItemsQuery, GetItemsQueryVariables, GetItemsQuery,
     // ItemSelectColumn 
 } from '../../lib/types/graphql';
@@ -16,6 +16,7 @@ import { ItemFormModal } from './ItemFormModal';
 import { useParams, Link } from 'react-router-dom';
 import { PaginationConfig } from 'antd/lib/pagination';
 import { SorterResult, TableCurrentDataSource } from 'antd/lib/table/interface';
+import { computeDefaultPagination } from '../../lib/UtilityFunctions';
 // import DocumentNode from 'graphql-tag';
 
 
@@ -54,10 +55,6 @@ interface IItemTableParams {
  * Set to `null` to remove the modal from the screen.
  */
 export type visibleHandler = ( c?: React.ReactElement ) => void;
-
-function computeDefaultPagination (): number {
-    return (window.innerHeight - 50) / 22 ; 
-}
 
 
 

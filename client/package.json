@@ -16,7 +16,7 @@
     "upgrade-deps": "yarn upgrade --latest --exact uuid",
     "upgrade-devDeps": "yarn upgrade --latest --exact css-loader html-webpack-plugin node-sass react-hot-loader sass-loader source-map-loader style-loader ts-loader tslint typescript",
     "upgrade-webpack": "yarn upgrade --latest --exact webpack webpack-cli webpack-dev-server",
-    "generate-json-schema": ".\\node_modules\\.bin\\ts-json-schema-generator --path .\\src\\lib\\item\\ItemHardwareFastenerBolt\\*d.ts --tsconfig .\\tsconfig.json --type ScrewSizeSchema -o .\\src\\lib\\item\\ItemHardwareFastenerBolt\\config\\ScrewSizeOptions.schema.json"
+    "generate-json-schema": ".\\node_modules\\.bin\\ts-json-schema-generator --path .\\src\\lib\\item\\ItemHardwareFastenerScrewMachine\\*d.ts --tsconfig .\\tsconfig.json --type ScrewSizeSchema -o .\\src\\lib\\item\\ItemHardwareFastenerScrewMachine\\config\\ScrewSizeOptions.schema.json"
   },
   "author": "Eric D Hiller",
   "license": "ISC",

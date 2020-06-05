@@ -2,8 +2,8 @@ import { Table, Divider } from 'antd';
 import * as React from 'react';
 import { OrderSelectColumn, useGetOrdersQuery, GetOrdersQuery, Order as OrderGql } from '../../lib/types/graphql';
 import { Item } from '../../lib/item';
-import { toTitleCase } from '../../lib/UtilityFunctions';
-import { ColumnProps } from 'antd/lib/table';
+import { toTitleCase, computeDefaultPagination } from '../../lib/UtilityFunctions';
+import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { OrderEditModal } from './OrderEditModal';
@@ -18,17 +18,17 @@ interface OrderTableProps {
 
 interface OrderTableState {
     data?: Item<any>[];
-    pagination: pagination;
+    pagination: false | TablePaginationConfig;
     loading: boolean;
     clickedRecord: Order;
     modal: React.ReactElement;
 }
 
-interface pagination {
-    total: number;
-    pageSize: number;
-    current: number;
-}
+// interface pagination {
+//     total: number;
+//     pageSize: number;
+//     current: number;
+// }
 
 interface IOrderTableParams {
     /** item_id is Int as string */
@@ -39,7 +39,8 @@ interface IOrderTableParams {
 export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
     const [ state, setState ] = React.useState<OrderTableState>( {
         data: undefined,
-        pagination: { total: 0, pageSize: 100, current: 0 },
+        // pagination: { total: 0, pageSize: 100, current: 0 },
+        pagination: { hideOnSinglePage: true, defaultPageSize: computeDefaultPagination() },
         loading: false,
         clickedRecord: undefined,
         modal: null
@@ -64,7 +65,8 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
         }
     }, [ params.order_id, params.action ] );
 
-    const { data, loading, error } = useGetOrdersQuery();
+    const result = useGetOrdersQuery();
+    // const { data, loading, error } = useGetOrdersQuery();
 
 
 
@@ -108,12 +110,14 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
     };
 
 
-    const handleTableChange = ( pagination, filters, sorter ) => {
-        const pager = { ...state.pagination };
-        pager.current = pagination.current;
+    const handleTableChange = ( pagination: TablePaginationConfig, filters, sorter ) => {
+        const pager = state.pagination;
+        if ( pager ) {
+            pager.current = pagination.current;
+        }
         setState( {
             ...state,
-            pagination: pager,
+            pagination: pager ? pager : pagination,
         } );
     };
 
@@ -121,20 +125,114 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
         console.log( 'params', pagination, filters, sorter );
     };
 
-    if ( error ) return <span>Error</span>;
-    console.log( "data is", data );
+    if ( result.error ) return <span>Error</span>;
+    console.log( "data is", result.data, '\ncolumns are', columns );
     return (
         <div>
             {state.modal}
+            BOOGAR
             <Table
                 columns={columns}
-                dataSource={data ? data.order : []}
+                dataSource={result.data ? result.data.order : []}
+                // dataSource={ [
+                //     {
+                //         "vendor_order_id": "qqq1",
+                //         "vendor": {
+                //             "name": "Amazon",
+                //             "url": "https://amazon.com",
+                //             "__typename": "vendor"
+                //         },
+                //         "url": null,
+                //         "total_cost": "$55.00",
+                //         "tax_cost": "$5.00",
+                //         "pon": null,
+                //         "placed_date": "2019-03-15",
+                //         "payment_method_id": null,
+                //         "items_cost": "$50.00",
+                //         "id": 1,
+                //         "fulfilled_date": null,
+                //         "__typename": "order"
+                //     },
+                //     {
+                //         "vendor_order_id": "qqq1",
+                //         "vendor": {
+                //             "name": "Amazon",
+                //             "url": "https://amazon.com",
+                //             "__typename": "vendor"
+                //         },
+                //         "url": null,
+                //         "total_cost": "$55.00",
+                //         "tax_cost": "$5.00",
+                //         "pon": null,
+                //         "placed_date": "2019-03-21",
+                //         "payment_method_id": null,
+                //         "items_cost": "$50.00",
+                //         "id": 2,
+                //         "fulfilled_date": null,
+                //         "__typename": "order"
+                //     },
+                //     {
+                //         "vendor_order_id": "qqq1",
+                //         "vendor": {
+                //             "name": "Amazon",
+                //             "url": "https://amazon.com",
+                //             "__typename": "vendor"
+                //         },
+                //         "url": null,
+                //         "total_cost": "$55.00",
+                //         "tax_cost": "$5.00",
+                //         "pon": null,
+                //         "placed_date": "2019-04-16",
+                //         "payment_method_id": null,
+                //         "items_cost": "$50.00",
+                //         "id": 3,
+                //         "fulfilled_date": null,
+                //         "__typename": "order"
+                //     },
+                //     {
+                //         "vendor_order_id": "qqq1",
+                //         "vendor": {
+                //             "name": "Amazon",
+                //             "url": "https://amazon.com",
+                //             "__typename": "vendor"
+                //         },
+                //         "url": null,
+                //         "total_cost": "$55.00",
+                //         "tax_cost": "$5.00",
+                //         "pon": null,
+                //         "placed_date": "2019-04-22",
+                //         "payment_method_id": null,
+                //         "items_cost": "$50.00",
+                //         "id": 4,
+                //         "fulfilled_date": null,
+                //         "__typename": "order"
+                //     },
+                //     {
+                //         "vendor_order_id": "qqq2",
+                //         "vendor": {
+                //             "name": "Amazon",
+                //             "url": "https://amazon.com",
+                //             "__typename": "vendor"
+                //         },
+                //         "url": null,
+                //         "total_cost": "$11.00",
+                //         "tax_cost": "$1.00",
+                //         "pon": null,
+                //         "placed_date": "2020-05-09",
+                //         "payment_method_id": null,
+                //         "items_cost": "$10.00",
+                //         "id": 5,
+                //         "fulfilled_date": null,
+                //         "__typename": "order"
+                //     }
+                // ]
+
+                // }
                 rowKey={order => order.id.toString()}
                 pagination={state.pagination}
-                loading={loading}
+                loading={result.loading}
                 onChange={onChange}
-            >
-            </Table>
+            />
         </div>
     );
 };

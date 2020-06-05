@@ -8,9 +8,9 @@
 //     coarse: number;
 // }
 
-import { EnumHardwareFastenerThreadLabelEnum, EnumHardwareFastenerDriveEnum, EnumHardwareFastenerHeadEnum, EnumHardwareFastenerThreadStandardEnum } from "../../../types/graphql";
+import { EnumItemHardwareFastenerThreadLabelEnum, EnumItemHardwareFastenerDriveEnum, EnumItemHardwareFastenerHeadEnum, EnumItemHardwareFastenerThreadStandardEnum } from "../../../types/graphql";
 
-// export type ThreadOptionT = Record<keyof typeof EnumHardwareFastenerThreadTypeEnum, number | null>;
+// export type ThreadOptionT = Record<keyof typeof EnumItemHardwareFastenerThreadTypeEnum, number | null>;
 
 /**
  * @pattern ^[0-9.]+mm$
@@ -22,10 +22,10 @@ export type MetricUnit = string;
  */
 type USCustomarySystemUnit = string;
 
-export type DriveType<U> = Record<keyof typeof EnumHardwareFastenerDriveEnum, U>;
+export type DriveType<U> = Record<keyof typeof EnumItemHardwareFastenerDriveEnum, U>;
 
 
-type HeadDefinition<U> = Record<keyof typeof EnumHardwareFastenerHeadEnum, {
+type HeadDefinition<U> = Record<keyof typeof EnumItemHardwareFastenerHeadEnum, {
     drive: Partial<DriveType<U>>;
 }>;
 
@@ -33,7 +33,7 @@ type HeadDefinition<U> = Record<keyof typeof EnumHardwareFastenerHeadEnum, {
  * @propertyNames {"pattern": "^[0-9.]+$"}
  **/
 type PitchDefinitions = { [ pitch: string ]: {
-    label?: EnumHardwareFastenerThreadLabelEnum;
+    label?: EnumItemHardwareFastenerThreadLabelEnum;
     tolerance?: any; // TODO
 };};
 
@@ -43,7 +43,7 @@ interface DiameterDefinitionBase<U> {
     pitch: PitchDefinitions;
     hardness?: any; // TODO
     head: Partial<HeadDefinition<U>>;
-    standard: EnumHardwareFastenerThreadStandardEnum;
+    standard: EnumItemHardwareFastenerThreadStandardEnum;
 }
 
 /**
