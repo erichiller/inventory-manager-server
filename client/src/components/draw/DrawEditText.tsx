@@ -189,7 +189,7 @@ export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
     // // }
 
     // get autocompleteFieldValues(): string[] {
-    //     return Object.keys( ItemHardwareFastenerBoltSelectColumn ).map( col => `{{${col.toLowerCase()}}}`);
+    //     return Object.keys( ItemHardwareFastenerScrewMachineSelectColumn ).map( col => `{{${col.toLowerCase()}}}`);
     // }
     // get formatOptions(): CheckedFormatOptionsT {
     //     return [

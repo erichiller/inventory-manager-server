@@ -31,3 +31,4 @@ export type PropertyTypeMatch<T, M> = Pick<T, {
     [ K in keyof T ]: T[ K ] extends M ? K : never
 }[ keyof T ]>;
 
+export type ObjectColumnProperty<T> = Partial<Extract<keyof T, string>> | [ keyof T, Extract<keyof T[ keyof T ], string> ] ;

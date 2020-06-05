@@ -94,4 +94,4 @@ export class ItemBundle extends Item<ItemPlusClassT<ItemBundleGql, 'item_bundle'
 }
 
 Item.RegisterClassType( "item_bundle", ItemBundle );
-// Item.RegisterClassType<ItemBundleGql, ItemBundle>( "ITEM_HARDWARE_FASTENER_BOLT", ItemBundle );
+// Item.RegisterClassType<ItemBundleGql, ItemBundle>( "item_hardware_fastener_screw_machine", ItemBundle );

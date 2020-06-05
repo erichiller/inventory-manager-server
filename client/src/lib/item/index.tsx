@@ -1,10 +1,10 @@
 import { Item } from './Item';
-import { ItemHardwareFastenerBolt } from './ItemHardwareFastenerBolt/Index';
+import { ItemHardwareFastenerScrewMachine } from './ItemHardwareFastenerScrewMachine/Index';
 import { ItemBundle } from './ItemBundle/Index';
 
 
 export {
     Item,
-    ItemHardwareFastenerBolt,
+    ItemHardwareFastenerScrewMachine,
     ItemBundle
 };

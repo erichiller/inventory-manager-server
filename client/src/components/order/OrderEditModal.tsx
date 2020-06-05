@@ -66,7 +66,7 @@ export const OrderEditModal: React.FC<OrderEditModalProps> = ( props ) => {
     // useEffect( () => {
     //     let initProps: Partial<OrderBundle> = {};
     //     if ( !props.thread_direction ) {
-    //         initProps.thread_direction = EnumHandednessEnum.right;
+    //         initProps.thread_direction = EnumItemHandednessEnum.right;
     //     }
     //     form.setFieldsValue( initProps );
     // } );

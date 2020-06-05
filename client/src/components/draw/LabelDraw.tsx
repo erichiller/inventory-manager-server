@@ -55,7 +55,7 @@ type ChangedValueI = string;
 
 interface LabelDrawProps {
     width: number;
-    // item: ItemHardwareFastenerBolt;
+    // item: ItemHardwareFastenerScrewMachine;
     item?: Item<any>;
     label: LabelExport;
     updateWidth: ( newPx: number ) => void;

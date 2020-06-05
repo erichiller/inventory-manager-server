@@ -23,6 +23,7 @@ export const ItemTableMouseOver: React.FC<ItemTableMouseOverProps> = ( props ) =
                 style={{
                     ...props.style,
                     position: 'absolute',
+                    // display: props.visible ? 'initial' : 'none',
                     visibility: props.visible ? 'visible' : 'hidden',
                     zIndex: 5,
                     // left: position[ 0 ]+3,

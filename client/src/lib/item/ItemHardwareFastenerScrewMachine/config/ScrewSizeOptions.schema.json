@@ -2,7 +2,7 @@
   "$ref": "#/definitions/ScrewSizeSchema",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "EnumHardwareFastenerThreadLabelEnum": {
+    "EnumItemHardwareFastenerThreadLabelEnum": {
       "enum": [
         "coarse",
         "extra_fine",
@@ -10,7 +10,7 @@
       ],
       "type": "string"
     },
-    "EnumHardwareFastenerThreadStandardEnum": {
+    "EnumItemHardwareFastenerThreadStandardEnum": {
       "enum": [
         "DIN",
         "ISO",
@@ -30,7 +30,7 @@
         "additionalProperties": false,
         "properties": {
           "label": {
-            "$ref": "#/definitions/EnumHardwareFastenerThreadLabelEnum"
+            "$ref": "#/definitions/EnumItemHardwareFastenerThreadLabelEnum"
           },
           "tolerance": {
           }
@@ -848,7 +848,7 @@
                 "$ref": "#/definitions/PitchDefinitions"
               },
               "standard": {
-                "$ref": "#/definitions/EnumHardwareFastenerThreadStandardEnum"
+                "$ref": "#/definitions/EnumItemHardwareFastenerThreadStandardEnum"
               }
             },
             "type": "object"
@@ -1659,7 +1659,7 @@
                 "$ref": "#/definitions/PitchDefinitions"
               },
               "standard": {
-                "$ref": "#/definitions/EnumHardwareFastenerThreadStandardEnum"
+                "$ref": "#/definitions/EnumItemHardwareFastenerThreadStandardEnum"
               }
             },
             "type": "object"

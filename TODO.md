@@ -7,16 +7,18 @@
 - [ ] Try [animations](http://react-component.github.io/tween-one/) ; or <https://reacttraining.com/react-router/web/example/animated-transitions>
 - [ ] Make use of additional linter: [tslint-react-hooks](https://www.npmjs.com/package/tslint-react-hooks) or `eslint-plugin-react-hooks`
   - [ ] Use the `exhaustive-deps` rule. It warns of incorrect dependencies
-- [x] `ItemSearch` should only search when input is entered.
+- [ ] `ItemSearch` should only search when input is entered.
+      _I thought I had this fixed, but it is still running with search text `*undefined*`_
 - [ ] Print List button should say "no labels in list" if there are none
 - [x] _Order_ in `Menu` always shows highlighted.
 - [ ] Move the search bar in Item/Index to be in the top menu bar
+- [ ] bug with `ItemTableMouseOver` sometimes displays down when it shouldn't
 
 ## Table
 
 - [ ] Filter / search on table
 - [ ] customizable column renderer on Item ; ie. images/icons , `toTitleCase`, append unit, etc.
-- [ ] provide a column priority, so that some can be eliminated when in mobile mode.
+- [ ] provide a column priority, so that some can be eliminated when in mobile mode.s
 
 - [ ] Item data
   - [ ] Add Item form
