@@ -759,6 +759,8 @@ export enum EnumItemHardwareFastenerDriveConstraint {
 }
 
 export enum EnumItemHardwareFastenerDriveEnum {
+  /** Turn screws that have the tamper-resistant asymmetrical drive exclusive to McMaster-Carr. Also known as insert bits, use these in hand drivers or with a bit adapter in power tools. */
+  asymmetrical = 'asymmetrical',
   /** There are two types of clutch screw drives: Type A and Type G. Type A, also known as a "standard clutch", resembles a bow tie, with a small circular "knot" at the center. These were common in GM automobiles, trucks and buses of the 1940s and 1950s. Type G resembles a butterfly, and lacks the center "knot". This type of screw head is commonly used in the manufacture of mobile homes and recreational vehicles.[53] The clutch head was designed to be driven with a flat-blade screwdriver as well as a clutch driver. */
   clutch = 'clutch',
   /** two dots equidistant and opposite each other from center */
@@ -773,8 +775,7 @@ export enum EnumItemHardwareFastenerDriveEnum {
   hex_socket = 'hex_socket',
   /** hex with center point preventing normal allen wrench tools from operating */
   hex_tamper_resistant = 'hex_tamper_resistant',
-  hex_with_pilot_reflex = 'hex_with_pilot_reflex',
-  mcm_drive = 'mcm_drive',
+  /** No drive present */
   none = 'none',
   /** Installs with a normal slotted driver but can not be removed without special tools */
   one_way = 'one_way',
@@ -790,6 +791,7 @@ export enum EnumItemHardwareFastenerDriveEnum {
   slot = 'slot',
   /** aka Robertson Square Drive. Abbreviated SQ or SD */
   square = 'square',
+  /** Torq-set is a cruciform screw drive used in torque-sensitive applications. The Torq-set head is similar in appearance to a Phillips drive in that it has a cross with 4 arms. In Torq-set however, the lines are offset from each other, so they do not align to form intersecting slots across the top of the head. Because of this, a regular Phillips or flat-blade screwdriver will not fit the head. It is used in military and aerospace applications.  https://en.wikipedia.org/wiki/List_of_screw_drives#Torq-set */
   torq_set = 'torq_set',
   /** aka star, 6-pointed star */
   torx = 'torx',
@@ -802,8 +804,7 @@ export enum EnumItemHardwareFastenerDriveEnum {
   /** Sometimes called a triangular slotted screw. It is used as a tamper-resistant screw on various products, typically electronics. */
   tri_wing = 'tri_wing',
   /** The additional points make these sockets easier to connect with the heads of fasteners. This is ideal if you are trying to work on a fastener that is hard to see or you cannot see at all. 12 point sockets are also great for use in tight spaces as they allow you to connect to a fastener at more angles. */
-  twelve_point = 'twelve_point',
-  wrench_flat = 'wrench_flat'
+  twelve_point = 'twelve_point'
 }
 
 /** expression to compare columns of type enum_item_hardware_fastener_drive_enum. All fields are combined with logical 'AND'. */
@@ -18039,6 +18040,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameter = {
   pitch: Scalars['numeric'];
   pitch_mm: Scalars['numeric'];
   standard: EnumItemHardwareFastenerThreadStandardEnum;
+  tap_drill_size?: Maybe<Scalars['numeric']>;
   thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
   unit: EnumUnitEnum;
 };
@@ -18100,6 +18102,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterAvgFields = {
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
   pitch_mm?: Maybe<Scalars['Float']>;
+  tap_drill_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -18107,6 +18110,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterAvgOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
   pitch_mm?: Maybe<OrderBy>;
+  tap_drill_size?: Maybe<OrderBy>;
 };
 
 /** Boolean expression to filter rows from the table "property_item_hardware_fastener_screw_machine.diameter". All fields are combined with a logical 'AND'. */
@@ -18121,6 +18125,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterBoolExp = {
   pitch?: Maybe<NumericComparisonExp>;
   pitch_mm?: Maybe<NumericComparisonExp>;
   standard?: Maybe<EnumItemHardwareFastenerThreadStandardEnumComparisonExp>;
+  tap_drill_size?: Maybe<NumericComparisonExp>;
   thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnumComparisonExp>;
   unit?: Maybe<EnumUnitEnumComparisonExp>;
 };
@@ -18136,6 +18141,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterIncInput = {
   diameter_major?: Maybe<Scalars['numeric']>;
   pitch?: Maybe<Scalars['numeric']>;
   pitch_mm?: Maybe<Scalars['numeric']>;
+  tap_drill_size?: Maybe<Scalars['numeric']>;
 };
 
 /** input type for inserting data into table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -18147,6 +18153,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterInsertInput = {
   pitch?: Maybe<Scalars['numeric']>;
   pitch_mm?: Maybe<Scalars['numeric']>;
   standard?: Maybe<EnumItemHardwareFastenerThreadStandardEnum>;
+  tap_drill_size?: Maybe<Scalars['numeric']>;
   thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
   unit?: Maybe<EnumUnitEnum>;
 };
@@ -18159,6 +18166,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterMaxFields = {
   diameter_pitch_label?: Maybe<Scalars['String']>;
   pitch?: Maybe<Scalars['numeric']>;
   pitch_mm?: Maybe<Scalars['numeric']>;
+  tap_drill_size?: Maybe<Scalars['numeric']>;
 };
 
 /** order by max() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -18168,6 +18176,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterMaxOrderBy = {
   diameter_pitch_label?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
   pitch_mm?: Maybe<OrderBy>;
+  tap_drill_size?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
@@ -18178,6 +18187,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterMinFields = {
   diameter_pitch_label?: Maybe<Scalars['String']>;
   pitch?: Maybe<Scalars['numeric']>;
   pitch_mm?: Maybe<Scalars['numeric']>;
+  tap_drill_size?: Maybe<Scalars['numeric']>;
 };
 
 /** order by min() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -18187,6 +18197,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterMinOrderBy = {
   diameter_pitch_label?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
   pitch_mm?: Maybe<OrderBy>;
+  tap_drill_size?: Maybe<OrderBy>;
 };
 
 /** response of any mutation on the table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -18220,6 +18231,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterOrderBy = {
   pitch?: Maybe<OrderBy>;
   pitch_mm?: Maybe<OrderBy>;
   standard?: Maybe<OrderBy>;
+  tap_drill_size?: Maybe<OrderBy>;
   thread_label?: Maybe<OrderBy>;
   unit?: Maybe<OrderBy>;
 };
@@ -18248,6 +18260,8 @@ export enum PropertyItemHardwareFastenerScrewMachineDiameterSelectColumn {
   /** column name */
   standard = 'standard',
   /** column name */
+  tap_drill_size = 'tap_drill_size',
+  /** column name */
   thread_label = 'thread_label',
   /** column name */
   unit = 'unit'
@@ -18262,6 +18276,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterSetInput = {
   pitch?: Maybe<Scalars['numeric']>;
   pitch_mm?: Maybe<Scalars['numeric']>;
   standard?: Maybe<EnumItemHardwareFastenerThreadStandardEnum>;
+  tap_drill_size?: Maybe<Scalars['numeric']>;
   thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
   unit?: Maybe<EnumUnitEnum>;
 };
@@ -18272,6 +18287,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterStddevFields = {
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
   pitch_mm?: Maybe<Scalars['Float']>;
+  tap_drill_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -18279,6 +18295,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterStddevOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
   pitch_mm?: Maybe<OrderBy>;
+  tap_drill_size?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -18287,6 +18304,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterStddevPopFields = {
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
   pitch_mm?: Maybe<Scalars['Float']>;
+  tap_drill_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -18294,6 +18312,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterStddevPopOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
   pitch_mm?: Maybe<OrderBy>;
+  tap_drill_size?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -18302,6 +18321,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterStddevSampFields = {
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
   pitch_mm?: Maybe<Scalars['Float']>;
+  tap_drill_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -18309,6 +18329,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterStddevSampOrderBy = 
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
   pitch_mm?: Maybe<OrderBy>;
+  tap_drill_size?: Maybe<OrderBy>;
 };
 
 /** aggregate sum on columns */
@@ -18317,6 +18338,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterSumFields = {
   diameter_major?: Maybe<Scalars['numeric']>;
   pitch?: Maybe<Scalars['numeric']>;
   pitch_mm?: Maybe<Scalars['numeric']>;
+  tap_drill_size?: Maybe<Scalars['numeric']>;
 };
 
 /** order by sum() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -18324,6 +18346,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterSumOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
   pitch_mm?: Maybe<OrderBy>;
+  tap_drill_size?: Maybe<OrderBy>;
 };
 
 /** update columns of table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -18343,6 +18366,8 @@ export enum PropertyItemHardwareFastenerScrewMachineDiameterUpdateColumn {
   /** column name */
   standard = 'standard',
   /** column name */
+  tap_drill_size = 'tap_drill_size',
+  /** column name */
   thread_label = 'thread_label',
   /** column name */
   unit = 'unit'
@@ -18354,6 +18379,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterVarPopFields = {
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
   pitch_mm?: Maybe<Scalars['Float']>;
+  tap_drill_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -18361,6 +18387,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterVarPopOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
   pitch_mm?: Maybe<OrderBy>;
+  tap_drill_size?: Maybe<OrderBy>;
 };
 
 /** aggregate var_samp on columns */
@@ -18369,6 +18396,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterVarSampFields = {
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
   pitch_mm?: Maybe<Scalars['Float']>;
+  tap_drill_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -18376,6 +18404,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterVarSampOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
   pitch_mm?: Maybe<OrderBy>;
+  tap_drill_size?: Maybe<OrderBy>;
 };
 
 /** aggregate variance on columns */
@@ -18384,6 +18413,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterVarianceFields = {
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
   pitch_mm?: Maybe<Scalars['Float']>;
+  tap_drill_size?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -18391,6 +18421,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterVarianceOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
   pitch_mm?: Maybe<OrderBy>;
+  tap_drill_size?: Maybe<OrderBy>;
 };
 
 /** query root */
@@ -24206,6 +24237,22 @@ export type SendBufferMutation = (
   )> }
 );
 
+export type VendorFieldsFragment = (
+  { __typename?: 'vendor' }
+  & Pick<Vendor, 'id' | 'name' | 'url' | 'account_id'>
+);
+
+export type GetVendorsQueryVariables = {};
+
+
+export type GetVendorsQuery = (
+  { __typename?: 'query_root' }
+  & { vendor: Array<(
+    { __typename?: 'vendor' }
+    & VendorFieldsFragment
+  )> }
+);
+
 export type ItemFieldsFragment = (
   { __typename?: 'item' }
   & Pick<Item, 'id' | 'class' | 'object'>
@@ -24407,6 +24454,14 @@ export const OrderFieldsFragmentDoc = gql`
   items_cost
   id
   fulfilled_date
+}
+    `;
+export const VendorFieldsFragmentDoc = gql`
+    fragment vendorFields on vendor {
+  id
+  name
+  url
+  account_id
 }
     `;
 export const ItemFieldsFragmentDoc = gql`
@@ -25338,6 +25393,51 @@ export function useSendBufferMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type SendBufferMutationHookResult = ReturnType<typeof useSendBufferMutation>;
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
+export const GetVendorsDocument = gql`
+    query GetVendors {
+  vendor(order_by: {id: asc}) {
+    ...vendorFields
+  }
+}
+    ${VendorFieldsFragmentDoc}`;
+export type GetVendorsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetVendorsQuery, GetVendorsQueryVariables>
+    } & TChildProps;
+export function withGetVendors<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetVendorsQuery,
+  GetVendorsQueryVariables,
+  GetVendorsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetVendorsQuery, GetVendorsQueryVariables, GetVendorsProps<TChildProps, TDataName>>(GetVendorsDocument, {
+      alias: 'getVendors',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetVendorsQuery__
+ *
+ * To run a query within a React component, call `useGetVendorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVendorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVendorsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetVendorsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetVendorsQuery, GetVendorsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetVendorsQuery, GetVendorsQueryVariables>(GetVendorsDocument, baseOptions);
+      }
+export function useGetVendorsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetVendorsQuery, GetVendorsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetVendorsQuery, GetVendorsQueryVariables>(GetVendorsDocument, baseOptions);
+        }
+export type GetVendorsQueryHookResult = ReturnType<typeof useGetVendorsQuery>;
+export type GetVendorsLazyQueryHookResult = ReturnType<typeof useGetVendorsLazyQuery>;
+export type GetVendorsQueryResult = ApolloReactCommon.QueryResult<GetVendorsQuery, GetVendorsQueryVariables>;
 export const GetItemsDocument = gql`
     query GetItems($categories: [enum_item_class_enum!]) {
   items: item(where: {class: {_in: $categories}}, order_by: {id: asc}) {
@@ -25766,4 +25866,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-05T07:16:57-06:00
+// graphql typescript defs generated on 2020-06-06T08:02:05-06:00

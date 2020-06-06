@@ -7,7 +7,7 @@ import { toMinimumFixed, Union } from '../../UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { ItemBundle } from './Index';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { ItemSelect } from './ItemSelect';
+import { ItemSelect } from '../../../components/item/ItemSelect';
 
 
 interface ItemBundleEditFormProps extends Union<ItemFormProps, ItemBundle> {

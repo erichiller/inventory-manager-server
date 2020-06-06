@@ -2,6 +2,7 @@ import { ItemHardwareFastenerScrewMachine } from "../..";
 import { EnumItemHardwareFastenerDriveEnum, EnumItemHardwareFastenerScrewMachinePointEnum } from "../../../types/graphql";
 
 import TwelvePoint from './PropertyOptions/DriveType/12-Point.png';
+import Asymmetrical from './PropertyOptions/DriveType/Asymmetrical.png';
 import Clutch from './PropertyOptions/DriveType/Clutch.png';
 import DrilledSpanner from './PropertyOptions/DriveType/DrilledSpanner.png';
 import Frearson from './PropertyOptions/DriveType/Frearson.png';
@@ -9,8 +10,6 @@ import Hex from './PropertyOptions/DriveType/Hex.png';
 import HexSlot from './PropertyOptions/DriveType/HexSlot.png';
 import HexSocket from './PropertyOptions/DriveType/HexSocket.png';
 import HexSocketTamperResistant from './PropertyOptions/DriveType/HexSocketTamperResistant.png';
-import HexWithPilotReflex from './PropertyOptions/DriveType/HexWithPilotReflex.png';
-import MCMDrive from './PropertyOptions/DriveType/MCMDrive.png';
 import None from './PropertyOptions/DriveType/None.png';
 import OneWay from './PropertyOptions/DriveType/OneWay.png';
 import Pentagon from './PropertyOptions/DriveType/Pentagon.png';
@@ -25,7 +24,6 @@ import TorxPlus from './PropertyOptions/DriveType/TorxPlus.png';
 import TorxTamperResistant from './PropertyOptions/DriveType/TorxTamperResistant.png';
 import TriGroove from './PropertyOptions/DriveType/TriGroove.png';
 import TriWing from './PropertyOptions/DriveType/TriWing.png';
-import WrenchFlat from './PropertyOptions/DriveType/WrenchFlat.png';
 
 import ExtendedPoint from './PropertyOptions/Point/extended.png';
 import FlatPoint from './PropertyOptions/Point/flat.png';
@@ -41,6 +39,7 @@ import { PNGReactFC, SVGReactFC } from "../../../../styles/icon";
  ********************************************************************************/
 
 export const TwelvePointIcon: PNGReactFC = ( props ) => <img src={TwelvePoint} {...props} />;
+export const AsymmetricalIcon: PNGReactFC = ( props ) => <img src={Asymmetrical} {...props} />; // aka MCMDrive (McMaster Proprietary)
 export const DrilledSpannerIcon: PNGReactFC = ( props ) => <img src={DrilledSpanner} {...props} />;
 export const ClutchIcon: PNGReactFC = ( props ) => <img src={Clutch} {...props} />;
 export const FrearsonIcon: PNGReactFC = ( props ) => <img src={Frearson} {...props} />;
@@ -48,8 +47,6 @@ export const HexIcon: PNGReactFC = ( props ) => <img src={Hex} {...props} />;
 export const HexSlotIcon: PNGReactFC = ( props ) => <img src={HexSlot} {...props} />;
 export const HexSocketIcon: PNGReactFC = ( props ) => <img src={HexSocket} {...props} />;
 export const HexSocketTamperResistantIcon: PNGReactFC = ( props ) => <img src={HexSocketTamperResistant} {...props} />;
-export const HexWithPilotReflexIcon: PNGReactFC = ( props ) => <img src={HexWithPilotReflex} {...props} />;
-export const MCMDriveIcon: PNGReactFC = ( props ) => <img src={MCMDrive} {...props} />;
 export const NoneIcon: PNGReactFC = ( props ) => <img src={None} {...props} />;
 export const OneWayIcon: PNGReactFC = ( props ) => <img src={OneWay} {...props} />;
 export const PentagonIcon: PNGReactFC = ( props ) => <img src={Pentagon} {...props} />;
@@ -64,7 +61,6 @@ export const TorxPlusIcon: PNGReactFC = ( props ) => <img src={TorxPlus} {...pro
 export const TorxTamperResistantIcon: PNGReactFC = ( props ) => <img src={TorxTamperResistant} {...props} />;
 export const TriGrooveIcon: PNGReactFC = ( props ) => <img src={TriGroove} {...props} />;
 export const TriWingIcon: PNGReactFC = ( props ) => <img src={TriWing} {...props} />;
-export const WrenchFlatIcon: PNGReactFC = ( props ) => <img src={WrenchFlat} {...props} />;
 
 
 export type IconMapT<T extends string> = Record<T, SVGReactFC | PNGReactFC>;
@@ -73,6 +69,7 @@ export type IconMapT<T extends string> = Record<T, SVGReactFC | PNGReactFC>;
 
 export const ItemHardwareFastenerScrewMachineDriveTypeIconMap: IconMapT<EnumItemHardwareFastenerDriveEnum> = {
     twelve_point: TwelvePointIcon,
+    asymmetrical: AsymmetricalIcon,
     clutch: ClutchIcon,
     drilled_spanner: DrilledSpannerIcon,
     frearson: FrearsonIcon,
@@ -80,8 +77,6 @@ export const ItemHardwareFastenerScrewMachineDriveTypeIconMap: IconMapT<EnumItem
     hex_slot: HexSlotIcon,
     hex_socket: HexSocketIcon,
     hex_tamper_resistant: HexSocketTamperResistantIcon,
-    hex_with_pilot_reflex: HexWithPilotReflexIcon,
-    mcm_drive: MCMDriveIcon,
     none: NoneIcon,
     one_way: OneWayIcon,
     pentagon: PentagonIcon,
@@ -96,7 +91,6 @@ export const ItemHardwareFastenerScrewMachineDriveTypeIconMap: IconMapT<EnumItem
     torx_tamper_resistant: TorxTamperResistantIcon,
     tri_groove: TriGrooveIcon,
     tri_wing: TriWingIcon,
-    wrench_flat: WrenchFlatIcon
 };
 
 /********************************************************************************

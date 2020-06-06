@@ -1,20 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Form, Input, Divider, Tooltip } from 'antd';
+import { Form, Input, Divider } from 'antd';
 import { ItemFormProps } from '../Item';
 import { EnumItemHardwareFastenerScrewHeadEnum, EnumItemHardwareFastenerDriveEnum, EnumItemHardwareFinishEnum, EnumItemHardwareFastenerMaterialEnum, EnumItemHandednessEnum, EnumItemHardwareFastenerThreadStandardEnum, EnumItemHardwareFastenerScrewMachineThreadFitEnum, EnumItemHardwareFastenerScrewMachinePointEnum, EnumItemHardwareFastenerScrewHardnessEnum, EnumItemHardwareFastenerScrewMachineStrengthEnum, useGetEnumItemHardwareFastenerThreadStandardQuery, EnumItemHardwareUseMaterialEnum, EnumItemHardwareFastenerThreadLabelEnum } from '../../types/graphql';
 
-import { EnumUnitKeys, EnumItemHardwareFastenerSpecificationsEnum } from './types/types';
+import { EnumItemHardwareFastenerSpecificationsEnum } from './types/types';
 import { UnitSelect } from './formComponents/UnitSelect';
 import { MeasurementInput } from './formComponents/MeasurementInput';
 import { EnumSelect } from './formComponents/EnumSelect';
 import { ScrewSizeInput, ScrewSizeInputOptionData } from './formComponents/ScrewSizeInput';
-import { toMinimumFixed, Union, toTitleCase } from '../../UtilityFunctions';
+import { toMinimumFixed, Union, toTitleCase, EnumUnitKeys } from '../../UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { ItemHardwareFastenerScrewMachine } from './Index';
 import { ScrewThreadIcon, ScrewEmbeddedLengthIcon, ScrewHeadDiameterIcon, ScrewHeadHeightIcon, ItemHardwareFastenerScrewMachineDriveTypeIconMap, ItemHardwareFastenerScrewMachinePointIconMap } from './icon';
-import { FormIconTooltip, getUnitPrefixFromUnitSystem } from './formComponents/helpers';
+import { getUnitPrefixFromUnitSystem } from './formComponents/helpers';
 import { ThreadDirection_RightHandRuleIcon } from './icon';
 import { DescriptionTableTooltip } from './formComponents/DescriptionTableTooltip';
+import { FormIconTooltip } from '../../FormHelpers';
 
 
 interface ItemHardwareFastenerScrewMachineFormProps extends Union<ItemFormProps, ItemHardwareFastenerScrewMachine> {

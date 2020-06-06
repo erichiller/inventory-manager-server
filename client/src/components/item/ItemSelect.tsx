@@ -5,9 +5,9 @@ import { AutoComplete, Input, DatePicker, Select } from "antd";
 
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
-import { toTitleCase, getDaysInMonth } from "../../UtilityFunctions";
+import { toTitleCase, getDaysInMonth } from "../../lib/UtilityFunctions";
 import { InputProps } from "antd/lib/input";
-import { useGetOrdersByDateRangeQuery, useGetItemsQuery, useItemSearchQuery } from "../../types/graphql";
+import { useGetOrdersByDateRangeQuery, useGetItemsQuery, useItemSearchQuery } from "../../lib/types/graphql";
 
 
 interface OptionT {

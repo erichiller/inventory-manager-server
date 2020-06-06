@@ -8,7 +8,7 @@ import TextArea from 'antd/lib/input/TextArea';
 import { toMinimumFixed, Union } from '../../lib/UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { ItemSelect } from '../../lib/item/ItemBundle/ItemSelect';
+import { ItemSelect } from '../item/ItemSelect';
 import { useForm } from 'antd/lib/form/Form';
 
 

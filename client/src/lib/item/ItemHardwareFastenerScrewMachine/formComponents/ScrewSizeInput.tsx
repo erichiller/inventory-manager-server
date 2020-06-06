@@ -1,13 +1,13 @@
 import { EnumUnitEnum, EnumItemHardwareFastenerThreadStandardEnum, EnumItemHardwareFastenerThreadLabelEnum } from "../../../types/graphql";
 import { getUnitSystemFromUnitPrefix, getUnitPrefixAndDiameterFromOptionString, screwSizeRegex, getUnitPrefixFromUnitSystem } from "./helpers";
-import { UnitPrefixT, EnumUnitKeys } from "../types/types";
+import { UnitPrefixT } from "../types/types";
 import Select, { SelectProps, SelectValue } from "antd/lib/select";
 import React, { useState } from "react";
 import { AutoComplete, Input } from "antd";
 import { InputProps } from "antd/lib/input";
 
 import ScrewSizeConfig from '../config/ScrewSizeOptions.json';
-import { eliminateArrayDuplicates, transparentLog, toTitleCase, filterObjectKeysWithProperty, matchFirstOfArrayOrNull, parseIntSafe, parseFloatSafeWithDefault } from "../../../UtilityFunctions";
+import { eliminateArrayDuplicates, transparentLog, toTitleCase, filterObjectKeysWithProperty, matchFirstOfArrayOrNull, parseIntSafe, parseFloatSafeWithDefault, EnumUnitKeys } from "../../../UtilityFunctions";
 import { PitchDefinitions, DiameterDefinitionBase } from "../types/ScrewSizeOption";
 
 console.log( { ScrewSizeConfig} );

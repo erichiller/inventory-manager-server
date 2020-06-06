@@ -1,6 +1,8 @@
 import { Integer } from './types/uint8';
 import { Store } from 'antd/lib/form/interface';
 import { Item } from './item';
+import { EnumUnitKeys } from './types/UtilityTypes';
+import { EnumUnitEnum } from './types/graphql';
 
 export * from './types/UtilityTypes';
 
@@ -272,4 +274,23 @@ export function applyDefaults<T extends Item<any>> ( fieldValues: Store, default
  */
 export function computeDefaultPagination (): number {
     return ( window.innerHeight - 50 ) / 22;
+}
+
+
+
+/**
+ * Accept Unit enum and return the string for representation of the unit system's dimensions
+ * @param sys EnumUnit or its keys
+ */
+export function getUnitFromUnitSystem ( sys: EnumUnitKeys | EnumUnitEnum ) {
+    switch ( sys ) {
+        case EnumUnitEnum.metric:
+        case 'metric':
+            return "mm";
+        case EnumUnitEnum.usc:
+        case 'usc':
+            return "in.";
+        default:
+            return '';
+    }
 }
