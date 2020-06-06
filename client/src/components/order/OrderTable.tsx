@@ -6,7 +6,7 @@ import { toTitleCase, computeDefaultPagination } from '../../lib/UtilityFunction
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { OrderEditModal } from './OrderEditModal';
+import { OrderEditModal } from './OrderFormModal';
 import { Order } from '../../lib/order/Order';
 
 
@@ -130,7 +130,6 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
     return (
         <div>
             {state.modal}
-            BOOGAR
             <Table
                 columns={columns}
                 dataSource={result.data ? result.data.order : []}

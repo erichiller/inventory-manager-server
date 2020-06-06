@@ -1,16 +1,19 @@
-
 fragment vendorFields on vendor {
-    id          # id: Int!
-    name        # name: String!
-    url         # url: String
-    account_id  # account_id: String
+    id # id: Int!
+    name # name: String!
+    url # url: String
+    account_id # account_id: String
 }
 
-
-
-
 query GetVendors {
-    vendor(order_by: { id: asc }) {
+    vendor(order_by: { id: asc } ) {
         ...vendorFields
     }
 }
+
+query SearchVendors($search_string: String) {
+    vendor(order_by: { id: asc }, where: { name: { _ilike: $search_string } }) {
+        ...vendorFields
+    }
+}
+

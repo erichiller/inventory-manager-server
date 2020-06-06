@@ -129,6 +129,17 @@ div[role="tooltip"] {
         grid-column-start: span 2;
     }
 }
+.vendorOption {
+    @extend .orderOption;
+    grid-template-rows: 18px;
+    
+    & :nth-last-child(1) {
+        // background-color: purple;
+        grid-column-start: initial;
+    }
+}
+
+
 
 .OrderInput {
     display: flex;

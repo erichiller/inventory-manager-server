@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Divider, Button, Modal, message } from 'antd';
+import { Form, Divider, Button, Modal, message, Input, DatePicker } from 'antd';
 import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery } from '../../lib/types/graphql';
 
 import { QueryResultTypePlus } from '../../lib/UtilityFunctions';
@@ -8,6 +8,8 @@ import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/util';
 import { QueryResult } from 'react-apollo';
 import { ItemSelect } from '../item/ItemSelect';
+import { VendorSelect } from '../vendor/VendorSelect';
+import moment from 'moment';
 
 
 type OrderEditModalProps = {
@@ -89,6 +91,8 @@ export const OrderEditModal: React.FC<OrderEditModalProps> = ( props ) => {
         console.log( { class: 'OrderEditModal', method: 'onFieldsChange', changedFields, values } );
     };
 
+    let initialValues = order ? order : { placed_date: moment() };
+
     return <Modal
         visible={true}
         title="Order"
@@ -104,23 +108,71 @@ export const OrderEditModal: React.FC<OrderEditModalProps> = ( props ) => {
             name="OrderForm"
             form={form}
             layout="horizontal"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 9 }}
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 16 }}
             // name="Order-add-edit-delete"
             onKeyPress={( event ) => {
                 console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode } );
                 if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
             }}
-            initialValues={order}
+            initialValues={initialValues}
             onFieldsChange={onFieldsChange}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
         >
             <div className="col">
+                <Form.Item name="vendor_id" label="Vendor" required>
+                    <VendorSelect />
+                </Form.Item>
+                <Form.Item name="vendor_order_id" label="Order #" required>
+                    <Input />
+                </Form.Item>
+                <Form.Item name="placed_date" label="Date Placed" required>
+                    <DatePicker
+                        // id="datepicker_monthpicker"
+                        // defaultValue={moment()}
+                    />
+                </Form.Item>
+                <Form.Item name="fullfilled_date" label="Date Fullfilled">
+                    <DatePicker
+                        // id="datepicker_monthpicker"
+                        // defaultValue={moment()}
+                    />
+                </Form.Item>
+
+
+                <Form.Item name="items_cost" label="Items Cost">
+                    <Input type="number" step="0.01" min="0" prefix="$" />
+                </Form.Item>
+                <Form.Item name="tax_cost" label="Tax">
+                    <Input type="number" step="0.01" min="0" prefix="$" />
+                </Form.Item>
+                <Form.Item name="total_cost" label="Total">
+                    <Input type="number" step="0.01" min="0" prefix="$" />
+                </Form.Item>
+
+
+                <Form.Item name="pon" label="Purchase Order #">
+                    <Input />
+                </Form.Item>
+
+                <Form.Item name="url" label="URL">
+                    {/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/url */}
+                    <Input
+                        type="url" // htmlFor="url" ?? 
+                        pattern="https?://.*"
+                     />
+                </Form.Item>
+
+                {/* TODO: select payment_method_id */}
+                {/* TODO: select money input type ?? html */}
+
+
+
+
                 <Divider key="Items" orientation="left">Items</Divider>
                 <Form.Item name="Items" label="Items">
                     <ItemSelect />
-
                 </Form.Item>
                 {/* <Form.List name="Items">
                     {( fields, { add, remove } ) => {
