@@ -20,7 +20,7 @@ import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { resolve } from "url";
 import { rejects } from "assert";
-import { ItemSelect } from "./ItemBundle/ItemSelect";
+import { ItemSelect } from "../../components/item/ItemSelect";
 
 export type GenericItem = Pick<ItemGql, 'id'>
     & Partial<Pick<ItemGql, | 'object'>

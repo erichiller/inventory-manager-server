@@ -4,7 +4,7 @@ import React from 'react';
 import { Integer } from '../../types/uint8';
 import { HexBoltIcon } from '../../../styles/icon';
 import { ColumnProps } from 'antd/lib/table';
-import { toTitleCase, enumerable, Union } from '../../UtilityFunctions';
+import { toTitleCase, enumerable, Union, getUnitFromUnitSystem } from '../../UtilityFunctions';
 import { ItemHardwareFastenerScrewMachineForm } from './Form';
 import { ItemHardwareFastenerScrewMachineEditMutationHandler } from './Edit';
 import { ItemHardwareFastenerScrewMachineAddMutationHandler } from './Add';
@@ -132,56 +132,133 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
         // TODO: group columns sensibly
         // TODO: name columns sensibly
 
-        const basicColumn = ( key: keyof ItemHardwareFastenerScrewMachineGql ) => {
-            return {
-                key: key,
-                title: toTitleCase( key ),
-                dataIndex: ItemHardwareFastenerScrewMachineSelectColumn[ key ] ?? key
-            } as ColumnProps<ItemHardwareFastenerScrewMachineGql>;
-        };
-        let cols: Partial<keyof ItemHardwareFastenerScrewMachineGql | ColumnProps<ItemHardwareFastenerScrewMachineGql>>[] = [
-            // 'id', 
-            'name', 'head_type', 'unit', 'point_type', 'thread_label', 'thread_standard', 'drive_size',
-            // 'drive_type', 
-            'countersunk_height',
-            // 'head_height',
-            // 'description',
-            // 'product_url',
-            // 'shaft_length',
-            // 'head_diameter',
-            'thread_length',
-            'embedded_length' ];
-        return [
-            ...cols.map( key => {
-                if ( typeof key === 'string' ) {
-                    return {
-                        key: key,
-                        title: toTitleCase( key ),
-                        dataIndex: ItemHardwareFastenerScrewMachineSelectColumn[ key ] ?? key,
-                    };
-                }
-                if ( typeof key === 'object' ) {
-                    return key;
-                }
-            } ),
-            {
-                key: 'id',
-                title: 'ID',
-                dataIndex: [ 'id' ]
-            },
-            basicColumn( 'name' ),
-            {
-                key: 'drive_type',
-                title: 'Drive Type',
-                dataIndex: 'drive_type',
-                render: ( value, record, index ) => {
-                    if ( ! ( value in ItemHardwareFastenerScrewMachineDriveTypeIconMap )) { return ''; }
-                    const Icon = ItemHardwareFastenerScrewMachineDriveTypeIconMap[ value ];
-                    console.log( 'drive_type render', { value, record, index, icon: ItemHardwareFastenerScrewMachineDriveTypeIconMap[ value ]});
-                    return < Icon /> ;
-                }
-            }
-        ];
+        /**
+         * Quick function to create ColumnProps for use in Ant Design Table
+         * @param columns When providing a ColumnProps object, only the key is needed (unless custom props are required), `title` and `dataIndex` will be auto-added.
+         */
+        function makeColumn ( columns: Array<keyof ItemHardwareFastenerScrewMachineGql | ColumnProps<ItemHardwareFastenerScrewMachineGql>> ): Array<ColumnProps<ItemHardwareFastenerScrewMachineGql>>;
+        function makeColumn ( keys: Array<keyof ItemHardwareFastenerScrewMachineGql> ): ColumnProps<ItemHardwareFastenerScrewMachineGql>;
+        function makeColumn ( key: keyof ItemHardwareFastenerScrewMachineGql ): ColumnProps<ItemHardwareFastenerScrewMachineGql>;
+        function makeColumn ( key:
+            keyof ItemHardwareFastenerScrewMachineGql
+            | Array<keyof ItemHardwareFastenerScrewMachineGql>
+            | Array<
+                keyof ItemHardwareFastenerScrewMachineGql
+                | ColumnProps<ItemHardwareFastenerScrewMachineGql>
+            > ): any {
+            return ( !Array.isArray( key ) ? [ key ] : key ).map( k => {
+                let kKey: string = typeof k === 'object' ? k.key as string : k;
+
+                return Object.assign(
+                    {},
+                    {
+                        key: kKey,
+                        title: toTitleCase( kKey ),
+                        dataIndex: ItemHardwareFastenerScrewMachineSelectColumn[ kKey ] ?? kKey,
+                    },
+                    typeof k === 'object' ? k : {}
+                );
+            } );
+            /** 
+             * breakpoint
+             * see 
+             * https://github.com/ant-design/ant-design/blob/015109b42b85c63146371b4e32b883cf97b088e8/components/_util/responsiveObserve.ts#L1
+             * options: 'xxl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs';
+             *  xs: '(max-width: 575px)',
+             *  sm: '(min-width: 576px)',
+             *  md: '(min-width: 768px)',
+             *  lg: '(min-width: 992px)',
+             *  xl: '(min-width: 1200px)',
+             *  xxl: '(min-width: 1600px)',
+             * 
+             **/
+        }
+        return makeColumn(
+            [
+                {
+                    key: 'id',
+                    responsive: [ 'xl' ],
+                },
+                'name',
+                {
+                    key: 'thread_diameter',
+                    title: 'Diameter',
+                    responsive: [ 'lg' ],
+                },
+                {
+                    key: 'embedded_length',
+                    title: 'Length',
+                    render: ( value, record, index ) => `${ value } ${ getUnitFromUnitSystem(record.unit) }`,
+                    responsive: [ 'sm' ],
+                },
+                {
+                    key: 'thread_standard',
+                    title: 'Standard',
+                    responsive: [ 'xxl' ],
+                },
+                {
+                    key: 'head_type',
+                    title: 'Head',
+                    responsive: [ 'lg' ],
+                },
+                {
+                    key: 'point_type',
+                    responsive: [ 'xl' ],
+                },
+                {
+                    key: 'thread_label',
+                    responsive: [ 'xxl' ],
+                },
+                {
+                    key: 'drive_type',
+                    title: 'Drive Type',
+                    dataIndex: 'drive_type',
+                    render: ( value, record, index ) => {
+                        if ( !( value in ItemHardwareFastenerScrewMachineDriveTypeIconMap ) ) { return ''; }
+                        const Icon = ItemHardwareFastenerScrewMachineDriveTypeIconMap[ value ];
+                        console.log( 'drive_type render', { value, record, index, icon: ItemHardwareFastenerScrewMachineDriveTypeIconMap[ value ] } );
+                        return < Icon />;
+                    }
+                },
+                {
+                    key: 'drive_size',
+                    responsive: [ 'xxl' ],
+                },
+                {
+                    key: 'countersunk_height',
+                    responsive: [ 'xxl' ],
+                },
+                {
+                    key: 'head_height',
+                    responsive: [ 'xxl' ],
+                },
+                {
+                    key: 'head_diameter',
+                    responsive: [ 'xxl' ],
+                },
+                {
+                    key: 'finish',
+                    responsive: [ 'xxl' ],
+                },
+                {
+                    key: 'material',
+                    responsive: [ 'xxl' ],
+                },
+                {
+                    key: 'thread_fit',
+                    title: 'Fit',
+                    responsive: [ 'xxl' ],
+                },
+                {
+                    key: 'strength_class',
+                    responsive: [ 'xxl' ],
+                },
+                // 'product_url', // TODO: make this an icon ?
+                {
+                    key: 'thread_length',
+                    responsive: [ 'xxl' ],
+                },
+            ] );
     }
     get Columns (): ColumnProps<ItemHardwareFastenerScrewMachineGql>[] {
         return ItemHardwareFastenerScrewMachine.Columns as ColumnProps<ItemHardwareFastenerScrewMachineGql>[];

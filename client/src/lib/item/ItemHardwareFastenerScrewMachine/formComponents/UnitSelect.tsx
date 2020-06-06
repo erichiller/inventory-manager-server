@@ -1,10 +1,10 @@
 import { SelectProps } from "antd/lib/select";
-import { EnumUnitKeys } from "../types/types";
 import React, { useState, useEffect } from "react";
 import { Select } from "antd";
 import { EnumUnitEnum } from "../../../types/graphql";
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
+import { EnumUnitKeys } from "../../../types/UtilityTypes";
 
 /**
  * Form Select Input for unit selection (metric or usc)

@@ -17,7 +17,7 @@
 ## Table
 
 - [ ] Filter / search on table
-- [ ] customizable column renderer on Item ; ie. images/icons , `toTitleCase`, append unit, etc.
+- [x] customizable column renderer on Item ; ie. images/icons , `toTitleCase`, append unit, etc.
 - [ ] provide a column priority, so that some can be eliminated when in mobile mode.s
 
 - [ ] Item data

@@ -7,7 +7,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/util';
 import { QueryResult } from 'react-apollo';
-import { ItemSelect } from '../../lib/item/ItemBundle/ItemSelect';
+import { ItemSelect } from '../item/ItemSelect';
 
 
 type OrderEditModalProps = {

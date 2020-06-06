@@ -1,8 +1,7 @@
-import { getUnitFromUnitSystem } from "./helpers";
 import { InputProps } from "antd/lib/input";
-import { EnumUnitKeys } from "../types/types";
 import React, { useState, ChangeEvent } from "react";
 import { Input } from "antd";
+import { EnumUnitKeys, getUnitFromUnitSystem } from "../../../UtilityFunctions";
 
 
 interface MeasurementInputProps extends InputProps {
