@@ -11,7 +11,7 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 WORKDIR /app
 # RUN Copy-Item -Recurse /tmp/node_modules /app/
 COPY package.json /app/
-COPY yarn.lock /app/
+# COPY yarn.lock /app/  # TODO: this doesn't work anymore with yarn workspaces
 RUN yarn
 COPY tsconfig.json /app/
 COPY webpack.config.js /app/
