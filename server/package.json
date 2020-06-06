@@ -1,5 +1,5 @@
 {
-  "name": "inventory-manager-daemon",
+  "name": "server",
   "version": "0.0.1",
   "description": "Server for web resources and print handler via IPP",
   "main": "index.js",
