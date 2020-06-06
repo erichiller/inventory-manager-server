@@ -24253,6 +24253,19 @@ export type GetVendorsQuery = (
   )> }
 );
 
+export type SearchVendorsQueryVariables = {
+  search_string?: Maybe<Scalars['String']>;
+};
+
+
+export type SearchVendorsQuery = (
+  { __typename?: 'query_root' }
+  & { vendor: Array<(
+    { __typename?: 'vendor' }
+    & VendorFieldsFragment
+  )> }
+);
+
 export type ItemFieldsFragment = (
   { __typename?: 'item' }
   & Pick<Item, 'id' | 'class' | 'object'>
@@ -25438,6 +25451,52 @@ export function useGetVendorsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type GetVendorsQueryHookResult = ReturnType<typeof useGetVendorsQuery>;
 export type GetVendorsLazyQueryHookResult = ReturnType<typeof useGetVendorsLazyQuery>;
 export type GetVendorsQueryResult = ApolloReactCommon.QueryResult<GetVendorsQuery, GetVendorsQueryVariables>;
+export const SearchVendorsDocument = gql`
+    query SearchVendors($search_string: String) {
+  vendor(order_by: {id: asc}, where: {name: {_ilike: $search_string}}) {
+    ...vendorFields
+  }
+}
+    ${VendorFieldsFragmentDoc}`;
+export type SearchVendorsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<SearchVendorsQuery, SearchVendorsQueryVariables>
+    } & TChildProps;
+export function withSearchVendors<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  SearchVendorsQuery,
+  SearchVendorsQueryVariables,
+  SearchVendorsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, SearchVendorsQuery, SearchVendorsQueryVariables, SearchVendorsProps<TChildProps, TDataName>>(SearchVendorsDocument, {
+      alias: 'searchVendors',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useSearchVendorsQuery__
+ *
+ * To run a query within a React component, call `useSearchVendorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchVendorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchVendorsQuery({
+ *   variables: {
+ *      search_string: // value for 'search_string'
+ *   },
+ * });
+ */
+export function useSearchVendorsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchVendorsQuery, SearchVendorsQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchVendorsQuery, SearchVendorsQueryVariables>(SearchVendorsDocument, baseOptions);
+      }
+export function useSearchVendorsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchVendorsQuery, SearchVendorsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchVendorsQuery, SearchVendorsQueryVariables>(SearchVendorsDocument, baseOptions);
+        }
+export type SearchVendorsQueryHookResult = ReturnType<typeof useSearchVendorsQuery>;
+export type SearchVendorsLazyQueryHookResult = ReturnType<typeof useSearchVendorsLazyQuery>;
+export type SearchVendorsQueryResult = ApolloReactCommon.QueryResult<SearchVendorsQuery, SearchVendorsQueryVariables>;
 export const GetItemsDocument = gql`
     query GetItems($categories: [enum_item_class_enum!]) {
   items: item(where: {class: {_in: $categories}}, order_by: {id: asc}) {
@@ -25866,4 +25925,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-06T08:02:05-06:00
+// graphql typescript defs generated on 2020-06-06T09:15:41-06:00
