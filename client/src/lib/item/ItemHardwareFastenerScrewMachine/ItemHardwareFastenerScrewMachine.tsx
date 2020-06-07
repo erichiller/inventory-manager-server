@@ -4,7 +4,7 @@ import React from 'react';
 import { Integer } from '../../types/uint8';
 import { HexBoltIcon } from '../../../styles/icon';
 import { ColumnProps } from 'antd/lib/table';
-import { toTitleCase, enumerable, Union, getUnitFromUnitSystem } from '../../UtilityFunctions';
+import { toTitleCase, enumerable, Union, getUnitFromUnitSystem, sortByCaseInsensitiveText } from '../../UtilityFunctions';
 import { ItemHardwareFastenerScrewMachineForm } from './Form';
 import { ItemHardwareFastenerScrewMachineEditMutationHandler } from './Edit';
 import { ItemHardwareFastenerScrewMachineAddMutationHandler } from './Add';
@@ -173,6 +173,10 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
              * 
              **/
         }
+
+        const renderWithUnitSuffix = ( value, record: ItemHardwareFastenerScrewMachineGql ) => value ? `${ value } ${ getUnitFromUnitSystem( record.unit ) }` : '';
+
+
         return makeColumn(
             [
                 {
@@ -188,12 +192,26 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
                 {
                     key: 'embedded_length',
                     title: 'Length',
-                    render: ( value, record, index ) => `${ value } ${ getUnitFromUnitSystem(record.unit) }`,
+                    render: renderWithUnitSuffix,
                     responsive: [ 'sm' ],
+                },
+                {
+                    key: 'thread_pitch',
+                    title: 'Pitch',
+                    defaultSortOrder: 'ascend',
+                    sorter: ( a, b ) => parseFloat(a.thread_pitch) - parseFloat(b.thread_pitch),
+                    responsive: [ 'lg' ],
                 },
                 {
                     key: 'thread_standard',
                     title: 'Standard',
+                    filters: Object.keys(EnumItemHardwareFastenerThreadStandardEnum).map( k => { return {
+                        text: toTitleCase(k),
+                        value: k
+                    }}),
+                    filterMultiple: true,
+                    onFilter: ( value, record ) => record.thread_standard === value,
+                    sorter: sortByCaseInsensitiveText('thread_standard'),
                     responsive: [ 'xxl' ],
                 },
                 {
@@ -203,15 +221,17 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
                 },
                 {
                     key: 'point_type',
+                    title: 'Point',
                     responsive: [ 'xl' ],
                 },
                 {
                     key: 'thread_label',
+                    title: 'Thread',
                     responsive: [ 'xxl' ],
                 },
                 {
                     key: 'drive_type',
-                    title: 'Drive Type',
+                    title: 'Drive',
                     dataIndex: 'drive_type',
                     render: ( value, record, index ) => {
                         if ( !( value in ItemHardwareFastenerScrewMachineDriveTypeIconMap ) ) { return ''; }
@@ -226,14 +246,17 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
                 },
                 {
                     key: 'countersunk_height',
+                    render: renderWithUnitSuffix,
                     responsive: [ 'xxl' ],
                 },
                 {
                     key: 'head_height',
+                    render: renderWithUnitSuffix,
                     responsive: [ 'xxl' ],
                 },
                 {
                     key: 'head_diameter',
+                    render: renderWithUnitSuffix,
                     responsive: [ 'xxl' ],
                 },
                 {
@@ -251,11 +274,13 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
                 },
                 {
                     key: 'strength_class',
+                    title: 'Strength',
                     responsive: [ 'xxl' ],
                 },
                 // 'product_url', // TODO: make this an icon ?
                 {
                     key: 'thread_length',
+                    render: renderWithUnitSuffix,
                     responsive: [ 'xxl' ],
                 },
             ] );
