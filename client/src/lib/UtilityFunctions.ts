@@ -296,29 +296,10 @@ export function getUnitFromUnitSystem ( sys: EnumUnitKeys | EnumUnitEnum ) {
     }
 }
 
-// interface goo {
-//     prop_string_1: string;
-//     prop_string_2: string;
-//     prop_number_1: number;
-//     prop_number_array_1: number[];
-// }
-
-// let gooVar: keyof SubType<goo, string>;
-
-
-// let foo: keyof SubType<Item<GenericItem>, string>;
-// let i = new Item({id: 10});
-// i[foo].toLocaleLowerCase();
-
-// sortByCaseInsensitiveText<ItemHardwareFastenerScrewMachine>('thread_direction');
-
-// let ismK: keyof SubType<ItemHardwareFastenerScrewMachine, string> = 'thread_length';
-
 
 /** simple sort function to order strings, not case sensitive */
 export function sortByCaseInsensitiveText<T> ( propertyName: Extract<keyof SubType<T, string>, string> ) {
     return ( a: T, b: T ) => {
-        console.log( { method: 'sortByCaseInsensitiveText', a, b})
         let nameA: string = a[propertyName.toString()]?.toUpperCase(); // ignore upper and lowercase
         let nameB: string = b[propertyName.toString()]?.toUpperCase(); // ignore upper and lowercase
         if ( nameA < nameB ) {
@@ -330,4 +311,30 @@ export function sortByCaseInsensitiveText<T> ( propertyName: Extract<keyof SubTy
         // names must be equal
         return 0;
     };
+}
+/**
+ * simple sort function to order numbers 
+ * @returns
+ * * < 0 = a comes first
+ * * = 0 = tied  ;  _Note: the ECMAscript standard does not guarantee this behavior, thus, not all browsers (e.g. Mozilla versions dating back to at least 2003) respect this._
+ * * > 0 = b comes first
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort}
+ * */
+export function sortByNumber<T> ( propertyName: Extract<keyof SubType<T, number>, string> ) {
+    return ( a: T, b: T ) => {
+        return parseFloat( b[ propertyName ].toString() ) - parseFloat( a[ propertyName ].toString() );
+    };
+}
+
+/**
+ * Return antd table usable filter options.
+ * @param e any object that has keys and values
+ */
+export function tableFilterFromEnum( e: object){
+    return Object.keys( e ).map( k => {
+        return {
+            text: toTitleCase( k ),
+            value: k
+        };
+    } );
 }

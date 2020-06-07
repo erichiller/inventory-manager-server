@@ -16387,7 +16387,7 @@ export type Order = {
   items: Array<OrderItem>;
   /** An aggregated array relationship */
   items_aggregate: OrderItemAggregate;
-  items_cost: Scalars['money'];
+  items_cost?: Maybe<Scalars['money']>;
   /** An object relationship */
   payment_method?: Maybe<PaymentMethod>;
   payment_method_id?: Maybe<Scalars['Int']>;
@@ -16397,8 +16397,8 @@ export type Order = {
   shipments: Array<Shipment>;
   /** An aggregated array relationship */
   shipments_aggregate: ShipmentAggregate;
-  tax_cost: Scalars['money'];
-  total_cost: Scalars['money'];
+  tax_cost?: Maybe<Scalars['money']>;
+  total_cost?: Maybe<Scalars['money']>;
   url?: Maybe<Scalars['String']>;
   /** An object relationship */
   vendor: Vendor;
@@ -24131,7 +24131,7 @@ export type GetOrdersByDateRangeQuery = (
 
 export type InsertOrderMutationVariables = {
   fulfilled_date?: Maybe<Scalars['date']>;
-  items?: Maybe<OrderItemArrRelInsertInput>;
+  items: Array<OrderItemInsertInput>;
   items_cost?: Maybe<Scalars['money']>;
   payment_method?: Maybe<PaymentMethodObjRelInsertInput>;
   payment_method_id?: Maybe<Scalars['Int']>;
@@ -24150,12 +24150,8 @@ export type InsertOrderMutationVariables = {
 export type InsertOrderMutation = (
   { __typename?: 'mutation_root' }
   & { insert_order?: Maybe<(
-    { __typename?: 'order_mutation_response' }
-    & Pick<OrderMutationResponse, 'affected_rows'>
-    & { returning: Array<(
-      { __typename?: 'order' }
-      & Pick<Order, 'id'>
-    )> }
+    { __typename?: 'order' }
+    & Pick<Order, 'id'>
   )> }
 );
 
@@ -25106,12 +25102,9 @@ export type GetOrdersByDateRangeQueryHookResult = ReturnType<typeof useGetOrders
 export type GetOrdersByDateRangeLazyQueryHookResult = ReturnType<typeof useGetOrdersByDateRangeLazyQuery>;
 export type GetOrdersByDateRangeQueryResult = ApolloReactCommon.QueryResult<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>;
 export const InsertOrderDocument = gql`
-    mutation InsertOrder($fulfilled_date: date, $items: order_item_arr_rel_insert_input, $items_cost: money, $payment_method: payment_method_obj_rel_insert_input, $payment_method_id: Int, $placed_date: date, $pon: String, $shipments: shipment_arr_rel_insert_input, $tax_cost: money, $total_cost: money, $url: String, $vendor: vendor_obj_rel_insert_input, $vendor_id: Int, $vendor_order_id: String) {
-  insert_order(objects: {items: $items, payment_method: $payment_method, shipments: $shipments, vendor: $vendor, fulfilled_date: $fulfilled_date, items_cost: $items_cost, payment_method_id: $payment_method_id, placed_date: $placed_date, pon: $pon, tax_cost: $tax_cost, total_cost: $total_cost, url: $url, vendor_id: $vendor_id, vendor_order_id: $vendor_order_id}) {
-    affected_rows
-    returning {
-      id
-    }
+    mutation InsertOrder($fulfilled_date: date, $items: [order_item_insert_input!]!, $items_cost: money, $payment_method: payment_method_obj_rel_insert_input, $payment_method_id: Int, $placed_date: date, $pon: String, $shipments: shipment_arr_rel_insert_input, $tax_cost: money, $total_cost: money, $url: String, $vendor: vendor_obj_rel_insert_input, $vendor_id: Int, $vendor_order_id: String) {
+  insert_order: insert_order_one(object: {items: {data: $items}, payment_method: $payment_method, shipments: $shipments, vendor: $vendor, fulfilled_date: $fulfilled_date, items_cost: $items_cost, payment_method_id: $payment_method_id, placed_date: $placed_date, pon: $pon, tax_cost: $tax_cost, total_cost: $total_cost, url: $url, vendor_id: $vendor_id, vendor_order_id: $vendor_order_id}) {
+    id
   }
 }
     `;
@@ -25925,4 +25918,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-06T09:15:41-06:00
+// graphql typescript defs generated on 2020-06-07T10:19:36-06:00

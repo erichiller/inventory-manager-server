@@ -6,7 +6,7 @@ import { toTitleCase, computeDefaultPagination } from '../../lib/UtilityFunction
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { OrderEditModal } from './OrderFormModal';
+import { OrderFormModal } from './OrderFormModal';
 import { Order } from '../../lib/order/Order';
 
 
@@ -51,12 +51,12 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
         switch ( params.action ) {
             case "edit":
                 if ( params.order_id ) {
-                    setModal( <OrderEditModal orderId={parseInt( params.order_id )} /> );
+                    setModal( <OrderFormModal orderId={parseInt( params.order_id )} /> );
                 }
                 break;
             case "add":
                 if ( params.order_id ) {
-                    setModal( <OrderEditModal /> );
+                    setModal( <OrderFormModal /> );
                 }
                 break;
             default:

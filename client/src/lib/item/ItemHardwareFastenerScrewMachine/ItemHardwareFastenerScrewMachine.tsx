@@ -4,7 +4,7 @@ import React from 'react';
 import { Integer } from '../../types/uint8';
 import { HexBoltIcon } from '../../../styles/icon';
 import { ColumnProps } from 'antd/lib/table';
-import { toTitleCase, enumerable, Union, getUnitFromUnitSystem, sortByCaseInsensitiveText } from '../../UtilityFunctions';
+import { toTitleCase, enumerable, Union, getUnitFromUnitSystem, sortByCaseInsensitiveText, sortByNumber, tableFilterFromEnum } from '../../UtilityFunctions';
 import { ItemHardwareFastenerScrewMachineForm } from './Form';
 import { ItemHardwareFastenerScrewMachineEditMutationHandler } from './Edit';
 import { ItemHardwareFastenerScrewMachineAddMutationHandler } from './Add';
@@ -176,6 +176,14 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
 
         const renderWithUnitSuffix = ( value, record: ItemHardwareFastenerScrewMachineGql ) => value ? `${ value } ${ getUnitFromUnitSystem( record.unit ) }` : '';
 
+        function commonFilterConfig<T>( property: Extract<keyof T, string>, optionObject: object ){
+            return {
+                filters: tableFilterFromEnum( optionObject ),
+                filterMultiple: true,
+                onFilter: ( value: string | number | boolean, record: T ) => record[property as string] === value,
+            };
+        }
+
 
         return makeColumn(
             [
@@ -183,40 +191,41 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
                     key: 'id',
                     responsive: [ 'xl' ],
                 },
-                'name',
+                {
+                    key: 'name',
+                    sorter: sortByCaseInsensitiveText( 'name' ),
+                },
                 {
                     key: 'thread_diameter',
                     title: 'Diameter',
+                    sorter: sortByNumber( 'thread_diameter' ),
                     responsive: [ 'lg' ],
                 },
                 {
                     key: 'embedded_length',
                     title: 'Length',
                     render: renderWithUnitSuffix,
+                    sorter: sortByNumber( 'embedded_length' ),
                     responsive: [ 'sm' ],
                 },
                 {
                     key: 'thread_pitch',
                     title: 'Pitch',
                     defaultSortOrder: 'ascend',
-                    sorter: ( a, b ) => parseFloat(a.thread_pitch) - parseFloat(b.thread_pitch),
+                    sorter: sortByNumber('thread_pitch'),
                     responsive: [ 'lg' ],
                 },
                 {
                     key: 'thread_standard',
                     title: 'Standard',
-                    filters: Object.keys(EnumItemHardwareFastenerThreadStandardEnum).map( k => { return {
-                        text: toTitleCase(k),
-                        value: k
-                    }}),
-                    filterMultiple: true,
-                    onFilter: ( value, record ) => record.thread_standard === value,
+                    ...commonFilterConfig( 'thread_standard', EnumItemHardwareFastenerThreadStandardEnum),
                     sorter: sortByCaseInsensitiveText('thread_standard'),
                     responsive: [ 'xxl' ],
                 },
                 {
                     key: 'head_type',
                     title: 'Head',
+                    sorter: sortByCaseInsensitiveText( 'thread_standard' ),
                     responsive: [ 'lg' ],
                 },
                 {

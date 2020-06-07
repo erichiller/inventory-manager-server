@@ -23,10 +23,45 @@ query GetOrdersByDateRange($date_start_gte: date, $date_end_lte: date) {
     }
 }
 
+
+# mutation InsertOrder {
+#     insert_order_one(
+#         object: {
+#             id: 10
+#             items: { data: [{ item_id: 10 }] }
+#             payment_method: { data: { class: ACH } }
+#             items_cost: ""
+#             payment_method_id: 10
+#             placed_date: ""
+#             pon: ""
+#             shipments: {
+#                 data: {
+#                     id: 10
+#                     received_date: ""
+#                     shipped_date: ""
+#                     shipping_carrier: ""
+#                     tracking_id: ""
+#                     vendor_invoice_id: ""
+#                 }
+#             }
+#             tax_cost: ""
+#             total_cost: ""
+#             url: ""
+#             vendor_id: 10
+#             vendor_order_id: ""
+#         }
+#     ) {
+#         id
+#     }
+# }
+
+
+
 mutation InsertOrder(
     # $id: Int
     $fulfilled_date: date
-    $items: order_item_arr_rel_insert_input
+    # $items: order_item_arr_rel_insert_input
+    $items: [order_item_insert_input!]!
     $items_cost: money
     $payment_method: payment_method_obj_rel_insert_input
     $payment_method_id: Int
@@ -40,9 +75,9 @@ mutation InsertOrder(
     $vendor_id: Int
     $vendor_order_id: String
 ) {
-    insert_order(
-        objects: {
-            items: $items # objects
+    insert_order: insert_order_one (
+        object: {
+            items: { data: $items } # objects
             payment_method: $payment_method # objects
             shipments: $shipments # objects
             vendor: $vendor # object
@@ -58,10 +93,7 @@ mutation InsertOrder(
             vendor_order_id: $vendor_order_id
         }
     ) {
-        affected_rows
-        returning {
-            id
-        }
+        id
     }
 }
 

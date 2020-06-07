@@ -38,6 +38,10 @@
             padding: 12px;
         }
     }
+
+    .ant-table-thead tr th.ant-table-column-has-sorters .ant-table-filter-column-title {
+            padding-right: 2px;
+    }
 }
 
 .IconButton {
