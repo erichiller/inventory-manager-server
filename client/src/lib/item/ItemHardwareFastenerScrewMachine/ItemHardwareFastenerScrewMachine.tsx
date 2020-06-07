@@ -59,7 +59,7 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
     thread_fit?: Maybe<EnumItemHardwareFastenerScrewMachineThreadFitEnum>;
     thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
     /** if fully threaded, this should be === `shaft_length` */
-    thread_length?: Maybe<Scalars[ 'numeric' ]>;
+    thread_length?: number;
     /** TPI for usc, Pitch for metric ; ie. the 0.5 in M3 x 0.5 */
     thread_pitch: Scalars[ 'numeric' ];
     thread_standard: EnumItemHardwareFastenerThreadStandardEnum;

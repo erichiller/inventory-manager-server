@@ -1,8 +1,9 @@
 import { Integer } from './types/uint8';
 import { Store } from 'antd/lib/form/interface';
-import { Item } from './item';
-import { EnumUnitKeys } from './types/UtilityTypes';
+import { Item, ItemHardwareFastenerScrewMachine } from './item';
+import { EnumUnitKeys, SubType } from './types/UtilityTypes';
 import { EnumUnitEnum } from './types/graphql';
+import { GenericItem } from './item/Item';
 
 export * from './types/UtilityTypes';
 
@@ -295,12 +296,31 @@ export function getUnitFromUnitSystem ( sys: EnumUnitKeys | EnumUnitEnum ) {
     }
 }
 
+// interface goo {
+//     prop_string_1: string;
+//     prop_string_2: string;
+//     prop_number_1: number;
+//     prop_number_array_1: number[];
+// }
+
+// let gooVar: keyof SubType<goo, string>;
+
+
+// let foo: keyof SubType<Item<GenericItem>, string>;
+// let i = new Item({id: 10});
+// i[foo].toLocaleLowerCase();
+
+// sortByCaseInsensitiveText<ItemHardwareFastenerScrewMachine>('thread_direction');
+
+// let ismK: keyof SubType<ItemHardwareFastenerScrewMachine, string> = 'thread_length';
+
+
 /** simple sort function to order strings, not case sensitive */
-export function sortByCaseInsensitiveText<T, K extends keyof T> ( propertyName: keyof Extract<T[K], string> ) {
-    // export function sortByCaseInsensitiveText<T, K extends keyof T, V extends T[K], V extends string> ( propertyName: K ) {
+export function sortByCaseInsensitiveText<T> ( propertyName: Extract<keyof SubType<T, string>, string> ) {
     return ( a: T, b: T ) => {
-        var nameA = a[propertyName].toUpperCase(); // ignore upper and lowercase
-        var nameB = b.toUpperCase(); // ignore upper and lowercase
+        console.log( { method: 'sortByCaseInsensitiveText', a, b})
+        let nameA: string = a[propertyName.toString()]?.toUpperCase(); // ignore upper and lowercase
+        let nameB: string = b[propertyName.toString()]?.toUpperCase(); // ignore upper and lowercase
         if ( nameA < nameB ) {
             return -1;
         }
@@ -311,43 +331,3 @@ export function sortByCaseInsensitiveText<T, K extends keyof T> ( propertyName: 
         return 0;
     };
 }
-
-
-
-/**
- * if `Base[Key]` matches `Condition`, return `Key: Key`
- * else return `never`
- * 
- * @see {@link https://medium.com/dailyjs/typescript-create-a-condition-based-subset-types-9d902cea5b8c}
- */
-type FilterFlags<Base, Condition> = {
-    [ Key in keyof Base ]:
-    Base[ Key ] extends Condition ? Key : never
-};
-/**
- * Effectively filters out keys that do not match `Condition`  
- * by  
- * Via {@link FilterFlags} - Gets keys or `never`  
- * Takes these keys and removes `never`
- */
-type AllowedNames<Base, Condition> =
-    FilterFlags<Base, Condition>[ keyof Base ];
-/**
- * Create a new type which has the properties of `Base` that match `Condition`
- * 
- * @example <caption>This example extracts properties of `foo` that have a value type of `string`</caption>
- * // `fooT` is now { a: string, d: string }
- * // `fooKT` is now ` 'a' | 'd' `
- * 
- * interface foo {
- *   a: string;
- *   b: number;
- *   c: string[];
- *   d: string;
- * }
- * 
- * type fooT = SubType<foo, string>;
- * type fooKT = keyof fooT ;
- */
-type SubType<Base, Condition> =
-    Pick<Base, AllowedNames<Base, Condition>>;
