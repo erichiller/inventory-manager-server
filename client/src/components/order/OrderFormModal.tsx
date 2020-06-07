@@ -6,7 +6,7 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker } from 'antd';
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/ 
-import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery } from '../../lib/types/graphql';
+import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables } from '../../lib/types/graphql';
 
 import { QueryResultTypePlus } from '../../lib/UtilityFunctions';
 import { PlusOutlined } from '@ant-design/icons';
@@ -18,7 +18,7 @@ import { VendorSelect } from '../vendor/VendorSelect';
 import moment from 'moment';
 
 
-type OrderEditModalProps = {
+type OrderFormModalProps = {
     order: QueryResultTypePlus<typeof useGetOrderQuery>;
     orderId?: null;
 } | {
@@ -31,13 +31,15 @@ type OrderEditModalProps = {
 // extends Union<OrderFormProps, OrderBundle> { }
 
 
-export const OrderEditModal: React.FC<OrderEditModalProps> = ( props ) => {
+export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
     let { orderId } = props;
     const [ form ] = useForm();
     const history = useHistory();
-    let loading = true;
+    // let loading = true;
 
-    const [ order, setOrder ] = useState<QueryResultTypePlus<typeof useGetOrderQuery>>(props.order);
+    const [ order, setOrder ] = useState<QueryResultTypePlus<typeof useGetOrderQuery>>( props.order );
+    
+    const [ insertOrderMutation, { data, loading, error } ] = useInsertOrderMutation();
 
 
     let result: QueryResult<GetOrderQuery, GetOrderQueryVariables>;
@@ -48,7 +50,7 @@ export const OrderEditModal: React.FC<OrderEditModalProps> = ( props ) => {
                 id: orderId
             }
         } );
-        loading = result.loading;
+        // loading = result.loading;
 
         useEffect( () => {
             if ( result.error ) {
@@ -86,8 +88,25 @@ export const OrderEditModal: React.FC<OrderEditModalProps> = ( props ) => {
         [ name: string ]: any;
     } ) => {
         console.log( { class: 'OrderEditModal', method: 'onFinish', values } );
-        // setFormSubmitted( true );
+
+        console.log( { c: "insertOrderMutation" }, form.getFieldsValue() );
+        insertOrderMutation( {
+            variables: ( form.getFieldsValue() as InsertOrderMutationVariables)
+        });
     };
+
+    useEffect( () => {
+        if ( error ) {
+            // completeCallback( false );
+            message.error( `${ error.name }: ${ error.message }` );
+        } else if ( data ) {
+            message.success( `successfully created ${ data.__typename } with id ${ data.insert_order.id }` );
+            return () => {
+                form.resetFields();
+                exitModal();
+            };
+        }
+    }, [ data, loading, error ] );
 
     const onFinishFailed = ( errorInfo ) => {
         console.error( { class: 'OrderEditModal', method: 'onFinishFailed', errorInfo } );
@@ -177,7 +196,7 @@ export const OrderEditModal: React.FC<OrderEditModalProps> = ( props ) => {
 
 
                 <Divider key="Items" orientation="left">Items</Divider>
-                <Form.Item name="Items" label="Items">
+                <Form.Item name={['items','id']} label="Items">
                     <ItemSelect />
                 </Form.Item>
                 {/* <Form.List name="Items">
