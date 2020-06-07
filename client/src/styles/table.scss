@@ -15,6 +15,9 @@
     }
 
     .ant-table-thead > tr > th {
+        &:not(:first-child) {
+            border-left: 1px solid #f0f0f0;
+        }
         padding: 3px;
         @include desktop {
             padding: 6px;
@@ -22,6 +25,9 @@
     }
 
     .ant-table-tbody > tr > td {
+        // &:not(:first-child) {
+        //     border-left: 1px solid #fafafa;
+        // }
         @include phone {
             padding: 3px;
         }

@@ -294,3 +294,60 @@ export function getUnitFromUnitSystem ( sys: EnumUnitKeys | EnumUnitEnum ) {
             return '';
     }
 }
+
+/** simple sort function to order strings, not case sensitive */
+export function sortByCaseInsensitiveText<T, K extends keyof T> ( propertyName: keyof Extract<T[K], string> ) {
+    // export function sortByCaseInsensitiveText<T, K extends keyof T, V extends T[K], V extends string> ( propertyName: K ) {
+    return ( a: T, b: T ) => {
+        var nameA = a[propertyName].toUpperCase(); // ignore upper and lowercase
+        var nameB = b.toUpperCase(); // ignore upper and lowercase
+        if ( nameA < nameB ) {
+            return -1;
+        }
+        if ( nameA > nameB ) {
+            return 1;
+        }
+        // names must be equal
+        return 0;
+    };
+}
+
+
+
+/**
+ * if `Base[Key]` matches `Condition`, return `Key: Key`
+ * else return `never`
+ * 
+ * @see {@link https://medium.com/dailyjs/typescript-create-a-condition-based-subset-types-9d902cea5b8c}
+ */
+type FilterFlags<Base, Condition> = {
+    [ Key in keyof Base ]:
+    Base[ Key ] extends Condition ? Key : never
+};
+/**
+ * Effectively filters out keys that do not match `Condition`  
+ * by  
+ * Via {@link FilterFlags} - Gets keys or `never`  
+ * Takes these keys and removes `never`
+ */
+type AllowedNames<Base, Condition> =
+    FilterFlags<Base, Condition>[ keyof Base ];
+/**
+ * Create a new type which has the properties of `Base` that match `Condition`
+ * 
+ * @example <caption>This example extracts properties of `foo` that have a value type of `string`</caption>
+ * // `fooT` is now { a: string, d: string }
+ * // `fooKT` is now ` 'a' | 'd' `
+ * 
+ * interface foo {
+ *   a: string;
+ *   b: number;
+ *   c: string[];
+ *   d: string;
+ * }
+ * 
+ * type fooT = SubType<foo, string>;
+ * type fooKT = keyof fooT ;
+ */
+type SubType<Base, Condition> =
+    Pick<Base, AllowedNames<Base, Condition>>;

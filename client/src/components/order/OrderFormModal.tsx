@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Divider, Button, Modal, message, Input, DatePicker } from 'antd';
+/**
+ * // TODO: consider removing momentjs for a (SMALLER) alternative
+ * antd - remove momentjs
+ *  https://ant.design/docs/react/replace-moment
+ *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
+ **/ 
 import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery } from '../../lib/types/graphql';
 
 import { QueryResultTypePlus } from '../../lib/UtilityFunctions';

@@ -163,6 +163,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
             {
                 key: 'icon',
                 title: '',
+                responsive: ['xl'],
                 render: ( text, record: T ) => { console.log( { q: 'render icon ?', record, icon: record.icon } ); return ( record.icon === null ? null : < record.icon />); }
             },
             ...Object.values( columns ?? Item.Columns ),
