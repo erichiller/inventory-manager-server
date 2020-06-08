@@ -63,18 +63,16 @@ export type AllowedNames<Base, Condition> =
  * Create a new type which has the properties of `Base` that match `Condition`
  * 
  * @example <caption>This example extracts properties of `foo` that have a value type of `string`</caption>
- * // `fooT` is now { a: string, d: string }
- * // `fooKT` is now ` 'a' | 'd' `
- * 
- * interface foo {
- *   a: string;
- *   b: number;
- *   c: string[];
- *   d: string;
- * }
- * 
- * type fooT = SubType<foo, string>;
- * type fooKT = keyof fooT ;
+ *          // `fooT` is now { a: string, d: string }
+ *          // `fooKT` is now ` 'a' | 'd' `
+ *          interface foo {
+ *              a: string;
+ *              b: number;
+ *              c: string[];
+ *              d: string;
+ *          }
+ *          type fooT = SubType<foo, string>;
+ *          type fooKT = keyof fooT ;
  */
 export type SubType<Base, Condition> =
     Pick<Base, AllowedNames<Base, Condition>>;

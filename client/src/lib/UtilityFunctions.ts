@@ -247,6 +247,7 @@ export function getDaysInMonth ( a: number | string, b?: number ): number {
 // }
 
 /**
+ * Decorator to mark a property as enumerable.  
  * NOTE: `enumerable` on a property only controls whether it will appear in `for ... in` and does not add it to `Object.keys()`
  * @param value whether the wrapped property should be enumerable
  */
