@@ -435,7 +435,7 @@ export class Item<T extends GenericItem> {
      */
     get mouseOverRowComponent (): React.FC {
         // TODO: use for ... in so that enumerable properties are shown
-        return ( props ) => <pre>{JSON.stringify( Object.fromEntries(Object.entries(this).filter( ([ key, value ]) => key !== '_object')), null, 2 )}</pre>;
+        return ( props ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key, value ] ) => key !== '_object' ) ), Object.keys( this ).sort(), 2 )}</pre>;
     }
 
     // get bundle (): Item {
