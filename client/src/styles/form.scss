@@ -192,40 +192,7 @@ div[role="tooltip"] {
             max-height: 90vh;
         }
     }
-
-    /* Chrome, Safari, Edge, Opera */
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    /* Firefox */
-    input[type="number"] {
-        -moz-appearance: textfield;
-    }
-
-    // .screw-size-input {
-    // border: none;
-    // & div {
-    //     border: none;
-    // }
-    // .ant-select-selector {
-    //     padding-right: 2px;
-    // }
-    // .ant-input-group-addon {
-    //     border: none;
-    // }
-    // /* Chrome, Safari, Edge, Opera */
-    // input[type="number"]::-webkit-outer-spin-button,
-    // input[type="number"]::-webkit-inner-spin-button {
-    //     -webkit-appearance: none;
-    //     margin: 0;
-    // }
-    // /* Firefox */
-    // input[type="number"] {
-    //     -moz-appearance: textfield;
-    // }
-    // }
+    @extend .no-arrow-number-input;
 }
 
 #OrderForm {
@@ -237,38 +204,65 @@ div[role="tooltip"] {
     }
 }
 
+.no-arrow-number-input {
+    /* Chrome, Safari, Edge, Opera */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    /* Firefox */
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+}
+
 .OrderItemInput {
-    flex-wrap: nowrap;
-    display: flex;
+    
+    display: grid;
+    grid-template-columns: repeat(6, 16.6%);
+    grid-template-rows: 40px 40px;
+    column-gap: 4px;
     > * {
-        // display: inline-block;
-        margin-right: 4px;
+        height: min-content;
     }
-    // .ItemSelect {
-    //     width: 300px;
-    // }
-    // > * {
-    //     display: flex;
-    // }
-    .item_id {
-        flex-grow: 3;
-        min-width: 200px;
+    @extend .no-arrow-number-input;
+    input {
+        width: initial;
     }
-    .quantity {
-        flex-grow: 1;
-        min-width: 80px;
+    .ItemSelect {
+        grid-column-start: span 3;
+        background-color: pink;;
+    }
+    [name="quantity"] {
+        min-width: 100%;
+        width: 100%;
         .ant-input-number-input {
             padding-left: 5px; // was 11px
             padding-right: 5px;
         }
+        background-color: yellow;
     }
     Input[name="serial_no"] {
-        flex-grow: 4;
         background-color: red;
+        grid-column-start: span 2;
     }
-    // .serial_no { flex-grow: 4 }
-    Input[name="item_cost"] {
-        flex-grow: 1;
+    Input[name="shipment"] {
+        background-color: teal;
+        grid-column-start: span 3;
+    }
+    Input[name="cost_item"] {
+        background-color: blue;
+    }
+    Input[name="cost_tax"] {
+        background-color: magenta;
+    }
+    Input[name="cost_total"] {
+        background-color: silver;
+    }
+    Input[name="vendor_item"] {
+        background-color: salmon;
+        grid-column-start: span 6;
     }
 }
 

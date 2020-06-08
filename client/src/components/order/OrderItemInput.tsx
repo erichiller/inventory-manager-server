@@ -63,11 +63,11 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
         });
     };
 
-    const setQuantity = ( value: number ) => {
-        console.log( "setQuantity", { value } );
+    const setQuantity = ( event: React.ChangeEvent<HTMLInputElement> ) => {
+        console.log( "setQuantity", event.target.value );
         onChange( {
             ...props.value,
-            quantity: value
+            quantity: event.target.valueAsNumber
         } );
     };
     const setSerialNo = ( event: React.ChangeEvent<HTMLInputElement> ) => {
@@ -81,7 +81,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
     return (
         <div className="OrderItemInput">
 
-            <ItemSelect className="item_id" placeholder="Search for Item"
+            <ItemSelect placeholder="Search for Item"
                 mode={null}
                 onChange={setItemId}
                 suffixIcon={props.suffix}
@@ -94,22 +94,13 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
             //     />
             // }
             />
-            <InputNumber className="quantity" name="quantity" aria-valuemin={1} onChange={setQuantity} placeholder="Qty" />
-            <Input className="serial_no" name="serial_no" onChange={setSerialNo} placeholder="Serial#" />
-            <br />
-            <Input name="cost_item" type="number" step="0.01" min="0" prefix="$" />
-            <Input name="cost_tax" type="number" step="0.01" min="0" prefix="$" />
-            <Input name="cost_total" type="number" step="0.01" min="0" prefix="$" />
-            {/* 
-            TODO: serial_no
-            TODO: shipment_id
-                TODO: note shipment_id requires a new modal/form
-            TODO: vendor_item_id
-                TODO: note vendor_item_id requires a new modal/form
-            TODO: cost_item
-            TODO: cost_tax
-            TODO: cost_total
-             */}
+            <Input name="quantity" aria-valuemin={1} onChange={setQuantity} placeholder="Qty" />
+            <Input name="serial_no" onChange={setSerialNo} placeholder="Serial#" />
+            <Input name="shipment" onChange={setSerialNo} placeholder="Shipment" /> {/* TODO: onChange. Requires separate element*/}
+            <Input name="cost_item" type="number" step="0.01" min="0" prefix="$" placeholder="total" /> {/* TODO: onChange.*/}
+            <Input name="cost_tax" type="number" step="0.01" min="0" prefix="$" /> {/* TODO: onChange.*/}
+            <Input name="cost_total" type="number" step="0.01" min="0" prefix="$" /> {/* TODO: onChange.*/}
+            <Input name="vendor_item" onChange={setSerialNo} placeholder="Vendor Item" /> {/* TODO: onChange. Requires separate element*/}
 
         </div>
     );
