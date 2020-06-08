@@ -191,7 +191,6 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                 </Form.Item>
 
                 {/* TODO: select payment_method_id */}
-                {/* TODO: select money input type ?? html */}
 
 
 
