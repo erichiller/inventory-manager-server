@@ -16,10 +16,12 @@ interface OptionT {
 }
 type VT = SelectValue;
 
+export type ItemSelectProvidesValue = Array<{ item_id: number; }>
+
 interface ItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
     forwardRef?: React.MutableRefObject<Input>;
     value?: VT;
-    onChange?: ( item_id: number[] ) => void;
+    onChange?: ( items: ItemSelectProvidesValue) => void;
 }
 /**
  * Form Select Input for Items
@@ -52,24 +54,26 @@ export const ItemSelect: React.FC<ItemSelectProps> = ( props ) => {
         }
     }, [ loading, data ] );
     return (
-        <div className="ItemSelect">
+        <div className={`ItemSelect ${props.className?? ''}`}>
             <Select
-                mode="multiple"
+                mode={ props.mode ?? 'multiple'}
                 filterOption={false}
                 onSearch={value => { console.log( { event: "onSearch", setSearchText: value } ); setSearchText( value ); }}
+                suffixIcon={props.suffixIcon}
+                placeholder={props.placeholder}
                 onChange={( value, opt ) => {
                     console.log( "onChange", { value, opt } );
-                    let arrayOfNumbers: number[] = [];
+                    let arrayOfItemProps: {item_id: number;}[] = [];
                     if ( typeof value === "number" ) {
-                        arrayOfNumbers = [ value ];
+                        arrayOfItemProps = [ {item_id: value } ];
                     } else if ( typeof value === "string" ) {
-                        arrayOfNumbers = [ parseInt( value ) ];
+                        arrayOfItemProps = [ { item_id: parseInt( value ) } ];
                     } else if ( "key" in value ) {
-                        arrayOfNumbers = [ typeof value.value === "number" ? value.value : parseInt( value.value ) ];
+                        arrayOfItemProps = [ { item_id: (typeof value.value === "number" ? value.value : parseInt( value.value ) ) } ];
                     } else if ( Array.isArray(value) && value.length > 0){
-                        value.forEach( e => typeof e === "number" ? arrayOfNumbers.push(e) : arrayOfNumbers.push(parseInt(e)));
+                        value.forEach( e => typeof e === "number" ? arrayOfItemProps.push( { item_id: e } ) : arrayOfItemProps.push( { item_id: parseInt(e) }));
                     }
-                    onChange( arrayOfNumbers );
+                    onChange( arrayOfItemProps );
                 }}
             >
                 {...options.map( v => {

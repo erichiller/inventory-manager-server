@@ -9,13 +9,14 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker } from 'antd';
 import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables } from '../../lib/types/graphql';
 
 import { QueryResultTypePlus } from '../../lib/UtilityFunctions';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/util';
 import { QueryResult } from 'react-apollo';
 import { ItemSelect } from '../item/ItemSelect';
 import { VendorSelect } from '../vendor/VendorSelect';
 import moment from 'moment';
+import { OrderItemInput } from './OrderItemInput';
 
 
 type OrderFormModalProps = {
@@ -122,7 +123,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         visible={true}
         title="Order"
         // width={null}
-        className="OrderFormModal"
+        // className="OrderFormModal"
         onOk={e => {
             console.log( { class: 'OrderEditModal', method: 'onOk', e, values: form.getFieldsValue() } );
             form.submit();
@@ -196,37 +197,41 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
 
 
                 <Divider key="Items" orientation="left">Items</Divider>
-                <Form.Item name={['items','id']} label="Items">
-                    <ItemSelect />
-                </Form.Item>
-                {/* <Form.List name="Items">
+                {/* <Form.Item name='items' label="Items"> */}
+                {/* <Form.Item name={[ 'items', 'item_id' ]} label="Items"> */}
+                    {/* <ItemSelect /> */}
+                    {/* <OrderItemInput />
+                </Form.Item> */}
+                <Form.List name="items">
                     {( fields, { add, remove } ) => {
                         return (
                             <React.Fragment>
                                 {fields.map( ( field, index ) => (
                                     <Form.Item
                                         {...field}
-                                        label="Bundled Item"
+                                        // label="Item"
                                         getValueFromEvent={( args ) => {
-                                            console.log( 'form getValueFromEvent (Bundled Order)', { field, index, args } );
+                                            console.log( 'form getValueFromEvent (OrderFormModal.items)', { field, index, args } );
                                             return args;
                                         }}
+                                        className="full-width-form-item"
                                     >
-                                        <ItemSelect placeholder="Search for Item"
-                                            // suffix={
-                                            //     <MinusCircleOutlined
-                                            //         className="dynamic-delete-button"
-                                            //         onClick={() => {
-                                            //             remove( field.name );
-                                            //         }}
-                                            //     />
-                                            // }
+                                        <OrderItemInput placeholder="Search for Item"
+                                            suffix={
+                                                <MinusCircleOutlined
+                                                    className="dynamic-delete-button"
+                                                    onClick={() => {
+                                                        remove( field.name );
+                                                    }}
+                                                />
+                                            }
                                         />
                                     </Form.Item>
                                 ) )}
                                 <Form.Item
-                                    label=" "
+                                    label={null}
                                     colon={false}
+                                    className="full-width-form-item"
                                 >
                                     <Button
                                         type="dashed"
@@ -241,7 +246,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                             </React.Fragment>
                         );
                     }}
-                </Form.List> */}
+                </Form.List>
             </div>
 
         </Form>

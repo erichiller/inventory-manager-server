@@ -14431,9 +14431,8 @@ export type MutationRootDeleteOrderItemArgs = {
 
 /** mutation root */
 export type MutationRootDeleteOrderItemByPkArgs = {
+  item_id: Scalars['Int'];
   order_id: Scalars['Int'];
-  serial_no: Scalars['String'];
-  vendor_item_id: Scalars['Int'];
 };
 
 
@@ -16599,18 +16598,18 @@ export type OrderInsertInput = {
  */
 export type OrderItem = {
   __typename?: 'order_item';
-  cost_item: Scalars['money'];
+  cost_item?: Maybe<Scalars['money']>;
   cost_tax?: Maybe<Scalars['money']>;
   cost_total?: Maybe<Scalars['money']>;
-  item_id?: Maybe<Scalars['Int']>;
+  item_id: Scalars['Int'];
   /** link to manufacturer item, which in turn links to item */
-  manufacturer_item_id: Scalars['Int'];
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
   order_id: Scalars['Int'];
   quantity?: Maybe<Scalars['numeric']>;
   /** individual items unique id (as provided by manufacturer) */
-  serial_no: Scalars['String'];
+  serial_no?: Maybe<Scalars['String']>;
   shipment_id?: Maybe<Scalars['Int']>;
-  vendor_item_id: Scalars['Int'];
+  vendor_item_id?: Maybe<Scalars['Int']>;
 };
 
 /** aggregated selection of "order_item" */
@@ -16839,10 +16838,8 @@ export type OrderItemOrderBy = {
 
 /** primary key columns input for table: "order_item" */
 export type OrderItemPkColumnsInput = {
+  item_id: Scalars['Int'];
   order_id: Scalars['Int'];
-  /** individual items unique id (as provided by manufacturer) */
-  serial_no: Scalars['String'];
-  vendor_item_id: Scalars['Int'];
 };
 
 /** select columns of table "order_item" */
@@ -20153,9 +20150,8 @@ export type QueryRootOrderItemAggregateArgs = {
 
 /** query root */
 export type QueryRootOrderItemByPkArgs = {
+  item_id: Scalars['Int'];
   order_id: Scalars['Int'];
-  serial_no: Scalars['String'];
-  vendor_item_id: Scalars['Int'];
 };
 
 
@@ -22794,9 +22790,8 @@ export type SubscriptionRootOrderItemAggregateArgs = {
 
 /** subscription root */
 export type SubscriptionRootOrderItemByPkArgs = {
+  item_id: Scalars['Int'];
   order_id: Scalars['Int'];
-  serial_no: Scalars['String'];
-  vendor_item_id: Scalars['Int'];
 };
 
 
@@ -25918,4 +25913,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-07T10:19:36-06:00
+// graphql typescript defs generated on 2020-06-08T06:48:14-06:00

@@ -59,7 +59,8 @@ div[role="tooltip"] {
     & span {
         border-bottom: 1px solid silver;
     }
-    & span:nth-last-of-type(2), & span:nth-last-of-type(1) {
+    & span:nth-last-of-type(2),
+    & span:nth-last-of-type(1) {
         border-bottom: initial;
     }
     // & :not(span:nth-of-type(-1)) {
@@ -71,7 +72,7 @@ div[role="tooltip"] {
     display: flex;
     & .ant-select .ant-select-selector {
         height: 46px;
-        padding-top:3px;
+        padding-top: 3px;
     }
 }
 
@@ -132,14 +133,12 @@ div[role="tooltip"] {
 .vendorOption {
     @extend .orderOption;
     grid-template-rows: 18px;
-    
+
     & :nth-last-child(1) {
         // background-color: purple;
         grid-column-start: initial;
     }
 }
-
-
 
 .OrderInput {
     display: flex;
@@ -227,4 +226,55 @@ div[role="tooltip"] {
     //     -moz-appearance: textfield;
     // }
     // }
+}
+
+#OrderForm {
+    .ant-input-affix-wrapper {
+        width: initial;
+        input[type="number"] {
+            width: 5em;
+        }
+    }
+}
+
+.OrderItemInput {
+    flex-wrap: nowrap;
+    display: flex;
+    > * {
+        // display: inline-block;
+        margin-right: 4px;
+    }
+    // .ItemSelect {
+    //     width: 300px;
+    // }
+    // > * {
+    //     display: flex;
+    // }
+    .item_id {
+        flex-grow: 3;
+        min-width: 200px;
+    }
+    .quantity {
+        flex-grow: 1;
+        min-width: 80px;
+        .ant-input-number-input {
+            padding-left: 5px; // was 11px
+            padding-right: 5px;
+        }
+    }
+    Input[name="serial_no"] {
+        flex-grow: 4;
+        background-color: red;
+    }
+    // .serial_no { flex-grow: 4 }
+    Input[name="item_cost"] {
+        flex-grow: 1;
+    }
+}
+
+// override the ant column settings
+.full-width-form-item {
+    > div {
+        max-width: 100%;
+    }
 }
