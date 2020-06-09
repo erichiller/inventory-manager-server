@@ -33,6 +33,12 @@ code {
             color: #1890ff;
         }
     }
+    a > svg { // essentially for NOT antd-icons since they are wrapped in an additional <span>
+        height: 18px;
+        font-size: 14px;
+        fill: currentColor;
+        
+    }
 
 }
 

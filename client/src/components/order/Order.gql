@@ -21,6 +21,7 @@ query GetOrdersByDateRange($date_start_gte: date, $date_end_lte: date) {
         where: { placed_date: { _gte: $date_start_gte, _lte: $date_end_lte } }
     ) {
         ...basicOrderFields
+        ...objectOrderFields
     }
 }
 

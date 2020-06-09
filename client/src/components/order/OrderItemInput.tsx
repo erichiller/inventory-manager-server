@@ -94,6 +94,10 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
             //     />
             // }
             />
+            {/* TODO: rather than have ItemSelect search through ITEMS... it should search through all items listings: (see below)
+                1. Based on `Vendor` of `Order` search `vendor_items` ; this can then pre-populate the `manufacturer_item` and `item`
+                2. 
+                 */}
             <Input name="quantity" aria-valuemin={1} onChange={setQuantity} placeholder="Qty" />
             <Input name="serial_no" onChange={setSerialNo} placeholder="Serial#" />
             <Input name="shipment" onChange={setSerialNo} placeholder="Shipment" /> {/* TODO: onChange. Requires separate element*/}

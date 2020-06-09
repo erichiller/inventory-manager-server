@@ -24184,6 +24184,7 @@ export type GetOrdersByDateRangeQuery = (
   & { order: Array<(
     { __typename?: 'order' }
     & BasicOrderFieldsFragment
+    & ObjectOrderFieldsFragment
   )> }
 );
 
@@ -25183,9 +25184,11 @@ export const GetOrdersByDateRangeDocument = gql`
     query GetOrdersByDateRange($date_start_gte: date, $date_end_lte: date) {
   order(where: {placed_date: {_gte: $date_start_gte, _lte: $date_end_lte}}) {
     ...basicOrderFields
+    ...objectOrderFields
   }
 }
-    ${BasicOrderFieldsFragmentDoc}`;
+    ${BasicOrderFieldsFragmentDoc}
+${ObjectOrderFieldsFragmentDoc}`;
 export type GetOrdersByDateRangeProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>
     } & TChildProps;
@@ -26144,4 +26147,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-09T07:15:45-06:00
+// graphql typescript defs generated on 2020-06-09T07:24:07-06:00

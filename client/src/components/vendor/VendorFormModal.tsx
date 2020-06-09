@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Divider, Button, Modal, message, Input, DatePicker } from 'antd';
+import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from 'antd';
 /**
  * // TODO: consider removing momentjs for a (SMALLER) alternative
  * antd - remove momentjs
@@ -16,6 +16,7 @@ import { QueryResult } from 'react-apollo';
 import { ItemSelect } from '../item/ItemSelect';
 import { VendorSelect } from './VendorSelect';
 import moment from 'moment';
+import { Store } from 'antd/lib/form/interface';
 
 
 type VendorFormModalProps = {
@@ -146,39 +147,21 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
             onFinishFailed={onFinishFailed}
         >
             <div className="col">
-                <Form.Item name="vendor_id" label="Vendor" required>
+                <Form.Item name="name" label="Name" required>
                     <VendorSelect />
                 </Form.Item>
-                <Form.Item name="vendor_vendor_id" label="Vendor #" required>
+                <Form.Item name="account_id" label="Account #" required>
                     <Input />
                 </Form.Item>
-                <Form.Item name="placed_date" label="Date Placed" required>
-                    <DatePicker
-                        // id="datepicker_monthpicker"
-                        // defaultValue={moment()}
-                    />
-                </Form.Item>
-                <Form.Item name="fullfilled_date" label="Date Fullfilled">
-                    <DatePicker
-                        // id="datepicker_monthpicker"
-                        // defaultValue={moment()}
-                    />
-                </Form.Item>
-
-
-                <Form.Item name="items_cost" label="Items Cost">
-                    <Input type="number" step="0.01" min="0" prefix="$" />
-                </Form.Item>
-                <Form.Item name="tax_cost" label="Tax">
-                    <Input type="number" step="0.01" min="0" prefix="$" />
-                </Form.Item>
-                <Form.Item name="total_cost" label="Total">
-                    <Input type="number" step="0.01" min="0" prefix="$" />
-                </Form.Item>
-
-
-                <Form.Item name="pon" label="Purchase Vendor #">
-                    <Input />
+                <Form.Item
+                    name={['manufacturer', 'data']}
+                    label="Account #"
+                    required
+                    normalize={ (value: Boolean, prevValue: Boolean, allValues: Store) => {
+                        console.log('vendor manufacturer form\n', {value, prevValue, allValues});
+                    }}
+                >
+                    <Switch />
                 </Form.Item>
 
                 <Form.Item name="url" label="URL">
