@@ -97,9 +97,9 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
             <Input name="quantity" aria-valuemin={1} onChange={setQuantity} placeholder="Qty" />
             <Input name="serial_no" onChange={setSerialNo} placeholder="Serial#" />
             <Input name="shipment" onChange={setSerialNo} placeholder="Shipment" /> {/* TODO: onChange. Requires separate element*/}
-            <Input name="cost_item" type="number" step="0.01" min="0" prefix="$" placeholder="total" /> {/* TODO: onChange.*/}
-            <Input name="cost_tax" type="number" step="0.01" min="0" prefix="$" /> {/* TODO: onChange.*/}
-            <Input name="cost_total" type="number" step="0.01" min="0" prefix="$" /> {/* TODO: onChange.*/}
+            <Input name="cost_item" type="number" step="0.01" min="0" prefix="$" placeholder="item" /> {/* TODO: onChange.*/}
+            <Input name="cost_tax" type="number" step="0.01" min="0" prefix="$" placeholder="tax" /> {/* TODO: onChange.*/}
+            <Input name="cost_total" type="number" step="0.01" min="0" prefix="$" placeholder="total" /> {/* TODO: onChange.*/}
             <Input name="vendor_item" onChange={setSerialNo} placeholder="Vendor Item" /> {/* TODO: onChange. Requires separate element*/}
 
         </div>

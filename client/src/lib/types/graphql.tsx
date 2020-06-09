@@ -23331,8 +23331,58 @@ export type Vendor = {
   __typename?: 'vendor';
   account_id?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  /** An object relationship */
+  manufacturer?: Maybe<Manufacturer>;
   name: Scalars['String'];
+  /** An array relationship */
+  orders: Array<Order>;
+  /** An aggregated array relationship */
+  orders_aggregate: OrderAggregate;
   url?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  vendor_items: Array<VendorItem>;
+  /** An aggregated array relationship */
+  vendor_items_aggregate: VendorItemAggregate;
+};
+
+
+/** columns and relationships of "vendor" */
+export type VendorOrdersArgs = {
+  distinct_on?: Maybe<Array<OrderSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<OrderOrderBy>>;
+  where?: Maybe<OrderBoolExp>;
+};
+
+
+/** columns and relationships of "vendor" */
+export type VendorOrdersAggregateArgs = {
+  distinct_on?: Maybe<Array<OrderSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<OrderOrderBy>>;
+  where?: Maybe<OrderBoolExp>;
+};
+
+
+/** columns and relationships of "vendor" */
+export type VendorVendorItemsArgs = {
+  distinct_on?: Maybe<Array<VendorItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<VendorItemOrderBy>>;
+  where?: Maybe<VendorItemBoolExp>;
+};
+
+
+/** columns and relationships of "vendor" */
+export type VendorVendorItemsAggregateArgs = {
+  distinct_on?: Maybe<Array<VendorItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<VendorItemOrderBy>>;
+  where?: Maybe<VendorItemBoolExp>;
 };
 
 /** aggregated selection of "vendor" */
@@ -23404,8 +23454,11 @@ export type VendorBoolExp = {
   _or?: Maybe<Array<Maybe<VendorBoolExp>>>;
   account_id?: Maybe<StringComparisonExp>;
   id?: Maybe<IntComparisonExp>;
+  manufacturer?: Maybe<ManufacturerBoolExp>;
   name?: Maybe<StringComparisonExp>;
+  orders?: Maybe<OrderBoolExp>;
   url?: Maybe<StringComparisonExp>;
+  vendor_items?: Maybe<VendorItemBoolExp>;
 };
 
 /** unique or primary key constraints on table "vendor" */
@@ -23423,8 +23476,11 @@ export type VendorIncInput = {
 export type VendorInsertInput = {
   account_id?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  manufacturer?: Maybe<ManufacturerObjRelInsertInput>;
   name?: Maybe<Scalars['String']>;
+  orders?: Maybe<OrderArrRelInsertInput>;
   url?: Maybe<Scalars['String']>;
+  vendor_items?: Maybe<VendorItemArrRelInsertInput>;
 };
 
 /** columns and relationships of "vendor_item" */
@@ -23800,8 +23856,11 @@ export type VendorOnConflict = {
 export type VendorOrderBy = {
   account_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  manufacturer?: Maybe<ManufacturerOrderBy>;
   name?: Maybe<OrderBy>;
+  orders_aggregate?: Maybe<OrderAggregateOrderBy>;
   url?: Maybe<OrderBy>;
+  vendor_items_aggregate?: Maybe<VendorItemAggregateOrderBy>;
 };
 
 /** primary key columns input for table: "vendor" */
@@ -24101,12 +24160,16 @@ export type EditLabelMutation = (
   )> }
 );
 
-export type OrderFieldsFragment = (
+export type BasicOrderFieldsFragment = (
   { __typename?: 'order' }
-  & Pick<Order, 'vendor_order_id' | 'url' | 'total_cost' | 'tax_cost' | 'pon' | 'placed_date' | 'payment_method_id' | 'items_cost' | 'id' | 'fulfilled_date'>
+  & Pick<Order, 'id' | 'vendor_order_id' | 'url' | 'total_cost' | 'tax_cost' | 'pon' | 'placed_date' | 'payment_method_id' | 'items_cost' | 'fulfilled_date'>
+);
+
+export type ObjectOrderFieldsFragment = (
+  { __typename?: 'order' }
   & { vendor: (
     { __typename?: 'vendor' }
-    & Pick<Vendor, 'name' | 'url'>
+    & BasicVendorFieldsFragment
   ) }
 );
 
@@ -24120,7 +24183,7 @@ export type GetOrdersByDateRangeQuery = (
   { __typename?: 'query_root' }
   & { order: Array<(
     { __typename?: 'order' }
-    & OrderFieldsFragment
+    & BasicOrderFieldsFragment
   )> }
 );
 
@@ -24157,7 +24220,8 @@ export type GetOrdersQuery = (
   { __typename?: 'query_root' }
   & { order: Array<(
     { __typename?: 'order' }
-    & OrderFieldsFragment
+    & BasicOrderFieldsFragment
+    & ObjectOrderFieldsFragment
   )> }
 );
 
@@ -24182,7 +24246,7 @@ export type GetOrderQuery = (
       )> }
     ), vendor: (
       { __typename?: 'vendor' }
-      & Pick<Vendor, 'account_id' | 'id' | 'name' | 'url'>
+      & Pick<Vendor, 'id' | 'account_id' | 'name' | 'url'>
     ), shipments: Array<(
       { __typename?: 'shipment' }
       & Pick<Shipment, 'id' | 'order_id' | 'received_date' | 'shipped_date' | 'shipping_carrier' | 'tracking_id' | 'vendor_invoice_id'>
@@ -24228,9 +24292,23 @@ export type SendBufferMutation = (
   )> }
 );
 
-export type VendorFieldsFragment = (
+export type BasicVendorFieldsFragment = (
   { __typename?: 'vendor' }
   & Pick<Vendor, 'id' | 'name' | 'url' | 'account_id'>
+);
+
+export type ObjectVendorFieldsFragment = (
+  { __typename?: 'vendor' }
+  & { manufacturer?: Maybe<(
+    { __typename?: 'manufacturer' }
+    & Pick<Manufacturer, 'id'>
+  )>, orders: Array<(
+    { __typename?: 'order' }
+    & BasicOrderFieldsFragment
+  )>, vendor_items: Array<(
+    { __typename?: 'vendor_item' }
+    & Pick<VendorItem, 'id' | 'item_id' | 'vendor_sku'>
+  )> }
 );
 
 export type GetVendorsQueryVariables = {};
@@ -24240,7 +24318,11 @@ export type GetVendorsQuery = (
   { __typename?: 'query_root' }
   & { vendor: Array<(
     { __typename?: 'vendor' }
-    & VendorFieldsFragment
+    & { manufacturer?: Maybe<(
+      { __typename?: 'manufacturer' }
+      & Pick<Manufacturer, 'id'>
+    )> }
+    & BasicVendorFieldsFragment
   )> }
 );
 
@@ -24253,7 +24335,37 @@ export type SearchVendorsQuery = (
   { __typename?: 'query_root' }
   & { vendor: Array<(
     { __typename?: 'vendor' }
-    & VendorFieldsFragment
+    & BasicVendorFieldsFragment
+  )> }
+);
+
+export type GetVendorQueryVariables = {
+  id: Scalars['Int'];
+};
+
+
+export type GetVendorQuery = (
+  { __typename?: 'query_root' }
+  & { vendor?: Maybe<(
+    { __typename?: 'vendor' }
+    & BasicVendorFieldsFragment
+    & ObjectVendorFieldsFragment
+  )> }
+);
+
+export type InsertVendorMutationVariables = {
+  account_id?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  manufacturer?: Maybe<ManufacturerObjRelInsertInput>;
+  url: Scalars['String'];
+};
+
+
+export type InsertVendorMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_vendor?: Maybe<(
+    { __typename?: 'vendor' }
+    & BasicVendorFieldsFragment
   )> }
 );
 
@@ -24442,13 +24554,25 @@ export const LabelFieldsFragmentDoc = gql`
   }
 }
     `;
-export const OrderFieldsFragmentDoc = gql`
-    fragment orderFields on order {
-  vendor_order_id
+export const BasicVendorFieldsFragmentDoc = gql`
+    fragment basicVendorFields on vendor {
+  id
+  name
+  url
+  account_id
+}
+    `;
+export const ObjectOrderFieldsFragmentDoc = gql`
+    fragment objectOrderFields on order {
   vendor {
-    name
-    url
+    ...basicVendorFields
   }
+}
+    ${BasicVendorFieldsFragmentDoc}`;
+export const BasicOrderFieldsFragmentDoc = gql`
+    fragment basicOrderFields on order {
+  id
+  vendor_order_id
   url
   total_cost
   tax_cost
@@ -24456,18 +24580,24 @@ export const OrderFieldsFragmentDoc = gql`
   placed_date
   payment_method_id
   items_cost
-  id
   fulfilled_date
 }
     `;
-export const VendorFieldsFragmentDoc = gql`
-    fragment vendorFields on vendor {
-  id
-  name
-  url
-  account_id
+export const ObjectVendorFieldsFragmentDoc = gql`
+    fragment objectVendorFields on vendor {
+  manufacturer {
+    id
+  }
+  orders {
+    ...basicOrderFields
+  }
+  vendor_items {
+    id
+    item_id
+    vendor_sku
+  }
 }
-    `;
+    ${BasicOrderFieldsFragmentDoc}`;
 export const ItemFieldsFragmentDoc = gql`
     fragment ItemFields on item {
   id
@@ -25052,10 +25182,10 @@ export type EditLabelMutationOptions = ApolloReactCommon.BaseMutationOptions<Edi
 export const GetOrdersByDateRangeDocument = gql`
     query GetOrdersByDateRange($date_start_gte: date, $date_end_lte: date) {
   order(where: {placed_date: {_gte: $date_start_gte, _lte: $date_end_lte}}) {
-    ...orderFields
+    ...basicOrderFields
   }
 }
-    ${OrderFieldsFragmentDoc}`;
+    ${BasicOrderFieldsFragmentDoc}`;
 export type GetOrdersByDateRangeProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>
     } & TChildProps;
@@ -25157,10 +25287,12 @@ export type InsertOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<I
 export const GetOrdersDocument = gql`
     query GetOrders {
   order(order_by: {placed_date: asc}) {
-    ...orderFields
+    ...basicOrderFields
+    ...objectOrderFields
   }
 }
-    ${OrderFieldsFragmentDoc}`;
+    ${BasicOrderFieldsFragmentDoc}
+${ObjectOrderFieldsFragmentDoc}`;
 export type GetOrdersProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetOrdersQuery, GetOrdersQueryVariables>
     } & TChildProps;
@@ -25231,8 +25363,8 @@ export const GetOrderDocument = gql`
       }
     }
     vendor {
-      account_id
       id
+      account_id
       name
       url
     }
@@ -25397,10 +25529,13 @@ export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<Se
 export const GetVendorsDocument = gql`
     query GetVendors {
   vendor(order_by: {id: asc}) {
-    ...vendorFields
+    ...basicVendorFields
+    manufacturer {
+      id
+    }
   }
 }
-    ${VendorFieldsFragmentDoc}`;
+    ${BasicVendorFieldsFragmentDoc}`;
 export type GetVendorsProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetVendorsQuery, GetVendorsQueryVariables>
     } & TChildProps;
@@ -25442,10 +25577,10 @@ export type GetVendorsQueryResult = ApolloReactCommon.QueryResult<GetVendorsQuer
 export const SearchVendorsDocument = gql`
     query SearchVendors($search_string: String) {
   vendor(order_by: {id: asc}, where: {name: {_ilike: $search_string}}) {
-    ...vendorFields
+    ...basicVendorFields
   }
 }
-    ${VendorFieldsFragmentDoc}`;
+    ${BasicVendorFieldsFragmentDoc}`;
 export type SearchVendorsProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<SearchVendorsQuery, SearchVendorsQueryVariables>
     } & TChildProps;
@@ -25485,6 +25620,102 @@ export function useSearchVendorsLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export type SearchVendorsQueryHookResult = ReturnType<typeof useSearchVendorsQuery>;
 export type SearchVendorsLazyQueryHookResult = ReturnType<typeof useSearchVendorsLazyQuery>;
 export type SearchVendorsQueryResult = ApolloReactCommon.QueryResult<SearchVendorsQuery, SearchVendorsQueryVariables>;
+export const GetVendorDocument = gql`
+    query GetVendor($id: Int!) {
+  vendor: vendor_by_pk(id: $id) {
+    ...basicVendorFields
+    ...objectVendorFields
+  }
+}
+    ${BasicVendorFieldsFragmentDoc}
+${ObjectVendorFieldsFragmentDoc}`;
+export type GetVendorProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetVendorQuery, GetVendorQueryVariables>
+    } & TChildProps;
+export function withGetVendor<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetVendorQuery,
+  GetVendorQueryVariables,
+  GetVendorProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetVendorQuery, GetVendorQueryVariables, GetVendorProps<TChildProps, TDataName>>(GetVendorDocument, {
+      alias: 'getVendor',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetVendorQuery__
+ *
+ * To run a query within a React component, call `useGetVendorQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVendorQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVendorQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetVendorQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetVendorQuery, GetVendorQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetVendorQuery, GetVendorQueryVariables>(GetVendorDocument, baseOptions);
+      }
+export function useGetVendorLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetVendorQuery, GetVendorQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetVendorQuery, GetVendorQueryVariables>(GetVendorDocument, baseOptions);
+        }
+export type GetVendorQueryHookResult = ReturnType<typeof useGetVendorQuery>;
+export type GetVendorLazyQueryHookResult = ReturnType<typeof useGetVendorLazyQuery>;
+export type GetVendorQueryResult = ApolloReactCommon.QueryResult<GetVendorQuery, GetVendorQueryVariables>;
+export const InsertVendorDocument = gql`
+    mutation InsertVendor($account_id: String, $name: String!, $manufacturer: manufacturer_obj_rel_insert_input, $url: String!) {
+  insert_vendor: insert_vendor_one(object: {account_id: $account_id, name: $name, manufacturer: $manufacturer, url: $url}) {
+    ...basicVendorFields
+  }
+}
+    ${BasicVendorFieldsFragmentDoc}`;
+export type InsertVendorMutationFn = ApolloReactCommon.MutationFunction<InsertVendorMutation, InsertVendorMutationVariables>;
+export type InsertVendorProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertVendorMutation, InsertVendorMutationVariables>
+    } & TChildProps;
+export function withInsertVendor<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  InsertVendorMutation,
+  InsertVendorMutationVariables,
+  InsertVendorProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, InsertVendorMutation, InsertVendorMutationVariables, InsertVendorProps<TChildProps, TDataName>>(InsertVendorDocument, {
+      alias: 'insertVendor',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useInsertVendorMutation__
+ *
+ * To run a mutation, you first call `useInsertVendorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertVendorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertVendorMutation, { data, loading, error }] = useInsertVendorMutation({
+ *   variables: {
+ *      account_id: // value for 'account_id'
+ *      name: // value for 'name'
+ *      manufacturer: // value for 'manufacturer'
+ *      url: // value for 'url'
+ *   },
+ * });
+ */
+export function useInsertVendorMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertVendorMutation, InsertVendorMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertVendorMutation, InsertVendorMutationVariables>(InsertVendorDocument, baseOptions);
+      }
+export type InsertVendorMutationHookResult = ReturnType<typeof useInsertVendorMutation>;
+export type InsertVendorMutationResult = ApolloReactCommon.MutationResult<InsertVendorMutation>;
+export type InsertVendorMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertVendorMutation, InsertVendorMutationVariables>;
 export const GetItemsDocument = gql`
     query GetItems($categories: [enum_item_class_enum!]) {
   items: item(where: {class: {_in: $categories}}, order_by: {id: asc}) {
@@ -25913,4 +26144,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-08T06:48:14-06:00
+// graphql typescript defs generated on 2020-06-09T07:15:45-06:00

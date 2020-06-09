@@ -7,7 +7,7 @@ import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { OrderFormModal } from './OrderFormModal';
-import { Order } from '../../lib/order/Order';
+import { Order } from '../../lib/Order/Order';
 
 
 

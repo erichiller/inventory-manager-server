@@ -232,7 +232,6 @@ div[role="tooltip"] {
     }
     .ItemSelect {
         grid-column-start: span 3;
-        background-color: pink;;
     }
     [name="quantity"] {
         min-width: 100%;
@@ -241,27 +240,20 @@ div[role="tooltip"] {
             padding-left: 5px; // was 11px
             padding-right: 5px;
         }
-        background-color: yellow;
     }
     Input[name="serial_no"] {
-        background-color: red;
         grid-column-start: span 2;
     }
     Input[name="shipment"] {
-        background-color: teal;
         grid-column-start: span 3;
     }
-    Input[name="cost_item"] {
-        background-color: blue;
-    }
-    Input[name="cost_tax"] {
-        background-color: magenta;
-    }
-    Input[name="cost_total"] {
-        background-color: silver;
-    }
+    // Input[name="cost_item"] {
+    // }
+    // Input[name="cost_tax"] {
+    // }
+    // Input[name="cost_total"] {
+    // }
     Input[name="vendor_item"] {
-        background-color: salmon;
         grid-column-start: span 6;
     }
 }

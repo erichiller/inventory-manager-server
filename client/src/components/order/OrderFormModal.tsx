@@ -117,7 +117,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         console.log( { class: 'OrderEditModal', method: 'onFieldsChange', changedFields, values } );
     };
 
-    let initialValues = order ? order : { placed_date: moment() };
+    let initialValues = order ? order : { placed_date: moment() , items: [{}] };
 
     return <Modal
         visible={true}
