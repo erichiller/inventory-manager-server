@@ -122,8 +122,8 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
             {state.modal}
             <Table
                 columns={columns}
-                dataSource={result.data ? result.data.Vendor : []}
-                rowKey={Vendor => Vendor.id.toString()}
+                dataSource={result.data ? result.data.vendor : []}
+                rowKey={vendor => vendor.id.toString()}
                 pagination={state.pagination}
                 loading={result.loading}
                 onChange={onChange}

@@ -5,6 +5,7 @@ import { LabelTable } from '../components/label/LabelTable';
 import { ItemIndex } from '../components/item/Index';
 import { ItemFormModal } from '../components/item/ItemFormModal';
 import { OrderTable } from '../components/order/OrderTable';
+import { VendorTable } from '../components/vendor/VendorTable';
 
 type ReactFunctionComponent = ( ( route?: RouteEntry, match?: RouterMatch ) => JSX.Element );
 
