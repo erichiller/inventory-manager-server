@@ -1,19 +1,61 @@
-fragment vendorFields on vendor {
-    id # id: Int!
-    name # name: String!
-    url # url: String
-    account_id # account_id: String
+fragment basicVendorFields on vendor {
+	id # id: Int!
+	name # name: String!
+	url # url: String
+	account_id # account_id: String
+}
+fragment objectVendorFields on vendor {
+	manufacturer {
+		id
+	}
+	orders {
+		...basicOrderFields
+	}
+	vendor_items {
+		id
+		item_id
+		vendor_sku
+	}
 }
 
 query GetVendors {
-    vendor(order_by: { id: asc } ) {
-        ...vendorFields
-    }
+	vendor(order_by: { id: asc }) {
+		...basicVendorFields
+		manufacturer {
+			id
+		}
+	}
 }
 
 query SearchVendors($search_string: String) {
-    vendor(order_by: { id: asc }, where: { name: { _ilike: $search_string } }) {
-        ...vendorFields
-    }
+	vendor(order_by: { id: asc }, where: { name: { _ilike: $search_string }}) {
+		...basicVendorFields
+	}
 }
 
+query GetVendor($id: Int!) {
+	vendor: vendor_by_pk(id: $id) {
+		...basicVendorFields
+		...objectVendorFields
+	}
+}
+
+
+mutation InsertVendor(
+	        $account_id: String
+	        $name: String!
+	        $manufacturer: manufacturer_obj_rel_insert_input
+            $url: String!
+    ) {
+    insert_vendor: insert_vendor_one (
+        object: {
+	        account_id: $account_id
+	        name: $name
+	        manufacturer: $manufacturer
+            url: $url
+
+        }
+    ) {
+        ...basicVendorFields
+    }
+}

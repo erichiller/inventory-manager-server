@@ -72,6 +72,19 @@ export const routes: RouteEntry[] = [
             return <OrderTable />;
         }
     },
+    {
+        title: "Vendors",
+        subtitle: "View or add vendors",
+        breadcrumbName: "Orders",
+        path: [ "/vendor", "/order/:vendor_id", "/vendor/:vendor_id/:action" ], // action can be either 'edit' or 'add'
+        exact: true,
+        // AppMenuIcon: () => <Icon component={DiggingIcon as any} />,
+        // AppMenuEntry: () => <ProjectSubMenu key="ProjectsubMenu" />,
+        // ModeMenu: () => <ProjectModeMenu />,
+        main: () => {
+            return <VendorTable />;
+        }
+    },
 ];
 
 
