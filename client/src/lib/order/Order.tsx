@@ -76,11 +76,7 @@ export class Order implements OrderDataProps {
 
     // order: OrderGql;
 
-
     constructor ( props: Partial<OrderDataProps> ) {
-        // constructor( props: Partial<T>){
-        // if (!props) return;
-        // this.order = props;
         this.id = props.id;
         console.log( "Order class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
     }
@@ -137,157 +133,17 @@ export class Order implements OrderDataProps {
         return simpleObject as OrderDataProps;
     }
 
-    // @enumerable( true )
-    // get name (): string {
-    //     if ( this._name ) {
-    //         return this._name;
-    //     }
-    //     else if ( this._object && this._object.hasOwnProperty( "name" ) ) {
-    //         return this._object[ 'name' ];
-    //     }
-    //     else {
-    //         // should this warn?
-    //         return "";
-    //     }
-    // }
-    // set name ( nameVal: string ) {
-    //     this._name = nameVal;
-    // }
-
-
-
-    // static get categories (): CategoryHierarchyT[] {
-    //     // TODO: this needs to calculate on the fly from `class`
-    //     return [ "Order" ];
-    // }
-    // get categories (): CategoryHierarchyT[] {
-    //     return [ "Order" ];
-    // }
-
-    // /**
-    //  * All possible order classes / types
-    //  */
-    // static get ClassTypes (): Array<keyof typeof EnumOrderClassEnum> {
-    //     return Object.keys( EnumOrderClassEnum ) as Array<keyof typeof EnumOrderClassEnum>;
-    // }
-
-
-    // // static _ClassTypes: Partial< IEnumOrderMap< OrderExtender<any> > > = {};
-    // static _ClassTypes: IEnumOrderMap;
-
-    // static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T>; }> (
-    //     orderClass: OrderGqlTypename,
-    //     typeClass: T
-    // ) {
-    //     Order._ClassTypes = {
-    //         ...Order._ClassTypes,
-    //         ...Object.fromEntries( [ [ orderClass.toLowerCase(), typeClass ] ] )
-    //     };
-    // }
-
-    /**
-     * Return the class for an input GraphQL `__typename`
-     * @param orderTypename The GraphQL type for an Order class, this is what is found in `__typename` and is of the form `order_category1_category2_classname`
-     */
-    // public static getClassForType ( orderTypename: OrderGqlTypename ): typeof Order {
-    //     let orderClassLowerCase = orderTypename.toLowerCase();
-    //     // console.log( { class: 'Order', method: 'getClassForType', classTypes: Order._ClassTypes, lookup_key: orderClass } );
-    //     // if ( orderClassLowerCase === "order" ) {
-    //     //     return Order;
-    //     // }
-    //     return Order._ClassTypes[ orderClassLowerCase ];
-    // }
-
     static get icon (): IconComponentT {
-        // return new Promise<IconComponentT>( ( resolve, reject ) => {
-        // resolve( CodeIcon );
-        // });
-        // return new Promise( ( resolve, reject ) => resolve(CodeIcon) );
         return ShoppingCartOutlined as IconComponentT;
     }
-
-    // get dothings () {
-    //     // return <img />;
-    //     apolloClient.query<Icon, GetIconQueryVariables>( {
-    //         query: GetIconDocument,
-    //         variables: { id: 'REPLACE WITH UUID' }
-    //     } ).then( result => {
-    //         message.info( `Saved Successfully` );
-    //     } ).catch( error => {
-    //         console.log( "MUTATE ERROR", error );
-    //         message.error( `Failure during save: ${ error }` );
-    //     } )
-    //     // .finally( () => {
-    //     //     // props.visibleHandler( null );
-    //     // } );
-    //     const result = apolloClient.query<Icon, GetIconQueryVariables>( {
-    //         query: GetIconDocument,
-    //         variables: { id: 'REPLACE WITH UUID' }
-    //     } );
-    //     return result;
-    // }
-
-    // callDoThings () {
-    //     return (await this.dothings).data.data;
-    // }
 
     /**
      * common lookup of icon;
      * returns dataurl ( SVG )
      */
     get icon (): IconComponentT {
-        // return <img />;
-        // apolloClient.query<Icon, GetIconQueryVariables>( {
-        //     query: GetIconDocument,
-        //     variables: {id: 'REPLACE WITH UUID'}
-        // } ).then( result => {
-        //     message.info( `Saved Successfully` );
-        // } ).catch( error => {
-        //     console.log( "MUTATE ERROR", error );
-        //     message.error( `Failure during save: ${ error }` );
-        // } ).finally( () => {
-        //     // props.visibleHandler( null );
-        // } );
-        // return new Promise( (result, reject) => apolloClient.query<Icon, GetIconQueryVariables>( {
-        //     query: GetIconDocument,
-        //     variables: { id: 'REPLACE WITH UUID' }
-        // } ) ).then( result => {
-        //     return CodeIcon;
-        // });
-        // return result;
-        // .then( result => { return () => <img src={result.data.data} />; } );
-        /**
-         * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-         * 
-         * SUBCRIBE TO CACHE UPDATES HERE
-         * 
-         * THE CONSTRUCTOR SHOULD TAKE IN THE RESULT OF THE QUERY.
-         * NO QUERIES SHOULD TAKE PLACE HERE
-         * 
-         * SEE:
-         * https://www.apollographql.com/docs/react/api/apollo-client/#apolloclient-functions
-         * https://www.apollographql.com/docs/react/api/apollo-client/#ObservableQuery
-         * 
-         */
-        // return Order.icon;
-        // return Order<T>.getClassForType( this._class ).icon;
         return Order.icon;
     }
-    // get iconMatches (): Icon[] {
-    //     return null;
-    // }
-    // get icons (): React.ReactElement[] {
-    //     return null;
-    // }
-    // get labelTemplate (): Label {
-    //     return null;
-    // }
-    // get labelTemplateMatches (): Label[] {
-    //     return null;
-    // }
-    // get labelTemplates (): Label[] {
-    //     return null;
-    // }
     /**
      * Props which should be included in label (default) 
      * Optionally defined on subclasses
@@ -295,10 +151,6 @@ export class Order implements OrderDataProps {
     get labelProps (): Array<keyof Order> {
         return Object.keys( this ) as Array<keyof Order>;
     }
-    // static get labelProps (): Array<string> {
-    //     console.log( {keysOfThisCls: Object.keys( this ), keysOfOrderCls: Object.keys(Order) });
-    //     return Object.keys( this ) as Array<Extract<keyof GenericOrder, string>>;
-    // }
     /**
      * Props to use as display columns (default)
      * Ordered
@@ -306,16 +158,8 @@ export class Order implements OrderDataProps {
      */
     static get Columns (): ColumnProps<ObjectColumnProperty<Order>>[] {
         // TODO: order columns sensibly
-        // let cols: ColumnProps<Order>[] = ( [ ...Object.keys( OrderSelectColumn ), 'name' ].filter(
-        //     key => [ "OBJECT" ].includes( key ) ? false : key ).map(
-        //         // key => [ "ID" ].includes( key ) ? false : key ).map(
-        //         key => {
-        //             return {
-        //                 key: key,
-        //                 title: toTitleCase( key ),
-        //                 dataIndex: OrderSelectColumn[ key ] ?? key,
-        //             };
-        //         } ) );
+        // TODO: use the same logic as within `ItemHardwareFastenerScrewMachine` for `Columns` generation
+        // TODO: `<Link>` for Vendor in table. using `render: () => {}`
         const keys: ObjectColumnProperty<Order>[] = [
             'id',
             [ 'vendor', 'name'],

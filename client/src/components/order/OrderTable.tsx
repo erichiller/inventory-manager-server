@@ -24,14 +24,7 @@ interface OrderTableState {
     modal: React.ReactElement;
 }
 
-// interface pagination {
-//     total: number;
-//     pageSize: number;
-//     current: number;
-// }
-
 interface IOrderTableParams {
-    /** item_id is Int as string */
     order_id: string;
     action: "edit" | 'add';
 }
@@ -66,9 +59,6 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
     }, [ params.order_id, params.action ] );
 
     const result = useGetOrdersQuery();
-    // const { data, loading, error } = useGetOrdersQuery();
-
-
 
     const columns: ColumnProps<Extract<GetOrdersQuery, 'order'>>[] = [
         ...Order.Columns,
@@ -133,100 +123,6 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
             <Table
                 columns={columns}
                 dataSource={result.data ? result.data.order : []}
-                // dataSource={ [
-                //     {
-                //         "vendor_order_id": "qqq1",
-                //         "vendor": {
-                //             "name": "Amazon",
-                //             "url": "https://amazon.com",
-                //             "__typename": "vendor"
-                //         },
-                //         "url": null,
-                //         "total_cost": "$55.00",
-                //         "tax_cost": "$5.00",
-                //         "pon": null,
-                //         "placed_date": "2019-03-15",
-                //         "payment_method_id": null,
-                //         "items_cost": "$50.00",
-                //         "id": 1,
-                //         "fulfilled_date": null,
-                //         "__typename": "order"
-                //     },
-                //     {
-                //         "vendor_order_id": "qqq1",
-                //         "vendor": {
-                //             "name": "Amazon",
-                //             "url": "https://amazon.com",
-                //             "__typename": "vendor"
-                //         },
-                //         "url": null,
-                //         "total_cost": "$55.00",
-                //         "tax_cost": "$5.00",
-                //         "pon": null,
-                //         "placed_date": "2019-03-21",
-                //         "payment_method_id": null,
-                //         "items_cost": "$50.00",
-                //         "id": 2,
-                //         "fulfilled_date": null,
-                //         "__typename": "order"
-                //     },
-                //     {
-                //         "vendor_order_id": "qqq1",
-                //         "vendor": {
-                //             "name": "Amazon",
-                //             "url": "https://amazon.com",
-                //             "__typename": "vendor"
-                //         },
-                //         "url": null,
-                //         "total_cost": "$55.00",
-                //         "tax_cost": "$5.00",
-                //         "pon": null,
-                //         "placed_date": "2019-04-16",
-                //         "payment_method_id": null,
-                //         "items_cost": "$50.00",
-                //         "id": 3,
-                //         "fulfilled_date": null,
-                //         "__typename": "order"
-                //     },
-                //     {
-                //         "vendor_order_id": "qqq1",
-                //         "vendor": {
-                //             "name": "Amazon",
-                //             "url": "https://amazon.com",
-                //             "__typename": "vendor"
-                //         },
-                //         "url": null,
-                //         "total_cost": "$55.00",
-                //         "tax_cost": "$5.00",
-                //         "pon": null,
-                //         "placed_date": "2019-04-22",
-                //         "payment_method_id": null,
-                //         "items_cost": "$50.00",
-                //         "id": 4,
-                //         "fulfilled_date": null,
-                //         "__typename": "order"
-                //     },
-                //     {
-                //         "vendor_order_id": "qqq2",
-                //         "vendor": {
-                //             "name": "Amazon",
-                //             "url": "https://amazon.com",
-                //             "__typename": "vendor"
-                //         },
-                //         "url": null,
-                //         "total_cost": "$11.00",
-                //         "tax_cost": "$1.00",
-                //         "pon": null,
-                //         "placed_date": "2020-05-09",
-                //         "payment_method_id": null,
-                //         "items_cost": "$10.00",
-                //         "id": 5,
-                //         "fulfilled_date": null,
-                //         "__typename": "order"
-                //     }
-                // ]
-
-                // }
                 rowKey={order => order.id.toString()}
                 pagination={state.pagination}
                 loading={result.loading}
