@@ -164,7 +164,7 @@ key here is to always make from the most specific item to the least specific.
 
 also, all `item_id` must remain unique
 
-====== Schema Start =====
+## Schema Start
 
 
 ```sql
@@ -211,8 +211,18 @@ enum PAYMENT_METHOD_ENUM (
     CC | ACH | CHECK | CASH
 ) -- ✔
 
+-- manufacturer_item kept here as opposed to vendor_item because in some cases the vendor's item id can stay the same while the manufacturer changes
 table order_item (
-  -- SEE ACTUAL
+    manufacturer_item_id - integer, nullable -- link to manufacturer item, which in turn links to item
+    serial_no - text, nullable               -- individual items unique id (as provided by manufacturer)
+    cost_item - money, nullable
+    order_id - integer, primary key
+    shipment_id - integer, nullable
+    cost_tax - money, nullable
+    cost_total - money, nullable
+    vendor_item_id - integer, nullable
+    quantity - numeric, nullable
+    item_id - integer, primary key           -- provided in addition to `manufacturer_item_id` because the manufacturer isn't always known
 ) -- ✔
 
 table vendor_item (
@@ -239,21 +249,18 @@ table manufacturer_item (
 ) -- ✔
 
 /**
- * item_catalog?
- * xxxx  Put name & description in actual item_X tables.
- * maybe this should just be a view , I'm not even sure it will ever be necessary ?
+ * individual items from all classes tracked here
 **/
 table item (
-    ✔id: Integer
-    ✔class: item_class → item_class (enum)
-    name : string
-    description : string  -- this could be a compound of various searchable strings that is kept up to date with triggers
+    id: Integer
+    class: item_class → item_class (enum)
+    metadata : string  -- object metadata is kept up to date with triggers
     -- links / relationships here are not in sql,
     -- are relationships defined in GraphQL
-    ✔labelTemplates : → label_template[ ]
-    ✔vendorItems : → vendor_item[ ]
-    ✔manufacturerItems → manufacturer_item[ ]
-    ✔bundles → item_bundle[ ]
+    labelTemplates : → label_template[ ]
+    vendorItems : → vendor_item[ ]
+    manufacturerItems → manufacturer_item[ ]
+    bundles → item_bundle[ ]
 ) -- ✔
 
 table item_bundle (
