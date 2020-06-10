@@ -5,10 +5,10 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  * antd - remove momentjs
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
- **/ 
-import { GetVendorQuery, GetVendorQueryVariables, useGetVendorQuery, useInsertVendorMutation, InsertVendorMutationVariables } from '../../lib/types/graphql';
+ **/
+import { GetVendorQuery, GetVendorQueryVariables, useGetVendorQuery, useInsertVendorMutation, InsertVendorMutationVariables, useGetVendorLazyQuery, useUpdateVendorMutation, useInsertManufacturerMutation, UpdateVendorMutationVariables, useDeleteManufacturerMutation } from '../../lib/types/graphql';
 
-import { QueryResultTypePlus } from '../../lib/UtilityFunctions';
+import { QueryResultTypePlus, Union, filterObject } from '../../lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/util';
@@ -17,6 +17,8 @@ import { ItemSelect } from '../item/ItemSelect';
 import { VendorSelect } from './VendorSelect';
 import moment from 'moment';
 import { Store } from 'antd/lib/form/interface';
+import { PageSpin } from '../shared/PageSpin';
+import { Vendor } from '../../lib/Vendor/Vendor';
 
 
 type VendorFormModalProps = {
@@ -28,7 +30,7 @@ type VendorFormModalProps = {
 } | {
     vendor?: null;
     vendorId?: null;
-}
+};
 // extends Union<VendorFormProps, VendorBundle> { }
 
 
@@ -39,75 +41,115 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
     // let loading = true;
 
     const [ vendor, setVendor ] = useState<QueryResultTypePlus<typeof useGetVendorQuery>>( props.vendor );
-    
-    const [ insertVendorMutation, { data, loading, error } ] = useInsertVendorMutation();
+
+    //edit
+    const [ updateVendor, updateVendorResult ] = useUpdateVendorMutation();
+    const [ insertManufacturer, insertManufacturerResult ] = useInsertManufacturerMutation();
+    const [ deleteManufacturer, deleteManufacturerResult ] = useDeleteManufacturerMutation();
+    // add new
+    const [ insertVendor, insertVendorResult ] = useInsertVendorMutation();
 
 
-    let result: QueryResult<GetVendorQuery, GetVendorQueryVariables>;
+    const [ runGet, lookupResult ] = useGetVendorLazyQuery( {
+        partialRefetch: true,
+        returnPartialData: true,
+    } );
 
-    if ( !vendor && vendorId ) {
-        result = useGetVendorQuery( {
-            variables: {
-                id: vendorId
-            }
-        } );
-        // loading = result.loading;
+    // let foo = lookupResult.data.vendor.manufacturer.id;
 
-        useEffect( () => {
-            if ( result.error ) {
-                message.error( result.error );
-            }
-            if ( result.data ) {
-                setVendor( result.data.vendor );
-                if ( result.data.vendor ) {
-                    message.info( `loaded data, found vendorId of ${ result.data.vendor.id }` );
-                } else {
-                    message.warning( `No Vendors found.` );
-                }
-            }
-        }, [ result.data, result.error ] );
-    } else {
-        console.debug( `Vendor received in props not running GraphQL`, { vendor: props.vendor } );
-    }
-
-    // useEffect( () => {
-    //     screwSizeInputRef.current.focus();
-    // }, [ screwSizeInputRef ] );
-
-    // useEffect( () => {
-    //     let initProps: Partial<VendorBundle> = {};
-    //     if ( !props.thread_direction ) {
-    //         initProps.thread_direction = EnumItemHandednessEnum.right;
-    //     }
-    //     form.setFieldsValue( initProps );
-    // } );
-    const exitModal = () => {
-        console.log( "cancelling modal, history.goBack, history is currently", { history } );
-        history.goBack();
-    };
-    const onFinish = ( values: {
-        [ name: string ]: any;
-    } ) => {
-        console.log( { class: 'VendorEditModal', method: 'onFinish', values } );
-
-        console.log( { c: "insertVendorMutation" }, form.getFieldsValue() );
-        insertVendorMutation( {
-            variables: ( form.getFieldsValue() as InsertVendorMutationVariables)
-        });
-    };
+    /***************************************** Effects *****************************************/
 
     useEffect( () => {
-        if ( error ) {
+        if ( !vendor && vendorId ) {
+            runGet( {
+                variables: {
+                    id: vendorId
+                }
+            } );
+        } else {
+            console.debug( `Vendor received in props not running GraphQL`, { vendor: props.vendor } );
+        }
+        if ( lookupResult.error ) {
+            message.error( lookupResult.error );
+        }
+        if ( lookupResult.data && !lookupResult.loading ) {
+            if ( lookupResult.data.vendor ) {
+                setVendor( lookupResult.data.vendor );
+                console.debug( `loaded data, found vendorId of ${ lookupResult.data.vendor.id }`, lookupResult.data.vendor );
+                message.info( `loaded data, found vendorId of ${ lookupResult.data.vendor.id }` );
+            } else {
+                console.warn( `No Vendors found`, lookupResult );
+                message.warning( `No Vendors found.` );
+            }
+        }
+    }, [ lookupResult.data, lookupResult.error ] );
+
+
+    useEffect( () => {
+        if ( insertVendorResult.error ) { // FIXME: must run for all xxxResult
             // completeCallback( false );
-            message.error( `${ error.name }: ${ error.message }` );
-        } else if ( data ) {
-            message.success( `successfully created ${ data.__typename } with id ${ data.insert_vendor.id }` );
+            message.error( `${ insertVendorResult.error.name }: ${ insertVendorResult.error.message }` );
+        } else if ( insertVendorResult.data ) {
+            message.success( `successfully created ${ insertVendorResult.data.__typename } with id ${ insertVendorResult.data.insert_vendor.id }` );
             return () => {
                 form.resetFields();
                 exitModal();
             };
         }
-    }, [ data, loading, error ] );
+    }, [ insertVendorResult, updateVendorResult, insertManufacturerResult, deleteManufacturerResult ] );
+
+    /***************************************************************************/
+
+    const exitModal = () => {
+        console.log( "cancelling modal, history.goBack, history is currently", { history } );
+        history.goBack();
+    };
+
+    const onFinish = ( values: {
+        [ name: string ]: any;
+    } ) => {
+        console.log( { class: 'VendorEditModal', method: 'onFinish', values, vendor } );
+
+        console.log( { c: "insertVendorMutation" }, form.getFieldsValue() );
+        if ( vendorId ) {
+            let formFieldValues = form.getFieldsValue() as Exclude<UpdateVendorMutationVariables, 'id'> & {
+                manufacturer: {data: { id: number; } ; };
+            };
+            // edit
+            // if id now, but not before
+            if ( formFieldValues.manufacturer?.data?.id && !vendor.manufacturer?.id ) {
+                console.log( `inserting manufacturer, value was ${ vendor.manufacturer?.id }, value is: ${ formFieldValues.manufacturer?.data?.id}\n`, { vendor } )
+                insertManufacturer( {
+                    variables: {
+                        name: formFieldValues.name,
+                        url: formFieldValues.url,
+                        vendor_id: vendorId
+                    }
+                })
+            } else if ( ! formFieldValues.manufacturer?.data?.id && vendor.manufacturer.id ) {
+                // remove manufacturer record
+                deleteManufacturer( {
+                    variables: {
+                        id: vendor.manufacturer.id
+                    }
+                });
+            }
+            let filteredTest = filterObject( formFieldValues, null, [ 'manufacturer' ] );
+            console.log({filteredTest, vendor})
+            updateVendor( {
+                variables: {
+                    id: vendorId,
+                    ...filterObject( formFieldValues, null, [ 'manufacturer' ] )
+                }
+            } );
+        } else {
+            // insert
+            insertVendor( {
+                variables: ( form.getFieldsValue() as InsertVendorMutationVariables )
+            } );
+        }
+    };
+
 
     const onFinishFailed = ( errorInfo ) => {
         console.error( { class: 'VendorEditModal', method: 'onFinishFailed', errorInfo } );
@@ -117,7 +159,28 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
         console.log( { class: 'VendorEditModal', method: 'onFieldsChange', changedFields, values } );
     };
 
-    let initialValues = vendor ? vendor : { placed_date: moment() , items: [{}] };
+    // let initialValues = vendor ? vendor : { placed_date: moment() , items: [{}] };
+
+    /** halt waiting for incoming vendor data. */
+    if ( !vendor ) {
+        return <PageSpin />;
+    }
+
+    let initialValues: Partial<Vendor> |
+        Union<
+            Exclude<Vendor, 'manufacturer'>,
+            { id: number; }
+        > = {};
+    if ( vendor ) {
+        initialValues = vendor;
+        // if ( initialValues.manufacturer ) {
+        //     initialValues.manufacturer = {
+        //         data: {
+        //             id: initialValues.id
+        //         }
+        //     };
+        // }
+    }
 
     return <Modal
         visible={true}
@@ -136,7 +199,6 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
             layout="horizontal"
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 16 }}
-            // name="Vendor-add-edit-delete"
             onKeyPress={( event ) => {
                 console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode } );
                 if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
@@ -148,17 +210,19 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
         >
             <div className="col">
                 <Form.Item name="name" label="Name" required>
-                    <VendorSelect />
+                    <Input />
                 </Form.Item>
-                <Form.Item name="account_id" label="Account #" required>
+                <Form.Item name="account_id" label="Account #">
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    name={['manufacturer', 'data']}
-                    label="Account #"
+                    name={'manufacturer'}
+                    label="Manufacturer?"
+                    valuePropName='checked'
                     required
-                    normalize={ (value: Boolean, prevValue: Boolean, allValues: Store) => {
-                        console.log('vendor manufacturer form\n', {value, prevValue, allValues});
+                    normalize={( value: Boolean, prevValue: Boolean, allValues: Store ) => {
+                        console.log( 'vendor manufacturer form\n', { value, prevValue, allValues } );
+                        return {data: {id: value}};
                     }}
                 >
                     <Switch />
@@ -169,7 +233,7 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                     <Input
                         type="url" // htmlFor="url" ?? 
                         pattern="https?://.*"
-                     />
+                    />
                 </Form.Item>
             </div>
 

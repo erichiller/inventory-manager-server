@@ -29,13 +29,15 @@ import { resolve } from "url";
 import { rejects } from "assert";
 import { CategoryHierarchyT, IconComponentT, FormMutationHandler } from "../item/Item";
 import { ShoppingCartOutlined, ShopOutlined } from "@ant-design/icons";
+import { ApolloQueryResult } from "apollo-client";
 
-interface VendorDataProps extends Pick<VendorGql,
+interface VendorDataProps extends Pick<ApolloQueryResult<GetVendorQuery>['data']['vendor'],
     '__typename' |
     'id' |
     'name' |
     'url' |
-    'account_id'
+    'account_id' | 
+    'manufacturer'
     > {
     // nothing to add
 }
@@ -50,6 +52,7 @@ export class Vendor implements VendorDataProps {
     // orders: Array<Order>;
     // orders_aggregate: OrderAggregate;
     url?: string;
+    manufacturer
 
     constructor ( props: Partial<VendorDataProps> ) {
         // constructor( props: Partial<T>){

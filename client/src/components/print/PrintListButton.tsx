@@ -71,7 +71,8 @@ export const PrintListButton: React.FC<PrintListButtonProps> = ( props ) => {
             // } : {})}
             // key={props.key ?? "PrintListButton"}
             // style={props.style ?? {}}
-            {...filterObject( props, null, [ 'mutate' ] )}
+            // {...filterObject( props, null, [ 'mutate' ] )}
+            {...props}
         >
             {
                 context.getPrintLabels().map( label => {
