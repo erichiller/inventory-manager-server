@@ -176,11 +176,11 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
 
         const renderWithUnitSuffix = ( value, record: ItemHardwareFastenerScrewMachineGql ) => value ? `${ value } ${ getUnitFromUnitSystem( record.unit ) }` : '';
 
-        function commonFilterConfig<T>( property: Extract<keyof T, string>, optionObject: object ){
+        function commonFilterConfig<T> ( property: Extract<keyof T, string>, optionObject: object ) {
             return {
                 filters: tableFilterFromEnum( optionObject ),
                 filterMultiple: true,
-                onFilter: ( value: string | number | boolean, record: T ) => record[property as string] === value,
+                onFilter: ( value: string | number | boolean, record: T ) => record[ property as string ] === value,
             };
         }
 
@@ -212,14 +212,14 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
                     key: 'thread_pitch',
                     title: 'Pitch',
                     defaultSortOrder: 'ascend',
-                    sorter: sortByNumber('thread_pitch'),
+                    sorter: sortByNumber( 'thread_pitch' ),
                     responsive: [ 'lg' ],
                 },
                 {
                     key: 'thread_standard',
                     title: 'Standard',
-                    ...commonFilterConfig( 'thread_standard', EnumItemHardwareFastenerThreadStandardEnum),
-                    sorter: sortByCaseInsensitiveText('thread_standard'),
+                    ...commonFilterConfig( 'thread_standard', EnumItemHardwareFastenerThreadStandardEnum ),
+                    sorter: sortByCaseInsensitiveText( 'thread_standard' ),
                     responsive: [ 'xxl' ],
                 },
                 {

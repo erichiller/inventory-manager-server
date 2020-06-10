@@ -3,6 +3,7 @@ import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHoc from '@apollo/react-hoc';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
+export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -5020,6 +5021,174 @@ export type EnumPaymentMethodTypeSetInput = {
 
 /** update columns of table "enum.payment_method_type" */
 export enum EnumPaymentMethodTypeUpdateColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
+/**
+ * Storage space type
+ * 
+ * 
+ * columns and relationships of "enum.space_type"
+ */
+export type EnumSpaceType = {
+  __typename?: 'enum_space_type';
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+};
+
+/** aggregated selection of "enum.space_type" */
+export type EnumSpaceTypeAggregate = {
+  __typename?: 'enum_space_type_aggregate';
+  aggregate?: Maybe<EnumSpaceTypeAggregateFields>;
+  nodes: Array<EnumSpaceType>;
+};
+
+/** aggregate fields of "enum.space_type" */
+export type EnumSpaceTypeAggregateFields = {
+  __typename?: 'enum_space_type_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<EnumSpaceTypeMaxFields>;
+  min?: Maybe<EnumSpaceTypeMinFields>;
+};
+
+
+/** aggregate fields of "enum.space_type" */
+export type EnumSpaceTypeAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<EnumSpaceTypeSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "enum.space_type" */
+export type EnumSpaceTypeAggregateOrderBy = {
+  count?: Maybe<OrderBy>;
+  max?: Maybe<EnumSpaceTypeMaxOrderBy>;
+  min?: Maybe<EnumSpaceTypeMinOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "enum.space_type" */
+export type EnumSpaceTypeArrRelInsertInput = {
+  data: Array<EnumSpaceTypeInsertInput>;
+  on_conflict?: Maybe<EnumSpaceTypeOnConflict>;
+};
+
+/** Boolean expression to filter rows from the table "enum.space_type". All fields are combined with a logical 'AND'. */
+export type EnumSpaceTypeBoolExp = {
+  _and?: Maybe<Array<Maybe<EnumSpaceTypeBoolExp>>>;
+  _not?: Maybe<EnumSpaceTypeBoolExp>;
+  _or?: Maybe<Array<Maybe<EnumSpaceTypeBoolExp>>>;
+  description?: Maybe<StringComparisonExp>;
+  id?: Maybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "enum.space_type" */
+export enum EnumSpaceTypeConstraint {
+  /** unique or primary key constraint */
+  space_type_pkey = 'space_type_pkey'
+}
+
+export enum EnumSpaceTypeEnum {
+  bin = 'bin',
+  building = 'building',
+  drawer = 'drawer',
+  floor = 'floor',
+  political_region = 'political_region',
+  room = 'room',
+  wall = 'wall'
+}
+
+/** expression to compare columns of type enum_space_type_enum. All fields are combined with logical 'AND'. */
+export type EnumSpaceTypeEnumComparisonExp = {
+  _eq?: Maybe<EnumSpaceTypeEnum>;
+  _in?: Maybe<Array<EnumSpaceTypeEnum>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<EnumSpaceTypeEnum>;
+  _nin?: Maybe<Array<EnumSpaceTypeEnum>>;
+};
+
+/** input type for inserting data into table "enum.space_type" */
+export type EnumSpaceTypeInsertInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type EnumSpaceTypeMaxFields = {
+  __typename?: 'enum_space_type_max_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "enum.space_type" */
+export type EnumSpaceTypeMaxOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type EnumSpaceTypeMinFields = {
+  __typename?: 'enum_space_type_min_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "enum.space_type" */
+export type EnumSpaceTypeMinOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "enum.space_type" */
+export type EnumSpaceTypeMutationResponse = {
+  __typename?: 'enum_space_type_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<EnumSpaceType>;
+};
+
+/** input type for inserting object relation for remote table "enum.space_type" */
+export type EnumSpaceTypeObjRelInsertInput = {
+  data: EnumSpaceTypeInsertInput;
+  on_conflict?: Maybe<EnumSpaceTypeOnConflict>;
+};
+
+/** on conflict condition type for table "enum.space_type" */
+export type EnumSpaceTypeOnConflict = {
+  constraint: EnumSpaceTypeConstraint;
+  update_columns: Array<EnumSpaceTypeUpdateColumn>;
+  where?: Maybe<EnumSpaceTypeBoolExp>;
+};
+
+/** ordering options when selecting data from "enum.space_type" */
+export type EnumSpaceTypeOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "enum.space_type" */
+export type EnumSpaceTypePkColumnsInput = {
+  id: Scalars['String'];
+};
+
+/** select columns of table "enum.space_type" */
+export enum EnumSpaceTypeSelectColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
+/** input type for updating data in table "enum.space_type" */
+export type EnumSpaceTypeSetInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "enum.space_type" */
+export enum EnumSpaceTypeUpdateColumn {
   /** column name */
   description = 'description',
   /** column name */
@@ -13190,6 +13359,10 @@ export type MutationRoot = {
   delete_enum_payment_method_type?: Maybe<EnumPaymentMethodTypeMutationResponse>;
   /** delete single row from the table: "enum.payment_method_type" */
   delete_enum_payment_method_type_by_pk?: Maybe<EnumPaymentMethodType>;
+  /** delete data from the table: "enum.space_type" */
+  delete_enum_space_type?: Maybe<EnumSpaceTypeMutationResponse>;
+  /** delete single row from the table: "enum.space_type" */
+  delete_enum_space_type_by_pk?: Maybe<EnumSpaceType>;
   /** delete data from the table: "enum.unit" */
   delete_enum_unit?: Maybe<EnumUnitMutationResponse>;
   /** delete single row from the table: "enum.unit" */
@@ -13302,6 +13475,10 @@ export type MutationRoot = {
   delete_shipment?: Maybe<ShipmentMutationResponse>;
   /** delete single row from the table: "shipment" */
   delete_shipment_by_pk?: Maybe<Shipment>;
+  /** delete data from the table: "storage" */
+  delete_storage?: Maybe<StorageMutationResponse>;
+  /** delete single row from the table: "storage" */
+  delete_storage_by_pk?: Maybe<Storage>;
   /** delete data from the table: "tag" */
   delete_tag?: Maybe<TagMutationResponse>;
   /** delete single row from the table: "tag" */
@@ -13430,6 +13607,10 @@ export type MutationRoot = {
   insert_enum_payment_method_type?: Maybe<EnumPaymentMethodTypeMutationResponse>;
   /** insert a single row into the table: "enum.payment_method_type" */
   insert_enum_payment_method_type_one?: Maybe<EnumPaymentMethodType>;
+  /** insert data into the table: "enum.space_type" */
+  insert_enum_space_type?: Maybe<EnumSpaceTypeMutationResponse>;
+  /** insert a single row into the table: "enum.space_type" */
+  insert_enum_space_type_one?: Maybe<EnumSpaceType>;
   /** insert data into the table: "enum.unit" */
   insert_enum_unit?: Maybe<EnumUnitMutationResponse>;
   /** insert a single row into the table: "enum.unit" */
@@ -13542,6 +13723,10 @@ export type MutationRoot = {
   insert_shipment?: Maybe<ShipmentMutationResponse>;
   /** insert a single row into the table: "shipment" */
   insert_shipment_one?: Maybe<Shipment>;
+  /** insert data into the table: "storage" */
+  insert_storage?: Maybe<StorageMutationResponse>;
+  /** insert a single row into the table: "storage" */
+  insert_storage_one?: Maybe<Storage>;
   /** insert data into the table: "tag" */
   insert_tag?: Maybe<TagMutationResponse>;
   /** insert a single row into the table: "tag" */
@@ -13675,6 +13860,10 @@ export type MutationRoot = {
   update_enum_payment_method_type?: Maybe<EnumPaymentMethodTypeMutationResponse>;
   /** update single row of the table: "enum.payment_method_type" */
   update_enum_payment_method_type_by_pk?: Maybe<EnumPaymentMethodType>;
+  /** update data of the table: "enum.space_type" */
+  update_enum_space_type?: Maybe<EnumSpaceTypeMutationResponse>;
+  /** update single row of the table: "enum.space_type" */
+  update_enum_space_type_by_pk?: Maybe<EnumSpaceType>;
   /** update data of the table: "enum.unit" */
   update_enum_unit?: Maybe<EnumUnitMutationResponse>;
   /** update single row of the table: "enum.unit" */
@@ -13787,6 +13976,10 @@ export type MutationRoot = {
   update_shipment?: Maybe<ShipmentMutationResponse>;
   /** update single row of the table: "shipment" */
   update_shipment_by_pk?: Maybe<Shipment>;
+  /** update data of the table: "storage" */
+  update_storage?: Maybe<StorageMutationResponse>;
+  /** update single row of the table: "storage" */
+  update_storage_by_pk?: Maybe<Storage>;
   /** update data of the table: "tag" */
   update_tag?: Maybe<TagMutationResponse>;
   /** update single row of the table: "tag" */
@@ -14152,6 +14345,18 @@ export type MutationRootDeleteEnumPaymentMethodTypeByPkArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteEnumSpaceTypeArgs = {
+  where: EnumSpaceTypeBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumSpaceTypeByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteEnumUnitArgs = {
   where: EnumUnitBoolExp;
 };
@@ -14496,6 +14701,18 @@ export type MutationRootDeleteShipmentArgs = {
 
 /** mutation root */
 export type MutationRootDeleteShipmentByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteStorageArgs = {
+  where: StorageBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteStorageByPkArgs = {
   id: Scalars['Int'];
 };
 
@@ -14943,6 +15160,20 @@ export type MutationRootInsertEnumPaymentMethodTypeOneArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertEnumSpaceTypeArgs = {
+  objects: Array<EnumSpaceTypeInsertInput>;
+  on_conflict?: Maybe<EnumSpaceTypeOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumSpaceTypeOneArgs = {
+  object: EnumSpaceTypeInsertInput;
+  on_conflict?: Maybe<EnumSpaceTypeOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertEnumUnitArgs = {
   objects: Array<EnumUnitInsertInput>;
   on_conflict?: Maybe<EnumUnitOnConflict>;
@@ -15331,6 +15562,20 @@ export type MutationRootInsertShipmentArgs = {
 export type MutationRootInsertShipmentOneArgs = {
   object: ShipmentInsertInput;
   on_conflict?: Maybe<ShipmentOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertStorageArgs = {
+  objects: Array<StorageInsertInput>;
+  on_conflict?: Maybe<StorageOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertStorageOneArgs = {
+  object: StorageInsertInput;
+  on_conflict?: Maybe<StorageOnConflict>;
 };
 
 
@@ -15785,6 +16030,20 @@ export type MutationRootUpdateEnumPaymentMethodTypeArgs = {
 export type MutationRootUpdateEnumPaymentMethodTypeByPkArgs = {
   _set?: Maybe<EnumPaymentMethodTypeSetInput>;
   pk_columns: EnumPaymentMethodTypePkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumSpaceTypeArgs = {
+  _set?: Maybe<EnumSpaceTypeSetInput>;
+  where: EnumSpaceTypeBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumSpaceTypeByPkArgs = {
+  _set?: Maybe<EnumSpaceTypeSetInput>;
+  pk_columns: EnumSpaceTypePkColumnsInput;
 };
 
 
@@ -16307,6 +16566,22 @@ export type MutationRootUpdateShipmentByPkArgs = {
   _inc?: Maybe<ShipmentIncInput>;
   _set?: Maybe<ShipmentSetInput>;
   pk_columns: ShipmentPkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateStorageArgs = {
+  _inc?: Maybe<StorageIncInput>;
+  _set?: Maybe<StorageSetInput>;
+  where: StorageBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateStorageByPkArgs = {
+  _inc?: Maybe<StorageIncInput>;
+  _set?: Maybe<StorageSetInput>;
+  pk_columns: StoragePkColumnsInput;
 };
 
 
@@ -18600,6 +18875,12 @@ export type QueryRoot = {
   enum_payment_method_type_aggregate: EnumPaymentMethodTypeAggregate;
   /** fetch data from the table: "enum.payment_method_type" using primary key columns */
   enum_payment_method_type_by_pk?: Maybe<EnumPaymentMethodType>;
+  /** fetch data from the table: "enum.space_type" */
+  enum_space_type: Array<EnumSpaceType>;
+  /** fetch aggregated fields from the table: "enum.space_type" */
+  enum_space_type_aggregate: EnumSpaceTypeAggregate;
+  /** fetch data from the table: "enum.space_type" using primary key columns */
+  enum_space_type_by_pk?: Maybe<EnumSpaceType>;
   /** fetch data from the table: "enum.unit" */
   enum_unit: Array<EnumUnit>;
   /** fetch aggregated fields from the table: "enum.unit" */
@@ -18773,6 +19054,12 @@ export type QueryRoot = {
   shipment_aggregate: ShipmentAggregate;
   /** fetch data from the table: "shipment" using primary key columns */
   shipment_by_pk?: Maybe<Shipment>;
+  /** fetch data from the table: "storage" */
+  storage: Array<Storage>;
+  /** fetch aggregated fields from the table: "storage" */
+  storage_aggregate: StorageAggregate;
+  /** fetch data from the table: "storage" using primary key columns */
+  storage_by_pk?: Maybe<Storage>;
   /** fetch data from the table: "tag" */
   tag: Array<Tag>;
   /** fetch aggregated fields from the table: "tag" */
@@ -19549,6 +19836,32 @@ export type QueryRootEnumPaymentMethodTypeByPkArgs = {
 
 
 /** query root */
+export type QueryRootEnumSpaceTypeArgs = {
+  distinct_on?: Maybe<Array<EnumSpaceTypeSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumSpaceTypeOrderBy>>;
+  where?: Maybe<EnumSpaceTypeBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootEnumSpaceTypeAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumSpaceTypeSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumSpaceTypeOrderBy>>;
+  where?: Maybe<EnumSpaceTypeBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootEnumSpaceTypeByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** query root */
 export type QueryRootEnumUnitArgs = {
   distinct_on?: Maybe<Array<EnumUnitSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
@@ -20312,6 +20625,32 @@ export type QueryRootShipmentByPkArgs = {
 
 
 /** query root */
+export type QueryRootStorageArgs = {
+  distinct_on?: Maybe<Array<StorageSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<StorageOrderBy>>;
+  where?: Maybe<StorageBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootStorageAggregateArgs = {
+  distinct_on?: Maybe<Array<StorageSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<StorageOrderBy>>;
+  where?: Maybe<StorageBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootStorageByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** query root */
 export type QueryRootTagArgs = {
   distinct_on?: Maybe<Array<TagSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
@@ -21064,6 +21403,326 @@ export type SmallintComparisonExp = {
   _nin?: Maybe<Array<Scalars['smallint']>>;
 };
 
+/** columns and relationships of "storage" */
+export type Storage = {
+  __typename?: 'storage';
+  abbreviation: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  parent_id?: Maybe<Scalars['Int']>;
+  space_type: EnumSpaceTypeEnum;
+};
+
+/** aggregated selection of "storage" */
+export type StorageAggregate = {
+  __typename?: 'storage_aggregate';
+  aggregate?: Maybe<StorageAggregateFields>;
+  nodes: Array<Storage>;
+};
+
+/** aggregate fields of "storage" */
+export type StorageAggregateFields = {
+  __typename?: 'storage_aggregate_fields';
+  avg?: Maybe<StorageAvgFields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<StorageMaxFields>;
+  min?: Maybe<StorageMinFields>;
+  stddev?: Maybe<StorageStddevFields>;
+  stddev_pop?: Maybe<StorageStddevPopFields>;
+  stddev_samp?: Maybe<StorageStddevSampFields>;
+  sum?: Maybe<StorageSumFields>;
+  var_pop?: Maybe<StorageVarPopFields>;
+  var_samp?: Maybe<StorageVarSampFields>;
+  variance?: Maybe<StorageVarianceFields>;
+};
+
+
+/** aggregate fields of "storage" */
+export type StorageAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<StorageSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "storage" */
+export type StorageAggregateOrderBy = {
+  avg?: Maybe<StorageAvgOrderBy>;
+  count?: Maybe<OrderBy>;
+  max?: Maybe<StorageMaxOrderBy>;
+  min?: Maybe<StorageMinOrderBy>;
+  stddev?: Maybe<StorageStddevOrderBy>;
+  stddev_pop?: Maybe<StorageStddevPopOrderBy>;
+  stddev_samp?: Maybe<StorageStddevSampOrderBy>;
+  sum?: Maybe<StorageSumOrderBy>;
+  var_pop?: Maybe<StorageVarPopOrderBy>;
+  var_samp?: Maybe<StorageVarSampOrderBy>;
+  variance?: Maybe<StorageVarianceOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "storage" */
+export type StorageArrRelInsertInput = {
+  data: Array<StorageInsertInput>;
+  on_conflict?: Maybe<StorageOnConflict>;
+};
+
+/** aggregate avg on columns */
+export type StorageAvgFields = {
+  __typename?: 'storage_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+  parent_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "storage" */
+export type StorageAvgOrderBy = {
+  id?: Maybe<OrderBy>;
+  parent_id?: Maybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "storage". All fields are combined with a logical 'AND'. */
+export type StorageBoolExp = {
+  _and?: Maybe<Array<Maybe<StorageBoolExp>>>;
+  _not?: Maybe<StorageBoolExp>;
+  _or?: Maybe<Array<Maybe<StorageBoolExp>>>;
+  abbreviation?: Maybe<StringComparisonExp>;
+  description?: Maybe<StringComparisonExp>;
+  id?: Maybe<IntComparisonExp>;
+  name?: Maybe<StringComparisonExp>;
+  parent_id?: Maybe<IntComparisonExp>;
+  space_type?: Maybe<EnumSpaceTypeEnumComparisonExp>;
+};
+
+/** unique or primary key constraints on table "storage" */
+export enum StorageConstraint {
+  /** unique or primary key constraint */
+  storage_parent_name_key = 'storage_parent_name_key',
+  /** unique or primary key constraint */
+  storage_pkey = 'storage_pkey'
+}
+
+/** input type for incrementing integer column in table "storage" */
+export type StorageIncInput = {
+  id?: Maybe<Scalars['Int']>;
+  parent_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "storage" */
+export type StorageInsertInput = {
+  abbreviation?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  parent_id?: Maybe<Scalars['Int']>;
+  space_type?: Maybe<EnumSpaceTypeEnum>;
+};
+
+/** aggregate max on columns */
+export type StorageMaxFields = {
+  __typename?: 'storage_max_fields';
+  abbreviation?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  parent_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "storage" */
+export type StorageMaxOrderBy = {
+  abbreviation?: Maybe<OrderBy>;
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+  parent_id?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type StorageMinFields = {
+  __typename?: 'storage_min_fields';
+  abbreviation?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  parent_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "storage" */
+export type StorageMinOrderBy = {
+  abbreviation?: Maybe<OrderBy>;
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+  parent_id?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "storage" */
+export type StorageMutationResponse = {
+  __typename?: 'storage_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Storage>;
+};
+
+/** input type for inserting object relation for remote table "storage" */
+export type StorageObjRelInsertInput = {
+  data: StorageInsertInput;
+  on_conflict?: Maybe<StorageOnConflict>;
+};
+
+/** on conflict condition type for table "storage" */
+export type StorageOnConflict = {
+  constraint: StorageConstraint;
+  update_columns: Array<StorageUpdateColumn>;
+  where?: Maybe<StorageBoolExp>;
+};
+
+/** ordering options when selecting data from "storage" */
+export type StorageOrderBy = {
+  abbreviation?: Maybe<OrderBy>;
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+  parent_id?: Maybe<OrderBy>;
+  space_type?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "storage" */
+export type StoragePkColumnsInput = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "storage" */
+export enum StorageSelectColumn {
+  /** column name */
+  abbreviation = 'abbreviation',
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id',
+  /** column name */
+  name = 'name',
+  /** column name */
+  parent_id = 'parent_id',
+  /** column name */
+  space_type = 'space_type'
+}
+
+/** input type for updating data in table "storage" */
+export type StorageSetInput = {
+  abbreviation?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  parent_id?: Maybe<Scalars['Int']>;
+  space_type?: Maybe<EnumSpaceTypeEnum>;
+};
+
+/** aggregate stddev on columns */
+export type StorageStddevFields = {
+  __typename?: 'storage_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+  parent_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "storage" */
+export type StorageStddevOrderBy = {
+  id?: Maybe<OrderBy>;
+  parent_id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_pop on columns */
+export type StorageStddevPopFields = {
+  __typename?: 'storage_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  parent_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "storage" */
+export type StorageStddevPopOrderBy = {
+  id?: Maybe<OrderBy>;
+  parent_id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_samp on columns */
+export type StorageStddevSampFields = {
+  __typename?: 'storage_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  parent_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "storage" */
+export type StorageStddevSampOrderBy = {
+  id?: Maybe<OrderBy>;
+  parent_id?: Maybe<OrderBy>;
+};
+
+/** aggregate sum on columns */
+export type StorageSumFields = {
+  __typename?: 'storage_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+  parent_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "storage" */
+export type StorageSumOrderBy = {
+  id?: Maybe<OrderBy>;
+  parent_id?: Maybe<OrderBy>;
+};
+
+/** update columns of table "storage" */
+export enum StorageUpdateColumn {
+  /** column name */
+  abbreviation = 'abbreviation',
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id',
+  /** column name */
+  name = 'name',
+  /** column name */
+  parent_id = 'parent_id',
+  /** column name */
+  space_type = 'space_type'
+}
+
+/** aggregate var_pop on columns */
+export type StorageVarPopFields = {
+  __typename?: 'storage_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  parent_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "storage" */
+export type StorageVarPopOrderBy = {
+  id?: Maybe<OrderBy>;
+  parent_id?: Maybe<OrderBy>;
+};
+
+/** aggregate var_samp on columns */
+export type StorageVarSampFields = {
+  __typename?: 'storage_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  parent_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "storage" */
+export type StorageVarSampOrderBy = {
+  id?: Maybe<OrderBy>;
+  parent_id?: Maybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type StorageVarianceFields = {
+  __typename?: 'storage_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+  parent_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "storage" */
+export type StorageVarianceOrderBy = {
+  id?: Maybe<OrderBy>;
+  parent_id?: Maybe<OrderBy>;
+};
+
 /** subscription root */
 export type SubscriptionRoot = {
   __typename?: 'subscription_root';
@@ -21241,6 +21900,12 @@ export type SubscriptionRoot = {
   enum_payment_method_type_aggregate: EnumPaymentMethodTypeAggregate;
   /** fetch data from the table: "enum.payment_method_type" using primary key columns */
   enum_payment_method_type_by_pk?: Maybe<EnumPaymentMethodType>;
+  /** fetch data from the table: "enum.space_type" */
+  enum_space_type: Array<EnumSpaceType>;
+  /** fetch aggregated fields from the table: "enum.space_type" */
+  enum_space_type_aggregate: EnumSpaceTypeAggregate;
+  /** fetch data from the table: "enum.space_type" using primary key columns */
+  enum_space_type_by_pk?: Maybe<EnumSpaceType>;
   /** fetch data from the table: "enum.unit" */
   enum_unit: Array<EnumUnit>;
   /** fetch aggregated fields from the table: "enum.unit" */
@@ -21413,6 +22078,12 @@ export type SubscriptionRoot = {
   shipment_aggregate: ShipmentAggregate;
   /** fetch data from the table: "shipment" using primary key columns */
   shipment_by_pk?: Maybe<Shipment>;
+  /** fetch data from the table: "storage" */
+  storage: Array<Storage>;
+  /** fetch aggregated fields from the table: "storage" */
+  storage_aggregate: StorageAggregate;
+  /** fetch data from the table: "storage" using primary key columns */
+  storage_by_pk?: Maybe<Storage>;
   /** fetch data from the table: "tag" */
   tag: Array<Tag>;
   /** fetch aggregated fields from the table: "tag" */
@@ -22189,6 +22860,32 @@ export type SubscriptionRootEnumPaymentMethodTypeByPkArgs = {
 
 
 /** subscription root */
+export type SubscriptionRootEnumSpaceTypeArgs = {
+  distinct_on?: Maybe<Array<EnumSpaceTypeSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumSpaceTypeOrderBy>>;
+  where?: Maybe<EnumSpaceTypeBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumSpaceTypeAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumSpaceTypeSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumSpaceTypeOrderBy>>;
+  where?: Maybe<EnumSpaceTypeBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumSpaceTypeByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** subscription root */
 export type SubscriptionRootEnumUnitArgs = {
   distinct_on?: Maybe<Array<EnumUnitSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
@@ -22947,6 +23644,32 @@ export type SubscriptionRootShipmentAggregateArgs = {
 
 /** subscription root */
 export type SubscriptionRootShipmentByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootStorageArgs = {
+  distinct_on?: Maybe<Array<StorageSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<StorageOrderBy>>;
+  where?: Maybe<StorageBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootStorageAggregateArgs = {
+  distinct_on?: Maybe<Array<StorageSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<StorageOrderBy>>;
+  where?: Maybe<StorageBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootStorageByPkArgs = {
   id: Scalars['Int'];
 };
 
@@ -23977,14 +24700,14 @@ export type VendorVarianceOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
-export type InsertIconMutationVariables = {
+export type InsertIconMutationVariables = Exact<{
   mimeData?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   title?: Maybe<Scalars['String']>;
   categories?: Maybe<IconItemCategoryMapArrRelInsertInput>;
   labels?: Maybe<IconLabelMapArrRelInsertInput>;
-};
+}>;
 
 
 export type InsertIconMutation = (
@@ -23995,9 +24718,9 @@ export type InsertIconMutation = (
   )> }
 );
 
-export type GetIconQueryVariables = {
+export type GetIconQueryVariables = Exact<{
   id: Scalars['uuid'];
-};
+}>;
 
 
 export type GetIconQuery = (
@@ -24033,10 +24756,10 @@ export type GetIconsQuery = (
   )> }
 );
 
-export type SearchItemsQueryVariables = {
+export type SearchItemsQueryVariables = Exact<{
   containsFilter?: Maybe<Scalars['jsonb']>;
   hasAnyKeysFilter?: Maybe<Array<Scalars['String']>>;
-};
+}>;
 
 
 export type SearchItemsQuery = (
@@ -24068,9 +24791,9 @@ export type GetLabelsQuery = (
   )> }
 );
 
-export type GetLabelQueryVariables = {
+export type GetLabelQueryVariables = Exact<{
   label_id: Scalars['uuid'];
-};
+}>;
 
 
 export type GetLabelQuery = (
@@ -24081,9 +24804,9 @@ export type GetLabelQuery = (
   )> }
 );
 
-export type GetLabelByItemIdQueryVariables = {
+export type GetLabelByItemIdQueryVariables = Exact<{
   item_id?: Maybe<Scalars['Int']>;
-};
+}>;
 
 
 export type GetLabelByItemIdQuery = (
@@ -24116,14 +24839,14 @@ export type GetSingleLabelsQuery = (
   )> }
 );
 
-export type SaveLabelMutationVariables = {
+export type SaveLabelMutationVariables = Exact<{
   content?: Maybe<Scalars['jsonb']>;
   height?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
   item_id?: Maybe<Scalars['Int']>;
   title?: Maybe<Scalars['String']>;
   width?: Maybe<Scalars['Int']>;
-};
+}>;
 
 
 export type SaveLabelMutation = (
@@ -24138,14 +24861,14 @@ export type SaveLabelMutation = (
   )> }
 );
 
-export type EditLabelMutationVariables = {
+export type EditLabelMutationVariables = Exact<{
   content?: Maybe<Scalars['jsonb']>;
   height?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
   item_id?: Maybe<Scalars['Int']>;
   title?: Maybe<Scalars['String']>;
   width?: Maybe<Scalars['Int']>;
-};
+}>;
 
 
 export type EditLabelMutation = (
@@ -24173,10 +24896,10 @@ export type ObjectOrderFieldsFragment = (
   ) }
 );
 
-export type GetOrdersByDateRangeQueryVariables = {
+export type GetOrdersByDateRangeQueryVariables = Exact<{
   date_start_gte?: Maybe<Scalars['date']>;
   date_end_lte?: Maybe<Scalars['date']>;
-};
+}>;
 
 
 export type GetOrdersByDateRangeQuery = (
@@ -24188,7 +24911,7 @@ export type GetOrdersByDateRangeQuery = (
   )> }
 );
 
-export type InsertOrderMutationVariables = {
+export type InsertOrderMutationVariables = Exact<{
   fulfilled_date?: Maybe<Scalars['date']>;
   items: Array<OrderItemInsertInput>;
   items_cost?: Maybe<Scalars['money']>;
@@ -24203,7 +24926,7 @@ export type InsertOrderMutationVariables = {
   vendor?: Maybe<VendorObjRelInsertInput>;
   vendor_id?: Maybe<Scalars['Int']>;
   vendor_order_id?: Maybe<Scalars['String']>;
-};
+}>;
 
 
 export type InsertOrderMutation = (
@@ -24226,9 +24949,9 @@ export type GetOrdersQuery = (
   )> }
 );
 
-export type GetOrderQueryVariables = {
+export type GetOrderQueryVariables = Exact<{
   id: Scalars['Int'];
-};
+}>;
 
 
 export type GetOrderQuery = (
@@ -24280,9 +25003,9 @@ export type GetPrinterStatusQuery = (
   )> }
 );
 
-export type SendBufferMutationVariables = {
+export type SendBufferMutationVariables = Exact<{
   buffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>;
-};
+}>;
 
 
 export type SendBufferMutation = (
@@ -24312,6 +25035,11 @@ export type ObjectVendorFieldsFragment = (
   )> }
 );
 
+export type BasicVendorItemFieldsFragment = (
+  { __typename?: 'vendor_item' }
+  & Pick<VendorItem, 'id' | 'item_id' | 'vendor_id' | 'vendor_sku'>
+);
+
 export type GetVendorsQueryVariables = {};
 
 
@@ -24327,22 +25055,9 @@ export type GetVendorsQuery = (
   )> }
 );
 
-export type SearchVendorsQueryVariables = {
-  search_string?: Maybe<Scalars['String']>;
-};
-
-
-export type SearchVendorsQuery = (
-  { __typename?: 'query_root' }
-  & { vendor: Array<(
-    { __typename?: 'vendor' }
-    & BasicVendorFieldsFragment
-  )> }
-);
-
-export type GetVendorQueryVariables = {
+export type GetVendorQueryVariables = Exact<{
   id: Scalars['Int'];
-};
+}>;
 
 
 export type GetVendorQuery = (
@@ -24354,12 +25069,36 @@ export type GetVendorQuery = (
   )> }
 );
 
-export type InsertVendorMutationVariables = {
+export type GetVendorItemsQueryVariables = {};
+
+
+export type GetVendorItemsQuery = (
+  { __typename?: 'query_root' }
+  & { vendor_item: Array<(
+    { __typename?: 'vendor_item' }
+    & BasicVendorItemFieldsFragment
+  )> }
+);
+
+export type SearchVendorsQueryVariables = Exact<{
+  search_string?: Maybe<Scalars['String']>;
+}>;
+
+
+export type SearchVendorsQuery = (
+  { __typename?: 'query_root' }
+  & { vendor: Array<(
+    { __typename?: 'vendor' }
+    & BasicVendorFieldsFragment
+  )> }
+);
+
+export type InsertVendorMutationVariables = Exact<{
   account_id?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   manufacturer?: Maybe<ManufacturerObjRelInsertInput>;
   url: Scalars['String'];
-};
+}>;
 
 
 export type InsertVendorMutation = (
@@ -24370,15 +25109,65 @@ export type InsertVendorMutation = (
   )> }
 );
 
+export type UpdateVendorMutationVariables = Exact<{
+  id: Scalars['Int'];
+  account_id?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  url: Scalars['String'];
+}>;
+
+
+export type UpdateVendorMutation = (
+  { __typename?: 'mutation_root' }
+  & { vendor?: Maybe<(
+    { __typename?: 'vendor' }
+    & BasicVendorFieldsFragment
+    & ObjectVendorFieldsFragment
+  )> }
+);
+
+export type BasicManufacturerFieldsFragment = (
+  { __typename?: 'manufacturer' }
+  & Pick<Manufacturer, 'id' | 'name' | 'url' | 'vendor_id'>
+);
+
+export type InsertManufacturerMutationVariables = Exact<{
+  name: Scalars['String'];
+  url?: Maybe<Scalars['String']>;
+  vendor_id?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type InsertManufacturerMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_manufacturer_one?: Maybe<(
+    { __typename?: 'manufacturer' }
+    & BasicManufacturerFieldsFragment
+  )> }
+);
+
+export type DeleteManufacturerMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteManufacturerMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_manufacturer_by_pk?: Maybe<(
+    { __typename?: 'manufacturer' }
+    & BasicManufacturerFieldsFragment
+  )> }
+);
+
 export type ItemFieldsFragment = (
   { __typename?: 'item' }
   & Pick<Item, 'id' | 'class' | 'object'>
   & { name: Item['object'] }
 );
 
-export type GetItemsQueryVariables = {
+export type GetItemsQueryVariables = Exact<{
   categories?: Maybe<Array<EnumItemClassEnum>>;
-};
+}>;
 
 
 export type GetItemsQuery = (
@@ -24389,9 +25178,9 @@ export type GetItemsQuery = (
   )> }
 );
 
-export type GetItemQueryVariables = {
+export type GetItemQueryVariables = Exact<{
   id: Scalars['Int'];
-};
+}>;
 
 
 export type GetItemQuery = (
@@ -24402,9 +25191,9 @@ export type GetItemQuery = (
   )> }
 );
 
-export type ItemSearchQueryVariables = {
+export type ItemSearchQueryVariables = Exact<{
   search_text: Scalars['String'];
-};
+}>;
 
 
 export type ItemSearchQuery = (
@@ -24450,7 +25239,7 @@ export type ItemHardwareFastenerScrewMachineQuery = (
   )> }
 );
 
-export type InsertItemHardwareFastenerScrewMachineMutationVariables = {
+export type InsertItemHardwareFastenerScrewMachineMutationVariables = Exact<{
   countersunk_angle?: Maybe<Scalars['numeric']>;
   countersunk_height?: Maybe<Scalars['numeric']>;
   description?: Maybe<Scalars['String']>;
@@ -24479,7 +25268,7 @@ export type InsertItemHardwareFastenerScrewMachineMutationVariables = {
   thread_standard?: Maybe<EnumItemHardwareFastenerThreadStandardEnum>;
   unit?: Maybe<EnumUnitEnum>;
   use_material?: Maybe<EnumItemHardwareUseMaterialEnum>;
-};
+}>;
 
 
 export type InsertItemHardwareFastenerScrewMachineMutation = (
@@ -24501,7 +25290,7 @@ export type GetEnumItemHardwareFastenerThreadStandardQuery = (
   )> }
 );
 
-export type UpdateItemHardwareFastenerScrewMachineMutationVariables = {
+export type UpdateItemHardwareFastenerScrewMachineMutationVariables = Exact<{
   countersunk_angle?: Maybe<Scalars['numeric']>;
   countersunk_height?: Maybe<Scalars['numeric']>;
   description?: Maybe<Scalars['String']>;
@@ -24530,7 +25319,7 @@ export type UpdateItemHardwareFastenerScrewMachineMutationVariables = {
   thread_standard?: Maybe<EnumItemHardwareFastenerThreadStandardEnum>;
   unit?: Maybe<EnumUnitEnum>;
   use_material?: Maybe<EnumItemHardwareUseMaterialEnum>;
-};
+}>;
 
 
 export type UpdateItemHardwareFastenerScrewMachineMutation = (
@@ -24599,6 +25388,22 @@ export const ObjectVendorFieldsFragmentDoc = gql`
   }
 }
     ${BasicOrderFieldsFragmentDoc}`;
+export const BasicVendorItemFieldsFragmentDoc = gql`
+    fragment basicVendorItemFields on vendor_item {
+  id
+  item_id
+  vendor_id
+  vendor_sku
+}
+    `;
+export const BasicManufacturerFieldsFragmentDoc = gql`
+    fragment basicManufacturerFields on manufacturer {
+  id
+  name
+  url
+  vendor_id
+}
+    `;
 export const ItemFieldsFragmentDoc = gql`
     fragment ItemFields on item {
   id
@@ -25577,52 +26382,6 @@ export function useGetVendorsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type GetVendorsQueryHookResult = ReturnType<typeof useGetVendorsQuery>;
 export type GetVendorsLazyQueryHookResult = ReturnType<typeof useGetVendorsLazyQuery>;
 export type GetVendorsQueryResult = ApolloReactCommon.QueryResult<GetVendorsQuery, GetVendorsQueryVariables>;
-export const SearchVendorsDocument = gql`
-    query SearchVendors($search_string: String) {
-  vendor(order_by: {id: asc}, where: {name: {_ilike: $search_string}}) {
-    ...basicVendorFields
-  }
-}
-    ${BasicVendorFieldsFragmentDoc}`;
-export type SearchVendorsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<SearchVendorsQuery, SearchVendorsQueryVariables>
-    } & TChildProps;
-export function withSearchVendors<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  SearchVendorsQuery,
-  SearchVendorsQueryVariables,
-  SearchVendorsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, SearchVendorsQuery, SearchVendorsQueryVariables, SearchVendorsProps<TChildProps, TDataName>>(SearchVendorsDocument, {
-      alias: 'searchVendors',
-      ...operationOptions
-    });
-};
-
-/**
- * __useSearchVendorsQuery__
- *
- * To run a query within a React component, call `useSearchVendorsQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchVendorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSearchVendorsQuery({
- *   variables: {
- *      search_string: // value for 'search_string'
- *   },
- * });
- */
-export function useSearchVendorsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchVendorsQuery, SearchVendorsQueryVariables>) {
-        return ApolloReactHooks.useQuery<SearchVendorsQuery, SearchVendorsQueryVariables>(SearchVendorsDocument, baseOptions);
-      }
-export function useSearchVendorsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchVendorsQuery, SearchVendorsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SearchVendorsQuery, SearchVendorsQueryVariables>(SearchVendorsDocument, baseOptions);
-        }
-export type SearchVendorsQueryHookResult = ReturnType<typeof useSearchVendorsQuery>;
-export type SearchVendorsLazyQueryHookResult = ReturnType<typeof useSearchVendorsLazyQuery>;
-export type SearchVendorsQueryResult = ApolloReactCommon.QueryResult<SearchVendorsQuery, SearchVendorsQueryVariables>;
 export const GetVendorDocument = gql`
     query GetVendor($id: Int!) {
   vendor: vendor_by_pk(id: $id) {
@@ -25671,6 +26430,97 @@ export function useGetVendorLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type GetVendorQueryHookResult = ReturnType<typeof useGetVendorQuery>;
 export type GetVendorLazyQueryHookResult = ReturnType<typeof useGetVendorLazyQuery>;
 export type GetVendorQueryResult = ApolloReactCommon.QueryResult<GetVendorQuery, GetVendorQueryVariables>;
+export const GetVendorItemsDocument = gql`
+    query GetVendorItems {
+  vendor_item {
+    ...basicVendorItemFields
+  }
+}
+    ${BasicVendorItemFieldsFragmentDoc}`;
+export type GetVendorItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetVendorItemsQuery, GetVendorItemsQueryVariables>
+    } & TChildProps;
+export function withGetVendorItems<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetVendorItemsQuery,
+  GetVendorItemsQueryVariables,
+  GetVendorItemsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetVendorItemsQuery, GetVendorItemsQueryVariables, GetVendorItemsProps<TChildProps, TDataName>>(GetVendorItemsDocument, {
+      alias: 'getVendorItems',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetVendorItemsQuery__
+ *
+ * To run a query within a React component, call `useGetVendorItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVendorItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVendorItemsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetVendorItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetVendorItemsQuery, GetVendorItemsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetVendorItemsQuery, GetVendorItemsQueryVariables>(GetVendorItemsDocument, baseOptions);
+      }
+export function useGetVendorItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetVendorItemsQuery, GetVendorItemsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetVendorItemsQuery, GetVendorItemsQueryVariables>(GetVendorItemsDocument, baseOptions);
+        }
+export type GetVendorItemsQueryHookResult = ReturnType<typeof useGetVendorItemsQuery>;
+export type GetVendorItemsLazyQueryHookResult = ReturnType<typeof useGetVendorItemsLazyQuery>;
+export type GetVendorItemsQueryResult = ApolloReactCommon.QueryResult<GetVendorItemsQuery, GetVendorItemsQueryVariables>;
+export const SearchVendorsDocument = gql`
+    query SearchVendors($search_string: String) {
+  vendor(order_by: {id: asc}, where: {name: {_ilike: $search_string}}) {
+    ...basicVendorFields
+  }
+}
+    ${BasicVendorFieldsFragmentDoc}`;
+export type SearchVendorsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<SearchVendorsQuery, SearchVendorsQueryVariables>
+    } & TChildProps;
+export function withSearchVendors<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  SearchVendorsQuery,
+  SearchVendorsQueryVariables,
+  SearchVendorsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, SearchVendorsQuery, SearchVendorsQueryVariables, SearchVendorsProps<TChildProps, TDataName>>(SearchVendorsDocument, {
+      alias: 'searchVendors',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useSearchVendorsQuery__
+ *
+ * To run a query within a React component, call `useSearchVendorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchVendorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchVendorsQuery({
+ *   variables: {
+ *      search_string: // value for 'search_string'
+ *   },
+ * });
+ */
+export function useSearchVendorsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchVendorsQuery, SearchVendorsQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchVendorsQuery, SearchVendorsQueryVariables>(SearchVendorsDocument, baseOptions);
+      }
+export function useSearchVendorsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchVendorsQuery, SearchVendorsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchVendorsQuery, SearchVendorsQueryVariables>(SearchVendorsDocument, baseOptions);
+        }
+export type SearchVendorsQueryHookResult = ReturnType<typeof useSearchVendorsQuery>;
+export type SearchVendorsLazyQueryHookResult = ReturnType<typeof useSearchVendorsLazyQuery>;
+export type SearchVendorsQueryResult = ApolloReactCommon.QueryResult<SearchVendorsQuery, SearchVendorsQueryVariables>;
 export const InsertVendorDocument = gql`
     mutation InsertVendor($account_id: String, $name: String!, $manufacturer: manufacturer_obj_rel_insert_input, $url: String!) {
   insert_vendor: insert_vendor_one(object: {account_id: $account_id, name: $name, manufacturer: $manufacturer, url: $url}) {
@@ -25719,6 +26569,148 @@ export function useInsertVendorMutation(baseOptions?: ApolloReactHooks.MutationH
 export type InsertVendorMutationHookResult = ReturnType<typeof useInsertVendorMutation>;
 export type InsertVendorMutationResult = ApolloReactCommon.MutationResult<InsertVendorMutation>;
 export type InsertVendorMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertVendorMutation, InsertVendorMutationVariables>;
+export const UpdateVendorDocument = gql`
+    mutation UpdateVendor($id: Int!, $account_id: String, $name: String!, $url: String!) {
+  vendor: update_vendor_by_pk(pk_columns: {id: $id}, _set: {account_id: $account_id, name: $name, url: $url}) {
+    ...basicVendorFields
+    ...objectVendorFields
+  }
+}
+    ${BasicVendorFieldsFragmentDoc}
+${ObjectVendorFieldsFragmentDoc}`;
+export type UpdateVendorMutationFn = ApolloReactCommon.MutationFunction<UpdateVendorMutation, UpdateVendorMutationVariables>;
+export type UpdateVendorProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateVendorMutation, UpdateVendorMutationVariables>
+    } & TChildProps;
+export function withUpdateVendor<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  UpdateVendorMutation,
+  UpdateVendorMutationVariables,
+  UpdateVendorProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, UpdateVendorMutation, UpdateVendorMutationVariables, UpdateVendorProps<TChildProps, TDataName>>(UpdateVendorDocument, {
+      alias: 'updateVendor',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useUpdateVendorMutation__
+ *
+ * To run a mutation, you first call `useUpdateVendorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateVendorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateVendorMutation, { data, loading, error }] = useUpdateVendorMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      account_id: // value for 'account_id'
+ *      name: // value for 'name'
+ *      url: // value for 'url'
+ *   },
+ * });
+ */
+export function useUpdateVendorMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateVendorMutation, UpdateVendorMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateVendorMutation, UpdateVendorMutationVariables>(UpdateVendorDocument, baseOptions);
+      }
+export type UpdateVendorMutationHookResult = ReturnType<typeof useUpdateVendorMutation>;
+export type UpdateVendorMutationResult = ApolloReactCommon.MutationResult<UpdateVendorMutation>;
+export type UpdateVendorMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateVendorMutation, UpdateVendorMutationVariables>;
+export const InsertManufacturerDocument = gql`
+    mutation InsertManufacturer($name: String!, $url: String, $vendor_id: Int) {
+  insert_manufacturer_one(object: {name: $name, url: $url, vendor_id: $vendor_id}) {
+    ...basicManufacturerFields
+  }
+}
+    ${BasicManufacturerFieldsFragmentDoc}`;
+export type InsertManufacturerMutationFn = ApolloReactCommon.MutationFunction<InsertManufacturerMutation, InsertManufacturerMutationVariables>;
+export type InsertManufacturerProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertManufacturerMutation, InsertManufacturerMutationVariables>
+    } & TChildProps;
+export function withInsertManufacturer<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  InsertManufacturerMutation,
+  InsertManufacturerMutationVariables,
+  InsertManufacturerProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, InsertManufacturerMutation, InsertManufacturerMutationVariables, InsertManufacturerProps<TChildProps, TDataName>>(InsertManufacturerDocument, {
+      alias: 'insertManufacturer',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useInsertManufacturerMutation__
+ *
+ * To run a mutation, you first call `useInsertManufacturerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertManufacturerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertManufacturerMutation, { data, loading, error }] = useInsertManufacturerMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      url: // value for 'url'
+ *      vendor_id: // value for 'vendor_id'
+ *   },
+ * });
+ */
+export function useInsertManufacturerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertManufacturerMutation, InsertManufacturerMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertManufacturerMutation, InsertManufacturerMutationVariables>(InsertManufacturerDocument, baseOptions);
+      }
+export type InsertManufacturerMutationHookResult = ReturnType<typeof useInsertManufacturerMutation>;
+export type InsertManufacturerMutationResult = ApolloReactCommon.MutationResult<InsertManufacturerMutation>;
+export type InsertManufacturerMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertManufacturerMutation, InsertManufacturerMutationVariables>;
+export const DeleteManufacturerDocument = gql`
+    mutation DeleteManufacturer($id: Int!) {
+  delete_manufacturer_by_pk(id: $id) {
+    ...basicManufacturerFields
+  }
+}
+    ${BasicManufacturerFieldsFragmentDoc}`;
+export type DeleteManufacturerMutationFn = ApolloReactCommon.MutationFunction<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>;
+export type DeleteManufacturerProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>
+    } & TChildProps;
+export function withDeleteManufacturer<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  DeleteManufacturerMutation,
+  DeleteManufacturerMutationVariables,
+  DeleteManufacturerProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, DeleteManufacturerMutation, DeleteManufacturerMutationVariables, DeleteManufacturerProps<TChildProps, TDataName>>(DeleteManufacturerDocument, {
+      alias: 'deleteManufacturer',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useDeleteManufacturerMutation__
+ *
+ * To run a mutation, you first call `useDeleteManufacturerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteManufacturerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteManufacturerMutation, { data, loading, error }] = useDeleteManufacturerMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteManufacturerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>(DeleteManufacturerDocument, baseOptions);
+      }
+export type DeleteManufacturerMutationHookResult = ReturnType<typeof useDeleteManufacturerMutation>;
+export type DeleteManufacturerMutationResult = ApolloReactCommon.MutationResult<DeleteManufacturerMutation>;
+export type DeleteManufacturerMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>;
 export const GetItemsDocument = gql`
     query GetItems($categories: [enum_item_class_enum!]) {
   items: item(where: {class: {_in: $categories}}, order_by: {id: asc}) {
@@ -26147,4 +27139,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-09T07:24:07-06:00
+// graphql typescript defs generated on 2020-06-10T09:56:24-06:00
