@@ -32,6 +32,8 @@ export function toTitleCase ( s: string ): string {
  * @param allow array of propertyname strings that should be **included**
  * @param exclude array of propertyname strings that should be **excluded**
  */
+export function filterObject<T, P extends keyof T> ( o: T, allow: Array<P>, exclude: null | undefined ): Pick<T, P>;
+export function filterObject<T, P extends keyof T> ( o: T, allow: null | undefined, exclude: Array<P> ): Omit<T, P>;
 export function filterObject ( o: object, allow: undefined | null | string[], exclude: undefined | null | string[] ): object {
     let f: ( key ) => boolean = allow
         ? ( key ) => allow.includes( key )
