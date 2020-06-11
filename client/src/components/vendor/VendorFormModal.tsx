@@ -21,7 +21,7 @@ import { PageSpin } from '../shared/PageSpin';
 import { Vendor } from '../../lib/Vendor/Vendor';
 
 
-type VendorFormModalProps = {
+type VendorFormModalProps = Union<{
     vendor: QueryResultTypePlus<typeof useGetVendorQuery>;
     vendorId?: null;
 } | {
@@ -30,7 +30,9 @@ type VendorFormModalProps = {
 } | {
     vendor?: null;
     vendorId?: null;
-};
+}, {
+    visibilityHandler: (modal: React.ReactElement) => void;
+}>;
 // extends Union<VendorFormProps, VendorBundle> { }
 
 
@@ -38,9 +40,17 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
     let { vendorId } = props;
     const [ form ] = useForm();
     const history = useHistory();
-    // let loading = true;
 
-    const [ vendor, setVendor ] = useState<QueryResultTypePlus<typeof useGetVendorQuery>>( props.vendor );
+
+    const [ runGet, lookupResult ] = useGetVendorLazyQuery( {
+        partialRefetch: true,
+        returnPartialData: true,
+    } );
+
+    const [ vendor, setVendor ] = useState<QueryResultTypePlus<typeof useGetVendorQuery>>( props.vendor ?? lookupResult.data?.vendor );
+
+
+    console.log( "VendorFormModal init", { props, lookupResult, vendor } );
 
     //edit
     const [ updateVendor, updateVendorResult ] = useUpdateVendorMutation();
@@ -50,17 +60,13 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
     const [ insertVendor, insertVendorResult ] = useInsertVendorMutation();
 
 
-    const [ runGet, lookupResult ] = useGetVendorLazyQuery( {
-        partialRefetch: true,
-        returnPartialData: true,
-    } );
-
-    // let foo = lookupResult.data.vendor.manufacturer.id;
-
     /***************************************** Effects *****************************************/
 
     useEffect( () => {
-        if ( !vendor && vendorId ) {
+        console.debug( `loading data using vendorId of ${ vendorId }`, lookupResult );
+        if ( !vendor && lookupResult.data?.vendor ) {
+            setVendor( lookupResult.data.vendor );
+        } else if ( !vendor && vendorId ) {
             runGet( {
                 variables: {
                     id: vendorId
@@ -82,15 +88,16 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                 message.warning( `No Vendors found.` );
             }
         }
-    }, [ lookupResult.data, lookupResult.error ] );
-
+    }, [ vendorId, lookupResult.data, lookupResult.error ] );
 
     useEffect( () => {
-        if ( insertVendorResult.error ) { // FIXME: must run for all xxxResult
+        let error = insertVendorResult.error || updateVendorResult.error || insertManufacturerResult.error || deleteManufacturerResult.error;
+        let 
+        if ( insertVendorResult.error || updateVendorResult.error || insertManufacturerResult.error || deleteManufacturerResult.error ) {
             // completeCallback( false );
             message.error( `${ insertVendorResult.error.name }: ${ insertVendorResult.error.message }` );
-        } else if ( insertVendorResult.data ) {
-            message.success( `successfully created ${ insertVendorResult.data.__typename } with id ${ insertVendorResult.data.insert_vendor.id }` );
+        } else if ( insertVendorResult.data || updateVendorResult.data || insertManufacturerResult.data || deleteManufacturerResult.data ) {
+            message.success( `successfully created ${ insertVendorResult.data?.__typename } with id ${ insertVendorResult.data.insert_vendor.id }` );
             return () => {
                 form.resetFields();
                 exitModal();
@@ -102,7 +109,8 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
 
     const exitModal = () => {
         console.log( "cancelling modal, history.goBack, history is currently", { history } );
-        history.goBack();
+        // history.goBack();
+        props.visibilityHandler(null);
     };
 
     const onFinish = ( values: {
@@ -126,7 +134,7 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                         vendor_id: vendorId
                     }
                 })
-            } else if ( ! formFieldValues.manufacturer?.data?.id && vendor.manufacturer.id ) {
+            } else if ( ! formFieldValues.manufacturer?.data?.id && vendor.manufacturer?.id ) {
                 // remove manufacturer record
                 deleteManufacturer( {
                     variables: {
@@ -163,6 +171,7 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
 
     /** halt waiting for incoming vendor data. */
     if ( !vendor ) {
+        console.debug("no vendor data; awaiting data")
         return <PageSpin />;
     }
 
@@ -173,25 +182,22 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
         > = {};
     if ( vendor ) {
         initialValues = vendor;
-        // if ( initialValues.manufacturer ) {
-        //     initialValues.manufacturer = {
-        //         data: {
-        //             id: initialValues.id
-        //         }
-        //     };
-        // }
+        if ( initialValues.manufacturer ) {
+            initialValues.manufacturer = true;
+        }
     }
 
     return <Modal
         visible={true}
         title="Vendor"
-        // width={null}
-        // className="VendorFormModal"
         onOk={e => {
             console.log( { class: 'VendorEditModal', method: 'onOk', e, values: form.getFieldsValue() } );
             form.submit();
         }}
-        onCancel={event => exitModal()}
+        onCancel={event => {
+            console.log("Modal onCancel", event);
+            exitModal();
+        }}
     >
         <Form
             name="VendorForm"
@@ -220,10 +226,10 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                     label="Manufacturer?"
                     valuePropName='checked'
                     required
-                    normalize={( value: Boolean, prevValue: Boolean, allValues: Store ) => {
-                        console.log( 'vendor manufacturer form\n', { value, prevValue, allValues } );
-                        return {data: {id: value}};
-                    }}
+                    // normalize={( value: Boolean, prevValue: Boolean, allValues: Store ) => {
+                    //     console.log( 'vendor manufacturer form\n', { value, prevValue, allValues } );
+                    //     return {data: {id: value}};
+                    // }}
                 >
                     <Switch />
                 </Form.Item>
