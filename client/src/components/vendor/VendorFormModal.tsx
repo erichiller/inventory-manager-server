@@ -6,7 +6,7 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetVendorQuery, GetVendorQueryVariables, useGetVendorQuery, useInsertVendorMutation, InsertVendorMutationVariables, useGetVendorLazyQuery, useUpdateVendorMutation, useInsertManufacturerMutation, UpdateVendorMutationVariables, useDeleteManufacturerMutation } from '../../lib/types/graphql';
+import { GetVendorQuery, GetVendorQueryVariables, useGetVendorQuery, useInsertVendorMutation, InsertVendorMutationVariables, useGetVendorLazyQuery, useUpdateVendorMutation, useInsertManufacturerMutation, UpdateVendorMutationVariables, useDeleteManufacturerMutation, GetVendorDocument } from '../../lib/types/graphql';
 
 import { QueryResultTypePlus, Union, filterObject, deepCopy } from '../../lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
@@ -31,7 +31,7 @@ type VendorFormModalProps = Union<{
     vendor?: null;
     vendorId?: null;
 }, {
-    visibilityHandler: (modal: React.ReactElement) => void;
+    visibilityHandler: ( modal: React.ReactElement ) => void;
 }>;
 // extends Union<VendorFormProps, VendorBundle> { }
 
@@ -57,7 +57,11 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
     const [ insertManufacturer, insertManufacturerResult ] = useInsertManufacturerMutation();
     const [ deleteManufacturer, deleteManufacturerResult ] = useDeleteManufacturerMutation();
     // add new
-    const [ insertVendor, insertVendorResult ] = useInsertVendorMutation();
+    const [ insertVendor, insertVendorResult ] = useInsertVendorMutation( {
+        refetchQueries: [
+            { query: GetVendorDocument }
+        ]
+    });
 
 
     /***************************************** Effects *****************************************/
@@ -99,8 +103,8 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
         } else if ( data ) {
             message.success( `successfully ${ insertVendorResult.data ? 'created' : 'updated' } ${ data?.vendor.__typename } with id ${ data.vendor.id }` );
             // return () => {
-                form.resetFields();
-                exitModal();
+            form.resetFields();
+            exitModal();
             // };
         }
     }, [ insertVendorResult, updateVendorResult, insertManufacturerResult, deleteManufacturerResult ] );
@@ -110,7 +114,7 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
     const exitModal = () => {
         console.log( "cancelling modal, history.goBack, history is currently", { history } );
         // history.goBack();
-        props.visibilityHandler(null);
+        props.visibilityHandler( null );
     };
 
     const onFinish = ( values: {
@@ -119,30 +123,29 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
         console.log( { class: 'VendorEditModal', method: 'onFinish', values, vendor, formFieldValues: form.getFieldsValue() } );
         if ( vendorId ) {
             let formFieldValues = form.getFieldsValue() as Exclude<UpdateVendorMutationVariables, 'id'> & {
-                manufacturer: {data: { id: number; } ; };
+                manufacturer: boolean;
             };
             // edit
             // if id now, but not before
             if ( formFieldValues.manufacturer && !vendor.manufacturer ) {
-                console.log( `inserting manufacturer, value was ${ vendor.manufacturer?.id }, value is: ${ formFieldValues.manufacturer?.data?.id}\n`, { vendor } )
                 insertManufacturer( {
                     variables: {
                         name: formFieldValues.name,
                         url: formFieldValues.url,
                         vendor_id: vendorId
                     }
-                })
-            } else if ( ! formFieldValues.manufacturer && vendor.manufacturer ) {
-                console.log( `deleting manufacturer, value was ${ vendor.manufacturer }, value is: ${ formFieldValues.manufacturer }\n`, { vendor, values, formFieldValues: form.getFieldsValue() } )
+                } );
+            } else if ( !formFieldValues.manufacturer && vendor.manufacturer ) {
+                console.log( `deleting manufacturer, value was ${ vendor.manufacturer }, value is: ${ formFieldValues.manufacturer }\n`, { vendor, values, formFieldValues: form.getFieldsValue() } );
                 // remove manufacturer record
                 deleteManufacturer( {
                     variables: {
-                        id: vendor.manufacturer.id
+                        id: vendor.manufacturer[ 0 ].id
                     }
-                });
+                } );
             }
             let filteredTest = filterObject( formFieldValues, null, [ 'manufacturer' ] );
-            console.log({filteredTest, vendor})
+            console.log( { filteredTest, vendor } );
             updateVendor( {
                 variables: {
                     id: vendorId,
@@ -150,9 +153,20 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                 }
             } );
         } else {
-            // insert
+            // insert new (add)
+            let formFieldValues = form.getFieldsValue() as Exclude<InsertVendorMutationVariables, 'id'>;
             insertVendor( {
-                variables: ( form.getFieldsValue() as InsertVendorMutationVariables )
+                variables: {
+                    ...filterObject( formFieldValues, null, [ 'manufacturer' ] ),
+                    ...( formFieldValues.manufacturer ? {
+                        manufacturer: {
+                            data: [ {
+                                name: formFieldValues.name,
+                                url: formFieldValues.url
+                            } ]
+                        }
+                    } : {} )
+                }
             } );
         }
     };
@@ -169,19 +183,19 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
     // let initialValues = vendor ? vendor : { placed_date: moment() , items: [{}] };
 
     /** halt waiting for incoming vendor data. */
-    if ( !vendor ) {
-        console.debug("no vendor data; awaiting data")
+    if ( !vendor && vendorId ) {
+        console.debug( "no vendor data; awaiting data" );
         return <PageSpin />;
     }
 
     let initialValues: Partial<Union<
-            Omit<Vendor, 'manufacturer'>,
-            { manufacturer: boolean; }
-        >> = {};
+        Omit<Vendor, 'manufacturer'>,
+        { manufacturer: boolean; }
+    >> = {};
     if ( vendor ) {
-        initialValues = { 
-            ... filterObject( deepCopy(vendor), null, [ 'manufacturer' ]), 
-            ...{ manufacturer: ( ( vendor.manufacturer?.id ) ? true : false) } 
+        initialValues = {
+            ...filterObject( deepCopy( vendor ), null, [ 'manufacturer' ] ),
+            ...{ manufacturer: ( vendor.manufacturer && vendor.manufacturer.length === 1 ? true : false ) }
         };
     }
 
@@ -193,7 +207,7 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
             form.submit();
         }}
         onCancel={event => {
-            console.log("Modal onCancel", event);
+            console.log( "Modal onCancel", event );
             exitModal();
         }}
     >
@@ -224,10 +238,10 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                     label="Manufacturer?"
                     valuePropName='checked'
                     required
-                    // normalize={( value: Boolean, prevValue: Boolean, allValues: Store ) => {
-                    //     console.log( 'vendor manufacturer form\n', { value, prevValue, allValues } );
-                    //     return {data: {id: value}};
-                    // }}
+                // normalize={( value: Boolean, prevValue: Boolean, allValues: Store ) => {
+                //     console.log( 'vendor manufacturer form\n', { value, prevValue, allValues } );
+                //     return {data: {id: value}};
+                // }}
                 >
                     <Switch />
                 </Form.Item>

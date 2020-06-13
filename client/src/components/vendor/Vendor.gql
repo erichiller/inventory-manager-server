@@ -51,76 +51,87 @@ query GetVendorItems {
 
 query SearchVendors($search_string: String) {
 	vendor(order_by: { id: asc }, where: { name: { _ilike: $search_string }}) {
-			...basicVendorFields
-		}
-	}
+        ...basicVendorFields
+    }
+}
 
-	mutation InsertVendor(
-	$account_id: String
-	$name: String!
-	$manufacturer: manufacturer_obj_rel_insert_input
-	$url: String!
-	) {
-		vendor: insert_vendor_one(
-		object: {
-			account_id: $account_id
-			name: $name
-			manufacturer: $manufacturer
-			url: $url
-		}
-		) {
-			...basicVendorFields
-		}
-	}
+mutation InsertVendor(
+$account_id: String
+$name: String!
+$manufacturer: manufacturer_arr_rel_insert_input
+$url: String!
+) {
+    vendor: insert_vendor_one(
+    object: {
+        account_id: $account_id
+        name: $name
+        manufacturer: $manufacturer
+        url: $url
+    }
+    ) {
+        ...basicVendorFields
+    }
+}
 
-	mutation UpdateVendor (
-	$id: Int!
-	$account_id: String
-	$name: String!
-	$url: String!
-	) {
-		vendor: update_vendor_by_pk(
-		pk_columns: {
-			id: $id, 
-		}
-		_set: {
-			account_id: $account_id, 
-			name: $name, 
-			url: $url
-		}
-		) {
-			...basicVendorFields
-			...objectVendorFields
-		}
-	}
+mutation UpdateVendor (
+$id: Int!
+$account_id: String
+$name: String!
+$url: String!
+) {
+    vendor: update_vendor_by_pk(
+    pk_columns: {
+        id: $id, 
+    }
+    _set: {
+        account_id: $account_id, 
+        name: $name, 
+        url: $url
+    }
+    ) {
+        ...basicVendorFields
+        ...objectVendorFields
+    }
+}
 
-	# ## manufacturer
 
-	fragment basicManufacturerFields on manufacturer {
-		id # Int
-		name # String
-		url # String
-		vendor_id # Int
-	}
+mutation DeleteVendor (
+$id: Int!
+) {
+    delete_vendor_by_pk(id: $id) {
+        ...basicVendorFields
+    }
+}
 
-	mutation InsertManufacturer (
-	$name: String!
-	$url: String
-	$vendor_id: Int
-	) {
-		insert_manufacturer_one(object: {
-			name: $name
-			url: $url
-			vendor_id: $vendor_id
-		}) {
-			...basicManufacturerFields
-		}
-	}
 
-	mutation DeleteManufacturer (
-	$id: Int!
-	) {
-		delete_manufacturer_by_pk(id: $id) {
-			...basicManufacturerFields
-		}
-	}
+
+# ## manufacturer
+
+fragment basicManufacturerFields on manufacturer {
+    id # Int
+    name # String
+    url # String
+    vendor_id # Int
+}
+
+mutation InsertManufacturer (
+$name: String!
+$url: String
+$vendor_id: Int
+) {
+    insert_manufacturer_one(object: {
+        name: $name
+        url: $url
+        vendor_id: $vendor_id
+    }) {
+        ...basicManufacturerFields
+    }
+}
+
+mutation DeleteManufacturer (
+$id: Int!
+) {
+    delete_manufacturer_by_pk(id: $id) {
+        ...basicManufacturerFields
+    }
+}

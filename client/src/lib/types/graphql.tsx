@@ -5354,6 +5354,554 @@ export enum EnumUnitUpdateColumn {
   id = 'id'
 }
 
+/** columns and relationships of "foo" */
+export type Foo = {
+  __typename?: 'foo';
+  /** An object relationship */
+  foo_sub?: Maybe<FooSub>;
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
+/** aggregated selection of "foo" */
+export type FooAggregate = {
+  __typename?: 'foo_aggregate';
+  aggregate?: Maybe<FooAggregateFields>;
+  nodes: Array<Foo>;
+};
+
+/** aggregate fields of "foo" */
+export type FooAggregateFields = {
+  __typename?: 'foo_aggregate_fields';
+  avg?: Maybe<FooAvgFields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<FooMaxFields>;
+  min?: Maybe<FooMinFields>;
+  stddev?: Maybe<FooStddevFields>;
+  stddev_pop?: Maybe<FooStddevPopFields>;
+  stddev_samp?: Maybe<FooStddevSampFields>;
+  sum?: Maybe<FooSumFields>;
+  var_pop?: Maybe<FooVarPopFields>;
+  var_samp?: Maybe<FooVarSampFields>;
+  variance?: Maybe<FooVarianceFields>;
+};
+
+
+/** aggregate fields of "foo" */
+export type FooAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<FooSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "foo" */
+export type FooAggregateOrderBy = {
+  avg?: Maybe<FooAvgOrderBy>;
+  count?: Maybe<OrderBy>;
+  max?: Maybe<FooMaxOrderBy>;
+  min?: Maybe<FooMinOrderBy>;
+  stddev?: Maybe<FooStddevOrderBy>;
+  stddev_pop?: Maybe<FooStddevPopOrderBy>;
+  stddev_samp?: Maybe<FooStddevSampOrderBy>;
+  sum?: Maybe<FooSumOrderBy>;
+  var_pop?: Maybe<FooVarPopOrderBy>;
+  var_samp?: Maybe<FooVarSampOrderBy>;
+  variance?: Maybe<FooVarianceOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "foo" */
+export type FooArrRelInsertInput = {
+  data: Array<FooInsertInput>;
+  on_conflict?: Maybe<FooOnConflict>;
+};
+
+/** aggregate avg on columns */
+export type FooAvgFields = {
+  __typename?: 'foo_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "foo" */
+export type FooAvgOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "foo". All fields are combined with a logical 'AND'. */
+export type FooBoolExp = {
+  _and?: Maybe<Array<Maybe<FooBoolExp>>>;
+  _not?: Maybe<FooBoolExp>;
+  _or?: Maybe<Array<Maybe<FooBoolExp>>>;
+  foo_sub?: Maybe<FooSubBoolExp>;
+  id?: Maybe<IntComparisonExp>;
+  name?: Maybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "foo" */
+export enum FooConstraint {
+  /** unique or primary key constraint */
+  foo_pkey = 'foo_pkey'
+}
+
+/** input type for incrementing integer column in table "foo" */
+export type FooIncInput = {
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "foo" */
+export type FooInsertInput = {
+  foo_sub?: Maybe<FooSubObjRelInsertInput>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type FooMaxFields = {
+  __typename?: 'foo_max_fields';
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "foo" */
+export type FooMaxOrderBy = {
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type FooMinFields = {
+  __typename?: 'foo_min_fields';
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "foo" */
+export type FooMinOrderBy = {
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "foo" */
+export type FooMutationResponse = {
+  __typename?: 'foo_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Foo>;
+};
+
+/** input type for inserting object relation for remote table "foo" */
+export type FooObjRelInsertInput = {
+  data: FooInsertInput;
+  on_conflict?: Maybe<FooOnConflict>;
+};
+
+/** on conflict condition type for table "foo" */
+export type FooOnConflict = {
+  constraint: FooConstraint;
+  update_columns: Array<FooUpdateColumn>;
+  where?: Maybe<FooBoolExp>;
+};
+
+/** ordering options when selecting data from "foo" */
+export type FooOrderBy = {
+  foo_sub?: Maybe<FooSubOrderBy>;
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "foo" */
+export type FooPkColumnsInput = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "foo" */
+export enum FooSelectColumn {
+  /** column name */
+  id = 'id',
+  /** column name */
+  name = 'name'
+}
+
+/** input type for updating data in table "foo" */
+export type FooSetInput = {
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type FooStddevFields = {
+  __typename?: 'foo_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "foo" */
+export type FooStddevOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_pop on columns */
+export type FooStddevPopFields = {
+  __typename?: 'foo_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "foo" */
+export type FooStddevPopOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_samp on columns */
+export type FooStddevSampFields = {
+  __typename?: 'foo_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "foo" */
+export type FooStddevSampOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** columns and relationships of "foo_sub" */
+export type FooSub = {
+  __typename?: 'foo_sub';
+  /** An object relationship */
+  foo: Foo;
+  foo_id: Scalars['Int'];
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
+/** aggregated selection of "foo_sub" */
+export type FooSubAggregate = {
+  __typename?: 'foo_sub_aggregate';
+  aggregate?: Maybe<FooSubAggregateFields>;
+  nodes: Array<FooSub>;
+};
+
+/** aggregate fields of "foo_sub" */
+export type FooSubAggregateFields = {
+  __typename?: 'foo_sub_aggregate_fields';
+  avg?: Maybe<FooSubAvgFields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<FooSubMaxFields>;
+  min?: Maybe<FooSubMinFields>;
+  stddev?: Maybe<FooSubStddevFields>;
+  stddev_pop?: Maybe<FooSubStddevPopFields>;
+  stddev_samp?: Maybe<FooSubStddevSampFields>;
+  sum?: Maybe<FooSubSumFields>;
+  var_pop?: Maybe<FooSubVarPopFields>;
+  var_samp?: Maybe<FooSubVarSampFields>;
+  variance?: Maybe<FooSubVarianceFields>;
+};
+
+
+/** aggregate fields of "foo_sub" */
+export type FooSubAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<FooSubSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "foo_sub" */
+export type FooSubAggregateOrderBy = {
+  avg?: Maybe<FooSubAvgOrderBy>;
+  count?: Maybe<OrderBy>;
+  max?: Maybe<FooSubMaxOrderBy>;
+  min?: Maybe<FooSubMinOrderBy>;
+  stddev?: Maybe<FooSubStddevOrderBy>;
+  stddev_pop?: Maybe<FooSubStddevPopOrderBy>;
+  stddev_samp?: Maybe<FooSubStddevSampOrderBy>;
+  sum?: Maybe<FooSubSumOrderBy>;
+  var_pop?: Maybe<FooSubVarPopOrderBy>;
+  var_samp?: Maybe<FooSubVarSampOrderBy>;
+  variance?: Maybe<FooSubVarianceOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "foo_sub" */
+export type FooSubArrRelInsertInput = {
+  data: Array<FooSubInsertInput>;
+  on_conflict?: Maybe<FooSubOnConflict>;
+};
+
+/** aggregate avg on columns */
+export type FooSubAvgFields = {
+  __typename?: 'foo_sub_avg_fields';
+  foo_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "foo_sub" */
+export type FooSubAvgOrderBy = {
+  foo_id?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "foo_sub". All fields are combined with a logical 'AND'. */
+export type FooSubBoolExp = {
+  _and?: Maybe<Array<Maybe<FooSubBoolExp>>>;
+  _not?: Maybe<FooSubBoolExp>;
+  _or?: Maybe<Array<Maybe<FooSubBoolExp>>>;
+  foo?: Maybe<FooBoolExp>;
+  foo_id?: Maybe<IntComparisonExp>;
+  id?: Maybe<IntComparisonExp>;
+  name?: Maybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "foo_sub" */
+export enum FooSubConstraint {
+  /** unique or primary key constraint */
+  foo_sub_foo_id_key = 'foo_sub_foo_id_key',
+  /** unique or primary key constraint */
+  foo_sub_pkey = 'foo_sub_pkey'
+}
+
+/** input type for incrementing integer column in table "foo_sub" */
+export type FooSubIncInput = {
+  foo_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "foo_sub" */
+export type FooSubInsertInput = {
+  foo?: Maybe<FooObjRelInsertInput>;
+  foo_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type FooSubMaxFields = {
+  __typename?: 'foo_sub_max_fields';
+  foo_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "foo_sub" */
+export type FooSubMaxOrderBy = {
+  foo_id?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type FooSubMinFields = {
+  __typename?: 'foo_sub_min_fields';
+  foo_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "foo_sub" */
+export type FooSubMinOrderBy = {
+  foo_id?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "foo_sub" */
+export type FooSubMutationResponse = {
+  __typename?: 'foo_sub_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<FooSub>;
+};
+
+/** input type for inserting object relation for remote table "foo_sub" */
+export type FooSubObjRelInsertInput = {
+  data: FooSubInsertInput;
+  on_conflict?: Maybe<FooSubOnConflict>;
+};
+
+/** on conflict condition type for table "foo_sub" */
+export type FooSubOnConflict = {
+  constraint: FooSubConstraint;
+  update_columns: Array<FooSubUpdateColumn>;
+  where?: Maybe<FooSubBoolExp>;
+};
+
+/** ordering options when selecting data from "foo_sub" */
+export type FooSubOrderBy = {
+  foo?: Maybe<FooOrderBy>;
+  foo_id?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "foo_sub" */
+export type FooSubPkColumnsInput = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "foo_sub" */
+export enum FooSubSelectColumn {
+  /** column name */
+  foo_id = 'foo_id',
+  /** column name */
+  id = 'id',
+  /** column name */
+  name = 'name'
+}
+
+/** input type for updating data in table "foo_sub" */
+export type FooSubSetInput = {
+  foo_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type FooSubStddevFields = {
+  __typename?: 'foo_sub_stddev_fields';
+  foo_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "foo_sub" */
+export type FooSubStddevOrderBy = {
+  foo_id?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_pop on columns */
+export type FooSubStddevPopFields = {
+  __typename?: 'foo_sub_stddev_pop_fields';
+  foo_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "foo_sub" */
+export type FooSubStddevPopOrderBy = {
+  foo_id?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_samp on columns */
+export type FooSubStddevSampFields = {
+  __typename?: 'foo_sub_stddev_samp_fields';
+  foo_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "foo_sub" */
+export type FooSubStddevSampOrderBy = {
+  foo_id?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate sum on columns */
+export type FooSubSumFields = {
+  __typename?: 'foo_sub_sum_fields';
+  foo_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "foo_sub" */
+export type FooSubSumOrderBy = {
+  foo_id?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** update columns of table "foo_sub" */
+export enum FooSubUpdateColumn {
+  /** column name */
+  foo_id = 'foo_id',
+  /** column name */
+  id = 'id',
+  /** column name */
+  name = 'name'
+}
+
+/** aggregate var_pop on columns */
+export type FooSubVarPopFields = {
+  __typename?: 'foo_sub_var_pop_fields';
+  foo_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "foo_sub" */
+export type FooSubVarPopOrderBy = {
+  foo_id?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate var_samp on columns */
+export type FooSubVarSampFields = {
+  __typename?: 'foo_sub_var_samp_fields';
+  foo_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "foo_sub" */
+export type FooSubVarSampOrderBy = {
+  foo_id?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type FooSubVarianceFields = {
+  __typename?: 'foo_sub_variance_fields';
+  foo_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "foo_sub" */
+export type FooSubVarianceOrderBy = {
+  foo_id?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate sum on columns */
+export type FooSumFields = {
+  __typename?: 'foo_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "foo" */
+export type FooSumOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** update columns of table "foo" */
+export enum FooUpdateColumn {
+  /** column name */
+  id = 'id',
+  /** column name */
+  name = 'name'
+}
+
+/** aggregate var_pop on columns */
+export type FooVarPopFields = {
+  __typename?: 'foo_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "foo" */
+export type FooVarPopOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate var_samp on columns */
+export type FooVarSampFields = {
+  __typename?: 'foo_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "foo" */
+export type FooVarSampOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type FooVarianceFields = {
+  __typename?: 'foo_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "foo" */
+export type FooVarianceOrderBy = {
+  id?: Maybe<OrderBy>;
+};
+
 /**
  * Image / icon data for labels
  * 
@@ -12606,9 +13154,35 @@ export type LabelVarianceOrderBy = {
 export type Manufacturer = {
   __typename?: 'manufacturer';
   id: Scalars['Int'];
+  /** An array relationship */
+  manufacturer_items: Array<ManufacturerItem>;
+  /** An aggregated array relationship */
+  manufacturer_items_aggregate: ManufacturerItemAggregate;
   name: Scalars['String'];
   url: Scalars['String'];
+  /** An object relationship */
+  vendor?: Maybe<Vendor>;
   vendor_id?: Maybe<Scalars['Int']>;
+};
+
+
+/** columns and relationships of "manufacturer" */
+export type ManufacturerManufacturerItemsArgs = {
+  distinct_on?: Maybe<Array<ManufacturerItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ManufacturerItemOrderBy>>;
+  where?: Maybe<ManufacturerItemBoolExp>;
+};
+
+
+/** columns and relationships of "manufacturer" */
+export type ManufacturerManufacturerItemsAggregateArgs = {
+  distinct_on?: Maybe<Array<ManufacturerItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ManufacturerItemOrderBy>>;
+  where?: Maybe<ManufacturerItemBoolExp>;
 };
 
 /** aggregated selection of "manufacturer" */
@@ -12681,8 +13255,10 @@ export type ManufacturerBoolExp = {
   _not?: Maybe<ManufacturerBoolExp>;
   _or?: Maybe<Array<Maybe<ManufacturerBoolExp>>>;
   id?: Maybe<IntComparisonExp>;
+  manufacturer_items?: Maybe<ManufacturerItemBoolExp>;
   name?: Maybe<StringComparisonExp>;
   url?: Maybe<StringComparisonExp>;
+  vendor?: Maybe<VendorBoolExp>;
   vendor_id?: Maybe<IntComparisonExp>;
 };
 
@@ -12703,8 +13279,10 @@ export type ManufacturerIncInput = {
 /** input type for inserting data into table "manufacturer" */
 export type ManufacturerInsertInput = {
   id?: Maybe<Scalars['Int']>;
+  manufacturer_items?: Maybe<ManufacturerItemArrRelInsertInput>;
   name?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
+  vendor?: Maybe<VendorObjRelInsertInput>;
   vendor_id?: Maybe<Scalars['Int']>;
 };
 
@@ -13093,8 +13671,10 @@ export type ManufacturerOnConflict = {
 /** ordering options when selecting data from "manufacturer" */
 export type ManufacturerOrderBy = {
   id?: Maybe<OrderBy>;
+  manufacturer_items_aggregate?: Maybe<ManufacturerItemAggregateOrderBy>;
   name?: Maybe<OrderBy>;
   url?: Maybe<OrderBy>;
+  vendor?: Maybe<VendorOrderBy>;
   vendor_id?: Maybe<OrderBy>;
 };
 
@@ -13367,6 +13947,14 @@ export type MutationRoot = {
   delete_enum_unit?: Maybe<EnumUnitMutationResponse>;
   /** delete single row from the table: "enum.unit" */
   delete_enum_unit_by_pk?: Maybe<EnumUnit>;
+  /** delete data from the table: "foo" */
+  delete_foo?: Maybe<FooMutationResponse>;
+  /** delete single row from the table: "foo" */
+  delete_foo_by_pk?: Maybe<Foo>;
+  /** delete data from the table: "foo_sub" */
+  delete_foo_sub?: Maybe<FooSubMutationResponse>;
+  /** delete single row from the table: "foo_sub" */
+  delete_foo_sub_by_pk?: Maybe<FooSub>;
   /** delete data from the table: "icon" */
   delete_icon?: Maybe<IconMutationResponse>;
   /** delete single row from the table: "icon" */
@@ -13615,6 +14203,14 @@ export type MutationRoot = {
   insert_enum_unit?: Maybe<EnumUnitMutationResponse>;
   /** insert a single row into the table: "enum.unit" */
   insert_enum_unit_one?: Maybe<EnumUnit>;
+  /** insert data into the table: "foo" */
+  insert_foo?: Maybe<FooMutationResponse>;
+  /** insert a single row into the table: "foo" */
+  insert_foo_one?: Maybe<Foo>;
+  /** insert data into the table: "foo_sub" */
+  insert_foo_sub?: Maybe<FooSubMutationResponse>;
+  /** insert a single row into the table: "foo_sub" */
+  insert_foo_sub_one?: Maybe<FooSub>;
   /** insert data into the table: "icon" */
   insert_icon?: Maybe<IconMutationResponse>;
   /** insert data into the table: "icon_item_category_map" */
@@ -13868,6 +14464,14 @@ export type MutationRoot = {
   update_enum_unit?: Maybe<EnumUnitMutationResponse>;
   /** update single row of the table: "enum.unit" */
   update_enum_unit_by_pk?: Maybe<EnumUnit>;
+  /** update data of the table: "foo" */
+  update_foo?: Maybe<FooMutationResponse>;
+  /** update single row of the table: "foo" */
+  update_foo_by_pk?: Maybe<Foo>;
+  /** update data of the table: "foo_sub" */
+  update_foo_sub?: Maybe<FooSubMutationResponse>;
+  /** update single row of the table: "foo_sub" */
+  update_foo_sub_by_pk?: Maybe<FooSub>;
   /** update data of the table: "icon" */
   update_icon?: Maybe<IconMutationResponse>;
   /** update single row of the table: "icon" */
@@ -14365,6 +14969,30 @@ export type MutationRootDeleteEnumUnitArgs = {
 /** mutation root */
 export type MutationRootDeleteEnumUnitByPkArgs = {
   id: Scalars['String'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteFooArgs = {
+  where: FooBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteFooByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteFooSubArgs = {
+  where: FooSubBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteFooSubByPkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -15184,6 +15812,34 @@ export type MutationRootInsertEnumUnitArgs = {
 export type MutationRootInsertEnumUnitOneArgs = {
   object: EnumUnitInsertInput;
   on_conflict?: Maybe<EnumUnitOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertFooArgs = {
+  objects: Array<FooInsertInput>;
+  on_conflict?: Maybe<FooOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertFooOneArgs = {
+  object: FooInsertInput;
+  on_conflict?: Maybe<FooOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertFooSubArgs = {
+  objects: Array<FooSubInsertInput>;
+  on_conflict?: Maybe<FooSubOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertFooSubOneArgs = {
+  object: FooSubInsertInput;
+  on_conflict?: Maybe<FooSubOnConflict>;
 };
 
 
@@ -16062,6 +16718,38 @@ export type MutationRootUpdateEnumUnitByPkArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateFooArgs = {
+  _inc?: Maybe<FooIncInput>;
+  _set?: Maybe<FooSetInput>;
+  where: FooBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateFooByPkArgs = {
+  _inc?: Maybe<FooIncInput>;
+  _set?: Maybe<FooSetInput>;
+  pk_columns: FooPkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateFooSubArgs = {
+  _inc?: Maybe<FooSubIncInput>;
+  _set?: Maybe<FooSubSetInput>;
+  where: FooSubBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateFooSubByPkArgs = {
+  _inc?: Maybe<FooSubIncInput>;
+  _set?: Maybe<FooSubSetInput>;
+  pk_columns: FooSubPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateIconArgs = {
   _set?: Maybe<IconSetInput>;
   where: IconBoolExp;
@@ -16657,11 +17345,11 @@ export type Order = {
   __typename?: 'order';
   fulfilled_date?: Maybe<Scalars['date']>;
   id: Scalars['Int'];
-  /** An array relationship */
-  items: Array<OrderItem>;
-  /** An aggregated array relationship */
-  items_aggregate: OrderItemAggregate;
   items_cost?: Maybe<Scalars['money']>;
+  /** An array relationship */
+  order_items: Array<OrderItem>;
+  /** An aggregated array relationship */
+  order_items_aggregate: OrderItemAggregate;
   /** An object relationship */
   payment_method?: Maybe<PaymentMethod>;
   payment_method_id?: Maybe<Scalars['Int']>;
@@ -16682,7 +17370,7 @@ export type Order = {
 
 
 /** columns and relationships of "order" */
-export type OrderItemsArgs = {
+export type OrderOrderItemsArgs = {
   distinct_on?: Maybe<Array<OrderItemSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -16692,7 +17380,7 @@ export type OrderItemsArgs = {
 
 
 /** columns and relationships of "order" */
-export type OrderItemsAggregateArgs = {
+export type OrderOrderItemsAggregateArgs = {
   distinct_on?: Maybe<Array<OrderItemSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -16799,8 +17487,8 @@ export type OrderBoolExp = {
   _or?: Maybe<Array<Maybe<OrderBoolExp>>>;
   fulfilled_date?: Maybe<DateComparisonExp>;
   id?: Maybe<IntComparisonExp>;
-  items?: Maybe<OrderItemBoolExp>;
   items_cost?: Maybe<MoneyComparisonExp>;
+  order_items?: Maybe<OrderItemBoolExp>;
   payment_method?: Maybe<PaymentMethodBoolExp>;
   payment_method_id?: Maybe<IntComparisonExp>;
   placed_date?: Maybe<DateComparisonExp>;
@@ -16850,8 +17538,8 @@ export type OrderIncInput = {
 export type OrderInsertInput = {
   fulfilled_date?: Maybe<Scalars['date']>;
   id?: Maybe<Scalars['Int']>;
-  items?: Maybe<OrderItemArrRelInsertInput>;
   items_cost?: Maybe<Scalars['money']>;
+  order_items?: Maybe<OrderItemArrRelInsertInput>;
   payment_method?: Maybe<PaymentMethodObjRelInsertInput>;
   payment_method_id?: Maybe<Scalars['Int']>;
   placed_date?: Maybe<Scalars['date']>;
@@ -17456,8 +18144,8 @@ export type OrderOnConflict = {
 export type OrderOrderBy = {
   fulfilled_date?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
-  items_aggregate?: Maybe<OrderItemAggregateOrderBy>;
   items_cost?: Maybe<OrderBy>;
+  order_items_aggregate?: Maybe<OrderItemAggregateOrderBy>;
   payment_method?: Maybe<PaymentMethodOrderBy>;
   payment_method_id?: Maybe<OrderBy>;
   placed_date?: Maybe<OrderBy>;
@@ -18888,6 +19576,18 @@ export type QueryRoot = {
   /** fetch data from the table: "enum.unit" using primary key columns */
   enum_unit_by_pk?: Maybe<EnumUnit>;
   files?: Maybe<Array<Maybe<File>>>;
+  /** fetch data from the table: "foo" */
+  foo: Array<Foo>;
+  /** fetch aggregated fields from the table: "foo" */
+  foo_aggregate: FooAggregate;
+  /** fetch data from the table: "foo" using primary key columns */
+  foo_by_pk?: Maybe<Foo>;
+  /** fetch data from the table: "foo_sub" */
+  foo_sub: Array<FooSub>;
+  /** fetch aggregated fields from the table: "foo_sub" */
+  foo_sub_aggregate: FooSubAggregate;
+  /** fetch data from the table: "foo_sub" using primary key columns */
+  foo_sub_by_pk?: Maybe<FooSub>;
   /** fetch data from the table: "icon" */
   icon: Array<Icon>;
   /** fetch aggregated fields from the table: "icon" */
@@ -19884,6 +20584,58 @@ export type QueryRootEnumUnitAggregateArgs = {
 /** query root */
 export type QueryRootEnumUnitByPkArgs = {
   id: Scalars['String'];
+};
+
+
+/** query root */
+export type QueryRootFooArgs = {
+  distinct_on?: Maybe<Array<FooSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<FooOrderBy>>;
+  where?: Maybe<FooBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootFooAggregateArgs = {
+  distinct_on?: Maybe<Array<FooSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<FooOrderBy>>;
+  where?: Maybe<FooBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootFooByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** query root */
+export type QueryRootFooSubArgs = {
+  distinct_on?: Maybe<Array<FooSubSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<FooSubOrderBy>>;
+  where?: Maybe<FooSubBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootFooSubAggregateArgs = {
+  distinct_on?: Maybe<Array<FooSubSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<FooSubOrderBy>>;
+  where?: Maybe<FooSubBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootFooSubByPkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -21912,6 +22664,18 @@ export type SubscriptionRoot = {
   enum_unit_aggregate: EnumUnitAggregate;
   /** fetch data from the table: "enum.unit" using primary key columns */
   enum_unit_by_pk?: Maybe<EnumUnit>;
+  /** fetch data from the table: "foo" */
+  foo: Array<Foo>;
+  /** fetch aggregated fields from the table: "foo" */
+  foo_aggregate: FooAggregate;
+  /** fetch data from the table: "foo" using primary key columns */
+  foo_by_pk?: Maybe<Foo>;
+  /** fetch data from the table: "foo_sub" */
+  foo_sub: Array<FooSub>;
+  /** fetch aggregated fields from the table: "foo_sub" */
+  foo_sub_aggregate: FooSubAggregate;
+  /** fetch data from the table: "foo_sub" using primary key columns */
+  foo_sub_by_pk?: Maybe<FooSub>;
   /** fetch data from the table: "icon" */
   icon: Array<Icon>;
   /** fetch aggregated fields from the table: "icon" */
@@ -22908,6 +23672,58 @@ export type SubscriptionRootEnumUnitAggregateArgs = {
 /** subscription root */
 export type SubscriptionRootEnumUnitByPkArgs = {
   id: Scalars['String'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootFooArgs = {
+  distinct_on?: Maybe<Array<FooSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<FooOrderBy>>;
+  where?: Maybe<FooBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootFooAggregateArgs = {
+  distinct_on?: Maybe<Array<FooSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<FooOrderBy>>;
+  where?: Maybe<FooBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootFooByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootFooSubArgs = {
+  distinct_on?: Maybe<Array<FooSubSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<FooSubOrderBy>>;
+  where?: Maybe<FooSubBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootFooSubAggregateArgs = {
+  distinct_on?: Maybe<Array<FooSubSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<FooSubOrderBy>>;
+  where?: Maybe<FooSubBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootFooSubByPkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -24054,8 +24870,10 @@ export type Vendor = {
   __typename?: 'vendor';
   account_id?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
-  /** An object relationship */
-  manufacturer?: Maybe<Manufacturer>;
+  /** An array relationship */
+  manufacturer: Array<Manufacturer>;
+  /** An aggregated array relationship */
+  manufacturer_aggregate: ManufacturerAggregate;
   name: Scalars['String'];
   /** An array relationship */
   orders: Array<Order>;
@@ -24066,6 +24884,26 @@ export type Vendor = {
   vendor_items: Array<VendorItem>;
   /** An aggregated array relationship */
   vendor_items_aggregate: VendorItemAggregate;
+};
+
+
+/** columns and relationships of "vendor" */
+export type VendorManufacturerArgs = {
+  distinct_on?: Maybe<Array<ManufacturerSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ManufacturerOrderBy>>;
+  where?: Maybe<ManufacturerBoolExp>;
+};
+
+
+/** columns and relationships of "vendor" */
+export type VendorManufacturerAggregateArgs = {
+  distinct_on?: Maybe<Array<ManufacturerSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ManufacturerOrderBy>>;
+  where?: Maybe<ManufacturerBoolExp>;
 };
 
 
@@ -24199,7 +25037,7 @@ export type VendorIncInput = {
 export type VendorInsertInput = {
   account_id?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
-  manufacturer?: Maybe<ManufacturerObjRelInsertInput>;
+  manufacturer?: Maybe<ManufacturerArrRelInsertInput>;
   name?: Maybe<Scalars['String']>;
   orders?: Maybe<OrderArrRelInsertInput>;
   url?: Maybe<Scalars['String']>;
@@ -24579,7 +25417,7 @@ export type VendorOnConflict = {
 export type VendorOrderBy = {
   account_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
-  manufacturer?: Maybe<ManufacturerOrderBy>;
+  manufacturer_aggregate?: Maybe<ManufacturerAggregateOrderBy>;
   name?: Maybe<OrderBy>;
   orders_aggregate?: Maybe<OrderAggregateOrderBy>;
   url?: Maybe<OrderBy>;
@@ -24738,7 +25576,7 @@ export type GetIconQuery = (
   )> }
 );
 
-export type GetIconsQueryVariables = {};
+export type GetIconsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetIconsQuery = (
@@ -24780,7 +25618,7 @@ export type LabelFieldsFragment = (
   )> }
 );
 
-export type GetLabelsQueryVariables = {};
+export type GetLabelsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetLabelsQuery = (
@@ -24817,7 +25655,7 @@ export type GetLabelByItemIdQuery = (
   )> }
 );
 
-export type GetTemplatesQueryVariables = {};
+export type GetTemplatesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetTemplatesQuery = (
@@ -24828,7 +25666,7 @@ export type GetTemplatesQuery = (
   )> }
 );
 
-export type GetSingleLabelsQueryVariables = {};
+export type GetSingleLabelsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetSingleLabelsQuery = (
@@ -24937,7 +25775,7 @@ export type InsertOrderMutation = (
   )> }
 );
 
-export type GetOrdersQueryVariables = {};
+export type GetOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetOrdersQuery = (
@@ -24959,10 +25797,10 @@ export type GetOrderQuery = (
   & { order?: Maybe<(
     { __typename?: 'order' }
     & Pick<Order, 'vendor_order_id' | 'vendor_id' | 'url' | 'total_cost' | 'tax_cost' | 'pon' | 'placed_date' | 'payment_method_id' | 'items_cost' | 'id' | 'fulfilled_date'>
-    & { items: Array<(
+    & { order_items: Array<(
       { __typename?: 'order_item' }
       & Pick<OrderItem, 'cost_item' | 'cost_tax' | 'cost_total' | 'item_id' | 'manufacturer_item_id' | 'order_id' | 'quantity' | 'serial_no' | 'shipment_id' | 'vendor_item_id'>
-    )>, items_aggregate: (
+    )>, order_items_aggregate: (
       { __typename?: 'order_item_aggregate' }
       & { aggregate?: Maybe<(
         { __typename?: 'order_item_aggregate_fields' }
@@ -24984,7 +25822,7 @@ export type GetOrderQuery = (
   )> }
 );
 
-export type GetPrinterStatusQueryVariables = {};
+export type GetPrinterStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetPrinterStatusQuery = (
@@ -25023,7 +25861,7 @@ export type BasicVendorFieldsFragment = (
 
 export type ObjectVendorFieldsFragment = (
   { __typename?: 'vendor' }
-  & { manufacturer?: Maybe<(
+  & { manufacturer: Array<(
     { __typename?: 'manufacturer' }
     & Pick<Manufacturer, 'id'>
   )>, orders: Array<(
@@ -25040,14 +25878,14 @@ export type BasicVendorItemFieldsFragment = (
   & Pick<VendorItem, 'id' | 'item_id' | 'vendor_id' | 'vendor_sku'>
 );
 
-export type GetVendorsQueryVariables = {};
+export type GetVendorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetVendorsQuery = (
   { __typename?: 'query_root' }
   & { vendor: Array<(
     { __typename?: 'vendor' }
-    & { manufacturer?: Maybe<(
+    & { manufacturer: Array<(
       { __typename?: 'manufacturer' }
       & Pick<Manufacturer, 'id'>
     )> }
@@ -25069,7 +25907,7 @@ export type GetVendorQuery = (
   )> }
 );
 
-export type GetVendorItemsQueryVariables = {};
+export type GetVendorItemsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetVendorItemsQuery = (
@@ -25096,7 +25934,7 @@ export type SearchVendorsQuery = (
 export type InsertVendorMutationVariables = Exact<{
   account_id?: Maybe<Scalars['String']>;
   name: Scalars['String'];
-  manufacturer?: Maybe<ManufacturerObjRelInsertInput>;
+  manufacturer?: Maybe<ManufacturerArrRelInsertInput>;
   url: Scalars['String'];
 }>;
 
@@ -25123,6 +25961,19 @@ export type UpdateVendorMutation = (
     { __typename?: 'vendor' }
     & BasicVendorFieldsFragment
     & ObjectVendorFieldsFragment
+  )> }
+);
+
+export type DeleteVendorMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteVendorMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_vendor_by_pk?: Maybe<(
+    { __typename?: 'vendor' }
+    & BasicVendorFieldsFragment
   )> }
 );
 
@@ -25205,7 +26056,7 @@ export type ItemSearchQuery = (
   )> }
 );
 
-export type ItemBundleQueryVariables = {};
+export type ItemBundleQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ItemBundleQuery = (
@@ -25228,7 +26079,7 @@ export type ItemHardwareFastenerScrewMachineFieldsFragment = (
   & Pick<ItemHardwareFastenerScrewMachine, 'id' | 'name' | 'description' | 'unit' | 'thread_length' | 'head_type' | 'drive_type' | 'drive_size' | 'head_diameter' | 'head_height' | 'thread_diameter' | 'finish' | 'material' | 'thread_direction' | 'countersunk_angle' | 'tensile_strength' | 'specifications_met' | 'thread_fit' | 'point_type' | 'hardness' | 'strength_class' | 'use_material'>
 );
 
-export type ItemHardwareFastenerScrewMachineQueryVariables = {};
+export type ItemHardwareFastenerScrewMachineQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ItemHardwareFastenerScrewMachineQuery = (
@@ -25279,7 +26130,7 @@ export type InsertItemHardwareFastenerScrewMachineMutation = (
   )> }
 );
 
-export type GetEnumItemHardwareFastenerThreadStandardQueryVariables = {};
+export type GetEnumItemHardwareFastenerThreadStandardQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetEnumItemHardwareFastenerThreadStandardQuery = (
@@ -26036,7 +26887,7 @@ export type GetOrdersByDateRangeLazyQueryHookResult = ReturnType<typeof useGetOr
 export type GetOrdersByDateRangeQueryResult = ApolloReactCommon.QueryResult<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>;
 export const InsertOrderDocument = gql`
     mutation InsertOrder($fulfilled_date: date, $items: [order_item_insert_input!]!, $items_cost: money, $payment_method: payment_method_obj_rel_insert_input, $payment_method_id: Int, $placed_date: date, $pon: String, $shipments: shipment_arr_rel_insert_input, $tax_cost: money, $total_cost: money, $url: String, $vendor: vendor_obj_rel_insert_input, $vendor_id: Int, $vendor_order_id: String) {
-  insert_order: insert_order_one(object: {items: {data: $items}, payment_method: $payment_method, shipments: $shipments, vendor: $vendor, fulfilled_date: $fulfilled_date, items_cost: $items_cost, payment_method_id: $payment_method_id, placed_date: $placed_date, pon: $pon, tax_cost: $tax_cost, total_cost: $total_cost, url: $url, vendor_id: $vendor_id, vendor_order_id: $vendor_order_id}) {
+  insert_order: insert_order_one(object: {order_items: {data: $items}, payment_method: $payment_method, shipments: $shipments, vendor: $vendor, fulfilled_date: $fulfilled_date, items_cost: $items_cost, payment_method_id: $payment_method_id, placed_date: $placed_date, pon: $pon, tax_cost: $tax_cost, total_cost: $total_cost, url: $url, vendor_id: $vendor_id, vendor_order_id: $vendor_order_id}) {
     id
   }
 }
@@ -26153,7 +27004,7 @@ export const GetOrderDocument = gql`
     items_cost
     id
     fulfilled_date
-    items {
+    order_items {
       cost_item
       cost_tax
       cost_total
@@ -26165,7 +27016,7 @@ export const GetOrderDocument = gql`
       shipment_id
       vendor_item_id
     }
-    items_aggregate {
+    order_items_aggregate {
       aggregate {
         count
       }
@@ -26522,7 +27373,7 @@ export type SearchVendorsQueryHookResult = ReturnType<typeof useSearchVendorsQue
 export type SearchVendorsLazyQueryHookResult = ReturnType<typeof useSearchVendorsLazyQuery>;
 export type SearchVendorsQueryResult = ApolloReactCommon.QueryResult<SearchVendorsQuery, SearchVendorsQueryVariables>;
 export const InsertVendorDocument = gql`
-    mutation InsertVendor($account_id: String, $name: String!, $manufacturer: manufacturer_obj_rel_insert_input, $url: String!) {
+    mutation InsertVendor($account_id: String, $name: String!, $manufacturer: manufacturer_arr_rel_insert_input, $url: String!) {
   vendor: insert_vendor_one(object: {account_id: $account_id, name: $name, manufacturer: $manufacturer, url: $url}) {
     ...basicVendorFields
   }
@@ -26619,6 +27470,51 @@ export function useUpdateVendorMutation(baseOptions?: ApolloReactHooks.MutationH
 export type UpdateVendorMutationHookResult = ReturnType<typeof useUpdateVendorMutation>;
 export type UpdateVendorMutationResult = ApolloReactCommon.MutationResult<UpdateVendorMutation>;
 export type UpdateVendorMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateVendorMutation, UpdateVendorMutationVariables>;
+export const DeleteVendorDocument = gql`
+    mutation DeleteVendor($id: Int!) {
+  delete_vendor_by_pk(id: $id) {
+    ...basicVendorFields
+  }
+}
+    ${BasicVendorFieldsFragmentDoc}`;
+export type DeleteVendorMutationFn = ApolloReactCommon.MutationFunction<DeleteVendorMutation, DeleteVendorMutationVariables>;
+export type DeleteVendorProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteVendorMutation, DeleteVendorMutationVariables>
+    } & TChildProps;
+export function withDeleteVendor<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  DeleteVendorMutation,
+  DeleteVendorMutationVariables,
+  DeleteVendorProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, DeleteVendorMutation, DeleteVendorMutationVariables, DeleteVendorProps<TChildProps, TDataName>>(DeleteVendorDocument, {
+      alias: 'deleteVendor',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useDeleteVendorMutation__
+ *
+ * To run a mutation, you first call `useDeleteVendorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteVendorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteVendorMutation, { data, loading, error }] = useDeleteVendorMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteVendorMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteVendorMutation, DeleteVendorMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteVendorMutation, DeleteVendorMutationVariables>(DeleteVendorDocument, baseOptions);
+      }
+export type DeleteVendorMutationHookResult = ReturnType<typeof useDeleteVendorMutation>;
+export type DeleteVendorMutationResult = ApolloReactCommon.MutationResult<DeleteVendorMutation>;
+export type DeleteVendorMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteVendorMutation, DeleteVendorMutationVariables>;
 export const InsertManufacturerDocument = gql`
     mutation InsertManufacturer($name: String!, $url: String, $vendor_id: Int) {
   insert_manufacturer_one(object: {name: $name, url: $url, vendor_id: $vendor_id}) {
@@ -27139,4 +28035,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-12T05:42:50-06:00
+// graphql typescript defs generated on 2020-06-13T08:36:01-06:00
