@@ -21,7 +21,7 @@ import { PageSpin } from '../shared/PageSpin';
 import { Order } from '../../lib/Order/Order';
 
 
-type OrderFormModalProps = {
+type OrderFormModalProps = Union<{
     order: QueryResultTypePlus<typeof useGetOrderQuery>;
     orderId?: null;
 } | {
@@ -30,9 +30,9 @@ type OrderFormModalProps = {
 } | {
     order?: null;
     orderId?: null;
-};
-// extends Union<OrderFormProps, OrderBundle> { }
-
+}, {
+    visibilityHandler: ( modal: React.ReactElement ) => void;
+}>;
 
 export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
     let { orderId } = props;
@@ -72,20 +72,9 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         }
     }, [ orderLookupResult.data, orderLookupResult.error ] );
 
-    // useEffect( () => {
-    //     screwSizeInputRef.current.focus();
-    // }, [ screwSizeInputRef ] );
-
-    // useEffect( () => {
-    //     let initProps: Partial<OrderBundle> = {};
-    //     if ( !props.thread_direction ) {
-    //         initProps.thread_direction = EnumItemHandednessEnum.right;
-    //     }
-    //     form.setFieldsValue( initProps );
-    // } );
     const exitModal = () => {
         console.log( "cancelling modal, history.goBack, history is currently", { history } );
-        history.goBack();
+        props.visibilityHandler( null );
     };
     const onFinish = ( values: {
         [ name: string ]: any;
@@ -95,6 +84,9 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             variables: ( form.getFieldsValue() as InsertOrderMutationVariables )
         } );
     };
+
+
+    /***************************************** Effects *****************************************/
 
     useEffect( () => {
         if ( error ) {
@@ -117,7 +109,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         console.log( { class: 'OrderEditModal', method: 'onFieldsChange', changedFields, values } );
     };
 
-    if ( !order ) {
+    if ( !order && orderId ) {
         return <PageSpin />;
     }
 

@@ -6,7 +6,7 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetVendorQuery, GetVendorQueryVariables, useGetVendorQuery, useInsertVendorMutation, InsertVendorMutationVariables, useGetVendorLazyQuery, useUpdateVendorMutation, useInsertManufacturerMutation, UpdateVendorMutationVariables, useDeleteManufacturerMutation, GetVendorDocument } from '../../lib/types/graphql';
+import { GetVendorQuery, GetVendorQueryVariables, useGetVendorQuery, useInsertVendorMutation, InsertVendorMutationVariables, useGetVendorLazyQuery, useUpdateVendorMutation, useInsertManufacturerMutation, UpdateVendorMutationVariables, useDeleteManufacturerMutation, GetVendorDocument, GetVendorsDocument } from '../../lib/types/graphql';
 
 import { QueryResultTypePlus, Union, filterObject, deepCopy } from '../../lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
@@ -113,7 +113,6 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
 
     const exitModal = () => {
         console.log( "cancelling modal, history.goBack, history is currently", { history } );
-        // history.goBack();
         props.visibilityHandler( null );
     };
 
@@ -166,7 +165,10 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                             } ]
                         }
                     } : {} )
-                }
+                },
+                refetchQueries: [
+                    { query: GetVendorsDocument }
+                ]
             } );
         }
     };
@@ -227,7 +229,7 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
             onFinishFailed={onFinishFailed}
         >
             <div className="col">
-                <Form.Item name="name" label="Name" required>
+                <Form.Item name="name" label="Name" rules={[{required: true}]}>
                     <Input />
                 </Form.Item>
                 <Form.Item name="account_id" label="Account #">
@@ -237,7 +239,6 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                     name={'manufacturer'}
                     label="Manufacturer?"
                     valuePropName='checked'
-                    required
                 // normalize={( value: Boolean, prevValue: Boolean, allValues: Store ) => {
                 //     console.log( 'vendor manufacturer form\n', { value, prevValue, allValues } );
                 //     return {data: {id: value}};
@@ -246,7 +247,17 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                     <Switch />
                 </Form.Item>
 
-                <Form.Item name="url" label="URL">
+                <Form.Item name="url" label="URL"
+                // https://ant.design/components/form/#Rule
+                // TODO: use a custom validator ( or onChange ) to load the url's icon / ico
+                    rules={[ 
+                        {
+                            required: true, 
+                            pattern: /https?:\/\/.*/,
+                            message: 'Please enter a valid website for this Vendor.' 
+                        },
+                    ]}
+                >
                     {/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/url */}
                     <Input
                         type="url" // htmlFor="url" ?? 

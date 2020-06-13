@@ -4,11 +4,12 @@ import { VendorSelectColumn, Vendor as VendorGql, useGetVendorsQuery, GetVendors
 import { Item } from '../../lib/item';
 import { toTitleCase, computeDefaultPagination } from '../../lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { VendorFormModal } from './VendorFormModal';
 import { Vendor } from '../../lib/Vendor/Vendor';
 import { useState } from 'react';
+// import { history }
 
 
 
@@ -36,16 +37,24 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
         loading: false,
         clickedRecord: undefined,
     } );
-    const [ modal, setModal ] = useState<React.ReactElement>(null);
     let params = useParams<IVendorTableParams>();
-    const [ vendors, setVendors ] = useState< Vendor[] >( [] );
+    const [ vendors, setVendors ] = useState<Vendor[]>( [] );
+    const [ modal, setModal ] = useState<React.ReactElement>( null );
+    const history = useHistory();
+
+    const handleModalChange = ( modal: React.ReactElement ) => {
+        if (modal === null ){
+            history.push('/vendor');
+        }
+        setModal(modal);
+    }
 
     React.useEffect( () => {
         console.log({'position': 'React.useEffect', vendor_id: params.vendor_id, action: params.action});
         switch ( params.action ) {
             case "edit":
                 if ( params.vendor_id ) {
-                    setModal( <VendorFormModal visibilityHandler={setModal} vendorId={parseInt( params.vendor_id )} /> );
+                    setModal( <VendorFormModal visibilityHandler={handleModalChange} vendorId={parseInt( params.vendor_id )} /> );
                 }
                 break;
             case "add":
@@ -56,7 +65,6 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
                 break;
         }
     }, [ params ] );
-// }, [ params.vendor_id, params.action ] );
 
     const result = useGetVendorsQuery();
 
@@ -82,9 +90,6 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
         }
     }, [ deleteVendorResult ] );
 
-
-
-
     const columns: ColumnProps<Extract<GetVendorsQuery, 'Vendor'>>[] = [
         ...Vendor.Columns,
         ...[
@@ -106,27 +111,6 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
             }
         ]
     ];
-
-    // const setModal = ( modal: React.ReactElement, clickedRecord?: Vendor ) => {
-    //     console.log( "viewPrintModal () ? received", modal, clickedRecord );
-    //     if ( !modal ) {
-    //         setState( {
-    //             ...state,
-    //             clickedRecord: clickedRecord,
-    //             modal: null
-    //         } );
-    //         console.log( "viewPrintModal(null) removing modal" );
-    //         return;
-    //     }
-    //     setState( {
-    //         ...state,
-    //         modal: modal,
-    //         clickedRecord: clickedRecord
-    //     } );
-    //     console.log( "viewPrintModal () ? provided new modal" );
-    //     return;
-    // };
-
 
     // const handleTableChange = ( pagination: TablePaginationConfig, filters, sorter ) => {
     //     const pager = state.pagination;
