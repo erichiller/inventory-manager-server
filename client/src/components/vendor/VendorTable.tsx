@@ -8,6 +8,7 @@ import { Link, useParams } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { VendorFormModal } from './VendorFormModal';
 import { Vendor } from '../../lib/Vendor/Vendor';
+import { useState } from 'react';
 
 
 
@@ -35,8 +36,9 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
         loading: false,
         clickedRecord: undefined,
     } );
-    const [ modal, setModal ] = React.useState<React.ReactElement>(null);
+    const [ modal, setModal ] = useState<React.ReactElement>(null);
     let params = useParams<IVendorTableParams>();
+    const [ vendors, setVendors ] = useState< Vendor[] >( [] );
 
     React.useEffect( () => {
         console.log({'position': 'React.useEffect', vendor_id: params.vendor_id, action: params.action});
@@ -59,6 +61,12 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
 // }, [ params.vendor_id, params.action ] );
 
     const result = useGetVendorsQuery();
+
+    React.useEffect( () => {
+        if ( result.data ){
+            setVendors(Vendor.ItemsFactory(result.data.vendor));
+        }
+    }, [ result.data ]);
 
 
     const columns: ColumnProps<Extract<GetVendorsQuery, 'Vendor'>>[] = [
@@ -117,13 +125,13 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
     }
 
     if ( result.error ) return <span>Error</span>;
-    console.log( "data is", result.data, '\ncolumns are', columns, '\nmodal is:', modal );
+    console.log( "data is", result.data, '\nvendors:', vendors, '\ncolumns are', columns, '\nmodal is:', modal );
     return (
         <div>
             {modal}
             <Table
                 columns={columns}
-                dataSource={result.data ? result.data.vendor : []}
+                dataSource={vendors}
                 rowKey={vendor => vendor.id.toString()}
                 pagination={state.pagination}
                 loading={result.loading}

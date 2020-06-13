@@ -25103,7 +25103,7 @@ export type InsertVendorMutationVariables = Exact<{
 
 export type InsertVendorMutation = (
   { __typename?: 'mutation_root' }
-  & { insert_vendor?: Maybe<(
+  & { vendor?: Maybe<(
     { __typename?: 'vendor' }
     & BasicVendorFieldsFragment
   )> }
@@ -26523,7 +26523,7 @@ export type SearchVendorsLazyQueryHookResult = ReturnType<typeof useSearchVendor
 export type SearchVendorsQueryResult = ApolloReactCommon.QueryResult<SearchVendorsQuery, SearchVendorsQueryVariables>;
 export const InsertVendorDocument = gql`
     mutation InsertVendor($account_id: String, $name: String!, $manufacturer: manufacturer_obj_rel_insert_input, $url: String!) {
-  insert_vendor: insert_vendor_one(object: {account_id: $account_id, name: $name, manufacturer: $manufacturer, url: $url}) {
+  vendor: insert_vendor_one(object: {account_id: $account_id, name: $name, manufacturer: $manufacturer, url: $url}) {
     ...basicVendorFields
   }
 }
@@ -27139,4 +27139,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-10T09:56:24-06:00
+// graphql typescript defs generated on 2020-06-12T05:42:50-06:00

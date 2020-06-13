@@ -1,6 +1,7 @@
 
 import {
     Vendor as VendorGql,
+    GetVendorsQueryHookResult,
     Icon,
     Label,
     VendorSelectColumn,
@@ -22,7 +23,7 @@ import { apolloClient } from '../../index';
 import { message, Tooltip } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Union, Unpacked, enumerable, ObjectColumnProperty } from "../UtilityFunctions";
+import { toTitleCase, Union, Unpacked, enumerable, ObjectColumnProperty, sortByCaseInsensitiveText, sortByNumber, makeColumn } from "../UtilityFunctions";
 import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { resolve } from "url";
@@ -42,6 +43,8 @@ interface VendorDataProps extends Pick<ApolloQueryResult<GetVendorQuery>['data']
     // nothing to add
 }
 
+type VendorsGql = GetVendorsQueryHookResult[ 'data' ][ 'vendor' ];
+
 
 export class Vendor implements VendorDataProps {
     __typename: 'vendor' = 'vendor';
@@ -52,13 +55,16 @@ export class Vendor implements VendorDataProps {
     // orders: Array<Order>;
     // orders_aggregate: OrderAggregate;
     url?: string;
-    manufacturer
+    manufacturer?: { id: Integer; };
 
     constructor ( props: Partial<VendorDataProps> ) {
         // constructor( props: Partial<T>){
         // if (!props) return;
         // this.Vendor = props;
-        this.id = props.id;
+        // this.id = props.id;
+        for( let key in props ){
+            this[key] = props[key];
+        }
         console.log( "Vendor class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
     }
 
@@ -95,6 +101,14 @@ export class Vendor implements VendorDataProps {
             // } ).finally( () => {
             // props.visibleHandler( null );
         } ) );
+    }
+
+    /**
+     * Return an array of `Vendor`s from input Gql results
+     * @param results Output from `GetVendor` GraphQL query (`data` property)
+     */
+    static ItemsFactory ( results: VendorsGql ): Array<Vendor> {
+        return results.map( vendorGql => new Vendor( vendorGql ));
     }
 
     /**
@@ -213,42 +227,9 @@ export class Vendor implements VendorDataProps {
      * returns dataurl ( SVG )
      */
     get icon (): IconComponentT {
-        // return <img />;
-        // apolloClient.query<Icon, GetIconQueryVariables>( {
-        //     query: GetIconDocument,
-        //     variables: {id: 'REPLACE WITH UUID'}
-        // } ).then( result => {
-        //     message.info( `Saved Successfully` );
-        // } ).catch( error => {
-        //     console.log( "MUTATE ERROR", error );
-        //     message.error( `Failure during save: ${ error }` );
-        // } ).finally( () => {
-        //     // props.visibleHandler( null );
-        // } );
-        // return new Promise( (result, reject) => apolloClient.query<Icon, GetIconQueryVariables>( {
-        //     query: GetIconDocument,
-        //     variables: { id: 'REPLACE WITH UUID' }
-        // } ) ).then( result => {
-        //     return CodeIcon;
-        // });
-        // return result;
-        // .then( result => { return () => <img src={result.data.data} />; } );
-        /**
-         * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-         * 
-         * SUBCRIBE TO CACHE UPDATES HERE
-         * 
-         * THE CONSTRUCTOR SHOULD TAKE IN THE RESULT OF THE QUERY.
-         * NO QUERIES SHOULD TAKE PLACE HERE
-         * 
-         * SEE:
-         * https://www.apollographql.com/docs/react/api/apollo-client/#apolloclient-functions
-         * https://www.apollographql.com/docs/react/api/apollo-client/#ObservableQuery
-         * 
-         */
-        // return Vendor.icon;
-        // return Vendor<T>.getClassForType( this._class ).icon;
-        return Vendor.icon;
+        // TODO: better way to retrieve and store icons ?
+        // read `<link rel="shortcut icon" type="image/ico" href="/Content/Images/Global/Xtras/favicon.gif" />` from index.html `<head>` ?
+        return () => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />;
     }
     // get iconMatches (): Icon[] {
     //     return null;
@@ -281,47 +262,38 @@ export class Vendor implements VendorDataProps {
      * Vendored
      * Optionally defined on subclasses
      */
-    static get Columns (): ColumnProps<ObjectColumnProperty<Vendor>>[] {
-        // TODO: Vendor columns sensibly
-        // let cols: ColumnProps<Vendor>[] = ( [ ...Object.keys( VendorSelectColumn ), 'name' ].filter(
-        //     key => [ "OBJECT" ].includes( key ) ? false : key ).map(
-        //         // key => [ "ID" ].includes( key ) ? false : key ).map(
-        //         key => {
-        //             return {
-        //                 key: key,
-        //                 title: toTitleCase( key ),
-        //                 dataIndex: VendorSelectColumn[ key ] ?? key,
-        //             };
-        //         } ) );
-        const keys: ObjectColumnProperty<Vendor>[] = [
-            'id',
-            'name',
-            'account_id',
-            'url',
-        ];
-        const cols: ColumnProps<ObjectColumnProperty<Vendor>>[] = keys.map( key => {
-            if ( typeof key === 'string' ) {
-                return {
-                    key: key,
-                    title: toTitleCase( key ),
-                    dataIndex: VendorSelectColumn[ key ] ?? key,
-                } as ColumnProps<ObjectColumnProperty<Vendor>>;
-            }
+    static get Columns (): ColumnProps<Vendor>[] {
 
-            if ( Array.isArray( key ) ) {
-                return {
-                    key: `${ key[ 0 ] }_${ key[ 1 ] }`,
-                    title: toTitleCase( `${ key[ 0 ] }_${ key[ 1 ] }` ),
-                    dataIndex: key,
-                } as ColumnProps<ObjectColumnProperty<Vendor>>;
-            }
-            if ( typeof key === 'object' ) {
-                return key as ColumnProps<ObjectColumnProperty<Vendor>>;
-            }
-        } );
-        return cols;
+        return makeColumn(
+            [
+                {
+                    key: 'id',
+                    responsive: [ 'xl' ],
+                },
+                {
+                    key: 'icon',
+                    title: '',
+                    render: ( text, record: Vendor ) => { 
+                        console.log( { q: 'render icon ?', record, icon: record.icon } ); 
+                        return ( record.icon === null ? null : < record.icon /> ); 
+                    }
+                },
+                {
+                    key: 'name',
+                    sorter: sortByCaseInsensitiveText( 'name' ),
+                    render: ( text, record: Vendor ) => {
+                        return ( record.url === null ? record.name : <a href={record.url}>{record.name}</a> );
+                    }
+                },
+                {
+                    key: 'account_id',
+                    title: 'Account ID',
+                    responsive: [ 'lg' ],
+                }
+            ]
+        );
     }
-    get Columns (): ColumnProps<ObjectColumnProperty<Vendor>>[] {
+    get Columns (): ColumnProps<Vendor>[] {
         return Vendor.Columns;
     }
     /**

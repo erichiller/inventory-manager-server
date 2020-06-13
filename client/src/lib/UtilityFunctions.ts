@@ -4,6 +4,7 @@ import { Item, ItemHardwareFastenerScrewMachine } from './item';
 import { EnumUnitKeys, SubType } from './types/UtilityTypes';
 import { EnumUnitEnum } from './types/graphql';
 import { GenericItem } from './item/Item';
+import { ColumnProps } from 'antd/lib/table';
 
 export * from './types/UtilityTypes';
 
@@ -340,4 +341,83 @@ export function tableFilterFromEnum( e: object){
             value: k
         };
     } );
+}
+
+/**
+ * Returns a copy of the input object with no references to the input object.
+ * @param obj object to copy
+ * @returns new object with no references to input object
+ * 
+ * @description
+ * Currently this uses JSON parse, stringify, which seems like a hack, but thats the best I've found.
+ * Maybe using a recursive `Object.assign` would be faster?
+ * 
+ * **foo**
+ * 
+ * @see 
+ * - {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign MDN - Object.assign}
+ * - {@link https://stackoverflow.com/questions/59140106/angular-how-can-i-clone-an-object-in-typescript Stack Overflow - How to clone object in TypeScript}
+ */
+export function deepCopy<T extends Object>( obj: T ): T {
+    return JSON.parse( JSON.stringify( obj ) );
+}
+
+
+
+
+/**
+ * Quick function to create ColumnProps for use in Ant Design Table
+ * @param columns When providing a ColumnProps object, only the key is needed (unless custom props are required), `title` and `dataIndex` will be auto-added.
+ *
+ * @description Breakpoint
+ * options: 'xxl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs';
+ * ```
+ * label | definition
+ * ------|------------
+ *  xs   | '(max-width: 575px)',
+ *  sm   | '(min-width: 576px)',
+ *  md   | '(min-width: 768px)',
+ *  lg   | '(min-width: 992px)',
+ *  xl   | '(min-width: 1200px)',
+ *  xxl  | '(min-width: 1600px)',
+ * ```
+ * @see {@link https://github.com/ant-design/ant-design/blob/015109b42b85c63146371b4e32b883cf97b088e8/components/_util/responsiveObserve.ts#L1 antd Table Breakpoints}
+ *
+ */
+export function makeColumn<T> ( columns: Array<keyof T | ColumnProps<T>> ): Array<ColumnProps<T>>;
+export function makeColumn<T> ( keys: Array<keyof T> ): ColumnProps<T>;
+export function makeColumn<T> ( key: keyof T ): ColumnProps<T>;
+export function makeColumn<T> ( key:
+    keyof T
+    | Array<keyof T>
+    | Array<
+        keyof T
+        | ColumnProps<T>
+    > ): any {
+    return ( !Array.isArray( key ) ? [ key ] : key ).map( k => {
+        let kKey: string = typeof k === 'object' ? k.key as string : k as string;
+
+        return Object.assign(
+            {},
+            {
+                key: kKey,
+                title: toTitleCase( kKey ),
+                dataIndex: kKey,
+            },
+            typeof k === 'object' ? k : {}
+        );
+    } );
+}
+
+/**
+ * 
+ * @param property keyof object to be filtered
+ * @param optionObject 
+ */
+export function commonFilterConfig<T> ( property: Extract<keyof T, string>, optionObject: object ) {
+    return {
+        filters: tableFilterFromEnum( optionObject ),
+        filterMultiple: true,
+        onFilter: ( value: string | number | boolean, record: T ) => record[ property as string ] === value,
+    };
 }
