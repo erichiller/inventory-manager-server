@@ -4,10 +4,11 @@ import { OrderSelectColumn, useGetOrdersQuery, GetOrdersQuery, Order as OrderGql
 import { Item } from '../../lib/item';
 import { toTitleCase, computeDefaultPagination } from '../../lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { OrderFormModal } from './OrderFormModal';
 import { Order } from '../../lib/Order/Order';
+import { useState } from 'react';
 
 
 
@@ -21,7 +22,6 @@ interface OrderTableState {
     pagination: false | TablePaginationConfig;
     loading: boolean;
     clickedRecord: Order;
-    modal: React.ReactElement;
 }
 
 interface IOrderTableParams {
@@ -35,21 +35,29 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
         // pagination: { total: 0, pageSize: 100, current: 0 },
         pagination: { hideOnSinglePage: true, defaultPageSize: computeDefaultPagination() },
         loading: false,
-        clickedRecord: undefined,
-        modal: null
+        clickedRecord: undefined
     } );
     let params = useParams<IOrderTableParams>();
+    const [ modal, setModal ] = useState<React.ReactElement>( null );
+    const history = useHistory();
+
+    const handleModalChange = ( modal: React.ReactElement ) => {
+        if ( modal === null ) {
+            history.push( '/order' );
+        }
+        setModal( modal );
+    }
 
     React.useEffect( () => {
         switch ( params.action ) {
             case "edit":
                 if ( params.order_id ) {
-                    setModal( <OrderFormModal orderId={parseInt( params.order_id )} /> );
+                    setModal( <OrderFormModal visibilityHandler={handleModalChange} orderId={parseInt( params.order_id )} /> );
                 }
                 break;
             case "add":
                 if ( params.order_id ) {
-                    setModal( <OrderFormModal /> );
+                    setModal( <OrderFormModal visibilityHandler={handleModalChange} /> );
                 }
                 break;
             default:
@@ -79,25 +87,25 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
         ]
     ];
 
-    const setModal = ( modal: React.ReactElement, clickedRecord?: Order ) => {
-        console.log( "viewPrintModal () ? received", modal, clickedRecord );
-        if ( !modal ) {
-            setState( {
-                ...state,
-                clickedRecord: clickedRecord,
-                modal: null
-            } );
-            console.log( "viewPrintModal(null) removing modal" );
-            return;
-        }
-        setState( {
-            ...state,
-            modal: modal,
-            clickedRecord: clickedRecord
-        } );
-        console.log( "viewPrintModal () ? provided new modal" );
-        return;
-    };
+    // const setModal = ( modal: React.ReactElement, clickedRecord?: Order ) => {
+    //     console.log( "viewPrintModal () ? received", modal, clickedRecord );
+    //     if ( !modal ) {
+    //         setState( {
+    //             ...state,
+    //             clickedRecord: clickedRecord,
+    //             modal: null
+    //         } );
+    //         console.log( "viewPrintModal(null) removing modal" );
+    //         return;
+    //     }
+    //     setState( {
+    //         ...state,
+    //         modal: modal,
+    //         clickedRecord: clickedRecord
+    //     } );
+    //     console.log( "viewPrintModal () ? provided new modal" );
+    //     return;
+    // };
 
 
     const handleTableChange = ( pagination: TablePaginationConfig, filters, sorter ) => {
@@ -119,7 +127,7 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
     console.log( "data is", result.data, '\ncolumns are', columns );
     return (
         <div>
-            {state.modal}
+            {modal}
             <Table
                 columns={columns}
                 dataSource={result.data ? result.data.order : []}

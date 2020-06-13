@@ -16,8 +16,16 @@ export const MainMenu: React.FC<{}> = ( props ) => {
             <span role="img" aria-label="container" className="anticon anticon-container IconButton"><CurlyBracesIcon /></span>Objects</Link></Menu.Item>
         <Menu.Item key="/label"><Link to="/label"><TagOutlined />Labels</Link></Menu.Item>
         <Menu.SubMenu key="/order" title={<Link to="/order"><ShoppingCartOutlined />Orders</Link>} >
-            <Menu.Item key="/order"><Link to="/order"><UnorderedListOutlined />List</Link></Menu.Item>
-            <Menu.Item key="/order/_/add"><Link to="/order/_/add"><PlusCircleOutlined />Add Order</Link></Menu.Item>
+            <Menu.Item key="/order">
+
+                <Menu className="MainMenuInItem" mode="horizontal"
+                    selectedKeys={[ location.pathname ]}
+                >
+                    <Menu.Item key="/order"><Link to="/order"><UnorderedListOutlined />Orders</Link></Menu.Item>
+                    <Menu.Item key="/order/_/add"><Link to="/order/_/add"><PlusSquareOutlined /></Link></Menu.Item>
+                </Menu>
+            </Menu.Item>
+            
             <Menu.Item key="/vendor">
                 <Menu className="MainMenuInItem" mode="horizontal" 
                 selectedKeys={[ location.pathname ]} 

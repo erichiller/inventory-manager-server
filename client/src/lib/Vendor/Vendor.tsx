@@ -29,7 +29,7 @@ import { FormInstance } from "antd/lib/form";
 import { resolve } from "url";
 import { rejects } from "assert";
 import { CategoryHierarchyT, IconComponentT, FormMutationHandler } from "../item/Item";
-import { ShoppingCartOutlined, ShopOutlined } from "@ant-design/icons";
+import { ShoppingCartOutlined, ShopOutlined, CheckOutlined } from "@ant-design/icons";
 import { ApolloQueryResult } from "apollo-client";
 
 interface VendorDataProps extends Pick<ApolloQueryResult<GetVendorQuery>['data']['vendor'],
@@ -58,13 +58,16 @@ export class Vendor implements VendorDataProps {
     url?: string;
     manufacturer?: { id: Integer; }; 
 
-    constructor ( props: Partial<VendorDataProps> ) {
+    constructor ( props: Partial<ApolloQueryResult<GetVendorQuery>[ 'data' ][ 'vendor' ]> ) {
         // constructor( props: Partial<T>){
         // if (!props) return;
         // this.Vendor = props;
         // this.id = props.id;
         for( let key in props ){
             this[key] = props[key];
+        }
+        if ( props.manufacturer && props.manufacturer.length === 1 ){
+            this.manufacturer = props.manufacturer[0];
         }
         console.log( "Vendor class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
     }
@@ -290,6 +293,14 @@ export class Vendor implements VendorDataProps {
                     key: 'account_id',
                     title: 'Account ID',
                     responsive: [ 'lg' ],
+                },
+                {
+                    key: 'manufacturer',
+                    title: 'Manufacturer?',
+                    responsive: ['lg'],
+                    render: ( text, record: Vendor ) => {
+                        return ( record.manufacturer?.id ? <CheckOutlined /> : null )
+                    }
                 }
             ]
         );
