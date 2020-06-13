@@ -1,6 +1,6 @@
-import { Table, Divider } from 'antd';
+import { Table, Divider, message } from 'antd';
 import * as React from 'react';
-import { VendorSelectColumn, Vendor as VendorGql, useGetVendorsQuery, GetVendorsQuery } from '../../lib/types/graphql';
+import { VendorSelectColumn, Vendor as VendorGql, useGetVendorsQuery, GetVendorsQuery, useDeleteVendorMutation, GetVendorDocument, GetVendorsDocument } from '../../lib/types/graphql';
 import { Item } from '../../lib/item';
 import { toTitleCase, computeDefaultPagination } from '../../lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
@@ -49,9 +49,7 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
                 }
                 break;
             case "add":
-                if ( params.vendor_id ) {
-                    setModal( <VendorFormModal visibilityHandler={setModal} /> );
-                }
+                setModal( <VendorFormModal visibilityHandler={setModal} /> );
                 break;
             default:
                 setModal( null );
@@ -62,11 +60,29 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
 
     const result = useGetVendorsQuery();
 
+    const [ deleteVendor, deleteVendorResult ] = useDeleteVendorMutation( {
+        refetchQueries: [
+            { query: GetVendorsDocument }
+        ]
+    } );
+
     React.useEffect( () => {
-        if ( result.data ){
-            setVendors(Vendor.ItemsFactory(result.data.vendor));
+        console.log( "updating vendor objects from result.data" );
+        if ( result.data ) {
+            console.log("updating vendor objects from result.data");
+            setVendors( Vendor.ItemsFactory( result.data.vendor ) );
         }
-    }, [ result.data ]);
+    }, [ result.data ] );
+
+    React.useEffect( () => {
+        if ( deleteVendorResult.error ){
+            message.error( `Error deleting vendor: \n${deleteVendorResult.error}`);
+        } else if ( deleteVendorResult.data ) {
+            message.info( `Successfully deleted vendor.`);
+        }
+    }, [ deleteVendorResult ] );
+
+
 
 
     const columns: ColumnProps<Extract<GetVendorsQuery, 'Vendor'>>[] = [
@@ -81,7 +97,10 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
                         <Link to={`/vendor/${ record.id }/edit`}><EditOutlined className="IconButton" /></Link>
                         <Divider type="vertical" />
                         {/* TODO */}
-                        <a><DeleteOutlined className="IconButton" /></a>
+                        <a><DeleteOutlined className="IconButton" onClick={ ( ) => {
+                            deleteVendor({variables: {id: record.id }});
+                        }
+                        }/></a>
                     </span >
                 ),
             }

@@ -37,8 +37,9 @@ interface VendorDataProps extends Pick<ApolloQueryResult<GetVendorQuery>['data']
     'id' |
     'name' |
     'url' |
-    'account_id' | 
-    'manufacturer'
+    'account_id'
+    // FIXME - `manufacturer` needs fixing - this is a hack-ish work-around because hasura does not allow inserting related objects when the relation column is on the far side object. However, with arrays it does.
+    // 'manufacturer'
     > {
     // nothing to add
 }
@@ -55,7 +56,7 @@ export class Vendor implements VendorDataProps {
     // orders: Array<Order>;
     // orders_aggregate: OrderAggregate;
     url?: string;
-    manufacturer?: { id: Integer; };
+    manufacturer?: { id: Integer; }; 
 
     constructor ( props: Partial<VendorDataProps> ) {
         // constructor( props: Partial<T>){
