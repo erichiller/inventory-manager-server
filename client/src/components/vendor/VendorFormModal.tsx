@@ -8,7 +8,7 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  **/
 import { GetVendorQuery, GetVendorQueryVariables, useGetVendorQuery, useInsertVendorMutation, InsertVendorMutationVariables, useGetVendorLazyQuery, useUpdateVendorMutation, useInsertManufacturerMutation, UpdateVendorMutationVariables, useDeleteManufacturerMutation } from '../../lib/types/graphql';
 
-import { QueryResultTypePlus, Union, filterObject } from '../../lib/UtilityFunctions';
+import { QueryResultTypePlus, Union, filterObject, deepCopy } from '../../lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/util';
@@ -92,16 +92,16 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
 
     useEffect( () => {
         let error = insertVendorResult.error || updateVendorResult.error || insertManufacturerResult.error || deleteManufacturerResult.error;
-        let 
-        if ( insertVendorResult.error || updateVendorResult.error || insertManufacturerResult.error || deleteManufacturerResult.error ) {
+        let data = insertVendorResult.data || updateVendorResult.data; // || insertManufacturerResult.data || deleteManufacturerResult.data;
+        if ( error ) {
             // completeCallback( false );
-            message.error( `${ insertVendorResult.error.name }: ${ insertVendorResult.error.message }` );
-        } else if ( insertVendorResult.data || updateVendorResult.data || insertManufacturerResult.data || deleteManufacturerResult.data ) {
-            message.success( `successfully created ${ insertVendorResult.data?.__typename } with id ${ insertVendorResult.data.insert_vendor.id }` );
-            return () => {
+            message.error( `${ error.name }: ${ error.message }` );
+        } else if ( data ) {
+            message.success( `successfully ${ insertVendorResult.data ? 'created' : 'updated' } ${ data?.vendor.__typename } with id ${ data.vendor.id }` );
+            // return () => {
                 form.resetFields();
                 exitModal();
-            };
+            // };
         }
     }, [ insertVendorResult, updateVendorResult, insertManufacturerResult, deleteManufacturerResult ] );
 
@@ -116,16 +116,14 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
     const onFinish = ( values: {
         [ name: string ]: any;
     } ) => {
-        console.log( { class: 'VendorEditModal', method: 'onFinish', values, vendor } );
-
-        console.log( { c: "insertVendorMutation" }, form.getFieldsValue() );
+        console.log( { class: 'VendorEditModal', method: 'onFinish', values, vendor, formFieldValues: form.getFieldsValue() } );
         if ( vendorId ) {
             let formFieldValues = form.getFieldsValue() as Exclude<UpdateVendorMutationVariables, 'id'> & {
                 manufacturer: {data: { id: number; } ; };
             };
             // edit
             // if id now, but not before
-            if ( formFieldValues.manufacturer?.data?.id && !vendor.manufacturer?.id ) {
+            if ( formFieldValues.manufacturer && !vendor.manufacturer ) {
                 console.log( `inserting manufacturer, value was ${ vendor.manufacturer?.id }, value is: ${ formFieldValues.manufacturer?.data?.id}\n`, { vendor } )
                 insertManufacturer( {
                     variables: {
@@ -134,7 +132,8 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                         vendor_id: vendorId
                     }
                 })
-            } else if ( ! formFieldValues.manufacturer?.data?.id && vendor.manufacturer?.id ) {
+            } else if ( ! formFieldValues.manufacturer && vendor.manufacturer ) {
+                console.log( `deleting manufacturer, value was ${ vendor.manufacturer }, value is: ${ formFieldValues.manufacturer }\n`, { vendor, values, formFieldValues: form.getFieldsValue() } )
                 // remove manufacturer record
                 deleteManufacturer( {
                     variables: {
@@ -175,16 +174,15 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
         return <PageSpin />;
     }
 
-    let initialValues: Partial<Vendor> |
-        Union<
-            Exclude<Vendor, 'manufacturer'>,
-            { id: number; }
-        > = {};
+    let initialValues: Partial<Union<
+            Omit<Vendor, 'manufacturer'>,
+            { manufacturer: boolean; }
+        >> = {};
     if ( vendor ) {
-        initialValues = vendor;
-        if ( initialValues.manufacturer ) {
-            initialValues.manufacturer = true;
-        }
+        initialValues = { 
+            ... filterObject( deepCopy(vendor), null, [ 'manufacturer' ]), 
+            ...{ manufacturer: ( ( vendor.manufacturer?.id ) ? true : false) } 
+        };
     }
 
     return <Modal

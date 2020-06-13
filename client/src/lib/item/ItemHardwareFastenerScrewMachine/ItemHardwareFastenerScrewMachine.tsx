@@ -4,7 +4,7 @@ import React from 'react';
 import { Integer } from '../../types/uint8';
 import { HexBoltIcon } from '../../../styles/icon';
 import { ColumnProps } from 'antd/lib/table';
-import { toTitleCase, enumerable, Union, getUnitFromUnitSystem, sortByCaseInsensitiveText, sortByNumber, tableFilterFromEnum } from '../../UtilityFunctions';
+import { toTitleCase, enumerable, Union, getUnitFromUnitSystem, sortByCaseInsensitiveText, sortByNumber, tableFilterFromEnum, makeColumn, commonFilterConfig } from '../../UtilityFunctions';
 import { ItemHardwareFastenerScrewMachineForm } from './Form';
 import { ItemHardwareFastenerScrewMachineEditMutationHandler } from './Edit';
 import { ItemHardwareFastenerScrewMachineAddMutationHandler } from './Add';
@@ -131,59 +131,7 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
     static get Columns (): ColumnProps<ItemHardwareFastenerScrewMachineGql>[] {
         // TODO: group columns sensibly
         // TODO: name columns sensibly
-
-        /**
-         * Quick function to create ColumnProps for use in Ant Design Table
-         * @param columns When providing a ColumnProps object, only the key is needed (unless custom props are required), `title` and `dataIndex` will be auto-added.
-         */
-        function makeColumn ( columns: Array<keyof ItemHardwareFastenerScrewMachineGql | ColumnProps<ItemHardwareFastenerScrewMachineGql>> ): Array<ColumnProps<ItemHardwareFastenerScrewMachineGql>>;
-        function makeColumn ( keys: Array<keyof ItemHardwareFastenerScrewMachineGql> ): ColumnProps<ItemHardwareFastenerScrewMachineGql>;
-        function makeColumn ( key: keyof ItemHardwareFastenerScrewMachineGql ): ColumnProps<ItemHardwareFastenerScrewMachineGql>;
-        function makeColumn ( key:
-            keyof ItemHardwareFastenerScrewMachineGql
-            | Array<keyof ItemHardwareFastenerScrewMachineGql>
-            | Array<
-                keyof ItemHardwareFastenerScrewMachineGql
-                | ColumnProps<ItemHardwareFastenerScrewMachineGql>
-            > ): any {
-            return ( !Array.isArray( key ) ? [ key ] : key ).map( k => {
-                let kKey: string = typeof k === 'object' ? k.key as string : k;
-
-                return Object.assign(
-                    {},
-                    {
-                        key: kKey,
-                        title: toTitleCase( kKey ),
-                        dataIndex: ItemHardwareFastenerScrewMachineSelectColumn[ kKey ] ?? kKey,
-                    },
-                    typeof k === 'object' ? k : {}
-                );
-            } );
-            /** 
-             * breakpoint
-             * see 
-             * https://github.com/ant-design/ant-design/blob/015109b42b85c63146371b4e32b883cf97b088e8/components/_util/responsiveObserve.ts#L1
-             * options: 'xxl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs';
-             *  xs: '(max-width: 575px)',
-             *  sm: '(min-width: 576px)',
-             *  md: '(min-width: 768px)',
-             *  lg: '(min-width: 992px)',
-             *  xl: '(min-width: 1200px)',
-             *  xxl: '(min-width: 1600px)',
-             * 
-             **/
-        }
-
         const renderWithUnitSuffix = ( value, record: ItemHardwareFastenerScrewMachineGql ) => value ? `${ value } ${ getUnitFromUnitSystem( record.unit ) }` : '';
-
-        function commonFilterConfig<T> ( property: Extract<keyof T, string>, optionObject: object ) {
-            return {
-                filters: tableFilterFromEnum( optionObject ),
-                filterMultiple: true,
-                onFilter: ( value: string | number | boolean, record: T ) => record[ property as string ] === value,
-            };
-        }
-
 
         return makeColumn(
             [
