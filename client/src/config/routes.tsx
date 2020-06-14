@@ -6,6 +6,7 @@ import { ItemIndex } from '../components/item/Index';
 import { ItemFormModal } from '../components/item/ItemFormModal';
 import { OrderTable } from '../components/order/OrderTable';
 import { VendorTable } from '../components/vendor/VendorTable';
+import { ManufacturerTable } from '../components/manufacturer/ManufacturerTable';
 
 type ReactFunctionComponent = ( ( route?: RouteEntry, match?: RouterMatch ) => JSX.Element );
 
@@ -84,6 +85,19 @@ export const routes: RouteEntry[] = [
         // ModeMenu: () => <ProjectModeMenu />,
         main: () => {
             return <VendorTable />;
+        }
+    },
+    {
+        title: "Manufacturers",
+        subtitle: "View or add manufacturers",
+        breadcrumbName: "Orders",
+        path: [ "/manufacturer", "/manufacturer/:manufacturer_id", "/manufacturer/:manufacturer_id/:action" ], // action can be either 'edit' or 'add'
+        exact: true,
+        // AppMenuIcon: () => <Icon component={DiggingIcon as any} />,
+        // AppMenuEntry: () => <ProjectSubMenu key="ProjectsubMenu" />,
+        // ModeMenu: () => <ProjectModeMenu />,
+        main: () => {
+            return <ManufacturerTable />;
         }
     },
 ];

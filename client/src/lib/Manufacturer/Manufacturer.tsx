@@ -1,20 +1,17 @@
 
 import {
-    Vendor as VendorGql,
-    GetVendorsQueryHookResult,
+    Manufacturer as ManufacturerGql,
+    GetManufacturersQueryHookResult,
     Icon,
     Label,
-    VendorSelectColumn,
-    GetVendorQueryVariables,
-    GetVendorDocument,
-    GetVendorQuery,
+    ManufacturerSelectColumn,
+    GetManufacturerQueryVariables,
+    GetManufacturerDocument,
+    GetManufacturerQuery,
     Scalars,
     Maybe,
-    VendorItem,
-    VendorItemAggregate,
-    PaymentMethod,
-    Shipment,
-    ShipmentAggregate
+    ManufacturerItem,
+    ManufacturerItemAggregate,
 } from "../types/graphql";
 
 import { Integer } from '../types/uint8';
@@ -32,73 +29,67 @@ import { CategoryHierarchyT, IconComponentT, FormMutationHandler } from "../item
 import { ShoppingCartOutlined, ShopOutlined, CheckOutlined } from "@ant-design/icons";
 import { ApolloQueryResult } from "apollo-client";
 
-interface VendorDataProps extends Pick<ApolloQueryResult<GetVendorQuery>['data']['vendor'],
+interface ManufacturerDataProps extends Pick<ApolloQueryResult<GetManufacturerQuery>['data']['manufacturer'],
     '__typename' |
     'id' |
     'name' |
     'url' |
-    'account_id'
-    // FIXME - `manufacturer` needs fixing - this is a hack-ish work-around because hasura does not allow inserting related objects when the relation column is on the far side object. However, with arrays it does.
-    // 'manufacturer'
+    'vendor_id'
     > {
     // nothing to add
 }
 
-type VendorsGql = GetVendorsQueryHookResult[ 'data' ][ 'vendor' ];
+type ManufacturersGql = GetManufacturersQueryHookResult[ 'data' ][ 'manufacturer' ];
 
 
-export class Vendor implements VendorDataProps {
-    __typename: 'vendor' = 'vendor';
-    account_id?: string;
+export class Manufacturer implements ManufacturerDataProps {
+    __typename: 'manufacturer' = 'manufacturer';
     id: Integer;
     // manufacturer?: Maybe<Manufacturer>;
     name: string;
     // orders: Array<Order>;
     // orders_aggregate: OrderAggregate;
-    url?: string;
-    manufacturer?: { id: Integer; }; 
+    url: string;
+    vendor_id?: Integer;
 
-    constructor ( props: Partial<ApolloQueryResult<GetVendorQuery>[ 'data' ][ 'vendor' ]> ) {
+    constructor ( props: Partial<ApolloQueryResult<GetManufacturerQuery>[ 'data' ][ 'manufacturer' ]> ) {
         // constructor( props: Partial<T>){
         // if (!props) return;
-        // this.Vendor = props;
+        // this.Manufacturer = props;
         // this.id = props.id;
         for( let key in props ){
             this[key] = props[key];
         }
-        if ( props.manufacturer && props.manufacturer.length === 1 ){
-            this.manufacturer = props.manufacturer[0];
-        }
-        console.log( "Vendor class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
+        console.log( "Manufacturer class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
     }
 
     static [ Symbol.hasInstance ] ( instance: object ) {
-        // TODO: apply to other Vendor subclasses
+        // TODO: apply to other Manufacturer subclasses
         // TODO: use `constructor.name` ??
-        if ( '__typename' in instance && instance[ '__typename' ] === 'vendor' ) {
+        if ( '__typename' in instance && instance[ '__typename' ] === 'manufacturer' ) {
             return true;
         }
         return false;
     }
 
-    static async VendorFactory<Q extends typeof GetVendorDocument> ( variables: GetVendorQueryVariables, query: Q = GetVendorDocument as Q ): Promise<Vendor> {
+    static async ManufacturerFactory<Q extends typeof GetManufacturerDocument> ( variables: GetManufacturerQueryVariables, query: Q = GetManufacturerDocument as Q ): Promise<Manufacturer> {
 
-        return new Promise( ( resolve, reject ) => apolloClient.query<GetVendorQuery, GetVendorQueryVariables>( {
+        return new Promise( ( resolve, reject ) => apolloClient.query<GetManufacturerQuery, GetManufacturerQueryVariables>( {
             query: query,
             variables: {
                 id: variables.id
             }
         } ).then( result => {
-            console.log( { _cls: "Vendor", method: 'VendorFactory', msg: "loading Vendor from GraphQL", vendor_data: result } );
-            const data = result.data.vendor;
-            let vendor = new Vendor( result.data.vendor );
+            console.log( { _cls: "Manufacturer", method: 'ManufacturerFactory', msg: "loading Manufacturer from GraphQL", manufacturer_data: result } );
+            const data = result.data.manufacturer;
+            let manufacturer = new Manufacturer( result.data.manufacturer );
             // it._name = result.data.object?.main ? result.data.object.name : "";
             // this._class = result.data.object;
             // this._object = result.data.object;
-            resolve( vendor );
+            resolve( manufacturer );
             // message.info( `Saved Successfully` );
         } ).catch( error => {
-            const msg = `Failure loading Vendor ${ variables.id }: ${ error }`;
+            const msg = `Failure loading Manufacturer ${ variables.id }: ${ error }`;
             console.error( msg );
             message.error( msg );
             reject( error );
@@ -108,28 +99,28 @@ export class Vendor implements VendorDataProps {
     }
 
     /**
-     * Return an array of `Vendor`s from input Gql results
-     * @param results Output from `GetVendor` GraphQL query (`data` property)
+     * Return an array of `Manufacturer`s from input Gql results
+     * @param results Output from `GetManufacturer` GraphQL query (`data` property)
      */
-    static ItemsFactory ( results: VendorsGql ): Array<Vendor> {
-        return results.map( vendorGql => new Vendor( vendorGql ));
+    static ItemsFactory ( results: ManufacturersGql ): Array<Manufacturer> {
+        return results.map( manufacturerGql => new Manufacturer( manufacturerGql ));
     }
 
     /**
      * The GraphQL `__typename`
      */
-    get class (): 'vendor' {
+    get class (): 'manufacturer' {
         return this.__typename;
     }
     /**
      * Returns self as a simple object. `get prop(): string` converted to `{ prop: string }`
      */
-    get simpleObject (): VendorDataProps {
+    get simpleObject (): ManufacturerDataProps {
         let simpleObject: { [ key: string ]: any; } = {};
         for ( let propertyKey in this ) {
             simpleObject[ propertyKey ] = this[ propertyKey ];
         }
-        return simpleObject as VendorDataProps;
+        return simpleObject as ManufacturerDataProps;
     }
 
     // @enumerable( true )
@@ -153,44 +144,44 @@ export class Vendor implements VendorDataProps {
 
     // static get categories (): CategoryHierarchyT[] {
     //     // TODO: this needs to calculate on the fly from `class`
-    //     return [ "Vendor" ];
+    //     return [ "Manufacturer" ];
     // }
     // get categories (): CategoryHierarchyT[] {
-    //     return [ "Vendor" ];
+    //     return [ "Manufacturer" ];
     // }
 
     // /**
-    //  * All possible Vendor classes / types
+    //  * All possible Manufacturer classes / types
     //  */
-    // static get ClassTypes (): Array<keyof typeof EnumVendorClassEnum> {
-    //     return Object.keys( EnumVendorClassEnum ) as Array<keyof typeof EnumVendorClassEnum>;
+    // static get ClassTypes (): Array<keyof typeof EnumManufacturerClassEnum> {
+    //     return Object.keys( EnumManufacturerClassEnum ) as Array<keyof typeof EnumManufacturerClassEnum>;
     // }
 
 
-    // // static _ClassTypes: Partial< IEnumVendorMap< VendorExtender<any> > > = {};
-    // static _ClassTypes: IEnumVendorMap;
+    // // static _ClassTypes: Partial< IEnumManufacturerMap< ManufacturerExtender<any> > > = {};
+    // static _ClassTypes: IEnumManufacturerMap;
 
     // static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T>; }> (
-    //     VendorClass: VendorGqlTypename,
+    //     ManufacturerClass: ManufacturerGqlTypename,
     //     typeClass: T
     // ) {
-    //     Vendor._ClassTypes = {
-    //         ...Vendor._ClassTypes,
-    //         ...Object.fromEntries( [ [ VendorClass.toLowerCase(), typeClass ] ] )
+    //     Manufacturer._ClassTypes = {
+    //         ...Manufacturer._ClassTypes,
+    //         ...Object.fromEntries( [ [ ManufacturerClass.toLowerCase(), typeClass ] ] )
     //     };
     // }
 
     /**
      * Return the class for an input GraphQL `__typename`
-     * @param VendorTypename The GraphQL type for an Vendor class, this is what is found in `__typename` and is of the form `Vendor_category1_category2_classname`
+     * @param ManufacturerTypename The GraphQL type for an Manufacturer class, this is what is found in `__typename` and is of the form `Manufacturer_category1_category2_classname`
      */
-    // public static getClassForType ( VendorTypename: VendorGqlTypename ): typeof Vendor {
-    //     let VendorClassLowerCase = VendorTypename.toLowerCase();
-    //     // console.log( { class: 'Vendor', method: 'getClassForType', classTypes: Vendor._ClassTypes, lookup_key: VendorClass } );
-    //     // if ( VendorClassLowerCase === "Vendor" ) {
-    //     //     return Vendor;
+    // public static getClassForType ( ManufacturerTypename: ManufacturerGqlTypename ): typeof Manufacturer {
+    //     let ManufacturerClassLowerCase = ManufacturerTypename.toLowerCase();
+    //     // console.log( { class: 'Manufacturer', method: 'getClassForType', classTypes: Manufacturer._ClassTypes, lookup_key: ManufacturerClass } );
+    //     // if ( ManufacturerClassLowerCase === "Manufacturer" ) {
+    //     //     return Manufacturer;
     //     // }
-    //     return Vendor._ClassTypes[ VendorClassLowerCase ];
+    //     return Manufacturer._ClassTypes[ ManufacturerClassLowerCase ];
     // }
 
     static get icon (): IconComponentT {
@@ -233,7 +224,7 @@ export class Vendor implements VendorDataProps {
     get icon (): IconComponentT {
         // TODO: better way to retrieve and store icons ?
         // read `<link rel="shortcut icon" type="image/ico" href="/Content/Images/Global/Xtras/favicon.gif" />` from index.html `<head>` ?
-        return () => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />;
+        return () => <img className="manufacturerIcon" src={`${ this.url }/favicon.ico`} />;
     }
     // get iconMatches (): Icon[] {
     //     return null;
@@ -254,19 +245,19 @@ export class Vendor implements VendorDataProps {
      * Props which should be included in label (default) 
      * Optionally defined on subclasses
      */
-    get labelProps (): Array<keyof Vendor> {
-        return Object.keys( this ) as Array<keyof Vendor>;
+    get labelProps (): Array<keyof Manufacturer> {
+        return Object.keys( this ) as Array<keyof Manufacturer>;
     }
     // static get labelProps (): Array<string> {
-    //     console.log( {keysOfThisCls: Object.keys( this ), keysOfVendorCls: Object.keys(Vendor) });
-    //     return Object.keys( this ) as Array<Extract<keyof GenericVendor, string>>;
+    //     console.log( {keysOfThisCls: Object.keys( this ), keysOfManufacturerCls: Object.keys(Manufacturer) });
+    //     return Object.keys( this ) as Array<Extract<keyof GenericManufacturer, string>>;
     // }
     /**
      * Props to use as display columns (default)
-     * Vendored
+     * Manufacturered
      * Optionally defined on subclasses
      */
-    static get Columns (): ColumnProps<Vendor>[] {
+    static get Columns (): ColumnProps<Manufacturer>[] {
 
         return makeColumn(
             [
@@ -277,7 +268,7 @@ export class Vendor implements VendorDataProps {
                 {
                     key: 'icon',
                     title: '',
-                    render: ( text, record: Vendor ) => { 
+                    render: ( text, record: Manufacturer ) => { 
                         console.log( { q: 'render icon ?', record, icon: record.icon } ); 
                         return ( record.icon === null ? null : < record.icon /> ); 
                     }
@@ -285,60 +276,60 @@ export class Vendor implements VendorDataProps {
                 {
                     key: 'name',
                     sorter: sortByCaseInsensitiveText( 'name' ),
-                    render: ( text, record: Vendor ) => {
+                    render: ( text, record: Manufacturer ) => {
                         return ( record.url === null ? record.name : <a href={record.url}>{record.name}</a> );
                     }
                 },
                 {
-                    key: 'account_id',
+                    key: 'vendor_id',
                     title: 'Account ID',
                     responsive: [ 'lg' ],
                 },
                 {
-                    // TODO: Make this a link to the manufacturer.
-                    key: 'manufacturer',
-                    title: 'Manufacturer?',
+                    // TODO: Make this a link to the vendor.
+                    key: 'vendor_id',
+                    title: 'Vendor?',
                     responsive: ['lg'],
-                    render: ( text, record: Vendor ) => {
-                        return ( record.manufacturer?.id ? <CheckOutlined /> : null )
+                    render: ( text, record: Manufacturer ) => {
+                        return ( record.vendor_id ? <CheckOutlined /> : null )
                     }
                 }
             ]
         );
     }
-    get Columns (): ColumnProps<Vendor>[] {
-        return Vendor.Columns;
+    get Columns (): ColumnProps<Manufacturer>[] {
+        return Manufacturer.Columns;
     }
     /**
      * Props which should be included in search (default)
-     * Vendored
+     * Manufacturered
      * Optionally defined on subclasses
      */
-    get searchProps (): ( keyof Vendor )[] {
+    get searchProps (): ( keyof Manufacturer )[] {
         return null;
     }
     /**
      * Props which should be filterable in table (default)
-     * Vendored
+     * Manufacturered
      * Optionally defined on subclasses
      */
-    get filterProps (): ( keyof Vendor )[] {
+    get filterProps (): ( keyof Manufacturer )[] {
         return null;
     }
     /**
      * Props which should be sortable in table (default)
-     * Vendored
+     * Manufacturered
      * Optionally defined on subclasses
      */
-    get sortProps (): ( keyof Vendor )[] {
+    get sortProps (): ( keyof Manufacturer )[] {
         return null;
     }
     /**
      * Props to default to in QR Code (default)
-     * Vendored
+     * Manufacturered
      * Optionally defined on subclasses
      */
-    get defaultQrProps (): ( keyof Vendor )[] {
+    get defaultQrProps (): ( keyof Manufacturer )[] {
         return null;
     }
 
@@ -347,7 +338,7 @@ export class Vendor implements VendorDataProps {
         return null;
     }
     /**
-     * Form to add Vendor
+     * Form to add Manufacturer
      */
     static get addComponent (): React.FC {
         return null;
@@ -359,7 +350,7 @@ export class Vendor implements VendorDataProps {
         return null;
     }
     /**
-     * Form to edit Vendor
+     * Form to edit Manufacturer
      */
     get editComponent (): React.FC {
         return null;
@@ -373,7 +364,7 @@ export class Vendor implements VendorDataProps {
     /**
      * editFormInitialValues control what data is loaded into edit form upon render
      */
-    get editFormInitialValues (): VendorDataProps {
+    get editFormInitialValues (): ManufacturerDataProps {
         return null;
     }
     /**
@@ -384,7 +375,7 @@ export class Vendor implements VendorDataProps {
     }
 
     /**
-     * Component displayed when Vendor moused over in Table
+     * Component displayed when Manufacturer moused over in Table
      * Default is to display all properties EXCEPT `_object`
      */
     get mouseOverRowComponent (): React.FC {
@@ -392,7 +383,7 @@ export class Vendor implements VendorDataProps {
         return ( props ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key, value ] ) => key !== '_object' ) ), null, 2 )}</pre>;
     }
 
-    // get bundle (): Vendor {
+    // get bundle (): Manufacturer {
     //     return null;
     // }
 
