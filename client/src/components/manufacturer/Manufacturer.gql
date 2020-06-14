@@ -1,0 +1,103 @@
+
+fragment basicManufacturerFields on manufacturer {
+    id # Int
+    name # String
+    url # String
+    vendor_id # Int
+}
+
+fragment objectManufacturerFields on manufacturer {
+	vendor {
+		...basicVendorFields
+	}
+    manufacturer_items {
+        ...basicManufacturerItemFields
+    }
+    # manufacturer_items_aggregate {
+    #   aggregate {
+    #     count
+    #   }
+    # }
+}
+
+fragment basicManufacturerItemFields on manufacturer_item {
+      id
+      item_id
+      manufacturer_id
+      manufacturer_product_id
+      # TODO: Series ?
+      # the rest of the data is found via `item_id`
+      product_url
+}
+
+query GetManufacturers {
+	manufacturer(order_by: { id: asc }) {
+		...basicManufacturerFields
+	}
+}
+
+
+query GetManufacturer($id: Int!) {
+	manufacturer: manufacturer_by_pk(id: $id) {
+		...basicManufacturerFields
+		...objectManufacturerFields
+	}
+}
+
+
+query GetManufacturerItems {
+	manufacturer_item {
+		...basicManufacturerItemFields
+	}
+}
+
+query SearchManufacturers($search_string: String) {
+	manufacturer(order_by: { id: asc }, where: { name: { _ilike: $search_string }}) {
+        ...basicManufacturerFields
+    }
+}
+
+
+mutation InsertManufacturer (
+$name: String!
+$url: String
+$vendor_id: Int
+) {
+    manufacturer: insert_manufacturer_one(object: {
+        name: $name
+        url: $url
+        vendor_id: $vendor_id
+    }) {
+        ...basicManufacturerFields
+    }
+}
+
+mutation UpdateManufacturer (
+$id: Int!
+$name: String!
+$url: String
+$vendor_id: Int
+) {
+    manufacturer: update_manufacturer_by_pk(
+    pk_columns: {
+        id: $id, 
+    }
+    _set: {
+        name: $name, 
+        url: $url
+        vendor_id: $vendor_id, 
+    }
+    ) {
+        ...basicManufacturerFields
+        ...objectManufacturerFields
+    }
+}
+
+
+mutation DeleteManufacturer (
+$id: Int!
+) {
+    delete_manufacturer_by_pk(id: $id) {
+        ...basicManufacturerFields
+    }
+}

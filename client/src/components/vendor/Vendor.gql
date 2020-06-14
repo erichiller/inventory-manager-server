@@ -103,35 +103,3 @@ $id: Int!
     }
 }
 
-
-
-# ## manufacturer
-
-fragment basicManufacturerFields on manufacturer {
-    id # Int
-    name # String
-    url # String
-    vendor_id # Int
-}
-
-mutation InsertManufacturer (
-$name: String!
-$url: String
-$vendor_id: Int
-) {
-    insert_manufacturer_one(object: {
-        name: $name
-        url: $url
-        vendor_id: $vendor_id
-    }) {
-        ...basicManufacturerFields
-    }
-}
-
-mutation DeleteManufacturer (
-$id: Int!
-) {
-    delete_manufacturer_by_pk(id: $id) {
-        ...basicManufacturerFields
-    }
-}

@@ -1,0 +1,9 @@
+/** Requires:
+ * playlfe/gql (nodejs)
+ * Facebook Watchman (windows binary)
+**/
+{
+  schema: {
+    files: 'client/src/**/*.gql'
+  }
+}
