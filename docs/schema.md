@@ -341,7 +341,106 @@ class ItemHardwareFastenerBolt extends GenericItem {
 } ✔
 ```
 
-....
+## Items and their presence in orders, vendor, manufacturer, shipment
+
+Item search should:
+
+For item enter on the form:
+Type into searchable field as currently.
+searches through 3 tables / objects and displays all results, sorted as the below order:
+→ vendor_item.item when vendor_item.vendor_id == order.vendor_id
+     if a vendor_item is selected, and if it has manufacturer. DONE
+     if a vendor_item is selected, and if it does not have a manufacturer. continue, the user should create a new vendor_item 
+
+→ manufacturer_item.item
+    if selected, allow the user to create a new vendor_item
+
+→ item
+     if selected allow the user to assign/create a manufacturer_item and vendor_item
+
+    ! create extra item related objects 
+        - manufacturer_item
+        - vendor_item
+        - shipment
+      with forms embedded inside 
+       https://ant.design/components/collapse/
+
+
+→ assign a value for item_id
+→ (optional) set vendor_item_id
+                       create if required
+                       basic: vendor_item_id & item_id
+→ (optional) set manufacturer_item_id
+                       create if required
+                       basic: manufacturer & item_id
+→ (optional) set shipment ; 
+                       create if required
+                       basic: tracking # ?
+                       -- no can't be required, because the tracking # isn't always known when the items on an order are split into shipments.
+                       -- use groups of items and an optional tracking # field
+                       ! as items are assigned shipments sort them in the form so that items on the same shipment are adjacent. This should ease the confusion of an initially arbitrary `shipment.id` ( rather than `shipment.tracking_id` ).
+→ (optional) set serial no.
+→ (optional) cost_item
+→ (optional) cost_tax
+→ (optional) cost_total
+→ (optional) quantity
+
+
+
+order_item:
+→ order_id
+→ item_id       
+ - vendor_item_id
+ - manufacturer_item_id
+ - shipment_id
+ - serial_no
+ - cost_item
+ - cost_tax
+ - cost_total
+ - quantity
+
+item_id -- it's redundant, but so what? as long as there's a check constraint ????? 
+    → try: foreign key on
+         vendor_item_id
+         item_id
+         ?? would this enforce :
+            if vendor_item_id then:    
+              vendor_item_id.item_id === this.item_id
+        otherwise I could write a constraint for this
+    → would probably make writing code faster, but lookups slower
+
+
+
+unique on: ( item_id, order_id ) 
+
+    `order_item` represents a real-world item that is an instance of item, 
+    - with a manufacturer attached (potentially)
+    - with the vendor item attached ?? not sure if this should be mandatory. In fact I'm pretty sure it shouldn't be mandatory. (mandatory, but anonymous/generated vendor items are allowed
+
+
+
+vendor_item:
+ - id
+ - vendor_id
+ - sku
+ - item_id
+ - description
+ # this should track "variations" of the item_id.
+     For example the item might be cat6 550mhz
+     but the vendor item would be 1000ft of it.
+
+manufacturer_item:
+ - id
+ - manufacturer_product_id
+ - manufacturer_product_name
+ - manufacturer_product_series
+ - product_url
+ - manufacturer_id
+ - item_id
+ 
+
+
+## Additional Notes
 
 * [fetch based on presence of sub-objects and arrays](https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html#filter-based-on-nested-objects-fields)
 * [fetch based on null, true](https://docs.hasura.io/1.0/graphql/manual/queries/query-filters.html#the-true-expression)
