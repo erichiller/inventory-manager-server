@@ -61,11 +61,14 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
         refetchQueries: [
             { query: GetVendorDocument }
         ]
-    });
+    } );
 
 
     /***************************************** Effects *****************************************/
 
+    /**
+     * Handle Lookup results
+     */
     useEffect( () => {
         console.debug( `loading data using vendorId of ${ vendorId }`, lookupResult );
         if ( !vendor && lookupResult.data?.vendor ) {
@@ -94,6 +97,10 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
         }
     }, [ vendorId, lookupResult.data, lookupResult.error ] );
 
+
+    /**
+     * Handle Mutations results
+     */
     useEffect( () => {
         let error = insertVendorResult.error || updateVendorResult.error || insertManufacturerResult.error || deleteManufacturerResult.error;
         let data = insertVendorResult.data || updateVendorResult.data; // || insertManufacturerResult.data || deleteManufacturerResult.data;
@@ -143,8 +150,6 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                     }
                 } );
             }
-            let filteredTest = filterObject( formFieldValues, null, [ 'manufacturer' ] );
-            console.log( { filteredTest, vendor } );
             updateVendor( {
                 variables: {
                     id: vendorId,
@@ -229,7 +234,7 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
             onFinishFailed={onFinishFailed}
         >
             <div className="col">
-                <Form.Item name="name" label="Name" rules={[{required: true}]}>
+                <Form.Item name="name" label="Name" rules={[ { required: true } ]}>
                     <Input />
                 </Form.Item>
                 <Form.Item name="account_id" label="Account #">
@@ -248,13 +253,13 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                 </Form.Item>
 
                 <Form.Item name="url" label="URL"
-                // https://ant.design/components/form/#Rule
-                // TODO: use a custom validator ( or onChange ) to load the url's icon / ico
-                    rules={[ 
+                    // https://ant.design/components/form/#Rule
+                    // TODO: use a custom validator ( or onChange ) to load the url's icon / ico
+                    rules={[
                         {
-                            required: true, 
+                            required: true,
                             pattern: /https?:\/\/.*/,
-                            message: 'Please enter a valid website for this Vendor.' 
+                            message: 'Please enter a valid website for this Vendor.'
                         },
                     ]}
                 >
