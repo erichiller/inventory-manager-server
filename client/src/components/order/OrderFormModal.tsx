@@ -6,19 +6,20 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker } from 'antd';
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables, useGetOrderLazyQuery } from '../../lib/types/graphql';
+import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, UpdateOrderMutationVariables, GetOrdersDocument } from '../../lib/types/graphql';
 
-import { QueryResultTypePlus, Union } from '../../lib/UtilityFunctions';
+import { QueryResultTypePlus, Union, filterObject } from '../../lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/util';
 import { QueryResult } from 'react-apollo';
 import { ItemSelect } from '../item/ItemSelect';
-import { VendorSelect } from '../vendor/VendorSelect';
+import { VendorSelect } from '../Vendor/VendorSelect';
 import moment from 'moment';
 import { OrderItemInput } from './OrderItemInput';
 import { PageSpin } from '../shared/PageSpin';
 import { Order } from '../../lib/Order/Order';
+import TextArea from 'antd/lib/input/TextArea';
 
 
 type OrderFormModalProps = Union<{
@@ -41,15 +42,30 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
 
     const [ order, setOrder ] = useState<QueryResultTypePlus<typeof useGetOrderQuery>>( props.order );
 
-    const [ insertOrderMutation, { data, loading, error } ] = useInsertOrderMutation();
-
-    const [ runGetOrder, orderLookupResult ] = useGetOrderLazyQuery( {
+    const [ runGetOrder, lookupResult ] = useGetOrderLazyQuery( {
         partialRefetch: true,
         returnPartialData: true,
     } );
 
+    //edit
+    const [ updateOrder, updateOrderResult ] = useUpdateOrderMutation();
+    // add new
+    const [ insertOrder, insertOrderResult ] = useInsertOrderMutation( {
+        refetchQueries: [
+            { query: GetOrderDocument }
+        ]
+    } );
+
+    /***************************************** Effects *****************************************/
+
+    /**
+     * Handle Lookup results
+     */
     useEffect( () => {
-        if ( !order && orderId ) {
+        console.debug( `loading data using orderId of ${ orderId }`, lookupResult );
+        if ( !order && lookupResult.data?.order ) {
+            setOrder( lookupResult.data.order );
+        } else if ( !order && orderId ) {
             runGetOrder( {
                 variables: {
                     id: orderId
@@ -58,19 +74,54 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         } else {
             console.debug( `Order received in props not running GraphQL`, { order: props.order } );
         }
-        if ( orderLookupResult.error ) {
-            message.error( orderLookupResult.error );
+        if ( lookupResult.error ) {
+            message.error( lookupResult.error );
         }
-        if ( orderLookupResult.data && !orderLookupResult.loading ) {
-            if ( orderLookupResult.data.order ) {
-                setOrder( orderLookupResult.data.order );
-                message.info( `loaded data, found orderId of ${ orderLookupResult.data.order.id }` );
+        if ( lookupResult.data && !lookupResult.loading ) {
+            if ( lookupResult.data.order ) {
+                setOrder( lookupResult.data.order );
+                message.info( `loaded data, found orderId of ${ lookupResult.data.order.id }` );
             } else {
-                console.warn( `No Orders found`, orderLookupResult );
+                console.warn( `No Orders found`, lookupResult );
                 message.warning( `No Orders found.` );
             }
         }
-    }, [ orderLookupResult.data, orderLookupResult.error ] );
+    }, [ orderId, lookupResult.data, lookupResult.error ] );
+
+    /**
+     * Handle Mutations results
+     */
+    useEffect( () => {
+        let error = insertOrderResult.error || updateOrderResult.error; // || insertManufacturerResult.error || deleteManufacturerResult.error;
+        let data = insertOrderResult.data || updateOrderResult.data; // || insertManufacturerResult.data || deleteManufacturerResult.data;
+        if ( error ) {
+            // completeCallback( false );
+            message.error( `${ error.name }: ${ error.message }` );
+        } else if ( data ) {
+            message.success( `successfully ${ insertOrderResult.data ? 'created' : 'updated' } ${ data?.order.__typename } with id ${ data.order.id }` );
+            // return () => {
+            form.resetFields();
+            exitModal();
+            // };
+        }
+    }, [ insertOrderResult, updateOrderResult ] ); // , insertManufacturerResult, deleteManufacturerResult
+
+
+
+    // useEffect( () => {
+    //     if ( error ) {
+    //         // completeCallback( false );
+    //         message.error( `${ error.name }: ${ error.message }` );
+    //     } else if ( data ) {
+    //         message.success( `successfully created ${ data.__typename } with id ${ data.insert_order.id }` );
+    //         return () => {
+    //             form.resetFields();
+    //             exitModal();
+    //         };
+    //     }
+    // }, [ data, loading, error ] );
+
+    /***************************************************************************/
 
     const exitModal = () => {
         console.log( "cancelling modal, history.goBack, history is currently", { history } );
@@ -79,27 +130,61 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
     const onFinish = ( values: {
         [ name: string ]: any;
     } ) => {
-        console.log( { class: 'OrderEditModal', method: 'onFinish', values, formfieldvalues: form.getFieldsValue() } );
-        insertOrderMutation( {
-            variables: ( form.getFieldsValue() as InsertOrderMutationVariables )
-        } );
+        console.log( { class: 'OrderEditModal', method: 'onFinish', values, order, formFieldValues: form.getFieldsValue() } );
+        if ( orderId ) {
+            // set to InsertOrderMutationVariables rather than UpdateOrderMutationVariables here because thats what the form contains
+            let formFieldValues = form.getFieldsValue() as Exclude<InsertOrderMutationVariables, 'id'> & { 
+                manufacturer: boolean;
+            };
+            // edit
+            // if id now, but not before
+            // if ( formFieldValues.manufacturer && !order.manufacturer ) {
+            //     insertManufacturer( {
+            //         variables: {
+            //             name: formFieldValues.name,
+            //             url: formFieldValues.url,
+            //             order_id: orderId
+            //         }
+            //     } );
+            // } else if ( !formFieldValues.manufacturer && order.manufacturer ) {
+            //     console.log( `deleting manufacturer, value was ${ order.manufacturer }, value is: ${ formFieldValues.manufacturer }\n`, { order, values, formFieldValues: form.getFieldsValue() } );
+            //     // remove manufacturer record
+            //     deleteManufacturer( {
+            //         variables: {
+            //             id: order.manufacturer[ 0 ].id
+            //         }
+            //     } );
+            // }
+            // TODO: handle:  order_items, payment method, vendor, shipment -- changes for objects
+            updateOrder( {
+                variables: {
+                    id: orderId,
+                    ...filterObject( formFieldValues, null, [ 'order_items' ] )
+                }
+            } );
+        } else {
+            // insert new (add)
+            let formFieldValues = form.getFieldsValue() as Exclude<InsertOrderMutationVariables, 'id'>;
+            insertOrder( {
+                variables: {
+                    ...formFieldValues
+                    // ...filterObject( formFieldValues, null, [ 'manufacturer' ] ),
+                    // ...( formFieldValues.manufacturer ? {
+                    //     manufacturer: {
+                    //         data: [ {
+                    //             name: formFieldValues.name,
+                    //             url: formFieldValues.url
+                    //         } ]
+                    //     }
+                    // } : {} )
+                },
+                refetchQueries: [
+                    { query: GetOrdersDocument }
+                ]
+            } );
+        }
     };
 
-
-    /***************************************** Effects *****************************************/
-
-    useEffect( () => {
-        if ( error ) {
-            // completeCallback( false );
-            message.error( `${ error.name }: ${ error.message }` );
-        } else if ( data ) {
-            message.success( `successfully created ${ data.__typename } with id ${ data.insert_order.id }` );
-            return () => {
-                form.resetFields();
-                exitModal();
-            };
-        }
-    }, [ data, loading, error ] );
 
     const onFinishFailed = ( errorInfo ) => {
         console.error( { class: 'OrderEditModal', method: 'onFinishFailed', errorInfo } );
@@ -120,17 +205,22 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         > = {};
     if ( order ) {
         for ( let key in order ) {
-            console.log(key);
-            if ( key !== null && ![
-                'fulfilled_date', 
+            console.log( key );
+            if ( key !== null && [
+                'fulfilled_date',
                 'placed_date'
-            ].includes(key) ){
-                initialValues[key] = order[key];
+            ].includes( key ) ) {
+                initialValues[ key ] = moment( order[ key ] );
+            } else {
+                // default
+                initialValues[ key ] = order[ key ];
             }
-            // FIXME: fulfilled_date and placed_date need to be converted to momentjs
+            if ( !initialValues.order_items ) {
+                initialValues.order_items = [];
+            }
         }
     } else {
-        initialValues = { placed_date: moment(), items: [ {} ] };
+        initialValues = { placed_date: moment(), items: [] };
     }
 
 
@@ -139,6 +229,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
     return <Modal
         visible={true}
         title="Order"
+        width={650}
         onOk={e => {
             console.log( { class: 'OrderEditModal', method: 'onOk', e, values: form.getFieldsValue() } );
             form.submit();
@@ -174,7 +265,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                     // defaultValue={moment()}
                     />
                 </Form.Item>
-                <Form.Item name="fullfilled_date" label="Date Fullfilled">
+                <Form.Item name="fulfilled_date" label="Date Fulfilled">
                     <DatePicker
                     // id="datepicker_monthpicker"
                     // defaultValue={moment()}
@@ -197,11 +288,21 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                     <Input />
                 </Form.Item>
 
-                <Form.Item name="url" label="URL">
+                <Form.Item name="url" label="URL"
+                    // https://ant.design/components/form/#Rule
+                    rules={[
+                        {
+                            // required: true,
+                            pattern: /https?:\/\/.*/,
+                            message: 'Please enter a valid url for this Order.'
+                        },
+                    ]}
+                >
                     {/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/url */}
-                    <Input
-                        type="url" // htmlFor="url" ?? 
-                        pattern="https?://.*"
+                    <TextArea
+                        autoSize={{ minRows: 1, maxRows: 5 }}
+                        // type="url" // htmlFor="url" ?? 
+                        // pattern="https?://.*"
                     />
                 </Form.Item>
 
@@ -216,7 +317,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                 {/* <ItemSelect /> */}
                 {/* <OrderItemInput />
                 </Form.Item> */}
-                <Form.List name="items">
+                <Form.List name="order_items">
                     {( fields, { add, remove } ) => {
                         return (
                             <React.Fragment>

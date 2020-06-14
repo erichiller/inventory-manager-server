@@ -27,7 +27,10 @@ interface ItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
  * Form Select Input for Items
  */
 export const ItemSelect: React.FC<ItemSelectProps> = ( props ) => {
-    const { onChange, value, ...remainingProps } = props;
+    const { onChange, 
+        //value, 
+        // ...remainingProps 
+    } = props;
     const [ searchText, setSearchText ] = useState<string>();
     const [ options, setOptions ] = useState<OptionT[]>( [] );
     const { data, loading, error } = useItemSearchQuery( {
