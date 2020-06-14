@@ -58,7 +58,7 @@ export class Order implements OrderDataProps {
 
     id: Scalars[ 'Int' ];
     fulfilled_date?: Maybe<Scalars[ 'date' ]>;
-    items: Array<OrderItem>;
+    order_items: Array<OrderItem>;
     items_aggregate: OrderItemAggregate;
     items_cost: Scalars[ 'money' ];
     payment_method?: Maybe<PaymentMethod>;
