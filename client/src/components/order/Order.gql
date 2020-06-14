@@ -161,3 +161,11 @@ mutation UpdateOrder (
     }
 }
 
+mutation DeleteOrder (
+$id: Int!
+) {
+    delete_order_by_pk(id: $id) {
+        ...basicOrderFields
+    }
+}
+

@@ -1,8 +1,8 @@
-import { Table, Divider } from 'antd';
+import { Table, Divider, message } from 'antd';
 import * as React from 'react';
-import { OrderSelectColumn, useGetOrdersQuery, GetOrdersQuery, Order as OrderGql } from '../../lib/types/graphql';
+import { useGetOrdersQuery, GetOrdersQuery, useDeleteOrderMutation, GetOrdersDocument } from '../../lib/types/graphql';
 import { Item } from '../../lib/item';
-import { toTitleCase, computeDefaultPagination } from '../../lib/UtilityFunctions';
+import { computeDefaultPagination } from '../../lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -46,7 +46,7 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
             history.push( '/order' );
         }
         setModal( modal );
-    }
+    };
 
     React.useEffect( () => {
         switch ( params.action ) {
@@ -68,6 +68,20 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
 
     const result = useGetOrdersQuery();
 
+    /** delete */
+    const [ deleteVendor, deleteVendorResult ] = useDeleteOrderMutation( {
+        refetchQueries: [
+            { query: GetOrdersDocument }
+        ]
+    } );
+    React.useEffect( () => {
+        if ( deleteVendorResult.error ) {
+            message.error( `Error deleting vendor: \n${ deleteVendorResult.error }` );
+        } else if ( deleteVendorResult.data ) {
+            message.info( `Successfully deleted vendor.` );
+        }
+    }, [ deleteVendorResult ] );
+
     const columns: ColumnProps<Extract<GetOrdersQuery, 'order'>>[] = [
         ...Order.Columns,
         ...[
@@ -79,8 +93,9 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
                     <span>
                         <Link to={`/order/${ record.id }/edit`}><EditOutlined className="IconButton" /></Link>
                         <Divider type="vertical" />
-                        {/* TODO */}
-                        <a><DeleteOutlined className="IconButton" /></a>
+                        <a><DeleteOutlined className="IconButton" onClick={() => {
+                            deleteVendor( { variables: { id: record.id } } );
+                        }} /></a>
                     </span >
                 ),
             }

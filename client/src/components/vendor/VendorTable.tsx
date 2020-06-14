@@ -101,11 +101,9 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
                     <span>
                         <Link to={`/vendor/${ record.id }/edit`}><EditOutlined className="IconButton" /></Link>
                         <Divider type="vertical" />
-                        {/* TODO */}
                         <a><DeleteOutlined className="IconButton" onClick={ ( ) => {
                             deleteVendor({variables: {id: record.id }});
-                        }
-                        }/></a>
+                        }}/></a>
                     </span >
                 ),
             }
