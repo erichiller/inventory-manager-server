@@ -25,82 +25,8 @@ query GetOrdersByDateRange($date_start_gte: date, $date_end_lte: date) {
     }
 }
 
-
-# mutation InsertOrder {
-#     insert_order_one(
-#         object: {
-#             id: 10
-#             items: { data: [{ item_id: 10 }] }
-#             payment_method: { data: { class: ACH } }
-#             items_cost: ""
-#             payment_method_id: 10
-#             placed_date: ""
-#             pon: ""
-#             shipments: {
-#                 data: {
-#                     id: 10
-#                     received_date: ""
-#                     shipped_date: ""
-#                     shipping_carrier: ""
-#                     tracking_id: ""
-#                     vendor_invoice_id: ""
-#                 }
-#             }
-#             tax_cost: ""
-#             total_cost: ""
-#             url: ""
-#             vendor_id: 10
-#             vendor_order_id: ""
-#         }
-#     ) {
-#         id
-#     }
-# }
-
-
-
-mutation InsertOrder(
-    # $id: Int
-    $fulfilled_date: date
-    # $items: order_item_arr_rel_insert_input
-    $items: [order_item_insert_input!]!
-    $items_cost: money
-    $payment_method: payment_method_obj_rel_insert_input
-    $payment_method_id: Int
-    $placed_date: date
-    $pon: String
-    $shipments: shipment_arr_rel_insert_input
-    $tax_cost: money
-    $total_cost: money
-    $url: String
-    $vendor: vendor_obj_rel_insert_input
-    $vendor_id: Int
-    $vendor_order_id: String
-) {
-    insert_order: insert_order_one (
-        object: {
-            order_items: { data: $items } # objects
-            payment_method: $payment_method # objects
-            shipments: $shipments # objects
-            vendor: $vendor # object
-            fulfilled_date: $fulfilled_date
-            items_cost: $items_cost
-            payment_method_id: $payment_method_id
-            placed_date: $placed_date
-            pon: $pon
-            tax_cost: $tax_cost
-            total_cost: $total_cost
-            url: $url
-            vendor_id: $vendor_id
-            vendor_order_id: $vendor_order_id
-        }
-    ) {
-        id
-    }
-}
-
 query GetOrders {
-    order(order_by: { placed_date: asc }) {
+    order(order_by: { placed_date: desc }) {
         ...basicOrderFields
         ...objectOrderFields
     }
@@ -157,6 +83,81 @@ query GetOrder($id: Int!) {
                 count
             }
         }
+    }
+}
+
+mutation InsertOrder(
+    # $id: Int
+    $fulfilled_date: date
+    $order_items: [order_item_insert_input!]!
+    $items_cost: numeric
+    $payment_method: payment_method_obj_rel_insert_input
+    $payment_method_id: Int
+    $placed_date: date
+    $pon: String
+    $shipments: shipment_arr_rel_insert_input
+    $tax_cost: numeric
+    $total_cost: numeric
+    $url: String
+    $vendor: vendor_obj_rel_insert_input
+    $vendor_id: Int
+    $vendor_order_id: String
+) {
+    order: insert_order_one (
+        object: {
+            order_items: { data: $order_items } # objects
+            payment_method: $payment_method # objects
+            shipments: $shipments # objects
+            vendor: $vendor # object
+            fulfilled_date: $fulfilled_date
+            items_cost: $items_cost
+            payment_method_id: $payment_method_id
+            placed_date: $placed_date
+            pon: $pon
+            tax_cost: $tax_cost
+            total_cost: $total_cost
+            url: $url
+            vendor_id: $vendor_id
+            vendor_order_id: $vendor_order_id
+        }
+    ) {
+        ...basicOrderFields
+        ...objectOrderFields
+    }
+}
+
+mutation UpdateOrder (
+    $id: Int!
+    $fulfilled_date: date
+    $items_cost: numeric
+    $payment_method_id: Int
+    $placed_date: date
+    $pon: String
+    $tax_cost: numeric
+    $total_cost: numeric
+    $url: String
+    $vendor_id: Int
+    $vendor_order_id: String
+) {
+    order: update_order_by_pk(
+    pk_columns: {
+        id: $id, 
+    }
+    _set: {
+        fulfilled_date: $fulfilled_date
+        items_cost: $items_cost
+        payment_method_id: $payment_method_id
+        placed_date: $placed_date
+        pon: $pon
+        tax_cost: $tax_cost
+        total_cost: $total_cost
+        url: $url
+        vendor_id: $vendor_id
+        vendor_order_id: $vendor_order_id
+    }
+    ) {
+        ...basicOrderFields
+        ...objectOrderFields
     }
 }
 
