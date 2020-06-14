@@ -25847,6 +25847,19 @@ export type UpdateOrderMutation = (
   )> }
 );
 
+export type DeleteOrderMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteOrderMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_order_by_pk?: Maybe<(
+    { __typename?: 'order' }
+    & BasicOrderFieldsFragment
+  )> }
+);
+
 export type GetPrinterStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -27167,6 +27180,51 @@ export function useUpdateOrderMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type UpdateOrderMutationHookResult = ReturnType<typeof useUpdateOrderMutation>;
 export type UpdateOrderMutationResult = ApolloReactCommon.MutationResult<UpdateOrderMutation>;
 export type UpdateOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateOrderMutation, UpdateOrderMutationVariables>;
+export const DeleteOrderDocument = gql`
+    mutation DeleteOrder($id: Int!) {
+  delete_order_by_pk(id: $id) {
+    ...basicOrderFields
+  }
+}
+    ${BasicOrderFieldsFragmentDoc}`;
+export type DeleteOrderMutationFn = ApolloReactCommon.MutationFunction<DeleteOrderMutation, DeleteOrderMutationVariables>;
+export type DeleteOrderProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteOrderMutation, DeleteOrderMutationVariables>
+    } & TChildProps;
+export function withDeleteOrder<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  DeleteOrderMutation,
+  DeleteOrderMutationVariables,
+  DeleteOrderProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, DeleteOrderMutation, DeleteOrderMutationVariables, DeleteOrderProps<TChildProps, TDataName>>(DeleteOrderDocument, {
+      alias: 'deleteOrder',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useDeleteOrderMutation__
+ *
+ * To run a mutation, you first call `useDeleteOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteOrderMutation, { data, loading, error }] = useDeleteOrderMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteOrderMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteOrderMutation, DeleteOrderMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteOrderMutation, DeleteOrderMutationVariables>(DeleteOrderDocument, baseOptions);
+      }
+export type DeleteOrderMutationHookResult = ReturnType<typeof useDeleteOrderMutation>;
+export type DeleteOrderMutationResult = ApolloReactCommon.MutationResult<DeleteOrderMutation>;
+export type DeleteOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteOrderMutation, DeleteOrderMutationVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
   PrinterStatus {
@@ -28119,4 +28177,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-14T05:59:28-06:00
+// graphql typescript defs generated on 2020-06-14T06:39:25-06:00
