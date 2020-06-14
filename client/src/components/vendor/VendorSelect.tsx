@@ -9,7 +9,7 @@ import { InputProps } from "antd/lib/input";
 import { useGetVendorsLazyQuery, useSearchVendorsLazyQuery, useSearchVendorsQuery } from "../../lib/types/graphql";
 
 
-interface OptionT {
+interface OptionT extends OptionData {
     label?: string | ReactElement;
     id: number;
 }
@@ -48,6 +48,7 @@ export const VendorSelect: React.FC<VendorSelectProps> = ( props ) => {
                 console.log( "outputting option", v );
                 return {
                     id: v.id,
+                    value: v.id,
                     label: <span className="vendorOption">
                         {v && v.url ? <div><img src={`${ v.url }/favicon.ico`} /></div> : null}
                         <span>{v.name}</span>
@@ -90,12 +91,15 @@ export const VendorSelect: React.FC<VendorSelectProps> = ( props ) => {
                     }
                     onChange( vendor_id );
                 }}
-            >
+                options={options}
+                {...( value ? { defaultValue: props.value } : {} )}
+                />
+            {/* >
                 {...options.map( v => {
                     console.log( "select with options", v );
                     return <Select.Option key={v.id} value={v.id.toString()}>{v.label}</Select.Option>;
                 } )}
-            </Select>
+            </Select> */}
         </div>
     );
 };
