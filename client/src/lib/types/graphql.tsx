@@ -5354,554 +5354,6 @@ export enum EnumUnitUpdateColumn {
   id = 'id'
 }
 
-/** columns and relationships of "foo" */
-export type Foo = {
-  __typename?: 'foo';
-  /** An object relationship */
-  foo_sub?: Maybe<FooSub>;
-  id: Scalars['Int'];
-  name: Scalars['String'];
-};
-
-/** aggregated selection of "foo" */
-export type FooAggregate = {
-  __typename?: 'foo_aggregate';
-  aggregate?: Maybe<FooAggregateFields>;
-  nodes: Array<Foo>;
-};
-
-/** aggregate fields of "foo" */
-export type FooAggregateFields = {
-  __typename?: 'foo_aggregate_fields';
-  avg?: Maybe<FooAvgFields>;
-  count?: Maybe<Scalars['Int']>;
-  max?: Maybe<FooMaxFields>;
-  min?: Maybe<FooMinFields>;
-  stddev?: Maybe<FooStddevFields>;
-  stddev_pop?: Maybe<FooStddevPopFields>;
-  stddev_samp?: Maybe<FooStddevSampFields>;
-  sum?: Maybe<FooSumFields>;
-  var_pop?: Maybe<FooVarPopFields>;
-  var_samp?: Maybe<FooVarSampFields>;
-  variance?: Maybe<FooVarianceFields>;
-};
-
-
-/** aggregate fields of "foo" */
-export type FooAggregateFieldsCountArgs = {
-  columns?: Maybe<Array<FooSelectColumn>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "foo" */
-export type FooAggregateOrderBy = {
-  avg?: Maybe<FooAvgOrderBy>;
-  count?: Maybe<OrderBy>;
-  max?: Maybe<FooMaxOrderBy>;
-  min?: Maybe<FooMinOrderBy>;
-  stddev?: Maybe<FooStddevOrderBy>;
-  stddev_pop?: Maybe<FooStddevPopOrderBy>;
-  stddev_samp?: Maybe<FooStddevSampOrderBy>;
-  sum?: Maybe<FooSumOrderBy>;
-  var_pop?: Maybe<FooVarPopOrderBy>;
-  var_samp?: Maybe<FooVarSampOrderBy>;
-  variance?: Maybe<FooVarianceOrderBy>;
-};
-
-/** input type for inserting array relation for remote table "foo" */
-export type FooArrRelInsertInput = {
-  data: Array<FooInsertInput>;
-  on_conflict?: Maybe<FooOnConflict>;
-};
-
-/** aggregate avg on columns */
-export type FooAvgFields = {
-  __typename?: 'foo_avg_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "foo" */
-export type FooAvgOrderBy = {
-  id?: Maybe<OrderBy>;
-};
-
-/** Boolean expression to filter rows from the table "foo". All fields are combined with a logical 'AND'. */
-export type FooBoolExp = {
-  _and?: Maybe<Array<Maybe<FooBoolExp>>>;
-  _not?: Maybe<FooBoolExp>;
-  _or?: Maybe<Array<Maybe<FooBoolExp>>>;
-  foo_sub?: Maybe<FooSubBoolExp>;
-  id?: Maybe<IntComparisonExp>;
-  name?: Maybe<StringComparisonExp>;
-};
-
-/** unique or primary key constraints on table "foo" */
-export enum FooConstraint {
-  /** unique or primary key constraint */
-  foo_pkey = 'foo_pkey'
-}
-
-/** input type for incrementing integer column in table "foo" */
-export type FooIncInput = {
-  id?: Maybe<Scalars['Int']>;
-};
-
-/** input type for inserting data into table "foo" */
-export type FooInsertInput = {
-  foo_sub?: Maybe<FooSubObjRelInsertInput>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-};
-
-/** aggregate max on columns */
-export type FooMaxFields = {
-  __typename?: 'foo_max_fields';
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-};
-
-/** order by max() on columns of table "foo" */
-export type FooMaxOrderBy = {
-  id?: Maybe<OrderBy>;
-  name?: Maybe<OrderBy>;
-};
-
-/** aggregate min on columns */
-export type FooMinFields = {
-  __typename?: 'foo_min_fields';
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-};
-
-/** order by min() on columns of table "foo" */
-export type FooMinOrderBy = {
-  id?: Maybe<OrderBy>;
-  name?: Maybe<OrderBy>;
-};
-
-/** response of any mutation on the table "foo" */
-export type FooMutationResponse = {
-  __typename?: 'foo_mutation_response';
-  /** number of affected rows by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
-  returning: Array<Foo>;
-};
-
-/** input type for inserting object relation for remote table "foo" */
-export type FooObjRelInsertInput = {
-  data: FooInsertInput;
-  on_conflict?: Maybe<FooOnConflict>;
-};
-
-/** on conflict condition type for table "foo" */
-export type FooOnConflict = {
-  constraint: FooConstraint;
-  update_columns: Array<FooUpdateColumn>;
-  where?: Maybe<FooBoolExp>;
-};
-
-/** ordering options when selecting data from "foo" */
-export type FooOrderBy = {
-  foo_sub?: Maybe<FooSubOrderBy>;
-  id?: Maybe<OrderBy>;
-  name?: Maybe<OrderBy>;
-};
-
-/** primary key columns input for table: "foo" */
-export type FooPkColumnsInput = {
-  id: Scalars['Int'];
-};
-
-/** select columns of table "foo" */
-export enum FooSelectColumn {
-  /** column name */
-  id = 'id',
-  /** column name */
-  name = 'name'
-}
-
-/** input type for updating data in table "foo" */
-export type FooSetInput = {
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-};
-
-/** aggregate stddev on columns */
-export type FooStddevFields = {
-  __typename?: 'foo_stddev_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "foo" */
-export type FooStddevOrderBy = {
-  id?: Maybe<OrderBy>;
-};
-
-/** aggregate stddev_pop on columns */
-export type FooStddevPopFields = {
-  __typename?: 'foo_stddev_pop_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "foo" */
-export type FooStddevPopOrderBy = {
-  id?: Maybe<OrderBy>;
-};
-
-/** aggregate stddev_samp on columns */
-export type FooStddevSampFields = {
-  __typename?: 'foo_stddev_samp_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "foo" */
-export type FooStddevSampOrderBy = {
-  id?: Maybe<OrderBy>;
-};
-
-/** columns and relationships of "foo_sub" */
-export type FooSub = {
-  __typename?: 'foo_sub';
-  /** An object relationship */
-  foo: Foo;
-  foo_id: Scalars['Int'];
-  id: Scalars['Int'];
-  name: Scalars['String'];
-};
-
-/** aggregated selection of "foo_sub" */
-export type FooSubAggregate = {
-  __typename?: 'foo_sub_aggregate';
-  aggregate?: Maybe<FooSubAggregateFields>;
-  nodes: Array<FooSub>;
-};
-
-/** aggregate fields of "foo_sub" */
-export type FooSubAggregateFields = {
-  __typename?: 'foo_sub_aggregate_fields';
-  avg?: Maybe<FooSubAvgFields>;
-  count?: Maybe<Scalars['Int']>;
-  max?: Maybe<FooSubMaxFields>;
-  min?: Maybe<FooSubMinFields>;
-  stddev?: Maybe<FooSubStddevFields>;
-  stddev_pop?: Maybe<FooSubStddevPopFields>;
-  stddev_samp?: Maybe<FooSubStddevSampFields>;
-  sum?: Maybe<FooSubSumFields>;
-  var_pop?: Maybe<FooSubVarPopFields>;
-  var_samp?: Maybe<FooSubVarSampFields>;
-  variance?: Maybe<FooSubVarianceFields>;
-};
-
-
-/** aggregate fields of "foo_sub" */
-export type FooSubAggregateFieldsCountArgs = {
-  columns?: Maybe<Array<FooSubSelectColumn>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "foo_sub" */
-export type FooSubAggregateOrderBy = {
-  avg?: Maybe<FooSubAvgOrderBy>;
-  count?: Maybe<OrderBy>;
-  max?: Maybe<FooSubMaxOrderBy>;
-  min?: Maybe<FooSubMinOrderBy>;
-  stddev?: Maybe<FooSubStddevOrderBy>;
-  stddev_pop?: Maybe<FooSubStddevPopOrderBy>;
-  stddev_samp?: Maybe<FooSubStddevSampOrderBy>;
-  sum?: Maybe<FooSubSumOrderBy>;
-  var_pop?: Maybe<FooSubVarPopOrderBy>;
-  var_samp?: Maybe<FooSubVarSampOrderBy>;
-  variance?: Maybe<FooSubVarianceOrderBy>;
-};
-
-/** input type for inserting array relation for remote table "foo_sub" */
-export type FooSubArrRelInsertInput = {
-  data: Array<FooSubInsertInput>;
-  on_conflict?: Maybe<FooSubOnConflict>;
-};
-
-/** aggregate avg on columns */
-export type FooSubAvgFields = {
-  __typename?: 'foo_sub_avg_fields';
-  foo_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "foo_sub" */
-export type FooSubAvgOrderBy = {
-  foo_id?: Maybe<OrderBy>;
-  id?: Maybe<OrderBy>;
-};
-
-/** Boolean expression to filter rows from the table "foo_sub". All fields are combined with a logical 'AND'. */
-export type FooSubBoolExp = {
-  _and?: Maybe<Array<Maybe<FooSubBoolExp>>>;
-  _not?: Maybe<FooSubBoolExp>;
-  _or?: Maybe<Array<Maybe<FooSubBoolExp>>>;
-  foo?: Maybe<FooBoolExp>;
-  foo_id?: Maybe<IntComparisonExp>;
-  id?: Maybe<IntComparisonExp>;
-  name?: Maybe<StringComparisonExp>;
-};
-
-/** unique or primary key constraints on table "foo_sub" */
-export enum FooSubConstraint {
-  /** unique or primary key constraint */
-  foo_sub_foo_id_key = 'foo_sub_foo_id_key',
-  /** unique or primary key constraint */
-  foo_sub_pkey = 'foo_sub_pkey'
-}
-
-/** input type for incrementing integer column in table "foo_sub" */
-export type FooSubIncInput = {
-  foo_id?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-};
-
-/** input type for inserting data into table "foo_sub" */
-export type FooSubInsertInput = {
-  foo?: Maybe<FooObjRelInsertInput>;
-  foo_id?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-};
-
-/** aggregate max on columns */
-export type FooSubMaxFields = {
-  __typename?: 'foo_sub_max_fields';
-  foo_id?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-};
-
-/** order by max() on columns of table "foo_sub" */
-export type FooSubMaxOrderBy = {
-  foo_id?: Maybe<OrderBy>;
-  id?: Maybe<OrderBy>;
-  name?: Maybe<OrderBy>;
-};
-
-/** aggregate min on columns */
-export type FooSubMinFields = {
-  __typename?: 'foo_sub_min_fields';
-  foo_id?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-};
-
-/** order by min() on columns of table "foo_sub" */
-export type FooSubMinOrderBy = {
-  foo_id?: Maybe<OrderBy>;
-  id?: Maybe<OrderBy>;
-  name?: Maybe<OrderBy>;
-};
-
-/** response of any mutation on the table "foo_sub" */
-export type FooSubMutationResponse = {
-  __typename?: 'foo_sub_mutation_response';
-  /** number of affected rows by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
-  returning: Array<FooSub>;
-};
-
-/** input type for inserting object relation for remote table "foo_sub" */
-export type FooSubObjRelInsertInput = {
-  data: FooSubInsertInput;
-  on_conflict?: Maybe<FooSubOnConflict>;
-};
-
-/** on conflict condition type for table "foo_sub" */
-export type FooSubOnConflict = {
-  constraint: FooSubConstraint;
-  update_columns: Array<FooSubUpdateColumn>;
-  where?: Maybe<FooSubBoolExp>;
-};
-
-/** ordering options when selecting data from "foo_sub" */
-export type FooSubOrderBy = {
-  foo?: Maybe<FooOrderBy>;
-  foo_id?: Maybe<OrderBy>;
-  id?: Maybe<OrderBy>;
-  name?: Maybe<OrderBy>;
-};
-
-/** primary key columns input for table: "foo_sub" */
-export type FooSubPkColumnsInput = {
-  id: Scalars['Int'];
-};
-
-/** select columns of table "foo_sub" */
-export enum FooSubSelectColumn {
-  /** column name */
-  foo_id = 'foo_id',
-  /** column name */
-  id = 'id',
-  /** column name */
-  name = 'name'
-}
-
-/** input type for updating data in table "foo_sub" */
-export type FooSubSetInput = {
-  foo_id?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-};
-
-/** aggregate stddev on columns */
-export type FooSubStddevFields = {
-  __typename?: 'foo_sub_stddev_fields';
-  foo_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "foo_sub" */
-export type FooSubStddevOrderBy = {
-  foo_id?: Maybe<OrderBy>;
-  id?: Maybe<OrderBy>;
-};
-
-/** aggregate stddev_pop on columns */
-export type FooSubStddevPopFields = {
-  __typename?: 'foo_sub_stddev_pop_fields';
-  foo_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "foo_sub" */
-export type FooSubStddevPopOrderBy = {
-  foo_id?: Maybe<OrderBy>;
-  id?: Maybe<OrderBy>;
-};
-
-/** aggregate stddev_samp on columns */
-export type FooSubStddevSampFields = {
-  __typename?: 'foo_sub_stddev_samp_fields';
-  foo_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "foo_sub" */
-export type FooSubStddevSampOrderBy = {
-  foo_id?: Maybe<OrderBy>;
-  id?: Maybe<OrderBy>;
-};
-
-/** aggregate sum on columns */
-export type FooSubSumFields = {
-  __typename?: 'foo_sub_sum_fields';
-  foo_id?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-};
-
-/** order by sum() on columns of table "foo_sub" */
-export type FooSubSumOrderBy = {
-  foo_id?: Maybe<OrderBy>;
-  id?: Maybe<OrderBy>;
-};
-
-/** update columns of table "foo_sub" */
-export enum FooSubUpdateColumn {
-  /** column name */
-  foo_id = 'foo_id',
-  /** column name */
-  id = 'id',
-  /** column name */
-  name = 'name'
-}
-
-/** aggregate var_pop on columns */
-export type FooSubVarPopFields = {
-  __typename?: 'foo_sub_var_pop_fields';
-  foo_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "foo_sub" */
-export type FooSubVarPopOrderBy = {
-  foo_id?: Maybe<OrderBy>;
-  id?: Maybe<OrderBy>;
-};
-
-/** aggregate var_samp on columns */
-export type FooSubVarSampFields = {
-  __typename?: 'foo_sub_var_samp_fields';
-  foo_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "foo_sub" */
-export type FooSubVarSampOrderBy = {
-  foo_id?: Maybe<OrderBy>;
-  id?: Maybe<OrderBy>;
-};
-
-/** aggregate variance on columns */
-export type FooSubVarianceFields = {
-  __typename?: 'foo_sub_variance_fields';
-  foo_id?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "foo_sub" */
-export type FooSubVarianceOrderBy = {
-  foo_id?: Maybe<OrderBy>;
-  id?: Maybe<OrderBy>;
-};
-
-/** aggregate sum on columns */
-export type FooSumFields = {
-  __typename?: 'foo_sum_fields';
-  id?: Maybe<Scalars['Int']>;
-};
-
-/** order by sum() on columns of table "foo" */
-export type FooSumOrderBy = {
-  id?: Maybe<OrderBy>;
-};
-
-/** update columns of table "foo" */
-export enum FooUpdateColumn {
-  /** column name */
-  id = 'id',
-  /** column name */
-  name = 'name'
-}
-
-/** aggregate var_pop on columns */
-export type FooVarPopFields = {
-  __typename?: 'foo_var_pop_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "foo" */
-export type FooVarPopOrderBy = {
-  id?: Maybe<OrderBy>;
-};
-
-/** aggregate var_samp on columns */
-export type FooVarSampFields = {
-  __typename?: 'foo_var_samp_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "foo" */
-export type FooVarSampOrderBy = {
-  id?: Maybe<OrderBy>;
-};
-
-/** aggregate variance on columns */
-export type FooVarianceFields = {
-  __typename?: 'foo_variance_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "foo" */
-export type FooVarianceOrderBy = {
-  id?: Maybe<OrderBy>;
-};
-
 /**
  * Image / icon data for labels
  * 
@@ -13292,8 +12744,13 @@ export type ManufacturerItem = {
   id: Scalars['Int'];
   item_id: Scalars['Int'];
   manufacturer_id: Scalars['Int'];
+  /** example - Cisco 7204VXR */
   manufacturer_product_id: Scalars['String'];
-  product_url: Scalars['String'];
+  /** example - Cisco 7204 */
+  manufacturer_product_name?: Maybe<Scalars['String']>;
+  /** example - Cisco 7200 series */
+  manufacturer_product_series?: Maybe<Scalars['String']>;
+  product_url?: Maybe<Scalars['String']>;
 };
 
 /** aggregated selection of "manufacturer_item" */
@@ -13371,6 +12828,8 @@ export type ManufacturerItemBoolExp = {
   item_id?: Maybe<IntComparisonExp>;
   manufacturer_id?: Maybe<IntComparisonExp>;
   manufacturer_product_id?: Maybe<StringComparisonExp>;
+  manufacturer_product_name?: Maybe<StringComparisonExp>;
+  manufacturer_product_series?: Maybe<StringComparisonExp>;
   product_url?: Maybe<StringComparisonExp>;
 };
 
@@ -13393,6 +12852,8 @@ export type ManufacturerItemInsertInput = {
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_id?: Maybe<Scalars['Int']>;
   manufacturer_product_id?: Maybe<Scalars['String']>;
+  manufacturer_product_name?: Maybe<Scalars['String']>;
+  manufacturer_product_series?: Maybe<Scalars['String']>;
   product_url?: Maybe<Scalars['String']>;
 };
 
@@ -13403,6 +12864,8 @@ export type ManufacturerItemMaxFields = {
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_id?: Maybe<Scalars['Int']>;
   manufacturer_product_id?: Maybe<Scalars['String']>;
+  manufacturer_product_name?: Maybe<Scalars['String']>;
+  manufacturer_product_series?: Maybe<Scalars['String']>;
   product_url?: Maybe<Scalars['String']>;
 };
 
@@ -13412,6 +12875,8 @@ export type ManufacturerItemMaxOrderBy = {
   item_id?: Maybe<OrderBy>;
   manufacturer_id?: Maybe<OrderBy>;
   manufacturer_product_id?: Maybe<OrderBy>;
+  manufacturer_product_name?: Maybe<OrderBy>;
+  manufacturer_product_series?: Maybe<OrderBy>;
   product_url?: Maybe<OrderBy>;
 };
 
@@ -13422,6 +12887,8 @@ export type ManufacturerItemMinFields = {
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_id?: Maybe<Scalars['Int']>;
   manufacturer_product_id?: Maybe<Scalars['String']>;
+  manufacturer_product_name?: Maybe<Scalars['String']>;
+  manufacturer_product_series?: Maybe<Scalars['String']>;
   product_url?: Maybe<Scalars['String']>;
 };
 
@@ -13431,6 +12898,8 @@ export type ManufacturerItemMinOrderBy = {
   item_id?: Maybe<OrderBy>;
   manufacturer_id?: Maybe<OrderBy>;
   manufacturer_product_id?: Maybe<OrderBy>;
+  manufacturer_product_name?: Maybe<OrderBy>;
+  manufacturer_product_series?: Maybe<OrderBy>;
   product_url?: Maybe<OrderBy>;
 };
 
@@ -13462,6 +12931,8 @@ export type ManufacturerItemOrderBy = {
   item_id?: Maybe<OrderBy>;
   manufacturer_id?: Maybe<OrderBy>;
   manufacturer_product_id?: Maybe<OrderBy>;
+  manufacturer_product_name?: Maybe<OrderBy>;
+  manufacturer_product_series?: Maybe<OrderBy>;
   product_url?: Maybe<OrderBy>;
 };
 
@@ -13481,6 +12952,10 @@ export enum ManufacturerItemSelectColumn {
   /** column name */
   manufacturer_product_id = 'manufacturer_product_id',
   /** column name */
+  manufacturer_product_name = 'manufacturer_product_name',
+  /** column name */
+  manufacturer_product_series = 'manufacturer_product_series',
+  /** column name */
   product_url = 'product_url'
 }
 
@@ -13490,6 +12965,8 @@ export type ManufacturerItemSetInput = {
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_id?: Maybe<Scalars['Int']>;
   manufacturer_product_id?: Maybe<Scalars['String']>;
+  manufacturer_product_name?: Maybe<Scalars['String']>;
+  manufacturer_product_series?: Maybe<Scalars['String']>;
   product_url?: Maybe<Scalars['String']>;
 };
 
@@ -13563,6 +13040,10 @@ export enum ManufacturerItemUpdateColumn {
   manufacturer_id = 'manufacturer_id',
   /** column name */
   manufacturer_product_id = 'manufacturer_product_id',
+  /** column name */
+  manufacturer_product_name = 'manufacturer_product_name',
+  /** column name */
+  manufacturer_product_series = 'manufacturer_product_series',
   /** column name */
   product_url = 'product_url'
 }
@@ -13947,14 +13428,6 @@ export type MutationRoot = {
   delete_enum_unit?: Maybe<EnumUnitMutationResponse>;
   /** delete single row from the table: "enum.unit" */
   delete_enum_unit_by_pk?: Maybe<EnumUnit>;
-  /** delete data from the table: "foo" */
-  delete_foo?: Maybe<FooMutationResponse>;
-  /** delete single row from the table: "foo" */
-  delete_foo_by_pk?: Maybe<Foo>;
-  /** delete data from the table: "foo_sub" */
-  delete_foo_sub?: Maybe<FooSubMutationResponse>;
-  /** delete single row from the table: "foo_sub" */
-  delete_foo_sub_by_pk?: Maybe<FooSub>;
   /** delete data from the table: "icon" */
   delete_icon?: Maybe<IconMutationResponse>;
   /** delete single row from the table: "icon" */
@@ -14203,14 +13676,6 @@ export type MutationRoot = {
   insert_enum_unit?: Maybe<EnumUnitMutationResponse>;
   /** insert a single row into the table: "enum.unit" */
   insert_enum_unit_one?: Maybe<EnumUnit>;
-  /** insert data into the table: "foo" */
-  insert_foo?: Maybe<FooMutationResponse>;
-  /** insert a single row into the table: "foo" */
-  insert_foo_one?: Maybe<Foo>;
-  /** insert data into the table: "foo_sub" */
-  insert_foo_sub?: Maybe<FooSubMutationResponse>;
-  /** insert a single row into the table: "foo_sub" */
-  insert_foo_sub_one?: Maybe<FooSub>;
   /** insert data into the table: "icon" */
   insert_icon?: Maybe<IconMutationResponse>;
   /** insert data into the table: "icon_item_category_map" */
@@ -14464,14 +13929,6 @@ export type MutationRoot = {
   update_enum_unit?: Maybe<EnumUnitMutationResponse>;
   /** update single row of the table: "enum.unit" */
   update_enum_unit_by_pk?: Maybe<EnumUnit>;
-  /** update data of the table: "foo" */
-  update_foo?: Maybe<FooMutationResponse>;
-  /** update single row of the table: "foo" */
-  update_foo_by_pk?: Maybe<Foo>;
-  /** update data of the table: "foo_sub" */
-  update_foo_sub?: Maybe<FooSubMutationResponse>;
-  /** update single row of the table: "foo_sub" */
-  update_foo_sub_by_pk?: Maybe<FooSub>;
   /** update data of the table: "icon" */
   update_icon?: Maybe<IconMutationResponse>;
   /** update single row of the table: "icon" */
@@ -14969,30 +14426,6 @@ export type MutationRootDeleteEnumUnitArgs = {
 /** mutation root */
 export type MutationRootDeleteEnumUnitByPkArgs = {
   id: Scalars['String'];
-};
-
-
-/** mutation root */
-export type MutationRootDeleteFooArgs = {
-  where: FooBoolExp;
-};
-
-
-/** mutation root */
-export type MutationRootDeleteFooByPkArgs = {
-  id: Scalars['Int'];
-};
-
-
-/** mutation root */
-export type MutationRootDeleteFooSubArgs = {
-  where: FooSubBoolExp;
-};
-
-
-/** mutation root */
-export type MutationRootDeleteFooSubByPkArgs = {
-  id: Scalars['Int'];
 };
 
 
@@ -15812,34 +15245,6 @@ export type MutationRootInsertEnumUnitArgs = {
 export type MutationRootInsertEnumUnitOneArgs = {
   object: EnumUnitInsertInput;
   on_conflict?: Maybe<EnumUnitOnConflict>;
-};
-
-
-/** mutation root */
-export type MutationRootInsertFooArgs = {
-  objects: Array<FooInsertInput>;
-  on_conflict?: Maybe<FooOnConflict>;
-};
-
-
-/** mutation root */
-export type MutationRootInsertFooOneArgs = {
-  object: FooInsertInput;
-  on_conflict?: Maybe<FooOnConflict>;
-};
-
-
-/** mutation root */
-export type MutationRootInsertFooSubArgs = {
-  objects: Array<FooSubInsertInput>;
-  on_conflict?: Maybe<FooSubOnConflict>;
-};
-
-
-/** mutation root */
-export type MutationRootInsertFooSubOneArgs = {
-  object: FooSubInsertInput;
-  on_conflict?: Maybe<FooSubOnConflict>;
 };
 
 
@@ -16714,38 +16119,6 @@ export type MutationRootUpdateEnumUnitArgs = {
 export type MutationRootUpdateEnumUnitByPkArgs = {
   _set?: Maybe<EnumUnitSetInput>;
   pk_columns: EnumUnitPkColumnsInput;
-};
-
-
-/** mutation root */
-export type MutationRootUpdateFooArgs = {
-  _inc?: Maybe<FooIncInput>;
-  _set?: Maybe<FooSetInput>;
-  where: FooBoolExp;
-};
-
-
-/** mutation root */
-export type MutationRootUpdateFooByPkArgs = {
-  _inc?: Maybe<FooIncInput>;
-  _set?: Maybe<FooSetInput>;
-  pk_columns: FooPkColumnsInput;
-};
-
-
-/** mutation root */
-export type MutationRootUpdateFooSubArgs = {
-  _inc?: Maybe<FooSubIncInput>;
-  _set?: Maybe<FooSubSetInput>;
-  where: FooSubBoolExp;
-};
-
-
-/** mutation root */
-export type MutationRootUpdateFooSubByPkArgs = {
-  _inc?: Maybe<FooSubIncInput>;
-  _set?: Maybe<FooSubSetInput>;
-  pk_columns: FooSubPkColumnsInput;
 };
 
 
@@ -17672,6 +17045,8 @@ export type OrderItemBoolExp = {
 
 /** unique or primary key constraints on table "order_item" */
 export enum OrderItemConstraint {
+  /** unique or primary key constraint */
+  order_item_item_id_vendor_item_id_serial_no_key = 'order_item_item_id_vendor_item_id_serial_no_key',
   /** unique or primary key constraint */
   order_item_pkey = 'order_item_pkey',
   /** unique or primary key constraint */
@@ -19576,18 +18951,6 @@ export type QueryRoot = {
   /** fetch data from the table: "enum.unit" using primary key columns */
   enum_unit_by_pk?: Maybe<EnumUnit>;
   files?: Maybe<Array<Maybe<File>>>;
-  /** fetch data from the table: "foo" */
-  foo: Array<Foo>;
-  /** fetch aggregated fields from the table: "foo" */
-  foo_aggregate: FooAggregate;
-  /** fetch data from the table: "foo" using primary key columns */
-  foo_by_pk?: Maybe<Foo>;
-  /** fetch data from the table: "foo_sub" */
-  foo_sub: Array<FooSub>;
-  /** fetch aggregated fields from the table: "foo_sub" */
-  foo_sub_aggregate: FooSubAggregate;
-  /** fetch data from the table: "foo_sub" using primary key columns */
-  foo_sub_by_pk?: Maybe<FooSub>;
   /** fetch data from the table: "icon" */
   icon: Array<Icon>;
   /** fetch aggregated fields from the table: "icon" */
@@ -20584,58 +19947,6 @@ export type QueryRootEnumUnitAggregateArgs = {
 /** query root */
 export type QueryRootEnumUnitByPkArgs = {
   id: Scalars['String'];
-};
-
-
-/** query root */
-export type QueryRootFooArgs = {
-  distinct_on?: Maybe<Array<FooSelectColumn>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<FooOrderBy>>;
-  where?: Maybe<FooBoolExp>;
-};
-
-
-/** query root */
-export type QueryRootFooAggregateArgs = {
-  distinct_on?: Maybe<Array<FooSelectColumn>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<FooOrderBy>>;
-  where?: Maybe<FooBoolExp>;
-};
-
-
-/** query root */
-export type QueryRootFooByPkArgs = {
-  id: Scalars['Int'];
-};
-
-
-/** query root */
-export type QueryRootFooSubArgs = {
-  distinct_on?: Maybe<Array<FooSubSelectColumn>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<FooSubOrderBy>>;
-  where?: Maybe<FooSubBoolExp>;
-};
-
-
-/** query root */
-export type QueryRootFooSubAggregateArgs = {
-  distinct_on?: Maybe<Array<FooSubSelectColumn>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<FooSubOrderBy>>;
-  where?: Maybe<FooSubBoolExp>;
-};
-
-
-/** query root */
-export type QueryRootFooSubByPkArgs = {
-  id: Scalars['Int'];
 };
 
 
@@ -22664,18 +21975,6 @@ export type SubscriptionRoot = {
   enum_unit_aggregate: EnumUnitAggregate;
   /** fetch data from the table: "enum.unit" using primary key columns */
   enum_unit_by_pk?: Maybe<EnumUnit>;
-  /** fetch data from the table: "foo" */
-  foo: Array<Foo>;
-  /** fetch aggregated fields from the table: "foo" */
-  foo_aggregate: FooAggregate;
-  /** fetch data from the table: "foo" using primary key columns */
-  foo_by_pk?: Maybe<Foo>;
-  /** fetch data from the table: "foo_sub" */
-  foo_sub: Array<FooSub>;
-  /** fetch aggregated fields from the table: "foo_sub" */
-  foo_sub_aggregate: FooSubAggregate;
-  /** fetch data from the table: "foo_sub" using primary key columns */
-  foo_sub_by_pk?: Maybe<FooSub>;
   /** fetch data from the table: "icon" */
   icon: Array<Icon>;
   /** fetch aggregated fields from the table: "icon" */
@@ -23672,58 +22971,6 @@ export type SubscriptionRootEnumUnitAggregateArgs = {
 /** subscription root */
 export type SubscriptionRootEnumUnitByPkArgs = {
   id: Scalars['String'];
-};
-
-
-/** subscription root */
-export type SubscriptionRootFooArgs = {
-  distinct_on?: Maybe<Array<FooSelectColumn>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<FooOrderBy>>;
-  where?: Maybe<FooBoolExp>;
-};
-
-
-/** subscription root */
-export type SubscriptionRootFooAggregateArgs = {
-  distinct_on?: Maybe<Array<FooSelectColumn>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<FooOrderBy>>;
-  where?: Maybe<FooBoolExp>;
-};
-
-
-/** subscription root */
-export type SubscriptionRootFooByPkArgs = {
-  id: Scalars['Int'];
-};
-
-
-/** subscription root */
-export type SubscriptionRootFooSubArgs = {
-  distinct_on?: Maybe<Array<FooSubSelectColumn>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<FooSubOrderBy>>;
-  where?: Maybe<FooSubBoolExp>;
-};
-
-
-/** subscription root */
-export type SubscriptionRootFooSubAggregateArgs = {
-  distinct_on?: Maybe<Array<FooSubSelectColumn>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<FooSubOrderBy>>;
-  where?: Maybe<FooSubBoolExp>;
-};
-
-
-/** subscription root */
-export type SubscriptionRootFooSubByPkArgs = {
-  id: Scalars['Int'];
 };
 
 
@@ -25047,6 +24294,8 @@ export type VendorInsertInput = {
 /** columns and relationships of "vendor_item" */
 export type VendorItem = {
   __typename?: 'vendor_item';
+  /** this should track "variations" of the item_id.      For example the item might be cat6 550mhz      but the vendor item would be 1000ft of it. */
+  description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   item_id: Scalars['Int'];
   vendor_id: Scalars['Int'];
@@ -25124,6 +24373,7 @@ export type VendorItemBoolExp = {
   _and?: Maybe<Array<Maybe<VendorItemBoolExp>>>;
   _not?: Maybe<VendorItemBoolExp>;
   _or?: Maybe<Array<Maybe<VendorItemBoolExp>>>;
+  description?: Maybe<StringComparisonExp>;
   id?: Maybe<IntComparisonExp>;
   item_id?: Maybe<IntComparisonExp>;
   vendor_id?: Maybe<IntComparisonExp>;
@@ -25132,6 +24382,8 @@ export type VendorItemBoolExp = {
 
 /** unique or primary key constraints on table "vendor_item" */
 export enum VendorItemConstraint {
+  /** unique or primary key constraint */
+  vendor_item_id_item_id_key = 'vendor_item_id_item_id_key',
   /** unique or primary key constraint */
   vendor_item_pkey = 'vendor_item_pkey'
 }
@@ -25145,6 +24397,7 @@ export type VendorItemIncInput = {
 
 /** input type for inserting data into table "vendor_item" */
 export type VendorItemInsertInput = {
+  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   vendor_id?: Maybe<Scalars['Int']>;
@@ -25154,6 +24407,7 @@ export type VendorItemInsertInput = {
 /** aggregate max on columns */
 export type VendorItemMaxFields = {
   __typename?: 'vendor_item_max_fields';
+  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   vendor_id?: Maybe<Scalars['Int']>;
@@ -25162,6 +24416,7 @@ export type VendorItemMaxFields = {
 
 /** order by max() on columns of table "vendor_item" */
 export type VendorItemMaxOrderBy = {
+  description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
@@ -25171,6 +24426,7 @@ export type VendorItemMaxOrderBy = {
 /** aggregate min on columns */
 export type VendorItemMinFields = {
   __typename?: 'vendor_item_min_fields';
+  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   vendor_id?: Maybe<Scalars['Int']>;
@@ -25179,6 +24435,7 @@ export type VendorItemMinFields = {
 
 /** order by min() on columns of table "vendor_item" */
 export type VendorItemMinOrderBy = {
+  description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
@@ -25209,6 +24466,7 @@ export type VendorItemOnConflict = {
 
 /** ordering options when selecting data from "vendor_item" */
 export type VendorItemOrderBy = {
+  description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
@@ -25223,6 +24481,8 @@ export type VendorItemPkColumnsInput = {
 /** select columns of table "vendor_item" */
 export enum VendorItemSelectColumn {
   /** column name */
+  description = 'description',
+  /** column name */
   id = 'id',
   /** column name */
   item_id = 'item_id',
@@ -25234,6 +24494,7 @@ export enum VendorItemSelectColumn {
 
 /** input type for updating data in table "vendor_item" */
 export type VendorItemSetInput = {
+  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   vendor_id?: Maybe<Scalars['Int']>;
@@ -25302,6 +24563,8 @@ export type VendorItemSumOrderBy = {
 
 /** update columns of table "vendor_item" */
 export enum VendorItemUpdateColumn {
+  /** column name */
+  description = 'description',
   /** column name */
   id = 'id',
   /** column name */
@@ -25806,15 +25069,29 @@ export type InsertManufacturerMutation = (
   )> }
 );
 
-export type UpdateManufacturerMutationVariables = Exact<{
-  id: Scalars['Int'];
+export type InsertManufacturerWithVendorMutationVariables = Exact<{
   name: Scalars['String'];
   url?: Maybe<Scalars['String']>;
-  vendor_id?: Maybe<Scalars['Int']>;
+  vendor?: Maybe<VendorObjRelInsertInput>;
 }>;
 
 
-export type UpdateManufacturerMutation = (
+export type InsertManufacturerWithVendorMutation = (
+  { __typename?: 'mutation_root' }
+  & { manufacturer?: Maybe<(
+    { __typename?: 'manufacturer' }
+    & BasicManufacturerFieldsFragment
+  )> }
+);
+
+export type UpdateManufacturerUnchangedVendorMutationVariables = Exact<{
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  url?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateManufacturerUnchangedVendorMutation = (
   { __typename?: 'mutation_root' }
   & { manufacturer?: Maybe<(
     { __typename?: 'manufacturer' }
@@ -25833,6 +25110,26 @@ export type DeleteManufacturerMutation = (
   & { delete_manufacturer_by_pk?: Maybe<(
     { __typename?: 'manufacturer' }
     & BasicManufacturerFieldsFragment
+  )> }
+);
+
+export type InsertVendorWithExistingManufacturerMutationVariables = Exact<{
+  account_id?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  url: Scalars['String'];
+  manufacturer_id: Scalars['Int'];
+}>;
+
+
+export type InsertVendorWithExistingManufacturerMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_vendor_one?: Maybe<(
+    { __typename?: 'vendor' }
+    & Pick<Vendor, 'id' | 'name' | 'url'>
+    & { manufacturer: Array<(
+      { __typename?: 'manufacturer' }
+      & Pick<Manufacturer, 'id' | 'name' | 'url'>
+    )> }
   )> }
 );
 
@@ -27207,56 +26504,102 @@ export function useInsertManufacturerMutation(baseOptions?: ApolloReactHooks.Mut
 export type InsertManufacturerMutationHookResult = ReturnType<typeof useInsertManufacturerMutation>;
 export type InsertManufacturerMutationResult = ApolloReactCommon.MutationResult<InsertManufacturerMutation>;
 export type InsertManufacturerMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertManufacturerMutation, InsertManufacturerMutationVariables>;
-export const UpdateManufacturerDocument = gql`
-    mutation UpdateManufacturer($id: Int!, $name: String!, $url: String, $vendor_id: Int) {
-  manufacturer: update_manufacturer_by_pk(pk_columns: {id: $id}, _set: {name: $name, url: $url, vendor_id: $vendor_id}) {
+export const InsertManufacturerWithVendorDocument = gql`
+    mutation InsertManufacturerWithVendor($name: String!, $url: String, $vendor: vendor_obj_rel_insert_input) {
+  manufacturer: insert_manufacturer_one(object: {name: $name, url: $url, vendor: $vendor}) {
     ...basicManufacturerFields
-    ...objectManufacturerFields
   }
 }
-    ${BasicManufacturerFieldsFragmentDoc}
-${ObjectManufacturerFieldsFragmentDoc}`;
-export type UpdateManufacturerMutationFn = ApolloReactCommon.MutationFunction<UpdateManufacturerMutation, UpdateManufacturerMutationVariables>;
-export type UpdateManufacturerProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateManufacturerMutation, UpdateManufacturerMutationVariables>
+    ${BasicManufacturerFieldsFragmentDoc}`;
+export type InsertManufacturerWithVendorMutationFn = ApolloReactCommon.MutationFunction<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>;
+export type InsertManufacturerWithVendorProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>
     } & TChildProps;
-export function withUpdateManufacturer<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+export function withInsertManufacturerWithVendor<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
-  UpdateManufacturerMutation,
-  UpdateManufacturerMutationVariables,
-  UpdateManufacturerProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, UpdateManufacturerMutation, UpdateManufacturerMutationVariables, UpdateManufacturerProps<TChildProps, TDataName>>(UpdateManufacturerDocument, {
-      alias: 'updateManufacturer',
+  InsertManufacturerWithVendorMutation,
+  InsertManufacturerWithVendorMutationVariables,
+  InsertManufacturerWithVendorProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables, InsertManufacturerWithVendorProps<TChildProps, TDataName>>(InsertManufacturerWithVendorDocument, {
+      alias: 'insertManufacturerWithVendor',
       ...operationOptions
     });
 };
 
 /**
- * __useUpdateManufacturerMutation__
+ * __useInsertManufacturerWithVendorMutation__
  *
- * To run a mutation, you first call `useUpdateManufacturerMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateManufacturerMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useInsertManufacturerWithVendorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertManufacturerWithVendorMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateManufacturerMutation, { data, loading, error }] = useUpdateManufacturerMutation({
+ * const [insertManufacturerWithVendorMutation, { data, loading, error }] = useInsertManufacturerWithVendorMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      url: // value for 'url'
+ *      vendor: // value for 'vendor'
+ *   },
+ * });
+ */
+export function useInsertManufacturerWithVendorMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>(InsertManufacturerWithVendorDocument, baseOptions);
+      }
+export type InsertManufacturerWithVendorMutationHookResult = ReturnType<typeof useInsertManufacturerWithVendorMutation>;
+export type InsertManufacturerWithVendorMutationResult = ApolloReactCommon.MutationResult<InsertManufacturerWithVendorMutation>;
+export type InsertManufacturerWithVendorMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>;
+export const UpdateManufacturerUnchangedVendorDocument = gql`
+    mutation UpdateManufacturerUnchangedVendor($id: Int!, $name: String!, $url: String) {
+  manufacturer: update_manufacturer_by_pk(pk_columns: {id: $id}, _set: {name: $name, url: $url}) {
+    ...basicManufacturerFields
+    ...objectManufacturerFields
+  }
+}
+    ${BasicManufacturerFieldsFragmentDoc}
+${ObjectManufacturerFieldsFragmentDoc}`;
+export type UpdateManufacturerUnchangedVendorMutationFn = ApolloReactCommon.MutationFunction<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>;
+export type UpdateManufacturerUnchangedVendorProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>
+    } & TChildProps;
+export function withUpdateManufacturerUnchangedVendor<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  UpdateManufacturerUnchangedVendorMutation,
+  UpdateManufacturerUnchangedVendorMutationVariables,
+  UpdateManufacturerUnchangedVendorProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables, UpdateManufacturerUnchangedVendorProps<TChildProps, TDataName>>(UpdateManufacturerUnchangedVendorDocument, {
+      alias: 'updateManufacturerUnchangedVendor',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useUpdateManufacturerUnchangedVendorMutation__
+ *
+ * To run a mutation, you first call `useUpdateManufacturerUnchangedVendorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateManufacturerUnchangedVendorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateManufacturerUnchangedVendorMutation, { data, loading, error }] = useUpdateManufacturerUnchangedVendorMutation({
  *   variables: {
  *      id: // value for 'id'
  *      name: // value for 'name'
  *      url: // value for 'url'
- *      vendor_id: // value for 'vendor_id'
  *   },
  * });
  */
-export function useUpdateManufacturerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateManufacturerMutation, UpdateManufacturerMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateManufacturerMutation, UpdateManufacturerMutationVariables>(UpdateManufacturerDocument, baseOptions);
+export function useUpdateManufacturerUnchangedVendorMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>(UpdateManufacturerUnchangedVendorDocument, baseOptions);
       }
-export type UpdateManufacturerMutationHookResult = ReturnType<typeof useUpdateManufacturerMutation>;
-export type UpdateManufacturerMutationResult = ApolloReactCommon.MutationResult<UpdateManufacturerMutation>;
-export type UpdateManufacturerMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateManufacturerMutation, UpdateManufacturerMutationVariables>;
+export type UpdateManufacturerUnchangedVendorMutationHookResult = ReturnType<typeof useUpdateManufacturerUnchangedVendorMutation>;
+export type UpdateManufacturerUnchangedVendorMutationResult = ApolloReactCommon.MutationResult<UpdateManufacturerUnchangedVendorMutation>;
+export type UpdateManufacturerUnchangedVendorMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>;
 export const DeleteManufacturerDocument = gql`
     mutation DeleteManufacturer($id: Int!) {
   delete_manufacturer_by_pk(id: $id) {
@@ -27302,6 +26645,61 @@ export function useDeleteManufacturerMutation(baseOptions?: ApolloReactHooks.Mut
 export type DeleteManufacturerMutationHookResult = ReturnType<typeof useDeleteManufacturerMutation>;
 export type DeleteManufacturerMutationResult = ApolloReactCommon.MutationResult<DeleteManufacturerMutation>;
 export type DeleteManufacturerMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>;
+export const InsertVendorWithExistingManufacturerDocument = gql`
+    mutation InsertVendorWithExistingManufacturer($account_id: String, $name: String!, $url: String!, $manufacturer_id: Int!) {
+  insert_vendor_one(object: {account_id: $account_id, name: $name, url: $url, manufacturer: {data: {name: $name, url: $url, id: $manufacturer_id}, on_conflict: {constraint: manufacturer_pkey, update_columns: vendor_id}}}) {
+    id
+    name
+    url
+    manufacturer {
+      id
+      name
+      url
+    }
+  }
+}
+    `;
+export type InsertVendorWithExistingManufacturerMutationFn = ApolloReactCommon.MutationFunction<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>;
+export type InsertVendorWithExistingManufacturerProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>
+    } & TChildProps;
+export function withInsertVendorWithExistingManufacturer<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  InsertVendorWithExistingManufacturerMutation,
+  InsertVendorWithExistingManufacturerMutationVariables,
+  InsertVendorWithExistingManufacturerProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables, InsertVendorWithExistingManufacturerProps<TChildProps, TDataName>>(InsertVendorWithExistingManufacturerDocument, {
+      alias: 'insertVendorWithExistingManufacturer',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useInsertVendorWithExistingManufacturerMutation__
+ *
+ * To run a mutation, you first call `useInsertVendorWithExistingManufacturerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertVendorWithExistingManufacturerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertVendorWithExistingManufacturerMutation, { data, loading, error }] = useInsertVendorWithExistingManufacturerMutation({
+ *   variables: {
+ *      account_id: // value for 'account_id'
+ *      name: // value for 'name'
+ *      url: // value for 'url'
+ *      manufacturer_id: // value for 'manufacturer_id'
+ *   },
+ * });
+ */
+export function useInsertVendorWithExistingManufacturerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>(InsertVendorWithExistingManufacturerDocument, baseOptions);
+      }
+export type InsertVendorWithExistingManufacturerMutationHookResult = ReturnType<typeof useInsertVendorWithExistingManufacturerMutation>;
+export type InsertVendorWithExistingManufacturerMutationResult = ApolloReactCommon.MutationResult<InsertVendorWithExistingManufacturerMutation>;
+export type InsertVendorWithExistingManufacturerMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>;
 export const GetOrdersByDateRangeDocument = gql`
     query GetOrdersByDateRange($date_start_gte: date, $date_end_lte: date) {
   order(where: {placed_date: {_gte: $date_start_gte, _lte: $date_end_lte}}) {
@@ -28513,4 +27911,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-14T10:32:16-06:00
+// graphql typescript defs generated on 2020-06-15T07:05:14-06:00

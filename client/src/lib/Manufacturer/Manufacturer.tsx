@@ -262,10 +262,6 @@ export class Manufacturer implements ManufacturerDataProps {
         return makeColumn(
             [
                 {
-                    key: 'id',
-                    responsive: [ 'xl' ],
-                },
-                {
                     key: 'icon',
                     title: '',
                     render: ( text, record: Manufacturer ) => { 
@@ -274,16 +270,15 @@ export class Manufacturer implements ManufacturerDataProps {
                     }
                 },
                 {
+                    key: 'id',
+                    responsive: [ 'xl' ],
+                },
+                {
                     key: 'name',
                     sorter: sortByCaseInsensitiveText( 'name' ),
                     render: ( text, record: Manufacturer ) => {
                         return ( record.url === null ? record.name : <a href={record.url}>{record.name}</a> );
                     }
-                },
-                {
-                    key: 'vendor_id',
-                    title: 'Account ID',
-                    responsive: [ 'lg' ],
                 },
                 {
                     // TODO: Make this a link to the vendor.
