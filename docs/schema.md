@@ -341,55 +341,54 @@ class ItemHardwareFastenerBolt extends GenericItem {
 } ✔
 ```
 
-## Items and their presence in orders, vendor, manufacturer, shipment
+## Items and their presence in `Order`, `Vendor`, `Manufacturer`, `Shipment`
 
 Item search should:
 
-For item enter on the form:
-Type into searchable field as currently.
-searches through 3 tables / objects and displays all results, sorted as the below order:
-→ vendor_item.item when vendor_item.vendor_id == order.vendor_id
-     if a vendor_item is selected, and if it has manufacturer. DONE
-     if a vendor_item is selected, and if it does not have a manufacturer. continue, the user should create a new vendor_item 
+For item entry within the form:
+- Type into searchable field as currently.
+- searches through 3 tables / objects and displays all results, sorted as the below order:
+    1. `vendor_item.item` when _`vendor_item.vendor_id == order.vendor_id`_
+        - if a `vendor_item` is selected, and if it has `manufacturer`. **DONE**  
+        - a `vendor_item` is selected, and if it does not have a `manufacturer`. **continue, the user should create a new `vendor_item`**
 
-→ manufacturer_item.item
-    if selected, allow the user to create a new vendor_item
+    2. `manufacturer_item.item`
+         - if selected, allow the user to create a new vendor_item
 
-→ item
-     if selected allow the user to assign/create a manufacturer_item and vendor_item
+    3. `item`
+        - if selected allow the user to assign/create a `manufacturer_item` and `vendor_item`
 
     ! create extra item related objects 
-        - manufacturer_item
-        - vendor_item
-        - shipment
-      with forms embedded inside 
-       https://ant.design/components/collapse/
+        - `manufacturer_item`
+        - `vendor_item`
+        - `shipment`
+      with forms embedded inside an [antd collapse](https://ant.design/components/collapse/)
 
 
-→ assign a value for item_id
-→ (optional) set vendor_item_id
-                       create if required
-                       basic: vendor_item_id & item_id
-→ (optional) set manufacturer_item_id
-                       create if required
-                       basic: manufacturer & item_id
-→ (optional) set shipment ; 
-                       create if required
-                       basic: tracking # ?
-                       -- no can't be required, because the tracking # isn't always known when the items on an order are split into shipments.
-                       -- use groups of items and an optional tracking # field
-                       ! as items are assigned shipments sort them in the form so that items on the same shipment are adjacent. This should ease the confusion of an initially arbitrary `shipment.id` ( rather than `shipment.tracking_id` ).
-→ (optional) set serial no.
-→ (optional) cost_item
-→ (optional) cost_tax
-→ (optional) cost_total
-→ (optional) quantity
+- assign a value for `item_id`
+- (optional) set `vendor_item_id`
+    - create if required  
+        basic: `vendor_item_id` & `item_id`
+- (optional) set `manufacturer_item_id`
+    - create if required  
+        basic: `manufacturer` & `item_id`
+- (optional) set `shipment`  
+    - create if required  
+        basic: `tracking_id` ?
+        - no can't be required, because the `tracking_id` isn't always known when the items on an order are split into shipments.  
+        - use groups of items and an optional `tracking_id` field  
+        - **as items are assigned shipments sort them in the form so that items on the same shipment are adjacent. This should ease the confusion of an initially arbitrary `shipment.id` ( rather than `shipment.tracking_id` ).**
+- (optional) `serial_no`
+- (optional) `cost_item`
+- (optional) `cost_tax`
+- (optional) `cost_total`
+- (optional) `quantity`
 
 
 
-order_item:
-→ order_id
-→ item_id       
+### order_item:
+ - **order_id**
+ - **item_id**
  - vendor_item_id
  - manufacturer_item_id
  - shipment_id
@@ -399,23 +398,25 @@ order_item:
  - cost_total
  - quantity
 
-item_id -- it's redundant, but so what? as long as there's a check constraint ????? 
-    → try: foreign key on
-         vendor_item_id
-         item_id
-         ?? would this enforce :
-            if vendor_item_id then:    
-              vendor_item_id.item_id === this.item_id
-        otherwise I could write a constraint for this
-    → would probably make writing code faster, but lookups slower
+`item_id` -- it's redundant, but so what? as long as there's a check constraint ????? 
+  * [ ] try: foreign key on  
+    - `vendor_item_id`
+    - `item_id`  
+        ?? would this enforce :
+        ```
+        if vendor_item_id then:    
+            vendor_item_id.item_id === this.item_id
+        ```
+        otherwise I could write a constraint for this  
+        **this would probably make writing code faster, but lookups slower**
 
 
 
-unique on: ( item_id, order_id ) 
+_unique_ on: ( `item_id`, `order_id` ) 
 
-    `order_item` represents a real-world item that is an instance of item, 
-    - with a manufacturer attached (potentially)
-    - with the vendor item attached ?? not sure if this should be mandatory. In fact I'm pretty sure it shouldn't be mandatory. (mandatory, but anonymous/generated vendor items are allowed
+`order_item` represents a real-world item that is an instance of `item`, 
+- with a `manufacturer` attached (potentially)
+- with the vendor item attached ?? not sure if this should be mandatory. In fact I'm pretty sure it shouldn't be mandatory. (mandatory, but anonymous/generated vendor items are allowed
 
 
 

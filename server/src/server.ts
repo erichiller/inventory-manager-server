@@ -73,6 +73,8 @@ export async function startServer ( port: number ): Promise<HttpServer | HttpsSe
 
     app.get( '/file/:doc_file_id', s3FileDownload );
 
+    app.get( '/favicon_cache/:doc_file_id', s3FileDownload );
+
 
     var wsServer = new WebSocket.Server( {
         noServer: true,

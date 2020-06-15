@@ -54,7 +54,7 @@ query ItemSearch($search_text: String!) {
         }, 
         # TODO: I need to come up with a way to specify _"Any `item_` class
         where: { 
-            class: {} 
+            class: {}
         }
     ) {
         id
