@@ -72,11 +72,46 @@ $vendor_id: Int
     }
 }
 
-mutation UpdateManufacturer (
+
+mutation InsertManufacturerWithVendor (
+$name: String!
+$url: String
+$vendor: vendor_obj_rel_insert_input
+) {
+    manufacturer: insert_manufacturer_one(object: {
+        name: $name
+        url: $url
+        vendor: $vendor
+    }) {
+        ...basicManufacturerFields
+    }
+}
+
+# mutation UpdateManufacturer (
+# $id: Int!
+# $name: String!
+# $url: String
+# $vendor_id: Int
+# ) {
+#     manufacturer: update_manufacturer_by_pk(
+#     pk_columns: {
+#         id: $id, 
+#     }
+#     _set: {
+#         name: $name, 
+#         url: $url
+#         vendor_id: $vendor_id, 
+#     }
+#     ) {
+#         ...basicManufacturerFields
+#         ...objectManufacturerFields
+#     }
+# }
+
+mutation UpdateManufacturerUnchangedVendor (
 $id: Int!
 $name: String!
 $url: String
-$vendor_id: Int
 ) {
     manufacturer: update_manufacturer_by_pk(
     pk_columns: {
@@ -85,7 +120,6 @@ $vendor_id: Int
     _set: {
         name: $name, 
         url: $url
-        vendor_id: $vendor_id, 
     }
     ) {
         ...basicManufacturerFields
@@ -99,5 +133,45 @@ $id: Int!
 ) {
     delete_manufacturer_by_pk(id: $id) {
         ...basicManufacturerFields
+    }
+}
+
+
+#############################################
+## manufacturer specific vendor operations ##
+#############################################
+
+mutation InsertVendorWithExistingManufacturer (
+$account_id: String
+$name: String!
+$url: String!
+$manufacturer_id: Int!
+) {
+    insert_vendor_one(
+        object: {
+            account_id: $account_id
+            name: $name
+            url: $url
+            manufacturer: {
+                data: {
+                    name: $name
+                    url: $url
+                    id: $manufacturer_id
+                }, 
+                on_conflict: {
+                    constraint: manufacturer_pkey, 
+                    update_columns: vendor_id
+                }
+            }
+        }
+    ) {
+        id
+        name
+        url
+        manufacturer {
+            id
+            name
+            url
+        }
     }
 }

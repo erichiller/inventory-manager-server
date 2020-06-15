@@ -131,6 +131,7 @@ export const ManufacturerTable: React.FC<ManufacturerTableProps> = ( props ) => 
         <div>
             {modal}
             <Table
+                className="FullPageTable"
                 columns={columns}
                 dataSource={manufacturers}
                 rowKey={manufacturer => manufacturer.id.toString()}

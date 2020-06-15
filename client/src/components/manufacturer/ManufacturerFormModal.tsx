@@ -6,7 +6,7 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetManufacturerQuery, GetManufacturerQueryVariables, useGetManufacturerQuery, useInsertManufacturerMutation, InsertManufacturerMutationVariables, useGetManufacturerLazyQuery, useUpdateManufacturerMutation, UpdateManufacturerMutationVariables, useDeleteManufacturerMutation, GetManufacturerDocument, GetManufacturersDocument, useDeleteVendorMutation, useInsertVendorMutation } from '../../lib/types/graphql';
+import { GetManufacturerQuery, GetManufacturerQueryVariables, useGetManufacturerQuery, useInsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables, useGetManufacturerLazyQuery, useUpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables, useDeleteManufacturerMutation, GetManufacturerDocument, GetManufacturersDocument, useDeleteVendorMutation, useInsertVendorMutation, useInsertVendorWithExistingManufacturerMutation } from '../../lib/types/graphql';
 
 import { QueryResultTypePlus, Union, filterObject, deepCopy } from '../../lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
@@ -53,12 +53,12 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
     console.log( "ManufacturerFormModal init", { props, lookupResult, manufacturer } );
 
     //edit
-    const [ updateManufacturer, updateManufacturerResult ] = useUpdateManufacturerMutation();
+    const [ updateManufacturer, updateManufacturerResult ] = useUpdateManufacturerUnchangedVendorMutation();
     const [ deleteManufacturer, deleteManufacturerResult ] = useDeleteManufacturerMutation();
     const [ deleteVendor, deleteVendorResult ] = useDeleteVendorMutation();
-    const [ insertVendor, insertVendorResult ] = useInsertVendorMutation();
+    const [ insertVendor, insertVendorResult ] = useInsertVendorWithExistingManufacturerMutation();
     // add new
-    const [ insertManufacturer, insertManufacturerResult ] = useInsertManufacturerMutation( {
+    const [ insertManufacturer, insertManufacturerResult ] = useInsertManufacturerWithVendorMutation( {
         refetchQueries: [
             { query: GetManufacturerDocument }
         ]
@@ -103,13 +103,14 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
      * Handle Mutations results
      */
     useEffect( () => {
-        let error = insertManufacturerResult.error || updateManufacturerResult.error || insertManufacturerResult.error || deleteManufacturerResult.error;
-        let data = insertManufacturerResult.data || updateManufacturerResult.data; // || insertManufacturerResult.data || deleteManufacturerResult.data;
+        let error = insertManufacturerResult.error || updateManufacturerResult.error || insertVendorResult.error || deleteVendorResult.error;
+        let manufacturerData = insertManufacturerResult.data || updateManufacturerResult.data;
+        let vendorData = insertVendorResult.data || deleteVendorResult.data;
         if ( error ) {
             // completeCallback( false );
             message.error( `${ error.name }: ${ error.message }` );
-        } else if ( data ) {
-            message.success( `successfully ${ insertManufacturerResult.data ? 'created' : 'updated' } ${ data?.manufacturer.__typename } with id ${ data.manufacturer.id }` );
+        } else if ( manufacturerData ) {
+            message.success( `successfully ${ insertManufacturerResult.data ? 'created' : 'updated' } ${ manufacturerData?.manufacturer.__typename } with id ${ manufacturerData.manufacturer.id }` );
             // return () => {
             form.resetFields();
             exitModal();
@@ -128,10 +129,10 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
         [ name: string ]: any;
     } ) => {
         console.log( { class: 'ManufacturerEditModal', method: 'onFinish', values, manufacturer, formFieldValues: form.getFieldsValue() } );
+        let formFieldValues = form.getFieldsValue() as Exclude<UpdateManufacturerUnchangedVendorMutationVariables, 'id'> & {
+            vendor: boolean;
+        };
         if ( manufacturerId ) {
-            let formFieldValues = form.getFieldsValue() as Exclude<UpdateManufacturerMutationVariables, 'id'> & {
-                vendor: boolean;
-            };
             // edit
             // if id now, but not before
             if ( formFieldValues.vendor ) {
@@ -139,7 +140,7 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
                     variables: {
                         name: formFieldValues.name,
                         url: formFieldValues.url,
-                        manufacturer: {data : [ { id: manufacturerId }] }
+                        manufacturer_id: manufacturerId
                     }
                 } );
             } else if ( !formFieldValues.vendor && manufacturer.vendor ) {
@@ -154,16 +155,17 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
             updateManufacturer( {
                 variables: {
                     id: manufacturerId,
-                    ...filterObject( formFieldValues, null, [ 'vendor' ] )
+                    ...filterObject( formFieldValues, null, [ 'vendor' ] ),
+                    // vendor_id: manufacturer.vendor_id
                 }
             } );
         } else {
             // insert new (add)
-            let formFieldValues = form.getFieldsValue() as Exclude<InsertManufacturerMutationVariables, 'id'>;
+            // let formFieldValues = form.getFieldsValue() as Exclude<InsertManufacturerWithVendorMutationVariables, 'id'>;
             insertManufacturer( {
                 variables: {
-                    ...filterObject( formFieldValues, null, [ 'vendor_id' ] ),
-                    ...( formFieldValues.vendor_id ? {
+                    ...filterObject( formFieldValues, null, [ 'vendor' ] ),
+                    ...( formFieldValues.vendor ? {
                         vendor: {
                             data: {
                                 name: formFieldValues.name,
@@ -197,14 +199,14 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
     }
 
     let initialValues: Partial<Union<
-        Omit<Manufacturer, 'manufacturer'>,
-        { manufacturer: boolean; }
+        Omit<Manufacturer, 'vendor'>,
+        { vendor: boolean; }
     >> = {};
     if ( manufacturer ) {
         initialValues = {
-            ...deepCopy( manufacturer )
-            // ...filterObject( deepCopy( manufacturer ), null, [ 'vendor' ] ),
-            // ...{ vendor: ( manufacturer.vendor && manufacturer.manufacturer.length === 1 ? true : false ) }
+            // ...deepCopy( manufacturer )
+            ...filterObject( deepCopy( manufacturer ), null, [ 'vendor' ] ),
+            ...{ vendor: ( manufacturer.vendor ? true : false ) }
         };
     }
 
@@ -239,20 +241,6 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
                 <Form.Item name="name" label="Name" rules={[ { required: true } ]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="account_id" label="Account #">
-                    <Input />
-                </Form.Item>
-                <Form.Item
-                    name={'manufacturer'}
-                    label="Manufacturer?"
-                    valuePropName='checked'
-                // normalize={( value: Boolean, prevValue: Boolean, allValues: Store ) => {
-                //     console.log( 'manufacturer manufacturer form\n', { value, prevValue, allValues } );
-                //     return {data: {id: value}};
-                // }}
-                >
-                    <Switch />
-                </Form.Item>
 
                 <Form.Item name="url" label="URL"
                     // https://ant.design/components/form/#Rule
@@ -260,7 +248,8 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
                     rules={[
                         {
                             required: true,
-                            pattern: /https?:\/\/.*/,
+                            // ^https?\:\/\/[0-9a-zA-Z][-.\w]*[0-9a-zA-Z]*\.(com|net|pro)\/?
+                            pattern: /^https?\:\/\/[0-9a-zA-Z][-.\w]*[0-9a-zA-Z]*\.[a-zA-Z]{2,}\/?/,
                             message: 'Please enter a valid website for this Manufacturer.'
                         },
                     ]}
@@ -270,6 +259,18 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
                         type="url" // htmlFor="url" ?? 
                         pattern="https?://.*"
                     />
+                </Form.Item>
+                
+                <Form.Item
+                    name={'vendor'}
+                    label="Vendor?"
+                    valuePropName='checked'
+                // normalize={( value: Boolean, prevValue: Boolean, allValues: Store ) => {
+                //     console.log( 'manufacturer manufacturer form\n', { value, prevValue, allValues } );
+                //     return {data: {id: value}};
+                // }}
+                >
+                    <Switch />
                 </Form.Item>
             </div>
 

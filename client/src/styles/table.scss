@@ -1,6 +1,6 @@
-.ItemTable {
+.ItemTable, .FullPageTable {
     user-select: none;
-    .ant-table-cell:nth-of-type(1) {
+    .ant-table-cell:nth-of-type(1), .ant-table-cell:nth-of-type(2) {
         text-align: center;
         img {
             width: 25px;
@@ -70,6 +70,8 @@
         cubic-bezier(0.645, 0.045, 0.355, 1),
         cubic-bezier(0.645, 0.045, 0.355, 1);
     transition-delay: 0s, 0s, 0s, 0s;
+    
+    fill: currentColor;
 
     // color:rgba(0,0,0,.85);
     &:hover {
