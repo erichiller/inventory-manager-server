@@ -105,6 +105,14 @@ export type OperationResult = {
   result: Scalars['Boolean'];
 };
 
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  endCursor: Scalars['String'];
+  hasNextPage: Scalars['Boolean'];
+  hasPreviousPage: Scalars['Boolean'];
+  startCursor: Scalars['String'];
+};
+
 /** Printer and label status and properies */
 export type PrinterLabelStatus = {
   __typename?: 'PrinterLabelStatus';
@@ -19111,6 +19119,14 @@ export type QueryRoot = {
   search_data_aggregate: SearchDataAggregate;
   /** fetch data from the table: "search_data" using primary key columns */
   search_data_by_pk?: Maybe<SearchData>;
+  /** execute function "search_item" which returns "item" */
+  search_item: Array<Item>;
+  /** execute function "search_item" and query aggregates on result of table type "item" */
+  search_item_aggregate: ItemAggregate;
+  /** execute function "search_item_prefer_vendor" which returns "item" */
+  search_item_prefer_vendor: Array<Item>;
+  /** execute function "search_item_prefer_vendor" and query aggregates on result of table type "item" */
+  search_item_prefer_vendor_aggregate: ItemAggregate;
   /** fetch data from the table: "shipment" */
   shipment: Array<Shipment>;
   /** fetch aggregated fields from the table: "shipment" */
@@ -20662,6 +20678,50 @@ export type QueryRootSearchDataByPkArgs = {
 
 
 /** query root */
+export type QueryRootSearchItemArgs = {
+  args: SearchItemArgs;
+  distinct_on?: Maybe<Array<ItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemOrderBy>>;
+  where?: Maybe<ItemBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootSearchItemAggregateArgs = {
+  args: SearchItemArgs;
+  distinct_on?: Maybe<Array<ItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemOrderBy>>;
+  where?: Maybe<ItemBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootSearchItemPreferVendorArgs = {
+  args: SearchItemPreferVendorArgs;
+  distinct_on?: Maybe<Array<ItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemOrderBy>>;
+  where?: Maybe<ItemBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootSearchItemPreferVendorAggregateArgs = {
+  args: SearchItemPreferVendorArgs;
+  distinct_on?: Maybe<Array<ItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemOrderBy>>;
+  where?: Maybe<ItemBoolExp>;
+};
+
+
+/** query root */
 export type QueryRootShipmentArgs = {
   distinct_on?: Maybe<Array<ShipmentSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
@@ -21105,6 +21165,17 @@ export type SearchDataVarianceFields = {
 /** order by variance() on columns of table "search_data" */
 export type SearchDataVarianceOrderBy = {
   id?: Maybe<OrderBy>;
+};
+
+export type SearchItemArgs = {
+  query_text?: Maybe<Scalars['String']>;
+  return_limit?: Maybe<Scalars['Int']>;
+};
+
+export type SearchItemPreferVendorArgs = {
+  prefer_vendor_id?: Maybe<Scalars['Int']>;
+  query_text?: Maybe<Scalars['String']>;
+  return_limit?: Maybe<Scalars['Int']>;
 };
 
 /**
@@ -22135,6 +22206,14 @@ export type SubscriptionRoot = {
   search_data_aggregate: SearchDataAggregate;
   /** fetch data from the table: "search_data" using primary key columns */
   search_data_by_pk?: Maybe<SearchData>;
+  /** execute function "search_item" which returns "item" */
+  search_item: Array<Item>;
+  /** execute function "search_item" and query aggregates on result of table type "item" */
+  search_item_aggregate: ItemAggregate;
+  /** execute function "search_item_prefer_vendor" which returns "item" */
+  search_item_prefer_vendor: Array<Item>;
+  /** execute function "search_item_prefer_vendor" and query aggregates on result of table type "item" */
+  search_item_prefer_vendor_aggregate: ItemAggregate;
   /** fetch data from the table: "shipment" */
   shipment: Array<Shipment>;
   /** fetch aggregated fields from the table: "shipment" */
@@ -23682,6 +23761,50 @@ export type SubscriptionRootSearchDataAggregateArgs = {
 /** subscription root */
 export type SubscriptionRootSearchDataByPkArgs = {
   id: Scalars['bigint'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootSearchItemArgs = {
+  args: SearchItemArgs;
+  distinct_on?: Maybe<Array<ItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemOrderBy>>;
+  where?: Maybe<ItemBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootSearchItemAggregateArgs = {
+  args: SearchItemArgs;
+  distinct_on?: Maybe<Array<ItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemOrderBy>>;
+  where?: Maybe<ItemBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootSearchItemPreferVendorArgs = {
+  args: SearchItemPreferVendorArgs;
+  distinct_on?: Maybe<Array<ItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemOrderBy>>;
+  where?: Maybe<ItemBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootSearchItemPreferVendorAggregateArgs = {
+  args: SearchItemPreferVendorArgs;
+  distinct_on?: Maybe<Array<ItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemOrderBy>>;
+  where?: Maybe<ItemBoolExp>;
 };
 
 
@@ -25269,6 +25392,21 @@ export type DeleteOrderMutation = (
   & { delete_order_by_pk?: Maybe<(
     { __typename?: 'order' }
     & BasicOrderFieldsFragment
+  )> }
+);
+
+export type SearchItemPreferVendorQueryVariables = Exact<{
+  query_text: Scalars['String'];
+  prefer_vendor_id?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type SearchItemPreferVendorQuery = (
+  { __typename?: 'query_root' }
+  & { item: Array<(
+    { __typename?: 'item' }
+    & Pick<Item, 'id' | 'class'>
+    & { name: Item['object'] }
   )> }
 );
 
@@ -27051,6 +27189,55 @@ export function useDeleteOrderMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type DeleteOrderMutationHookResult = ReturnType<typeof useDeleteOrderMutation>;
 export type DeleteOrderMutationResult = ApolloReactCommon.MutationResult<DeleteOrderMutation>;
 export type DeleteOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteOrderMutation, DeleteOrderMutationVariables>;
+export const SearchItemPreferVendorDocument = gql`
+    query SearchItemPreferVendor($query_text: String!, $prefer_vendor_id: Int) {
+  item: search_item_prefer_vendor(args: {query_text: $query_text, prefer_vendor_id: $prefer_vendor_id}) {
+    id
+    class
+    name: object(path: "name")
+  }
+}
+    `;
+export type SearchItemPreferVendorProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables>
+    } & TChildProps;
+export function withSearchItemPreferVendor<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  SearchItemPreferVendorQuery,
+  SearchItemPreferVendorQueryVariables,
+  SearchItemPreferVendorProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables, SearchItemPreferVendorProps<TChildProps, TDataName>>(SearchItemPreferVendorDocument, {
+      alias: 'searchItemPreferVendor',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useSearchItemPreferVendorQuery__
+ *
+ * To run a query within a React component, call `useSearchItemPreferVendorQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchItemPreferVendorQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchItemPreferVendorQuery({
+ *   variables: {
+ *      query_text: // value for 'query_text'
+ *      prefer_vendor_id: // value for 'prefer_vendor_id'
+ *   },
+ * });
+ */
+export function useSearchItemPreferVendorQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables>(SearchItemPreferVendorDocument, baseOptions);
+      }
+export function useSearchItemPreferVendorLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables>(SearchItemPreferVendorDocument, baseOptions);
+        }
+export type SearchItemPreferVendorQueryHookResult = ReturnType<typeof useSearchItemPreferVendorQuery>;
+export type SearchItemPreferVendorLazyQueryHookResult = ReturnType<typeof useSearchItemPreferVendorLazyQuery>;
+export type SearchItemPreferVendorQueryResult = ApolloReactCommon.QueryResult<SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
   PrinterStatus {
@@ -27911,4 +28098,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-15T07:05:14-06:00
+// graphql typescript defs generated on 2020-06-15T10:50:32-06:00

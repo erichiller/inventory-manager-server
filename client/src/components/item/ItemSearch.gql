@@ -1,3 +1,4 @@
+# TODO: nothing uses this in the way it is intended (but probably doesn't work), remove query.
 query SearchItems(
     # should be an obect of { key: value }
     $containsFilter: jsonb

@@ -4,7 +4,7 @@ import { gql } from "apollo-server";
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
-import fetch from 'cross-fetch'
+import fetch from 'cross-fetch';
 import { HASURA_GRAPHQL_API_URL, HASURA_ACCESS_KEY } from '../../config';
 
 export const s3FileDownload = ( req: express.Request, res: express.Response ) => {

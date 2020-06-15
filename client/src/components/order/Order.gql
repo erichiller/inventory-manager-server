@@ -169,3 +169,24 @@ $id: Int!
     }
 }
 
+
+
+###########
+## Items ##
+###########
+
+query SearchItemPreferVendor (
+    $query_text: String!
+    $prefer_vendor_id: Int
+){
+    item: search_item_prefer_vendor(
+        args: {
+            query_text: $query_text, 
+            prefer_vendor_id: $prefer_vendor_id
+        }
+    ) {
+        id
+        class
+        name: object(path: "name")
+    }
+}

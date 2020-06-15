@@ -24,6 +24,7 @@
     "graphql-tools": "^6.0.9",
     "graphql-tools-fork": "^9.0.1",
     "ipp": "^2.0.1",
+    "jsdom": "^16.2.2",
     "mkdirp": "^0.5.1",
     "net-snmp": "^1.2.4",
     "node-thermal-printer": "^4.1.0",
