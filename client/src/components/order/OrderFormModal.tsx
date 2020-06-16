@@ -332,6 +332,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                                         className="full-width-form-item"
                                     >
                                         <OrderItemInput placeholder="Search for Item"
+                                            vendorId={form.getFieldValue("vendor_id")}
                                             suffix={
                                                 <MinusCircleOutlined
                                                     className="dynamic-delete-button"

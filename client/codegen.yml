@@ -50,6 +50,18 @@ generates:
             - time:
                 message: "graphql typescript defs generated on "
                 format: YYYY-MM-DDTHH:mm:ssZ
+    # ./src/lib/types/graphql_schema_introspection.json:
+    #   plugins:
+    #     - introspection
+    #   config:
+    #     minify: true
+    ./src/lib/types/schema.graphql:
+      plugins:
+        - schema-ast
+      config:
+        commentDescriptions: true
+        # includeDirectives: true
+
 
 overwrite: true
 # schema: "http://graphql.hiller.pro:8080/v1/graphql"

@@ -15,16 +15,16 @@ interface OptionT {
     order_id: string;
     label ?: string | ReactElement;
 }
-// interface OrderInputProps extends InputProps {
-interface OrderInputProps extends Omit<InputProps, 'value' | 'onChange'> {
+// interface OrderSelectProps extends InputProps {
+interface OrderSelectProps extends Omit<InputProps, 'value' | 'onChange'> {
     forwardRef?: React.MutableRefObject<Input>;
     value?: OptionT;
     onChange?: ( event: OptionT ) => void;
 }
 /**
- * Form Select Input for arbitrary ENUM
+ * Form Select For Order for arbitrary ENUM
  */
-export const OrderInput: React.FC<OrderInputProps> = ( props ) => {
+export const OrderSelect: React.FC<OrderSelectProps> = ( props ) => {
     const { onChange, value, ...remainingProps } = props;
     const [ valueText, setValueText ] = useState<string>();
     const [ dateString, setDateString ] = useState<string>(moment().format('YYYY-MM'));
@@ -71,7 +71,7 @@ export const OrderInput: React.FC<OrderInputProps> = ( props ) => {
         onChange( value.value );
     };
     return (
-        <div className="OrderInput">
+        <div className="OrderSelect">
             {/* <AutoComplete
                 options={options}
                 onChange={( str, opt ) => handleSearch( opt as OptionT )}

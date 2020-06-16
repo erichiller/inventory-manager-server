@@ -188,5 +188,12 @@ query SearchItemPreferVendor (
         id
         class
         name: object(path: "name")
+        object
+        vendorItems {
+            vendor_id
+        }
+        manufacturerItems {
+            manufacturer_id
+        }
     }
 }

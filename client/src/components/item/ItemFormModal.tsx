@@ -6,7 +6,7 @@ import { Item } from '../../lib/item';
 import { ItemFormProps, FormMutationHandler } from '../../lib/item/Item';
 import TextArea from 'antd/lib/input/TextArea';
 import { QtyInput } from '../../lib/item/common/QtyInput';
-import { OrderInput } from '../order/OrderInput';
+import { OrderSelect } from '../order/OrderSelect';
 import { useHistory } from 'react-router-dom';
 
 type ItemFormModalProps = {
@@ -104,7 +104,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
                     <QtyInput />
                 </Form.Item>
                 <Form.Item name="order" label="Order">
-                    <OrderInput />
+                    <OrderSelect />
                 </Form.Item>
                 {/* TODO: then here have a type selector when in the generic add form */}
             </div>
