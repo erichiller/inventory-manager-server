@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { StorageDriverS3 } from './S3';
+import { S3ObjectStore } from './S3ObjectStore';
 import { gql } from "apollo-server";
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -44,6 +44,7 @@ export const s3FileDownload = ( req: express.Request, res: express.Response ) =>
                 "Content-Type": "application/octet-stream",
                 "Content-Disposition": "attachment; filename=" + filename
             } );
-            new StorageDriverS3().getObject( s3_obj_id ).pipe( res );
-        } );
+            return new S3ObjectStore().getObject( s3_obj_id );
+        } )
+        .then( objectResponseStream => objectResponseStream.pipe( res ) );
 };

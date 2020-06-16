@@ -13,7 +13,7 @@ import { SubscriptionServer } from 'subscriptions-transport-ws';
 import * as url from 'url';
 import * as WebSocket from 'ws';
 import { HandleWebsocketUploadConnection } from './drivers/websocket/documentUpload';
-import { s3FileDownload } from './drivers/storage/S3FileDownload';
+import { s3FileDownload } from './drivers/storage/FileDownload';
 
 
 type ExpressGraphQLOptionsFunction = ( req?: express.Request, res?: express.Response ) => any | Promise<any>;

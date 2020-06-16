@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { StorageDriverS3 } from '../storage/S3';
+import { S3ObjectStore } from '../storage/S3ObjectStore';
 import * as WebSocket from 'ws';
 import { IncomingMessage as HttpIncomingMessage } from 'http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -55,7 +55,7 @@ export function HandleWebsocketUploadConnection ( ws: WebSocket, req: HttpIncomi
 
         let fileId = uuidv4();
         let fileData = message.slice( headerLength + 4 );
-        new StorageDriverS3().setObject( fileId, fileData, ( err, data ) => {
+        new S3ObjectStore().setObject( fileId, fileData, ( err, data ) => {
             if ( err ) throw err;
             ws.send( "success" );
             console.log( `Saved file to ${ fileId }\n\t message:\n`, message );
