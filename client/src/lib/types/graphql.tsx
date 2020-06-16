@@ -25405,8 +25405,15 @@ export type SearchItemPreferVendorQuery = (
   { __typename?: 'query_root' }
   & { item: Array<(
     { __typename?: 'item' }
-    & Pick<Item, 'id' | 'class'>
+    & Pick<Item, 'id' | 'class' | 'object'>
     & { name: Item['object'] }
+    & { vendorItems: Array<(
+      { __typename?: 'vendor_item' }
+      & Pick<VendorItem, 'vendor_id'>
+    )>, manufacturerItems: Array<(
+      { __typename?: 'manufacturer_item' }
+      & Pick<ManufacturerItem, 'manufacturer_id'>
+    )> }
   )> }
 );
 
@@ -27195,6 +27202,13 @@ export const SearchItemPreferVendorDocument = gql`
     id
     class
     name: object(path: "name")
+    object
+    vendorItems {
+      vendor_id
+    }
+    manufacturerItems {
+      manufacturer_id
+    }
   }
 }
     `;
@@ -28098,4 +28112,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-15T10:50:32-06:00
+// graphql typescript defs generated on 2020-06-16T10:33:26-06:00

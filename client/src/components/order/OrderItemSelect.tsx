@@ -7,7 +7,8 @@ import { AutoComplete, Input, DatePicker, Select } from "antd";
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { toTitleCase, getDaysInMonth } from "../../lib/UtilityFunctions";
 import { InputProps } from "antd/lib/input";
-import { useGetOrdersByDateRangeQuery, useGetItemsQuery, useItemSearchQuery } from "../../lib/types/graphql";
+import { useGetOrdersByDateRangeQuery, useGetItemsQuery, useSearchItemPreferVendorQuery } from "../../lib/types/graphql";
+import { Integer } from "../../lib/types/uint8";
 
 
 interface OptionT {
@@ -21,6 +22,7 @@ export type OrderItemSelectProvidesValue = Array<{ item_id: number; }>
 interface OrderItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
     forwardRef?: React.MutableRefObject<Input>;
     value?: VT;
+    vendorId: Integer;
     onChange?: ( items: OrderItemSelectProvidesValue) => void;
 }
 /**
@@ -28,27 +30,31 @@ interface OrderItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange
  */
 export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
     const { onChange, 
+        vendorId
         //value, 
         // ...remainingProps 
     } = props;
     const [ searchText, setSearchText ] = useState<string>();
     const [ options, setOptions ] = useState<OptionT[]>( [] );
-    const { data, loading, error } = useItemSearchQuery( {
+    const { data, loading, error } = useSearchItemPreferVendorQuery( {
         variables: {
-            search_text: `*${searchText}*`
+            query_text: `*${searchText}*`,
+            prefer_vendor_id: vendorId
         }
     } );
     useEffect( () => {
         if ( !loading && !error ) {
             console.log( { class: "OrderItemSelect", "action": "useEffect", event: "loading and error ok", data } );
-            setOptions( data.search.map( v => {
+            setOptions( data.item.map( v => {
                 console.log( "outputting option", v );
                 return {
                     item_id: v.id,
                     label: <span className="orderOption">
-                        {/* {<v.icon />} */}
+                        {/* {<v.icon />} // TODO */}
                         <span>{v.name}</span>
-                        <span>{v.metadata?.description}</span>
+                        <span>{ v.manufacturerItems && v.manufacturerItems.length > 0 ? `manufacturer_id: ${v.manufacturerItems[0].manufacturer_id}` : null}</span>
+                        <span>{v.vendorItems && v.vendorItems.length > 0 ? `vendor_id: ${v.vendorItems[ 0 ].vendor_id}` : null}</span>
+                        <span>{v.object?.description}</span>
                         {/* <span>#{v.vendor_order_id}</span> */}
                     </span>
                     // TODO: Set value to the applicable string, feed value up that is the `order_id`

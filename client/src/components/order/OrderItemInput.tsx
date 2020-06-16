@@ -11,6 +11,8 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ItemSelect, ItemSelectProvidesValue } from '../item/ItemSelect';
 import { useForm } from 'antd/lib/form/Form';
 import { InputProps } from 'antd/lib/input';
+import { OrderItemSelect } from './OrderItemSelect';
+import { Integer } from '../../lib/types/uint8';
 
 
 interface OrderItemDefinition extends Omit<OrderItem, 'order_id'> {
@@ -23,6 +25,7 @@ interface OrderItemInputProps extends Omit<InputProps, 'value' | 'onChange'> {
     value?: OrderItemDefinition;
     // onChange?: ( items: { item_id: number; }[] ) => void;
     onChange?: ( item: OrderItemDefinition ) => void;
+    vendorId: Integer;
 }
 
 /**
@@ -81,10 +84,11 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
     return (
         <div className="OrderItemInput">
 
-            <ItemSelect placeholder="Search for Item"
+            <OrderItemSelect placeholder="Search for Item"
                 mode={null}
                 onChange={setItemId}
                 suffixIcon={props.suffix}
+                vendorId={props.vendorId}
             // suffix={
             //     <MinusCircleOutlined
             //         className="dynamic-delete-button"

@@ -140,7 +140,11 @@ div[role="tooltip"] {
     }
 }
 
-.OrderInput {
+.orderItemOption {
+    @extend .orderOption
+}
+
+.OrderSelect {
     display: flex;
     .ant-picker-input input {
         width: 55px;
@@ -230,7 +234,7 @@ div[role="tooltip"] {
     input {
         width: initial;
     }
-    .ItemSelect {
+    .ItemSelect, .OrderItemSelect {
         grid-column-start: span 3;
     }
     [name="quantity"] {
