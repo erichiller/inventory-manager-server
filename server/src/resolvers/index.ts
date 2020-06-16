@@ -7,10 +7,9 @@ import { BrotherLabeler, PrinterStatus } from '../lib/epson';
 import { HttpLink } from 'apollo-link-http/lib/httpLink';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
-import fetch from 'node-fetch';
+import fetch from 'cross-fetch';
 import { HASURA_GRAPHQL_API_URL, HASURA_ACCESS_KEY } from '../config';
 import { UserInputError } from 'apollo-server';
-import { IResolvers, ResolverTypeWrapper } from '../types/graphql';
 
 export const resolvers = {
     uint8: uint8_resolver,

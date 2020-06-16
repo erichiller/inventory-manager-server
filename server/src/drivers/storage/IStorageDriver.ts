@@ -1,8 +1,8 @@
 
-import { Readable } from 'stream';
+import { Stream } from 'stream';
 
 // Generic interface to implmenent alternative storage drivers
 export interface IStorageDriver {
-    setObject: ( id: string, content: Uint8Array, callback?: ( err: Error, data: AWS.S3.ManagedUpload.SendData ) => void ) => void;
-    getObject: ( id: string ) => Readable;
+    setObject: ( id: string, content: string | Stream | Buffer | Uint8Array, callback?: ( err: Error, etag: string ) => void ) => void;
+    getObject: ( id: string ) => Promise<Stream>;
 }
