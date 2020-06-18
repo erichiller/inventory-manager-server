@@ -68,13 +68,6 @@ type OperationResult {
   result: Boolean!
 }
 
-type PageInfo {
-  endCursor: String!
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: String!
-}
-
 # Printer and label status and properies
 type PrinterLabelStatus {
   labelCharacteristic: LabelCharacteristic
@@ -6099,6 +6092,42 @@ type item {
   id: Int!
 
   # An array relationship
+  itemVariants(
+    # distinct select on columns
+    distinct_on: [item_variant_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [item_variant_order_by!]
+
+    # filter the rows returned
+    where: item_variant_bool_exp
+  ): [item_variant!]!
+
+  # An aggregated array relationship
+  itemVariants_aggregate(
+    # distinct select on columns
+    distinct_on: [item_variant_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [item_variant_order_by!]
+
+    # filter the rows returned
+    where: item_variant_bool_exp
+  ): item_variant_aggregate!
+
+  # An array relationship
   labelTemplates(
     # distinct select on columns
     distinct_on: [label_template_map_select_column!]
@@ -6353,6 +6382,7 @@ input item_bool_exp {
   bundle: item_bundle_map_bool_exp
   class: enum_item_class_enum_comparison_exp
   id: Int_comparison_exp
+  itemVariants: item_variant_bool_exp
   labelTemplates: label_template_map_bool_exp
   labels: label_bool_exp
   manufacturerItems: manufacturer_item_bool_exp
@@ -11058,6 +11088,7 @@ input item_order_by {
   bundle_aggregate: item_bundle_map_aggregate_order_by
   class: order_by
   id: order_by
+  itemVariants_aggregate: item_variant_aggregate_order_by
   labelTemplates_aggregate: label_template_map_aggregate_order_by
   labels_aggregate: label_aggregate_order_by
   manufacturerItems_aggregate: manufacturer_item_aggregate_order_by
@@ -11197,6 +11228,410 @@ type item_variance_fields {
 input item_variance_order_by {
   id: order_by
   stock: order_by
+}
+
+# All existing combinations of vendor and manufacturer for an item, including null for both.
+#
+#
+# columns and relationships of "item_variant"
+type item_variant {
+  class: String
+  id: Int
+
+  # An object relationship
+  item: item
+  item_id: Int
+
+  # An object relationship
+  manufacturer: manufacturer
+  manufacturer_id: Int
+  manufacturer_item_id: Int
+  object(
+    # JSON select path
+    path: String
+  ): jsonb
+  order_id: Int
+  order_item_id: Int
+
+  # An object relationship
+  vendor: vendor
+  vendor_id: Int
+  vendor_item_id: Int
+}
+
+# aggregated selection of "item_variant"
+type item_variant_aggregate {
+  aggregate: item_variant_aggregate_fields
+  nodes: [item_variant!]!
+}
+
+# aggregate fields of "item_variant"
+type item_variant_aggregate_fields {
+  avg: item_variant_avg_fields
+  count(columns: [item_variant_select_column!], distinct: Boolean): Int
+  max: item_variant_max_fields
+  min: item_variant_min_fields
+  stddev: item_variant_stddev_fields
+  stddev_pop: item_variant_stddev_pop_fields
+  stddev_samp: item_variant_stddev_samp_fields
+  sum: item_variant_sum_fields
+  var_pop: item_variant_var_pop_fields
+  var_samp: item_variant_var_samp_fields
+  variance: item_variant_variance_fields
+}
+
+# order by aggregate values of table "item_variant"
+input item_variant_aggregate_order_by {
+  avg: item_variant_avg_order_by
+  count: order_by
+  max: item_variant_max_order_by
+  min: item_variant_min_order_by
+  stddev: item_variant_stddev_order_by
+  stddev_pop: item_variant_stddev_pop_order_by
+  stddev_samp: item_variant_stddev_samp_order_by
+  sum: item_variant_sum_order_by
+  var_pop: item_variant_var_pop_order_by
+  var_samp: item_variant_var_samp_order_by
+  variance: item_variant_variance_order_by
+}
+
+# append existing jsonb value of filtered columns with new jsonb value
+input item_variant_append_input {
+  object: jsonb
+}
+
+# aggregate avg on columns
+type item_variant_avg_fields {
+  id: Float
+  item_id: Float
+  manufacturer_id: Float
+  manufacturer_item_id: Float
+  order_id: Float
+  order_item_id: Float
+  vendor_id: Float
+  vendor_item_id: Float
+}
+
+# order by avg() on columns of table "item_variant"
+input item_variant_avg_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_id: order_by
+  manufacturer_item_id: order_by
+  order_id: order_by
+  order_item_id: order_by
+  vendor_id: order_by
+  vendor_item_id: order_by
+}
+
+# Boolean expression to filter rows from the table "item_variant". All fields are combined with a logical 'AND'.
+input item_variant_bool_exp {
+  _and: [item_variant_bool_exp]
+  _not: item_variant_bool_exp
+  _or: [item_variant_bool_exp]
+  class: String_comparison_exp
+  id: Int_comparison_exp
+  item: item_bool_exp
+  item_id: Int_comparison_exp
+  manufacturer: manufacturer_bool_exp
+  manufacturer_id: Int_comparison_exp
+  manufacturer_item_id: Int_comparison_exp
+  object: jsonb_comparison_exp
+  order_id: Int_comparison_exp
+  order_item_id: Int_comparison_exp
+  vendor: vendor_bool_exp
+  vendor_id: Int_comparison_exp
+  vendor_item_id: Int_comparison_exp
+}
+
+# delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+input item_variant_delete_at_path_input {
+  object: [String]
+}
+
+# delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+input item_variant_delete_elem_input {
+  object: Int
+}
+
+# delete key/value pair or string element. key/value pairs are matched based on their key value
+input item_variant_delete_key_input {
+  object: String
+}
+
+# aggregate max on columns
+type item_variant_max_fields {
+  class: String
+  id: Int
+  item_id: Int
+  manufacturer_id: Int
+  manufacturer_item_id: Int
+  order_id: Int
+  order_item_id: Int
+  vendor_id: Int
+  vendor_item_id: Int
+}
+
+# order by max() on columns of table "item_variant"
+input item_variant_max_order_by {
+  class: order_by
+  id: order_by
+  item_id: order_by
+  manufacturer_id: order_by
+  manufacturer_item_id: order_by
+  order_id: order_by
+  order_item_id: order_by
+  vendor_id: order_by
+  vendor_item_id: order_by
+}
+
+# aggregate min on columns
+type item_variant_min_fields {
+  class: String
+  id: Int
+  item_id: Int
+  manufacturer_id: Int
+  manufacturer_item_id: Int
+  order_id: Int
+  order_item_id: Int
+  vendor_id: Int
+  vendor_item_id: Int
+}
+
+# order by min() on columns of table "item_variant"
+input item_variant_min_order_by {
+  class: order_by
+  id: order_by
+  item_id: order_by
+  manufacturer_id: order_by
+  manufacturer_item_id: order_by
+  order_id: order_by
+  order_item_id: order_by
+  vendor_id: order_by
+  vendor_item_id: order_by
+}
+
+# ordering options when selecting data from "item_variant"
+input item_variant_order_by {
+  class: order_by
+  id: order_by
+  item: item_order_by
+  item_id: order_by
+  manufacturer: manufacturer_order_by
+  manufacturer_id: order_by
+  manufacturer_item_id: order_by
+  object: order_by
+  order_id: order_by
+  order_item_id: order_by
+  vendor: vendor_order_by
+  vendor_id: order_by
+  vendor_item_id: order_by
+}
+
+# prepend existing jsonb value of filtered columns with new jsonb value
+input item_variant_prepend_input {
+  object: jsonb
+}
+
+# select columns of table "item_variant"
+enum item_variant_select_column {
+  # column name
+  class
+
+  # column name
+  id
+
+  # column name
+  item_id
+
+  # column name
+  manufacturer_id
+
+  # column name
+  manufacturer_item_id
+
+  # column name
+  object
+
+  # column name
+  order_id
+
+  # column name
+  order_item_id
+
+  # column name
+  vendor_id
+
+  # column name
+  vendor_item_id
+}
+
+# aggregate stddev on columns
+type item_variant_stddev_fields {
+  id: Float
+  item_id: Float
+  manufacturer_id: Float
+  manufacturer_item_id: Float
+  order_id: Float
+  order_item_id: Float
+  vendor_id: Float
+  vendor_item_id: Float
+}
+
+# order by stddev() on columns of table "item_variant"
+input item_variant_stddev_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_id: order_by
+  manufacturer_item_id: order_by
+  order_id: order_by
+  order_item_id: order_by
+  vendor_id: order_by
+  vendor_item_id: order_by
+}
+
+# aggregate stddev_pop on columns
+type item_variant_stddev_pop_fields {
+  id: Float
+  item_id: Float
+  manufacturer_id: Float
+  manufacturer_item_id: Float
+  order_id: Float
+  order_item_id: Float
+  vendor_id: Float
+  vendor_item_id: Float
+}
+
+# order by stddev_pop() on columns of table "item_variant"
+input item_variant_stddev_pop_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_id: order_by
+  manufacturer_item_id: order_by
+  order_id: order_by
+  order_item_id: order_by
+  vendor_id: order_by
+  vendor_item_id: order_by
+}
+
+# aggregate stddev_samp on columns
+type item_variant_stddev_samp_fields {
+  id: Float
+  item_id: Float
+  manufacturer_id: Float
+  manufacturer_item_id: Float
+  order_id: Float
+  order_item_id: Float
+  vendor_id: Float
+  vendor_item_id: Float
+}
+
+# order by stddev_samp() on columns of table "item_variant"
+input item_variant_stddev_samp_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_id: order_by
+  manufacturer_item_id: order_by
+  order_id: order_by
+  order_item_id: order_by
+  vendor_id: order_by
+  vendor_item_id: order_by
+}
+
+# aggregate sum on columns
+type item_variant_sum_fields {
+  id: Int
+  item_id: Int
+  manufacturer_id: Int
+  manufacturer_item_id: Int
+  order_id: Int
+  order_item_id: Int
+  vendor_id: Int
+  vendor_item_id: Int
+}
+
+# order by sum() on columns of table "item_variant"
+input item_variant_sum_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_id: order_by
+  manufacturer_item_id: order_by
+  order_id: order_by
+  order_item_id: order_by
+  vendor_id: order_by
+  vendor_item_id: order_by
+}
+
+# aggregate var_pop on columns
+type item_variant_var_pop_fields {
+  id: Float
+  item_id: Float
+  manufacturer_id: Float
+  manufacturer_item_id: Float
+  order_id: Float
+  order_item_id: Float
+  vendor_id: Float
+  vendor_item_id: Float
+}
+
+# order by var_pop() on columns of table "item_variant"
+input item_variant_var_pop_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_id: order_by
+  manufacturer_item_id: order_by
+  order_id: order_by
+  order_item_id: order_by
+  vendor_id: order_by
+  vendor_item_id: order_by
+}
+
+# aggregate var_samp on columns
+type item_variant_var_samp_fields {
+  id: Float
+  item_id: Float
+  manufacturer_id: Float
+  manufacturer_item_id: Float
+  order_id: Float
+  order_item_id: Float
+  vendor_id: Float
+  vendor_item_id: Float
+}
+
+# order by var_samp() on columns of table "item_variant"
+input item_variant_var_samp_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_id: order_by
+  manufacturer_item_id: order_by
+  order_id: order_by
+  order_item_id: order_by
+  vendor_id: order_by
+  vendor_item_id: order_by
+}
+
+# aggregate variance on columns
+type item_variant_variance_fields {
+  id: Float
+  item_id: Float
+  manufacturer_id: Float
+  manufacturer_item_id: Float
+  order_id: Float
+  order_item_id: Float
+  vendor_id: Float
+  vendor_item_id: Float
+}
+
+# order by variance() on columns of table "item_variant"
+input item_variant_variance_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_id: order_by
+  manufacturer_item_id: order_by
+  order_id: order_by
+  order_item_id: order_by
+  vendor_id: order_by
+  vendor_item_id: order_by
 }
 
 scalar jsonb
@@ -12439,7 +12874,13 @@ input manufacturer_insert_input {
 # columns and relationships of "manufacturer_item"
 type manufacturer_item {
   id: Int!
+
+  # An object relationship
+  item: item!
   item_id: Int!
+
+  # An object relationship
+  manufacturer: manufacturer!
   manufacturer_id: Int!
 
   # example - Cisco 7204VXR
@@ -12450,6 +12891,42 @@ type manufacturer_item {
 
   # example - Cisco 7200 series
   manufacturer_product_series: String
+
+  # An array relationship
+  orderItems(
+    # distinct select on columns
+    distinct_on: [order_item_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [order_item_order_by!]
+
+    # filter the rows returned
+    where: order_item_bool_exp
+  ): [order_item!]!
+
+  # An aggregated array relationship
+  orderItems_aggregate(
+    # distinct select on columns
+    distinct_on: [order_item_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [order_item_order_by!]
+
+    # filter the rows returned
+    where: order_item_bool_exp
+  ): order_item_aggregate!
   product_url: String
 }
 
@@ -12515,11 +12992,14 @@ input manufacturer_item_bool_exp {
   _not: manufacturer_item_bool_exp
   _or: [manufacturer_item_bool_exp]
   id: Int_comparison_exp
+  item: item_bool_exp
   item_id: Int_comparison_exp
+  manufacturer: manufacturer_bool_exp
   manufacturer_id: Int_comparison_exp
   manufacturer_product_id: String_comparison_exp
   manufacturer_product_name: String_comparison_exp
   manufacturer_product_series: String_comparison_exp
+  orderItems: order_item_bool_exp
   product_url: String_comparison_exp
 }
 
@@ -12539,11 +13019,14 @@ input manufacturer_item_inc_input {
 # input type for inserting data into table "manufacturer_item"
 input manufacturer_item_insert_input {
   id: Int
+  item: item_obj_rel_insert_input
   item_id: Int
+  manufacturer: manufacturer_obj_rel_insert_input
   manufacturer_id: Int
   manufacturer_product_id: String
   manufacturer_product_name: String
   manufacturer_product_series: String
+  orderItems: order_item_arr_rel_insert_input
   product_url: String
 }
 
@@ -12616,11 +13099,14 @@ input manufacturer_item_on_conflict {
 # ordering options when selecting data from "manufacturer_item"
 input manufacturer_item_order_by {
   id: order_by
+  item: item_order_by
   item_id: order_by
+  manufacturer: manufacturer_order_by
   manufacturer_id: order_by
   manufacturer_product_id: order_by
   manufacturer_product_name: order_by
   manufacturer_product_series: order_by
+  orderItems_aggregate: order_item_aggregate_order_by
   product_url: order_by
 }
 
@@ -13469,7 +13955,7 @@ type mutation_root {
   ): order_item_mutation_response
 
   # delete single row from the table: "order_item"
-  delete_order_item_by_pk(item_id: Int!, order_id: Int!): order_item
+  delete_order_item_by_pk(id: Int!): order_item
 
   # delete data from the table: "payment_method"
   delete_payment_method(
@@ -16336,6 +16822,7 @@ type order_item {
   cost_item: money
   cost_tax: money
   cost_total: money
+  id: Int!
   item_id: Int!
 
   # link to manufacturer item, which in turn links to item
@@ -16396,6 +16883,7 @@ type order_item_avg_fields {
   cost_item: Float
   cost_tax: Float
   cost_total: Float
+  id: Float
   item_id: Float
   manufacturer_item_id: Float
   order_id: Float
@@ -16409,6 +16897,7 @@ input order_item_avg_order_by {
   cost_item: order_by
   cost_tax: order_by
   cost_total: order_by
+  id: order_by
   item_id: order_by
   manufacturer_item_id: order_by
   order_id: order_by
@@ -16425,6 +16914,7 @@ input order_item_bool_exp {
   cost_item: money_comparison_exp
   cost_tax: money_comparison_exp
   cost_total: money_comparison_exp
+  id: Int_comparison_exp
   item_id: Int_comparison_exp
   manufacturer_item_id: Int_comparison_exp
   order_id: Int_comparison_exp
@@ -16436,6 +16926,9 @@ input order_item_bool_exp {
 
 # unique or primary key constraints on table "order_item"
 enum order_item_constraint {
+  # unique or primary key constraint
+  order_item_id_key
+
   # unique or primary key constraint
   order_item_item_id_vendor_item_id_serial_no_key
 
@@ -16451,6 +16944,7 @@ input order_item_inc_input {
   cost_item: money
   cost_tax: money
   cost_total: money
+  id: Int
   item_id: Int
   manufacturer_item_id: Int
   order_id: Int
@@ -16464,6 +16958,7 @@ input order_item_insert_input {
   cost_item: money
   cost_tax: money
   cost_total: money
+  id: Int
   item_id: Int
   manufacturer_item_id: Int
   order_id: Int
@@ -16478,6 +16973,7 @@ type order_item_max_fields {
   cost_item: money
   cost_tax: money
   cost_total: money
+  id: Int
   item_id: Int
   manufacturer_item_id: Int
   order_id: Int
@@ -16492,6 +16988,7 @@ input order_item_max_order_by {
   cost_item: order_by
   cost_tax: order_by
   cost_total: order_by
+  id: order_by
   item_id: order_by
   manufacturer_item_id: order_by
   order_id: order_by
@@ -16506,6 +17003,7 @@ type order_item_min_fields {
   cost_item: money
   cost_tax: money
   cost_total: money
+  id: Int
   item_id: Int
   manufacturer_item_id: Int
   order_id: Int
@@ -16520,6 +17018,7 @@ input order_item_min_order_by {
   cost_item: order_by
   cost_tax: order_by
   cost_total: order_by
+  id: order_by
   item_id: order_by
   manufacturer_item_id: order_by
   order_id: order_by
@@ -16556,6 +17055,7 @@ input order_item_order_by {
   cost_item: order_by
   cost_tax: order_by
   cost_total: order_by
+  id: order_by
   item_id: order_by
   manufacturer_item_id: order_by
   order_id: order_by
@@ -16567,8 +17067,7 @@ input order_item_order_by {
 
 # primary key columns input for table: "order_item"
 input order_item_pk_columns_input {
-  item_id: Int!
-  order_id: Int!
+  id: Int!
 }
 
 # select columns of table "order_item"
@@ -16581,6 +17080,9 @@ enum order_item_select_column {
 
   # column name
   cost_total
+
+  # column name
+  id
 
   # column name
   item_id
@@ -16609,6 +17111,7 @@ input order_item_set_input {
   cost_item: money
   cost_tax: money
   cost_total: money
+  id: Int
   item_id: Int
   manufacturer_item_id: Int
   order_id: Int
@@ -16623,6 +17126,7 @@ type order_item_stddev_fields {
   cost_item: Float
   cost_tax: Float
   cost_total: Float
+  id: Float
   item_id: Float
   manufacturer_item_id: Float
   order_id: Float
@@ -16636,6 +17140,7 @@ input order_item_stddev_order_by {
   cost_item: order_by
   cost_tax: order_by
   cost_total: order_by
+  id: order_by
   item_id: order_by
   manufacturer_item_id: order_by
   order_id: order_by
@@ -16649,6 +17154,7 @@ type order_item_stddev_pop_fields {
   cost_item: Float
   cost_tax: Float
   cost_total: Float
+  id: Float
   item_id: Float
   manufacturer_item_id: Float
   order_id: Float
@@ -16662,6 +17168,7 @@ input order_item_stddev_pop_order_by {
   cost_item: order_by
   cost_tax: order_by
   cost_total: order_by
+  id: order_by
   item_id: order_by
   manufacturer_item_id: order_by
   order_id: order_by
@@ -16675,6 +17182,7 @@ type order_item_stddev_samp_fields {
   cost_item: Float
   cost_tax: Float
   cost_total: Float
+  id: Float
   item_id: Float
   manufacturer_item_id: Float
   order_id: Float
@@ -16688,6 +17196,7 @@ input order_item_stddev_samp_order_by {
   cost_item: order_by
   cost_tax: order_by
   cost_total: order_by
+  id: order_by
   item_id: order_by
   manufacturer_item_id: order_by
   order_id: order_by
@@ -16701,6 +17210,7 @@ type order_item_sum_fields {
   cost_item: money
   cost_tax: money
   cost_total: money
+  id: Int
   item_id: Int
   manufacturer_item_id: Int
   order_id: Int
@@ -16714,6 +17224,7 @@ input order_item_sum_order_by {
   cost_item: order_by
   cost_tax: order_by
   cost_total: order_by
+  id: order_by
   item_id: order_by
   manufacturer_item_id: order_by
   order_id: order_by
@@ -16732,6 +17243,9 @@ enum order_item_update_column {
 
   # column name
   cost_total
+
+  # column name
+  id
 
   # column name
   item_id
@@ -16760,6 +17274,7 @@ type order_item_var_pop_fields {
   cost_item: Float
   cost_tax: Float
   cost_total: Float
+  id: Float
   item_id: Float
   manufacturer_item_id: Float
   order_id: Float
@@ -16773,6 +17288,7 @@ input order_item_var_pop_order_by {
   cost_item: order_by
   cost_tax: order_by
   cost_total: order_by
+  id: order_by
   item_id: order_by
   manufacturer_item_id: order_by
   order_id: order_by
@@ -16786,6 +17302,7 @@ type order_item_var_samp_fields {
   cost_item: Float
   cost_tax: Float
   cost_total: Float
+  id: Float
   item_id: Float
   manufacturer_item_id: Float
   order_id: Float
@@ -16799,6 +17316,7 @@ input order_item_var_samp_order_by {
   cost_item: order_by
   cost_tax: order_by
   cost_total: order_by
+  id: order_by
   item_id: order_by
   manufacturer_item_id: order_by
   order_id: order_by
@@ -16812,6 +17330,7 @@ type order_item_variance_fields {
   cost_item: Float
   cost_tax: Float
   cost_total: Float
+  id: Float
   item_id: Float
   manufacturer_item_id: Float
   order_id: Float
@@ -16825,6 +17344,7 @@ input order_item_variance_order_by {
   cost_item: order_by
   cost_tax: order_by
   cost_total: order_by
+  id: order_by
   item_id: order_by
   manufacturer_item_id: order_by
   order_id: order_by
@@ -19940,6 +20460,42 @@ type query_root {
   # fetch data from the table: "item.hardware_fastener_washer" using primary key columns
   item_hardware_fastener_washer_by_pk(id: Int!): item_hardware_fastener_washer
 
+  # fetch data from the table: "item_variant"
+  item_variant(
+    # distinct select on columns
+    distinct_on: [item_variant_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [item_variant_order_by!]
+
+    # filter the rows returned
+    where: item_variant_bool_exp
+  ): [item_variant!]!
+
+  # fetch aggregated fields from the table: "item_variant"
+  item_variant_aggregate(
+    # distinct select on columns
+    distinct_on: [item_variant_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [item_variant_order_by!]
+
+    # filter the rows returned
+    where: item_variant_bool_exp
+  ): item_variant_aggregate!
+
   # fetch data from the table: "label"
   label(
     # distinct select on columns
@@ -20211,7 +20767,7 @@ type query_root {
   ): order_item_aggregate!
 
   # fetch data from the table: "order_item" using primary key columns
-  order_item_by_pk(item_id: Int!, order_id: Int!): order_item
+  order_item_by_pk(id: Int!): order_item
 
   # fetch data from the table: "payment_method"
   payment_method(
@@ -20453,13 +21009,13 @@ type query_root {
     where: item_bool_exp
   ): item_aggregate!
 
-  # execute function "search_item_prefer_vendor" which returns "item"
-  search_item_prefer_vendor(
-    # input parameters for function "search_item_prefer_vendor"
-    args: search_item_prefer_vendor_args!
+  # execute function "search_item_variant" which returns "item_variant"
+  search_item_variant(
+    # input parameters for function "search_item_variant"
+    args: search_item_variant_args!
 
     # distinct select on columns
-    distinct_on: [item_select_column!]
+    distinct_on: [item_variant_select_column!]
 
     # limit the number of rows returned
     limit: Int
@@ -20468,19 +21024,19 @@ type query_root {
     offset: Int
 
     # sort the rows by one or more columns
-    order_by: [item_order_by!]
+    order_by: [item_variant_order_by!]
 
     # filter the rows returned
-    where: item_bool_exp
-  ): [item!]!
+    where: item_variant_bool_exp
+  ): [item_variant!]!
 
-  # execute function "search_item_prefer_vendor" and query aggregates on result of table type "item"
-  search_item_prefer_vendor_aggregate(
-    # input parameters for function "search_item_prefer_vendor"
-    args: search_item_prefer_vendor_args!
+  # execute function "search_item_variant" and query aggregates on result of table type "item_variant"
+  search_item_variant_aggregate(
+    # input parameters for function "search_item_variant"
+    args: search_item_variant_args!
 
     # distinct select on columns
-    distinct_on: [item_select_column!]
+    distinct_on: [item_variant_select_column!]
 
     # limit the number of rows returned
     limit: Int
@@ -20489,11 +21045,11 @@ type query_root {
     offset: Int
 
     # sort the rows by one or more columns
-    order_by: [item_order_by!]
+    order_by: [item_variant_order_by!]
 
     # filter the rows returned
-    where: item_bool_exp
-  ): item_aggregate!
+    where: item_variant_bool_exp
+  ): item_variant_aggregate!
 
   # fetch data from the table: "shipment"
   shipment(
@@ -20999,8 +21555,7 @@ input search_item_args {
   return_limit: Int
 }
 
-input search_item_prefer_vendor_args {
-  prefer_vendor_id: Int
+input search_item_variant_args {
   query_text: String
   return_limit: Int
 }
@@ -23463,6 +24018,42 @@ type subscription_root {
   # fetch data from the table: "item.hardware_fastener_washer" using primary key columns
   item_hardware_fastener_washer_by_pk(id: Int!): item_hardware_fastener_washer
 
+  # fetch data from the table: "item_variant"
+  item_variant(
+    # distinct select on columns
+    distinct_on: [item_variant_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [item_variant_order_by!]
+
+    # filter the rows returned
+    where: item_variant_bool_exp
+  ): [item_variant!]!
+
+  # fetch aggregated fields from the table: "item_variant"
+  item_variant_aggregate(
+    # distinct select on columns
+    distinct_on: [item_variant_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [item_variant_order_by!]
+
+    # filter the rows returned
+    where: item_variant_bool_exp
+  ): item_variant_aggregate!
+
   # fetch data from the table: "label"
   label(
     # distinct select on columns
@@ -23734,7 +24325,7 @@ type subscription_root {
   ): order_item_aggregate!
 
   # fetch data from the table: "order_item" using primary key columns
-  order_item_by_pk(item_id: Int!, order_id: Int!): order_item
+  order_item_by_pk(id: Int!): order_item
 
   # fetch data from the table: "payment_method"
   payment_method(
@@ -23976,13 +24567,13 @@ type subscription_root {
     where: item_bool_exp
   ): item_aggregate!
 
-  # execute function "search_item_prefer_vendor" which returns "item"
-  search_item_prefer_vendor(
-    # input parameters for function "search_item_prefer_vendor"
-    args: search_item_prefer_vendor_args!
+  # execute function "search_item_variant" which returns "item_variant"
+  search_item_variant(
+    # input parameters for function "search_item_variant"
+    args: search_item_variant_args!
 
     # distinct select on columns
-    distinct_on: [item_select_column!]
+    distinct_on: [item_variant_select_column!]
 
     # limit the number of rows returned
     limit: Int
@@ -23991,19 +24582,19 @@ type subscription_root {
     offset: Int
 
     # sort the rows by one or more columns
-    order_by: [item_order_by!]
+    order_by: [item_variant_order_by!]
 
     # filter the rows returned
-    where: item_bool_exp
-  ): [item!]!
+    where: item_variant_bool_exp
+  ): [item_variant!]!
 
-  # execute function "search_item_prefer_vendor" and query aggregates on result of table type "item"
-  search_item_prefer_vendor_aggregate(
-    # input parameters for function "search_item_prefer_vendor"
-    args: search_item_prefer_vendor_args!
+  # execute function "search_item_variant" and query aggregates on result of table type "item_variant"
+  search_item_variant_aggregate(
+    # input parameters for function "search_item_variant"
+    args: search_item_variant_args!
 
     # distinct select on columns
-    distinct_on: [item_select_column!]
+    distinct_on: [item_variant_select_column!]
 
     # limit the number of rows returned
     limit: Int
@@ -24012,11 +24603,11 @@ type subscription_root {
     offset: Int
 
     # sort the rows by one or more columns
-    order_by: [item_order_by!]
+    order_by: [item_variant_order_by!]
 
     # filter the rows returned
-    where: item_bool_exp
-  ): item_aggregate!
+    where: item_variant_bool_exp
+  ): item_variant_aggregate!
 
   # fetch data from the table: "shipment"
   shipment(
@@ -24709,7 +25300,49 @@ type vendor_item {
   # this should track "variations" of the item_id.      For example the item might be cat6 550mhz      but the vendor item would be 1000ft of it.
   description: String
   id: Int!
+
+  # An object relationship
+  item: item!
   item_id: Int!
+
+  # An array relationship
+  orderItems(
+    # distinct select on columns
+    distinct_on: [order_item_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [order_item_order_by!]
+
+    # filter the rows returned
+    where: order_item_bool_exp
+  ): [order_item!]!
+
+  # An aggregated array relationship
+  orderItems_aggregate(
+    # distinct select on columns
+    distinct_on: [order_item_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [order_item_order_by!]
+
+    # filter the rows returned
+    where: order_item_bool_exp
+  ): order_item_aggregate!
+
+  # An object relationship
+  vendor: vendor!
   vendor_id: Int!
   vendor_sku: String!
 }
@@ -24777,7 +25410,10 @@ input vendor_item_bool_exp {
   _or: [vendor_item_bool_exp]
   description: String_comparison_exp
   id: Int_comparison_exp
+  item: item_bool_exp
   item_id: Int_comparison_exp
+  orderItems: order_item_bool_exp
+  vendor: vendor_bool_exp
   vendor_id: Int_comparison_exp
   vendor_sku: String_comparison_exp
 }
@@ -24802,7 +25438,10 @@ input vendor_item_inc_input {
 input vendor_item_insert_input {
   description: String
   id: Int
+  item: item_obj_rel_insert_input
   item_id: Int
+  orderItems: order_item_arr_rel_insert_input
+  vendor: vendor_obj_rel_insert_input
   vendor_id: Int
   vendor_sku: String
 }
@@ -24869,7 +25508,10 @@ input vendor_item_on_conflict {
 input vendor_item_order_by {
   description: order_by
   id: order_by
+  item: item_order_by
   item_id: order_by
+  orderItems_aggregate: order_item_aggregate_order_by
+  vendor: vendor_order_by
   vendor_id: order_by
   vendor_sku: order_by
 }

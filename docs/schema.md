@@ -347,15 +347,18 @@ Item search should:
 
 For item entry within the form:
 - Type into searchable field as currently.
-- searches through 3 tables / objects and displays all results, sorted as the below order:
-    1. `vendor_item.item` when _`vendor_item.vendor_id == order.vendor_id`_
-        - if a `vendor_item` is selected, and if it has `manufacturer`. **DONE**  
-        - a `vendor_item` is selected, and if it does not have a `manufacturer`. **continue, the user should create a new `vendor_item`**
+- searches through 4 tables / objects and displays all results, sorted as the below order:
+    1. `order_item.item` when _`order_item.order.vendor_id == order.vendor_id`_
+        - if a `order_item` is selected, and if it has a `manufacturer`: **DONE**  
+        - a `order_item` is selected, and if it does not have a `manufacturer`: **continue, the user should enter the `manufacturer` (if known)**
 
-    2. `manufacturer_item.item`
-         - if selected, allow the user to create a new vendor_item
+    2. `vendor_item.item` when _`vendor_item.vendor_id == order.vendor_id`_
+        - if a `vendor_item` is selected: **continue, the user should enter the `manufacturer` (if known)**
 
-    3. `item`
+    3. `manufacturer_item.item`
+         - if a `manufacturer_item` is selected: **continue, allow the user to create a new `vendor_item` with the `vendor` set to `order.vendor_id`
+
+    4. `item`
         - if selected allow the user to assign/create a `manufacturer_item` and `vendor_item`
 
     ! create extra item related objects 

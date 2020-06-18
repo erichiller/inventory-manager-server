@@ -105,14 +105,6 @@ export type OperationResult = {
   result: Scalars['Boolean'];
 };
 
-export type PageInfo = {
-  __typename?: 'PageInfo';
-  endCursor: Scalars['String'];
-  hasNextPage: Scalars['Boolean'];
-  hasPreviousPage: Scalars['Boolean'];
-  startCursor: Scalars['String'];
-};
-
 /** Printer and label status and properies */
 export type PrinterLabelStatus = {
   __typename?: 'PrinterLabelStatus';
@@ -6405,6 +6397,10 @@ export type Item = {
   class: EnumItemClassEnum;
   id: Scalars['Int'];
   /** An array relationship */
+  itemVariants: Array<ItemVariant>;
+  /** An aggregated array relationship */
+  itemVariants_aggregate: ItemVariantAggregate;
+  /** An array relationship */
   labelTemplates: Array<LabelTemplateMap>;
   /** An aggregated array relationship */
   labelTemplates_aggregate: LabelTemplateMapAggregate;
@@ -6447,6 +6443,26 @@ export type ItemBundleAggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<ItemBundleMapOrderBy>>;
   where?: Maybe<ItemBundleMapBoolExp>;
+};
+
+
+/** columns and relationships of "item" */
+export type ItemItemVariantsArgs = {
+  distinct_on?: Maybe<Array<ItemVariantSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemVariantOrderBy>>;
+  where?: Maybe<ItemVariantBoolExp>;
+};
+
+
+/** columns and relationships of "item" */
+export type ItemItemVariantsAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemVariantSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemVariantOrderBy>>;
+  where?: Maybe<ItemVariantBoolExp>;
 };
 
 
@@ -6632,6 +6648,7 @@ export type ItemBoolExp = {
   bundle?: Maybe<ItemBundleMapBoolExp>;
   class?: Maybe<EnumItemClassEnumComparisonExp>;
   id?: Maybe<IntComparisonExp>;
+  itemVariants?: Maybe<ItemVariantBoolExp>;
   labelTemplates?: Maybe<LabelTemplateMapBoolExp>;
   labels?: Maybe<LabelBoolExp>;
   manufacturerItems?: Maybe<ManufacturerItemBoolExp>;
@@ -11328,6 +11345,7 @@ export type ItemOrderBy = {
   bundle_aggregate?: Maybe<ItemBundleMapAggregateOrderBy>;
   class?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  itemVariants_aggregate?: Maybe<ItemVariantAggregateOrderBy>;
   labelTemplates_aggregate?: Maybe<LabelTemplateMapAggregateOrderBy>;
   labels_aggregate?: Maybe<LabelAggregateOrderBy>;
   manufacturerItems_aggregate?: Maybe<ManufacturerItemAggregateOrderBy>;
@@ -11468,6 +11486,428 @@ export type ItemVarianceFields = {
 export type ItemVarianceOrderBy = {
   id?: Maybe<OrderBy>;
   stock?: Maybe<OrderBy>;
+};
+
+/**
+ * All existing combinations of vendor and manufacturer for an item, including null for both.
+ * 
+ * 
+ * columns and relationships of "item_variant"
+ */
+export type ItemVariant = {
+  __typename?: 'item_variant';
+  class?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  item?: Maybe<Item>;
+  item_id?: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  manufacturer?: Maybe<Manufacturer>;
+  manufacturer_id?: Maybe<Scalars['Int']>;
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
+  object?: Maybe<Scalars['jsonb']>;
+  order_id?: Maybe<Scalars['Int']>;
+  order_item_id?: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  vendor?: Maybe<Vendor>;
+  vendor_id?: Maybe<Scalars['Int']>;
+  vendor_item_id?: Maybe<Scalars['Int']>;
+};
+
+
+/**
+ * All existing combinations of vendor and manufacturer for an item, including null for both.
+ * 
+ * 
+ * columns and relationships of "item_variant"
+ */
+export type ItemVariantObjectArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "item_variant" */
+export type ItemVariantAggregate = {
+  __typename?: 'item_variant_aggregate';
+  aggregate?: Maybe<ItemVariantAggregateFields>;
+  nodes: Array<ItemVariant>;
+};
+
+/** aggregate fields of "item_variant" */
+export type ItemVariantAggregateFields = {
+  __typename?: 'item_variant_aggregate_fields';
+  avg?: Maybe<ItemVariantAvgFields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<ItemVariantMaxFields>;
+  min?: Maybe<ItemVariantMinFields>;
+  stddev?: Maybe<ItemVariantStddevFields>;
+  stddev_pop?: Maybe<ItemVariantStddevPopFields>;
+  stddev_samp?: Maybe<ItemVariantStddevSampFields>;
+  sum?: Maybe<ItemVariantSumFields>;
+  var_pop?: Maybe<ItemVariantVarPopFields>;
+  var_samp?: Maybe<ItemVariantVarSampFields>;
+  variance?: Maybe<ItemVariantVarianceFields>;
+};
+
+
+/** aggregate fields of "item_variant" */
+export type ItemVariantAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<ItemVariantSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "item_variant" */
+export type ItemVariantAggregateOrderBy = {
+  avg?: Maybe<ItemVariantAvgOrderBy>;
+  count?: Maybe<OrderBy>;
+  max?: Maybe<ItemVariantMaxOrderBy>;
+  min?: Maybe<ItemVariantMinOrderBy>;
+  stddev?: Maybe<ItemVariantStddevOrderBy>;
+  stddev_pop?: Maybe<ItemVariantStddevPopOrderBy>;
+  stddev_samp?: Maybe<ItemVariantStddevSampOrderBy>;
+  sum?: Maybe<ItemVariantSumOrderBy>;
+  var_pop?: Maybe<ItemVariantVarPopOrderBy>;
+  var_samp?: Maybe<ItemVariantVarSampOrderBy>;
+  variance?: Maybe<ItemVariantVarianceOrderBy>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type ItemVariantAppendInput = {
+  object?: Maybe<Scalars['jsonb']>;
+};
+
+/** aggregate avg on columns */
+export type ItemVariantAvgFields = {
+  __typename?: 'item_variant_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  vendor_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "item_variant" */
+export type ItemVariantAvgOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  vendor_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "item_variant". All fields are combined with a logical 'AND'. */
+export type ItemVariantBoolExp = {
+  _and?: Maybe<Array<Maybe<ItemVariantBoolExp>>>;
+  _not?: Maybe<ItemVariantBoolExp>;
+  _or?: Maybe<Array<Maybe<ItemVariantBoolExp>>>;
+  class?: Maybe<StringComparisonExp>;
+  id?: Maybe<IntComparisonExp>;
+  item?: Maybe<ItemBoolExp>;
+  item_id?: Maybe<IntComparisonExp>;
+  manufacturer?: Maybe<ManufacturerBoolExp>;
+  manufacturer_id?: Maybe<IntComparisonExp>;
+  manufacturer_item_id?: Maybe<IntComparisonExp>;
+  object?: Maybe<JsonbComparisonExp>;
+  order_id?: Maybe<IntComparisonExp>;
+  order_item_id?: Maybe<IntComparisonExp>;
+  vendor?: Maybe<VendorBoolExp>;
+  vendor_id?: Maybe<IntComparisonExp>;
+  vendor_item_id?: Maybe<IntComparisonExp>;
+};
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type ItemVariantDeleteAtPathInput = {
+  object?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type ItemVariantDeleteElemInput = {
+  object?: Maybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type ItemVariantDeleteKeyInput = {
+  object?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type ItemVariantMaxFields = {
+  __typename?: 'item_variant_max_fields';
+  class?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  item_id?: Maybe<Scalars['Int']>;
+  manufacturer_id?: Maybe<Scalars['Int']>;
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
+  order_id?: Maybe<Scalars['Int']>;
+  order_item_id?: Maybe<Scalars['Int']>;
+  vendor_id?: Maybe<Scalars['Int']>;
+  vendor_item_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "item_variant" */
+export type ItemVariantMaxOrderBy = {
+  class?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  vendor_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type ItemVariantMinFields = {
+  __typename?: 'item_variant_min_fields';
+  class?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  item_id?: Maybe<Scalars['Int']>;
+  manufacturer_id?: Maybe<Scalars['Int']>;
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
+  order_id?: Maybe<Scalars['Int']>;
+  order_item_id?: Maybe<Scalars['Int']>;
+  vendor_id?: Maybe<Scalars['Int']>;
+  vendor_item_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "item_variant" */
+export type ItemVariantMinOrderBy = {
+  class?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  vendor_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** ordering options when selecting data from "item_variant" */
+export type ItemVariantOrderBy = {
+  class?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  item?: Maybe<ItemOrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer?: Maybe<ManufacturerOrderBy>;
+  manufacturer_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  object?: Maybe<OrderBy>;
+  order_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  vendor?: Maybe<VendorOrderBy>;
+  vendor_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type ItemVariantPrependInput = {
+  object?: Maybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "item_variant" */
+export enum ItemVariantSelectColumn {
+  /** column name */
+  class = 'class',
+  /** column name */
+  id = 'id',
+  /** column name */
+  item_id = 'item_id',
+  /** column name */
+  manufacturer_id = 'manufacturer_id',
+  /** column name */
+  manufacturer_item_id = 'manufacturer_item_id',
+  /** column name */
+  object = 'object',
+  /** column name */
+  order_id = 'order_id',
+  /** column name */
+  order_item_id = 'order_item_id',
+  /** column name */
+  vendor_id = 'vendor_id',
+  /** column name */
+  vendor_item_id = 'vendor_item_id'
+}
+
+/** aggregate stddev on columns */
+export type ItemVariantStddevFields = {
+  __typename?: 'item_variant_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  vendor_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "item_variant" */
+export type ItemVariantStddevOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  vendor_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ItemVariantStddevPopFields = {
+  __typename?: 'item_variant_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  vendor_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "item_variant" */
+export type ItemVariantStddevPopOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  vendor_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ItemVariantStddevSampFields = {
+  __typename?: 'item_variant_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  vendor_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "item_variant" */
+export type ItemVariantStddevSampOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  vendor_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate sum on columns */
+export type ItemVariantSumFields = {
+  __typename?: 'item_variant_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+  item_id?: Maybe<Scalars['Int']>;
+  manufacturer_id?: Maybe<Scalars['Int']>;
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
+  order_id?: Maybe<Scalars['Int']>;
+  order_item_id?: Maybe<Scalars['Int']>;
+  vendor_id?: Maybe<Scalars['Int']>;
+  vendor_item_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "item_variant" */
+export type ItemVariantSumOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  vendor_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate var_pop on columns */
+export type ItemVariantVarPopFields = {
+  __typename?: 'item_variant_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  vendor_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "item_variant" */
+export type ItemVariantVarPopOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  vendor_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate var_samp on columns */
+export type ItemVariantVarSampFields = {
+  __typename?: 'item_variant_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  vendor_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "item_variant" */
+export type ItemVariantVarSampOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  vendor_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type ItemVariantVarianceFields = {
+  __typename?: 'item_variant_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  vendor_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "item_variant" */
+export type ItemVariantVarianceOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  vendor_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
 };
 
 
@@ -12750,7 +13190,11 @@ export type ManufacturerInsertInput = {
 export type ManufacturerItem = {
   __typename?: 'manufacturer_item';
   id: Scalars['Int'];
+  /** An object relationship */
+  item: Item;
   item_id: Scalars['Int'];
+  /** An object relationship */
+  manufacturer: Manufacturer;
   manufacturer_id: Scalars['Int'];
   /** example - Cisco 7204VXR */
   manufacturer_product_id: Scalars['String'];
@@ -12758,7 +13202,31 @@ export type ManufacturerItem = {
   manufacturer_product_name?: Maybe<Scalars['String']>;
   /** example - Cisco 7200 series */
   manufacturer_product_series?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  orderItems: Array<OrderItem>;
+  /** An aggregated array relationship */
+  orderItems_aggregate: OrderItemAggregate;
   product_url?: Maybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "manufacturer_item" */
+export type ManufacturerItemOrderItemsArgs = {
+  distinct_on?: Maybe<Array<OrderItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<OrderItemOrderBy>>;
+  where?: Maybe<OrderItemBoolExp>;
+};
+
+
+/** columns and relationships of "manufacturer_item" */
+export type ManufacturerItemOrderItemsAggregateArgs = {
+  distinct_on?: Maybe<Array<OrderItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<OrderItemOrderBy>>;
+  where?: Maybe<OrderItemBoolExp>;
 };
 
 /** aggregated selection of "manufacturer_item" */
@@ -12833,11 +13301,14 @@ export type ManufacturerItemBoolExp = {
   _not?: Maybe<ManufacturerItemBoolExp>;
   _or?: Maybe<Array<Maybe<ManufacturerItemBoolExp>>>;
   id?: Maybe<IntComparisonExp>;
+  item?: Maybe<ItemBoolExp>;
   item_id?: Maybe<IntComparisonExp>;
+  manufacturer?: Maybe<ManufacturerBoolExp>;
   manufacturer_id?: Maybe<IntComparisonExp>;
   manufacturer_product_id?: Maybe<StringComparisonExp>;
   manufacturer_product_name?: Maybe<StringComparisonExp>;
   manufacturer_product_series?: Maybe<StringComparisonExp>;
+  orderItems?: Maybe<OrderItemBoolExp>;
   product_url?: Maybe<StringComparisonExp>;
 };
 
@@ -12857,11 +13328,14 @@ export type ManufacturerItemIncInput = {
 /** input type for inserting data into table "manufacturer_item" */
 export type ManufacturerItemInsertInput = {
   id?: Maybe<Scalars['Int']>;
+  item?: Maybe<ItemObjRelInsertInput>;
   item_id?: Maybe<Scalars['Int']>;
+  manufacturer?: Maybe<ManufacturerObjRelInsertInput>;
   manufacturer_id?: Maybe<Scalars['Int']>;
   manufacturer_product_id?: Maybe<Scalars['String']>;
   manufacturer_product_name?: Maybe<Scalars['String']>;
   manufacturer_product_series?: Maybe<Scalars['String']>;
+  orderItems?: Maybe<OrderItemArrRelInsertInput>;
   product_url?: Maybe<Scalars['String']>;
 };
 
@@ -12936,11 +13410,14 @@ export type ManufacturerItemOnConflict = {
 /** ordering options when selecting data from "manufacturer_item" */
 export type ManufacturerItemOrderBy = {
   id?: Maybe<OrderBy>;
+  item?: Maybe<ItemOrderBy>;
   item_id?: Maybe<OrderBy>;
+  manufacturer?: Maybe<ManufacturerOrderBy>;
   manufacturer_id?: Maybe<OrderBy>;
   manufacturer_product_id?: Maybe<OrderBy>;
   manufacturer_product_name?: Maybe<OrderBy>;
   manufacturer_product_series?: Maybe<OrderBy>;
+  orderItems_aggregate?: Maybe<OrderItemAggregateOrderBy>;
   product_url?: Maybe<OrderBy>;
 };
 
@@ -14705,8 +15182,7 @@ export type MutationRootDeleteOrderItemArgs = {
 
 /** mutation root */
 export type MutationRootDeleteOrderItemByPkArgs = {
-  item_id: Scalars['Int'];
-  order_id: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 
@@ -16945,6 +17421,7 @@ export type OrderItem = {
   cost_item?: Maybe<Scalars['money']>;
   cost_tax?: Maybe<Scalars['money']>;
   cost_total?: Maybe<Scalars['money']>;
+  id: Scalars['Int'];
   item_id: Scalars['Int'];
   /** link to manufacturer item, which in turn links to item */
   manufacturer_item_id?: Maybe<Scalars['Int']>;
@@ -17013,6 +17490,7 @@ export type OrderItemAvgFields = {
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -17026,6 +17504,7 @@ export type OrderItemAvgOrderBy = {
   cost_item?: Maybe<OrderBy>;
   cost_tax?: Maybe<OrderBy>;
   cost_total?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -17042,6 +17521,7 @@ export type OrderItemBoolExp = {
   cost_item?: Maybe<MoneyComparisonExp>;
   cost_tax?: Maybe<MoneyComparisonExp>;
   cost_total?: Maybe<MoneyComparisonExp>;
+  id?: Maybe<IntComparisonExp>;
   item_id?: Maybe<IntComparisonExp>;
   manufacturer_item_id?: Maybe<IntComparisonExp>;
   order_id?: Maybe<IntComparisonExp>;
@@ -17053,6 +17533,8 @@ export type OrderItemBoolExp = {
 
 /** unique or primary key constraints on table "order_item" */
 export enum OrderItemConstraint {
+  /** unique or primary key constraint */
+  order_item_id_key = 'order_item_id_key',
   /** unique or primary key constraint */
   order_item_item_id_vendor_item_id_serial_no_key = 'order_item_item_id_vendor_item_id_serial_no_key',
   /** unique or primary key constraint */
@@ -17066,6 +17548,7 @@ export type OrderItemIncInput = {
   cost_item?: Maybe<Scalars['money']>;
   cost_tax?: Maybe<Scalars['money']>;
   cost_total?: Maybe<Scalars['money']>;
+  id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
@@ -17079,6 +17562,7 @@ export type OrderItemInsertInput = {
   cost_item?: Maybe<Scalars['money']>;
   cost_tax?: Maybe<Scalars['money']>;
   cost_total?: Maybe<Scalars['money']>;
+  id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
@@ -17094,6 +17578,7 @@ export type OrderItemMaxFields = {
   cost_item?: Maybe<Scalars['money']>;
   cost_tax?: Maybe<Scalars['money']>;
   cost_total?: Maybe<Scalars['money']>;
+  id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
@@ -17108,6 +17593,7 @@ export type OrderItemMaxOrderBy = {
   cost_item?: Maybe<OrderBy>;
   cost_tax?: Maybe<OrderBy>;
   cost_total?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -17123,6 +17609,7 @@ export type OrderItemMinFields = {
   cost_item?: Maybe<Scalars['money']>;
   cost_tax?: Maybe<Scalars['money']>;
   cost_total?: Maybe<Scalars['money']>;
+  id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
@@ -17137,6 +17624,7 @@ export type OrderItemMinOrderBy = {
   cost_item?: Maybe<OrderBy>;
   cost_tax?: Maybe<OrderBy>;
   cost_total?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -17173,6 +17661,7 @@ export type OrderItemOrderBy = {
   cost_item?: Maybe<OrderBy>;
   cost_tax?: Maybe<OrderBy>;
   cost_total?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -17184,8 +17673,7 @@ export type OrderItemOrderBy = {
 
 /** primary key columns input for table: "order_item" */
 export type OrderItemPkColumnsInput = {
-  item_id: Scalars['Int'];
-  order_id: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 /** select columns of table "order_item" */
@@ -17196,6 +17684,8 @@ export enum OrderItemSelectColumn {
   cost_tax = 'cost_tax',
   /** column name */
   cost_total = 'cost_total',
+  /** column name */
+  id = 'id',
   /** column name */
   item_id = 'item_id',
   /** column name */
@@ -17217,6 +17707,7 @@ export type OrderItemSetInput = {
   cost_item?: Maybe<Scalars['money']>;
   cost_tax?: Maybe<Scalars['money']>;
   cost_total?: Maybe<Scalars['money']>;
+  id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
@@ -17232,6 +17723,7 @@ export type OrderItemStddevFields = {
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -17245,6 +17737,7 @@ export type OrderItemStddevOrderBy = {
   cost_item?: Maybe<OrderBy>;
   cost_tax?: Maybe<OrderBy>;
   cost_total?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -17259,6 +17752,7 @@ export type OrderItemStddevPopFields = {
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -17272,6 +17766,7 @@ export type OrderItemStddevPopOrderBy = {
   cost_item?: Maybe<OrderBy>;
   cost_tax?: Maybe<OrderBy>;
   cost_total?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -17286,6 +17781,7 @@ export type OrderItemStddevSampFields = {
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -17299,6 +17795,7 @@ export type OrderItemStddevSampOrderBy = {
   cost_item?: Maybe<OrderBy>;
   cost_tax?: Maybe<OrderBy>;
   cost_total?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -17313,6 +17810,7 @@ export type OrderItemSumFields = {
   cost_item?: Maybe<Scalars['money']>;
   cost_tax?: Maybe<Scalars['money']>;
   cost_total?: Maybe<Scalars['money']>;
+  id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
@@ -17326,6 +17824,7 @@ export type OrderItemSumOrderBy = {
   cost_item?: Maybe<OrderBy>;
   cost_tax?: Maybe<OrderBy>;
   cost_total?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -17342,6 +17841,8 @@ export enum OrderItemUpdateColumn {
   cost_tax = 'cost_tax',
   /** column name */
   cost_total = 'cost_total',
+  /** column name */
+  id = 'id',
   /** column name */
   item_id = 'item_id',
   /** column name */
@@ -17364,6 +17865,7 @@ export type OrderItemVarPopFields = {
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -17377,6 +17879,7 @@ export type OrderItemVarPopOrderBy = {
   cost_item?: Maybe<OrderBy>;
   cost_tax?: Maybe<OrderBy>;
   cost_total?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -17391,6 +17894,7 @@ export type OrderItemVarSampFields = {
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -17404,6 +17908,7 @@ export type OrderItemVarSampOrderBy = {
   cost_item?: Maybe<OrderBy>;
   cost_tax?: Maybe<OrderBy>;
   cost_total?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -17418,6 +17923,7 @@ export type OrderItemVarianceFields = {
   cost_item?: Maybe<Scalars['Float']>;
   cost_tax?: Maybe<Scalars['Float']>;
   cost_total?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   item_id?: Maybe<Scalars['Float']>;
   manufacturer_item_id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
@@ -17431,6 +17937,7 @@ export type OrderItemVarianceOrderBy = {
   cost_item?: Maybe<OrderBy>;
   cost_tax?: Maybe<OrderBy>;
   cost_total?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
@@ -19049,6 +19556,10 @@ export type QueryRoot = {
   item_hardware_fastener_washer_aggregate: ItemHardwareFastenerWasherAggregate;
   /** fetch data from the table: "item.hardware_fastener_washer" using primary key columns */
   item_hardware_fastener_washer_by_pk?: Maybe<ItemHardwareFastenerWasher>;
+  /** fetch data from the table: "item_variant" */
+  item_variant: Array<ItemVariant>;
+  /** fetch aggregated fields from the table: "item_variant" */
+  item_variant_aggregate: ItemVariantAggregate;
   /** fetch data from the table: "label" */
   label: Array<Label>;
   /** fetch aggregated fields from the table: "label" */
@@ -19123,10 +19634,10 @@ export type QueryRoot = {
   search_item: Array<Item>;
   /** execute function "search_item" and query aggregates on result of table type "item" */
   search_item_aggregate: ItemAggregate;
-  /** execute function "search_item_prefer_vendor" which returns "item" */
-  search_item_prefer_vendor: Array<Item>;
-  /** execute function "search_item_prefer_vendor" and query aggregates on result of table type "item" */
-  search_item_prefer_vendor_aggregate: ItemAggregate;
+  /** execute function "search_item_variant" which returns "item_variant" */
+  search_item_variant: Array<ItemVariant>;
+  /** execute function "search_item_variant" and query aggregates on result of table type "item_variant" */
+  search_item_variant_aggregate: ItemVariantAggregate;
   /** fetch data from the table: "shipment" */
   shipment: Array<Shipment>;
   /** fetch aggregated fields from the table: "shipment" */
@@ -20362,6 +20873,26 @@ export type QueryRootItemHardwareFastenerWasherByPkArgs = {
 
 
 /** query root */
+export type QueryRootItemVariantArgs = {
+  distinct_on?: Maybe<Array<ItemVariantSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemVariantOrderBy>>;
+  where?: Maybe<ItemVariantBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootItemVariantAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemVariantSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemVariantOrderBy>>;
+  where?: Maybe<ItemVariantBoolExp>;
+};
+
+
+/** query root */
 export type QueryRootLabelArgs = {
   distinct_on?: Maybe<Array<LabelSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
@@ -20542,8 +21073,7 @@ export type QueryRootOrderItemAggregateArgs = {
 
 /** query root */
 export type QueryRootOrderItemByPkArgs = {
-  item_id: Scalars['Int'];
-  order_id: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 
@@ -20700,24 +21230,24 @@ export type QueryRootSearchItemAggregateArgs = {
 
 
 /** query root */
-export type QueryRootSearchItemPreferVendorArgs = {
-  args: SearchItemPreferVendorArgs;
-  distinct_on?: Maybe<Array<ItemSelectColumn>>;
+export type QueryRootSearchItemVariantArgs = {
+  args: SearchItemVariantArgs;
+  distinct_on?: Maybe<Array<ItemVariantSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<ItemOrderBy>>;
-  where?: Maybe<ItemBoolExp>;
+  order_by?: Maybe<Array<ItemVariantOrderBy>>;
+  where?: Maybe<ItemVariantBoolExp>;
 };
 
 
 /** query root */
-export type QueryRootSearchItemPreferVendorAggregateArgs = {
-  args: SearchItemPreferVendorArgs;
-  distinct_on?: Maybe<Array<ItemSelectColumn>>;
+export type QueryRootSearchItemVariantAggregateArgs = {
+  args: SearchItemVariantArgs;
+  distinct_on?: Maybe<Array<ItemVariantSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<ItemOrderBy>>;
-  where?: Maybe<ItemBoolExp>;
+  order_by?: Maybe<Array<ItemVariantOrderBy>>;
+  where?: Maybe<ItemVariantBoolExp>;
 };
 
 
@@ -21172,8 +21702,7 @@ export type SearchItemArgs = {
   return_limit?: Maybe<Scalars['Int']>;
 };
 
-export type SearchItemPreferVendorArgs = {
-  prefer_vendor_id?: Maybe<Scalars['Int']>;
+export type SearchItemVariantArgs = {
   query_text?: Maybe<Scalars['String']>;
   return_limit?: Maybe<Scalars['Int']>;
 };
@@ -22136,6 +22665,10 @@ export type SubscriptionRoot = {
   item_hardware_fastener_washer_aggregate: ItemHardwareFastenerWasherAggregate;
   /** fetch data from the table: "item.hardware_fastener_washer" using primary key columns */
   item_hardware_fastener_washer_by_pk?: Maybe<ItemHardwareFastenerWasher>;
+  /** fetch data from the table: "item_variant" */
+  item_variant: Array<ItemVariant>;
+  /** fetch aggregated fields from the table: "item_variant" */
+  item_variant_aggregate: ItemVariantAggregate;
   /** fetch data from the table: "label" */
   label: Array<Label>;
   /** fetch aggregated fields from the table: "label" */
@@ -22210,10 +22743,10 @@ export type SubscriptionRoot = {
   search_item: Array<Item>;
   /** execute function "search_item" and query aggregates on result of table type "item" */
   search_item_aggregate: ItemAggregate;
-  /** execute function "search_item_prefer_vendor" which returns "item" */
-  search_item_prefer_vendor: Array<Item>;
-  /** execute function "search_item_prefer_vendor" and query aggregates on result of table type "item" */
-  search_item_prefer_vendor_aggregate: ItemAggregate;
+  /** execute function "search_item_variant" which returns "item_variant" */
+  search_item_variant: Array<ItemVariant>;
+  /** execute function "search_item_variant" and query aggregates on result of table type "item_variant" */
+  search_item_variant_aggregate: ItemVariantAggregate;
   /** fetch data from the table: "shipment" */
   shipment: Array<Shipment>;
   /** fetch aggregated fields from the table: "shipment" */
@@ -23449,6 +23982,26 @@ export type SubscriptionRootItemHardwareFastenerWasherByPkArgs = {
 
 
 /** subscription root */
+export type SubscriptionRootItemVariantArgs = {
+  distinct_on?: Maybe<Array<ItemVariantSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemVariantOrderBy>>;
+  where?: Maybe<ItemVariantBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootItemVariantAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemVariantSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<ItemVariantOrderBy>>;
+  where?: Maybe<ItemVariantBoolExp>;
+};
+
+
+/** subscription root */
 export type SubscriptionRootLabelArgs = {
   distinct_on?: Maybe<Array<LabelSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
@@ -23629,8 +24182,7 @@ export type SubscriptionRootOrderItemAggregateArgs = {
 
 /** subscription root */
 export type SubscriptionRootOrderItemByPkArgs = {
-  item_id: Scalars['Int'];
-  order_id: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 
@@ -23787,24 +24339,24 @@ export type SubscriptionRootSearchItemAggregateArgs = {
 
 
 /** subscription root */
-export type SubscriptionRootSearchItemPreferVendorArgs = {
-  args: SearchItemPreferVendorArgs;
-  distinct_on?: Maybe<Array<ItemSelectColumn>>;
+export type SubscriptionRootSearchItemVariantArgs = {
+  args: SearchItemVariantArgs;
+  distinct_on?: Maybe<Array<ItemVariantSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<ItemOrderBy>>;
-  where?: Maybe<ItemBoolExp>;
+  order_by?: Maybe<Array<ItemVariantOrderBy>>;
+  where?: Maybe<ItemVariantBoolExp>;
 };
 
 
 /** subscription root */
-export type SubscriptionRootSearchItemPreferVendorAggregateArgs = {
-  args: SearchItemPreferVendorArgs;
-  distinct_on?: Maybe<Array<ItemSelectColumn>>;
+export type SubscriptionRootSearchItemVariantAggregateArgs = {
+  args: SearchItemVariantArgs;
+  distinct_on?: Maybe<Array<ItemVariantSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<ItemOrderBy>>;
-  where?: Maybe<ItemBoolExp>;
+  order_by?: Maybe<Array<ItemVariantOrderBy>>;
+  where?: Maybe<ItemVariantBoolExp>;
 };
 
 
@@ -24420,9 +24972,37 @@ export type VendorItem = {
   /** this should track "variations" of the item_id.      For example the item might be cat6 550mhz      but the vendor item would be 1000ft of it. */
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  /** An object relationship */
+  item: Item;
   item_id: Scalars['Int'];
+  /** An array relationship */
+  orderItems: Array<OrderItem>;
+  /** An aggregated array relationship */
+  orderItems_aggregate: OrderItemAggregate;
+  /** An object relationship */
+  vendor: Vendor;
   vendor_id: Scalars['Int'];
   vendor_sku: Scalars['String'];
+};
+
+
+/** columns and relationships of "vendor_item" */
+export type VendorItemOrderItemsArgs = {
+  distinct_on?: Maybe<Array<OrderItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<OrderItemOrderBy>>;
+  where?: Maybe<OrderItemBoolExp>;
+};
+
+
+/** columns and relationships of "vendor_item" */
+export type VendorItemOrderItemsAggregateArgs = {
+  distinct_on?: Maybe<Array<OrderItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<OrderItemOrderBy>>;
+  where?: Maybe<OrderItemBoolExp>;
 };
 
 /** aggregated selection of "vendor_item" */
@@ -24498,7 +25078,10 @@ export type VendorItemBoolExp = {
   _or?: Maybe<Array<Maybe<VendorItemBoolExp>>>;
   description?: Maybe<StringComparisonExp>;
   id?: Maybe<IntComparisonExp>;
+  item?: Maybe<ItemBoolExp>;
   item_id?: Maybe<IntComparisonExp>;
+  orderItems?: Maybe<OrderItemBoolExp>;
+  vendor?: Maybe<VendorBoolExp>;
   vendor_id?: Maybe<IntComparisonExp>;
   vendor_sku?: Maybe<StringComparisonExp>;
 };
@@ -24522,7 +25105,10 @@ export type VendorItemIncInput = {
 export type VendorItemInsertInput = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  item?: Maybe<ItemObjRelInsertInput>;
   item_id?: Maybe<Scalars['Int']>;
+  orderItems?: Maybe<OrderItemArrRelInsertInput>;
+  vendor?: Maybe<VendorObjRelInsertInput>;
   vendor_id?: Maybe<Scalars['Int']>;
   vendor_sku?: Maybe<Scalars['String']>;
 };
@@ -24591,7 +25177,10 @@ export type VendorItemOnConflict = {
 export type VendorItemOrderBy = {
   description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  item?: Maybe<ItemOrderBy>;
   item_id?: Maybe<OrderBy>;
+  orderItems_aggregate?: Maybe<OrderItemAggregateOrderBy>;
+  vendor?: Maybe<VendorOrderBy>;
   vendor_id?: Maybe<OrderBy>;
   vendor_sku?: Maybe<OrderBy>;
 };
@@ -25395,24 +25984,24 @@ export type DeleteOrderMutation = (
   )> }
 );
 
-export type SearchItemPreferVendorQueryVariables = Exact<{
+export type GetItemVariantsQueryVariables = Exact<{
   query_text: Scalars['String'];
   prefer_vendor_id?: Maybe<Scalars['Int']>;
 }>;
 
 
-export type SearchItemPreferVendorQuery = (
+export type GetItemVariantsQuery = (
   { __typename?: 'query_root' }
-  & { item: Array<(
-    { __typename?: 'item' }
-    & Pick<Item, 'id' | 'class' | 'object'>
-    & { name: Item['object'] }
-    & { vendorItems: Array<(
-      { __typename?: 'vendor_item' }
-      & Pick<VendorItem, 'vendor_id'>
-    )>, manufacturerItems: Array<(
-      { __typename?: 'manufacturer_item' }
-      & Pick<ManufacturerItem, 'manufacturer_id'>
+  & { item_variant: Array<(
+    { __typename?: 'item_variant' }
+    & Pick<ItemVariant, 'id' | 'item_id' | 'object'>
+    & { name: ItemVariant['object'] }
+    & { vendor?: Maybe<(
+      { __typename?: 'vendor' }
+      & Pick<Vendor, 'id' | 'name' | 'url'>
+    )>, manufacturer?: Maybe<(
+      { __typename?: 'manufacturer' }
+      & Pick<Manufacturer, 'id' | 'name' | 'url'>
     )> }
   )> }
 );
@@ -27196,62 +27785,66 @@ export function useDeleteOrderMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type DeleteOrderMutationHookResult = ReturnType<typeof useDeleteOrderMutation>;
 export type DeleteOrderMutationResult = ApolloReactCommon.MutationResult<DeleteOrderMutation>;
 export type DeleteOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteOrderMutation, DeleteOrderMutationVariables>;
-export const SearchItemPreferVendorDocument = gql`
-    query SearchItemPreferVendor($query_text: String!, $prefer_vendor_id: Int) {
-  item: search_item_prefer_vendor(args: {query_text: $query_text, prefer_vendor_id: $prefer_vendor_id}) {
+export const GetItemVariantsDocument = gql`
+    query GetItemVariants($query_text: String!, $prefer_vendor_id: Int) {
+  item_variant: search_item_variant(args: {query_text: $query_text}, where: {_or: [{vendor_id: {_eq: $prefer_vendor_id}}, {vendor_id: {_is_null: true}}]}, order_by: {vendor_id: asc, manufacturer_id: asc, id: asc}) {
     id
-    class
+    item_id
     name: object(path: "name")
     object
-    vendorItems {
-      vendor_id
+    vendor {
+      id
+      name
+      url
     }
-    manufacturerItems {
-      manufacturer_id
+    manufacturer {
+      id
+      name
+      url
     }
   }
 }
     `;
-export type SearchItemPreferVendorProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables>
+export type GetItemVariantsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetItemVariantsQuery, GetItemVariantsQueryVariables>
     } & TChildProps;
-export function withSearchItemPreferVendor<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+export function withGetItemVariants<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
-  SearchItemPreferVendorQuery,
-  SearchItemPreferVendorQueryVariables,
-  SearchItemPreferVendorProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables, SearchItemPreferVendorProps<TChildProps, TDataName>>(SearchItemPreferVendorDocument, {
-      alias: 'searchItemPreferVendor',
+  GetItemVariantsQuery,
+  GetItemVariantsQueryVariables,
+  GetItemVariantsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetItemVariantsQuery, GetItemVariantsQueryVariables, GetItemVariantsProps<TChildProps, TDataName>>(GetItemVariantsDocument, {
+      alias: 'getItemVariants',
       ...operationOptions
     });
 };
 
 /**
- * __useSearchItemPreferVendorQuery__
+ * __useGetItemVariantsQuery__
  *
- * To run a query within a React component, call `useSearchItemPreferVendorQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchItemPreferVendorQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetItemVariantsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetItemVariantsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useSearchItemPreferVendorQuery({
+ * const { data, loading, error } = useGetItemVariantsQuery({
  *   variables: {
  *      query_text: // value for 'query_text'
  *      prefer_vendor_id: // value for 'prefer_vendor_id'
  *   },
  * });
  */
-export function useSearchItemPreferVendorQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables>) {
-        return ApolloReactHooks.useQuery<SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables>(SearchItemPreferVendorDocument, baseOptions);
+export function useGetItemVariantsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemVariantsQuery, GetItemVariantsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetItemVariantsQuery, GetItemVariantsQueryVariables>(GetItemVariantsDocument, baseOptions);
       }
-export function useSearchItemPreferVendorLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables>(SearchItemPreferVendorDocument, baseOptions);
+export function useGetItemVariantsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemVariantsQuery, GetItemVariantsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetItemVariantsQuery, GetItemVariantsQueryVariables>(GetItemVariantsDocument, baseOptions);
         }
-export type SearchItemPreferVendorQueryHookResult = ReturnType<typeof useSearchItemPreferVendorQuery>;
-export type SearchItemPreferVendorLazyQueryHookResult = ReturnType<typeof useSearchItemPreferVendorLazyQuery>;
-export type SearchItemPreferVendorQueryResult = ApolloReactCommon.QueryResult<SearchItemPreferVendorQuery, SearchItemPreferVendorQueryVariables>;
+export type GetItemVariantsQueryHookResult = ReturnType<typeof useGetItemVariantsQuery>;
+export type GetItemVariantsLazyQueryHookResult = ReturnType<typeof useGetItemVariantsLazyQuery>;
+export type GetItemVariantsQueryResult = ApolloReactCommon.QueryResult<GetItemVariantsQuery, GetItemVariantsQueryVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
   PrinterStatus {
@@ -28112,4 +28705,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-16T10:33:26-06:00
+// graphql typescript defs generated on 2020-06-18T09:50:57-06:00
