@@ -4,15 +4,20 @@
 **/
 {
   schema: {
-    /** files: 'client/src/lib/types/schema.graphql' **/
-    
-        files: 'client/src/**/*.gql'
+    files: 'client/src/lib/types/schema.graphql'
   },
   query: {
     files: [
       {
         match: 'client/src/**/*.gql',
         parser: 'QueryParser',
+        validate: {
+            extends: "gql-rules-query",
+            rules: {
+            KnownFragmentNames: "off",
+            NoUnusedFragments: "off"
+            }
+        }
       },
     ]
   }

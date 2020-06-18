@@ -6,9 +6,10 @@ import moment from 'moment';
 
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
-import { toTitleCase, getDaysInMonth } from "../../lib/UtilityFunctions";
+import { toTitleCase, getDaysInMonth, toMinimumFixed } from "../../lib/UtilityFunctions";
 import { InputProps } from "antd/lib/input";
 import { useGetOrdersByDateRangeQuery } from "../../lib/types/graphql";
+import { Vendor } from "../../lib/Vendor/Vendor";
 
 
 interface OptionT {
@@ -45,12 +46,13 @@ export const OrderSelect: React.FC<OrderSelectProps> = ( props ) => {
     useEffect( () => {
         if ( !loading && !error ) {
             setOptions( data.order.map( v => {
+                let vendor = new Vendor(v.vendor);
                 return {
                     order_id: v.id.toString(),
                     label: <span className="orderOption">
-                        {v.vendor && v.vendor.url ? <div><img src={`${ v.vendor?.url }/favicon.ico`} /></div> : null }
-                        <span>{v.vendor.name}</span>
-                        <span>{v.total_cost}</span>
+                        {v.vendor && v.vendor.url ? <div><vendor.icon /></div> : null }
+                        <span>{vendor.name}</span>
+                        <span>${toMinimumFixed(v.total_cost, 2)}</span>
                         <span>#{v.vendor_order_id}</span>
                     </span>
                 };

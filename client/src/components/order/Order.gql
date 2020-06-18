@@ -175,25 +175,39 @@ $id: Int!
 ## Items ##
 ###########
 
-query SearchItemPreferVendor (
+query GetItemVariants (
     $query_text: String!
     $prefer_vendor_id: Int
-){
-    item: search_item_prefer_vendor(
+) {
+    item_variant: search_item_variant(
         args: {
-            query_text: $query_text, 
-            prefer_vendor_id: $prefer_vendor_id
+            query_text: $query_text
+        }
+        where: {
+            _or: [
+                {vendor_id: {_eq: $prefer_vendor_id}}
+                {vendor_id: {_is_null: true}}
+            ]
+        },
+        order_by: {
+            vendor_id: asc, 
+            manufacturer_id: asc, 
+            id: asc
         }
     ) {
         id
-        class
+        item_id
         name: object(path: "name")
         object
-        vendorItems {
-            vendor_id
+        vendor {
+            id
+            name
+            url
         }
-        manufacturerItems {
-            manufacturer_id
+        manufacturer {
+            id
+            name
+            url
         }
     }
 }
