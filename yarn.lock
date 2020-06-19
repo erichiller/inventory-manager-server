@@ -1631,6 +1631,11 @@
     "@graphql-tools/utils" "6.0.9"
     tslib "~2.0.0"
 
+"@json-editor/json-editor@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@json-editor/json-editor/-/json-editor-2.3.0.tgz#6c44c13cfa2f22b99123703b321c29e7ae16e74e"
+  integrity sha512-z+192e48xT74ZAvmd2VbEK11cal/EVRQ5y5C55y3IK9CTpiNIFSPaOe0u8Is1mt1vFOBVpkaCKP6GEdW82yKew==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
