@@ -84,31 +84,33 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
     return (
         <div className="OrderItemInput">
 
-            <OrderItemSelect placeholder="Search for Item"
-                mode={null}
-                onChange={setItemId}
-                suffixIcon={props.suffix}
-                vendorId={props.vendorId}
-            // suffix={
-            //     <MinusCircleOutlined
-            //         className="dynamic-delete-button"
-            //         onClick={() => {
-            //             remove( field.name );
-            //         }}
-            //     />
-            // }
-            />
-            {/* TODO: rather than have ItemSelect search through ITEMS... it should search through all items listings: (see below)
-                1. Based on `Vendor` of `Order` search `vendor_items` ; this can then pre-populate the `manufacturer_item` and `item`
-                2. 
-                 */}
+            <span id="OrderItemSelectContainer">
+                <OrderItemSelect placeholder="Search for Item"
+                    mode={null}
+                    onChange={setItemId}
+                    suffixIcon={props.suffix}
+                    vendorId={props.vendorId}
+                // suffix={
+                //     <MinusCircleOutlined
+                //         className="dynamic-delete-button"
+                //         onClick={() => {
+                //             remove( field.name );
+                //         }}
+                //     />
+                // }
+                />
+                <span id="ItemExtraInfo">
+                    <a>Vendor</a>
+                    <a>Manufacturer</a>
+                    <a>Serial#</a>
+                </span>
+            </span>
             <Input name="quantity" aria-valuemin={1} onChange={setQuantity} placeholder="Qty" />
-            <Input name="serial_no" onChange={setSerialNo} placeholder="Serial#" />
+            {/* <Input name="serial_no" onChange={setSerialNo} placeholder="Serial#" /> */}
+            <span id="cost_item"><Input name="cost_item" type="number" step="0.01" min="0" prefix="$" placeholder="item" /></span> {/* TODO: onChange.*/}
+            <span id="cost_tax"><Input name="cost_tax" type="number" step="0.01" min="0" prefix="$" placeholder="tax" /></span> {/* TODO: onChange.*/}
+            <span id="cost_total"><Input name="cost_total" type="number" step="0.01" min="0" prefix="$" placeholder="total" /></span > {/* TODO: onChange.*/}
             <Input name="shipment" onChange={setSerialNo} placeholder="Shipment" /> {/* TODO: onChange. Requires separate element*/}
-            <Input name="cost_item" type="number" step="0.01" min="0" prefix="$" placeholder="item" /> {/* TODO: onChange.*/}
-            <Input name="cost_tax" type="number" step="0.01" min="0" prefix="$" placeholder="tax" /> {/* TODO: onChange.*/}
-            <Input name="cost_total" type="number" step="0.01" min="0" prefix="$" placeholder="total" /> {/* TODO: onChange.*/}
-            <Input name="vendor_item" onChange={setSerialNo} placeholder="Vendor Item" /> {/* TODO: onChange. Requires separate element*/}
 
         </div>
     );

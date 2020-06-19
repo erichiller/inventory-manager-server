@@ -7,6 +7,7 @@ import { ItemFormModal } from '../components/item/ItemFormModal';
 import { OrderTable } from '../components/order/OrderTable';
 import { VendorTable } from '../components/vendor/VendorTable';
 import { ManufacturerTable } from '../components/manufacturer/ManufacturerTable';
+import { ObjectTable } from '../components/generic/ObjectTable';
 
 type ReactFunctionComponent = ( ( route?: RouteEntry, match?: RouterMatch ) => JSX.Element );
 
@@ -98,6 +99,19 @@ export const routes: RouteEntry[] = [
         // ModeMenu: () => <ProjectModeMenu />,
         main: () => {
             return <ManufacturerTable />;
+        }
+    },
+    {
+        title: "Objects",
+        subtitle: "Add, Edit, Print for Generic Data Types",
+        breadcrumbName: "Objects",
+        path: [ "/object", "/object/:object_id", "/object/:object_id/:action" ], // action can be either 'edit' or 'add'
+        exact: true,
+        // AppMenuIcon: () => <Icon component={DiggingIcon as any} />,
+        // AppMenuEntry: () => <ProjectSubMenu key="ProjectsubMenu" />,
+        // ModeMenu: () => <ProjectModeMenu />,
+        main: () => {
+            return <ObjectTable />;
         }
     },
 ];

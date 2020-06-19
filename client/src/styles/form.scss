@@ -159,7 +159,8 @@ div[role="tooltip"] {
         font-weight: bolder;
         font-size: 1em;
     }
-    & span:nth-of-type(2), & span:nth-of-type(5) {
+    & span:nth-of-type(2),
+    & span:nth-of-type(5) {
         // & :nth-child (2) {
         text-align: right;
         padding-right: 3px;
@@ -169,7 +170,8 @@ div[role="tooltip"] {
     }
 }
 
-.OrderSelect, .OrderItemSelect {
+.OrderSelect,
+.OrderItemSelect {
     display: flex;
     .ant-picker-input input {
         width: 55px;
@@ -247,9 +249,8 @@ div[role="tooltip"] {
 }
 
 .OrderItemInput {
-    
     display: grid;
-    grid-template-columns: repeat(6, 16.6%);
+    grid-template-columns: repeat(23, 3.75%);
     grid-template-rows: 40px 40px;
     column-gap: 4px;
     > * {
@@ -259,33 +260,56 @@ div[role="tooltip"] {
     input {
         width: initial;
     }
-    .ItemSelect, .OrderItemSelect {
-        grid-column-start: span 3;
+    #ItemExtraInfo {
+        display:flex;
+        padding-left: 5px;
+        padding-right: 5px;
+        justify-content: space-between;
+    }
+    .ItemSelect,
+    #OrderItemSelectContainer {
+        grid-column-start: span 12;
         grid-row-start: span 2;
     }
     [name="quantity"] {
         min-width: 100%;
         width: 100%;
+        grid-column-start: span 2;
         .ant-input-number-input {
             padding-left: 5px; // was 11px
             padding-right: 5px;
         }
     }
     Input[name="serial_no"] {
-        grid-column-start: span 2;
-    }
-    Input[name="shipment"] {
         grid-column-start: span 3;
     }
-    // Input[name="cost_item"] {
-    // }
-    // Input[name="cost_tax"] {
-    // }
-    // Input[name="cost_total"] {
-    // }
-    Input[name="vendor_item"] {
-        grid-column-start: span 6;
+    Input[name="shipment"] {
+        grid-column-start: span 11;
     }
+    #cost_item {
+        grid-column-start: span 3;
+        input[type="number"] {
+            min-width: 80%;
+            width: 90%;
+        }
+    }
+    #cost_tax {
+        grid-column-start: span 3;
+        input[type="number"] {
+            min-width: 80%;
+            width: 90%;
+        }
+    }
+    #cost_total {
+        grid-column-start: span 3;
+        input[type="number"] {
+            min-width: 80%;
+            width: 90%;
+        }
+    }
+    // Input[name="vendor_item"] {
+    //     grid-column-start: span 6;
+    // }
 }
 
 // override the ant column settings
