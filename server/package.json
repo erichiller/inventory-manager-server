@@ -16,7 +16,7 @@
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
     "apollo-link-http": "^1.5.16",
-    "apollo-server": "2.14.4",
+    "apollo-server": "2.15.0",
     "apollo-server-module-graphiql": "^1.4.0",
     "cors": "^2.8.5",
     "cross-fetch": "^3.0.5",
@@ -33,11 +33,11 @@
     "shortid": "^2.2.15"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.9.1",
-    "@graphql-codegen/time": "^1.9.1",
-    "@graphql-codegen/typescript": "^1.9.1",
-    "@graphql-codegen/typescript-operations": "^1.9.1",
-    "@graphql-codegen/typescript-resolvers": "^1.9.1",
+    "@graphql-codegen/cli": "^1.15.4",
+    "@graphql-codegen/time": "^1.15.4",
+    "@graphql-codegen/typescript": "^1.15.4",
+    "@graphql-codegen/typescript-operations": "^1.15.4",
+    "@graphql-codegen/typescript-resolvers": "^1.15.4",
     "@types/cors": "^2.8.6",
     "@types/minio": "^7.0.5",
     "@types/mkdirp": "^0.5.2",
@@ -50,7 +50,7 @@
     "ts-node": "^8.4.1",
     "typescript": "^3.6.3",
     "webpack": "^4.41.0",
-    "webpack-cli": "^3.3.9",
+    "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.8.1"
   }
 }

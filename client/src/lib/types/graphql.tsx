@@ -26059,7 +26059,7 @@ export type ObjectVendorFieldsFragment = (
 
 export type BasicVendorItemFieldsFragment = (
   { __typename?: 'vendor_item' }
-  & Pick<VendorItem, 'id' | 'item_id' | 'vendor_id' | 'vendor_sku'>
+  & Pick<VendorItem, 'id' | 'description' | 'item_id' | 'vendor_id' | 'vendor_sku'>
 );
 
 export type GetVendorsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -26088,17 +26088,6 @@ export type GetVendorQuery = (
     { __typename?: 'vendor' }
     & BasicVendorFieldsFragment
     & ObjectVendorFieldsFragment
-  )> }
-);
-
-export type GetVendorItemsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetVendorItemsQuery = (
-  { __typename?: 'query_root' }
-  & { vendor_item: Array<(
-    { __typename?: 'vendor_item' }
-    & BasicVendorItemFieldsFragment
   )> }
 );
 
@@ -26158,6 +26147,98 @@ export type DeleteVendorMutation = (
   & { delete_vendor_by_pk?: Maybe<(
     { __typename?: 'vendor' }
     & BasicVendorFieldsFragment
+  )> }
+);
+
+export type GetVendorItemsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetVendorItemsQuery = (
+  { __typename?: 'query_root' }
+  & { vendor_item: Array<(
+    { __typename?: 'vendor_item' }
+    & BasicVendorItemFieldsFragment
+  )> }
+);
+
+export type SearchVendorItemsQueryVariables = Exact<{
+  query_text: Scalars['String'];
+}>;
+
+
+export type SearchVendorItemsQuery = (
+  { __typename?: 'query_root' }
+  & { item: Array<(
+    { __typename?: 'item' }
+    & Pick<Item, 'id' | 'object'>
+    & { name: Item['object'] }
+    & { vendorItems: Array<(
+      { __typename?: 'vendor_item' }
+      & Pick<VendorItem, 'id'>
+      & { vendor: (
+        { __typename?: 'vendor' }
+        & Pick<Vendor, 'id' | 'name' | 'url'>
+      ) }
+    )> }
+  )> }
+);
+
+export type GetVendorItemQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetVendorItemQuery = (
+  { __typename?: 'query_root' }
+  & { vendor_item?: Maybe<(
+    { __typename?: 'vendor_item' }
+    & BasicVendorItemFieldsFragment
+  )> }
+);
+
+export type UpdateVendorItemMutationVariables = Exact<{
+  id: Scalars['Int'];
+  description?: Maybe<Scalars['String']>;
+  item_id: Scalars['Int'];
+  vendor_id: Scalars['Int'];
+  vendor_sku?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateVendorItemMutation = (
+  { __typename?: 'mutation_root' }
+  & { vendor_item?: Maybe<(
+    { __typename?: 'vendor_item' }
+    & BasicVendorItemFieldsFragment
+  )> }
+);
+
+export type InsertVendorItemMutationVariables = Exact<{
+  description?: Maybe<Scalars['String']>;
+  item_id: Scalars['Int'];
+  vendor_id: Scalars['Int'];
+  vendor_sku?: Maybe<Scalars['String']>;
+}>;
+
+
+export type InsertVendorItemMutation = (
+  { __typename?: 'mutation_root' }
+  & { vendor_item?: Maybe<(
+    { __typename?: 'vendor_item' }
+    & BasicVendorItemFieldsFragment
+  )> }
+);
+
+export type DeleteVendorItemMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteVendorItemMutation = (
+  { __typename?: 'mutation_root' }
+  & { vendor_item?: Maybe<(
+    { __typename?: 'vendor_item' }
+    & BasicVendorItemFieldsFragment
   )> }
 );
 
@@ -26421,6 +26502,7 @@ export const ObjectVendorFieldsFragmentDoc = gql`
 export const BasicVendorItemFieldsFragmentDoc = gql`
     fragment basicVendorItemFields on vendor_item {
   id
+  description
   item_id
   vendor_id
   vendor_sku
@@ -28043,51 +28125,6 @@ export function useGetVendorLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type GetVendorQueryHookResult = ReturnType<typeof useGetVendorQuery>;
 export type GetVendorLazyQueryHookResult = ReturnType<typeof useGetVendorLazyQuery>;
 export type GetVendorQueryResult = ApolloReactCommon.QueryResult<GetVendorQuery, GetVendorQueryVariables>;
-export const GetVendorItemsDocument = gql`
-    query GetVendorItems {
-  vendor_item {
-    ...basicVendorItemFields
-  }
-}
-    ${BasicVendorItemFieldsFragmentDoc}`;
-export type GetVendorItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetVendorItemsQuery, GetVendorItemsQueryVariables>
-    } & TChildProps;
-export function withGetVendorItems<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetVendorItemsQuery,
-  GetVendorItemsQueryVariables,
-  GetVendorItemsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetVendorItemsQuery, GetVendorItemsQueryVariables, GetVendorItemsProps<TChildProps, TDataName>>(GetVendorItemsDocument, {
-      alias: 'getVendorItems',
-      ...operationOptions
-    });
-};
-
-/**
- * __useGetVendorItemsQuery__
- *
- * To run a query within a React component, call `useGetVendorItemsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetVendorItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetVendorItemsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetVendorItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetVendorItemsQuery, GetVendorItemsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetVendorItemsQuery, GetVendorItemsQueryVariables>(GetVendorItemsDocument, baseOptions);
-      }
-export function useGetVendorItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetVendorItemsQuery, GetVendorItemsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetVendorItemsQuery, GetVendorItemsQueryVariables>(GetVendorItemsDocument, baseOptions);
-        }
-export type GetVendorItemsQueryHookResult = ReturnType<typeof useGetVendorItemsQuery>;
-export type GetVendorItemsLazyQueryHookResult = ReturnType<typeof useGetVendorItemsLazyQuery>;
-export type GetVendorItemsQueryResult = ApolloReactCommon.QueryResult<GetVendorItemsQuery, GetVendorItemsQueryVariables>;
 export const SearchVendorsDocument = gql`
     query SearchVendors($search_string: String) {
   vendor(order_by: {id: asc}, where: {name: {_ilike: $search_string}}) {
@@ -28277,6 +28314,295 @@ export function useDeleteVendorMutation(baseOptions?: ApolloReactHooks.MutationH
 export type DeleteVendorMutationHookResult = ReturnType<typeof useDeleteVendorMutation>;
 export type DeleteVendorMutationResult = ApolloReactCommon.MutationResult<DeleteVendorMutation>;
 export type DeleteVendorMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteVendorMutation, DeleteVendorMutationVariables>;
+export const GetVendorItemsDocument = gql`
+    query GetVendorItems {
+  vendor_item {
+    ...basicVendorItemFields
+  }
+}
+    ${BasicVendorItemFieldsFragmentDoc}`;
+export type GetVendorItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetVendorItemsQuery, GetVendorItemsQueryVariables>
+    } & TChildProps;
+export function withGetVendorItems<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetVendorItemsQuery,
+  GetVendorItemsQueryVariables,
+  GetVendorItemsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetVendorItemsQuery, GetVendorItemsQueryVariables, GetVendorItemsProps<TChildProps, TDataName>>(GetVendorItemsDocument, {
+      alias: 'getVendorItems',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetVendorItemsQuery__
+ *
+ * To run a query within a React component, call `useGetVendorItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVendorItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVendorItemsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetVendorItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetVendorItemsQuery, GetVendorItemsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetVendorItemsQuery, GetVendorItemsQueryVariables>(GetVendorItemsDocument, baseOptions);
+      }
+export function useGetVendorItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetVendorItemsQuery, GetVendorItemsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetVendorItemsQuery, GetVendorItemsQueryVariables>(GetVendorItemsDocument, baseOptions);
+        }
+export type GetVendorItemsQueryHookResult = ReturnType<typeof useGetVendorItemsQuery>;
+export type GetVendorItemsLazyQueryHookResult = ReturnType<typeof useGetVendorItemsLazyQuery>;
+export type GetVendorItemsQueryResult = ApolloReactCommon.QueryResult<GetVendorItemsQuery, GetVendorItemsQueryVariables>;
+export const SearchVendorItemsDocument = gql`
+    query SearchVendorItems($query_text: String!) {
+  item: search_item(args: {query_text: $query_text}, where: {vendorItems: {}}) {
+    id
+    name: object(path: "name")
+    object
+    vendorItems {
+      id
+      vendor {
+        id
+        name
+        url
+      }
+    }
+  }
+}
+    `;
+export type SearchVendorItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>
+    } & TChildProps;
+export function withSearchVendorItems<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  SearchVendorItemsQuery,
+  SearchVendorItemsQueryVariables,
+  SearchVendorItemsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, SearchVendorItemsQuery, SearchVendorItemsQueryVariables, SearchVendorItemsProps<TChildProps, TDataName>>(SearchVendorItemsDocument, {
+      alias: 'searchVendorItems',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useSearchVendorItemsQuery__
+ *
+ * To run a query within a React component, call `useSearchVendorItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchVendorItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchVendorItemsQuery({
+ *   variables: {
+ *      query_text: // value for 'query_text'
+ *   },
+ * });
+ */
+export function useSearchVendorItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>(SearchVendorItemsDocument, baseOptions);
+      }
+export function useSearchVendorItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>(SearchVendorItemsDocument, baseOptions);
+        }
+export type SearchVendorItemsQueryHookResult = ReturnType<typeof useSearchVendorItemsQuery>;
+export type SearchVendorItemsLazyQueryHookResult = ReturnType<typeof useSearchVendorItemsLazyQuery>;
+export type SearchVendorItemsQueryResult = ApolloReactCommon.QueryResult<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>;
+export const GetVendorItemDocument = gql`
+    query GetVendorItem($id: Int!) {
+  vendor_item: vendor_item_by_pk(id: $id) {
+    ...basicVendorItemFields
+  }
+}
+    ${BasicVendorItemFieldsFragmentDoc}`;
+export type GetVendorItemProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetVendorItemQuery, GetVendorItemQueryVariables>
+    } & TChildProps;
+export function withGetVendorItem<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetVendorItemQuery,
+  GetVendorItemQueryVariables,
+  GetVendorItemProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetVendorItemQuery, GetVendorItemQueryVariables, GetVendorItemProps<TChildProps, TDataName>>(GetVendorItemDocument, {
+      alias: 'getVendorItem',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetVendorItemQuery__
+ *
+ * To run a query within a React component, call `useGetVendorItemQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVendorItemQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVendorItemQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetVendorItemQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetVendorItemQuery, GetVendorItemQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetVendorItemQuery, GetVendorItemQueryVariables>(GetVendorItemDocument, baseOptions);
+      }
+export function useGetVendorItemLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetVendorItemQuery, GetVendorItemQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetVendorItemQuery, GetVendorItemQueryVariables>(GetVendorItemDocument, baseOptions);
+        }
+export type GetVendorItemQueryHookResult = ReturnType<typeof useGetVendorItemQuery>;
+export type GetVendorItemLazyQueryHookResult = ReturnType<typeof useGetVendorItemLazyQuery>;
+export type GetVendorItemQueryResult = ApolloReactCommon.QueryResult<GetVendorItemQuery, GetVendorItemQueryVariables>;
+export const UpdateVendorItemDocument = gql`
+    mutation UpdateVendorItem($id: Int!, $description: String, $item_id: Int!, $vendor_id: Int!, $vendor_sku: String) {
+  vendor_item: update_vendor_item_by_pk(pk_columns: {id: $id}, _set: {description: $description, item_id: $item_id, vendor_id: $vendor_id, vendor_sku: $vendor_sku}) {
+    ...basicVendorItemFields
+  }
+}
+    ${BasicVendorItemFieldsFragmentDoc}`;
+export type UpdateVendorItemMutationFn = ApolloReactCommon.MutationFunction<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>;
+export type UpdateVendorItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>
+    } & TChildProps;
+export function withUpdateVendorItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  UpdateVendorItemMutation,
+  UpdateVendorItemMutationVariables,
+  UpdateVendorItemProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, UpdateVendorItemMutation, UpdateVendorItemMutationVariables, UpdateVendorItemProps<TChildProps, TDataName>>(UpdateVendorItemDocument, {
+      alias: 'updateVendorItem',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useUpdateVendorItemMutation__
+ *
+ * To run a mutation, you first call `useUpdateVendorItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateVendorItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateVendorItemMutation, { data, loading, error }] = useUpdateVendorItemMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      description: // value for 'description'
+ *      item_id: // value for 'item_id'
+ *      vendor_id: // value for 'vendor_id'
+ *      vendor_sku: // value for 'vendor_sku'
+ *   },
+ * });
+ */
+export function useUpdateVendorItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>(UpdateVendorItemDocument, baseOptions);
+      }
+export type UpdateVendorItemMutationHookResult = ReturnType<typeof useUpdateVendorItemMutation>;
+export type UpdateVendorItemMutationResult = ApolloReactCommon.MutationResult<UpdateVendorItemMutation>;
+export type UpdateVendorItemMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>;
+export const InsertVendorItemDocument = gql`
+    mutation InsertVendorItem($description: String, $item_id: Int!, $vendor_id: Int!, $vendor_sku: String) {
+  vendor_item: insert_vendor_item_one(object: {description: $description, item_id: $item_id, vendor_id: $vendor_id, vendor_sku: $vendor_sku}) {
+    ...basicVendorItemFields
+  }
+}
+    ${BasicVendorItemFieldsFragmentDoc}`;
+export type InsertVendorItemMutationFn = ApolloReactCommon.MutationFunction<InsertVendorItemMutation, InsertVendorItemMutationVariables>;
+export type InsertVendorItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertVendorItemMutation, InsertVendorItemMutationVariables>
+    } & TChildProps;
+export function withInsertVendorItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  InsertVendorItemMutation,
+  InsertVendorItemMutationVariables,
+  InsertVendorItemProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, InsertVendorItemMutation, InsertVendorItemMutationVariables, InsertVendorItemProps<TChildProps, TDataName>>(InsertVendorItemDocument, {
+      alias: 'insertVendorItem',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useInsertVendorItemMutation__
+ *
+ * To run a mutation, you first call `useInsertVendorItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertVendorItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertVendorItemMutation, { data, loading, error }] = useInsertVendorItemMutation({
+ *   variables: {
+ *      description: // value for 'description'
+ *      item_id: // value for 'item_id'
+ *      vendor_id: // value for 'vendor_id'
+ *      vendor_sku: // value for 'vendor_sku'
+ *   },
+ * });
+ */
+export function useInsertVendorItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertVendorItemMutation, InsertVendorItemMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertVendorItemMutation, InsertVendorItemMutationVariables>(InsertVendorItemDocument, baseOptions);
+      }
+export type InsertVendorItemMutationHookResult = ReturnType<typeof useInsertVendorItemMutation>;
+export type InsertVendorItemMutationResult = ApolloReactCommon.MutationResult<InsertVendorItemMutation>;
+export type InsertVendorItemMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertVendorItemMutation, InsertVendorItemMutationVariables>;
+export const DeleteVendorItemDocument = gql`
+    mutation DeleteVendorItem($id: Int!) {
+  vendor_item: delete_vendor_item_by_pk(id: $id) {
+    ...basicVendorItemFields
+  }
+}
+    ${BasicVendorItemFieldsFragmentDoc}`;
+export type DeleteVendorItemMutationFn = ApolloReactCommon.MutationFunction<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>;
+export type DeleteVendorItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>
+    } & TChildProps;
+export function withDeleteVendorItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  DeleteVendorItemMutation,
+  DeleteVendorItemMutationVariables,
+  DeleteVendorItemProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, DeleteVendorItemMutation, DeleteVendorItemMutationVariables, DeleteVendorItemProps<TChildProps, TDataName>>(DeleteVendorItemDocument, {
+      alias: 'deleteVendorItem',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useDeleteVendorItemMutation__
+ *
+ * To run a mutation, you first call `useDeleteVendorItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteVendorItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteVendorItemMutation, { data, loading, error }] = useDeleteVendorItemMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteVendorItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>(DeleteVendorItemDocument, baseOptions);
+      }
+export type DeleteVendorItemMutationHookResult = ReturnType<typeof useDeleteVendorItemMutation>;
+export type DeleteVendorItemMutationResult = ApolloReactCommon.MutationResult<DeleteVendorItemMutation>;
+export type DeleteVendorItemMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>;
 export const GetItemsDocument = gql`
     query GetItems($categories: [enum_item_class_enum!]) {
   items: item(where: {class: {_in: $categories}}, order_by: {id: asc}) {
@@ -28705,4 +29031,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-18T09:50:57-06:00
+// graphql typescript defs generated on 2020-06-20T10:29:22-06:00

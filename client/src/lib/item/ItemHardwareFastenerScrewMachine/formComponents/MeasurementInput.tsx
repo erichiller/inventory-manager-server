@@ -10,7 +10,7 @@ interface MeasurementInputProps extends InputProps {
 export const MeasurementInput: React.FC<MeasurementInputProps> = ( props ) => {
     console.log( { class: 'MeasurementInput', props } );
     const { onChange, unit, ...remainingProps } = props;
-    const [ value, setValue ] = useState<string | number | string[]>( props.value );
+    const [ value, setValue ] = useState<string | number | readonly string[]>( props.value );
     const triggerChange = ( ev: ChangeEvent<HTMLInputElement> ) => {
         setValue( ev.target.value );
         if ( onChange ) {

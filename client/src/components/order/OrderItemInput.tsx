@@ -13,6 +13,8 @@ import { useForm } from 'antd/lib/form/Form';
 import { InputProps } from 'antd/lib/input';
 import { OrderItemSelect } from './OrderItemSelect';
 import { Integer } from '../../lib/types/uint8';
+import { useHistory, useLocation } from 'react-router-dom';
+import { VendorItemFormModal } from '../vendor/VendorItemFormModal';
 
 
 interface OrderItemDefinition extends Omit<OrderItem, 'order_id'> {
@@ -35,19 +37,16 @@ interface OrderItemInputProps extends Omit<InputProps, 'value' | 'onChange'> {
 export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemInputProps ) => {
     const { onChange, ...remainingProps } = props;
 
-    // const [ orderItem, setOrderItem ] = useState<OrderItemDefinition>(props.value);
 
-    // useEffect( () => {
-    //     screwSizeInputRef.current.focus();
-    // }, [ screwSizeInputRef ] );
-
-    // useEffect( () => {
-    //     let initProps: Partial<ItemBundle> = {};
-    //     if ( !props.thread_direction ) {
-    //         initProps.thread_direction = EnumItemHandednessEnum.right;
-    //     }
-    //     form.setFieldsValue( initProps );
-    // } );
+    const [ modal, setModal ] = useState<React.ReactElement>( null );
+    const history = useHistory();
+    const location = useLocation();
+    const handleModalChange = ( modal: React.ReactElement ) => {
+        if ( modal === null ) {
+            history.push( location.pathname );
+        }
+        setModal( modal );
+    };
 
     const setItemId = ( value: ItemSelectProvidesValue ) => {
         console.log( "setItem", { value } );
@@ -83,7 +82,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
 
     return (
         <div className="OrderItemInput">
-
+            {modal}
             <span id="OrderItemSelectContainer">
                 <OrderItemSelect placeholder="Search for Item"
                     mode={null}
@@ -100,7 +99,10 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                 // }
                 />
                 <span id="ItemExtraInfo">
-                    <a>Vendor</a>
+                    <Form.Item name="vendor_item" />
+                        <VendorItemSelect />
+                    
+                    </Form.Item>
                     <a>Manufacturer</a>
                     <a>Serial#</a>
                 </span>

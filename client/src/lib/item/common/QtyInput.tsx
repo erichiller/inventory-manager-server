@@ -8,7 +8,7 @@ interface QtyInputProps extends InputProps { }
 export const QtyInput: React.FC<QtyInputProps> = ( props ) => {
     console.log( { class: 'QtyInput', props } );
     const { onChange, ...remainingProps } = props;
-    const [ value, setValue ] = useState<null | number | string | string[]>( props.value );
+    const [ value, setValue ] = useState<null | number | string | readonly string[]>( props.value );
     const [ displayNumberInput, setDisplayNumberInput ] = useState<boolean>( props.value === null || props.value === undefined ? false : true );
     const triggerChange = ( ev: ChangeEvent<HTMLInputElement> ) => {
         setValue( ev.target.value );
