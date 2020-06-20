@@ -20,6 +20,7 @@ fragment objectVendorFields on vendor {
 
 fragment basicVendorItemFields on vendor_item {
 	id # id: Int
+    description # String
 	item_id # item_id: Int
 	vendor_id # vendor_id: Int
 	vendor_sku # vendor_sku: String
@@ -42,12 +43,6 @@ query GetVendor($id: Int!) {
 	}
 }
 
-
-query GetVendorItems {
-	vendor_item {
-		...basicVendorItemFields
-	}
-}
 
 query SearchVendors($search_string: String) {
 	vendor(order_by: { id: asc }, where: { name: { _ilike: $search_string }}) {
@@ -103,3 +98,90 @@ $id: Int!
     }
 }
 
+#################
+## vendor_item ##
+#################
+
+
+query GetVendorItems {
+	vendor_item {
+		...basicVendorItemFields
+	}
+}
+
+
+query SearchVendorItems (
+    $query_text: String!
+) {
+    item: search_item(
+        args: {
+            query_text: $query_text
+        }
+        where: {vendorItems: {}}
+    ) {
+        id
+        name: object(path: "name")
+        object
+        vendorItems {
+            id
+            vendor {
+                id
+                name
+                url
+            }
+        }
+    }
+}
+
+query GetVendorItem( $id: Int! ) {
+    vendor_item: vendor_item_by_pk(id: $id) {
+        ...basicVendorItemFields
+    }
+}
+
+mutation UpdateVendorItem (
+    $id: Int!
+    $description: String
+    $item_id: Int!
+    $vendor_id: Int!
+    $vendor_sku: String
+) {
+    vendor_item: update_vendor_item_by_pk(
+    pk_columns: {
+        id: $id, 
+    }
+    _set: {
+        description: $description, 
+        item_id: $item_id, 
+        vendor_id: $vendor_id
+        vendor_sku: $vendor_sku
+    }
+    ) {
+        ...basicVendorItemFields
+    }
+}
+mutation InsertVendorItem(
+    $description: String
+    $item_id: Int!
+    $vendor_id: Int!
+    $vendor_sku: String
+) {
+    vendor_item: insert_vendor_item_one(
+    object: {
+        description: $description
+        item_id: $item_id
+        vendor_id: $vendor_id
+        vendor_sku: $vendor_sku
+    }
+    ) {
+        ...basicVendorItemFields
+    }
+}
+
+mutation DeleteVendorItem (
+$id: Int!
+) {
+    vendor_item: delete_vendor_item_by_pk(id: $id) {
+        ...basicVendorItemFields
+    }
+}
