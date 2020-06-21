@@ -354,6 +354,9 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                                         onClick={() => {
                                             add();
                                         }}
+                                        onKeyDown={() => {
+                                            add();
+                                        }}
                                         style={{ width: "100%", textAlign: 'center' }}
                                     >
                                         <PlusOutlined /> Add Item
