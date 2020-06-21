@@ -26174,7 +26174,7 @@ export type SearchVendorItemsQuery = (
     & { name: Item['object'] }
     & { vendorItems: Array<(
       { __typename?: 'vendor_item' }
-      & Pick<VendorItem, 'id'>
+      & Pick<VendorItem, 'id' | 'vendor_sku'>
       & { vendor: (
         { __typename?: 'vendor' }
         & Pick<Vendor, 'id' | 'name' | 'url'>
@@ -28367,6 +28367,7 @@ export const SearchVendorItemsDocument = gql`
     object
     vendorItems {
       id
+      vendor_sku
       vendor {
         id
         name
@@ -29031,4 +29032,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-20T10:29:22-06:00
+// graphql typescript defs generated on 2020-06-21T10:20:06-06:00

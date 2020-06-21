@@ -124,6 +124,7 @@ query SearchVendorItems (
         object
         vendorItems {
             id
+            vendor_sku
             vendor {
                 id
                 name

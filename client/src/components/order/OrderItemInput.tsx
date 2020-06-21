@@ -15,6 +15,7 @@ import { OrderItemSelect } from './OrderItemSelect';
 import { Integer } from '../../lib/types/uint8';
 import { useHistory, useLocation } from 'react-router-dom';
 import { VendorItemFormModal } from '../vendor/VendorItemFormModal';
+import { VendorItemSelect } from '../vendor/VendorItemSelect';
 
 
 interface OrderItemDefinition extends Omit<OrderItem, 'order_id'> {
@@ -79,6 +80,20 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
             serial_no: event.target.value
         } );
     };
+    const setVendorItem = ( id: number ) => {
+        console.log( "setVendorItem", id );
+        onChange( {
+            ...props.value,
+            vendor_item_id: id
+        } );
+    };
+    const setShipment = ( event: React.ChangeEvent<HTMLInputElement> ) => {
+        console.log( "setShipment", event.target.value );
+        onChange( {
+            ...props.value,
+            shipment_id: parseInt(event.target.value)
+        } );
+    };
 
     return (
         <div className="OrderItemInput">
@@ -99,12 +114,9 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                 // }
                 />
                 <span id="ItemExtraInfo">
-                    <Form.Item name="vendor_item" />
-                        <VendorItemSelect />
-                    
-                    </Form.Item>
-                    <a>Manufacturer</a>
-                    <a>Serial#</a>
+                    <VendorItemSelect onChange={setVendorItem} />
+                    <Input name="manufacturer_item" onChange={setQuantity} placeholder="Manufacturer Item xx" />
+                    <Input name="serial_no" onChange={setSerialNo} placeholder="Serial #" />
                 </span>
             </span>
             <Input name="quantity" aria-valuemin={1} onChange={setQuantity} placeholder="Qty" />
@@ -112,8 +124,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
             <span id="cost_item"><Input name="cost_item" type="number" step="0.01" min="0" prefix="$" placeholder="item" /></span> {/* TODO: onChange.*/}
             <span id="cost_tax"><Input name="cost_tax" type="number" step="0.01" min="0" prefix="$" placeholder="tax" /></span> {/* TODO: onChange.*/}
             <span id="cost_total"><Input name="cost_total" type="number" step="0.01" min="0" prefix="$" placeholder="total" /></span > {/* TODO: onChange.*/}
-            <Input name="shipment" onChange={setSerialNo} placeholder="Shipment" /> {/* TODO: onChange. Requires separate element*/}
-
+            <Input name="shipment" onChange={setShipment} placeholder="Shipment" /> {/* TODO: onChange. Requires separate element*/}
         </div>
     );
 

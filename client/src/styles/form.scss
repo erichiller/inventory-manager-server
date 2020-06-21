@@ -261,10 +261,48 @@ div[role="tooltip"] {
         width: initial;
     }
     #ItemExtraInfo {
-        display:flex;
-        padding-left: 5px;
-        padding-right: 5px;
+        display: flex;
         justify-content: space-between;
+
+        > * {
+            width: 40%;
+        }
+
+        // Input[name="serial_no"] {
+        //     border: none;
+        // }
+        .VendorItemSelect {
+            .ant-select-arrow {
+                line-height: 0.6em;
+                font-size: 0.6em;
+            }
+        }
+        input.ant-input {
+            border: none;
+            line-height: 0.8em;
+            font-size: 0.8em;
+            height: 1.9em;
+            padding-left: 1px;
+            padding-right: 1px;
+            &:last-child {
+                text-align: right;
+                padding-right: 3px;
+            }
+        }
+        .ant-select-selector {
+            padding-left: 0;
+            // line-height: 0.8em;
+            font-size: 0.8em;
+            height: 20px;
+            input {
+                height: inherit;
+                // line-height: inherit;
+                // font-size: inherit;
+            }
+            .ant-select-selection-placeholder {
+                line-height: inherit;
+            }
+        }
     }
     .ItemSelect,
     #OrderItemSelectContainer {
@@ -279,9 +317,6 @@ div[role="tooltip"] {
             padding-left: 5px; // was 11px
             padding-right: 5px;
         }
-    }
-    Input[name="serial_no"] {
-        grid-column-start: span 3;
     }
     Input[name="shipment"] {
         grid-column-start: span 11;
@@ -310,6 +345,23 @@ div[role="tooltip"] {
     // Input[name="vendor_item"] {
     //     grid-column-start: span 6;
     // }
+}
+
+.VendorItemSelectDropdown {
+    .ant-select-item {
+        padding: 5px 6px;
+        min-height: unset;
+        line-height: 1em;
+        img {
+            padding-right: 4px;
+            display: inline-block;
+        }
+    }
+    .vendorItemOption {
+        img {
+            height: 1em;
+        }
+    }
 }
 
 // override the ant column settings
