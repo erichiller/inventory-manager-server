@@ -359,7 +359,27 @@ export function tableFilterFromEnum( e: object){
  * - {@link https://stackoverflow.com/questions/59140106/angular-how-can-i-clone-an-object-in-typescript Stack Overflow - How to clone object in TypeScript}
  */
 export function deepCopy<T extends Object>( obj: T ): T {
+    if ( ! ( typeof obj === "object" ) ){
+        return obj;
+    }
+    console.log({obj, obj_string: JSON.stringify( obj ), });
     return JSON.parse( JSON.stringify( obj ) );
+}
+
+/**
+ * Check if `objA` and `objB` are equal, even in nested properties.
+ * @param objA first comparison object
+ * @param objB second comparison object
+ * @returns true when `objA` and `objB` are equal, even in nested properties.
+ */
+export function deepEqual(objA: any, objB: any): objA is typeof objB {
+
+    if ( ! ( ( typeof objA === "object" ) && ( typeof objB === "object") ) ){
+        return false;
+    }
+    console.log({objA, objB, });
+    console.log({parsedA: JSON.stringify( objA, Object.keys( objA ).sort()), parsedB: JSON.stringify( objB, Object.keys( objB ).sort() )})
+    return JSON.stringify( objA, Object.keys( objA ).sort()) === JSON.stringify( objB, Object.keys( objB ).sort() );
 }
 
 
