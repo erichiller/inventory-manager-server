@@ -20,6 +20,8 @@ import { OrderItemInput } from './OrderItemInput';
 import { PageSpin } from '../shared/PageSpin';
 import { Order } from '../../lib/Order/Order';
 import TextArea from 'antd/lib/input/TextArea';
+import { CurlyBracesIcon } from '../../styles/icon';
+import { JsonModal } from '../shared/JsonModal';
 
 
 type OrderFormModalProps = Union<{
@@ -41,6 +43,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
     const history = useHistory();
 
     const [ order, setOrder ] = useState<QueryResultTypePlus<typeof useGetOrderQuery>>( props.order );
+    const [ modal, setModal ] = useState<React.ReactElement>( null );
 
     const [ runGetOrder, lookupResult ] = useGetOrderLazyQuery( {
         partialRefetch: true,
@@ -235,7 +238,14 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             form.submit();
         }}
         onCancel={event => exitModal()}
+        footer={[
+            <Button 
+                icon={<CurlyBracesIcon height={16} />} 
+                children="Debug"
+                onClick={() => setModal(<JsonModal json={form.getFieldsValue()} visibilityHandler={setModal} />)} />
+        ]}
     >
+        {modal}
         <Form
             name="OrderForm"
             form={form}
