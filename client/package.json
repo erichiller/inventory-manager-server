@@ -44,7 +44,7 @@
     "react-konva": "16.13.0-3",
     "react-rnd": "10.1.10",
     "react-router-dom": "5.2.0",
-    "uuid": "8.1.0"
+    "uuid": "8.2.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "1.15.4",
