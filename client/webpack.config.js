@@ -24,7 +24,11 @@ module.exports = {
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
             {
-                test: /\.svg$/,
+                // test: /\.svg$/,
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                issuer: {
+                    test: /\.(j|t)sx?$/
+                },
                 use: [
                     {
                         loader: '@svgr/webpack',
@@ -32,7 +36,18 @@ module.exports = {
                         //     native: true,
                         // },
                     },
+                    // {
+                    //     loader: 'url-loader'
+                    // }
                 ],
+            },
+            {
+                // don't use svgr for css
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                issuer: {
+                    test: /\.s?(a|c)ss$/,
+                },
+                loader: 'url-loader'
             },
             {
                 // test: /\.(jpg|png)$/,
