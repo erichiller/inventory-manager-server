@@ -6,7 +6,7 @@ import { AutoComplete, Input, DatePicker, Select } from "antd";
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { InputProps } from "antd/lib/input";
-import { useGetVendorItemsLazyQuery, useSearchVendorItemsLazyQuery, useSearchVendorItemsQuery } from "../../lib/types/graphql";
+import { useGetVendorItemsLazyQuery, useSearchVendorItemsLazyQuery, useSearchVendorItemsQuery, VendorItem } from "../../lib/types/graphql";
 
 
 interface OptionT extends OptionData {
@@ -15,10 +15,13 @@ interface OptionT extends OptionData {
 }
 type VT = SelectValue;
 
+interface VendorItemSelectValue extends Pick<VendorItem, 'id' | 'description' | 'item_id' | 'vendor_id' | 'vendor_sku'> { }
+
 interface VendorItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
     forwardRef?: React.MutableRefObject<Input>;
     value?: VT;
-    onChange?: ( id: number ) => void;
+    // onChange?: ( id: number ) => void;
+    onChange?: ( id: VendorItemSelectValue ) => void;
 }
 /**
  * Form Select Input for VendorItems
@@ -64,6 +67,10 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
             setOptions( opts );
         }
     }, [ loading, data ] );
+    useEffect( () => {
+        console.log("VendorItemSelect -- value changed")
+
+    }, [value])
     return (
             <Select
                 bordered={false}
@@ -75,11 +82,6 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                 onSearch={value => {
                     console.log( { event: "onSearch", setSearchText: value } );
                     setSearchText( value );
-                    // runQuery( {
-                    //     variables: {
-                    //         search_string: `${ value }%`
-                    //     }
-                    // } );
                 }}
                 onChange={( value, opt ) => {
                     console.log( { event: "onChange", value, opt } );
