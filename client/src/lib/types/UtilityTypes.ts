@@ -2,7 +2,7 @@ import { QueryHookOptions, QueryResult } from 'react-apollo';
 import { EnumUnitEnum } from './graphql';
 
 
-export type Union<A, B> = A & B;
+export type Union<A, B, C = {}, D = {}, E = {}, F = {}> = A & B & C & D & E & F;
 
 export type ClassType<T> = Union<keyof T, new () => T>;
 

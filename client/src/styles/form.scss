@@ -89,16 +89,27 @@ div[role="tooltip"] {
     }
 }
 
-.orderOption {
-    // vertical-align: middle;
-    // display: flex;
-    // flex-wrap: wrap;
-    // justify-content: space-between;
-
+@mixin grid-3 {
     display: grid;
     grid-template-columns: 35px 80px auto;
-    grid-template-rows: 25px 25px;
 
+    & span:nth-of-type(1) {
+        // & :nth-child (2) {
+        // padding-left: 4px;
+        font-weight: bolder;
+        // font-style: italic;
+    }
+    & span:nth-of-type(2) {
+        // & :nth-child (2) {
+        text-align: right;
+    }
+}
+
+.orderOption {
+    @include grid-3();
+
+    grid-template-rows: 25px 25px;
+    
     & div:nth-of-type(1) {
         & img {
             width: 24px;
@@ -114,29 +125,10 @@ div[role="tooltip"] {
         padding: 2px;
         font-weight: bold;
     }
-
-    & span:nth-of-type(1) {
-        // & :nth-child (2) {
-        // padding-left: 4px;
-        font-weight: bolder;
-        // font-style: italic;
-    }
-    & span:nth-of-type(2) {
-        // & :nth-child (2) {
-        text-align: right;
-    }
+    
     & :nth-last-child(1) {
         // background-color: purple;
         grid-column-start: span 2;
-    }
-}
-.vendorOption {
-    @extend .orderOption;
-    grid-template-rows: 18px;
-
-    & :nth-last-child(1) {
-        // background-color: purple;
-        grid-column-start: initial;
     }
 }
 

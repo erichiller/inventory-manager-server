@@ -239,7 +239,8 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         }}
         onCancel={event => exitModal()}
         footer={[
-            <Button 
+            <Button
+                key="order_form_debug_button"
                 icon={<CurlyBracesIcon height={16} />} 
                 children="Debug"
                 onClick={() => setModal(<JsonModal json={form.getFieldsValue()} visibilityHandler={setModal} />)} />
@@ -360,6 +361,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                                     className="full-width-form-item"
                                 >
                                     <Button
+                                        key="add_item"
                                         type="dashed"
                                         onClick={() => {
                                             add();
