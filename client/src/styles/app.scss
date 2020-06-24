@@ -2,14 +2,13 @@
 @import "media.scss";
 @import "content.scss";
 @import "draw.scss";
-@import "form.scss";
+@import "form";
 @import "table.scss";
 @import "jsoneditor.scss";
 @import "draggableModal.scss";
 @import "DrawContextMenu.scss";
 @import "ItemCategoryTree.scss";
 
-@import "form/vendor.scss";
 
 body {
     margin: 0;

@@ -36,11 +36,20 @@ pre {
 .ant-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     svg {
         fill: currentColor;
         height: 1em;
+        margin: 0;
+        padding: 0;
     }
-    :first-child {
-        margin-right: 3px;
+    > .anticon + span, 
+    > span + .anticon,
+    > svg + span, 
+    > span + svg {
+        margin-left: 3px;
     }
+    // :first-child {
+    //     margin-right: 3px;
+    // }
 }
