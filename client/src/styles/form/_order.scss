@@ -1,109 +1,3 @@
-.numberInput {
-    width: 110px;
-}
-
-div[role="tooltip"] {
-    header {
-        font-weight: bold;
-        font-size: 1.2em;
-        font-variant-caps: small-caps;
-        padding-bottom: 5px;
-    }
-    b {
-        font-weight: bolder;
-        padding-top: 5px;
-        display: block;
-    }
-    pre {
-        margin-left: 1em;
-        .highlight {
-            color: red;
-            border: 1px solid red;
-            border-radius: 1em;
-            padding: 3px;
-            line-height: 2em;
-        }
-    }
-}
-
-.formTooltip {
-    display: flex;
-    align-items: center;
-    & svg {
-        flex: auto;
-        stroke: white;
-        fill: white;
-        padding-right: 10px;
-        height: max-content;
-    }
-    & span {
-        flex: 1 0 50%;
-    }
-}
-
-.descriptionTable {
-    display: grid;
-    grid-template-columns: max-content auto;
-    grid-template-rows: max-content;
-    align-items: center;
-    & span:nth-of-type(odd) {
-        border-right: 1px solid silver;
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-    & span:nth-of-type(even) {
-        padding-left: 10px;
-    }
-    // & :not(span:nth-last-of-type(2)) {
-    // & :not(:last-child) {
-    & span {
-        border-bottom: 1px solid silver;
-    }
-    & span:nth-last-of-type(2),
-    & span:nth-last-of-type(1) {
-        border-bottom: initial;
-    }
-    // & :not(span:nth-of-type(-1)) {
-    //     border-bottom: 1px solid silver;
-    // }
-}
-
-.enumIconSelect {
-    display: flex;
-    & .ant-select .ant-select-selector {
-        height: 46px;
-        padding-top: 3px;
-    }
-}
-
-.enumIconSelectOption {
-    display: grid;
-    grid-template-columns: 40px auto;
-    grid-template-rows: 40px;
-    align-items: center;
-
-    & img,
-    svg {
-        width: 35px;
-        align-self: center;
-    }
-}
-
-@mixin grid-3 {
-    display: grid;
-    grid-template-columns: 35px 80px auto;
-
-    & span:nth-of-type(1) {
-        // & :nth-child (2) {
-        // padding-left: 4px;
-        font-weight: bolder;
-        // font-style: italic;
-    }
-    & span:nth-of-type(2) {
-        // & :nth-child (2) {
-        text-align: right;
-    }
-}
 
 .orderOption {
     @include grid-3();
@@ -173,51 +67,6 @@ div[role="tooltip"] {
     }
 }
 
-.ItemEditFormModal {
-    max-width: 100vw;
-    @include desktop {
-        max-width: 1200px;
-    }
-
-    .col {
-        @include desktop {
-            min-width: 50%;
-        }
-        flex: 0 0 80%;
-        margin: 0.2vh;
-        // style={{ flexFlow: 'column wrap;'}}
-    }
-    & .ant-divider-horizontal {
-        margin-top: 0.6vh;
-        margin-bottom: 0.6vh;
-    }
-    & .ant-form-item {
-        margin-bottom: 1.2vh;
-    }
-
-    span {
-        max-width: 100vw;
-    }
-    & .ant-select-selector {
-        max-width: 100vw;
-    }
-    input {
-        max-width: 100vw;
-    }
-    // textarea {
-    //     min-width: 20em;
-    // }
-    form {
-        flex-flow: column wrap;
-        display: flex;
-
-        @include desktop {
-            max-height: 90vh;
-        }
-    }
-    @extend .no-arrow-number-input;
-}
-
 #OrderForm {
     .ant-input-affix-wrapper {
         width: initial;
@@ -227,18 +76,6 @@ div[role="tooltip"] {
     }
 }
 
-.no-arrow-number-input {
-    /* Chrome, Safari, Edge, Opera */
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    /* Firefox */
-    input[type="number"] {
-        -moz-appearance: textfield;
-    }
-}
 
 .OrderItemInput {
     display: grid;
@@ -337,28 +174,4 @@ div[role="tooltip"] {
     // Input[name="vendor_item"] {
     //     grid-column-start: span 6;
     // }
-}
-
-.VendorItemSelectDropdown {
-    .ant-select-item {
-        padding: 5px 6px;
-        min-height: unset;
-        line-height: 1em;
-        img {
-            padding-right: 4px;
-            display: inline-block;
-        }
-    }
-    .vendorItemOption {
-        img {
-            height: 1em;
-        }
-    }
-}
-
-// override the ant column settings
-.full-width-form-item {
-    > div {
-        max-width: 100%;
-    }
 }
