@@ -13,6 +13,17 @@
     }
 }
 
+.VendorItemSelect {
+
+    .ant-select-selection-item{
+        display: flex;
+        align-items: center;
+        img + span {
+            padding-left: 3px;
+        }
+    }
+}
+
 
 .VendorItemSelectDropdown {
     .ant-select-item {
@@ -24,9 +35,10 @@
             display: inline-block;
         }
     }
-    .vendorItemOption {
-        img {
-            height: 1em;
-        }
+}
+.vendorItemOption {
+        line-height: 1em;
+    img {
+        height: 1em;
     }
 }
