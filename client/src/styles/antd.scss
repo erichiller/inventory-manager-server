@@ -31,3 +31,16 @@ pre {
     margin-bottom: 0;
     font-size: smaller;
 }
+
+// Buttons
+.ant-btn {
+    display: inline-flex;
+    align-items: center;
+    svg {
+        fill: currentColor;
+        height: 1em;
+    }
+    :first-child {
+        margin-right: 3px;
+    }
+}
