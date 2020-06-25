@@ -4913,6 +4913,166 @@ enum enum_space_type_update_column {
   id
 }
 
+# Event types that can add or subtract items from stock.
+#
+#
+# columns and relationships of "enum.stock_event_type"
+type enum_stock_event_type {
+  description: String
+  id: String!
+}
+
+# aggregated selection of "enum.stock_event_type"
+type enum_stock_event_type_aggregate {
+  aggregate: enum_stock_event_type_aggregate_fields
+  nodes: [enum_stock_event_type!]!
+}
+
+# aggregate fields of "enum.stock_event_type"
+type enum_stock_event_type_aggregate_fields {
+  count(columns: [enum_stock_event_type_select_column!], distinct: Boolean): Int
+  max: enum_stock_event_type_max_fields
+  min: enum_stock_event_type_min_fields
+}
+
+# order by aggregate values of table "enum.stock_event_type"
+input enum_stock_event_type_aggregate_order_by {
+  count: order_by
+  max: enum_stock_event_type_max_order_by
+  min: enum_stock_event_type_min_order_by
+}
+
+# input type for inserting array relation for remote table "enum.stock_event_type"
+input enum_stock_event_type_arr_rel_insert_input {
+  data: [enum_stock_event_type_insert_input!]!
+  on_conflict: enum_stock_event_type_on_conflict
+}
+
+# Boolean expression to filter rows from the table "enum.stock_event_type". All fields are combined with a logical 'AND'.
+input enum_stock_event_type_bool_exp {
+  _and: [enum_stock_event_type_bool_exp]
+  _not: enum_stock_event_type_bool_exp
+  _or: [enum_stock_event_type_bool_exp]
+  description: String_comparison_exp
+  id: String_comparison_exp
+}
+
+# unique or primary key constraints on table "enum.stock_event_type"
+enum enum_stock_event_type_constraint {
+  # unique or primary key constraint
+  stock_event_type_pkey
+}
+
+enum enum_stock_event_type_enum {
+  # item(s) added in an undefined method. Typically when the order simply was never input to inventory.
+  generic_aquisition
+
+  # item(s) consumed in an undefined manner. Typically for untracked projects.
+  generic_consumption
+
+  # item(s) purchased in an order
+  order
+
+  # item(s) consumed in a given project.
+  project
+}
+
+# expression to compare columns of type enum_stock_event_type_enum. All fields are combined with logical 'AND'.
+input enum_stock_event_type_enum_comparison_exp {
+  _eq: enum_stock_event_type_enum
+  _in: [enum_stock_event_type_enum!]
+  _is_null: Boolean
+  _neq: enum_stock_event_type_enum
+  _nin: [enum_stock_event_type_enum!]
+}
+
+# input type for inserting data into table "enum.stock_event_type"
+input enum_stock_event_type_insert_input {
+  description: String
+  id: String
+}
+
+# aggregate max on columns
+type enum_stock_event_type_max_fields {
+  description: String
+  id: String
+}
+
+# order by max() on columns of table "enum.stock_event_type"
+input enum_stock_event_type_max_order_by {
+  description: order_by
+  id: order_by
+}
+
+# aggregate min on columns
+type enum_stock_event_type_min_fields {
+  description: String
+  id: String
+}
+
+# order by min() on columns of table "enum.stock_event_type"
+input enum_stock_event_type_min_order_by {
+  description: order_by
+  id: order_by
+}
+
+# response of any mutation on the table "enum.stock_event_type"
+type enum_stock_event_type_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [enum_stock_event_type!]!
+}
+
+# input type for inserting object relation for remote table "enum.stock_event_type"
+input enum_stock_event_type_obj_rel_insert_input {
+  data: enum_stock_event_type_insert_input!
+  on_conflict: enum_stock_event_type_on_conflict
+}
+
+# on conflict condition type for table "enum.stock_event_type"
+input enum_stock_event_type_on_conflict {
+  constraint: enum_stock_event_type_constraint!
+  update_columns: [enum_stock_event_type_update_column!]!
+  where: enum_stock_event_type_bool_exp
+}
+
+# ordering options when selecting data from "enum.stock_event_type"
+input enum_stock_event_type_order_by {
+  description: order_by
+  id: order_by
+}
+
+# primary key columns input for table: "enum.stock_event_type"
+input enum_stock_event_type_pk_columns_input {
+  id: String!
+}
+
+# select columns of table "enum.stock_event_type"
+enum enum_stock_event_type_select_column {
+  # column name
+  description
+
+  # column name
+  id
+}
+
+# input type for updating data in table "enum.stock_event_type"
+input enum_stock_event_type_set_input {
+  description: String
+  id: String
+}
+
+# update columns of table "enum.stock_event_type"
+enum enum_stock_event_type_update_column {
+  # column name
+  description
+
+  # column name
+  id
+}
+
 # columns and relationships of "enum.unit"
 type enum_unit {
   description: String
@@ -6275,9 +6435,6 @@ type item {
     where: order_item_bool_exp
   ): order_item_aggregate!
 
-  # null means that there is stock, but of an unknown quantity.
-  stock: smallint
-
   # An array relationship
   vendorItems(
     # distinct select on columns
@@ -6365,13 +6522,11 @@ input item_arr_rel_insert_input {
 # aggregate avg on columns
 type item_avg_fields {
   id: Float
-  stock: Float
 }
 
 # order by avg() on columns of table "item"
 input item_avg_order_by {
   id: order_by
-  stock: order_by
 }
 
 # Boolean expression to filter rows from the table "item". All fields are combined with a logical 'AND'.
@@ -6388,7 +6543,6 @@ input item_bool_exp {
   manufacturerItems: manufacturer_item_bool_exp
   object: jsonb_comparison_exp
   orderItems: order_item_bool_exp
-  stock: smallint_comparison_exp
   vendorItems: vendor_item_bool_exp
 }
 
@@ -11020,7 +11174,6 @@ input item_hardware_fastener_washer_variance_order_by {
 # input type for incrementing integer column in table "item"
 input item_inc_input {
   id: Int
-  stock: smallint
 }
 
 # input type for inserting data into table "item"
@@ -11033,32 +11186,27 @@ input item_insert_input {
   manufacturerItems: manufacturer_item_arr_rel_insert_input
   object: jsonb
   orderItems: order_item_arr_rel_insert_input
-  stock: smallint
   vendorItems: vendor_item_arr_rel_insert_input
 }
 
 # aggregate max on columns
 type item_max_fields {
   id: Int
-  stock: smallint
 }
 
 # order by max() on columns of table "item"
 input item_max_order_by {
   id: order_by
-  stock: order_by
 }
 
 # aggregate min on columns
 type item_min_fields {
   id: Int
-  stock: smallint
 }
 
 # order by min() on columns of table "item"
 input item_min_order_by {
   id: order_by
-  stock: order_by
 }
 
 # response of any mutation on the table "item"
@@ -11094,7 +11242,6 @@ input item_order_by {
   manufacturerItems_aggregate: manufacturer_item_aggregate_order_by
   object: order_by
   orderItems_aggregate: order_item_aggregate_order_by
-  stock: order_by
   vendorItems_aggregate: vendor_item_aggregate_order_by
 }
 
@@ -11118,9 +11265,6 @@ enum item_select_column {
 
   # column name
   object
-
-  # column name
-  stock
 }
 
 # input type for updating data in table "item"
@@ -11128,55 +11272,46 @@ input item_set_input {
   class: enum_item_class_enum
   id: Int
   object: jsonb
-  stock: smallint
 }
 
 # aggregate stddev on columns
 type item_stddev_fields {
   id: Float
-  stock: Float
 }
 
 # order by stddev() on columns of table "item"
 input item_stddev_order_by {
   id: order_by
-  stock: order_by
 }
 
 # aggregate stddev_pop on columns
 type item_stddev_pop_fields {
   id: Float
-  stock: Float
 }
 
 # order by stddev_pop() on columns of table "item"
 input item_stddev_pop_order_by {
   id: order_by
-  stock: order_by
 }
 
 # aggregate stddev_samp on columns
 type item_stddev_samp_fields {
   id: Float
-  stock: Float
 }
 
 # order by stddev_samp() on columns of table "item"
 input item_stddev_samp_order_by {
   id: order_by
-  stock: order_by
 }
 
 # aggregate sum on columns
 type item_sum_fields {
   id: Int
-  stock: smallint
 }
 
 # order by sum() on columns of table "item"
 input item_sum_order_by {
   id: order_by
-  stock: order_by
 }
 
 # update columns of table "item"
@@ -11189,45 +11324,36 @@ enum item_update_column {
 
   # column name
   object
-
-  # column name
-  stock
 }
 
 # aggregate var_pop on columns
 type item_var_pop_fields {
   id: Float
-  stock: Float
 }
 
 # order by var_pop() on columns of table "item"
 input item_var_pop_order_by {
   id: order_by
-  stock: order_by
 }
 
 # aggregate var_samp on columns
 type item_var_samp_fields {
   id: Float
-  stock: Float
 }
 
 # order by var_samp() on columns of table "item"
 input item_var_samp_order_by {
   id: order_by
-  stock: order_by
 }
 
 # aggregate variance on columns
 type item_variance_fields {
   id: Float
-  stock: Float
 }
 
 # order by variance() on columns of table "item"
 input item_variance_order_by {
   id: order_by
-  stock: order_by
 }
 
 # All existing combinations of vendor and manufacturer for an item, including null for both.
@@ -13006,6 +13132,9 @@ input manufacturer_item_bool_exp {
 # unique or primary key constraints on table "manufacturer_item"
 enum manufacturer_item_constraint {
   # unique or primary key constraint
+  manufacturer_item_id_item_id_key
+
+  # unique or primary key constraint
   manufacturer_item_pkey
 }
 
@@ -13750,6 +13879,15 @@ type mutation_root {
   # delete single row from the table: "enum.space_type"
   delete_enum_space_type_by_pk(id: String!): enum_space_type
 
+  # delete data from the table: "enum.stock_event_type"
+  delete_enum_stock_event_type(
+    # filter the rows which have to be deleted
+    where: enum_stock_event_type_bool_exp!
+  ): enum_stock_event_type_mutation_response
+
+  # delete single row from the table: "enum.stock_event_type"
+  delete_enum_stock_event_type_by_pk(id: String!): enum_stock_event_type
+
   # delete data from the table: "enum.unit"
   delete_enum_unit(
     # filter the rows which have to be deleted
@@ -14001,6 +14139,15 @@ type mutation_root {
 
   # delete single row from the table: "shipment"
   delete_shipment_by_pk(id: Int!): shipment
+
+  # delete data from the table: "stock"
+  delete_stock(
+    # filter the rows which have to be deleted
+    where: stock_bool_exp!
+  ): stock_mutation_response
+
+  # delete single row from the table: "stock"
+  delete_stock_by_pk(id: Int!): stock
 
   # delete data from the table: "storage"
   delete_storage(
@@ -14578,6 +14725,24 @@ type mutation_root {
     on_conflict: enum_space_type_on_conflict
   ): enum_space_type
 
+  # insert data into the table: "enum.stock_event_type"
+  insert_enum_stock_event_type(
+    # the rows to be inserted
+    objects: [enum_stock_event_type_insert_input!]!
+
+    # on conflict condition
+    on_conflict: enum_stock_event_type_on_conflict
+  ): enum_stock_event_type_mutation_response
+
+  # insert a single row into the table: "enum.stock_event_type"
+  insert_enum_stock_event_type_one(
+    # the row to be inserted
+    object: enum_stock_event_type_insert_input!
+
+    # on conflict condition
+    on_conflict: enum_stock_event_type_on_conflict
+  ): enum_stock_event_type
+
   # insert data into the table: "enum.unit"
   insert_enum_unit(
     # the rows to be inserted
@@ -15081,6 +15246,24 @@ type mutation_root {
     # on conflict condition
     on_conflict: shipment_on_conflict
   ): shipment
+
+  # insert data into the table: "stock"
+  insert_stock(
+    # the rows to be inserted
+    objects: [stock_insert_input!]!
+
+    # on conflict condition
+    on_conflict: stock_on_conflict
+  ): stock_mutation_response
+
+  # insert a single row into the table: "stock"
+  insert_stock_one(
+    # the row to be inserted
+    object: stock_insert_input!
+
+    # on conflict condition
+    on_conflict: stock_on_conflict
+  ): stock
 
   # insert data into the table: "storage"
   insert_storage(
@@ -15637,6 +15820,22 @@ type mutation_root {
     _set: enum_space_type_set_input
     pk_columns: enum_space_type_pk_columns_input!
   ): enum_space_type
+
+  # update data of the table: "enum.stock_event_type"
+  update_enum_stock_event_type(
+    # sets the columns of the filtered rows to the given values
+    _set: enum_stock_event_type_set_input
+
+    # filter the rows which have to be updated
+    where: enum_stock_event_type_bool_exp!
+  ): enum_stock_event_type_mutation_response
+
+  # update single row of the table: "enum.stock_event_type"
+  update_enum_stock_event_type_by_pk(
+    # sets the columns of the filtered rows to the given values
+    _set: enum_stock_event_type_set_input
+    pk_columns: enum_stock_event_type_pk_columns_input!
+  ): enum_stock_event_type
 
   # update data of the table: "enum.unit"
   update_enum_unit(
@@ -16476,6 +16675,28 @@ type mutation_root {
     pk_columns: shipment_pk_columns_input!
   ): shipment
 
+  # update data of the table: "stock"
+  update_stock(
+    # increments the integer columns with given value of the filtered values
+    _inc: stock_inc_input
+
+    # sets the columns of the filtered rows to the given values
+    _set: stock_set_input
+
+    # filter the rows which have to be updated
+    where: stock_bool_exp!
+  ): stock_mutation_response
+
+  # update single row of the table: "stock"
+  update_stock_by_pk(
+    # increments the integer columns with given value of the filtered values
+    _inc: stock_inc_input
+
+    # sets the columns of the filtered rows to the given values
+    _set: stock_set_input
+    pk_columns: stock_pk_columns_input!
+  ): stock
+
   # update data of the table: "storage"
   update_storage(
     # increments the integer columns with given value of the filtered values
@@ -16927,7 +17148,13 @@ input order_item_bool_exp {
 # unique or primary key constraints on table "order_item"
 enum order_item_constraint {
   # unique or primary key constraint
+  order_item_id_item_id_key
+
+  # unique or primary key constraint
   order_item_id_key
+
+  # unique or primary key constraint
+  order_item_id_quantity_key
 
   # unique or primary key constraint
   order_item_item_id_vendor_item_id_serial_no_key
@@ -19835,6 +20062,45 @@ type query_root {
   # fetch data from the table: "enum.space_type" using primary key columns
   enum_space_type_by_pk(id: String!): enum_space_type
 
+  # fetch data from the table: "enum.stock_event_type"
+  enum_stock_event_type(
+    # distinct select on columns
+    distinct_on: [enum_stock_event_type_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [enum_stock_event_type_order_by!]
+
+    # filter the rows returned
+    where: enum_stock_event_type_bool_exp
+  ): [enum_stock_event_type!]!
+
+  # fetch aggregated fields from the table: "enum.stock_event_type"
+  enum_stock_event_type_aggregate(
+    # distinct select on columns
+    distinct_on: [enum_stock_event_type_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [enum_stock_event_type_order_by!]
+
+    # filter the rows returned
+    where: enum_stock_event_type_bool_exp
+  ): enum_stock_event_type_aggregate!
+
+  # fetch data from the table: "enum.stock_event_type" using primary key columns
+  enum_stock_event_type_by_pk(id: String!): enum_stock_event_type
+
   # fetch data from the table: "enum.unit"
   enum_unit(
     # distinct select on columns
@@ -21090,6 +21356,45 @@ type query_root {
   # fetch data from the table: "shipment" using primary key columns
   shipment_by_pk(id: Int!): shipment
 
+  # fetch data from the table: "stock"
+  stock(
+    # distinct select on columns
+    distinct_on: [stock_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [stock_order_by!]
+
+    # filter the rows returned
+    where: stock_bool_exp
+  ): [stock!]!
+
+  # fetch aggregated fields from the table: "stock"
+  stock_aggregate(
+    # distinct select on columns
+    distinct_on: [stock_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [stock_order_by!]
+
+    # filter the rows returned
+    where: stock_bool_exp
+  ): stock_aggregate!
+
+  # fetch data from the table: "stock" using primary key columns
+  stock_by_pk(id: Int!): stock
+
   # fetch data from the table: "storage"
   storage(
     # distinct select on columns
@@ -21909,6 +22214,447 @@ input smallint_comparison_exp {
   _lte: smallint
   _neq: smallint
   _nin: [smallint!]
+}
+
+# track acquisition and consumption of inventory items
+#
+#
+# columns and relationships of "stock"
+type stock {
+  date: timestamptz!
+  event_type: enum_stock_event_type_enum!
+  id: Int!
+  item_id: Int!
+  manufacturer_item_id: Int
+  order_item_id: Int
+  quantity: Int!
+  tag_id: Int
+  vendor_item_id: Int
+}
+
+# aggregated selection of "stock"
+type stock_aggregate {
+  aggregate: stock_aggregate_fields
+  nodes: [stock!]!
+}
+
+# aggregate fields of "stock"
+type stock_aggregate_fields {
+  avg: stock_avg_fields
+  count(columns: [stock_select_column!], distinct: Boolean): Int
+  max: stock_max_fields
+  min: stock_min_fields
+  stddev: stock_stddev_fields
+  stddev_pop: stock_stddev_pop_fields
+  stddev_samp: stock_stddev_samp_fields
+  sum: stock_sum_fields
+  var_pop: stock_var_pop_fields
+  var_samp: stock_var_samp_fields
+  variance: stock_variance_fields
+}
+
+# order by aggregate values of table "stock"
+input stock_aggregate_order_by {
+  avg: stock_avg_order_by
+  count: order_by
+  max: stock_max_order_by
+  min: stock_min_order_by
+  stddev: stock_stddev_order_by
+  stddev_pop: stock_stddev_pop_order_by
+  stddev_samp: stock_stddev_samp_order_by
+  sum: stock_sum_order_by
+  var_pop: stock_var_pop_order_by
+  var_samp: stock_var_samp_order_by
+  variance: stock_variance_order_by
+}
+
+# input type for inserting array relation for remote table "stock"
+input stock_arr_rel_insert_input {
+  data: [stock_insert_input!]!
+  on_conflict: stock_on_conflict
+}
+
+# aggregate avg on columns
+type stock_avg_fields {
+  id: Float
+  item_id: Float
+  manufacturer_item_id: Float
+  order_item_id: Float
+  quantity: Float
+  tag_id: Float
+  vendor_item_id: Float
+}
+
+# order by avg() on columns of table "stock"
+input stock_avg_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_item_id: order_by
+  order_item_id: order_by
+  quantity: order_by
+  tag_id: order_by
+  vendor_item_id: order_by
+}
+
+# Boolean expression to filter rows from the table "stock". All fields are combined with a logical 'AND'.
+input stock_bool_exp {
+  _and: [stock_bool_exp]
+  _not: stock_bool_exp
+  _or: [stock_bool_exp]
+  date: timestamptz_comparison_exp
+  event_type: enum_stock_event_type_enum_comparison_exp
+  id: Int_comparison_exp
+  item_id: Int_comparison_exp
+  manufacturer_item_id: Int_comparison_exp
+  order_item_id: Int_comparison_exp
+  quantity: Int_comparison_exp
+  tag_id: Int_comparison_exp
+  vendor_item_id: Int_comparison_exp
+}
+
+# unique or primary key constraints on table "stock"
+enum stock_constraint {
+  # unique or primary key constraint
+  stock_pkey
+}
+
+# input type for incrementing integer column in table "stock"
+input stock_inc_input {
+  id: Int
+  item_id: Int
+  manufacturer_item_id: Int
+  order_item_id: Int
+  quantity: Int
+  tag_id: Int
+  vendor_item_id: Int
+}
+
+# input type for inserting data into table "stock"
+input stock_insert_input {
+  date: timestamptz
+  event_type: enum_stock_event_type_enum
+  id: Int
+  item_id: Int
+  manufacturer_item_id: Int
+  order_item_id: Int
+  quantity: Int
+  tag_id: Int
+  vendor_item_id: Int
+}
+
+# aggregate max on columns
+type stock_max_fields {
+  date: timestamptz
+  id: Int
+  item_id: Int
+  manufacturer_item_id: Int
+  order_item_id: Int
+  quantity: Int
+  tag_id: Int
+  vendor_item_id: Int
+}
+
+# order by max() on columns of table "stock"
+input stock_max_order_by {
+  date: order_by
+  id: order_by
+  item_id: order_by
+  manufacturer_item_id: order_by
+  order_item_id: order_by
+  quantity: order_by
+  tag_id: order_by
+  vendor_item_id: order_by
+}
+
+# aggregate min on columns
+type stock_min_fields {
+  date: timestamptz
+  id: Int
+  item_id: Int
+  manufacturer_item_id: Int
+  order_item_id: Int
+  quantity: Int
+  tag_id: Int
+  vendor_item_id: Int
+}
+
+# order by min() on columns of table "stock"
+input stock_min_order_by {
+  date: order_by
+  id: order_by
+  item_id: order_by
+  manufacturer_item_id: order_by
+  order_item_id: order_by
+  quantity: order_by
+  tag_id: order_by
+  vendor_item_id: order_by
+}
+
+# response of any mutation on the table "stock"
+type stock_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [stock!]!
+}
+
+# input type for inserting object relation for remote table "stock"
+input stock_obj_rel_insert_input {
+  data: stock_insert_input!
+  on_conflict: stock_on_conflict
+}
+
+# on conflict condition type for table "stock"
+input stock_on_conflict {
+  constraint: stock_constraint!
+  update_columns: [stock_update_column!]!
+  where: stock_bool_exp
+}
+
+# ordering options when selecting data from "stock"
+input stock_order_by {
+  date: order_by
+  event_type: order_by
+  id: order_by
+  item_id: order_by
+  manufacturer_item_id: order_by
+  order_item_id: order_by
+  quantity: order_by
+  tag_id: order_by
+  vendor_item_id: order_by
+}
+
+# primary key columns input for table: "stock"
+input stock_pk_columns_input {
+  id: Int!
+}
+
+# select columns of table "stock"
+enum stock_select_column {
+  # column name
+  date
+
+  # column name
+  event_type
+
+  # column name
+  id
+
+  # column name
+  item_id
+
+  # column name
+  manufacturer_item_id
+
+  # column name
+  order_item_id
+
+  # column name
+  quantity
+
+  # column name
+  tag_id
+
+  # column name
+  vendor_item_id
+}
+
+# input type for updating data in table "stock"
+input stock_set_input {
+  date: timestamptz
+  event_type: enum_stock_event_type_enum
+  id: Int
+  item_id: Int
+  manufacturer_item_id: Int
+  order_item_id: Int
+  quantity: Int
+  tag_id: Int
+  vendor_item_id: Int
+}
+
+# aggregate stddev on columns
+type stock_stddev_fields {
+  id: Float
+  item_id: Float
+  manufacturer_item_id: Float
+  order_item_id: Float
+  quantity: Float
+  tag_id: Float
+  vendor_item_id: Float
+}
+
+# order by stddev() on columns of table "stock"
+input stock_stddev_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_item_id: order_by
+  order_item_id: order_by
+  quantity: order_by
+  tag_id: order_by
+  vendor_item_id: order_by
+}
+
+# aggregate stddev_pop on columns
+type stock_stddev_pop_fields {
+  id: Float
+  item_id: Float
+  manufacturer_item_id: Float
+  order_item_id: Float
+  quantity: Float
+  tag_id: Float
+  vendor_item_id: Float
+}
+
+# order by stddev_pop() on columns of table "stock"
+input stock_stddev_pop_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_item_id: order_by
+  order_item_id: order_by
+  quantity: order_by
+  tag_id: order_by
+  vendor_item_id: order_by
+}
+
+# aggregate stddev_samp on columns
+type stock_stddev_samp_fields {
+  id: Float
+  item_id: Float
+  manufacturer_item_id: Float
+  order_item_id: Float
+  quantity: Float
+  tag_id: Float
+  vendor_item_id: Float
+}
+
+# order by stddev_samp() on columns of table "stock"
+input stock_stddev_samp_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_item_id: order_by
+  order_item_id: order_by
+  quantity: order_by
+  tag_id: order_by
+  vendor_item_id: order_by
+}
+
+# aggregate sum on columns
+type stock_sum_fields {
+  id: Int
+  item_id: Int
+  manufacturer_item_id: Int
+  order_item_id: Int
+  quantity: Int
+  tag_id: Int
+  vendor_item_id: Int
+}
+
+# order by sum() on columns of table "stock"
+input stock_sum_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_item_id: order_by
+  order_item_id: order_by
+  quantity: order_by
+  tag_id: order_by
+  vendor_item_id: order_by
+}
+
+# update columns of table "stock"
+enum stock_update_column {
+  # column name
+  date
+
+  # column name
+  event_type
+
+  # column name
+  id
+
+  # column name
+  item_id
+
+  # column name
+  manufacturer_item_id
+
+  # column name
+  order_item_id
+
+  # column name
+  quantity
+
+  # column name
+  tag_id
+
+  # column name
+  vendor_item_id
+}
+
+# aggregate var_pop on columns
+type stock_var_pop_fields {
+  id: Float
+  item_id: Float
+  manufacturer_item_id: Float
+  order_item_id: Float
+  quantity: Float
+  tag_id: Float
+  vendor_item_id: Float
+}
+
+# order by var_pop() on columns of table "stock"
+input stock_var_pop_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_item_id: order_by
+  order_item_id: order_by
+  quantity: order_by
+  tag_id: order_by
+  vendor_item_id: order_by
+}
+
+# aggregate var_samp on columns
+type stock_var_samp_fields {
+  id: Float
+  item_id: Float
+  manufacturer_item_id: Float
+  order_item_id: Float
+  quantity: Float
+  tag_id: Float
+  vendor_item_id: Float
+}
+
+# order by var_samp() on columns of table "stock"
+input stock_var_samp_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_item_id: order_by
+  order_item_id: order_by
+  quantity: order_by
+  tag_id: order_by
+  vendor_item_id: order_by
+}
+
+# aggregate variance on columns
+type stock_variance_fields {
+  id: Float
+  item_id: Float
+  manufacturer_item_id: Float
+  order_item_id: Float
+  quantity: Float
+  tag_id: Float
+  vendor_item_id: Float
+}
+
+# order by variance() on columns of table "stock"
+input stock_variance_order_by {
+  id: order_by
+  item_id: order_by
+  manufacturer_item_id: order_by
+  order_item_id: order_by
+  quantity: order_by
+  tag_id: order_by
+  vendor_item_id: order_by
 }
 
 # columns and relationships of "storage"
@@ -23394,6 +24140,45 @@ type subscription_root {
   # fetch data from the table: "enum.space_type" using primary key columns
   enum_space_type_by_pk(id: String!): enum_space_type
 
+  # fetch data from the table: "enum.stock_event_type"
+  enum_stock_event_type(
+    # distinct select on columns
+    distinct_on: [enum_stock_event_type_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [enum_stock_event_type_order_by!]
+
+    # filter the rows returned
+    where: enum_stock_event_type_bool_exp
+  ): [enum_stock_event_type!]!
+
+  # fetch aggregated fields from the table: "enum.stock_event_type"
+  enum_stock_event_type_aggregate(
+    # distinct select on columns
+    distinct_on: [enum_stock_event_type_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [enum_stock_event_type_order_by!]
+
+    # filter the rows returned
+    where: enum_stock_event_type_bool_exp
+  ): enum_stock_event_type_aggregate!
+
+  # fetch data from the table: "enum.stock_event_type" using primary key columns
+  enum_stock_event_type_by_pk(id: String!): enum_stock_event_type
+
   # fetch data from the table: "enum.unit"
   enum_unit(
     # distinct select on columns
@@ -24647,6 +25432,45 @@ type subscription_root {
 
   # fetch data from the table: "shipment" using primary key columns
   shipment_by_pk(id: Int!): shipment
+
+  # fetch data from the table: "stock"
+  stock(
+    # distinct select on columns
+    distinct_on: [stock_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [stock_order_by!]
+
+    # filter the rows returned
+    where: stock_bool_exp
+  ): [stock!]!
+
+  # fetch aggregated fields from the table: "stock"
+  stock_aggregate(
+    # distinct select on columns
+    distinct_on: [stock_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [stock_order_by!]
+
+    # filter the rows returned
+    where: stock_bool_exp
+  ): stock_aggregate!
+
+  # fetch data from the table: "stock" using primary key columns
+  stock_by_pk(id: Int!): stock
 
   # fetch data from the table: "storage"
   storage(

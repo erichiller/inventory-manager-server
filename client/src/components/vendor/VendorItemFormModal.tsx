@@ -18,7 +18,6 @@ import { VendorSelect } from './VendorSelect';
 import moment from 'moment';
 import { Store } from 'antd/lib/form/interface';
 import { PageSpin } from '../shared/PageSpin';
-import { Vendor } from '../../lib/Vendor/Vendor';
 
 
 type VendorItemFormModalProps = Union<{
@@ -32,6 +31,7 @@ type VendorItemFormModalProps = Union<{
     vendorItemId?: null;
 }, {
     visibilityHandler: ( modal: React.ReactElement ) => void;
+    onFinish?: ( values: Partial<UpdateVendorItemMutationVariables> ) => void;
 }>;
 // extends Union<VendorFormProps, VendorBundle> { }
 
@@ -124,7 +124,11 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
     const onFinish = ( values: {
         [ name: string ]: any;
     } ) => {
-        console.log( { class: 'VendorEditModal', method: 'onFinish', values, vendorItem, formFieldValues: form.getFieldsValue() } );
+        console.log( { class: 'VendorItemEditModal', method: 'onFinish', values, vendorItem, formFieldValues: form.getFieldsValue() } );
+        if ( props.onFinish ){
+            console.log( { class: 'VendorItemEditModal', method: 'onFinish', event: 'calling props supplied onFinish()' } );
+            return props.onFinish(values);
+        }
         if ( vendorItemId ) {
             let formFieldValues = form.getFieldsValue() as Exclude<UpdateVendorItemMutationVariables, 'id'>;
             updateVendorItem( {
@@ -141,12 +145,12 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
                 variables: {
                     // ...filterObject( formFieldValues, null, [ 'manufacturer' ] ),
                     // ...( formFieldValues.manufacturer ? {
-                        // manufacturer: {
-                        //     data: [ {
-                        //         name: formFieldValues.name,
-                        //         url: formFieldValues.url
-                        //     } ]
-                        // }
+                    // manufacturer: {
+                    //     data: [ {
+                    //         name: formFieldValues.name,
+                    //         url: formFieldValues.url
+                    //     } ]
+                    // }
                     // } : {} )
                     ...formFieldValues
                 },
@@ -159,11 +163,11 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
 
 
     const onFinishFailed = ( errorInfo ) => {
-        console.error( { class: 'VendorEditModal', method: 'onFinishFailed', errorInfo } );
+        console.error( { class: 'VendorItemEditModal', method: 'onFinishFailed', errorInfo } );
     };
 
     const onFieldsChange = ( changedFields, values ) => {
-        console.log( { class: 'VendorEditModal', method: 'onFieldsChange', changedFields, values } );
+        console.log( { class: 'VendorItemEditModal', method: 'onFieldsChange', changedFields, values } );
     };
 
     // let initialValues = vendor ? vendor : { placed_date: moment() , items: [{}] };
@@ -188,7 +192,7 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
 
     return <Modal
         visible={true}
-        title="Vendor"
+        title="Vendor Item"
         onOk={e => {
             console.log( { class: 'VendorItemEditModal', method: 'onOk', e, values: form.getFieldsValue() } );
             form.submit();
@@ -214,17 +218,17 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
             onFinishFailed={onFinishFailed}
         >
             <div className="col">
-                <Form.Item name="description" label="Description" rules={[ { required: true } ]}>
-                    <Input />
+                <Form.Item name="vendor_id" label="Vendor" rules={[ { required: true } ]}>
+                    <VendorSelect />
+                </Form.Item>
+                <Form.Item name="item_id" label="Item" rules={[ { required: true } ]}>
+                    <ItemSelect />
                 </Form.Item>
                 <Form.Item name="vendor_sku" label="Vendor SKU">
                     <Input />
                 </Form.Item>
-                <Form.Item name="vendor_id" label="Vendor" >
-                    <VendorSelect />
-                </Form.Item>
-                <Form.Item name="vendor_id" label="Vendor" >
-                    <ItemSelect />
+                <Form.Item name="description" label="Description">
+                    <Input />
                 </Form.Item>
             </div>
 

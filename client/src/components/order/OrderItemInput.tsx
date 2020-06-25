@@ -2,7 +2,7 @@ import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'reac
 import { Form, Input, Divider, Tooltip, InputNumber, Switch, Row, Col, Button, message } from 'antd';
 // import { OptionsType } from 'rc-select/lib/Option';
 import { ItemFormProps } from '../../lib/item/Item';
-import { ItemBundle, OrderItem } from '../../lib/types/graphql';
+import { ItemBundle, OrderItem, VendorItem as VendorItemGql } from '../../lib/types/graphql';
 import TextArea from 'antd/lib/input/TextArea';
 
 import { toMinimumFixed, Union } from '../../lib/UtilityFunctions';
@@ -14,7 +14,6 @@ import { InputProps } from 'antd/lib/input';
 import { OrderItemSelect } from './OrderItemSelect';
 import { Integer } from '../../lib/types/uint8';
 import { useHistory, useLocation } from 'react-router-dom';
-import { VendorItemFormModal } from '../vendor/VendorItemFormModal';
 import { VendorItemSelect } from '../vendor/VendorItemSelect';
 
 
@@ -80,11 +79,12 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
             serial_no: event.target.value
         } );
     };
-    const setVendorItem = ( id: number ) => {
-        console.log( "setVendorItem", id );
+    // TODO
+    const setVendorItem = ( vendor_item: Partial<VendorItemGql> ) => {
+        console.log( "setVendorItem", vendor_item );
         onChange( {
             ...props.value,
-            vendor_item_id: id
+            ...( vendor_item.id ? { vendor_item_id: vendor_item.id } : vendor_item )
         } );
     };
     const setShipment = ( event: React.ChangeEvent<HTMLInputElement> ) => {

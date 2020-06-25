@@ -1,12 +1,15 @@
 import { SelectProps, SelectValue, LabeledValue } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
-import { AutoComplete, Input, DatePicker, Select } from "antd";
+import { AutoComplete, Input, DatePicker, Select, Divider } from "antd";
 
 
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { InputProps } from "antd/lib/input";
 import { useGetVendorItemsLazyQuery, useSearchVendorItemsLazyQuery, useSearchVendorItemsQuery, VendorItem } from "../../lib/types/graphql";
+import { PlusOutlined } from "@ant-design/icons";
+import { VendorItemFormModal } from "./VendorItemFormModal";
+import { useHistory, useLocation } from "react-router-dom";
 
 
 interface OptionT extends OptionData {
@@ -21,7 +24,7 @@ interface VendorItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChang
     forwardRef?: React.MutableRefObject<Input>;
     value?: VT;
     // onChange?: ( id: number ) => void;
-    onChange?: ( id: VendorItemSelectValue ) => void;
+    onChange?: ( vendor_item: VendorItemSelectValue ) => void;
 }
 /**
  * Form Select Input for VendorItems
@@ -30,12 +33,18 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
     const { onChange, value, ...remainingProps } = props;
     const [ searchText, setSearchText ] = useState<string>( "" );
     const [ options, setOptions ] = useState<OptionT[]>( [] );
-    // const { data, loading, error } = useVendorItemSearchQuery( {
-    //     variables: {
-    //         search_text: `*${ searchText }*`
-    //     }
-    // } );
-    // const [ runQuery, { called, data, error, loading } ] = useSearchVendorItemsLazyQuery( {
+
+
+    const [ modal, setModal ] = useState<React.ReactElement>( null );
+    const history = useHistory();
+    const location = useLocation();
+    const handleModalChange = ( modal: React.ReactElement ) => {
+        if ( modal === null ) {
+            history.push( location.pathname );
+        }
+        setModal( modal );
+    };
+
     const { data, error, loading } = useSearchVendorItemsQuery( {
         partialRefetch: true,
         returnPartialData: true,
@@ -68,10 +77,11 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
         }
     }, [ loading, data ] );
     useEffect( () => {
-        console.log("VendorItemSelect -- value changed")
-
-    }, [value])
+        console.log( "VendorItemSelect -- value changed" );
+    }, [ value ] );
     return (
+        <React.Fragment>
+            {modal}
             <Select
                 bordered={false}
                 filterOption={false}
@@ -83,6 +93,20 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                     console.log( { event: "onSearch", setSearchText: value } );
                     setSearchText( value );
                 }}
+                dropdownRender={menu => (
+                    <div>
+                        {menu}
+                        <Divider style={{ margin: '4px 0' }} />
+                        {/* <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}> */}
+                        <a
+                            style={{ flex: 'none', padding: '8px', display: 'block', cursor: 'pointer' }}
+                            onClick={() => handleModalChange( <VendorItemFormModal onFinish={onChange} visibilityHandler={handleModalChange} /> )}
+                        >
+                            <PlusOutlined /> Create Vendor Item
+                        </a>
+                        {/* </div> */}
+                    </div>
+                )}
                 onChange={( value, opt ) => {
                     console.log( { event: "onChange", value, opt } );
                     let vendorItem_id: number = null;
@@ -95,10 +119,17 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                         // } else if ( Array.isArray( value ) && value.length > 0 ) {
                         // value.forEach( e => typeof e === "number" ? arrayOfNumbers.push( e ) : arrayOfNumbers.push( parseInt( e ) ) );
                     }
-                    onChange( vendorItem_id );
+                    onChange( {
+                        id: vendorItem_id,
+                        item_id: 1111,
+                        vendor_id: 2222,
+                        vendor_sku: "3333",
+                        description: "4444"
+                    } );
                 }}
                 options={options}
                 {...( value ? { defaultValue: props.value } : {} )}
             />
+        </React.Fragment>
     );
 };
