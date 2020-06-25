@@ -100,6 +100,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
                 <Form.Item name="description" label="Description">
                     <TextArea placeholder="Brief (optional) description of this item" autoSize={{ minRows: 2 }} />
                 </Form.Item>
+                {/* TODO: stock needs fixing ; new stock-table */}
                 <Form.Item name="stock" label="Qty">
                     <QtyInput />
                 </Form.Item>

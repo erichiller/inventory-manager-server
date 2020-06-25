@@ -5195,6 +5195,175 @@ export enum EnumSpaceTypeUpdateColumn {
   id = 'id'
 }
 
+/**
+ * Event types that can add or subtract items from stock.
+ * 
+ * 
+ * columns and relationships of "enum.stock_event_type"
+ */
+export type EnumStockEventType = {
+  __typename?: 'enum_stock_event_type';
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+};
+
+/** aggregated selection of "enum.stock_event_type" */
+export type EnumStockEventTypeAggregate = {
+  __typename?: 'enum_stock_event_type_aggregate';
+  aggregate?: Maybe<EnumStockEventTypeAggregateFields>;
+  nodes: Array<EnumStockEventType>;
+};
+
+/** aggregate fields of "enum.stock_event_type" */
+export type EnumStockEventTypeAggregateFields = {
+  __typename?: 'enum_stock_event_type_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<EnumStockEventTypeMaxFields>;
+  min?: Maybe<EnumStockEventTypeMinFields>;
+};
+
+
+/** aggregate fields of "enum.stock_event_type" */
+export type EnumStockEventTypeAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<EnumStockEventTypeSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "enum.stock_event_type" */
+export type EnumStockEventTypeAggregateOrderBy = {
+  count?: Maybe<OrderBy>;
+  max?: Maybe<EnumStockEventTypeMaxOrderBy>;
+  min?: Maybe<EnumStockEventTypeMinOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "enum.stock_event_type" */
+export type EnumStockEventTypeArrRelInsertInput = {
+  data: Array<EnumStockEventTypeInsertInput>;
+  on_conflict?: Maybe<EnumStockEventTypeOnConflict>;
+};
+
+/** Boolean expression to filter rows from the table "enum.stock_event_type". All fields are combined with a logical 'AND'. */
+export type EnumStockEventTypeBoolExp = {
+  _and?: Maybe<Array<Maybe<EnumStockEventTypeBoolExp>>>;
+  _not?: Maybe<EnumStockEventTypeBoolExp>;
+  _or?: Maybe<Array<Maybe<EnumStockEventTypeBoolExp>>>;
+  description?: Maybe<StringComparisonExp>;
+  id?: Maybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "enum.stock_event_type" */
+export enum EnumStockEventTypeConstraint {
+  /** unique or primary key constraint */
+  stock_event_type_pkey = 'stock_event_type_pkey'
+}
+
+export enum EnumStockEventTypeEnum {
+  /** item(s) added in an undefined method. Typically when the order simply was never input to inventory. */
+  generic_aquisition = 'generic_aquisition',
+  /** item(s) consumed in an undefined manner. Typically for untracked projects. */
+  generic_consumption = 'generic_consumption',
+  /** item(s) purchased in an order */
+  order = 'order',
+  /** item(s) consumed in a given project. */
+  project = 'project'
+}
+
+/** expression to compare columns of type enum_stock_event_type_enum. All fields are combined with logical 'AND'. */
+export type EnumStockEventTypeEnumComparisonExp = {
+  _eq?: Maybe<EnumStockEventTypeEnum>;
+  _in?: Maybe<Array<EnumStockEventTypeEnum>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<EnumStockEventTypeEnum>;
+  _nin?: Maybe<Array<EnumStockEventTypeEnum>>;
+};
+
+/** input type for inserting data into table "enum.stock_event_type" */
+export type EnumStockEventTypeInsertInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type EnumStockEventTypeMaxFields = {
+  __typename?: 'enum_stock_event_type_max_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "enum.stock_event_type" */
+export type EnumStockEventTypeMaxOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type EnumStockEventTypeMinFields = {
+  __typename?: 'enum_stock_event_type_min_fields';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "enum.stock_event_type" */
+export type EnumStockEventTypeMinOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "enum.stock_event_type" */
+export type EnumStockEventTypeMutationResponse = {
+  __typename?: 'enum_stock_event_type_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<EnumStockEventType>;
+};
+
+/** input type for inserting object relation for remote table "enum.stock_event_type" */
+export type EnumStockEventTypeObjRelInsertInput = {
+  data: EnumStockEventTypeInsertInput;
+  on_conflict?: Maybe<EnumStockEventTypeOnConflict>;
+};
+
+/** on conflict condition type for table "enum.stock_event_type" */
+export type EnumStockEventTypeOnConflict = {
+  constraint: EnumStockEventTypeConstraint;
+  update_columns: Array<EnumStockEventTypeUpdateColumn>;
+  where?: Maybe<EnumStockEventTypeBoolExp>;
+};
+
+/** ordering options when selecting data from "enum.stock_event_type" */
+export type EnumStockEventTypeOrderBy = {
+  description?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "enum.stock_event_type" */
+export type EnumStockEventTypePkColumnsInput = {
+  id: Scalars['String'];
+};
+
+/** select columns of table "enum.stock_event_type" */
+export enum EnumStockEventTypeSelectColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
+/** input type for updating data in table "enum.stock_event_type" */
+export type EnumStockEventTypeSetInput = {
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "enum.stock_event_type" */
+export enum EnumStockEventTypeUpdateColumn {
+  /** column name */
+  description = 'description',
+  /** column name */
+  id = 'id'
+}
+
 /** columns and relationships of "enum.unit" */
 export type EnumUnit = {
   __typename?: 'enum_unit';
@@ -6417,8 +6586,6 @@ export type Item = {
   orderItems: Array<OrderItem>;
   /** An aggregated array relationship */
   orderItems_aggregate: OrderItemAggregate;
-  /** null means that there is stock, but of an unknown quantity. */
-  stock?: Maybe<Scalars['smallint']>;
   /** An array relationship */
   vendorItems: Array<VendorItem>;
   /** An aggregated array relationship */
@@ -6631,13 +6798,11 @@ export type ItemArrRelInsertInput = {
 export type ItemAvgFields = {
   __typename?: 'item_avg_fields';
   id?: Maybe<Scalars['Float']>;
-  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "item" */
 export type ItemAvgOrderBy = {
   id?: Maybe<OrderBy>;
-  stock?: Maybe<OrderBy>;
 };
 
 /** Boolean expression to filter rows from the table "item". All fields are combined with a logical 'AND'. */
@@ -6654,7 +6819,6 @@ export type ItemBoolExp = {
   manufacturerItems?: Maybe<ManufacturerItemBoolExp>;
   object?: Maybe<JsonbComparisonExp>;
   orderItems?: Maybe<OrderItemBoolExp>;
-  stock?: Maybe<SmallintComparisonExp>;
   vendorItems?: Maybe<VendorItemBoolExp>;
 };
 
@@ -11275,7 +11439,6 @@ export type ItemHardwareFastenerWasherVarianceOrderBy = {
 /** input type for incrementing integer column in table "item" */
 export type ItemIncInput = {
   id?: Maybe<Scalars['Int']>;
-  stock?: Maybe<Scalars['smallint']>;
 };
 
 /** input type for inserting data into table "item" */
@@ -11288,7 +11451,6 @@ export type ItemInsertInput = {
   manufacturerItems?: Maybe<ManufacturerItemArrRelInsertInput>;
   object?: Maybe<Scalars['jsonb']>;
   orderItems?: Maybe<OrderItemArrRelInsertInput>;
-  stock?: Maybe<Scalars['smallint']>;
   vendorItems?: Maybe<VendorItemArrRelInsertInput>;
 };
 
@@ -11296,26 +11458,22 @@ export type ItemInsertInput = {
 export type ItemMaxFields = {
   __typename?: 'item_max_fields';
   id?: Maybe<Scalars['Int']>;
-  stock?: Maybe<Scalars['smallint']>;
 };
 
 /** order by max() on columns of table "item" */
 export type ItemMaxOrderBy = {
   id?: Maybe<OrderBy>;
-  stock?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
 export type ItemMinFields = {
   __typename?: 'item_min_fields';
   id?: Maybe<Scalars['Int']>;
-  stock?: Maybe<Scalars['smallint']>;
 };
 
 /** order by min() on columns of table "item" */
 export type ItemMinOrderBy = {
   id?: Maybe<OrderBy>;
-  stock?: Maybe<OrderBy>;
 };
 
 /** response of any mutation on the table "item" */
@@ -11351,7 +11509,6 @@ export type ItemOrderBy = {
   manufacturerItems_aggregate?: Maybe<ManufacturerItemAggregateOrderBy>;
   object?: Maybe<OrderBy>;
   orderItems_aggregate?: Maybe<OrderItemAggregateOrderBy>;
-  stock?: Maybe<OrderBy>;
   vendorItems_aggregate?: Maybe<VendorItemAggregateOrderBy>;
 };
 
@@ -11372,9 +11529,7 @@ export enum ItemSelectColumn {
   /** column name */
   id = 'id',
   /** column name */
-  object = 'object',
-  /** column name */
-  stock = 'stock'
+  object = 'object'
 }
 
 /** input type for updating data in table "item" */
@@ -11382,59 +11537,50 @@ export type ItemSetInput = {
   class?: Maybe<EnumItemClassEnum>;
   id?: Maybe<Scalars['Int']>;
   object?: Maybe<Scalars['jsonb']>;
-  stock?: Maybe<Scalars['smallint']>;
 };
 
 /** aggregate stddev on columns */
 export type ItemStddevFields = {
   __typename?: 'item_stddev_fields';
   id?: Maybe<Scalars['Float']>;
-  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "item" */
 export type ItemStddevOrderBy = {
   id?: Maybe<OrderBy>;
-  stock?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_pop on columns */
 export type ItemStddevPopFields = {
   __typename?: 'item_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
-  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "item" */
 export type ItemStddevPopOrderBy = {
   id?: Maybe<OrderBy>;
-  stock?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_samp on columns */
 export type ItemStddevSampFields = {
   __typename?: 'item_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
-  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "item" */
 export type ItemStddevSampOrderBy = {
   id?: Maybe<OrderBy>;
-  stock?: Maybe<OrderBy>;
 };
 
 /** aggregate sum on columns */
 export type ItemSumFields = {
   __typename?: 'item_sum_fields';
   id?: Maybe<Scalars['Int']>;
-  stock?: Maybe<Scalars['smallint']>;
 };
 
 /** order by sum() on columns of table "item" */
 export type ItemSumOrderBy = {
   id?: Maybe<OrderBy>;
-  stock?: Maybe<OrderBy>;
 };
 
 /** update columns of table "item" */
@@ -11444,48 +11590,40 @@ export enum ItemUpdateColumn {
   /** column name */
   id = 'id',
   /** column name */
-  object = 'object',
-  /** column name */
-  stock = 'stock'
+  object = 'object'
 }
 
 /** aggregate var_pop on columns */
 export type ItemVarPopFields = {
   __typename?: 'item_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
-  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "item" */
 export type ItemVarPopOrderBy = {
   id?: Maybe<OrderBy>;
-  stock?: Maybe<OrderBy>;
 };
 
 /** aggregate var_samp on columns */
 export type ItemVarSampFields = {
   __typename?: 'item_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
-  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "item" */
 export type ItemVarSampOrderBy = {
   id?: Maybe<OrderBy>;
-  stock?: Maybe<OrderBy>;
 };
 
 /** aggregate variance on columns */
 export type ItemVarianceFields = {
   __typename?: 'item_variance_fields';
   id?: Maybe<Scalars['Float']>;
-  stock?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "item" */
 export type ItemVarianceOrderBy = {
   id?: Maybe<OrderBy>;
-  stock?: Maybe<OrderBy>;
 };
 
 /**
@@ -13315,6 +13453,8 @@ export type ManufacturerItemBoolExp = {
 /** unique or primary key constraints on table "manufacturer_item" */
 export enum ManufacturerItemConstraint {
   /** unique or primary key constraint */
+  manufacturer_item_id_item_id_key = 'manufacturer_item_id_item_id_key',
+  /** unique or primary key constraint */
   manufacturer_item_pkey = 'manufacturer_item_pkey'
 }
 
@@ -13909,6 +14049,10 @@ export type MutationRoot = {
   delete_enum_space_type?: Maybe<EnumSpaceTypeMutationResponse>;
   /** delete single row from the table: "enum.space_type" */
   delete_enum_space_type_by_pk?: Maybe<EnumSpaceType>;
+  /** delete data from the table: "enum.stock_event_type" */
+  delete_enum_stock_event_type?: Maybe<EnumStockEventTypeMutationResponse>;
+  /** delete single row from the table: "enum.stock_event_type" */
+  delete_enum_stock_event_type_by_pk?: Maybe<EnumStockEventType>;
   /** delete data from the table: "enum.unit" */
   delete_enum_unit?: Maybe<EnumUnitMutationResponse>;
   /** delete single row from the table: "enum.unit" */
@@ -14021,6 +14165,10 @@ export type MutationRoot = {
   delete_shipment?: Maybe<ShipmentMutationResponse>;
   /** delete single row from the table: "shipment" */
   delete_shipment_by_pk?: Maybe<Shipment>;
+  /** delete data from the table: "stock" */
+  delete_stock?: Maybe<StockMutationResponse>;
+  /** delete single row from the table: "stock" */
+  delete_stock_by_pk?: Maybe<Stock>;
   /** delete data from the table: "storage" */
   delete_storage?: Maybe<StorageMutationResponse>;
   /** delete single row from the table: "storage" */
@@ -14157,6 +14305,10 @@ export type MutationRoot = {
   insert_enum_space_type?: Maybe<EnumSpaceTypeMutationResponse>;
   /** insert a single row into the table: "enum.space_type" */
   insert_enum_space_type_one?: Maybe<EnumSpaceType>;
+  /** insert data into the table: "enum.stock_event_type" */
+  insert_enum_stock_event_type?: Maybe<EnumStockEventTypeMutationResponse>;
+  /** insert a single row into the table: "enum.stock_event_type" */
+  insert_enum_stock_event_type_one?: Maybe<EnumStockEventType>;
   /** insert data into the table: "enum.unit" */
   insert_enum_unit?: Maybe<EnumUnitMutationResponse>;
   /** insert a single row into the table: "enum.unit" */
@@ -14269,6 +14421,10 @@ export type MutationRoot = {
   insert_shipment?: Maybe<ShipmentMutationResponse>;
   /** insert a single row into the table: "shipment" */
   insert_shipment_one?: Maybe<Shipment>;
+  /** insert data into the table: "stock" */
+  insert_stock?: Maybe<StockMutationResponse>;
+  /** insert a single row into the table: "stock" */
+  insert_stock_one?: Maybe<Stock>;
   /** insert data into the table: "storage" */
   insert_storage?: Maybe<StorageMutationResponse>;
   /** insert a single row into the table: "storage" */
@@ -14410,6 +14566,10 @@ export type MutationRoot = {
   update_enum_space_type?: Maybe<EnumSpaceTypeMutationResponse>;
   /** update single row of the table: "enum.space_type" */
   update_enum_space_type_by_pk?: Maybe<EnumSpaceType>;
+  /** update data of the table: "enum.stock_event_type" */
+  update_enum_stock_event_type?: Maybe<EnumStockEventTypeMutationResponse>;
+  /** update single row of the table: "enum.stock_event_type" */
+  update_enum_stock_event_type_by_pk?: Maybe<EnumStockEventType>;
   /** update data of the table: "enum.unit" */
   update_enum_unit?: Maybe<EnumUnitMutationResponse>;
   /** update single row of the table: "enum.unit" */
@@ -14522,6 +14682,10 @@ export type MutationRoot = {
   update_shipment?: Maybe<ShipmentMutationResponse>;
   /** update single row of the table: "shipment" */
   update_shipment_by_pk?: Maybe<Shipment>;
+  /** update data of the table: "stock" */
+  update_stock?: Maybe<StockMutationResponse>;
+  /** update single row of the table: "stock" */
+  update_stock_by_pk?: Maybe<Stock>;
   /** update data of the table: "storage" */
   update_storage?: Maybe<StorageMutationResponse>;
   /** update single row of the table: "storage" */
@@ -14903,6 +15067,18 @@ export type MutationRootDeleteEnumSpaceTypeByPkArgs = {
 
 
 /** mutation root */
+export type MutationRootDeleteEnumStockEventTypeArgs = {
+  where: EnumStockEventTypeBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteEnumStockEventTypeByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
 export type MutationRootDeleteEnumUnitArgs = {
   where: EnumUnitBoolExp;
 };
@@ -15246,6 +15422,18 @@ export type MutationRootDeleteShipmentArgs = {
 
 /** mutation root */
 export type MutationRootDeleteShipmentByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type MutationRootDeleteStockArgs = {
+  where: StockBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootDeleteStockByPkArgs = {
   id: Scalars['Int'];
 };
 
@@ -15719,6 +15907,20 @@ export type MutationRootInsertEnumSpaceTypeOneArgs = {
 
 
 /** mutation root */
+export type MutationRootInsertEnumStockEventTypeArgs = {
+  objects: Array<EnumStockEventTypeInsertInput>;
+  on_conflict?: Maybe<EnumStockEventTypeOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertEnumStockEventTypeOneArgs = {
+  object: EnumStockEventTypeInsertInput;
+  on_conflict?: Maybe<EnumStockEventTypeOnConflict>;
+};
+
+
+/** mutation root */
 export type MutationRootInsertEnumUnitArgs = {
   objects: Array<EnumUnitInsertInput>;
   on_conflict?: Maybe<EnumUnitOnConflict>;
@@ -16107,6 +16309,20 @@ export type MutationRootInsertShipmentArgs = {
 export type MutationRootInsertShipmentOneArgs = {
   object: ShipmentInsertInput;
   on_conflict?: Maybe<ShipmentOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertStockArgs = {
+  objects: Array<StockInsertInput>;
+  on_conflict?: Maybe<StockOnConflict>;
+};
+
+
+/** mutation root */
+export type MutationRootInsertStockOneArgs = {
+  object: StockInsertInput;
+  on_conflict?: Maybe<StockOnConflict>;
 };
 
 
@@ -16589,6 +16805,20 @@ export type MutationRootUpdateEnumSpaceTypeArgs = {
 export type MutationRootUpdateEnumSpaceTypeByPkArgs = {
   _set?: Maybe<EnumSpaceTypeSetInput>;
   pk_columns: EnumSpaceTypePkColumnsInput;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumStockEventTypeArgs = {
+  _set?: Maybe<EnumStockEventTypeSetInput>;
+  where: EnumStockEventTypeBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateEnumStockEventTypeByPkArgs = {
+  _set?: Maybe<EnumStockEventTypeSetInput>;
+  pk_columns: EnumStockEventTypePkColumnsInput;
 };
 
 
@@ -17115,6 +17345,22 @@ export type MutationRootUpdateShipmentByPkArgs = {
 
 
 /** mutation root */
+export type MutationRootUpdateStockArgs = {
+  _inc?: Maybe<StockIncInput>;
+  _set?: Maybe<StockSetInput>;
+  where: StockBoolExp;
+};
+
+
+/** mutation root */
+export type MutationRootUpdateStockByPkArgs = {
+  _inc?: Maybe<StockIncInput>;
+  _set?: Maybe<StockSetInput>;
+  pk_columns: StockPkColumnsInput;
+};
+
+
+/** mutation root */
 export type MutationRootUpdateStorageArgs = {
   _inc?: Maybe<StorageIncInput>;
   _set?: Maybe<StorageSetInput>;
@@ -17534,7 +17780,11 @@ export type OrderItemBoolExp = {
 /** unique or primary key constraints on table "order_item" */
 export enum OrderItemConstraint {
   /** unique or primary key constraint */
+  order_item_id_item_id_key = 'order_item_id_item_id_key',
+  /** unique or primary key constraint */
   order_item_id_key = 'order_item_id_key',
+  /** unique or primary key constraint */
+  order_item_id_quantity_key = 'order_item_id_quantity_key',
   /** unique or primary key constraint */
   order_item_item_id_vendor_item_id_serial_no_key = 'order_item_item_id_vendor_item_id_serial_no_key',
   /** unique or primary key constraint */
@@ -19459,6 +19709,12 @@ export type QueryRoot = {
   enum_space_type_aggregate: EnumSpaceTypeAggregate;
   /** fetch data from the table: "enum.space_type" using primary key columns */
   enum_space_type_by_pk?: Maybe<EnumSpaceType>;
+  /** fetch data from the table: "enum.stock_event_type" */
+  enum_stock_event_type: Array<EnumStockEventType>;
+  /** fetch aggregated fields from the table: "enum.stock_event_type" */
+  enum_stock_event_type_aggregate: EnumStockEventTypeAggregate;
+  /** fetch data from the table: "enum.stock_event_type" using primary key columns */
+  enum_stock_event_type_by_pk?: Maybe<EnumStockEventType>;
   /** fetch data from the table: "enum.unit" */
   enum_unit: Array<EnumUnit>;
   /** fetch aggregated fields from the table: "enum.unit" */
@@ -19644,6 +19900,12 @@ export type QueryRoot = {
   shipment_aggregate: ShipmentAggregate;
   /** fetch data from the table: "shipment" using primary key columns */
   shipment_by_pk?: Maybe<Shipment>;
+  /** fetch data from the table: "stock" */
+  stock: Array<Stock>;
+  /** fetch aggregated fields from the table: "stock" */
+  stock_aggregate: StockAggregate;
+  /** fetch data from the table: "stock" using primary key columns */
+  stock_by_pk?: Maybe<Stock>;
   /** fetch data from the table: "storage" */
   storage: Array<Storage>;
   /** fetch aggregated fields from the table: "storage" */
@@ -20447,6 +20709,32 @@ export type QueryRootEnumSpaceTypeAggregateArgs = {
 
 /** query root */
 export type QueryRootEnumSpaceTypeByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** query root */
+export type QueryRootEnumStockEventTypeArgs = {
+  distinct_on?: Maybe<Array<EnumStockEventTypeSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumStockEventTypeOrderBy>>;
+  where?: Maybe<EnumStockEventTypeBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootEnumStockEventTypeAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumStockEventTypeSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumStockEventTypeOrderBy>>;
+  where?: Maybe<EnumStockEventTypeBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootEnumStockEventTypeByPkArgs = {
   id: Scalars['String'];
 };
 
@@ -21278,6 +21566,32 @@ export type QueryRootShipmentByPkArgs = {
 
 
 /** query root */
+export type QueryRootStockArgs = {
+  distinct_on?: Maybe<Array<StockSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<StockOrderBy>>;
+  where?: Maybe<StockBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootStockAggregateArgs = {
+  distinct_on?: Maybe<Array<StockSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<StockOrderBy>>;
+  where?: Maybe<StockBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootStockByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** query root */
 export type QueryRootStorageArgs = {
   distinct_on?: Maybe<Array<StorageSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
@@ -22066,6 +22380,453 @@ export type SmallintComparisonExp = {
   _nin?: Maybe<Array<Scalars['smallint']>>;
 };
 
+/**
+ * track acquisition and consumption of inventory items
+ * 
+ * 
+ * columns and relationships of "stock"
+ */
+export type Stock = {
+  __typename?: 'stock';
+  date: Scalars['timestamptz'];
+  event_type: EnumStockEventTypeEnum;
+  id: Scalars['Int'];
+  item_id: Scalars['Int'];
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
+  order_item_id?: Maybe<Scalars['Int']>;
+  quantity: Scalars['Int'];
+  tag_id?: Maybe<Scalars['Int']>;
+  vendor_item_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregated selection of "stock" */
+export type StockAggregate = {
+  __typename?: 'stock_aggregate';
+  aggregate?: Maybe<StockAggregateFields>;
+  nodes: Array<Stock>;
+};
+
+/** aggregate fields of "stock" */
+export type StockAggregateFields = {
+  __typename?: 'stock_aggregate_fields';
+  avg?: Maybe<StockAvgFields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<StockMaxFields>;
+  min?: Maybe<StockMinFields>;
+  stddev?: Maybe<StockStddevFields>;
+  stddev_pop?: Maybe<StockStddevPopFields>;
+  stddev_samp?: Maybe<StockStddevSampFields>;
+  sum?: Maybe<StockSumFields>;
+  var_pop?: Maybe<StockVarPopFields>;
+  var_samp?: Maybe<StockVarSampFields>;
+  variance?: Maybe<StockVarianceFields>;
+};
+
+
+/** aggregate fields of "stock" */
+export type StockAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<StockSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "stock" */
+export type StockAggregateOrderBy = {
+  avg?: Maybe<StockAvgOrderBy>;
+  count?: Maybe<OrderBy>;
+  max?: Maybe<StockMaxOrderBy>;
+  min?: Maybe<StockMinOrderBy>;
+  stddev?: Maybe<StockStddevOrderBy>;
+  stddev_pop?: Maybe<StockStddevPopOrderBy>;
+  stddev_samp?: Maybe<StockStddevSampOrderBy>;
+  sum?: Maybe<StockSumOrderBy>;
+  var_pop?: Maybe<StockVarPopOrderBy>;
+  var_samp?: Maybe<StockVarSampOrderBy>;
+  variance?: Maybe<StockVarianceOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "stock" */
+export type StockArrRelInsertInput = {
+  data: Array<StockInsertInput>;
+  on_conflict?: Maybe<StockOnConflict>;
+};
+
+/** aggregate avg on columns */
+export type StockAvgFields = {
+  __typename?: 'stock_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+  tag_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "stock" */
+export type StockAvgOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+  tag_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "stock". All fields are combined with a logical 'AND'. */
+export type StockBoolExp = {
+  _and?: Maybe<Array<Maybe<StockBoolExp>>>;
+  _not?: Maybe<StockBoolExp>;
+  _or?: Maybe<Array<Maybe<StockBoolExp>>>;
+  date?: Maybe<TimestamptzComparisonExp>;
+  event_type?: Maybe<EnumStockEventTypeEnumComparisonExp>;
+  id?: Maybe<IntComparisonExp>;
+  item_id?: Maybe<IntComparisonExp>;
+  manufacturer_item_id?: Maybe<IntComparisonExp>;
+  order_item_id?: Maybe<IntComparisonExp>;
+  quantity?: Maybe<IntComparisonExp>;
+  tag_id?: Maybe<IntComparisonExp>;
+  vendor_item_id?: Maybe<IntComparisonExp>;
+};
+
+/** unique or primary key constraints on table "stock" */
+export enum StockConstraint {
+  /** unique or primary key constraint */
+  stock_pkey = 'stock_pkey'
+}
+
+/** input type for incrementing integer column in table "stock" */
+export type StockIncInput = {
+  id?: Maybe<Scalars['Int']>;
+  item_id?: Maybe<Scalars['Int']>;
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
+  order_item_id?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['Int']>;
+  tag_id?: Maybe<Scalars['Int']>;
+  vendor_item_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "stock" */
+export type StockInsertInput = {
+  date?: Maybe<Scalars['timestamptz']>;
+  event_type?: Maybe<EnumStockEventTypeEnum>;
+  id?: Maybe<Scalars['Int']>;
+  item_id?: Maybe<Scalars['Int']>;
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
+  order_item_id?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['Int']>;
+  tag_id?: Maybe<Scalars['Int']>;
+  vendor_item_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type StockMaxFields = {
+  __typename?: 'stock_max_fields';
+  date?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  item_id?: Maybe<Scalars['Int']>;
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
+  order_item_id?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['Int']>;
+  tag_id?: Maybe<Scalars['Int']>;
+  vendor_item_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "stock" */
+export type StockMaxOrderBy = {
+  date?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+  tag_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type StockMinFields = {
+  __typename?: 'stock_min_fields';
+  date?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  item_id?: Maybe<Scalars['Int']>;
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
+  order_item_id?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['Int']>;
+  tag_id?: Maybe<Scalars['Int']>;
+  vendor_item_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "stock" */
+export type StockMinOrderBy = {
+  date?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+  tag_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "stock" */
+export type StockMutationResponse = {
+  __typename?: 'stock_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Stock>;
+};
+
+/** input type for inserting object relation for remote table "stock" */
+export type StockObjRelInsertInput = {
+  data: StockInsertInput;
+  on_conflict?: Maybe<StockOnConflict>;
+};
+
+/** on conflict condition type for table "stock" */
+export type StockOnConflict = {
+  constraint: StockConstraint;
+  update_columns: Array<StockUpdateColumn>;
+  where?: Maybe<StockBoolExp>;
+};
+
+/** ordering options when selecting data from "stock" */
+export type StockOrderBy = {
+  date?: Maybe<OrderBy>;
+  event_type?: Maybe<OrderBy>;
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+  tag_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "stock" */
+export type StockPkColumnsInput = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "stock" */
+export enum StockSelectColumn {
+  /** column name */
+  date = 'date',
+  /** column name */
+  event_type = 'event_type',
+  /** column name */
+  id = 'id',
+  /** column name */
+  item_id = 'item_id',
+  /** column name */
+  manufacturer_item_id = 'manufacturer_item_id',
+  /** column name */
+  order_item_id = 'order_item_id',
+  /** column name */
+  quantity = 'quantity',
+  /** column name */
+  tag_id = 'tag_id',
+  /** column name */
+  vendor_item_id = 'vendor_item_id'
+}
+
+/** input type for updating data in table "stock" */
+export type StockSetInput = {
+  date?: Maybe<Scalars['timestamptz']>;
+  event_type?: Maybe<EnumStockEventTypeEnum>;
+  id?: Maybe<Scalars['Int']>;
+  item_id?: Maybe<Scalars['Int']>;
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
+  order_item_id?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['Int']>;
+  tag_id?: Maybe<Scalars['Int']>;
+  vendor_item_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type StockStddevFields = {
+  __typename?: 'stock_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+  tag_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "stock" */
+export type StockStddevOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+  tag_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_pop on columns */
+export type StockStddevPopFields = {
+  __typename?: 'stock_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+  tag_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "stock" */
+export type StockStddevPopOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+  tag_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_samp on columns */
+export type StockStddevSampFields = {
+  __typename?: 'stock_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+  tag_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "stock" */
+export type StockStddevSampOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+  tag_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate sum on columns */
+export type StockSumFields = {
+  __typename?: 'stock_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+  item_id?: Maybe<Scalars['Int']>;
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
+  order_item_id?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['Int']>;
+  tag_id?: Maybe<Scalars['Int']>;
+  vendor_item_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "stock" */
+export type StockSumOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+  tag_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** update columns of table "stock" */
+export enum StockUpdateColumn {
+  /** column name */
+  date = 'date',
+  /** column name */
+  event_type = 'event_type',
+  /** column name */
+  id = 'id',
+  /** column name */
+  item_id = 'item_id',
+  /** column name */
+  manufacturer_item_id = 'manufacturer_item_id',
+  /** column name */
+  order_item_id = 'order_item_id',
+  /** column name */
+  quantity = 'quantity',
+  /** column name */
+  tag_id = 'tag_id',
+  /** column name */
+  vendor_item_id = 'vendor_item_id'
+}
+
+/** aggregate var_pop on columns */
+export type StockVarPopFields = {
+  __typename?: 'stock_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+  tag_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "stock" */
+export type StockVarPopOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+  tag_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate var_samp on columns */
+export type StockVarSampFields = {
+  __typename?: 'stock_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+  tag_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "stock" */
+export type StockVarSampOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+  tag_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type StockVarianceFields = {
+  __typename?: 'stock_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+  item_id?: Maybe<Scalars['Float']>;
+  manufacturer_item_id?: Maybe<Scalars['Float']>;
+  order_item_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+  tag_id?: Maybe<Scalars['Float']>;
+  vendor_item_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "stock" */
+export type StockVarianceOrderBy = {
+  id?: Maybe<OrderBy>;
+  item_id?: Maybe<OrderBy>;
+  manufacturer_item_id?: Maybe<OrderBy>;
+  order_item_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+  tag_id?: Maybe<OrderBy>;
+  vendor_item_id?: Maybe<OrderBy>;
+};
+
 /** columns and relationships of "storage" */
 export type Storage = {
   __typename?: 'storage';
@@ -22569,6 +23330,12 @@ export type SubscriptionRoot = {
   enum_space_type_aggregate: EnumSpaceTypeAggregate;
   /** fetch data from the table: "enum.space_type" using primary key columns */
   enum_space_type_by_pk?: Maybe<EnumSpaceType>;
+  /** fetch data from the table: "enum.stock_event_type" */
+  enum_stock_event_type: Array<EnumStockEventType>;
+  /** fetch aggregated fields from the table: "enum.stock_event_type" */
+  enum_stock_event_type_aggregate: EnumStockEventTypeAggregate;
+  /** fetch data from the table: "enum.stock_event_type" using primary key columns */
+  enum_stock_event_type_by_pk?: Maybe<EnumStockEventType>;
   /** fetch data from the table: "enum.unit" */
   enum_unit: Array<EnumUnit>;
   /** fetch aggregated fields from the table: "enum.unit" */
@@ -22753,6 +23520,12 @@ export type SubscriptionRoot = {
   shipment_aggregate: ShipmentAggregate;
   /** fetch data from the table: "shipment" using primary key columns */
   shipment_by_pk?: Maybe<Shipment>;
+  /** fetch data from the table: "stock" */
+  stock: Array<Stock>;
+  /** fetch aggregated fields from the table: "stock" */
+  stock_aggregate: StockAggregate;
+  /** fetch data from the table: "stock" using primary key columns */
+  stock_by_pk?: Maybe<Stock>;
   /** fetch data from the table: "storage" */
   storage: Array<Storage>;
   /** fetch aggregated fields from the table: "storage" */
@@ -23556,6 +24329,32 @@ export type SubscriptionRootEnumSpaceTypeAggregateArgs = {
 
 /** subscription root */
 export type SubscriptionRootEnumSpaceTypeByPkArgs = {
+  id: Scalars['String'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumStockEventTypeArgs = {
+  distinct_on?: Maybe<Array<EnumStockEventTypeSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumStockEventTypeOrderBy>>;
+  where?: Maybe<EnumStockEventTypeBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumStockEventTypeAggregateArgs = {
+  distinct_on?: Maybe<Array<EnumStockEventTypeSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<EnumStockEventTypeOrderBy>>;
+  where?: Maybe<EnumStockEventTypeBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootEnumStockEventTypeByPkArgs = {
   id: Scalars['String'];
 };
 
@@ -24382,6 +25181,32 @@ export type SubscriptionRootShipmentAggregateArgs = {
 
 /** subscription root */
 export type SubscriptionRootShipmentByPkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type SubscriptionRootStockArgs = {
+  distinct_on?: Maybe<Array<StockSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<StockOrderBy>>;
+  where?: Maybe<StockBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootStockAggregateArgs = {
+  distinct_on?: Maybe<Array<StockSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<StockOrderBy>>;
+  where?: Maybe<StockBoolExp>;
+};
+
+
+/** subscription root */
+export type SubscriptionRootStockByPkArgs = {
   id: Scalars['Int'];
 };
 
@@ -29032,4 +29857,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-21T10:20:06-06:00
+// graphql typescript defs generated on 2020-06-25T06:26:30-06:00

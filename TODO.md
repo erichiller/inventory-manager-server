@@ -28,6 +28,10 @@
   - [ ] Show image in table (of saved labels) (or `onMouseOver`)
   - [ ] button to directly add label to *Print List*
 
+- [ ] stock
+  - [ ] update code, especially item add common form <client\src\components\item\ItemFormModal.tsx>
+  - [ ] way to display this? → expandable rows ?
+
 ### For Consideration
 
 - [ ] Use Virtual List / Scrolling ; [see _"big data select"_ virtual scrolling && custom tag renderer](https://ant.design/components/select/#components-select-demo-big-data)
