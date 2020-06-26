@@ -84,7 +84,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
         console.log( "setVendorItem", vendor_item );
         onChange( {
             ...props.value,
-            ...( vendor_item.id ? { vendor_item_id: vendor_item.id } : vendor_item )
+            ...( vendor_item.id ? { vendor_item_id: vendor_item.id } : { vendor_item: vendor_item } )
         } );
     };
     const setShipment = ( event: React.ChangeEvent<HTMLInputElement> ) => {
