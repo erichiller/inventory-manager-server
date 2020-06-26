@@ -222,7 +222,7 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
                     <VendorSelect />
                 </Form.Item>
                 <Form.Item name="item_id" label="Item" rules={[ { required: true } ]}>
-                    <ItemSelect />
+                    <ItemSelect mode="single" />
                 </Form.Item>
                 <Form.Item name="vendor_sku" label="Vendor SKU">
                     <Input />

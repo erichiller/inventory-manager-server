@@ -5,7 +5,7 @@ import { AutoComplete, Input, DatePicker, Select } from "antd";
 
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
-import { toTitleCase, getDaysInMonth } from "../../lib/UtilityFunctions";
+import { toTitleCase, getDaysInMonth, Union, is, parseIntSafe } from "../../lib/UtilityFunctions";
 import { InputProps } from "antd/lib/input";
 import { useGetOrdersByDateRangeQuery, useGetItemsQuery, useItemSearchQuery } from "../../lib/types/graphql";
 
@@ -16,15 +16,52 @@ interface OptionT {
 }
 type VT = SelectValue;
 
-export type ItemSelectProvidesValue = Array<{ item_id: number; }>
+export type ItemSelectProvidesValue = Array<{ item_id: number; }>;
 
-interface ItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
-    forwardRef?: React.MutableRefObject<Input>;
-    value?: VT;
-    onChange?: ( items: ItemSelectProvidesValue) => void;
-}
+// interface ItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange' | 'mode'> {
+//     forwardRef?: React.MutableRefObject<Input>;
+//     value?: VT;
+//     onChange?: ( items: ItemSelectProvidesValue) => void;
+//     mode?: 'multiple' | 'tags' | 'single';
+// }
+
+
+
+// type VendorItemFormModalProps = Union<{
+//     vendorItem: QueryResultTypePlus<typeof useGetVendorItemQuery>;
+//     vendorItemId?: null;
+// } | {
+//     vendorItem?: null;
+//     vendorItemId: number;
+// } | {
+//     vendorItem?: null;
+//     vendorItemId?: null;
+// }, {
+//     visibilityHandler: ( modal: React.ReactElement ) => void;
+//     onFinish?: ( values: Partial<UpdateVendorItemMutationVariables> ) => void;
+// }>;
+
+type ItemSelectProps = Union<
+    Omit<SelectProps<VT>, 'value' | 'onChange' | 'mode'>,
+    {
+        forwardRef?: React.MutableRefObject<Input>;
+        value?: VT;
+    },
+    {
+        onChange?: ( items: ItemSelectProvidesValue ) => void;
+        mode?: undefined | 'multiple' | 'tags';
+    } |
+    {
+        onChange?: ( item_id: number ) => void;
+        mode: null | 'single';
+    }
+
+>;
+
 /**
  * Form Select Input for Items
+ * 
+ * Set `props.mode=null` or `single` for single input, else defaults to multiple
  */
 export const ItemSelect: React.FC<ItemSelectProps> = ( props ) => {
     const { onChange, 
@@ -38,6 +75,8 @@ export const ItemSelect: React.FC<ItemSelectProps> = ( props ) => {
             search_text: `*${searchText}*`
         }
     } );
+    const mode: 'multiple' | 'tags' | null = props.mode === 'single' ? null : ( props.mode ?? 'multiple' );
+    console.log( "ItemSelect with mode", mode );
     useEffect( () => {
         if ( !loading && !error ) {
             console.log( { class: "ItemSelect", "action": "useEffect", event: "loading and error ok", data } );
@@ -59,24 +98,29 @@ export const ItemSelect: React.FC<ItemSelectProps> = ( props ) => {
     return (
         <div className={`ItemSelect ${props.className?? ''}`}>
             <Select
-                mode={ props.mode ?? 'multiple'}
+                mode={ mode }
+                showSearch={true}
                 filterOption={false}
                 onSearch={value => { console.log( { event: "onSearch", setSearchText: value } ); setSearchText( value ); }}
                 suffixIcon={props.suffixIcon}
                 placeholder={props.placeholder}
                 onChange={( value, opt ) => {
                     console.log( "onChange", { value, opt } );
-                    let arrayOfItemProps: {item_id: number;}[] = [];
-                    if ( typeof value === "number" ) {
-                        arrayOfItemProps = [ {item_id: value } ];
-                    } else if ( typeof value === "string" ) {
-                        arrayOfItemProps = [ { item_id: parseInt( value ) } ];
-                    } else if ( "key" in value ) {
-                        arrayOfItemProps = [ { item_id: (typeof value.value === "number" ? value.value : parseInt( value.value ) ) } ];
-                    } else if ( Array.isArray(value) && value.length > 0){
-                        value.forEach( e => typeof e === "number" ? arrayOfItemProps.push( { item_id: e } ) : arrayOfItemProps.push( { item_id: parseInt(e) }));
+                    if ( is < ( input: number ) => void >( onChange, props.mode === null || props.mode === "single" ) ) {
+                        onChange( parseIntSafe(value)); 
+                    } else {
+                        let arrayOfItemProps: { item_id: number; }[] = [];
+                        if ( typeof value === "number" ) {
+                            arrayOfItemProps = [ { item_id: value } ];
+                        } else if ( typeof value === "string" ) {
+                            arrayOfItemProps = [ { item_id: parseInt( value ) } ];
+                        } else if ( "key" in value ) {
+                            arrayOfItemProps = [ { item_id: ( typeof value.value === "number" ? value.value : parseInt( value.value ) ) } ];
+                        } else if ( Array.isArray( value ) && value.length > 0 ) {
+                            value.forEach( e => typeof e === "number" ? arrayOfItemProps.push( { item_id: e } ) : arrayOfItemProps.push( { item_id: parseInt( e ) } ) );
+                        }
+                        onChange( arrayOfItemProps );
                     }
-                    onChange( arrayOfItemProps );
                 }}
             >
                 {...options.map( v => {

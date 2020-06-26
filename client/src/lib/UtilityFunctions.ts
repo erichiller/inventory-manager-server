@@ -5,6 +5,7 @@ import { EnumUnitKeys, SubType } from './types/UtilityTypes';
 import { EnumUnitEnum } from './types/graphql';
 import { GenericItem } from './item/Item';
 import { ColumnProps } from 'antd/lib/table';
+import { LabeledValue } from 'antd/lib/select';
 
 export * from './types/UtilityTypes';
 
@@ -106,9 +107,17 @@ export function matchFirstOfArrayOrNull<T> ( array: T[], match?: T ): T | null {
 /**
  * ParseInt, but it won't error when passed a number
  */
-export function parseIntSafe ( input: string | number ): Integer {
+export function parseIntSafe ( input: string | number | LabeledValue | ( string | number | LabeledValue )[] ): Integer {
+    // export function parseIntSafe ( input: string | number | (string | number)[] ): Integer {
+    if ( Array.isArray(input) ){
+        if ( input.length !== 1 ){
+            throw new Error("input is an array with more than one value; undefined behavior");
+        }
+        input = input[0];
+    }
     if ( typeof input === "number" ) { return input; }
-    return parseInt( input );
+    if ( typeof input === "string" ) { return parseInt( input ); }
+    if ( typeof input !== "string" && "key" in input ) { return typeof input.value === "string" ? parseInt(input.value) : input.value ; };
 }
 /**
  * ParseFloat, but it won't error when passed a number, and it will return default if NaN
@@ -248,6 +257,26 @@ export function getDaysInMonth ( a: number | string, b?: number ): number {
 //     }
 //     return false;
 // }
+
+
+
+/**
+ * This is a very generalized `x is T` function  
+ * input a type `T` and whether or not `subject` is of this type  
+ * This allows for general type equality testing based on user defined input
+ * @param subject variable whose type equality we desire
+ * @param equality is `subject` equal to `T`
+ * 
+ * @typeparam T is the type that subject is being checked against.
+ * 
+ * @example
+ * 
+ */
+export function is<T> ( subject: any, equality: boolean ): subject is T {
+    return equality;
+}
+
+
 
 /**
  * Decorator to mark a property as enumerable.  

@@ -126,6 +126,75 @@ mutation InsertOrder(
     }
 }
 
+# mutation InsertOrder(
+#     # $id: Int
+#     $fulfilled_date: date
+#     $order_items: [order_item_insert_input!]!
+#     $items_cost: numeric
+#     $payment_method: payment_method_obj_rel_insert_input
+#     $payment_method_id: Int
+#     $placed_date: date
+#     $pon: String
+#     $shipments: shipment_arr_rel_insert_input
+#     $tax_cost: numeric
+#     $total_cost: numeric
+#     $url: String
+#     $vendor: vendor_obj_rel_insert_input
+#     $vendor_id: Int
+#     $vendor_order_id: String
+# ) {
+#     order: insert_order_one (
+#         object: {
+#             payment_method: $payment_method # objects
+#             shipments: $shipments # objects
+#             vendor: $vendor # object
+#             fulfilled_date: $fulfilled_date
+#             items_cost: $items_cost
+#             payment_method_id: $payment_method_id
+#             placed_date: $placed_date
+#             pon: $pon
+#             tax_cost: $tax_cost
+#             total_cost: $total_cost
+#             url: $url
+#             vendor_id: $vendor_id
+#             vendor_order_id: $vendor_order_id
+#             order_items: {
+#                 data: $order_items
+#                 # [
+#                 # {
+#                 #   vendor_item: {
+#                 #     data: {
+#                 #       id: 165
+#                 #       vendor_id: 1
+#                 #       vendor_sku: "qq"
+#                 #       item_id: 143
+#                 #       description: "vendor item existing insert / upsert"
+#                 #     }, 
+#                 #     on_conflict: {
+#                 #       constraint: vendor_item_pkey, 
+#                 #       update_columns: [id]
+#                 #     }
+#                 #   }
+#                 #   item_id: 143, 
+#                 #   quantity: 1
+#                 #   # order_id: 1
+#                 # }
+#                 # ]
+#             }
+#             # vendor_id: 1
+#             # vendor_order_id: "VENDOR_ORDER_ID_AAAA"
+#             # placed_date: "2020-06-26"
+#   }) {
+#     id
+#     order_items {
+#       id
+#       vendor_item {
+#         id
+#       }
+#     }
+#   }
+# }
+
 mutation UpdateOrder (
     $id: Int!
     $fulfilled_date: date
