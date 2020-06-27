@@ -38,7 +38,7 @@ interface OrderItemInputProps extends Omit<InputProps, 'value' | 'onChange'> {
  */
 export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemInputProps ) => {
     const { onChange, ...remainingProps } = props;
-
+    console.log("OrderItemInput received props", props);
 
     const [ modal, setModal ] = useState<React.ReactElement>( null );
     const history = useHistory();
@@ -54,17 +54,17 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
         console.log( "setItem", { value } );
         let item_id: number = null;
         // unpack value from ItemSelect
-        if ( value && Array.isArray(value) ){
-            if ( value.length !== 1 ){
-                message.error("Invalid Input received from ItemSelect");
+        if ( value && Array.isArray( value ) ) {
+            if ( value.length !== 1 ) {
+                message.error( "Invalid Input received from ItemSelect" );
             } else {
-                item_id = value[0].item_id;
+                item_id = value[ 0 ].item_id;
             }
         }
         onChange( {
             ...props.value,
             item_id: item_id
-        });
+        } );
     };
 
     const setQuantity = ( event: React.ChangeEvent<HTMLInputElement> ) => {
@@ -133,14 +133,6 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                     onChange={setItemId}
                     suffixIcon={props.suffix}
                     vendorId={props.vendorId}
-                // suffix={
-                //     <MinusCircleOutlined
-                //         className="dynamic-delete-button"
-                //         onClick={() => {
-                //             remove( field.name );
-                //         }}
-                //     />
-                // }
                 />
                 <span id="ItemExtraInfo">
                     <VendorItemSelect onChange={setVendorItem} />
@@ -148,10 +140,41 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                     <Input name="serial_no" onChange={setSerialNo} placeholder="Serial #" />
                 </span>
             </span>
-            <Input name="quantity" aria-valuemin={1} onChange={setQuantity} placeholder="Qty" />
-            <span id="cost_item"><Input name="cost_item" type="number" step="0.01" min="0" prefix="$" onChange={setCostItem} placeholder="item" /></span>
-            <span id="cost_tax"><Input name="cost_tax" type="number" step="0.01" min="0" prefix="$" onChange={setCostTax} placeholder="tax" /></span>
-            <span id="cost_total"><Input name="cost_total" type="number" step="0.01" min="0" prefix="$" onChange={setCostTotal} placeholder="total" /></span >
+            <Input name="quantity" 
+                    defaultValue={props.value.quantity}
+                    aria-valuemin={1} 
+                    onChange={setQuantity} 
+                    placeholder="Qty" />
+            <span id="cost_item">
+                <Input name="cost_item" 
+                        defaultValue={props.value.cost_item}
+                        type="number" 
+                        step="0.01" 
+                        min="0" 
+                        prefix="$" 
+                        onChange={setCostItem} 
+                        placeholder="item" />
+            </span>
+            <span id="cost_tax">
+                <Input name="cost_tax"
+                    defaultValue={props.value.cost_tax}
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    prefix="$"
+                    onChange={setCostTax}
+                    placeholder="tax" />
+            </span>
+            <span id="cost_total">
+                <Input name="cost_total"
+                    defaultValue={props.value.cost_total}
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    prefix="$"
+                    onChange={setCostTotal}
+                    placeholder="total" />
+            </span >
             <ShipmentSelect excludeOrderInput onChange={setShipment} />
         </div>
     );
