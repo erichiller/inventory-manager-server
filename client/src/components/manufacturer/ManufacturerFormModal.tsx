@@ -19,6 +19,7 @@ import moment from 'moment';
 import { Store } from 'antd/lib/form/interface';
 import { PageSpin } from '../shared/PageSpin';
 import { Manufacturer } from '../../lib/Manufacturer/Manufacturer';
+import { UrlSelect } from '../shared/UrlInput';
 
 
 type ManufacturerFormModalProps = Union<{
@@ -242,24 +243,7 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
                     <Input />
                 </Form.Item>
 
-                <Form.Item name="url" label="URL"
-                    // https://ant.design/components/form/#Rule
-                    // TODO: use a custom validator ( or onChange ) to load the url's icon / ico
-                    rules={[
-                        {
-                            required: true,
-                            // ^https?\:\/\/[0-9a-zA-Z][-.\w]*[0-9a-zA-Z]*\.(com|net|pro)\/?
-                            pattern: /^https?\:\/\/[0-9a-zA-Z][-.\w]*[0-9a-zA-Z]*\.[a-zA-Z]{2,}\/?/,
-                            message: 'Please enter a valid website for this Manufacturer.'
-                        },
-                    ]}
-                >
-                    {/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/url */}
-                    <Input
-                        type="url" // htmlFor="url" ?? 
-                        pattern="https?://.*"
-                    />
-                </Form.Item>
+                <UrlSelect name="url" label="URL" validationMessage='Please enter a valid website for this Manufacturer.' />
                 
                 <Form.Item
                     name={'vendor'}

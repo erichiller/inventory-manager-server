@@ -9,14 +9,10 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
 import { GetVendorItemQuery, GetVendorItemQueryVariables, useGetVendorItemQuery, useInsertVendorItemMutation, InsertVendorItemMutationVariables, useGetVendorItemLazyQuery, useUpdateVendorItemMutation, UpdateVendorItemMutationVariables, GetVendorItemDocument, VendorItem as VendorItemGql } from '../../lib/types/graphql';
 
 import { QueryResultTypePlus, Union, filterObject, deepCopy } from '../../lib/UtilityFunctions';
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/util';
-import { QueryResult } from 'react-apollo';
 import { ItemSelect } from '../item/ItemSelect';
 import { VendorSelect } from './VendorSelect';
-import moment from 'moment';
-import { Store } from 'antd/lib/form/interface';
 import { PageSpin } from '../shared/PageSpin';
 
 
@@ -143,20 +139,8 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
             let formFieldValues = form.getFieldsValue() as Exclude<InsertVendorItemMutationVariables, 'id'>;
             insertVendorItem( {
                 variables: {
-                    // ...filterObject( formFieldValues, null, [ 'manufacturer' ] ),
-                    // ...( formFieldValues.manufacturer ? {
-                    // manufacturer: {
-                    //     data: [ {
-                    //         name: formFieldValues.name,
-                    //         url: formFieldValues.url
-                    //     } ]
-                    // }
-                    // } : {} )
                     ...formFieldValues
                 },
-                // refetchQueries: [
-                //     { query: GetVendorItemsDocument }
-                // ]
             } );
         }
     };
@@ -170,25 +154,12 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
         console.log( { class: 'VendorItemEditModal', method: 'onFieldsChange', changedFields, values } );
     };
 
-    // let initialValues = vendor ? vendor : { placed_date: moment() , items: [{}] };
-
     /** halt waiting for incoming vendor data. */
     if ( !vendorItem && vendorItemId ) {
         console.debug( "no vendor data; awaiting data" );
         return <PageSpin />;
     }
-
-    // let initialValues: Partial<Union<
-    //     Omit<VendorItem, 'manufacturer'>,
-    //     { manufacturer: boolean; }
-    // >> = {};
     let initialValues: Partial<VendorItemGql> = vendorItem ?? {};
-    // if ( vendorItem ) {
-    //     initialValues = {
-    //         ...filterObject( deepCopy( vendorItem ), null, [ 'manufacturer' ] ),
-    //         ...{ manufacturer: ( vendor.manufacturer && vendor.manufacturer.length === 1 ? true : false ) }
-    //     };
-    // }
 
     return <Modal
         visible={true}
@@ -224,7 +195,7 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
                 <Form.Item name="item_id" label="Item" rules={[ { required: true } ]}>
                     <ItemSelect mode="single" />
                 </Form.Item>
-                <Form.Item name="vendor_sku" label="Vendor SKU">
+                <Form.Item name="vendor_sku" label="Vendor SKU" rules={[ { required: true } ]}>
                     <Input />
                 </Form.Item>
                 <Form.Item name="description" label="Description">

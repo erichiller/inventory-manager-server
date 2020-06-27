@@ -5,7 +5,7 @@
  * antd Specific overrides
  **/
 
-#image-select {
+ #image-select {
     .ant-select-selection {
         height: 60px;
         padding: 5px;
@@ -13,17 +13,12 @@
 }
 
 // Descriptions
-
 .ant-descriptions-row {
     th.ant-descriptions-item-label {
         font-weight: bold;
     }
     td.ant-descriptions-item-content {
         padding: 10px 18px;
-        // padding-top: 16px;
-        // padding-right: 24px;
-        // padding-bottom: 16px;
-        // padding-left: 24px;
     }
 }
 
@@ -49,7 +44,4 @@ pre {
     > span + svg {
         margin-left: 3px;
     }
-    // :first-child {
-    //     margin-right: 3px;
-    // }
 }

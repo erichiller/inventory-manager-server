@@ -52,7 +52,7 @@ export const ManufacturerSelect: React.FC<ManufacturerSelectProps> = ( props ) =
                     label: <span className="manufacturerOption">
                         {v && v.url ? <div><img src={`${ v.url }/favicon.ico`} /></div> : null}
                         <span>{v.name}</span>
-                        <span>{v.url}</span>
+                        {/* <span>{v.url}</span> */}
                         {/* <span>#{v.manufacturer_order_id}</span> */}
                     </span>
                     // TODO: Set value to the applicable string, feed value up that is the `order_id`
@@ -76,6 +76,11 @@ export const ManufacturerSelect: React.FC<ManufacturerSelectProps> = ( props ) =
                     //         search_string: `${ value }%`
                     //     }
                     // } );
+                }}
+                onKeyDown={( e ) => {
+                    if ( e.nativeEvent.keyCode === 13 ) {
+                        e.preventDefault(); // keep Enter from submitting form within Selects so that autofill options can be triggered and selected.
+                    }
                 }}
                 onChange={( value, opt ) => {
                     console.log( "onChange", { value, opt } );

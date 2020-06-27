@@ -2,7 +2,7 @@ import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'reac
 import { Form, Input, Divider, Tooltip, InputNumber, Switch, Row, Col, Button, message } from 'antd';
 // import { OptionsType } from 'rc-select/lib/Option';
 import { ItemFormProps } from '../../lib/item/Item';
-import { ItemBundle, OrderItem, VendorItem as VendorItemGql } from '../../lib/types/graphql';
+import { ItemBundle, OrderItem, VendorItem as VendorItemGql, OrderItemInsertInput, VendorItemInsertInput, ManufacturerItemInsertInput, ShipmentInsertInput } from '../../lib/types/graphql';
 import TextArea from 'antd/lib/input/TextArea';
 
 import { toMinimumFixed, Union } from '../../lib/UtilityFunctions';
@@ -15,9 +15,11 @@ import { OrderItemSelect } from './OrderItemSelect';
 import { Integer } from '../../lib/types/uint8';
 import { useHistory, useLocation } from 'react-router-dom';
 import { VendorItemSelect } from '../vendor/VendorItemSelect';
+import { ManufacturerItemSelect } from '../manufacturer/ManufacturerItemSelect';
+import { ShipmentSelect } from '../Shipment/ShipmentSelect';
 
 
-interface OrderItemDefinition extends Omit<OrderItem, 'order_id'> {
+interface OrderItemDefinition extends Omit<OrderItemInsertInput, 'order_id'> {
 
 }
 
@@ -79,19 +81,46 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
             serial_no: event.target.value
         } );
     };
-    // TODO
-    const setVendorItem = ( vendor_item: Partial<VendorItemGql> ) => {
+    const setCostItem = ( event: React.ChangeEvent<HTMLInputElement> ) => {
+        console.log( "setCostItem", event.target.value );
+        onChange( {
+            ...props.value,
+            serial_no: event.target.value
+        } );
+    };
+    const setCostTax = ( event: React.ChangeEvent<HTMLInputElement> ) => {
+        console.log( "setCostTax", event.target.value );
+        onChange( {
+            ...props.value,
+            serial_no: event.target.value
+        } );
+    };
+    const setCostTotal = ( event: React.ChangeEvent<HTMLInputElement> ) => {
+        console.log( "setCostTotal", event.target.value );
+        onChange( {
+            ...props.value,
+            serial_no: event.target.value
+        } );
+    };
+    const setVendorItem = ( vendor_item: Partial<VendorItemInsertInput> ) => {
         console.log( "setVendorItem", vendor_item );
         onChange( {
             ...props.value,
-            ...( vendor_item.id ? { vendor_item_id: vendor_item.id } : { vendor_item: vendor_item } )
+            ...( vendor_item.id ? { vendor_item_id: vendor_item.id } : { vendor_item: { data: vendor_item } } )
         } );
     };
-    const setShipment = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log( "setShipment", event.target.value );
+    const setManufacturerItem = ( manufacturer_item: Partial<ManufacturerItemInsertInput> ) => {
+        console.log( "setManufacturerItem", manufacturer_item );
         onChange( {
             ...props.value,
-            shipment_id: parseInt(event.target.value)
+            ...( manufacturer_item.id ? { manufacturer_item_id: manufacturer_item.id } : { manufacturer_item: { data: manufacturer_item } } )
+        } );
+    };
+    const setShipment = ( shipment: Partial<ShipmentInsertInput> ) => {
+        console.log( "setShipment", shipment );
+        onChange( {
+            ...props.value,
+            ...( shipment.id ? { shipment_id: shipment.id } : { shipment: { data: shipment } } )
         } );
     };
 
@@ -115,16 +144,15 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                 />
                 <span id="ItemExtraInfo">
                     <VendorItemSelect onChange={setVendorItem} />
-                    <Input name="manufacturer_item" onChange={setQuantity} placeholder="Manufacturer Item xx" />
+                    <ManufacturerItemSelect onChange={setManufacturerItem} />
                     <Input name="serial_no" onChange={setSerialNo} placeholder="Serial #" />
                 </span>
             </span>
             <Input name="quantity" aria-valuemin={1} onChange={setQuantity} placeholder="Qty" />
-            {/* <Input name="serial_no" onChange={setSerialNo} placeholder="Serial#" /> */}
-            <span id="cost_item"><Input name="cost_item" type="number" step="0.01" min="0" prefix="$" placeholder="item" /></span> {/* TODO: onChange.*/}
-            <span id="cost_tax"><Input name="cost_tax" type="number" step="0.01" min="0" prefix="$" placeholder="tax" /></span> {/* TODO: onChange.*/}
-            <span id="cost_total"><Input name="cost_total" type="number" step="0.01" min="0" prefix="$" placeholder="total" /></span > {/* TODO: onChange.*/}
-            <Input name="shipment" onChange={setShipment} placeholder="Shipment" /> {/* TODO: onChange. Requires separate element*/}
+            <span id="cost_item"><Input name="cost_item" type="number" step="0.01" min="0" prefix="$" onChange={setCostItem} placeholder="item" /></span>
+            <span id="cost_tax"><Input name="cost_tax" type="number" step="0.01" min="0" prefix="$" onChange={setCostTax} placeholder="tax" /></span>
+            <span id="cost_total"><Input name="cost_total" type="number" step="0.01" min="0" prefix="$" onChange={setCostTotal} placeholder="total" /></span >
+            <ShipmentSelect excludeOrderInput onChange={setShipment} />
         </div>
     );
 

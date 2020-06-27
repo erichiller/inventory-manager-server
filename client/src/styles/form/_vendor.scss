@@ -37,8 +37,18 @@
     }
 }
 .vendorItemOption {
-        line-height: 1em;
+    line-height: 1em;
     img {
         height: 1em;
+    }
+}
+
+.VendorItemSelectNewSelectOption {
+    flex: none;
+    padding: 2px 8px;
+    display: block;
+    cursor: pointer;
+    .anticon {
+        margin-right: 2px;
     }
 }

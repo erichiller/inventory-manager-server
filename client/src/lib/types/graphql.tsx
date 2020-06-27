@@ -15,7 +15,6 @@ export type Scalars = {
   bigint: any;
   date: any;
   jsonb: any;
-  money: any;
   numeric: any;
   smallint: any;
   timestamptz: any;
@@ -13327,6 +13326,7 @@ export type ManufacturerInsertInput = {
 /** columns and relationships of "manufacturer_item" */
 export type ManufacturerItem = {
   __typename?: 'manufacturer_item';
+  description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   /** An object relationship */
   item: Item;
@@ -13438,6 +13438,7 @@ export type ManufacturerItemBoolExp = {
   _and?: Maybe<Array<Maybe<ManufacturerItemBoolExp>>>;
   _not?: Maybe<ManufacturerItemBoolExp>;
   _or?: Maybe<Array<Maybe<ManufacturerItemBoolExp>>>;
+  description?: Maybe<StringComparisonExp>;
   id?: Maybe<IntComparisonExp>;
   item?: Maybe<ItemBoolExp>;
   item_id?: Maybe<IntComparisonExp>;
@@ -13467,6 +13468,7 @@ export type ManufacturerItemIncInput = {
 
 /** input type for inserting data into table "manufacturer_item" */
 export type ManufacturerItemInsertInput = {
+  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   item?: Maybe<ItemObjRelInsertInput>;
   item_id?: Maybe<Scalars['Int']>;
@@ -13482,6 +13484,7 @@ export type ManufacturerItemInsertInput = {
 /** aggregate max on columns */
 export type ManufacturerItemMaxFields = {
   __typename?: 'manufacturer_item_max_fields';
+  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_id?: Maybe<Scalars['Int']>;
@@ -13493,6 +13496,7 @@ export type ManufacturerItemMaxFields = {
 
 /** order by max() on columns of table "manufacturer_item" */
 export type ManufacturerItemMaxOrderBy = {
+  description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_id?: Maybe<OrderBy>;
@@ -13505,6 +13509,7 @@ export type ManufacturerItemMaxOrderBy = {
 /** aggregate min on columns */
 export type ManufacturerItemMinFields = {
   __typename?: 'manufacturer_item_min_fields';
+  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_id?: Maybe<Scalars['Int']>;
@@ -13516,6 +13521,7 @@ export type ManufacturerItemMinFields = {
 
 /** order by min() on columns of table "manufacturer_item" */
 export type ManufacturerItemMinOrderBy = {
+  description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer_id?: Maybe<OrderBy>;
@@ -13549,6 +13555,7 @@ export type ManufacturerItemOnConflict = {
 
 /** ordering options when selecting data from "manufacturer_item" */
 export type ManufacturerItemOrderBy = {
+  description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   item?: Maybe<ItemOrderBy>;
   item_id?: Maybe<OrderBy>;
@@ -13569,6 +13576,8 @@ export type ManufacturerItemPkColumnsInput = {
 /** select columns of table "manufacturer_item" */
 export enum ManufacturerItemSelectColumn {
   /** column name */
+  description = 'description',
+  /** column name */
   id = 'id',
   /** column name */
   item_id = 'item_id',
@@ -13586,6 +13595,7 @@ export enum ManufacturerItemSelectColumn {
 
 /** input type for updating data in table "manufacturer_item" */
 export type ManufacturerItemSetInput = {
+  description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_id?: Maybe<Scalars['Int']>;
@@ -13657,6 +13667,8 @@ export type ManufacturerItemSumOrderBy = {
 
 /** update columns of table "manufacturer_item" */
 export enum ManufacturerItemUpdateColumn {
+  /** column name */
+  description = 'description',
   /** column name */
   id = 'id',
   /** column name */
@@ -13910,20 +13922,6 @@ export type ManufacturerVarianceFields = {
 export type ManufacturerVarianceOrderBy = {
   id?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
-};
-
-
-/** expression to compare columns of type money. All fields are combined with logical 'AND'. */
-export type MoneyComparisonExp = {
-  _eq?: Maybe<Scalars['money']>;
-  _gt?: Maybe<Scalars['money']>;
-  _gte?: Maybe<Scalars['money']>;
-  _in?: Maybe<Array<Scalars['money']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['money']>;
-  _lte?: Maybe<Scalars['money']>;
-  _neq?: Maybe<Scalars['money']>;
-  _nin?: Maybe<Array<Scalars['money']>>;
 };
 
 /** mutation root */
@@ -17664,18 +17662,28 @@ export type OrderInsertInput = {
  */
 export type OrderItem = {
   __typename?: 'order_item';
-  cost_item?: Maybe<Scalars['money']>;
-  cost_tax?: Maybe<Scalars['money']>;
-  cost_total?: Maybe<Scalars['money']>;
+  cost_item?: Maybe<Scalars['numeric']>;
+  cost_tax?: Maybe<Scalars['numeric']>;
+  cost_total?: Maybe<Scalars['numeric']>;
   id: Scalars['Int'];
+  /** An object relationship */
+  item: Item;
   item_id: Scalars['Int'];
+  /** An object relationship */
+  manufacturer_item?: Maybe<ManufacturerItem>;
   /** link to manufacturer item, which in turn links to item */
   manufacturer_item_id?: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  order: Order;
   order_id: Scalars['Int'];
   quantity?: Maybe<Scalars['numeric']>;
   /** individual items unique id (as provided by manufacturer) */
   serial_no?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  shipment?: Maybe<Shipment>;
   shipment_id?: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  vendor_item?: Maybe<VendorItem>;
   vendor_item_id?: Maybe<Scalars['Int']>;
 };
 
@@ -17764,16 +17772,21 @@ export type OrderItemBoolExp = {
   _and?: Maybe<Array<Maybe<OrderItemBoolExp>>>;
   _not?: Maybe<OrderItemBoolExp>;
   _or?: Maybe<Array<Maybe<OrderItemBoolExp>>>;
-  cost_item?: Maybe<MoneyComparisonExp>;
-  cost_tax?: Maybe<MoneyComparisonExp>;
-  cost_total?: Maybe<MoneyComparisonExp>;
+  cost_item?: Maybe<NumericComparisonExp>;
+  cost_tax?: Maybe<NumericComparisonExp>;
+  cost_total?: Maybe<NumericComparisonExp>;
   id?: Maybe<IntComparisonExp>;
+  item?: Maybe<ItemBoolExp>;
   item_id?: Maybe<IntComparisonExp>;
+  manufacturer_item?: Maybe<ManufacturerItemBoolExp>;
   manufacturer_item_id?: Maybe<IntComparisonExp>;
+  order?: Maybe<OrderBoolExp>;
   order_id?: Maybe<IntComparisonExp>;
   quantity?: Maybe<NumericComparisonExp>;
   serial_no?: Maybe<StringComparisonExp>;
+  shipment?: Maybe<ShipmentBoolExp>;
   shipment_id?: Maybe<IntComparisonExp>;
+  vendor_item?: Maybe<VendorItemBoolExp>;
   vendor_item_id?: Maybe<IntComparisonExp>;
 };
 
@@ -17795,9 +17808,9 @@ export enum OrderItemConstraint {
 
 /** input type for incrementing integer column in table "order_item" */
 export type OrderItemIncInput = {
-  cost_item?: Maybe<Scalars['money']>;
-  cost_tax?: Maybe<Scalars['money']>;
-  cost_total?: Maybe<Scalars['money']>;
+  cost_item?: Maybe<Scalars['numeric']>;
+  cost_tax?: Maybe<Scalars['numeric']>;
+  cost_total?: Maybe<Scalars['numeric']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
@@ -17809,25 +17822,30 @@ export type OrderItemIncInput = {
 
 /** input type for inserting data into table "order_item" */
 export type OrderItemInsertInput = {
-  cost_item?: Maybe<Scalars['money']>;
-  cost_tax?: Maybe<Scalars['money']>;
-  cost_total?: Maybe<Scalars['money']>;
+  cost_item?: Maybe<Scalars['numeric']>;
+  cost_tax?: Maybe<Scalars['numeric']>;
+  cost_total?: Maybe<Scalars['numeric']>;
   id?: Maybe<Scalars['Int']>;
+  item?: Maybe<ItemObjRelInsertInput>;
   item_id?: Maybe<Scalars['Int']>;
+  manufacturer_item?: Maybe<ManufacturerItemObjRelInsertInput>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
+  order?: Maybe<OrderObjRelInsertInput>;
   order_id?: Maybe<Scalars['Int']>;
   quantity?: Maybe<Scalars['numeric']>;
   serial_no?: Maybe<Scalars['String']>;
+  shipment?: Maybe<ShipmentObjRelInsertInput>;
   shipment_id?: Maybe<Scalars['Int']>;
+  vendor_item?: Maybe<VendorItemObjRelInsertInput>;
   vendor_item_id?: Maybe<Scalars['Int']>;
 };
 
 /** aggregate max on columns */
 export type OrderItemMaxFields = {
   __typename?: 'order_item_max_fields';
-  cost_item?: Maybe<Scalars['money']>;
-  cost_tax?: Maybe<Scalars['money']>;
-  cost_total?: Maybe<Scalars['money']>;
+  cost_item?: Maybe<Scalars['numeric']>;
+  cost_tax?: Maybe<Scalars['numeric']>;
+  cost_total?: Maybe<Scalars['numeric']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
@@ -17856,9 +17874,9 @@ export type OrderItemMaxOrderBy = {
 /** aggregate min on columns */
 export type OrderItemMinFields = {
   __typename?: 'order_item_min_fields';
-  cost_item?: Maybe<Scalars['money']>;
-  cost_tax?: Maybe<Scalars['money']>;
-  cost_total?: Maybe<Scalars['money']>;
+  cost_item?: Maybe<Scalars['numeric']>;
+  cost_tax?: Maybe<Scalars['numeric']>;
+  cost_total?: Maybe<Scalars['numeric']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
@@ -17912,12 +17930,17 @@ export type OrderItemOrderBy = {
   cost_tax?: Maybe<OrderBy>;
   cost_total?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  item?: Maybe<ItemOrderBy>;
   item_id?: Maybe<OrderBy>;
+  manufacturer_item?: Maybe<ManufacturerItemOrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
+  order?: Maybe<OrderOrderBy>;
   order_id?: Maybe<OrderBy>;
   quantity?: Maybe<OrderBy>;
   serial_no?: Maybe<OrderBy>;
+  shipment?: Maybe<ShipmentOrderBy>;
   shipment_id?: Maybe<OrderBy>;
+  vendor_item?: Maybe<VendorItemOrderBy>;
   vendor_item_id?: Maybe<OrderBy>;
 };
 
@@ -17954,9 +17977,9 @@ export enum OrderItemSelectColumn {
 
 /** input type for updating data in table "order_item" */
 export type OrderItemSetInput = {
-  cost_item?: Maybe<Scalars['money']>;
-  cost_tax?: Maybe<Scalars['money']>;
-  cost_total?: Maybe<Scalars['money']>;
+  cost_item?: Maybe<Scalars['numeric']>;
+  cost_tax?: Maybe<Scalars['numeric']>;
+  cost_total?: Maybe<Scalars['numeric']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
@@ -18057,9 +18080,9 @@ export type OrderItemStddevSampOrderBy = {
 /** aggregate sum on columns */
 export type OrderItemSumFields = {
   __typename?: 'order_item_sum_fields';
-  cost_item?: Maybe<Scalars['money']>;
-  cost_tax?: Maybe<Scalars['money']>;
-  cost_total?: Maybe<Scalars['money']>;
+  cost_item?: Maybe<Scalars['numeric']>;
+  cost_tax?: Maybe<Scalars['numeric']>;
+  cost_total?: Maybe<Scalars['numeric']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
@@ -22029,15 +22052,51 @@ export type SearchItemVariantArgs = {
  */
 export type Shipment = {
   __typename?: 'shipment';
+  /** An object relationship */
+  carrier: Vendor;
+  carrier_vendor_id: Scalars['Int'];
   id: Scalars['Int'];
   /** An object relationship */
   order?: Maybe<Order>;
+  /** An array relationship */
+  orderItems: Array<OrderItem>;
+  /** An aggregated array relationship */
+  orderItems_aggregate: OrderItemAggregate;
   order_id?: Maybe<Scalars['Int']>;
   received_date: Scalars['date'];
   shipped_date?: Maybe<Scalars['date']>;
-  shipping_carrier: Scalars['String'];
   tracking_id?: Maybe<Scalars['String']>;
   vendor_invoice_id?: Maybe<Scalars['String']>;
+};
+
+
+/**
+ * shipment or invoices, multiple allowed per order
+ * 
+ * 
+ * columns and relationships of "shipment"
+ */
+export type ShipmentOrderItemsArgs = {
+  distinct_on?: Maybe<Array<OrderItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<OrderItemOrderBy>>;
+  where?: Maybe<OrderItemBoolExp>;
+};
+
+
+/**
+ * shipment or invoices, multiple allowed per order
+ * 
+ * 
+ * columns and relationships of "shipment"
+ */
+export type ShipmentOrderItemsAggregateArgs = {
+  distinct_on?: Maybe<Array<OrderItemSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<OrderItemOrderBy>>;
+  where?: Maybe<OrderItemBoolExp>;
 };
 
 /** aggregated selection of "shipment" */
@@ -22094,12 +22153,14 @@ export type ShipmentArrRelInsertInput = {
 /** aggregate avg on columns */
 export type ShipmentAvgFields = {
   __typename?: 'shipment_avg_fields';
+  carrier_vendor_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "shipment" */
 export type ShipmentAvgOrderBy = {
+  carrier_vendor_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
 };
@@ -22109,12 +22170,14 @@ export type ShipmentBoolExp = {
   _and?: Maybe<Array<Maybe<ShipmentBoolExp>>>;
   _not?: Maybe<ShipmentBoolExp>;
   _or?: Maybe<Array<Maybe<ShipmentBoolExp>>>;
+  carrier?: Maybe<VendorBoolExp>;
+  carrier_vendor_id?: Maybe<IntComparisonExp>;
   id?: Maybe<IntComparisonExp>;
   order?: Maybe<OrderBoolExp>;
+  orderItems?: Maybe<OrderItemBoolExp>;
   order_id?: Maybe<IntComparisonExp>;
   received_date?: Maybe<DateComparisonExp>;
   shipped_date?: Maybe<DateComparisonExp>;
-  shipping_carrier?: Maybe<StringComparisonExp>;
   tracking_id?: Maybe<StringComparisonExp>;
   vendor_invoice_id?: Maybe<StringComparisonExp>;
 };
@@ -22127,18 +22190,21 @@ export enum ShipmentConstraint {
 
 /** input type for incrementing integer column in table "shipment" */
 export type ShipmentIncInput = {
+  carrier_vendor_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "shipment" */
 export type ShipmentInsertInput = {
+  carrier?: Maybe<VendorObjRelInsertInput>;
+  carrier_vendor_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   order?: Maybe<OrderObjRelInsertInput>;
+  orderItems?: Maybe<OrderItemArrRelInsertInput>;
   order_id?: Maybe<Scalars['Int']>;
   received_date?: Maybe<Scalars['date']>;
   shipped_date?: Maybe<Scalars['date']>;
-  shipping_carrier?: Maybe<Scalars['String']>;
   tracking_id?: Maybe<Scalars['String']>;
   vendor_invoice_id?: Maybe<Scalars['String']>;
 };
@@ -22146,22 +22212,22 @@ export type ShipmentInsertInput = {
 /** aggregate max on columns */
 export type ShipmentMaxFields = {
   __typename?: 'shipment_max_fields';
+  carrier_vendor_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
   received_date?: Maybe<Scalars['date']>;
   shipped_date?: Maybe<Scalars['date']>;
-  shipping_carrier?: Maybe<Scalars['String']>;
   tracking_id?: Maybe<Scalars['String']>;
   vendor_invoice_id?: Maybe<Scalars['String']>;
 };
 
 /** order by max() on columns of table "shipment" */
 export type ShipmentMaxOrderBy = {
+  carrier_vendor_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
   received_date?: Maybe<OrderBy>;
   shipped_date?: Maybe<OrderBy>;
-  shipping_carrier?: Maybe<OrderBy>;
   tracking_id?: Maybe<OrderBy>;
   vendor_invoice_id?: Maybe<OrderBy>;
 };
@@ -22169,22 +22235,22 @@ export type ShipmentMaxOrderBy = {
 /** aggregate min on columns */
 export type ShipmentMinFields = {
   __typename?: 'shipment_min_fields';
+  carrier_vendor_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
   received_date?: Maybe<Scalars['date']>;
   shipped_date?: Maybe<Scalars['date']>;
-  shipping_carrier?: Maybe<Scalars['String']>;
   tracking_id?: Maybe<Scalars['String']>;
   vendor_invoice_id?: Maybe<Scalars['String']>;
 };
 
 /** order by min() on columns of table "shipment" */
 export type ShipmentMinOrderBy = {
+  carrier_vendor_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
   received_date?: Maybe<OrderBy>;
   shipped_date?: Maybe<OrderBy>;
-  shipping_carrier?: Maybe<OrderBy>;
   tracking_id?: Maybe<OrderBy>;
   vendor_invoice_id?: Maybe<OrderBy>;
 };
@@ -22213,12 +22279,14 @@ export type ShipmentOnConflict = {
 
 /** ordering options when selecting data from "shipment" */
 export type ShipmentOrderBy = {
+  carrier?: Maybe<VendorOrderBy>;
+  carrier_vendor_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   order?: Maybe<OrderOrderBy>;
+  orderItems_aggregate?: Maybe<OrderItemAggregateOrderBy>;
   order_id?: Maybe<OrderBy>;
   received_date?: Maybe<OrderBy>;
   shipped_date?: Maybe<OrderBy>;
-  shipping_carrier?: Maybe<OrderBy>;
   tracking_id?: Maybe<OrderBy>;
   vendor_invoice_id?: Maybe<OrderBy>;
 };
@@ -22231,6 +22299,8 @@ export type ShipmentPkColumnsInput = {
 /** select columns of table "shipment" */
 export enum ShipmentSelectColumn {
   /** column name */
+  carrier_vendor_id = 'carrier_vendor_id',
+  /** column name */
   id = 'id',
   /** column name */
   order_id = 'order_id',
@@ -22238,8 +22308,6 @@ export enum ShipmentSelectColumn {
   received_date = 'received_date',
   /** column name */
   shipped_date = 'shipped_date',
-  /** column name */
-  shipping_carrier = 'shipping_carrier',
   /** column name */
   tracking_id = 'tracking_id',
   /** column name */
@@ -22248,11 +22316,11 @@ export enum ShipmentSelectColumn {
 
 /** input type for updating data in table "shipment" */
 export type ShipmentSetInput = {
+  carrier_vendor_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
   received_date?: Maybe<Scalars['date']>;
   shipped_date?: Maybe<Scalars['date']>;
-  shipping_carrier?: Maybe<Scalars['String']>;
   tracking_id?: Maybe<Scalars['String']>;
   vendor_invoice_id?: Maybe<Scalars['String']>;
 };
@@ -22260,12 +22328,14 @@ export type ShipmentSetInput = {
 /** aggregate stddev on columns */
 export type ShipmentStddevFields = {
   __typename?: 'shipment_stddev_fields';
+  carrier_vendor_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "shipment" */
 export type ShipmentStddevOrderBy = {
+  carrier_vendor_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
 };
@@ -22273,12 +22343,14 @@ export type ShipmentStddevOrderBy = {
 /** aggregate stddev_pop on columns */
 export type ShipmentStddevPopFields = {
   __typename?: 'shipment_stddev_pop_fields';
+  carrier_vendor_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "shipment" */
 export type ShipmentStddevPopOrderBy = {
+  carrier_vendor_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
 };
@@ -22286,12 +22358,14 @@ export type ShipmentStddevPopOrderBy = {
 /** aggregate stddev_samp on columns */
 export type ShipmentStddevSampFields = {
   __typename?: 'shipment_stddev_samp_fields';
+  carrier_vendor_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "shipment" */
 export type ShipmentStddevSampOrderBy = {
+  carrier_vendor_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
 };
@@ -22299,18 +22373,22 @@ export type ShipmentStddevSampOrderBy = {
 /** aggregate sum on columns */
 export type ShipmentSumFields = {
   __typename?: 'shipment_sum_fields';
+  carrier_vendor_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "shipment" */
 export type ShipmentSumOrderBy = {
+  carrier_vendor_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
 };
 
 /** update columns of table "shipment" */
 export enum ShipmentUpdateColumn {
+  /** column name */
+  carrier_vendor_id = 'carrier_vendor_id',
   /** column name */
   id = 'id',
   /** column name */
@@ -22319,8 +22397,6 @@ export enum ShipmentUpdateColumn {
   received_date = 'received_date',
   /** column name */
   shipped_date = 'shipped_date',
-  /** column name */
-  shipping_carrier = 'shipping_carrier',
   /** column name */
   tracking_id = 'tracking_id',
   /** column name */
@@ -22330,12 +22406,14 @@ export enum ShipmentUpdateColumn {
 /** aggregate var_pop on columns */
 export type ShipmentVarPopFields = {
   __typename?: 'shipment_var_pop_fields';
+  carrier_vendor_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "shipment" */
 export type ShipmentVarPopOrderBy = {
+  carrier_vendor_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
 };
@@ -22343,12 +22421,14 @@ export type ShipmentVarPopOrderBy = {
 /** aggregate var_samp on columns */
 export type ShipmentVarSampFields = {
   __typename?: 'shipment_var_samp_fields';
+  carrier_vendor_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "shipment" */
 export type ShipmentVarSampOrderBy = {
+  carrier_vendor_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
 };
@@ -22356,12 +22436,14 @@ export type ShipmentVarSampOrderBy = {
 /** aggregate variance on columns */
 export type ShipmentVarianceFields = {
   __typename?: 'shipment_variance_fields';
+  carrier_vendor_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   order_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "shipment" */
 export type ShipmentVarianceOrderBy = {
+  carrier_vendor_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
 };
@@ -26338,62 +26420,6 @@ export type VendorVarianceOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
-export type InsertIconMutationVariables = Exact<{
-  mimeData?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  title?: Maybe<Scalars['String']>;
-  categories?: Maybe<IconItemCategoryMapArrRelInsertInput>;
-  labels?: Maybe<IconLabelMapArrRelInsertInput>;
-}>;
-
-
-export type InsertIconMutation = (
-  { __typename?: 'mutation_root' }
-  & { insert_icon?: Maybe<(
-    { __typename?: 'icon_mutation_response' }
-    & Pick<IconMutationResponse, 'affected_rows'>
-  )> }
-);
-
-export type GetIconQueryVariables = Exact<{
-  id: Scalars['uuid'];
-}>;
-
-
-export type GetIconQuery = (
-  { __typename?: 'query_root' }
-  & { icon?: Maybe<(
-    { __typename?: 'icon' }
-    & Pick<Icon, 'data' | 'description' | 'id' | 'title'>
-    & { categories: Array<(
-      { __typename?: 'icon_item_category_map' }
-      & Pick<IconItemCategoryMap, 'category' | 'criteria' | 'sequence'>
-    )>, labels: Array<(
-      { __typename?: 'icon_label_map' }
-      & Pick<IconLabelMap, 'label_id'>
-    )> }
-  )> }
-);
-
-export type GetIconsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetIconsQuery = (
-  { __typename?: 'query_root' }
-  & { icon: Array<(
-    { __typename?: 'icon' }
-    & Pick<Icon, 'data' | 'description' | 'id' | 'title'>
-    & { categories: Array<(
-      { __typename?: 'icon_item_category_map' }
-      & Pick<IconItemCategoryMap, 'category' | 'criteria' | 'sequence'>
-    )>, labels: Array<(
-      { __typename?: 'icon_label_map' }
-      & Pick<IconLabelMap, 'label_id'>
-    )> }
-  )> }
-);
-
 export type SearchItemsQueryVariables = Exact<{
   containsFilter?: Maybe<Scalars['jsonb']>;
   hasAnyKeysFilter?: Maybe<Array<Scalars['String']>>;
@@ -26539,7 +26565,7 @@ export type ObjectManufacturerFieldsFragment = (
 
 export type BasicManufacturerItemFieldsFragment = (
   { __typename?: 'manufacturer_item' }
-  & Pick<ManufacturerItem, 'id' | 'item_id' | 'manufacturer_id' | 'manufacturer_product_id' | 'product_url'>
+  & Pick<ManufacturerItem, 'id' | 'item_id' | 'manufacturer_id' | 'manufacturer_product_id' | 'manufacturer_product_name' | 'manufacturer_product_series' | 'product_url' | 'description'>
 );
 
 export type GetManufacturersQueryVariables = Exact<{ [key: string]: never; }>;
@@ -26564,17 +26590,6 @@ export type GetManufacturerQuery = (
     { __typename?: 'manufacturer' }
     & BasicManufacturerFieldsFragment
     & ObjectManufacturerFieldsFragment
-  )> }
-);
-
-export type GetManufacturerItemsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetManufacturerItemsQuery = (
-  { __typename?: 'query_root' }
-  & { manufacturer_item: Array<(
-    { __typename?: 'manufacturer_item' }
-    & BasicManufacturerItemFieldsFragment
   )> }
 );
 
@@ -26670,6 +26685,104 @@ export type InsertVendorWithExistingManufacturerMutation = (
   )> }
 );
 
+export type GetManufacturerItemsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetManufacturerItemsQuery = (
+  { __typename?: 'query_root' }
+  & { manufacturer_item: Array<(
+    { __typename?: 'manufacturer_item' }
+    & BasicManufacturerItemFieldsFragment
+  )> }
+);
+
+export type SearchManufacturerItemsQueryVariables = Exact<{
+  query_text: Scalars['String'];
+}>;
+
+
+export type SearchManufacturerItemsQuery = (
+  { __typename?: 'query_root' }
+  & { item: Array<(
+    { __typename?: 'item' }
+    & Pick<Item, 'id' | 'object'>
+    & { name: Item['object'] }
+    & { manufacturerItems: Array<(
+      { __typename?: 'manufacturer_item' }
+      & { manufacturer: (
+        { __typename?: 'manufacturer' }
+        & Pick<Manufacturer, 'id' | 'name' | 'url'>
+      ) }
+      & BasicManufacturerItemFieldsFragment
+    )> }
+  )> }
+);
+
+export type GetManufacturerItemQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetManufacturerItemQuery = (
+  { __typename?: 'query_root' }
+  & { manufacturer_item?: Maybe<(
+    { __typename?: 'manufacturer_item' }
+    & BasicManufacturerItemFieldsFragment
+  )> }
+);
+
+export type UpdateManufacturerItemMutationVariables = Exact<{
+  id: Scalars['Int'];
+  item_id: Scalars['Int'];
+  manufacturer_id: Scalars['Int'];
+  manufacturer_product_id: Scalars['String'];
+  manufacturer_product_name?: Maybe<Scalars['String']>;
+  manufacturer_product_series?: Maybe<Scalars['String']>;
+  product_url?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateManufacturerItemMutation = (
+  { __typename?: 'mutation_root' }
+  & { manufacturer_item?: Maybe<(
+    { __typename?: 'manufacturer_item' }
+    & BasicManufacturerItemFieldsFragment
+  )> }
+);
+
+export type InsertManufacturerItemMutationVariables = Exact<{
+  item_id: Scalars['Int'];
+  manufacturer_id: Scalars['Int'];
+  manufacturer_product_id: Scalars['String'];
+  manufacturer_product_name?: Maybe<Scalars['String']>;
+  manufacturer_product_series?: Maybe<Scalars['String']>;
+  product_url?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+}>;
+
+
+export type InsertManufacturerItemMutation = (
+  { __typename?: 'mutation_root' }
+  & { manufacturer_item?: Maybe<(
+    { __typename?: 'manufacturer_item' }
+    & BasicManufacturerItemFieldsFragment
+  )> }
+);
+
+export type DeleteManufacturerItemMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteManufacturerItemMutation = (
+  { __typename?: 'mutation_root' }
+  & { manufacturer_item?: Maybe<(
+    { __typename?: 'manufacturer_item' }
+    & BasicManufacturerItemFieldsFragment
+  )> }
+);
+
 export type BasicOrderFieldsFragment = (
   { __typename?: 'order' }
   & Pick<Order, 'id' | 'vendor_order_id' | 'url' | 'total_cost' | 'tax_cost' | 'pon' | 'placed_date' | 'payment_method_id' | 'items_cost' | 'fulfilled_date'>
@@ -26681,6 +26794,11 @@ export type ObjectOrderFieldsFragment = (
     { __typename?: 'vendor' }
     & BasicVendorFieldsFragment
   ) }
+);
+
+export type BasicOrderItemFieldsFragment = (
+  { __typename?: 'order_item' }
+  & Pick<OrderItem, 'id' | 'cost_item' | 'cost_tax' | 'cost_total' | 'item_id' | 'shipment_id' | 'vendor_item_id' | 'serial_no' | 'quantity' | 'order_id' | 'manufacturer_item_id'>
 );
 
 export type GetOrdersByDateRangeQueryVariables = Exact<{
@@ -26734,7 +26852,11 @@ export type GetOrderQuery = (
       & Pick<Vendor, 'id' | 'account_id' | 'name' | 'url'>
     ), shipments: Array<(
       { __typename?: 'shipment' }
-      & Pick<Shipment, 'id' | 'order_id' | 'received_date' | 'shipped_date' | 'shipping_carrier' | 'tracking_id' | 'vendor_invoice_id'>
+      & Pick<Shipment, 'id' | 'order_id' | 'received_date' | 'shipped_date' | 'carrier_vendor_id' | 'tracking_id' | 'vendor_invoice_id'>
+      & { carrier: (
+        { __typename?: 'vendor' }
+        & Pick<Vendor, 'id' | 'name' | 'url'>
+      ) }
     )>, shipments_aggregate: (
       { __typename?: 'shipment_aggregate' }
       & { aggregate?: Maybe<(
@@ -26860,6 +26982,115 @@ export type SendBufferMutation = (
   & { putLabelMonochromeBuffer?: Maybe<(
     { __typename?: 'OperationResult' }
     & Pick<OperationResult, 'result'>
+  )> }
+);
+
+export type BasicShipmentFieldsFragment = (
+  { __typename?: 'shipment' }
+  & Pick<Shipment, 'id' | 'order_id' | 'vendor_invoice_id' | 'shipped_date' | 'received_date' | 'tracking_id' | 'carrier_vendor_id'>
+);
+
+export type ObjectShipmentFieldsFragment = (
+  { __typename?: 'shipment' }
+  & { order?: Maybe<(
+    { __typename?: 'order' }
+    & BasicOrderFieldsFragment
+  )>, orderItems: Array<(
+    { __typename?: 'order_item' }
+    & BasicOrderItemFieldsFragment
+  )>, carrier: (
+    { __typename?: 'vendor' }
+    & Pick<Vendor, 'id' | 'name' | 'url'>
+  ) }
+);
+
+export type GetShipmentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetShipmentsQuery = (
+  { __typename?: 'query_root' }
+  & { shipment: Array<(
+    { __typename?: 'shipment' }
+    & BasicShipmentFieldsFragment
+    & ObjectShipmentFieldsFragment
+  )> }
+);
+
+export type GetShipmentQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetShipmentQuery = (
+  { __typename?: 'query_root' }
+  & { shipment?: Maybe<(
+    { __typename?: 'shipment' }
+    & BasicShipmentFieldsFragment
+    & ObjectShipmentFieldsFragment
+  )> }
+);
+
+export type SearchShipmentsQueryVariables = Exact<{
+  search_string?: Maybe<Scalars['String']>;
+}>;
+
+
+export type SearchShipmentsQuery = (
+  { __typename?: 'query_root' }
+  & { shipment: Array<(
+    { __typename?: 'shipment' }
+    & BasicShipmentFieldsFragment
+    & ObjectShipmentFieldsFragment
+  )> }
+);
+
+export type InsertShipmentMutationVariables = Exact<{
+  vendor_invoice_id?: Maybe<Scalars['String']>;
+  tracking_id: Scalars['String'];
+  carrier_vendor_id: Scalars['Int'];
+  shipped_date?: Maybe<Scalars['date']>;
+  received_date: Scalars['date'];
+  order_id?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type InsertShipmentMutation = (
+  { __typename?: 'mutation_root' }
+  & { shipment?: Maybe<(
+    { __typename?: 'shipment' }
+    & BasicShipmentFieldsFragment
+  )> }
+);
+
+export type UpdateShipmentMutationVariables = Exact<{
+  id: Scalars['Int'];
+  vendor_invoice_id?: Maybe<Scalars['String']>;
+  tracking_id: Scalars['String'];
+  carrier_vendor_id: Scalars['Int'];
+  shipped_date?: Maybe<Scalars['date']>;
+  received_date: Scalars['date'];
+  order_id?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type UpdateShipmentMutation = (
+  { __typename?: 'mutation_root' }
+  & { shipment?: Maybe<(
+    { __typename?: 'shipment' }
+    & BasicShipmentFieldsFragment
+  )> }
+);
+
+export type DeleteShipmentMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteShipmentMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_shipment_by_pk?: Maybe<(
+    { __typename?: 'shipment' }
+    & BasicShipmentFieldsFragment
   )> }
 );
 
@@ -27064,6 +27295,62 @@ export type DeleteVendorItemMutation = (
   & { vendor_item?: Maybe<(
     { __typename?: 'vendor_item' }
     & BasicVendorItemFieldsFragment
+  )> }
+);
+
+export type InsertIconMutationVariables = Exact<{
+  mimeData?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  title?: Maybe<Scalars['String']>;
+  categories?: Maybe<IconItemCategoryMapArrRelInsertInput>;
+  labels?: Maybe<IconLabelMapArrRelInsertInput>;
+}>;
+
+
+export type InsertIconMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_icon?: Maybe<(
+    { __typename?: 'icon_mutation_response' }
+    & Pick<IconMutationResponse, 'affected_rows'>
+  )> }
+);
+
+export type GetIconQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type GetIconQuery = (
+  { __typename?: 'query_root' }
+  & { icon?: Maybe<(
+    { __typename?: 'icon' }
+    & Pick<Icon, 'data' | 'description' | 'id' | 'title'>
+    & { categories: Array<(
+      { __typename?: 'icon_item_category_map' }
+      & Pick<IconItemCategoryMap, 'category' | 'criteria' | 'sequence'>
+    )>, labels: Array<(
+      { __typename?: 'icon_label_map' }
+      & Pick<IconLabelMap, 'label_id'>
+    )> }
+  )> }
+);
+
+export type GetIconsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetIconsQuery = (
+  { __typename?: 'query_root' }
+  & { icon: Array<(
+    { __typename?: 'icon' }
+    & Pick<Icon, 'data' | 'description' | 'id' | 'title'>
+    & { categories: Array<(
+      { __typename?: 'icon_item_category_map' }
+      & Pick<IconItemCategoryMap, 'category' | 'criteria' | 'sequence'>
+    )>, labels: Array<(
+      { __typename?: 'icon_label_map' }
+      & Pick<IconLabelMap, 'label_id'>
+    )> }
   )> }
 );
 
@@ -27274,7 +27561,10 @@ export const BasicManufacturerItemFieldsFragmentDoc = gql`
   item_id
   manufacturer_id
   manufacturer_product_id
+  manufacturer_product_name
+  manufacturer_product_series
   product_url
+  description
 }
     `;
 export const ObjectManufacturerFieldsFragmentDoc = gql`
@@ -27295,6 +27585,17 @@ export const ObjectOrderFieldsFragmentDoc = gql`
   }
 }
     ${BasicVendorFieldsFragmentDoc}`;
+export const BasicShipmentFieldsFragmentDoc = gql`
+    fragment basicShipmentFields on shipment {
+  id
+  order_id
+  vendor_invoice_id
+  shipped_date
+  received_date
+  tracking_id
+  carrier_vendor_id
+}
+    `;
 export const BasicOrderFieldsFragmentDoc = gql`
     fragment basicOrderFields on order {
   id
@@ -27309,6 +27610,37 @@ export const BasicOrderFieldsFragmentDoc = gql`
   fulfilled_date
 }
     `;
+export const BasicOrderItemFieldsFragmentDoc = gql`
+    fragment basicOrderItemFields on order_item {
+  id
+  cost_item
+  cost_tax
+  cost_total
+  item_id
+  shipment_id
+  vendor_item_id
+  serial_no
+  quantity
+  order_id
+  manufacturer_item_id
+}
+    `;
+export const ObjectShipmentFieldsFragmentDoc = gql`
+    fragment objectShipmentFields on shipment {
+  order {
+    ...basicOrderFields
+  }
+  orderItems {
+    ...basicOrderItemFields
+  }
+  carrier {
+    id
+    name
+    url
+  }
+}
+    ${BasicOrderFieldsFragmentDoc}
+${BasicOrderItemFieldsFragmentDoc}`;
 export const ObjectVendorFieldsFragmentDoc = gql`
     fragment objectVendorFields on vendor {
   manufacturer {
@@ -27367,169 +27699,6 @@ export const ItemHardwareFastenerScrewMachineFieldsFragmentDoc = gql`
   use_material
 }
     `;
-export const InsertIconDocument = gql`
-    mutation InsertIcon($mimeData: String, $description: String, $id: uuid, $title: String, $categories: icon_item_category_map_arr_rel_insert_input, $labels: icon_label_map_arr_rel_insert_input) {
-  insert_icon(objects: {data: $mimeData, description: $description, id: $id, title: $title, categories: $categories, labels: $labels}) {
-    affected_rows
-  }
-}
-    `;
-export type InsertIconMutationFn = ApolloReactCommon.MutationFunction<InsertIconMutation, InsertIconMutationVariables>;
-export type InsertIconProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertIconMutation, InsertIconMutationVariables>
-    } & TChildProps;
-export function withInsertIcon<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  InsertIconMutation,
-  InsertIconMutationVariables,
-  InsertIconProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, InsertIconMutation, InsertIconMutationVariables, InsertIconProps<TChildProps, TDataName>>(InsertIconDocument, {
-      alias: 'insertIcon',
-      ...operationOptions
-    });
-};
-
-/**
- * __useInsertIconMutation__
- *
- * To run a mutation, you first call `useInsertIconMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertIconMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertIconMutation, { data, loading, error }] = useInsertIconMutation({
- *   variables: {
- *      mimeData: // value for 'mimeData'
- *      description: // value for 'description'
- *      id: // value for 'id'
- *      title: // value for 'title'
- *      categories: // value for 'categories'
- *      labels: // value for 'labels'
- *   },
- * });
- */
-export function useInsertIconMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertIconMutation, InsertIconMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertIconMutation, InsertIconMutationVariables>(InsertIconDocument, baseOptions);
-      }
-export type InsertIconMutationHookResult = ReturnType<typeof useInsertIconMutation>;
-export type InsertIconMutationResult = ApolloReactCommon.MutationResult<InsertIconMutation>;
-export type InsertIconMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertIconMutation, InsertIconMutationVariables>;
-export const GetIconDocument = gql`
-    query GetIcon($id: uuid!) {
-  icon: icon_by_pk(id: $id) {
-    data
-    description
-    id
-    title
-    categories {
-      category
-      criteria
-      sequence
-    }
-    labels {
-      label_id
-    }
-  }
-}
-    `;
-export type GetIconProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetIconQuery, GetIconQueryVariables>
-    } & TChildProps;
-export function withGetIcon<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetIconQuery,
-  GetIconQueryVariables,
-  GetIconProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetIconQuery, GetIconQueryVariables, GetIconProps<TChildProps, TDataName>>(GetIconDocument, {
-      alias: 'getIcon',
-      ...operationOptions
-    });
-};
-
-/**
- * __useGetIconQuery__
- *
- * To run a query within a React component, call `useGetIconQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetIconQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetIconQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetIconQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
-      }
-export function useGetIconLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
-        }
-export type GetIconQueryHookResult = ReturnType<typeof useGetIconQuery>;
-export type GetIconLazyQueryHookResult = ReturnType<typeof useGetIconLazyQuery>;
-export type GetIconQueryResult = ApolloReactCommon.QueryResult<GetIconQuery, GetIconQueryVariables>;
-export const GetIconsDocument = gql`
-    query GetIcons {
-  icon {
-    data
-    description
-    id
-    title
-    categories {
-      category
-      criteria
-      sequence
-    }
-    labels {
-      label_id
-    }
-  }
-}
-    `;
-export type GetIconsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetIconsQuery, GetIconsQueryVariables>
-    } & TChildProps;
-export function withGetIcons<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetIconsQuery,
-  GetIconsQueryVariables,
-  GetIconsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetIconsQuery, GetIconsQueryVariables, GetIconsProps<TChildProps, TDataName>>(GetIconsDocument, {
-      alias: 'getIcons',
-      ...operationOptions
-    });
-};
-
-/**
- * __useGetIconsQuery__
- *
- * To run a query within a React component, call `useGetIconsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetIconsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetIconsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetIconsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
-      }
-export function useGetIconsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
-        }
-export type GetIconsQueryHookResult = ReturnType<typeof useGetIconsQuery>;
-export type GetIconsLazyQueryHookResult = ReturnType<typeof useGetIconsLazyQuery>;
-export type GetIconsQueryResult = ApolloReactCommon.QueryResult<GetIconsQuery, GetIconsQueryVariables>;
 export const SearchItemsDocument = gql`
     query SearchItems($containsFilter: jsonb, $hasAnyKeysFilter: [String!]) {
   item(order_by: {class: asc}, where: {object: {_has_keys_any: $hasAnyKeysFilter, _contains: $containsFilter}}) {
@@ -28007,51 +28176,6 @@ export function useGetManufacturerLazyQuery(baseOptions?: ApolloReactHooks.LazyQ
 export type GetManufacturerQueryHookResult = ReturnType<typeof useGetManufacturerQuery>;
 export type GetManufacturerLazyQueryHookResult = ReturnType<typeof useGetManufacturerLazyQuery>;
 export type GetManufacturerQueryResult = ApolloReactCommon.QueryResult<GetManufacturerQuery, GetManufacturerQueryVariables>;
-export const GetManufacturerItemsDocument = gql`
-    query GetManufacturerItems {
-  manufacturer_item {
-    ...basicManufacturerItemFields
-  }
-}
-    ${BasicManufacturerItemFieldsFragmentDoc}`;
-export type GetManufacturerItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>
-    } & TChildProps;
-export function withGetManufacturerItems<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetManufacturerItemsQuery,
-  GetManufacturerItemsQueryVariables,
-  GetManufacturerItemsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables, GetManufacturerItemsProps<TChildProps, TDataName>>(GetManufacturerItemsDocument, {
-      alias: 'getManufacturerItems',
-      ...operationOptions
-    });
-};
-
-/**
- * __useGetManufacturerItemsQuery__
- *
- * To run a query within a React component, call `useGetManufacturerItemsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetManufacturerItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetManufacturerItemsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetManufacturerItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>(GetManufacturerItemsDocument, baseOptions);
-      }
-export function useGetManufacturerItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>(GetManufacturerItemsDocument, baseOptions);
-        }
-export type GetManufacturerItemsQueryHookResult = ReturnType<typeof useGetManufacturerItemsQuery>;
-export type GetManufacturerItemsLazyQueryHookResult = ReturnType<typeof useGetManufacturerItemsLazyQuery>;
-export type GetManufacturerItemsQueryResult = ApolloReactCommon.QueryResult<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>;
 export const SearchManufacturersDocument = gql`
     query SearchManufacturers($search_string: String) {
   manufacturer(order_by: {id: asc}, where: {name: {_ilike: $search_string}}) {
@@ -28341,6 +28465,301 @@ export function useInsertVendorWithExistingManufacturerMutation(baseOptions?: Ap
 export type InsertVendorWithExistingManufacturerMutationHookResult = ReturnType<typeof useInsertVendorWithExistingManufacturerMutation>;
 export type InsertVendorWithExistingManufacturerMutationResult = ApolloReactCommon.MutationResult<InsertVendorWithExistingManufacturerMutation>;
 export type InsertVendorWithExistingManufacturerMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>;
+export const GetManufacturerItemsDocument = gql`
+    query GetManufacturerItems {
+  manufacturer_item {
+    ...basicManufacturerItemFields
+  }
+}
+    ${BasicManufacturerItemFieldsFragmentDoc}`;
+export type GetManufacturerItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>
+    } & TChildProps;
+export function withGetManufacturerItems<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetManufacturerItemsQuery,
+  GetManufacturerItemsQueryVariables,
+  GetManufacturerItemsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables, GetManufacturerItemsProps<TChildProps, TDataName>>(GetManufacturerItemsDocument, {
+      alias: 'getManufacturerItems',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetManufacturerItemsQuery__
+ *
+ * To run a query within a React component, call `useGetManufacturerItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetManufacturerItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetManufacturerItemsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetManufacturerItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>(GetManufacturerItemsDocument, baseOptions);
+      }
+export function useGetManufacturerItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>(GetManufacturerItemsDocument, baseOptions);
+        }
+export type GetManufacturerItemsQueryHookResult = ReturnType<typeof useGetManufacturerItemsQuery>;
+export type GetManufacturerItemsLazyQueryHookResult = ReturnType<typeof useGetManufacturerItemsLazyQuery>;
+export type GetManufacturerItemsQueryResult = ApolloReactCommon.QueryResult<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>;
+export const SearchManufacturerItemsDocument = gql`
+    query SearchManufacturerItems($query_text: String!) {
+  item: search_item(args: {query_text: $query_text}, where: {vendorItems: {}}) {
+    id
+    name: object(path: "name")
+    object
+    manufacturerItems {
+      ...basicManufacturerItemFields
+      manufacturer {
+        id
+        name
+        url
+      }
+    }
+  }
+}
+    ${BasicManufacturerItemFieldsFragmentDoc}`;
+export type SearchManufacturerItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>
+    } & TChildProps;
+export function withSearchManufacturerItems<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  SearchManufacturerItemsQuery,
+  SearchManufacturerItemsQueryVariables,
+  SearchManufacturerItemsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables, SearchManufacturerItemsProps<TChildProps, TDataName>>(SearchManufacturerItemsDocument, {
+      alias: 'searchManufacturerItems',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useSearchManufacturerItemsQuery__
+ *
+ * To run a query within a React component, call `useSearchManufacturerItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchManufacturerItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchManufacturerItemsQuery({
+ *   variables: {
+ *      query_text: // value for 'query_text'
+ *   },
+ * });
+ */
+export function useSearchManufacturerItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>(SearchManufacturerItemsDocument, baseOptions);
+      }
+export function useSearchManufacturerItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>(SearchManufacturerItemsDocument, baseOptions);
+        }
+export type SearchManufacturerItemsQueryHookResult = ReturnType<typeof useSearchManufacturerItemsQuery>;
+export type SearchManufacturerItemsLazyQueryHookResult = ReturnType<typeof useSearchManufacturerItemsLazyQuery>;
+export type SearchManufacturerItemsQueryResult = ApolloReactCommon.QueryResult<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>;
+export const GetManufacturerItemDocument = gql`
+    query GetManufacturerItem($id: Int!) {
+  manufacturer_item: manufacturer_item_by_pk(id: $id) {
+    ...basicManufacturerItemFields
+  }
+}
+    ${BasicManufacturerItemFieldsFragmentDoc}`;
+export type GetManufacturerItemProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>
+    } & TChildProps;
+export function withGetManufacturerItem<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetManufacturerItemQuery,
+  GetManufacturerItemQueryVariables,
+  GetManufacturerItemProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetManufacturerItemQuery, GetManufacturerItemQueryVariables, GetManufacturerItemProps<TChildProps, TDataName>>(GetManufacturerItemDocument, {
+      alias: 'getManufacturerItem',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetManufacturerItemQuery__
+ *
+ * To run a query within a React component, call `useGetManufacturerItemQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetManufacturerItemQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetManufacturerItemQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetManufacturerItemQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>(GetManufacturerItemDocument, baseOptions);
+      }
+export function useGetManufacturerItemLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>(GetManufacturerItemDocument, baseOptions);
+        }
+export type GetManufacturerItemQueryHookResult = ReturnType<typeof useGetManufacturerItemQuery>;
+export type GetManufacturerItemLazyQueryHookResult = ReturnType<typeof useGetManufacturerItemLazyQuery>;
+export type GetManufacturerItemQueryResult = ApolloReactCommon.QueryResult<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>;
+export const UpdateManufacturerItemDocument = gql`
+    mutation UpdateManufacturerItem($id: Int!, $item_id: Int!, $manufacturer_id: Int!, $manufacturer_product_id: String!, $manufacturer_product_name: String, $manufacturer_product_series: String, $product_url: String, $description: String) {
+  manufacturer_item: update_manufacturer_item_by_pk(pk_columns: {id: $id}, _set: {item_id: $item_id, manufacturer_id: $manufacturer_id, manufacturer_product_id: $manufacturer_product_id, manufacturer_product_name: $manufacturer_product_name, manufacturer_product_series: $manufacturer_product_series, product_url: $product_url, description: $description}) {
+    ...basicManufacturerItemFields
+  }
+}
+    ${BasicManufacturerItemFieldsFragmentDoc}`;
+export type UpdateManufacturerItemMutationFn = ApolloReactCommon.MutationFunction<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>;
+export type UpdateManufacturerItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>
+    } & TChildProps;
+export function withUpdateManufacturerItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  UpdateManufacturerItemMutation,
+  UpdateManufacturerItemMutationVariables,
+  UpdateManufacturerItemProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables, UpdateManufacturerItemProps<TChildProps, TDataName>>(UpdateManufacturerItemDocument, {
+      alias: 'updateManufacturerItem',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useUpdateManufacturerItemMutation__
+ *
+ * To run a mutation, you first call `useUpdateManufacturerItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateManufacturerItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateManufacturerItemMutation, { data, loading, error }] = useUpdateManufacturerItemMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      item_id: // value for 'item_id'
+ *      manufacturer_id: // value for 'manufacturer_id'
+ *      manufacturer_product_id: // value for 'manufacturer_product_id'
+ *      manufacturer_product_name: // value for 'manufacturer_product_name'
+ *      manufacturer_product_series: // value for 'manufacturer_product_series'
+ *      product_url: // value for 'product_url'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useUpdateManufacturerItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>(UpdateManufacturerItemDocument, baseOptions);
+      }
+export type UpdateManufacturerItemMutationHookResult = ReturnType<typeof useUpdateManufacturerItemMutation>;
+export type UpdateManufacturerItemMutationResult = ApolloReactCommon.MutationResult<UpdateManufacturerItemMutation>;
+export type UpdateManufacturerItemMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>;
+export const InsertManufacturerItemDocument = gql`
+    mutation InsertManufacturerItem($item_id: Int!, $manufacturer_id: Int!, $manufacturer_product_id: String!, $manufacturer_product_name: String, $manufacturer_product_series: String, $product_url: String, $description: String) {
+  manufacturer_item: insert_manufacturer_item_one(object: {item_id: $item_id, manufacturer_id: $manufacturer_id, manufacturer_product_id: $manufacturer_product_id, manufacturer_product_name: $manufacturer_product_name, manufacturer_product_series: $manufacturer_product_series, product_url: $product_url, description: $description}) {
+    ...basicManufacturerItemFields
+  }
+}
+    ${BasicManufacturerItemFieldsFragmentDoc}`;
+export type InsertManufacturerItemMutationFn = ApolloReactCommon.MutationFunction<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>;
+export type InsertManufacturerItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>
+    } & TChildProps;
+export function withInsertManufacturerItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  InsertManufacturerItemMutation,
+  InsertManufacturerItemMutationVariables,
+  InsertManufacturerItemProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables, InsertManufacturerItemProps<TChildProps, TDataName>>(InsertManufacturerItemDocument, {
+      alias: 'insertManufacturerItem',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useInsertManufacturerItemMutation__
+ *
+ * To run a mutation, you first call `useInsertManufacturerItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertManufacturerItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertManufacturerItemMutation, { data, loading, error }] = useInsertManufacturerItemMutation({
+ *   variables: {
+ *      item_id: // value for 'item_id'
+ *      manufacturer_id: // value for 'manufacturer_id'
+ *      manufacturer_product_id: // value for 'manufacturer_product_id'
+ *      manufacturer_product_name: // value for 'manufacturer_product_name'
+ *      manufacturer_product_series: // value for 'manufacturer_product_series'
+ *      product_url: // value for 'product_url'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useInsertManufacturerItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>(InsertManufacturerItemDocument, baseOptions);
+      }
+export type InsertManufacturerItemMutationHookResult = ReturnType<typeof useInsertManufacturerItemMutation>;
+export type InsertManufacturerItemMutationResult = ApolloReactCommon.MutationResult<InsertManufacturerItemMutation>;
+export type InsertManufacturerItemMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>;
+export const DeleteManufacturerItemDocument = gql`
+    mutation DeleteManufacturerItem($id: Int!) {
+  manufacturer_item: delete_manufacturer_item_by_pk(id: $id) {
+    ...basicManufacturerItemFields
+  }
+}
+    ${BasicManufacturerItemFieldsFragmentDoc}`;
+export type DeleteManufacturerItemMutationFn = ApolloReactCommon.MutationFunction<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>;
+export type DeleteManufacturerItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>
+    } & TChildProps;
+export function withDeleteManufacturerItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  DeleteManufacturerItemMutation,
+  DeleteManufacturerItemMutationVariables,
+  DeleteManufacturerItemProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables, DeleteManufacturerItemProps<TChildProps, TDataName>>(DeleteManufacturerItemDocument, {
+      alias: 'deleteManufacturerItem',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useDeleteManufacturerItemMutation__
+ *
+ * To run a mutation, you first call `useDeleteManufacturerItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteManufacturerItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteManufacturerItemMutation, { data, loading, error }] = useDeleteManufacturerItemMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteManufacturerItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>(DeleteManufacturerItemDocument, baseOptions);
+      }
+export type DeleteManufacturerItemMutationHookResult = ReturnType<typeof useDeleteManufacturerItemMutation>;
+export type DeleteManufacturerItemMutationResult = ApolloReactCommon.MutationResult<DeleteManufacturerItemMutation>;
+export type DeleteManufacturerItemMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>;
 export const GetOrdersByDateRangeDocument = gql`
     query GetOrdersByDateRange($date_start_gte: date, $date_end_lte: date) {
   order(where: {placed_date: {_gte: $date_start_gte, _lte: $date_end_lte}}) {
@@ -28479,7 +28898,12 @@ export const GetOrderDocument = gql`
       order_id
       received_date
       shipped_date
-      shipping_carrier
+      carrier_vendor_id
+      carrier {
+        id
+        name
+        url
+      }
       tracking_id
       vendor_invoice_id
     }
@@ -28854,6 +29278,295 @@ export function useSendBufferMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type SendBufferMutationHookResult = ReturnType<typeof useSendBufferMutation>;
 export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
 export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
+export const GetShipmentsDocument = gql`
+    query GetShipments {
+  shipment(order_by: {id: asc}) {
+    ...basicShipmentFields
+    ...objectShipmentFields
+  }
+}
+    ${BasicShipmentFieldsFragmentDoc}
+${ObjectShipmentFieldsFragmentDoc}`;
+export type GetShipmentsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetShipmentsQuery, GetShipmentsQueryVariables>
+    } & TChildProps;
+export function withGetShipments<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetShipmentsQuery,
+  GetShipmentsQueryVariables,
+  GetShipmentsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetShipmentsQuery, GetShipmentsQueryVariables, GetShipmentsProps<TChildProps, TDataName>>(GetShipmentsDocument, {
+      alias: 'getShipments',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetShipmentsQuery__
+ *
+ * To run a query within a React component, call `useGetShipmentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetShipmentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetShipmentsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetShipmentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetShipmentsQuery, GetShipmentsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetShipmentsQuery, GetShipmentsQueryVariables>(GetShipmentsDocument, baseOptions);
+      }
+export function useGetShipmentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetShipmentsQuery, GetShipmentsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetShipmentsQuery, GetShipmentsQueryVariables>(GetShipmentsDocument, baseOptions);
+        }
+export type GetShipmentsQueryHookResult = ReturnType<typeof useGetShipmentsQuery>;
+export type GetShipmentsLazyQueryHookResult = ReturnType<typeof useGetShipmentsLazyQuery>;
+export type GetShipmentsQueryResult = ApolloReactCommon.QueryResult<GetShipmentsQuery, GetShipmentsQueryVariables>;
+export const GetShipmentDocument = gql`
+    query GetShipment($id: Int!) {
+  shipment: shipment_by_pk(id: $id) {
+    ...basicShipmentFields
+    ...objectShipmentFields
+  }
+}
+    ${BasicShipmentFieldsFragmentDoc}
+${ObjectShipmentFieldsFragmentDoc}`;
+export type GetShipmentProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetShipmentQuery, GetShipmentQueryVariables>
+    } & TChildProps;
+export function withGetShipment<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetShipmentQuery,
+  GetShipmentQueryVariables,
+  GetShipmentProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetShipmentQuery, GetShipmentQueryVariables, GetShipmentProps<TChildProps, TDataName>>(GetShipmentDocument, {
+      alias: 'getShipment',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetShipmentQuery__
+ *
+ * To run a query within a React component, call `useGetShipmentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetShipmentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetShipmentQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetShipmentQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetShipmentQuery, GetShipmentQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetShipmentQuery, GetShipmentQueryVariables>(GetShipmentDocument, baseOptions);
+      }
+export function useGetShipmentLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetShipmentQuery, GetShipmentQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetShipmentQuery, GetShipmentQueryVariables>(GetShipmentDocument, baseOptions);
+        }
+export type GetShipmentQueryHookResult = ReturnType<typeof useGetShipmentQuery>;
+export type GetShipmentLazyQueryHookResult = ReturnType<typeof useGetShipmentLazyQuery>;
+export type GetShipmentQueryResult = ApolloReactCommon.QueryResult<GetShipmentQuery, GetShipmentQueryVariables>;
+export const SearchShipmentsDocument = gql`
+    query SearchShipments($search_string: String) {
+  shipment(order_by: {id: asc}, where: {tracking_id: {_ilike: $search_string}}) {
+    ...basicShipmentFields
+    ...objectShipmentFields
+  }
+}
+    ${BasicShipmentFieldsFragmentDoc}
+${ObjectShipmentFieldsFragmentDoc}`;
+export type SearchShipmentsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<SearchShipmentsQuery, SearchShipmentsQueryVariables>
+    } & TChildProps;
+export function withSearchShipments<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  SearchShipmentsQuery,
+  SearchShipmentsQueryVariables,
+  SearchShipmentsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, SearchShipmentsQuery, SearchShipmentsQueryVariables, SearchShipmentsProps<TChildProps, TDataName>>(SearchShipmentsDocument, {
+      alias: 'searchShipments',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useSearchShipmentsQuery__
+ *
+ * To run a query within a React component, call `useSearchShipmentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchShipmentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchShipmentsQuery({
+ *   variables: {
+ *      search_string: // value for 'search_string'
+ *   },
+ * });
+ */
+export function useSearchShipmentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchShipmentsQuery, SearchShipmentsQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchShipmentsQuery, SearchShipmentsQueryVariables>(SearchShipmentsDocument, baseOptions);
+      }
+export function useSearchShipmentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchShipmentsQuery, SearchShipmentsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchShipmentsQuery, SearchShipmentsQueryVariables>(SearchShipmentsDocument, baseOptions);
+        }
+export type SearchShipmentsQueryHookResult = ReturnType<typeof useSearchShipmentsQuery>;
+export type SearchShipmentsLazyQueryHookResult = ReturnType<typeof useSearchShipmentsLazyQuery>;
+export type SearchShipmentsQueryResult = ApolloReactCommon.QueryResult<SearchShipmentsQuery, SearchShipmentsQueryVariables>;
+export const InsertShipmentDocument = gql`
+    mutation InsertShipment($vendor_invoice_id: String, $tracking_id: String!, $carrier_vendor_id: Int!, $shipped_date: date, $received_date: date!, $order_id: Int) {
+  shipment: insert_shipment_one(object: {vendor_invoice_id: $vendor_invoice_id, tracking_id: $tracking_id, carrier_vendor_id: $carrier_vendor_id, shipped_date: $shipped_date, received_date: $received_date, order_id: $order_id}) {
+    ...basicShipmentFields
+  }
+}
+    ${BasicShipmentFieldsFragmentDoc}`;
+export type InsertShipmentMutationFn = ApolloReactCommon.MutationFunction<InsertShipmentMutation, InsertShipmentMutationVariables>;
+export type InsertShipmentProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertShipmentMutation, InsertShipmentMutationVariables>
+    } & TChildProps;
+export function withInsertShipment<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  InsertShipmentMutation,
+  InsertShipmentMutationVariables,
+  InsertShipmentProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, InsertShipmentMutation, InsertShipmentMutationVariables, InsertShipmentProps<TChildProps, TDataName>>(InsertShipmentDocument, {
+      alias: 'insertShipment',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useInsertShipmentMutation__
+ *
+ * To run a mutation, you first call `useInsertShipmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertShipmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertShipmentMutation, { data, loading, error }] = useInsertShipmentMutation({
+ *   variables: {
+ *      vendor_invoice_id: // value for 'vendor_invoice_id'
+ *      tracking_id: // value for 'tracking_id'
+ *      carrier_vendor_id: // value for 'carrier_vendor_id'
+ *      shipped_date: // value for 'shipped_date'
+ *      received_date: // value for 'received_date'
+ *      order_id: // value for 'order_id'
+ *   },
+ * });
+ */
+export function useInsertShipmentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertShipmentMutation, InsertShipmentMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertShipmentMutation, InsertShipmentMutationVariables>(InsertShipmentDocument, baseOptions);
+      }
+export type InsertShipmentMutationHookResult = ReturnType<typeof useInsertShipmentMutation>;
+export type InsertShipmentMutationResult = ApolloReactCommon.MutationResult<InsertShipmentMutation>;
+export type InsertShipmentMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertShipmentMutation, InsertShipmentMutationVariables>;
+export const UpdateShipmentDocument = gql`
+    mutation UpdateShipment($id: Int!, $vendor_invoice_id: String, $tracking_id: String!, $carrier_vendor_id: Int!, $shipped_date: date, $received_date: date!, $order_id: Int) {
+  shipment: update_shipment_by_pk(pk_columns: {id: $id}, _set: {vendor_invoice_id: $vendor_invoice_id, tracking_id: $tracking_id, carrier_vendor_id: $carrier_vendor_id, shipped_date: $shipped_date, received_date: $received_date, order_id: $order_id}) {
+    ...basicShipmentFields
+  }
+}
+    ${BasicShipmentFieldsFragmentDoc}`;
+export type UpdateShipmentMutationFn = ApolloReactCommon.MutationFunction<UpdateShipmentMutation, UpdateShipmentMutationVariables>;
+export type UpdateShipmentProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateShipmentMutation, UpdateShipmentMutationVariables>
+    } & TChildProps;
+export function withUpdateShipment<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  UpdateShipmentMutation,
+  UpdateShipmentMutationVariables,
+  UpdateShipmentProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, UpdateShipmentMutation, UpdateShipmentMutationVariables, UpdateShipmentProps<TChildProps, TDataName>>(UpdateShipmentDocument, {
+      alias: 'updateShipment',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useUpdateShipmentMutation__
+ *
+ * To run a mutation, you first call `useUpdateShipmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateShipmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateShipmentMutation, { data, loading, error }] = useUpdateShipmentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      vendor_invoice_id: // value for 'vendor_invoice_id'
+ *      tracking_id: // value for 'tracking_id'
+ *      carrier_vendor_id: // value for 'carrier_vendor_id'
+ *      shipped_date: // value for 'shipped_date'
+ *      received_date: // value for 'received_date'
+ *      order_id: // value for 'order_id'
+ *   },
+ * });
+ */
+export function useUpdateShipmentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateShipmentMutation, UpdateShipmentMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateShipmentMutation, UpdateShipmentMutationVariables>(UpdateShipmentDocument, baseOptions);
+      }
+export type UpdateShipmentMutationHookResult = ReturnType<typeof useUpdateShipmentMutation>;
+export type UpdateShipmentMutationResult = ApolloReactCommon.MutationResult<UpdateShipmentMutation>;
+export type UpdateShipmentMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateShipmentMutation, UpdateShipmentMutationVariables>;
+export const DeleteShipmentDocument = gql`
+    mutation DeleteShipment($id: Int!) {
+  delete_shipment_by_pk(id: $id) {
+    ...basicShipmentFields
+  }
+}
+    ${BasicShipmentFieldsFragmentDoc}`;
+export type DeleteShipmentMutationFn = ApolloReactCommon.MutationFunction<DeleteShipmentMutation, DeleteShipmentMutationVariables>;
+export type DeleteShipmentProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteShipmentMutation, DeleteShipmentMutationVariables>
+    } & TChildProps;
+export function withDeleteShipment<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  DeleteShipmentMutation,
+  DeleteShipmentMutationVariables,
+  DeleteShipmentProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, DeleteShipmentMutation, DeleteShipmentMutationVariables, DeleteShipmentProps<TChildProps, TDataName>>(DeleteShipmentDocument, {
+      alias: 'deleteShipment',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useDeleteShipmentMutation__
+ *
+ * To run a mutation, you first call `useDeleteShipmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteShipmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteShipmentMutation, { data, loading, error }] = useDeleteShipmentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteShipmentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteShipmentMutation, DeleteShipmentMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteShipmentMutation, DeleteShipmentMutationVariables>(DeleteShipmentDocument, baseOptions);
+      }
+export type DeleteShipmentMutationHookResult = ReturnType<typeof useDeleteShipmentMutation>;
+export type DeleteShipmentMutationResult = ApolloReactCommon.MutationResult<DeleteShipmentMutation>;
+export type DeleteShipmentMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteShipmentMutation, DeleteShipmentMutationVariables>;
 export const GetVendorsDocument = gql`
     query GetVendors {
   vendor(order_by: {id: asc}) {
@@ -29429,6 +30142,169 @@ export function useDeleteVendorItemMutation(baseOptions?: ApolloReactHooks.Mutat
 export type DeleteVendorItemMutationHookResult = ReturnType<typeof useDeleteVendorItemMutation>;
 export type DeleteVendorItemMutationResult = ApolloReactCommon.MutationResult<DeleteVendorItemMutation>;
 export type DeleteVendorItemMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>;
+export const InsertIconDocument = gql`
+    mutation InsertIcon($mimeData: String, $description: String, $id: uuid, $title: String, $categories: icon_item_category_map_arr_rel_insert_input, $labels: icon_label_map_arr_rel_insert_input) {
+  insert_icon(objects: {data: $mimeData, description: $description, id: $id, title: $title, categories: $categories, labels: $labels}) {
+    affected_rows
+  }
+}
+    `;
+export type InsertIconMutationFn = ApolloReactCommon.MutationFunction<InsertIconMutation, InsertIconMutationVariables>;
+export type InsertIconProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertIconMutation, InsertIconMutationVariables>
+    } & TChildProps;
+export function withInsertIcon<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  InsertIconMutation,
+  InsertIconMutationVariables,
+  InsertIconProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, InsertIconMutation, InsertIconMutationVariables, InsertIconProps<TChildProps, TDataName>>(InsertIconDocument, {
+      alias: 'insertIcon',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useInsertIconMutation__
+ *
+ * To run a mutation, you first call `useInsertIconMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertIconMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertIconMutation, { data, loading, error }] = useInsertIconMutation({
+ *   variables: {
+ *      mimeData: // value for 'mimeData'
+ *      description: // value for 'description'
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *      categories: // value for 'categories'
+ *      labels: // value for 'labels'
+ *   },
+ * });
+ */
+export function useInsertIconMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertIconMutation, InsertIconMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertIconMutation, InsertIconMutationVariables>(InsertIconDocument, baseOptions);
+      }
+export type InsertIconMutationHookResult = ReturnType<typeof useInsertIconMutation>;
+export type InsertIconMutationResult = ApolloReactCommon.MutationResult<InsertIconMutation>;
+export type InsertIconMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertIconMutation, InsertIconMutationVariables>;
+export const GetIconDocument = gql`
+    query GetIcon($id: uuid!) {
+  icon: icon_by_pk(id: $id) {
+    data
+    description
+    id
+    title
+    categories {
+      category
+      criteria
+      sequence
+    }
+    labels {
+      label_id
+    }
+  }
+}
+    `;
+export type GetIconProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetIconQuery, GetIconQueryVariables>
+    } & TChildProps;
+export function withGetIcon<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetIconQuery,
+  GetIconQueryVariables,
+  GetIconProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetIconQuery, GetIconQueryVariables, GetIconProps<TChildProps, TDataName>>(GetIconDocument, {
+      alias: 'getIcon',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetIconQuery__
+ *
+ * To run a query within a React component, call `useGetIconQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIconQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIconQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetIconQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
+      }
+export function useGetIconLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
+        }
+export type GetIconQueryHookResult = ReturnType<typeof useGetIconQuery>;
+export type GetIconLazyQueryHookResult = ReturnType<typeof useGetIconLazyQuery>;
+export type GetIconQueryResult = ApolloReactCommon.QueryResult<GetIconQuery, GetIconQueryVariables>;
+export const GetIconsDocument = gql`
+    query GetIcons {
+  icon {
+    data
+    description
+    id
+    title
+    categories {
+      category
+      criteria
+      sequence
+    }
+    labels {
+      label_id
+    }
+  }
+}
+    `;
+export type GetIconsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetIconsQuery, GetIconsQueryVariables>
+    } & TChildProps;
+export function withGetIcons<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetIconsQuery,
+  GetIconsQueryVariables,
+  GetIconsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetIconsQuery, GetIconsQueryVariables, GetIconsProps<TChildProps, TDataName>>(GetIconsDocument, {
+      alias: 'getIcons',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetIconsQuery__
+ *
+ * To run a query within a React component, call `useGetIconsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIconsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIconsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetIconsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
+      }
+export function useGetIconsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
+        }
+export type GetIconsQueryHookResult = ReturnType<typeof useGetIconsQuery>;
+export type GetIconsLazyQueryHookResult = ReturnType<typeof useGetIconsLazyQuery>;
+export type GetIconsQueryResult = ApolloReactCommon.QueryResult<GetIconsQuery, GetIconsQueryVariables>;
 export const GetItemsDocument = gql`
     query GetItems($categories: [enum_item_class_enum!]) {
   items: item(where: {class: {_in: $categories}}, order_by: {id: asc}) {
@@ -29857,4 +30733,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-25T06:26:30-06:00
+// graphql typescript defs generated on 2020-06-27T07:28:15-06:00

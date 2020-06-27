@@ -1,0 +1,19 @@
+.ManufacturerItemSelect {
+    @extend .VendorItemSelect;
+}
+
+.ManufacturerItemSelectNewSelectOption {
+    @extend .VendorItemSelectNewSelectOption;
+}
+
+.ManufacturerItemSelectDropdown {
+    @extend .VendorItemSelectDropdown;
+}
+
+.manufacturerItemOption {
+    @extend .vendorItemOption;
+}
+
+.manufacturerOption {
+    @extend .vendorOption;
+}
