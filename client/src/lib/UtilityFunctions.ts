@@ -413,8 +413,8 @@ export function deepEqual(objA: any, objB: any): objA is typeof objB {
 
 
 
-export interface TypedColumnProps<T> extends Omit<ColumnProps<T>, 'dataIndex' | 'key'> {
-    key: keyof T;
+export interface TypedColumnProps< T > extends Omit<ColumnProps<T>, 'dataIndex' | 'key'> {
+    key: keyof T | [ keyof T, keyof T[keyof T] ]
     dataIndex?: keyof T;
 }
 
