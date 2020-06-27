@@ -60,15 +60,15 @@ export class Order implements OrderDataProps {
     fulfilled_date?: Maybe<Scalars[ 'date' ]>;
     order_items: Array<OrderItem>;
     items_aggregate: OrderItemAggregate;
-    items_cost: Scalars[ 'money' ];
+    items_cost: Scalars[ 'numeric' ];
     payment_method?: Maybe<PaymentMethod>;
     payment_method_id?: Maybe<Scalars[ 'Int' ]>;
     placed_date: Scalars[ 'date' ];
     pon?: Maybe<Scalars[ 'String' ]>;
     shipments: Array<Shipment>;
     shipments_aggregate: ShipmentAggregate;
-    tax_cost: Scalars[ 'money' ];
-    total_cost: Scalars[ 'money' ];
+    tax_cost: Scalars[ 'numeric' ];
+    total_cost: Scalars[ 'numeric' ];
     url?: Maybe<Scalars[ 'String' ]>;
     vendor: Vendor;
     vendor_id: Scalars[ 'Int' ];

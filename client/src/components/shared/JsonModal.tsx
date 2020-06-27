@@ -27,7 +27,7 @@ export const JsonModal: React.FC<JsonModalProps> = ( props ) => {
         visible={true}
         className="JsonModal"
         // onOk={() => visibilityHandler(false)}
-        // onCancel={this.handleCancel}
+        onCancel={() => visibilityHandler( null )}
         footer={[
             <Button key="close" type="primary" onClick={() => visibilityHandler( null )}>
                 Close
@@ -40,19 +40,8 @@ export const JsonModal: React.FC<JsonModalProps> = ( props ) => {
     </Modal>;
 };
 
-// import React, { Component } from 'react';
-// import isEqual from 'lodash/isEqual';
-// import cloneDeep from 'lodash/cloneDeep';
-
-// import 'jsoneditor/dist/jsoneditor.css';
-
-// import './JSONEditorReact.css';
 
 
-// interface JsonEditorProps extends JSONEditorOptions {
-//     json: object;
-//     text: string;
-// }
 
 type JsonEditorProps = Union<{
     json: object;

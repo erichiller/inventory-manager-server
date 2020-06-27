@@ -16,6 +16,37 @@ fragment objectOrderFields on order {
     }
 }
 
+fragment basicOrderItemFields on order_item {
+    id
+    cost_item
+    cost_tax
+    cost_total
+    item_id
+    shipment_id
+    vendor_item_id
+    serial_no
+    quantity
+    order_id
+    manufacturer_item_id
+    # cost_item: numeric
+    # cost_tax: numeric
+    # cost_total: numeric
+    # id: Int!
+    # item: item! # An object relationship
+    # item_id: Int!
+    # manufacturer_item: manufacturer_item # An object relationship
+    # manufacturer_item_id: Int
+    # link to manufacturer item, which in turn links to item
+    # order: order! # An object relationship
+    # order_id: Int!
+    # quantity: numeric
+    # serial_no: String # individual items unique id (as provided by manufacturer)
+    # shipment: shipment # An object relationship
+    # shipment_id: Int
+    # vendor_item: vendor_item # An object relationship
+    # vendor_item_id: Int
+}
+
 query GetOrdersByDateRange($date_start_gte: date, $date_end_lte: date) {
     order(
         where: { placed_date: { _gte: $date_start_gte, _lte: $date_end_lte } }
@@ -73,7 +104,12 @@ query GetOrder($id: Int!) {
             order_id
             received_date
             shipped_date
-            shipping_carrier
+            carrier_vendor_id
+            carrier {
+                id
+                name
+                url
+            }
             tracking_id
             vendor_invoice_id
         }

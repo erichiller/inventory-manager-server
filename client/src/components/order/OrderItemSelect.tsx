@@ -90,6 +90,11 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                 suffixIcon={props.suffixIcon}
                 placeholder={props.placeholder}
                 dropdownClassName="OrderItemSelectDropdown"
+                onKeyDown={( e ) => {
+                    if ( e.nativeEvent.keyCode === 13 ) {
+                        e.preventDefault(); // keep Enter from submitting form within Selects so that autofill options can be triggered and selected.
+                    }
+                }}
                 onChange={( value, opt ) => {
                     console.log( "onChange", { value, opt } );
                     let arrayOfItemProps: { item_id: number; }[] = [];

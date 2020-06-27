@@ -19,6 +19,7 @@ import moment from 'moment';
 import { Store } from 'antd/lib/form/interface';
 import { PageSpin } from '../shared/PageSpin';
 import { Vendor } from '../../lib/Vendor/Vendor';
+import { UrlSelect } from '../shared/UrlInput';
 
 
 type VendorFormModalProps = Union<{
@@ -252,23 +253,7 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                     <Switch />
                 </Form.Item>
 
-                <Form.Item name="url" label="URL"
-                    // https://ant.design/components/form/#Rule
-                    // TODO: use a custom validator ( or onChange ) to load the url's icon / ico
-                    rules={[
-                        {
-                            required: true,
-                            pattern: /https?:\/\/.*/,
-                            message: 'Please enter a valid website for this Vendor.'
-                        },
-                    ]}
-                >
-                    {/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/url */}
-                    <Input
-                        type="url" // htmlFor="url" ?? 
-                        pattern="https?://.*"
-                    />
-                </Form.Item>
+                <UrlSelect name="product_url" label="URL" validationMessage="Please enter a valid website for this Vendor." required />
             </div>
 
         </Form>

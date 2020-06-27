@@ -1,0 +1,19 @@
+.ShipmentSelect {
+    @extend .VendorItemSelect;
+}
+
+.ShipmentSelectNewSelectOption {
+    @extend .VendorItemSelectNewSelectOption;
+}
+
+.ShipmentSelectDropdown {
+    @extend .VendorItemSelectDropdown;
+}
+
+.ShipmentOption {
+    @extend .vendorItemOption;
+}
+
+.shipmentOption {
+    @extend .vendorOption;
+}

@@ -25,9 +25,10 @@ fragment basicManufacturerItemFields on manufacturer_item {
       item_id
       manufacturer_id
       manufacturer_product_id
-      # TODO: Series ?
-      # the rest of the data is found via `item_id`
+      manufacturer_product_name
+      manufacturer_product_series
       product_url
+      description
 }
 
 query GetManufacturers {
@@ -44,12 +45,6 @@ query GetManufacturer($id: Int!) {
 	}
 }
 
-
-query GetManufacturerItems {
-	manufacturer_item {
-		...basicManufacturerItemFields
-	}
-}
 
 query SearchManufacturers($search_string: String) {
 	manufacturer(order_by: { id: asc }, where: { name: { _ilike: $search_string }}) {
@@ -86,27 +81,6 @@ $vendor: vendor_obj_rel_insert_input
         ...basicManufacturerFields
     }
 }
-
-# mutation UpdateManufacturer (
-# $id: Int!
-# $name: String!
-# $url: String
-# $vendor_id: Int
-# ) {
-#     manufacturer: update_manufacturer_by_pk(
-#     pk_columns: {
-#         id: $id, 
-#     }
-#     _set: {
-#         name: $name, 
-#         url: $url
-#         vendor_id: $vendor_id, 
-#     }
-#     ) {
-#         ...basicManufacturerFields
-#         ...objectManufacturerFields
-#     }
-# }
 
 mutation UpdateManufacturerUnchangedVendor (
 $id: Int!
@@ -173,5 +147,107 @@ $manufacturer_id: Int!
             name
             url
         }
+    }
+}
+
+
+###########################
+#### manufacturer_item ####
+###########################
+
+
+query GetManufacturerItems {
+	manufacturer_item {
+		...basicManufacturerItemFields
+	}
+}
+
+
+query SearchManufacturerItems (
+    $query_text: String!
+) {
+    item: search_item(
+        args: {
+            query_text: $query_text
+        }
+        where: {vendorItems: {}}
+    ) {
+        id
+        name: object(path: "name")
+        object
+        manufacturerItems {
+            ...basicManufacturerItemFields
+            manufacturer {
+                id
+                name
+                url
+            }
+        }
+    }
+}
+
+query GetManufacturerItem( $id: Int! ) {
+    manufacturer_item: manufacturer_item_by_pk(id: $id) {
+        ...basicManufacturerItemFields
+    }
+}
+
+mutation UpdateManufacturerItem (
+    $id: Int!
+    $item_id: Int!
+    $manufacturer_id: Int!
+    $manufacturer_product_id: String!
+    $manufacturer_product_name: String
+    $manufacturer_product_series: String
+    $product_url: String
+    $description: String
+) {
+    manufacturer_item: update_manufacturer_item_by_pk(
+    pk_columns: {
+        id: $id, 
+    }
+    _set: {
+        item_id: $item_id
+        manufacturer_id: $manufacturer_id
+        manufacturer_product_id: $manufacturer_product_id
+        manufacturer_product_name: $manufacturer_product_name
+        manufacturer_product_series: $manufacturer_product_series
+        product_url: $product_url
+        description: $description
+    }
+    ) {
+        ...basicManufacturerItemFields
+    }
+}
+mutation InsertManufacturerItem(
+    # id
+    $item_id: Int!
+    $manufacturer_id: Int!
+    $manufacturer_product_id: String!
+    $manufacturer_product_name: String
+    $manufacturer_product_series: String
+    $product_url: String
+    $description: String
+) {
+    manufacturer_item: insert_manufacturer_item_one(
+    object: {
+        item_id: $item_id
+        manufacturer_id: $manufacturer_id
+        manufacturer_product_id: $manufacturer_product_id
+        manufacturer_product_name: $manufacturer_product_name
+        manufacturer_product_series: $manufacturer_product_series
+        product_url: $product_url
+        description: $description
+    }
+    ) {
+        ...basicManufacturerItemFields
+    }
+}
+
+mutation DeleteManufacturerItem (
+$id: Int!
+) {
+    manufacturer_item: delete_manufacturer_item_by_pk(id: $id) {
+        ...basicManufacturerItemFields
     }
 }

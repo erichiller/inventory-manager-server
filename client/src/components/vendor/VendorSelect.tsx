@@ -77,6 +77,11 @@ export const VendorSelect: React.FC<VendorSelectProps> = ( props ) => {
                     //     }
                     // } );
                 }}
+                onKeyDown={( e ) => {
+                    if ( e.nativeEvent.keyCode === 13 ) {
+                        e.preventDefault(); // keep Enter from submitting form within Selects so that autofill options can be triggered and selected.
+                    }
+                }}
                 onChange={( value, opt ) => {
                     console.log( "onChange", { value, opt } );
                     let vendor_id: number = null;
