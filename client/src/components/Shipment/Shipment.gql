@@ -1,0 +1,116 @@
+
+fragment basicShipmentFields on shipment {
+    id # Int
+    order_id # Int
+    vendor_invoice_id # String
+    shipped_date # Date
+    received_date # Date!
+    tracking_id # String
+    carrier_vendor_id # Int!
+}
+
+fragment objectShipmentFields on shipment {
+	order {
+		...basicOrderFields
+	}
+    orderItems {
+        ...basicOrderItemFields
+    }
+    carrier {
+        id
+        name
+        url
+    }
+#     orderItems_aggregate {
+#       aggregate {
+#         count
+#       }
+#     }
+}
+
+query GetShipments {
+	shipment(order_by: { id: asc }) {
+		...basicShipmentFields
+		...objectShipmentFields
+	}
+}
+
+
+query GetShipment($id: Int!) {
+	shipment: shipment_by_pk(id: $id) {
+		...basicShipmentFields
+		...objectShipmentFields
+	}
+}
+
+
+query SearchShipments($search_string: String) {
+	shipment(
+        order_by: { id: asc }, 
+        where: { 
+            tracking_id: { _ilike: $search_string }
+        }
+    ) {
+        ...basicShipmentFields
+		...objectShipmentFields
+    }
+}
+
+
+mutation InsertShipment(
+    $vendor_invoice_id: String,
+    $tracking_id: String!, 
+    $carrier_vendor_id: Int!, 
+    $shipped_date: date, 
+    $received_date: date!, 
+    $order_id: Int
+) {
+    shipment: insert_shipment_one(
+        object: {
+        #   id: 10,
+            vendor_invoice_id: $vendor_invoice_id, 
+            tracking_id: $tracking_id, 
+            carrier_vendor_id: $carrier_vendor_id, 
+            shipped_date: $shipped_date, 
+            received_date: $received_date, 
+            order_id: $order_id
+        }
+    ) {
+        ...basicShipmentFields
+  }
+}
+
+mutation UpdateShipment(
+    $id: Int!,
+    $tracking_id: String!, 
+    $carrier_vendor_id: Int!, 
+    $received_date: date!, 
+    $shipped_date: date, 
+    $vendor_invoice_id: String,
+    $order_id: Int
+) {
+    shipment: update_shipment_by_pk(
+        pk_columns: {
+            id: $id, 
+        }
+        _set: {
+            vendor_invoice_id: $vendor_invoice_id, 
+            tracking_id: $tracking_id, 
+            carrier_vendor_id: $carrier_vendor_id, 
+            shipped_date: $shipped_date, 
+            received_date: $received_date, 
+            order_id: $order_id
+        }
+    ) {
+        ...basicShipmentFields
+  }
+}
+
+
+mutation DeleteShipment (
+$id: Int!
+) {
+    delete_shipment_by_pk(id: $id) {
+        ...basicShipmentFields
+    }
+}
