@@ -77,6 +77,7 @@ query GetOrder($id: Int!) {
         id
         fulfilled_date
         order_items {
+            id
             cost_item
             cost_tax
             cost_total

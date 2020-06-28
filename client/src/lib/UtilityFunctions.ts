@@ -2,10 +2,11 @@ import { Integer } from './types/uint8';
 import { Store } from 'antd/lib/form/interface';
 import { Item, ItemHardwareFastenerScrewMachine } from './item';
 import { EnumUnitKeys, SubType } from './types/UtilityTypes';
-import { EnumUnitEnum } from './types/graphql';
+import { EnumUnitEnum, Query, MutationRootInsertEnumItemCableConnectorArgs } from './types/graphql';
 import { GenericItem } from './item/Item';
 import { ColumnProps } from 'antd/lib/table';
 import { LabeledValue } from 'antd/lib/select';
+import { QueryResult } from 'react-apollo';
 
 export * from './types/UtilityTypes';
 
@@ -220,17 +221,20 @@ export function getDaysInMonth ( a: number | string, b?: number ): number {
 }
 
 
-
-// export function isNumberArray ( arg: any ): arg is number[] {
-//     if ( Array.isArray( arg ) ) {
-//         if ( arg.length !== 0 ) {
-//             if ( typeof arg[ 0 ] === "number" ) {
-//                 return true;
-//             }
-//         }
-//     }
-//     return false;
-// }
+/**
+ * Type Guard / Check for type equality to `number[]`
+ * @param arg variable to be checked for type === `number[]`
+ */
+export function isNumberArray ( arg: any ): arg is number[] {
+    if ( Array.isArray( arg ) ) {
+        if ( arg.length !== 0 ) {
+            if ( typeof arg[ 0 ] === "number" ) { // this is lazy and could be improved, but for now, fine.
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 
 // export function isStringArray ( arg: any ): arg is string[] {
@@ -476,3 +480,4 @@ export function commonFilterConfig<T> ( property: Extract<keyof T, string>, opti
         onFilter: ( value: string | number | boolean, record: T ) => record[ property as string ] === value,
     };
 }
+

@@ -18,7 +18,7 @@ interface OptionT extends OptionData {
 }
 type VT = SelectValue;
 
-interface VendorItemSelectValue extends Partial<Pick<VendorItem, 'id' | 'description' | 'item_id' | 'vendor_id' | 'vendor_sku'>> { }
+export interface VendorItemSelectValue extends Partial<Pick<VendorItem, 'id' | 'description' | 'item_id' | 'vendor_id' | 'vendor_sku'>> { }
 
 interface VendorItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
     forwardRef?: React.MutableRefObject<Input>;

@@ -17,7 +17,7 @@ import { PageSpin } from '../shared/PageSpin';
 import { UrlSelect } from '../shared/UrlInput';
 import TextArea from 'antd/lib/input/TextArea';
 import { VendorSelect } from '../Vendor/VendorSelect';
-import { OrderSelect } from '../order/OrderSelect';
+import { OrderSelect } from '../Order/OrderSelect';
 
 
 type ShipmentFormModalProps = Union<{

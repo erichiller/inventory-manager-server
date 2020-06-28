@@ -26840,7 +26840,7 @@ export type GetOrderQuery = (
     & Pick<Order, 'vendor_order_id' | 'vendor_id' | 'url' | 'total_cost' | 'tax_cost' | 'pon' | 'placed_date' | 'payment_method_id' | 'items_cost' | 'id' | 'fulfilled_date'>
     & { order_items: Array<(
       { __typename?: 'order_item' }
-      & Pick<OrderItem, 'cost_item' | 'cost_tax' | 'cost_total' | 'item_id' | 'manufacturer_item_id' | 'order_id' | 'quantity' | 'serial_no' | 'shipment_id' | 'vendor_item_id'>
+      & Pick<OrderItem, 'id' | 'cost_item' | 'cost_tax' | 'cost_total' | 'item_id' | 'manufacturer_item_id' | 'order_id' | 'quantity' | 'serial_no' | 'shipment_id' | 'vendor_item_id'>
     )>, order_items_aggregate: (
       { __typename?: 'order_item_aggregate' }
       & { aggregate?: Maybe<(
@@ -27064,11 +27064,11 @@ export type InsertShipmentMutation = (
 
 export type UpdateShipmentMutationVariables = Exact<{
   id: Scalars['Int'];
-  vendor_invoice_id?: Maybe<Scalars['String']>;
   tracking_id: Scalars['String'];
   carrier_vendor_id: Scalars['Int'];
-  shipped_date?: Maybe<Scalars['date']>;
   received_date: Scalars['date'];
+  shipped_date?: Maybe<Scalars['date']>;
+  vendor_invoice_id?: Maybe<Scalars['String']>;
   order_id?: Maybe<Scalars['Int']>;
 }>;
 
@@ -27366,6 +27366,19 @@ export type GetItemsQueryVariables = Exact<{
 
 
 export type GetItemsQuery = (
+  { __typename?: 'query_root' }
+  & { items: Array<(
+    { __typename?: 'item' }
+    & ItemFieldsFragment
+  )> }
+);
+
+export type GetItemsByIdQueryVariables = Exact<{
+  ids?: Maybe<Array<Scalars['Int']>>;
+}>;
+
+
+export type GetItemsByIdQuery = (
   { __typename?: 'query_root' }
   & { items: Array<(
     { __typename?: 'item' }
@@ -28871,6 +28884,7 @@ export const GetOrderDocument = gql`
     id
     fulfilled_date
     order_items {
+      id
       cost_item
       cost_tax
       cost_total
@@ -29472,7 +29486,7 @@ export type InsertShipmentMutationHookResult = ReturnType<typeof useInsertShipme
 export type InsertShipmentMutationResult = ApolloReactCommon.MutationResult<InsertShipmentMutation>;
 export type InsertShipmentMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertShipmentMutation, InsertShipmentMutationVariables>;
 export const UpdateShipmentDocument = gql`
-    mutation UpdateShipment($id: Int!, $vendor_invoice_id: String, $tracking_id: String!, $carrier_vendor_id: Int!, $shipped_date: date, $received_date: date!, $order_id: Int) {
+    mutation UpdateShipment($id: Int!, $tracking_id: String!, $carrier_vendor_id: Int!, $received_date: date!, $shipped_date: date, $vendor_invoice_id: String, $order_id: Int) {
   shipment: update_shipment_by_pk(pk_columns: {id: $id}, _set: {vendor_invoice_id: $vendor_invoice_id, tracking_id: $tracking_id, carrier_vendor_id: $carrier_vendor_id, shipped_date: $shipped_date, received_date: $received_date, order_id: $order_id}) {
     ...basicShipmentFields
   }
@@ -29507,11 +29521,11 @@ export function withUpdateShipment<TProps, TChildProps = {}, TDataName extends s
  * const [updateShipmentMutation, { data, loading, error }] = useUpdateShipmentMutation({
  *   variables: {
  *      id: // value for 'id'
- *      vendor_invoice_id: // value for 'vendor_invoice_id'
  *      tracking_id: // value for 'tracking_id'
  *      carrier_vendor_id: // value for 'carrier_vendor_id'
- *      shipped_date: // value for 'shipped_date'
  *      received_date: // value for 'received_date'
+ *      shipped_date: // value for 'shipped_date'
+ *      vendor_invoice_id: // value for 'vendor_invoice_id'
  *      order_id: // value for 'order_id'
  *   },
  * });
@@ -30351,6 +30365,52 @@ export function useGetItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHoo
 export type GetItemsQueryHookResult = ReturnType<typeof useGetItemsQuery>;
 export type GetItemsLazyQueryHookResult = ReturnType<typeof useGetItemsLazyQuery>;
 export type GetItemsQueryResult = ApolloReactCommon.QueryResult<GetItemsQuery, GetItemsQueryVariables>;
+export const GetItemsByIdDocument = gql`
+    query GetItemsById($ids: [Int!]) {
+  items: item(where: {id: {_in: $ids}}, order_by: {id: asc}) {
+    ...ItemFields
+  }
+}
+    ${ItemFieldsFragmentDoc}`;
+export type GetItemsByIdProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetItemsByIdQuery, GetItemsByIdQueryVariables>
+    } & TChildProps;
+export function withGetItemsById<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetItemsByIdQuery,
+  GetItemsByIdQueryVariables,
+  GetItemsByIdProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetItemsByIdQuery, GetItemsByIdQueryVariables, GetItemsByIdProps<TChildProps, TDataName>>(GetItemsByIdDocument, {
+      alias: 'getItemsById',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetItemsByIdQuery__
+ *
+ * To run a query within a React component, call `useGetItemsByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetItemsByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetItemsByIdQuery({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useGetItemsByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemsByIdQuery, GetItemsByIdQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetItemsByIdQuery, GetItemsByIdQueryVariables>(GetItemsByIdDocument, baseOptions);
+      }
+export function useGetItemsByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemsByIdQuery, GetItemsByIdQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetItemsByIdQuery, GetItemsByIdQueryVariables>(GetItemsByIdDocument, baseOptions);
+        }
+export type GetItemsByIdQueryHookResult = ReturnType<typeof useGetItemsByIdQuery>;
+export type GetItemsByIdLazyQueryHookResult = ReturnType<typeof useGetItemsByIdLazyQuery>;
+export type GetItemsByIdQueryResult = ApolloReactCommon.QueryResult<GetItemsByIdQuery, GetItemsByIdQueryVariables>;
 export const GetItemDocument = gql`
     query GetItem($id: Int!) {
   item: item_by_pk(id: $id) {
@@ -30733,4 +30793,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-27T07:28:15-06:00
+// graphql typescript defs generated on 2020-06-28T10:15:47-06:00

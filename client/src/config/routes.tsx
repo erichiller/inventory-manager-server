@@ -4,8 +4,8 @@ import { ItemTable } from '../components/item/ItemTable';
 import { LabelTable } from '../components/label/LabelTable';
 import { ItemIndex } from '../components/item/Index';
 import { ItemFormModal } from '../components/item/ItemFormModal';
-import { OrderTable } from '../components/order/OrderTable';
-import { VendorTable } from '../components/vendor/VendorTable';
+import { OrderTable } from '../components/Order/OrderTable';
+import { VendorTable } from '../components/Vendor/VendorTable';
 import { ManufacturerTable } from '../components/manufacturer/ManufacturerTable';
 import { ObjectTable } from '../components/generic/ObjectTable';
 

@@ -6,7 +6,7 @@ import { AutoComplete, Input, DatePicker, Select, Divider } from "antd";
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { InputProps } from "antd/lib/input";
-import { useGetManufacturerItemsLazyQuery, useSearchManufacturerItemsLazyQuery, useSearchManufacturerItemsQuery, ManufacturerItem } from "../../lib/types/graphql";
+import { useGetManufacturerItemsLazyQuery, useSearchManufacturerItemsLazyQuery, useSearchManufacturerItemsQuery, ManufacturerItem as ManufacturerItemGql } from "../../lib/types/graphql";
 import { PlusOutlined } from "@ant-design/icons";
 import { ManufacturerItemFormModal } from "./ManufacturerItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
@@ -18,7 +18,7 @@ interface OptionT extends OptionData {
 }
 type VT = SelectValue;
 
-interface ManufacturerItemSelectValue extends Partial<Pick<ManufacturerItem, 'id' | 'description' | 'item_id' | 'manufacturer_id' | 'manufacturer_product_id'>> { }
+export interface ManufacturerItemSelectValue extends Partial<Pick<ManufacturerItemGql, 'id' | 'description' | 'item_id' | 'manufacturer_id' | 'manufacturer_product_id'>> { }
 
 interface ManufacturerItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
     forwardRef?: React.MutableRefObject<Input>;

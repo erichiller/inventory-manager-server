@@ -6,7 +6,7 @@ import { Item } from '../../lib/item';
 import { ItemFormProps, FormMutationHandler } from '../../lib/item/Item';
 import TextArea from 'antd/lib/input/TextArea';
 import { QtyInput } from '../../lib/item/common/QtyInput';
-import { OrderSelect } from '../order/OrderSelect';
+import { OrderSelect } from '../Order/OrderSelect';
 import { useHistory } from 'react-router-dom';
 
 type ItemFormModalProps = {

@@ -16,7 +16,7 @@ interface OptionT {
 }
 type VT = SelectValue;
 
-export type ItemSelectProvidesValue = Array<{ item_id: number; }>;
+export type ItemSelectMultipleProvidesValue = Array<{ item_id: number; }>;
 
 // interface ItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange' | 'mode'> {
 //     forwardRef?: React.MutableRefObject<Input>;
@@ -48,7 +48,7 @@ type ItemSelectProps = Union<
         value?: VT;
     },
     {
-        onChange?: ( items: ItemSelectProvidesValue ) => void;
+        onChange?: ( items: ItemSelectMultipleProvidesValue ) => void;
         mode?: undefined | 'multiple' | 'tags';
     } |
     {

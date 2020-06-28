@@ -22,6 +22,7 @@ import { Order } from '../../lib/Order/Order';
 import TextArea from 'antd/lib/input/TextArea';
 import { CurlyBracesIcon } from '../../styles/icon';
 import { JsonModal } from '../shared/JsonModal';
+import { Store } from 'antd/lib/form/interface';
 
 
 type OrderFormModalProps = Union<{
@@ -231,7 +232,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
 
     return <Modal
         visible={true}
-        title="Order"
+        title={`Order` + ( 'id' in initialValues ? ` #${initialValues.id}` : '' )}
         width={650}
         onOk={e => {
             console.log( { class: 'OrderEditModal', method: 'onOk', e, values: form.getFieldsValue() } );
@@ -341,6 +342,9 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                                             return args;
                                         }}
                                         className="full-width-form-item"
+                                        normalize={ ( value: any, prevValue: any, allValues: Store) => {
+                                            return { data: value };
+                                        }}
                                     >
                                         <OrderItemInput placeholder="Search for Item"
                                             vendorId={form.getFieldValue("vendor_id")}
