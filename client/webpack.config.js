@@ -2,6 +2,8 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const dev = require('webpack-dev-server');
+// const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
     mode: "development",
@@ -9,14 +11,17 @@ module.exports = {
         // 'react-hot-loader/patch',
         './src/index.tsx' // your app's entry point
     ],
-    devtool: 'source-map',
+    devtool: 'cheap-module-eval-source-map',
+    // devtool: 'source-map',  // this worked, trying cheap-module-eval-source-map
     // devtool: 'inline-source-map',
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: /node_modules/
+                // use: 'ts-loader',
+                loader: 'ts-loader',
+                // exclude: /node_modules/,  // not required, by default it doesn't
+                options: { transpileOnly: true }
             },
 
             {
@@ -96,6 +101,7 @@ module.exports = {
         path: path.resolve('.', 'dist'),
         publicPath: "/"
     },
+    // https://webpack.js.org/configuration/dev-server/
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
         // do not print bundle build stats
@@ -109,12 +115,25 @@ module.exports = {
         port: 80,
         host: '0.0.0.0',
         disableHostCheck: true,   // insecure , should use `public: 'inventory.hiller.pro`
+        transportMode: 'ws'
+
+        // clientLogLevel: 'warning',
+        // open: true,
+        // stats: 'errors-only'
     },
     plugins: [
+
+        new ForkTsCheckerWebpackPlugin({
+            // eslint: {
+            //     files: './src/**/*.{ts,tsx,js,jsx}' // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
+            // }
+        }),
+        // new ForkTsCheckerNotifierWebpackPlugin({ title: 'TypeScript', excludeWarnings: false }),
         // new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, 'src', 'index.html')
+            // template: path.resolve(__dirname, 'src', 'index.html')
+            inject: true, // testing
+            template: 'src/index.html'
         }),
         new webpack.EnvironmentPlugin({
             NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined

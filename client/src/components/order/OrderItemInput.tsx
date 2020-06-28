@@ -1,34 +1,35 @@
 import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'react';
 import { Form, Input, Divider, Tooltip, InputNumber, Switch, Row, Col, Button, message } from 'antd';
 // import { OptionsType } from 'rc-select/lib/Option';
-import { ItemFormProps } from '../../lib/item/Item';
-import { ItemBundle, OrderItem, VendorItem as VendorItemGql, OrderItemInsertInput, VendorItemInsertInput, ManufacturerItemInsertInput, ShipmentInsertInput } from '../../lib/types/graphql';
+import { VendorItem as VendorItemGql, OrderItem as OrderItemGql, VendorItemInsertInput, ManufacturerItemInsertInput, ShipmentInsertInput } from '../../lib/types/graphql';
 import TextArea from 'antd/lib/input/TextArea';
 
-import { toMinimumFixed, Union } from '../../lib/UtilityFunctions';
+import { toMinimumFixed, Union, SubType } from '../../lib/UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { ItemSelect, ItemSelectProvidesValue } from '../item/ItemSelect';
-import { useForm } from 'antd/lib/form/Form';
 import { InputProps } from 'antd/lib/input';
-import { OrderItemSelect } from './OrderItemSelect';
+import { OrderItemSelect, OrderItemSelectSingleValue } from './OrderItemSelect';
 import { Integer } from '../../lib/types/uint8';
 import { useHistory, useLocation } from 'react-router-dom';
-import { VendorItemSelect } from '../vendor/VendorItemSelect';
-import { ManufacturerItemSelect } from '../manufacturer/ManufacturerItemSelect';
-import { ShipmentSelect } from '../Shipment/ShipmentSelect';
+import { VendorItemSelect, VendorItemSelectValue } from '../Vendor/VendorItemSelect';
+import { ManufacturerItemSelect, ManufacturerItemSelectValue } from '../manufacturer/ManufacturerItemSelect';
+import { ShipmentSelect, ShipmentSelectValue } from '../Shipment/ShipmentSelect';
 
 
-interface OrderItemDefinition extends Omit<OrderItemInsertInput, 'order_id'> {
-
+// interface OrderItemDefinition extends Omit<Partial<OrderItemGql>, 'order_id'> {
+interface OrderItemInputValue extends Partial<SubType<OrderItemGql, string | number>> {
+    vendor_item: VendorItemSelectValue;
+    manufacturer_item: ManufacturerItemSelectValue;
+    shipment: ShipmentSelectValue;
+    item_id: number;
 }
 
 interface OrderItemInputProps extends Omit<InputProps, 'value' | 'onChange'> {
     // placeholder:'value' | 'onChange'> {
     // forwardRef?: React.MutableRefObject<Input>;
-    value?: OrderItemDefinition;
+    value?: OrderItemInputValue;
     // onChange?: ( items: { item_id: number; }[] ) => void;
-    onChange?: ( item: OrderItemDefinition ) => void;
+    onChange?: ( item: OrderItemInputValue ) => void;
     vendorId: Integer;
 }
 
@@ -50,20 +51,20 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
         setModal( modal );
     };
 
-    const setItemId = ( value: ItemSelectProvidesValue ) => {
+    const setItemId = ( value: OrderItemSelectSingleValue ) => {
         console.log( "setItem", { value } );
-        let item_id: number = null;
-        // unpack value from ItemSelect
-        if ( value && Array.isArray( value ) ) {
-            if ( value.length !== 1 ) {
-                message.error( "Invalid Input received from ItemSelect" );
-            } else {
-                item_id = value[ 0 ].item_id;
-            }
-        }
+        // let item_id: number = null;
+        // // unpack value from ItemSelect
+        // if ( value && Array.isArray( value ) ) {
+        //     if ( value.length !== 1 ) {
+        //         message.error( "Invalid Input received from ItemSelect" );
+        //     } else {
+        //         item_id = value[ 0 ].item_id;
+        //     }
+        // }
         onChange( {
             ...props.value,
-            item_id: item_id
+            item_id: value
         } );
     };
 
@@ -102,25 +103,25 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
             serial_no: event.target.value
         } );
     };
-    const setVendorItem = ( vendor_item: Partial<VendorItemInsertInput> ) => {
+    const setVendorItem = ( vendor_item: Partial<VendorItemSelectValue> ) => {
         console.log( "setVendorItem", vendor_item );
         onChange( {
             ...props.value,
-            ...( vendor_item.id ? { vendor_item_id: vendor_item.id } : { vendor_item: { data: vendor_item } } )
+            ...( vendor_item.id ? { vendor_item_id: vendor_item.id } : { vendor_item: vendor_item } )
         } );
     };
-    const setManufacturerItem = ( manufacturer_item: Partial<ManufacturerItemInsertInput> ) => {
+    const setManufacturerItem = ( manufacturer_item: Partial<ManufacturerItemSelectValue> ) => {
         console.log( "setManufacturerItem", manufacturer_item );
         onChange( {
             ...props.value,
-            ...( manufacturer_item.id ? { manufacturer_item_id: manufacturer_item.id } : { manufacturer_item: { data: manufacturer_item } } )
+            ...( manufacturer_item.id ? { manufacturer_item_id: manufacturer_item.id } : { manufacturer_item: manufacturer_item } )
         } );
     };
-    const setShipment = ( shipment: Partial<ShipmentInsertInput> ) => {
+    const setShipment = ( shipment: Partial<ShipmentSelectValue> ) => {
         console.log( "setShipment", shipment );
         onChange( {
             ...props.value,
-            ...( shipment.id ? { shipment_id: shipment.id } : { shipment: { data: shipment } } )
+            ...( shipment.id ? { shipment_id: shipment.id } : { shipment: shipment } )
         } );
     };
 
@@ -129,15 +130,19 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
             {modal}
             <span id="OrderItemSelectContainer">
                 <OrderItemSelect placeholder="Search for Item"
-                    mode={null}
+                    mode="single"
                     onChange={setItemId}
                     suffixIcon={props.suffix}
                     vendorId={props.vendorId}
+                    defaultValue={ props.value.item_id}
                 />
                 <span id="ItemExtraInfo">
                     <VendorItemSelect onChange={setVendorItem} />
                     <ManufacturerItemSelect onChange={setManufacturerItem} />
-                    <Input name="serial_no" onChange={setSerialNo} placeholder="Serial #" />
+                    <Input name="serial_no" 
+                            defaultValue={props.value.serial_no}
+                            onChange={setSerialNo} 
+                            placeholder="Serial #" />
                 </span>
             </span>
             <Input name="quantity" 

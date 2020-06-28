@@ -5,6 +5,7 @@
         "emitDecoratorMetadata": true,
         "esModuleInterop": true,
         "experimentalDecorators": true,
+        // "importsNotUsedAsValues": "preserve", // this breaks type-only imports
         "jsx": "react",
         // "jsx": "preserve", // this must be react unless using whatever create-react-app uses
         "module": "esnext",

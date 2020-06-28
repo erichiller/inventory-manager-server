@@ -64,6 +64,8 @@
     "@types/uuid": "8.0.0",
     "@types/webpack-env": "1.15.2",
     "css-loader": "3.6.0",
+    "fork-ts-checker-notifier-webpack-plugin": "^3.0.0",
+    "fork-ts-checker-webpack-plugin": "^5.0.5",
     "fs": "^0.0.1-security",
     "graphql-tag": "2.10.3",
     "graphql-tools": "6.0.11",

@@ -6,7 +6,7 @@ import { AutoComplete, Input, DatePicker, Select, Divider } from "antd";
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { InputProps } from "antd/lib/input";
-import { useGetShipmentsLazyQuery, useSearchShipmentsLazyQuery, useSearchShipmentsQuery, Shipment, ShipmentInsertInput } from "../../lib/types/graphql";
+import { useGetShipmentsLazyQuery, useSearchShipmentsLazyQuery, useSearchShipmentsQuery, Shipment as ShipmentGql, ShipmentInsertInput } from "../../lib/types/graphql";
 import { PlusOutlined } from "@ant-design/icons";
 import { ShipmentFormModal } from "./ShipmentFormModal";
 import { useHistory, useLocation } from "react-router-dom";
@@ -19,7 +19,7 @@ interface OptionT extends OptionData {
 }
 type VT = SelectValue;
 
-interface ShipmentSelectValue extends Partial<ShipmentInsertInput> { }
+export interface ShipmentSelectValue extends Partial<ShipmentGql> { }
 // interface ShipmentSelectValue extends Partial<Pick<Shipment, 'id' | 'order_id' | 'vendor_invoice_id' | 'shipped_date' | 'received_date' | 'tracking_id' | 'shipping_carrier'>> { }
 
 type ShipmentSelectProps = Union<
