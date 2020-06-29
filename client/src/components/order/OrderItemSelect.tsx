@@ -166,9 +166,9 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
         return opts.map( v => {
             console.log( "select with options", v );
             return <Select.Option
-            selec
                 key={v.variant_id | v.item_id} 
-                value={v.item_id.toString()}>
+                value={v.item_id}>
+                {/* value={v.item_id.toString()}> */}
                     {v.label}
                 </Select.Option>;
             //TODO - how to encode multi-value item, vendor, manufacturer
@@ -197,6 +197,7 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                 // defaultValue={defaultValue}
                 // defaultValue={defaultOptionElements}
                 defaultValue={defaultIds}
+                // defaultValue={defaultIds.length === 1 ? defaultIds[0].toString() : defaultIds.toString()}
                 onChange={( value, opt ) => {
                     // console.log( "onChange", { value, opt } );
                     // let arrayOfItemProps: { item_id: number; }[] = [];
