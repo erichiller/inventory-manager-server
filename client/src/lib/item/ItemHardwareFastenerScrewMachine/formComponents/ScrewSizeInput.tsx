@@ -8,7 +8,7 @@ import { InputProps } from "antd/lib/input";
 
 import ScrewSizeConfig from '../config/ScrewSizeOptions.json';
 import { eliminateArrayDuplicates, transparentLog, toTitleCase, filterObjectKeysWithProperty, matchFirstOfArrayOrNull, parseIntSafe, parseFloatSafeWithDefault, EnumUnitKeys } from "../../../UtilityFunctions";
-import { PitchDefinitions, DiameterDefinitionBase } from "../types/ScrewSizeOption";
+import type { PitchDefinitions, DiameterDefinitionBase } from "../types/ScrewSizeOption";
 
 console.log( { ScrewSizeConfig} );
 

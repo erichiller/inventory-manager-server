@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Konva from "konva";
 import ReactKonva, { KonvaNodeComponent, Transformer } from 'react-konva';
-import { KonvaEventObject } from "konva/types/Node";
+import type { KonvaEventObject } from "konva/types/Node";
 import { Item } from '../../../lib/item';
 import { DrawContext, DrawContextAdditions } from '../LabelDraw';
 import { LabelQR } from '../../../lib/LabelConstituent';
