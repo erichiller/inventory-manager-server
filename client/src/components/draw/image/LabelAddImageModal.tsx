@@ -1,4 +1,4 @@
-import { KonvaEventObject } from 'konva/types/Node';
+import type { KonvaEventObject } from 'konva/types/Node';
 import { Component, useState, useEffect } from 'react';
 import { Select, Tooltip, Button } from 'antd';
 import { DISPLAY } from '../../../lib/types/enums';

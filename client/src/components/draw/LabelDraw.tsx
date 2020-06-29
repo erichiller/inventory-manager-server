@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Stage } from 'react-konva';
-import { KonvaEventObject } from 'konva/types/Node';
+import type { KonvaEventObject } from 'konva/types/Node';
 import { Button, Tooltip, message } from 'antd';
 import { MedicineBoxOutlined, FontSizeOutlined, QrcodeOutlined, PictureOutlined, PlusCircleOutlined } from '@ant-design/icons';
 

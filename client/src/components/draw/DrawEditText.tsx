@@ -1,4 +1,4 @@
-import { KonvaEventObject } from 'konva/types/Node';
+import type { KonvaEventObject } from 'konva/types/Node';
 import { Component, useContext, useState } from 'react';
 import { DISPLAY } from '../../lib/types/enums';
 import React from 'react';

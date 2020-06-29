@@ -9,7 +9,7 @@ import { Spin, InputNumber, Input } from "antd";
 
 import { GetPrinterStatusQuery, GetPrinterStatusDocument } from "../../lib/types/graphql";
 import { DrawContext } from "../draw/LabelDraw";
-import { KonvaEventObject } from 'konva/types/Node';
+import type { KonvaEventObject } from 'konva/types/Node';
 import { TapeColorMap } from '../../lib/types/labelCanvasColors';
 import { LabelQR, LabelText, LabelImage } from '../../lib/LabelConstituent';
 
