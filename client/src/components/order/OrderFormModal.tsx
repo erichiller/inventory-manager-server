@@ -134,6 +134,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
     const onFinish = ( values: {
         [ name: string ]: any;
     } ) => {
+        // URGENT: need to wrap **ANY** **OBJECTS** within { data: <object> } BEFORE INSERT / UPDATE / ETC
         console.log( { class: 'OrderEditModal', method: 'onFinish', values, order, formFieldValues: form.getFieldsValue() } );
         if ( orderId ) {
             // set to InsertOrderMutationVariables rather than UpdateOrderMutationVariables here because thats what the form contains
@@ -342,9 +343,9 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                                             return args;
                                         }}
                                         className="full-width-form-item"
-                                        normalize={ ( value: any, prevValue: any, allValues: Store) => {
-                                            return { data: value };
-                                        }}
+                                        // normalize={ ( value: any, prevValue: any, allValues: Store) => {
+                                        //     return { data: value };
+                                        // }}
                                     >
                                         <OrderItemInput placeholder="Search for Item"
                                             vendorId={form.getFieldValue("vendor_id")}
