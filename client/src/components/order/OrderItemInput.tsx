@@ -52,7 +52,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
     };
 
     const setItemId = ( value: OrderItemSelectSingleValue ) => {
-        console.log( "setItem", { value } );
+        console.log( { c: 'OrderItemInput', f: "setItem", value } );
         // let item_id: number = null;
         // // unpack value from ItemSelect
         // if ( value && Array.isArray( value ) ) {
@@ -69,56 +69,56 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
     };
 
     const setQuantity = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log( "setQuantity", event.target.value );
+        console.log( { c: 'OrderItemInput', f: "setQuantity", event_value: event.target.value } );
         onChange( {
             ...props.value,
             quantity: event.target.valueAsNumber
         } );
     };
     const setSerialNo = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log( "setSerialNo", event.target.value );
+        console.log( { c: 'OrderItemInput', f: "setSerialNo", event_value: event.target.value });
         onChange( {
             ...props.value,
             serial_no: event.target.value
         } );
     };
     const setCostItem = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log( "setCostItem", event.target.value );
+        console.log( { c: 'OrderItemInput', f: "setCostItem", event_value: event.target.value} );
         onChange( {
             ...props.value,
             serial_no: event.target.value
         } );
     };
     const setCostTax = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log( "setCostTax", event.target.value );
+        console.log( { c: 'OrderItemInput', f: "setCostTax", event_value: event.target.value} );
         onChange( {
             ...props.value,
             serial_no: event.target.value
         } );
     };
     const setCostTotal = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log( "setCostTotal", event.target.value );
+        console.log( { c: 'OrderItemInput', f: "setCostTotal", event_value: event.target.value} );
         onChange( {
             ...props.value,
             serial_no: event.target.value
         } );
     };
     const setVendorItem = ( vendor_item: Partial<VendorItemSelectValue> ) => {
-        console.log( "setVendorItem", vendor_item );
+        console.log( { c: 'OrderItemInput', f: "setVendorItem", vendor_item });
         onChange( {
             ...props.value,
             ...( vendor_item.id ? { vendor_item_id: vendor_item.id } : { vendor_item: vendor_item } )
         } );
     };
     const setManufacturerItem = ( manufacturer_item: Partial<ManufacturerItemSelectValue> ) => {
-        console.log( "setManufacturerItem", manufacturer_item );
+        console.log( { c: 'OrderItemInput', f: "setManufacturerItem", manufacturer_item} );
         onChange( {
             ...props.value,
             ...( manufacturer_item.id ? { manufacturer_item_id: manufacturer_item.id } : { manufacturer_item: manufacturer_item } )
         } );
     };
     const setShipment = ( shipment: Partial<ShipmentSelectValue> ) => {
-        console.log( "setShipment", shipment );
+        console.log( { c: 'OrderItemInput', f: "setShipment", shipment });
         onChange( {
             ...props.value,
             ...( shipment.id ? { shipment_id: shipment.id } : { shipment: shipment } )
@@ -128,23 +128,28 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
     return (
         <div className="OrderItemInput">
             {modal}
+
             <span id="OrderItemSelectContainer">
                 <OrderItemSelect placeholder="Search for Item"
                     mode="single"
                     onChange={setItemId}
                     suffixIcon={props.suffix}
                     vendorId={props.vendorId}
-                    defaultValue={ props.value.item_id}
+                    defaultValue={ props.value.item_id }
                 />
+
                 <span id="ItemExtraInfo">
-                    <VendorItemSelect onChange={setVendorItem} />
+                    <VendorItemSelect defaultValue={props.value.vendor_item_id || props.value.vendor_item} onChange={setVendorItem} />
+
                     <ManufacturerItemSelect onChange={setManufacturerItem} />
+
                     <Input name="serial_no" 
                             defaultValue={props.value.serial_no}
                             onChange={setSerialNo} 
                             placeholder="Serial #" />
                 </span>
             </span>
+
             <Input name="quantity" 
                     defaultValue={props.value.quantity}
                     aria-valuemin={1} 
@@ -160,6 +165,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                         onChange={setCostItem} 
                         placeholder="item" />
             </span>
+
             <span id="cost_tax">
                 <Input name="cost_tax"
                     defaultValue={props.value.cost_tax}
@@ -170,6 +176,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                     onChange={setCostTax}
                     placeholder="tax" />
             </span>
+
             <span id="cost_total">
                 <Input name="cost_total"
                     defaultValue={props.value.cost_total}
@@ -180,7 +187,9 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                     onChange={setCostTotal}
                     placeholder="total" />
             </span >
+
             <ShipmentSelect excludeOrderInput onChange={setShipment} />
+
         </div>
     );
 

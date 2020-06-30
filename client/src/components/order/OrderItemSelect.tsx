@@ -91,19 +91,20 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
     console.log( { c: "OrderItemSelect", e: "init", props, data, loading, error, defaultItemQueryResult, defaultIds, options } );
 
     useEffect( () => {
+        console.log( "OrderItemSelect: calling initial useEffect", defaultItemQueryResult)
         if ( defaultIds && defaultItemQueryResult.called === false ){
             console.log("runDefaultItemQuery")
             runDefaultItemQuery( ); 
         }
         if ( data && ( !options || options.length === 0 ) ) {
-            console.log( 'OrderItemSelect: data is already present', data ); 
+            console.log( 'OrderItemSelect: data is already present', data, options ); 
             setOptionsFromVariants();
         }
         if ( defaultItemQueryResult.data && ( !options || options.length === 0 ) ) {
-            console.log( 'OrderItemSelect: defaultItemQueryResult is already present', defaultItemQueryResult ); 
+            console.log( 'OrderItemSelect: defaultItemQueryResult is already present', defaultItemQueryResult, options ); 
             setOptionsFromItems();
         }
-    });
+    }, []);
     useEffect( () => {
         if ( !loading && !error && data ) {
             console.log( { c: "OrderItemSelect", f: "useEffect", e: "loading and error ok", data } );
@@ -181,7 +182,6 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
             return <Select.Option
                 key={v.variant_id | v.item_id} 
                 value={v.item_id}>
-                {/* value={v.item_id.toString()}> */}
                     {v.label}
                 </Select.Option>;
             //TODO - how to encode multi-value item, vendor, manufacturer
@@ -192,6 +192,7 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
         return <Spin />
     }
 
+    // KILL: debug with  /(OrderItemSelect|OrderItemInput)/
     return (
         <div className={`OrderItemSelect ${ props.className ?? '' }`}>
             <Select
@@ -207,23 +208,8 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                         e.preventDefault(); // keep Enter from submitting form within Selects so that autofill options can be triggered and selected.
                     }
                 }}
-                // defaultValue={defaultValue}
-                // defaultValue={defaultOptionElements}
                 defaultValue={defaultIds}
-                // defaultValue={defaultIds.length === 1 ? defaultIds[0].toString() : defaultIds.toString()}
                 onChange={( value, opt ) => {
-                    // console.log( "onChange", { value, opt } );
-                    // let arrayOfItemProps: { item_id: number; }[] = [];
-                    // if ( typeof value === "number" ) {
-                    //     arrayOfItemProps = [ { item_id: value } ];
-                    // } else if ( typeof value === "string" ) {
-                    //     arrayOfItemProps = [ { item_id: parseInt( value ) } ];
-                    // } else if ( "key" in value ) {
-                    //     arrayOfItemProps = [ { item_id: ( typeof value.value === "number" ? value.value : parseInt( value.value ) ) } ];
-                    // } else if ( Array.isArray( value ) && value.length > 0 ) {
-                    //     value.forEach( e => typeof e === "number" ? arrayOfItemProps.push( { item_id: e } ) : arrayOfItemProps.push( { item_id: parseInt( e ) } ) );
-                    // }
-                    // onChange( arrayOfItemProps );
                     console.log( { cls: 'orderItemSelect', evt: "onChange", value, opt } );
                     if ( is<( input: number ) => void>( onChange, props.mode === null || props.mode === "single" ) ) {
                         onChange( parseIntSafe( value ) );
@@ -233,10 +219,6 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                             arrayOfItemProps = [ { item_id: value } ];
                         } else if ( typeof value === "string" ) {
                             arrayOfItemProps = [ { item_id: parseInt( value ) } ];
-                        // } else if ( "key" in value ) {
-                        //     arrayOfItemProps = [ { item_id: ( typeof value.value === "number" ? value.value : parseInt( value.value ) ) } ];
-                        // } else if ( Array.isArray( value ) && value.length > 0 ) {
-                        //     value.forEach( e => typeof e === "number" ? arrayOfItemProps.push( { item_id: e } ) : arrayOfItemProps.push( { item_id: parseInt( e ) } ) );
                         }
                         onChange( arrayOfItemProps );
                     }

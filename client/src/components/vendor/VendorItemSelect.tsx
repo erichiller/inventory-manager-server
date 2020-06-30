@@ -6,7 +6,7 @@ import { AutoComplete, Input, DatePicker, Select, Divider } from "antd";
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { InputProps } from "antd/lib/input";
-import { useGetVendorItemsLazyQuery, useSearchVendorItemsLazyQuery, useSearchVendorItemsQuery, VendorItem } from "../../lib/types/graphql";
+import { useGetVendorItemsLazyQuery, useSearchVendorItemsLazyQuery, useSearchVendorItemsQuery, VendorItem, VendorItemInsertInput } from "../../lib/types/graphql";
 import { PlusOutlined } from "@ant-design/icons";
 import { VendorItemFormModal } from "./VendorItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
@@ -16,7 +16,8 @@ interface OptionT extends OptionData {
     label?: string | ReactElement;
     id: number;
 }
-type VT = SelectValue;
+
+type VT = number | VendorItemInsertInput;
 
 export interface VendorItemSelectValue extends Partial<Pick<VendorItem, 'id' | 'description' | 'item_id' | 'vendor_id' | 'vendor_sku'>> { }
 
@@ -34,6 +35,18 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
     const [ searchText, setSearchText ] = useState<string>( "" );
     const [ options, setOptions ] = useState<OptionT[]>( [] );
 
+    const defaultIds: Array< number | undefined > = [
+        ...(
+            typeof props.value === "number" ?
+                [ props.value ] : (
+                    props.value ? [ props.value.id ] : [] )
+        ),
+        ...(
+            typeof props.defaultValue === "number" ?
+                [ props.defaultValue ] : (
+                    props.defaultValue ? [ props.defaultValue.id ] : [] )
+        )
+    ];
 
     const [ modal, setModal ] = useState<React.ReactElement>( null );
     const history = useHistory();
@@ -89,6 +102,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                 className="VendorItemSelect"
                 placeholder="Vendor Item"
                 dropdownClassName="VendorItemSelectDropdown"
+                defaultValue={defaultIds}
                 onSearch={value => {
                     console.log( { event: "onSearch", setSearchText: value } );
                     setSearchText( value );
@@ -126,8 +140,8 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                         vendorItem_id = value;
                     } else if ( typeof value === "string" ) {
                         vendorItem_id = parseInt( value );
-                    } else if ( "key" in value ) {
-                        vendorItem_id = typeof value.value === "number" ? value.value : parseInt( value.value );
+                    // } else if ( "key" in value ) {
+                    //     vendorItem_id = typeof value.value === "number" ? value.value : parseInt( value.value );
                     }
                     onChange( {
                         id: vendorItem_id,
@@ -138,7 +152,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                     } );
                 }}
                 options={options}
-                {...( value ? { defaultValue: props.value } : {} )}
+                // {...( value ? { defaultValue: props.value } : {} )}
             />
         </React.Fragment>
     );
