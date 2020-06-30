@@ -17,6 +17,7 @@ module.exports = {
     module: {
         rules: [
             {
+                // https://www.npmjs.com/package/ts-loader
                 test: /\.tsx?$/,
                 // use: 'ts-loader',
                 loader: 'ts-loader',

@@ -74,7 +74,7 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                     props.defaultValue ? [ props.defaultValue.id ] : [] )
         )
     ];
-    let defaultOptionElements: JSX.Element[] = [];
+    // let defaultOptionElements: JSX.Element[] = [];
     const [ searchText, setSearchText ] = useState<string>();
     const [ options, setOptions ] = useState<OptionT[]>( [] );
     const { data, loading, error } = useGetItemVariantsQuery( {
@@ -95,71 +95,84 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
             console.log("runDefaultItemQuery")
             runDefaultItemQuery( ); 
         }
-    })
-    useEffect( () => {
-        if ( !loading && !error ) {
-            console.log( { c: "OrderItemSelect", f: "useEffect", e: "loading and error ok", data } );
-            setOptions( data.item_variant.map( v => {
-                let ManufacturerIcon = v.manufacturer ? new Manufacturer( v.manufacturer ).icon : null;
-                let VendorIcon = v.vendor ? new Vendor( v.vendor ).icon : null;
-                console.log( "adding option object for ", {
-                    variant_id: v.id,
-                    item_id: v.item_id,
-                    manufacturer_id: v.manufacturer?.id,
-                    vendor_id: v.vendor?.id
-                } );
-                return {
-                    variant_id: v.id,
-                    item_id: v.item_id,
-                    manufacturer_id: v.manufacturer?.id,
-                    vendor_id: v.vendor?.id,
-                    label: <span className="orderItemOption">
-                        {/* {<v.icon />} // TODO */}
-                        <span>{v.name}</span>
-                        <span>{v.vendor?.name}</span>
-                        <span>{VendorIcon ? <VendorIcon /> : null}</span>
-
-                        <span>{v.object?.description || v.id}</span>
-                        <span>{v.manufacturer?.name}</span>
-                        <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span>
-                    </span>
-                    // TODO: Set value to the applicable string, feed value up that is the `order_id`
-                };
-            } ) );
+        if ( data && ( !options || options.length === 0 ) ) {
+            console.log( 'OrderItemSelect: data is already present', data ); 
+            setOptionsFromVariants();
         }
-        // URGENT: Also need to add things from past query, still in defaultItemQueryResult.data, but there was never a change.
+        if ( defaultItemQueryResult.data && ( !options || options.length === 0 ) ) {
+            console.log( 'OrderItemSelect: defaultItemQueryResult is already present', defaultItemQueryResult ); 
+            setOptionsFromItems();
+        }
+    });
+    useEffect( () => {
+        if ( !loading && !error && data ) {
+            console.log( { c: "OrderItemSelect", f: "useEffect", e: "loading and error ok", data } );
+            setOptionsFromVariants();
+        }
         if ( !defaultItemQueryResult.loading && !defaultItemQueryResult.error && defaultItemQueryResult.data ) {
-            let defaultOptions = defaultItemQueryResult.data.items.map( v => {
-                // let ManufacturerIcon = v.manufacturer ? new Manufacturer( v.manufacturer ).icon : null;
-                // let VendorIcon = v.vendor ? new Vendor( v.vendor ).icon : null;
-                console.log( "adding option object for ", {
-                    item_id: v.id,
-                    // item_id: v.item_id,
-                    // manufacturer_id: v.manufacturer?.id,
-                    // vendor_id: v.vendor?.id
-                } );
-                return {
-                    // variant_id: v.id,
-                    item_id: v.id,
-                    // manufacturer_id: v.manufacturer?.id,
-                    // vendor_id: v.vendor?.id,
-                    label: <span className="orderItemOption">
-                        {/* {<v.icon />} // TODO */}
-                        <span>{v.name}</span>
-                        {/* <span>{v.vendor?.name}</span> */}<span></span>
-                        {/* <span>{VendorIcon ? <VendorIcon /> : null}</span> */}<span></span>
-
-                        <span>{v.object?.description || v.id}</span>
-                        {/* <span>{v.manufacturer?.name}</span> */}<span></span>
-                        {/* <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span> */}<span></span>
-                    </span>
-                    // TODO: Set value to the applicable string, feed value up that is the `order_id`
-                };
-            } );
-            defaultOptionElements = optionsToOptionElements(defaultOptions);
-            setOptions( defaultOptions );
+            setOptionsFromItems();
         }
     }, [ loading, data, defaultItemQueryResult.data ] );
+
+    const setOptionsFromVariants = () => {
+        setOptions( data.item_variant.map( v => {
+            let ManufacturerIcon = v.manufacturer ? new Manufacturer( v.manufacturer ).icon : null;
+            let VendorIcon = v.vendor ? new Vendor( v.vendor ).icon : null;
+            console.log( "adding option object for ", {
+                variant_id: v.id,
+                item_id: v.item_id,
+                manufacturer_id: v.manufacturer?.id,
+                vendor_id: v.vendor?.id
+            } );
+            return {
+                variant_id: v.id,
+                item_id: v.item_id,
+                manufacturer_id: v.manufacturer?.id,
+                vendor_id: v.vendor?.id,
+                label: <span className="orderItemOption">
+                    {/* {<v.icon />} // TODO */}
+                    <span>{v.name}</span>
+                    <span>{v.vendor?.name}</span>
+                    <span>{VendorIcon ? <VendorIcon /> : null}</span>
+
+                    <span>{v.object?.description || v.id}</span>
+                    <span>{v.manufacturer?.name}</span>
+                    <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span>
+                </span>
+                // TODO: Set value to the applicable string, feed value up that is the `order_id`
+            };
+        } ) );
+    }
+
+    const setOptionsFromItems = () => {
+        setOptions( defaultItemQueryResult.data.items.map( v => {
+            // let ManufacturerIcon = v.manufacturer ? new Manufacturer( v.manufacturer ).icon : null;
+            // let VendorIcon = v.vendor ? new Vendor( v.vendor ).icon : null;
+            console.log( "adding option object for ", {
+                item_id: v.id,
+                // item_id: v.item_id,
+                // manufacturer_id: v.manufacturer?.id,
+                // vendor_id: v.vendor?.id
+            } );
+            return {
+                // variant_id: v.id,
+                item_id: v.id,
+                // manufacturer_id: v.manufacturer?.id,
+                // vendor_id: v.vendor?.id,
+                label: <span className="orderItemOption">
+                    {/* {<v.icon />} // TODO */}
+                    <span>{v.name}</span>
+                    {/* <span>{v.vendor?.name}</span> */}<span></span>
+                    {/* <span>{VendorIcon ? <VendorIcon /> : null}</span> */}<span></span>
+
+                    <span>{v.object?.description || v.id}</span>
+                    {/* <span>{v.manufacturer?.name}</span> */}<span></span>
+                    {/* <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span> */}<span></span>
+                </span>
+                // TODO: Set value to the applicable string, feed value up that is the `order_id`
+            };
+        } ));
+    }
 
 
     const optionsToOptionElements: ( opts: typeof options ) => JSX.Element[] = ( opts ) => {
