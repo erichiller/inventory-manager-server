@@ -36,8 +36,33 @@ export type PropertyTypeMatch<T, M> = Pick<T, {
 
 export type ObjectColumnProperty<T> = Partial<Extract<keyof T, string>> | [ keyof T, Extract<keyof T[ keyof T ], string> ];
 
+
+/**
+ * EnumUnit as string literal
+ */
 export type EnumUnitKeys = keyof typeof EnumUnitEnum;
 
+/**
+ * Type with only certain keys made partial
+ * @example
+ * interface OriginalType {
+ *     propA: string;
+ *     propB?: number;
+ *     propC: number;
+ * }
+ * type PartiallyPartialOriginalType = PartialPartial<OriginalType, 'propC'>;
+ * // `PartiallyPartialOriginalType` is now:
+ * // {
+ * //     propA: string;
+ * //     propB?: number;
+ * //     propC?: number;
+ * //     
+ * // }
+ */
+export type PartialPartial<T, K extends keyof T> = Union<
+    Omit<T, K>,
+    Partial<Pick<T, K>>
+>;
 
 
 
