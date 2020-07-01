@@ -11,9 +11,7 @@ import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrder
 import { QueryResultTypePlus, Union, filterObject } from '../../lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
-import { useForm } from 'antd/lib/form/util';
-import { QueryResult } from 'react-apollo';
-import { ItemSelect } from '../item/ItemSelect';
+import { useForm } from 'antd/lib/form/Form';
 import { VendorSelect } from '../Vendor/VendorSelect';
 import moment from 'moment';
 import { OrderItemInput } from './OrderItemInput';
@@ -22,7 +20,6 @@ import { Order } from '../../lib/Order/Order';
 import TextArea from 'antd/lib/input/TextArea';
 import { CurlyBracesIcon } from '../../styles/icon';
 import { JsonModal } from '../shared/JsonModal';
-import { Store } from 'antd/lib/form/interface';
 
 
 type OrderFormModalProps = Union<{

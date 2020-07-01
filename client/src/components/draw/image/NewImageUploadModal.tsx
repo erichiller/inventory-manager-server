@@ -7,7 +7,7 @@ import { Item } from "../../../lib/item";
 import { DISPLAY } from '../../../lib/types/enums';
 import { DrawContext } from "../LabelDraw";
 import { UploadOutlined } from '@ant-design/icons';
-import { useForm } from 'antd/lib/form/util';
+import { useForm } from 'antd/lib/form/Form';
 
 
 

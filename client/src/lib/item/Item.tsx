@@ -126,13 +126,19 @@ export class Item<T extends GenericItem> {
 
 
     /**
-     * Return an array of items from input Gql results
-     * @param results Output from Item GraphQL query (data)
+     * Return an constructed Item(s) from input Gql results.
+     * @param gqlResultsData Output from Item GraphQL query, the object at `<gqlQueryResult>.<itemType>.data`  
+     *                       Can be singular or an array.
+     * @returns returns a singular `Item` or an `Array<Item>` depending upon input
      */
-    static ItemsFactory ( results: GenericItem[] ): Array<Item<any>> {
-        // static ItemFactory ( results: GenericItem[] ): Item<GenericItem>[] {
+    static ItemsFactory ( gqlResultData: GenericItem ): Item<any>;
+    static ItemsFactory ( gqlResultData: GenericItem[] ): Array<Item<any>>;
+    static ItemsFactory ( gqlResultData: GenericItem | GenericItem[] ): Array<Item<any>> | Item<any> {
+        if ( !gqlResultData ) {
+            return null;
+        }
         let items: Item<any>[] = [];
-        results.forEach( i => {
+        ( Array.isArray( gqlResultData ) ? gqlResultData : [ gqlResultData ]).forEach( i => {
             let cls = this.getClassForType( i.class || i.__typename );
             if ( ! cls ) {
                 throw `class '${ i.class }' (__typename: '${ i.__typename }') is not registered in 'getClassForType', received '${ cls}' `;
@@ -141,6 +147,9 @@ export class Item<T extends GenericItem> {
             // console.log( { _cls: "Item", method: 'ItemsFactory', msg: "loading class of type", item_class: cls, item_class_name: cls.name } );
             items.push( new cls( i ) );
         } );
+        if ( ! Array.isArray( gqlResultData) ){
+            return items[0];
+        }
         return items;
     }
 
