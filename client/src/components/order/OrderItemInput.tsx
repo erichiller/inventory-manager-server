@@ -139,14 +139,17 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                 />
 
                 <span id="ItemExtraInfo">
-                    <VendorItemSelect defaultValue={props.value.vendor_item_id || props.value.vendor_item} onChange={setVendorItem} />
+                    <VendorItemSelect
+                        defaultValue={props.value.vendor_item_id || props.value.vendor_item} 
+                        onChange={setVendorItem} />
 
-                    <ManufacturerItemSelect onChange={setManufacturerItem} />
+                    <ManufacturerItemSelect 
+                        onChange={setManufacturerItem} />
 
                     <Input name="serial_no" 
-                            defaultValue={props.value.serial_no}
-                            onChange={setSerialNo} 
-                            placeholder="Serial #" />
+                        defaultValue={props.value.serial_no}
+                        onChange={setSerialNo} 
+                        placeholder="Serial #" />
                 </span>
             </span>
 

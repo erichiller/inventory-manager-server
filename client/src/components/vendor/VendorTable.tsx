@@ -78,7 +78,7 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
         console.log( "updating vendor objects from result.data" );
         if ( result.data ) {
             console.log("updating vendor objects from result.data");
-            setVendors( Vendor.ItemsFactory( result.data.vendor ) );
+            setVendors( Vendor.VendorsFactory( result.data.vendor ) );
         }
     }, [ result.data ] );
 

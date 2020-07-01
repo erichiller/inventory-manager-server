@@ -38,6 +38,7 @@ interface VendorDataProps extends Pick<ApolloQueryResult<GetVendorQuery>['data']
     'name' |
     'url' |
     'account_id'
+    // URGENT
     // FIXME - `manufacturer` needs fixing - this is a hack-ish work-around because hasura does not allow inserting related objects when the relation column is on the far side object. However, with arrays it does.
     // 'manufacturer'
     > {
@@ -111,7 +112,7 @@ export class Vendor implements VendorDataProps {
      * Return an array of `Vendor`s from input Gql results
      * @param results Output from `GetVendor` GraphQL query (`data` property)
      */
-    static ItemsFactory ( results: VendorsGql ): Array<Vendor> {
+    static VendorsFactory ( results: VendorsGql ): Array<Vendor> {
         return results.map( vendorGql => new Vendor( vendorGql ));
     }
 
