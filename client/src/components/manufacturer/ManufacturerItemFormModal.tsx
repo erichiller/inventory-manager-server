@@ -10,7 +10,7 @@ import { GetManufacturerItemQuery, GetManufacturerItemQueryVariables, useGetManu
 
 import { QueryResultTypePlus, Union, filterObject, deepCopy } from '../../lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
-import { useForm } from 'antd/lib/form/util';
+import { useForm } from 'antd/lib/form/Form';
 import { ItemSelect } from '../item/ItemSelect';
 import { ManufacturerSelect } from './ManufacturerSelect';
 import { PageSpin } from '../shared/PageSpin';

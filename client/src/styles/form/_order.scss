@@ -34,12 +34,13 @@
 .orderItemOption {
     // @extend .orderOption;
     display: grid;
-    grid-template-columns: auto auto 30px; // item.name | item.description ; (vendor|manufacturer).icon ; (vendor|manufacturer).name
+    grid-template-columns: 30px auto auto 30px; // item.name | item.description ; (vendor|manufacturer).icon ; (vendor|manufacturer).name
     grid-template-rows: 25px 25px;
     & img {
         width: 24px;
         height: initial;
         align-self: center;
+        grid-row-start: span 2;
     }
     & span:nth-of-type(1) {
         font-weight: bolder;

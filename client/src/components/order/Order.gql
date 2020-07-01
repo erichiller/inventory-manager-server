@@ -302,7 +302,11 @@ query GetItemVariants (
         }
     ) {
         id
-        item_id
+        item {
+            id
+            __typename
+            class
+        }
         name: object(path: "name")
         object
         vendor {

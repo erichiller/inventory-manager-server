@@ -26941,9 +26941,12 @@ export type GetItemVariantsQuery = (
   { __typename?: 'query_root' }
   & { item_variant: Array<(
     { __typename?: 'item_variant' }
-    & Pick<ItemVariant, 'id' | 'item_id' | 'object'>
+    & Pick<ItemVariant, 'id' | 'object'>
     & { name: ItemVariant['object'] }
-    & { vendor?: Maybe<(
+    & { item?: Maybe<(
+      { __typename: 'item' }
+      & Pick<Item, 'id' | 'class'>
+    )>, vendor?: Maybe<(
       { __typename?: 'vendor' }
       & Pick<Vendor, 'id' | 'name' | 'url'>
     )>, manufacturer?: Maybe<(
@@ -29134,7 +29137,11 @@ export const GetItemVariantsDocument = gql`
     query GetItemVariants($query_text: String!, $prefer_vendor_id: Int) {
   item_variant: search_item_variant(args: {query_text: $query_text}, where: {_or: [{vendor_id: {_eq: $prefer_vendor_id}}, {vendor_id: {_is_null: true}}]}, order_by: {vendor_id: asc, manufacturer_id: asc, id: asc}) {
     id
-    item_id
+    item {
+      id
+      __typename
+      class
+    }
     name: object(path: "name")
     object
     vendor {
@@ -30793,4 +30800,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-06-28T10:15:47-06:00
+// graphql typescript defs generated on 2020-07-01T06:14:22-06:00

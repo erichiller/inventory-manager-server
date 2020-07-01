@@ -11,7 +11,7 @@ import { GetManufacturerQuery, GetManufacturerQueryVariables, useGetManufacturer
 import { QueryResultTypePlus, Union, filterObject, deepCopy } from '../../lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
-import { useForm } from 'antd/lib/form/util';
+import { useForm } from 'antd/lib/form/Form';
 import { QueryResult } from 'react-apollo';
 import { ItemSelect } from '../item/ItemSelect';
 import { ManufacturerSelect } from './ManufacturerSelect';

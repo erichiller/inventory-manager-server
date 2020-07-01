@@ -11,6 +11,7 @@ import { useGetOrdersByDateRangeQuery, useGetItemsQuery, useGetItemVariantsQuery
 import { Integer } from "../../lib/types/uint8";
 import { Manufacturer } from "../../lib/Manufacturer/Manufacturer";
 import { Vendor } from "../../lib/Vendor/Vendor";
+import { Item } from "../../lib/item";
 
 
 interface OptionT {
@@ -121,21 +122,21 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
             let VendorIcon = v.vendor ? new Vendor( v.vendor ).icon : null;
             console.log( "adding option object for ", {
                 variant_id: v.id,
-                item_id: v.item_id,
+                item_id: v.item.id,
                 manufacturer_id: v.manufacturer?.id,
                 vendor_id: v.vendor?.id
             } );
+            let item = Item.ItemsFactory( v.item );
             return {
                 variant_id: v.id,
-                item_id: v.item_id,
+                item_id: v.item.id,
                 manufacturer_id: v.manufacturer?.id,
                 vendor_id: v.vendor?.id,
                 label: <span className="orderItemOption">
-                    {/* {<v.icon />} // TODO */}
+                    {<item.icon />}
                     <span>{v.name}</span>
                     <span>{v.vendor?.name}</span>
                     <span>{VendorIcon ? <VendorIcon /> : null}</span>
-
                     <span>{v.object?.description || v.id}</span>
                     <span>{v.manufacturer?.name}</span>
                     <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span>
@@ -155,13 +156,15 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                 // manufacturer_id: v.manufacturer?.id,
                 // vendor_id: v.vendor?.id
             } );
+
+            let item = Item.ItemsFactory( v );
             return {
                 // variant_id: v.id,
                 item_id: v.id,
                 // manufacturer_id: v.manufacturer?.id,
                 // vendor_id: v.vendor?.id,
                 label: <span className="orderItemOption">
-                    {/* {<v.icon />} // TODO */}
+                    {<item.icon />}
                     <span>{v.name}</span>
                     {/* <span>{v.vendor?.name}</span> */}<span></span>
                     {/* <span>{VendorIcon ? <VendorIcon /> : null}</span> */}<span></span>
