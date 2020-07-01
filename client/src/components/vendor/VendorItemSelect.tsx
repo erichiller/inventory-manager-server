@@ -6,10 +6,12 @@ import { AutoComplete, Input, DatePicker, Select, Divider } from "antd";
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { InputProps } from "antd/lib/input";
-import { useGetVendorItemsLazyQuery, useSearchVendorItemsLazyQuery, useSearchVendorItemsQuery, VendorItem, VendorItemInsertInput } from "../../lib/types/graphql";
+import { useGetVendorItemsLazyQuery, useSearchVendorItemsLazyQuery, useSearchVendorItemsQuery, VendorItem as VendorItemGql, VendorItemInsertInput, UpdateVendorItemMutationVariables } from "../../lib/types/graphql";
 import { PlusOutlined } from "@ant-design/icons";
 import { VendorItemFormModal } from "./VendorItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
+import { Vendor } from "../../lib/Vendor/Vendor";
+import { QueryResultTypePlus, Unpacked, PartialPartial } from "../../lib/UtilityFunctions";
 
 
 interface OptionT extends OptionData {
@@ -17,15 +19,17 @@ interface OptionT extends OptionData {
     id: number;
 }
 
-type VT = number | VendorItemInsertInput;
+type VT = number | Partial<UpdateVendorItemMutationVariables>;
 
-export interface VendorItemSelectValue extends Partial<Pick<VendorItem, 'id' | 'description' | 'item_id' | 'vendor_id' | 'vendor_sku'>> { }
+export interface VendorItemSelectValue extends Partial<Pick<VendorItemGql, 'id' | 'description' | 'item_id' | 'vendor_id' | 'vendor_sku'>> { }
 
 interface VendorItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
     forwardRef?: React.MutableRefObject<Input>;
     value?: VT;
     // onChange?: ( id: number ) => void;
     onChange?: ( vendor_item: VendorItemSelectValue ) => void;
+
+    // URGENT: provide item_id ; and only show vendor_id that matches this.
 }
 /**
  * Form Select Input for VendorItems
@@ -48,6 +52,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
         )
     ];
 
+    console.log( "VendorItemSelect: init, received props", { props_defaultValue: props.defaultValue, defaultIds, props } );
     const [ modal, setModal ] = useState<React.ReactElement>( null );
     const history = useHistory();
     const location = useLocation();
@@ -66,6 +71,35 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
         }
         // skip: state.loading
     } );
+    // KILL: /(OrderItemInput|VendorItemSelect)/
+    // URGENT: allow to feed in array or singular
+    // URGENT STOPPED HERE  !!!!!!!!!!!!!
+    // const updateOptionsFromVendorItem = async ( v: PartialPartial<
+        // Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]>, 'id' | 'vendor' | 'vendor_sku'> ) => {
+    const updateOptionsFromVendorItem = async ( v: Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]> | Partial<UpdateVendorItemMutationVariables> ) => {
+            let vendor: Vendor;
+        if ( 'vendor_id' in v ) {
+            vendor = await Vendor.VendorFactory( { id: v.vendor_id } );
+        } else if ( 'vendor' in v ) {
+            vendor = new Vendor( v.vendor );
+        }
+        setOptions( [{
+            id: v.id,
+            value: v.id,
+            label: <span className="vendorItemOption">
+                <vendor.icon />
+                {/* <span>{v.vendor.name}</span> */}
+                <span>{v.vendor_sku}</span>
+                {/* <span>#{v.vendorItem_order_id}</span> */}
+            </span>
+            // TODO: Set value to the applicable string, feed value up that is the `order_id`
+        }] )
+    }
+    useEffect( () => {
+        if ( props.defaultValue && typeof props.defaultValue !== "number" && ! props.defaultValue.id ){
+            updateOptionsFromVendorItem(props.defaultValue);
+        }
+    }, [props.defaultValue])
     useEffect( () => {
         if ( !loading && !error ) {
             console.log( { class: "VendorItemSelect", "action": "useEffect", event: "loading and error ok", data } );
@@ -73,20 +107,10 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
             data.item.forEach( item => {
                 item.vendorItems.forEach( v => {
                     console.log( "outputting option", v );
-                    opts.push( {
-                        id: v.id,
-                        value: v.id,
-                        label: <span className="vendorItemOption">
-                            {v && v.vendor.url ? <img src={`${ v.vendor.url }/favicon.ico`} /> : null}
-                            {/* <span>{v.vendor.name}</span> */}
-                            <span>{v.vendor_sku}</span>
-                            {/* <span>#{v.vendorItem_order_id}</span> */}
-                        </span>
-                        // TODO: Set value to the applicable string, feed value up that is the `order_id`
-                    } );
+                    updateOptionsFromVendorItem(v);
                 } );
             } );
-            setOptions( opts );
+            // setOptions( opts );
         }
     }, [ loading, data ] );
     useEffect( () => {
