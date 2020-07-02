@@ -1,7 +1,7 @@
 import { Integer } from './types/uint8';
 import { Store } from 'antd/lib/form/interface';
 import { Item, ItemHardwareFastenerScrewMachine } from './item';
-import { EnumUnitKeys, SubType } from './types/UtilityTypes';
+import { EnumUnitKeys, SubType, Unpacked } from './types/UtilityTypes';
 import { EnumUnitEnum, Query, MutationRootInsertEnumItemCableConnectorArgs } from './types/graphql';
 import { GenericItem } from './item/Item';
 import { ColumnProps } from 'antd/lib/table';
@@ -481,3 +481,49 @@ export function commonFilterConfig<T> ( property: Extract<keyof T, string>, opti
     };
 }
 
+/**
+ * Take an array of objects, select on of each objects properties values, and create a flat array
+ * @param arr The array of objects to start with
+ * @param property A string property of `arr` which will be flattened
+ * @example
+ * let arr = [
+ *      {
+ *          propA: [ 1 , 2 , 3]
+ *      },
+ *      {
+ *          propA: 4
+ *      },
+ *      {
+ *          propA: [5 , 6]
+ *      }
+ * ]
+ * flatArrayObjectProperty(arr, 'propA');
+ * // returns [ 1, 2, 3, 4, 5, 6 ] of type `number[]`
+ */
+export function flatArrayObjectProperty<T extends SubType<T, string>, K extends keyof T>( arr: T[], property: K): Array< Unpacked<T[K]> > {
+    let ret: Array<Unpacked<T[ K ]>> = [];
+    arr.forEach( ( obj => {
+        let propertyValue = obj[property];
+        if ( Array.isArray( propertyValue ) ){
+            propertyValue.forEach( v => {
+                ret.push(v);
+            });
+        } else {
+            ret.push(propertyValue);
+        }
+    }))
+    return ret;
+}
+// // TODO add this test
+// let arr = [
+//      {
+//          propA: [ 1 , 2 , 3]
+//      },
+//      {
+//          propA: 4
+//      },
+//      {
+//          propA: [5 , 6]
+//      }
+// ]
+// let test = flatArrayObjectProperty(arr, 'propA');
