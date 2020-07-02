@@ -503,7 +503,7 @@ export function commonFilterConfig<T> ( property: Extract<keyof T, string>, opti
 export function flatArrayObjectProperty<T extends SubType<T, string>, K extends keyof T>( arr: T[], property: K): Array< Unpacked<T[K]> > {
     let ret: Array<Unpacked<T[ K ]>> = [];
     arr.forEach( ( obj => {
-        let propertyValue = obj[property];
+        let propertyValue: Array< T[K] > = obj[property];
         if ( Array.isArray( propertyValue ) ){
             propertyValue.forEach( v => {
                 ret.push(v);
@@ -514,7 +514,7 @@ export function flatArrayObjectProperty<T extends SubType<T, string>, K extends 
     }))
     return ret;
 }
-// // TODO add this test
+// // CREATETEST
 // let arr = [
 //      {
 //          propA: [ 1 , 2 , 3]
@@ -527,3 +527,4 @@ export function flatArrayObjectProperty<T extends SubType<T, string>, K extends 
 //      }
 // ]
 // let test = flatArrayObjectProperty(arr, 'propA');
+// // should be `let test: number[]`

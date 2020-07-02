@@ -1,5 +1,5 @@
 import { SelectProps, SelectValue, LabeledValue } from "antd/lib/select";
-import React, { useState, useEffect, ReactElement } from "react";
+import React, { useState, useEffect, ReactElement, useRef } from "react";
 import { AutoComplete, Input, DatePicker, Select, Divider } from "antd";
 
 
@@ -11,7 +11,8 @@ import { PlusOutlined } from "@ant-design/icons";
 import { VendorItemFormModal } from "./VendorItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
 import { Vendor } from "../../lib/Vendor/Vendor";
-import { QueryResultTypePlus, Unpacked, PartialPartial } from "../../lib/UtilityFunctions";
+import { QueryResultTypePlus, Unpacked, PartialPartial, flatArrayObjectProperty } from "../../lib/UtilityFunctions";
+import { useAsyncHook } from "../../lib/useAsyncHook";
 
 
 interface OptionT extends OptionData {
@@ -38,6 +39,9 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
     const { onChange, value, ...remainingProps } = props;
     const [ searchText, setSearchText ] = useState<string>( "" );
     const [ options, setOptions ] = useState<OptionT[]>( [] );
+    const [asyncQuery, setAsyncQuery] = useState<() => Promise<any>>();
+
+    const [ vendors, asyncLoading ] = useAsyncHook(asyncQuery);
 
     const defaultIds: Array< number | undefined > = [
         ...(
@@ -76,43 +80,48 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
     // URGENT STOPPED HERE  !!!!!!!!!!!!!
     // const updateOptionsFromVendorItem = async ( v: PartialPartial<
         // Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]>, 'id' | 'vendor' | 'vendor_sku'> ) => {
-    const updateOptionsFromVendorItem = async ( v: Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]> | Partial<UpdateVendorItemMutationVariables> ) => {
+    async function updateOptionsFromVendorItem ( arr: Array<Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]> | Partial<UpdateVendorItemMutationVariables> > ) {
+        if ( ! Array.isArray(arr) ){ return null; }
+        let f = arr.map( async (v) => {
             let vendor: Vendor;
-        if ( 'vendor_id' in v ) {
-            vendor = await Vendor.VendorFactory( { id: v.vendor_id } );
-        } else if ( 'vendor' in v ) {
-            vendor = new Vendor( v.vendor );
-        }
-        setOptions( [{
-            id: v.id,
-            value: v.id,
-            label: <span className="vendorItemOption">
-                <vendor.icon />
-                {/* <span>{v.vendor.name}</span> */}
-                <span>{v.vendor_sku}</span>
-                {/* <span>#{v.vendorItem_order_id}</span> */}
-            </span>
-            // TODO: Set value to the applicable string, feed value up that is the `order_id`
-        }] )
+            if ( 'vendor_id' in v ) {
+                vendor = await Vendor.VendorFactory( { id: v.vendor_id } );
+            } else if ( 'vendor' in v ) {
+                vendor = new Vendor( v.vendor );
+            }
+            return {
+                id: v.id,
+                value: v.id,
+                label: <span className="vendorItemOption">
+                    <vendor.icon />
+                    {/* <span>{v.vendor.name}</span> */}
+                    <span>{v.vendor_sku}</span>
+                    {/* <span>#{v.vendorItem_order_id}</span> */}
+                </span>
+                // TODO: Set value to the applicable string, feed value up that is the `order_id`
+            }
+        });
     }
     useEffect( () => {
-        if ( props.defaultValue && typeof props.defaultValue !== "number" && ! props.defaultValue.id ){
-            updateOptionsFromVendorItem(props.defaultValue);
-        }
-    }, [props.defaultValue])
-    useEffect( () => {
-        if ( !loading && !error ) {
-            console.log( { class: "VendorItemSelect", "action": "useEffect", event: "loading and error ok", data } );
-            let opts: OptionT[] = [];
-            data.item.forEach( item => {
-                item.vendorItems.forEach( v => {
-                    console.log( "outputting option", v );
-                    updateOptionsFromVendorItem(v);
-                } );
-            } );
-            // setOptions( opts );
-        }
-    }, [ loading, data ] );
+        setAsyncQuery( () => updateOptionsFromVendorItem( [
+            ...( props.defaultValue && typeof props.defaultValue !== "number" && !props.defaultValue.id
+                ? [ props.defaultValue ]
+                : [] ),
+            ...( data && data.item ? flatArrayObjectProperty( data.item, 'vendorItems' ) : [] )
+        ] ) );
+        setOptions( vendors );
+        
+        console.log( { class: "VendorItemSelect", "action": "useEffect", event: "loading and error ok", data } );
+        //     let opts: OptionT[] = [];
+        //     data.item.forEach( item => {
+        //         item.vendorItems.forEach( v => {
+        //             console.log( "outputting option", v );
+        //             updateOptionsFromVendorItem(v);
+        //         } );
+        //     } );
+        //     // setOptions( opts );
+        // }
+    }, [ loading, data, vendors ] );
     useEffect( () => {
         console.log( "VendorItemSelect -- value changed" );
     }, [ value ] );
