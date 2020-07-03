@@ -1,4 +1,4 @@
-import { QueryHookOptions, QueryResult } from 'react-apollo';
+import { QueryHookOptions, QueryResult, BaseQueryOptions } from 'react-apollo';
 import { EnumUnitEnum, Exact } from './graphql';
 
 
@@ -10,11 +10,17 @@ export type Union<A, B, C = {}, D = {}, E = {}, F = {}> = A & B & C & D & E & F;
  * @see {@link https://www.typescriptlang.org/docs/handbook/interfaces.html#difference-between-the-static-and-instance-sides-of-classes Difference between the static and instance sides of classes}
  * @see {@link https://www.typescriptlang.org/docs/handbook/classes.html#static-properties Static Properties on Classes in TypeScript}
  */
-export type ClassType<T, StaticProps = {}> = Union<
-    // T, 
-    StaticProps, // TODO: ideally this would be inferred automatically as the `static` properties of `T`
-    new (...args: any[]) => T
+export type ClassType<
+    T extends new ( ...args: any ) => any,
+    // StaticProps = {}, 
+    // ConstructorArgs = any
+> = Union<
+    T, 
+    // StaticProps, // TODO: ideally this would be inferred automatically as the `static` properties of `T`
+    // ConstructorArgsT<T>
+    new (...args: ConstructorParameters<T>) => T
 >;
+// type ConstructorArgsT<T> = new (...args: T extends new (...args: infer P) => any ? P : never ) => T;
 
 // export type ClassType2<T> = Union <
 //     { [ K in keyof T ]: T[ K ] },
@@ -39,15 +45,8 @@ export type Unpacked<T> =
 
 /**
  * Replicate the type definition for a `useQuery...`
- * (alias) function useGetVendorItemQuery(
- * baseOptions?: ApolloReactHooks.QueryHookOptions<
- *      GetVendorItemQuery, GetVendorItemQueryVariables
- * >): ApolloReactCommon.QueryResult<
- * GetVendorItemQuery, Exact<{
-    id: number;
-}>>
  */
-export type IQuery<TQuery, TVariables> = ( baseOptions?: QueryHookOptions<TQuery, TVariables> ) => QueryResult<TQuery, TVariables>;
+export type IQuery<TQuery, TVariables extends BaseQueryOptions['variables']> = ( baseOptions?: QueryHookOptions<TQuery, TVariables> ) => QueryResult<TQuery, TVariables>;
 
 export type QueryResultReturnKey<Q extends IQuery<any, any>> = keyof Omit<Exclude<ReturnType<Q>[ 'data' ], undefined>, '__typename'>;
 

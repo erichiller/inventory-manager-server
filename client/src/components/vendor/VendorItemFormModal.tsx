@@ -159,7 +159,7 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
         console.debug( "no vendor data; awaiting data" );
         return <PageSpin />;
     }
-    let initialValues: Partial<VendorItemGql> = vendorItem ?? {};
+    let initialValues: Partial<typeof vendorItem> = vendorItem ?? {};
 
     return <Modal
         visible={true}

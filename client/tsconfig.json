@@ -1,4 +1,4 @@
-// https://www.typescriptlang.org/tsconfig
+// https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 {
     "compilerOptions": {
         "allowJs": true, // new
@@ -17,6 +17,23 @@
         // "skipLibCheck": true, // turning off is new
         "sourceMap": true,
         "target": "es2019",
+        /**
+         * https://dev.to/cooperdev/restructure-with-ease-thanks-to-typescript-path-mappings-4b0e
+         * https: //www.staging-typescript.org/tsconfig#paths
+         * https: //www.staging-typescript.org/docs/handbook/module-resolution.html#path-mapping
+        **/
+        "paths": {
+            "~lib/*": [
+                "lib/*"
+            ]
+            // "~app/*": [
+            //     "app/*"
+            // ],
+            // "~environments": [
+            //     "environments/environment"
+            // ],
+        },
+        "baseUrl": "src"
     },
     "include": [
         "src/**/*",

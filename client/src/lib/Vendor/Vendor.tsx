@@ -1,6 +1,6 @@
 
 import {
-    Vendor as VendorGql,
+    // Vendor as VendorGql,
     GetVendorsQueryHookResult,
     Icon,
     Label,
@@ -14,7 +14,9 @@ import {
     VendorItemAggregate,
     PaymentMethod,
     Shipment,
-    ShipmentAggregate
+    ShipmentAggregate,
+    useGetVendorItemQuery,
+    useGetVendorQuery
 } from "../types/graphql";
 
 import { Integer } from '../types/uint8';
@@ -31,6 +33,7 @@ import { rejects } from "assert";
 import { CategoryHierarchyT, IconComponentT, FormMutationHandler } from "../item/Item";
 import { ShoppingCartOutlined, ShopOutlined, CheckOutlined } from "@ant-design/icons";
 import { ApolloQueryResult } from "apollo-client";
+import { AsyncIcon } from "components/Shared/AsyncIcon";
 
 interface VendorDataProps extends Pick<ApolloQueryResult<GetVendorQuery>['data']['vendor'],
     '__typename' |
@@ -39,7 +42,7 @@ interface VendorDataProps extends Pick<ApolloQueryResult<GetVendorQuery>['data']
     'url' |
     'account_id'
     // URGENT
-    // FIXME - `manufacturer` needs fixing - this is a hack-ish work-around because hasura does not allow inserting related objects when the relation column is on the far side object. However, with arrays it does.
+    // FIX - `manufacturer` needs fixing - this is a hack-ish work-around because hasura does not allow inserting related objects when the relation column is on the far side object. However, with arrays it does.
     // 'manufacturer'
     > {
     // nothing to add
@@ -59,18 +62,22 @@ export class Vendor implements VendorDataProps {
     url?: string;
     manufacturer?: { id: Integer; }; 
 
-    constructor ( props: Partial<ApolloQueryResult<GetVendorQuery>[ 'data' ][ 'vendor' ]> ) {
+    constructor ( props: Partial<ApolloQueryResult<GetVendorQuery>[ 'data' ][ 'vendor' ]> | Partial<ApolloQueryResult<GetVendorQuery>[ 'data' ]> ) {
+        let inputData = ( ! ( 'vendor' in props )) ? props : props['vendor'];
         // constructor( props: Partial<T>){
         // if (!props) return;
         // this.Vendor = props;
         // this.id = props.id;
-        for( let key in props ){
-            this[key] = props[key];
+        for ( let key in inputData ){
+            console.log(`constructing vendor, ${key} = ${inputData[key]}`)
+            this[ key ] = inputData[key];
         }
-        if ( props.manufacturer && props.manufacturer.length === 1 ){
-            this.manufacturer = props.manufacturer[0];
+        if ( inputData ) {
+            if ( 'manufacturer' in inputData && inputData.manufacturer && inputData.manufacturer.length === 1 ) {
+                this.manufacturer = inputData.manufacturer[ 0 ];
+            }
         }
-        console.log( "Vendor class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
+        console.log( "Vendor class created with\n\tprops: \n", inputData, "\n\tand is currently:\n", this );
     }
 
     static [ Symbol.hasInstance ] ( instance: object ) {
@@ -181,19 +188,6 @@ export class Vendor implements VendorDataProps {
     //     };
     // }
 
-    /**
-     * Return the class for an input GraphQL `__typename`
-     * @param VendorTypename The GraphQL type for an Vendor class, this is what is found in `__typename` and is of the form `Vendor_category1_category2_classname`
-     */
-    // public static getClassForType ( VendorTypename: VendorGqlTypename ): typeof Vendor {
-    //     let VendorClassLowerCase = VendorTypename.toLowerCase();
-    //     // console.log( { class: 'Vendor', method: 'getClassForType', classTypes: Vendor._ClassTypes, lookup_key: VendorClass } );
-    //     // if ( VendorClassLowerCase === "Vendor" ) {
-    //     //     return Vendor;
-    //     // }
-    //     return Vendor._ClassTypes[ VendorClassLowerCase ];
-    // }
-
     static get icon (): IconComponentT {
         // return new Promise<IconComponentT>( ( resolve, reject ) => {
         // resolve( CodeIcon );
@@ -201,6 +195,46 @@ export class Vendor implements VendorDataProps {
         // return new Promise( ( resolve, reject ) => resolve(CodeIcon) );
         return ShopOutlined as IconComponentT;
     }
+
+    static useQuery = useGetVendorQuery;
+    
+    /**
+     * common lookup of icon;
+     * returns dataurl ( SVG )
+     */
+    get icon (): IconComponentT {
+        // TODO: better way to retrieve and store icons ?
+        // read `<link rel="shortcut icon" type="image/ico" href="/Content/Images/Global/Xtras/favicon.gif" />` from index.html `<head>` ?
+        // return () => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />;
+        // TODO if ! this.id => error icon
+        console.log( "Vendor: rendering AsyncIcon with this of", this );
+        if ( ! this.id ){
+            console.warn( "Vendor missing required id in ", this )
+        }
+        return () => {
+            console.log("Vendor Callback: rendering AsyncIcon with this of", this);
+            return <AsyncIcon cls={Vendor} vars={{ id: this.id }} cb={
+                // ( ) => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />
+                ( props: { obj: Vendor } ) => <img className="vendorIcon" src={`${ props.obj.url }/favicon.ico`} />
+            } />
+        }
+    }
+
+    // get iconMatches (): Icon[] {
+    //     return null;
+    // }
+    // get icons (): React.ReactElement[] {
+    //     return null;
+    // }
+    // get labelTemplate (): Label {
+    //     return null;
+    // }
+    // get labelTemplateMatches (): Label[] {
+    //     return null;
+    // }
+    // get labelTemplates (): Label[] {
+    //     return null;
+    // }
 
     // get dothings () {
     //     // return <img />;
@@ -227,30 +261,6 @@ export class Vendor implements VendorDataProps {
     //     return (await this.dothings).data.data;
     // }
 
-    /**
-     * common lookup of icon;
-     * returns dataurl ( SVG )
-     */
-    get icon (): IconComponentT {
-        // TODO: better way to retrieve and store icons ?
-        // read `<link rel="shortcut icon" type="image/ico" href="/Content/Images/Global/Xtras/favicon.gif" />` from index.html `<head>` ?
-        return () => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />;
-    }
-    // get iconMatches (): Icon[] {
-    //     return null;
-    // }
-    // get icons (): React.ReactElement[] {
-    //     return null;
-    // }
-    // get labelTemplate (): Label {
-    //     return null;
-    // }
-    // get labelTemplateMatches (): Label[] {
-    //     return null;
-    // }
-    // get labelTemplates (): Label[] {
-    //     return null;
-    // }
     /**
      * Props which should be included in label (default) 
      * Optionally defined on subclasses

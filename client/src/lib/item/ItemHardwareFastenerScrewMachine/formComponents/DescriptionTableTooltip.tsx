@@ -6,7 +6,7 @@ import { Query } from "../../../types/graphql";
 import { Spin, Tooltip } from "antd";
 
 interface DescriptionTableTooltipPropsWithQuery  {
-    query: IQuery;
+    query: IQuery<any, any>;
     width?: number;
     tableData?: false;
     title: string;

@@ -7,12 +7,12 @@ import { AutoComplete, Input, DatePicker, Select, Divider } from "antd";
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { InputProps } from "antd/lib/input";
 import { useGetVendorItemsLazyQuery, useSearchVendorItemsLazyQuery, useSearchVendorItemsQuery, VendorItem as VendorItemGql, VendorItemInsertInput, UpdateVendorItemMutationVariables } from "../../lib/types/graphql";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { VendorItemFormModal } from "./VendorItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
 import { Vendor } from "../../lib/Vendor/Vendor";
 import { QueryResultTypePlus, Unpacked, PartialPartial, flatArrayObjectProperty } from "../../lib/UtilityFunctions";
-import { useAsyncHook } from "../../lib/useAsyncHook";
+import { IconComponentT } from "../../lib/item/Item";
 
 
 interface OptionT extends OptionData {
@@ -39,11 +39,8 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
     const { onChange, value, ...remainingProps } = props;
     const [ searchText, setSearchText ] = useState<string>( "" );
     const [ options, setOptions ] = useState<OptionT[]>( [] );
-    const [asyncQuery, setAsyncQuery] = useState<() => Promise<any>>();
 
-    const [ vendors, asyncLoading ] = useAsyncHook(asyncQuery);
-
-    const defaultIds: Array< number | undefined > = [
+    const defaultIds: Array<number | undefined> = [
         ...(
             typeof props.value === "number" ?
                 [ props.value ] : (
@@ -76,41 +73,43 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
         // skip: state.loading
     } );
     // KILL: /(OrderItemInput|VendorItemSelect)/
-    // URGENT: allow to feed in array or singular
     // URGENT STOPPED HERE  !!!!!!!!!!!!!
     // const updateOptionsFromVendorItem = async ( v: PartialPartial<
-        // Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]>, 'id' | 'vendor' | 'vendor_sku'> ) => {
-    async function updateOptionsFromVendorItem ( arr: Array<Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]> | Partial<UpdateVendorItemMutationVariables> > ) {
-        if ( ! Array.isArray(arr) ){ return null; }
-        let f = arr.map( async (v) => {
-            let vendor: Vendor;
-            if ( 'vendor_id' in v ) {
-                vendor = await Vendor.VendorFactory( { id: v.vendor_id } );
-            } else if ( 'vendor' in v ) {
-                vendor = new Vendor( v.vendor );
+    // Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]>, 'id' | 'vendor' | 'vendor_sku'> ) => {
+    function updateOptionsFromVendorItem ( arr: Array<Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]> | Partial<UpdateVendorItemMutationVariables>> ) {
+        if ( !Array.isArray( arr ) ) { return null; }
+        setOptions( arr.map( ( v ) => {
+            let VendorIcon: IconComponentT;
+            if ( v && 'vendor' in v ) {
+                console.log( "VendorItemSelect: rendering AsyncIcon with this of", v.vendor );
+                VendorIcon = new Vendor( v.vendor ).icon;
+            } else if ( v && 'vendor_id' in v && typeof v.vendor_id === 'number' ) {
+                VendorIcon = new Vendor( { id: v.vendor_id } ).icon;
+            } else {
+                console.log( "VendorItemSelect: not rendering AsyncIcon with this of", v );
+                VendorIcon = () => <FileUnknownOutlined className="vendorIcon" />;
             }
             return {
                 id: v.id,
                 value: v.id,
                 label: <span className="vendorItemOption">
-                    <vendor.icon />
+                    <VendorIcon />
                     {/* <span>{v.vendor.name}</span> */}
                     <span>{v.vendor_sku}</span>
                     {/* <span>#{v.vendorItem_order_id}</span> */}
                 </span>
                 // TODO: Set value to the applicable string, feed value up that is the `order_id`
-            }
-        });
+            };
+        } ))
     }
     useEffect( () => {
-        setAsyncQuery( () => updateOptionsFromVendorItem( [
+        updateOptionsFromVendorItem( [
             ...( props.defaultValue && typeof props.defaultValue !== "number" && !props.defaultValue.id
                 ? [ props.defaultValue ]
                 : [] ),
             ...( data && data.item ? flatArrayObjectProperty( data.item, 'vendorItems' ) : [] )
-        ] ) );
-        setOptions( vendors );
-        
+        ] );
+
         console.log( { class: "VendorItemSelect", "action": "useEffect", event: "loading and error ok", data } );
         //     let opts: OptionT[] = [];
         //     data.item.forEach( item => {
@@ -121,7 +120,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
         //     } );
         //     // setOptions( opts );
         // }
-    }, [ loading, data, vendors ] );
+    }, [ loading, data, props.defaultValue ] );
     useEffect( () => {
         console.log( "VendorItemSelect -- value changed" );
     }, [ value ] );
@@ -173,8 +172,8 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                         vendorItem_id = value;
                     } else if ( typeof value === "string" ) {
                         vendorItem_id = parseInt( value );
-                    // } else if ( "key" in value ) {
-                    //     vendorItem_id = typeof value.value === "number" ? value.value : parseInt( value.value );
+                        // } else if ( "key" in value ) {
+                        //     vendorItem_id = typeof value.value === "number" ? value.value : parseInt( value.value );
                     }
                     onChange( {
                         id: vendorItem_id,
@@ -185,7 +184,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                     } );
                 }}
                 options={options}
-                // {...( value ? { defaultValue: props.value } : {} )}
+            // {...( value ? { defaultValue: props.value } : {} )}
             />
         </React.Fragment>
     );
