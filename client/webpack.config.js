@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const dev = require('webpack-dev-server');
 // const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
 
 module.exports = {
     mode: "development",
@@ -58,7 +60,7 @@ module.exports = {
             {
                 // test: /\.(jpg|png)$/,
                 // use: {
-                    // loader: 'url-loader',
+                // loader: 'url-loader',
                 // },
             },
             {
@@ -96,6 +98,13 @@ module.exports = {
             path.resolve(__dirname, 'src'),
             'node_modules'
         ],
+        plugins: [
+            /**
+             * https://github.com/TypeStrong/ts-loader#baseurl--paths-module-resolution
+             * https://github.com/dividab/tsconfig-paths-webpack-plugin/blob/master/README.md
+             */
+            new TsconfigPathsPlugin({ /*configFile: "./path/to/tsconfig.json" */ })
+        ]
     },
     output: {
         filename: 'bundle.js',
@@ -131,6 +140,8 @@ module.exports = {
         }),
         // new ForkTsCheckerNotifierWebpackPlugin({ title: 'TypeScript', excludeWarnings: false }),
         // new webpack.NoEmitOnErrorsPlugin(),
+        // https://www.npmjs.com/package/html-webpack-plugin
+        // https://github.com/jantimon/html-webpack-plugin#options
         new HtmlWebpackPlugin({
             // template: path.resolve(__dirname, 'src', 'index.html')
             inject: true, // testing
