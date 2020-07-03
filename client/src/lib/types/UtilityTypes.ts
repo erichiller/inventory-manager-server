@@ -1,10 +1,31 @@
 import { QueryHookOptions, QueryResult } from 'react-apollo';
-import { EnumUnitEnum } from './graphql';
+import { EnumUnitEnum, Exact } from './graphql';
 
 
 export type Union<A, B, C = {}, D = {}, E = {}, F = {}> = A & B & C & D & E & F;
 
-export type ClassType<T> = Union<keyof T, new () => T>;
+/**
+ * Type of Class (static side, with constructor, not instance type which can be determined with a normal `typeof <Class>`)
+ * // FIX: static class properties do not work with this ; as `T` represents the instance type of `T`
+ * @see {@link https://www.typescriptlang.org/docs/handbook/interfaces.html#difference-between-the-static-and-instance-sides-of-classes Difference between the static and instance sides of classes}
+ * @see {@link https://www.typescriptlang.org/docs/handbook/classes.html#static-properties Static Properties on Classes in TypeScript}
+ */
+export type ClassType<T, StaticProps = {}> = Union<
+    // T, 
+    StaticProps, // TODO: ideally this would be inferred automatically as the `static` properties of `T`
+    new (...args: any[]) => T
+>;
+
+// export type ClassType2<T> = Union <
+//     { [ K in keyof T ]: T[ K ] },
+//     new (...args: any[]) => T
+// >
+// export interface ClassType2<T> {
+//     { [ K in keyof T ]: T[ K ] }
+// }
+
+// export interface ClassType2 <T, A extends any[] > extends Function, keyof T { new(...args: A): T; }
+
 
 
 /**
@@ -16,9 +37,19 @@ export type Unpacked<T> =
     T extends Promise<infer U> ? U :
     T;
 
-export type IQuery = ( baseOptions?: QueryHookOptions<any, any> ) => QueryResult;
+/**
+ * Replicate the type definition for a `useQuery...`
+ * (alias) function useGetVendorItemQuery(
+ * baseOptions?: ApolloReactHooks.QueryHookOptions<
+ *      GetVendorItemQuery, GetVendorItemQueryVariables
+ * >): ApolloReactCommon.QueryResult<
+ * GetVendorItemQuery, Exact<{
+    id: number;
+}>>
+ */
+export type IQuery<TQuery, TVariables> = ( baseOptions?: QueryHookOptions<TQuery, TVariables> ) => QueryResult<TQuery, TVariables>;
 
-export type QueryResultReturnKey<Q extends IQuery> = keyof Omit<Exclude<ReturnType<Q>[ 'data' ], undefined>, '__typename'>;
+export type QueryResultReturnKey<Q extends IQuery<any, any>> = keyof Omit<Exclude<ReturnType<Q>[ 'data' ], undefined>, '__typename'>;
 
 /**
  * `Q` should be a query of the form `use...Query` from codegen.
@@ -26,7 +57,7 @@ export type QueryResultReturnKey<Q extends IQuery> = keyof Omit<Exclude<ReturnTy
  * This is the type when fully unpacked,
  * the result of the GraphQL query stored within `data.<typename>`
 **/
-export type QueryResultTypePlus<Q extends IQuery> = Unpacked<Exclude<ReturnType<Q>[ 'data' ], undefined>[ QueryResultReturnKey<Q> ]>;
+export type QueryResultTypePlus<Q extends IQuery<any, any>> = Unpacked<Exclude<ReturnType<Q>[ 'data' ], undefined>[ QueryResultReturnKey<Q> ]>;
 
 
 
