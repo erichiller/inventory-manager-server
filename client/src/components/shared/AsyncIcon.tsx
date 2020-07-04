@@ -16,18 +16,13 @@ interface AsyncIconProps<
     TQuery, 
     TVariables extends InstanceType<TClass>[ FilterFlags<keyof TClass, string> ], 
     TClass extends Union<TClassProvidingQuery<Class, TQuery, TVariables>, TClassProvidingInstanceWithIcon<Class>>,
-    // TInstance extends InstanceType<TClass> = InstanceType<TClass>
      > {
-    // query: IQuery<TQuery, TVariables>;
     vars: TVariables;
     cls: TClass;
     cb: IconComponentT<{obj: InstanceType<TClass>}>;
-        
-        // QueryResultTypePlus<IQuery<TQuery, TVariables>>
-    // cls: ClassType<TClass, { useQuery: IQuery<TQuery, TVariables>}>;
 }
 
-
+// CREATETEST
 // let query_class: TClassProvidingQuery<typeof Vendor>;
 // let instance_class: TClassProvidingInstanceWithIcon<typeof Vendor>;
 
@@ -48,7 +43,6 @@ interface AsyncIconProps<
 // }
 
 
-// type TIconProvidingClass = { icon: IconComponentT; };
 
 /**
  * Retrieve icon from query
@@ -60,11 +54,7 @@ export function AsyncIcon<
     TClass extends Union<TClassProvidingQuery<Class, TQuery, TVariables>, TClassProvidingInstanceWithIcon<Class>>,
 
 > ( props: AsyncIconProps<TQuery, TVariables, TClass> ) {
-
-    // return <Spin />
-
-
-    console.log({c: 'AsyncIcon', e: 'init', cls: props.cls, id: props.vars['id'], vars: props.vars})
+    // console.log({c: 'AsyncIcon', e: 'init', cls: props.cls, id: props.vars['id'], vars: props.vars})
     if ( ! props.vars['id'] ) {
         console.warn("AsyncIcon missing required id in ", props.vars)
         return null;
@@ -72,16 +62,11 @@ export function AsyncIcon<
     const { data, error, loading } = props.cls.useQuery( {
         variables: props.vars
     })
-
-    // const { data, error, loading } = useGetVendorQuery({
-    //     variables: props.vars as any
-    // })
-    
     const [ cls, setClass ] = useState<InstanceType<TClass>>();
     
     useEffect( () => {
         if ( data && !loading && !error && !cls ) {
-            console.log( "AsyncIcon creating new", props.cls, " with data", data )
+            // console.log( "AsyncIcon creating new", props.cls, " with data", data )
             setClass(new props.cls( data ));
         }
     }, [ data, loading, error]);
@@ -91,50 +76,18 @@ export function AsyncIcon<
             message.error(error.message)
         }
     })
+
     if ( ! cls ){
         return <Spin />
     }
     return <props.cb obj={cls} />
-
 };
 
-//     const data... = useGetIconForVendorIdQuery( props.id );
-// ...
-// if ( !data ) { return null; }
-// return <img src=data... />
 
-// }
-
-
-// let foo = useGetVendorItemQuery
-
-
-// class FooClass {
-
-//     constructor ( a: string, b: number){
-        
-//     }
-
-//     instance_prop: string;
-//     static static_prop: number;
-// }
-
-// let tt: ConstructorParameters<typeof FooClass>;
-
-// let t2: ClassType<FooClass> = FooClass;
-// let t3: ClassType2<FooClass> = FooClass;
-
-// t2;
-
-
-
-
-
+// CREATETEST
 // myFunction(Vendor, [ 3 ]);
 
-
 // let foo: StaticProperties<typeof Vendor>;
-
 
 // // function myFunction<
 // //     T extends new (...args: any[] ) => any,
