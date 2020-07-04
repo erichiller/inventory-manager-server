@@ -120,7 +120,6 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
             console.log( { c: "OrderItemSelect", f: "useEffect", e: "defaultItem loading and error ok", data, defaultItemQueryResult: defaultItemQueryResult } );
             setOptionsFromItems();
         }
-
     }, [ defaultItemQueryResult.loading, defaultItemQueryResult.data ] );
 
     const setOptionsFromVariants = () => {

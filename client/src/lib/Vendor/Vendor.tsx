@@ -63,7 +63,7 @@ export class Vendor implements VendorDataProps {
     manufacturer?: { id: Integer; }; 
 
     constructor ( props: Partial<ApolloQueryResult<GetVendorQuery>[ 'data' ][ 'vendor' ]> | Partial<ApolloQueryResult<GetVendorQuery>[ 'data' ]> ) {
-        let inputData = ( ! ( 'vendor' in props )) ? props : props['vendor'];
+        let inputData = ( ! ( 'vendor' in props )) ? props : props.vendor;
         // constructor( props: Partial<T>){
         // if (!props) return;
         // this.Vendor = props;
@@ -123,6 +123,8 @@ export class Vendor implements VendorDataProps {
         return results.map( vendorGql => new Vendor( vendorGql ));
     }
 
+    static useQuery = useGetVendorQuery;
+
     /**
      * The GraphQL `__typename`
      */
@@ -140,54 +142,6 @@ export class Vendor implements VendorDataProps {
         return simpleObject as VendorDataProps;
     }
 
-    // @enumerable( true )
-    // get name (): string {
-    //     if ( this._name ) {
-    //         return this._name;
-    //     }
-    //     else if ( this._object && this._object.hasOwnProperty( "name" ) ) {
-    //         return this._object[ 'name' ];
-    //     }
-    //     else {
-    //         // should this warn?
-    //         return "";
-    //     }
-    // }
-    // set name ( nameVal: string ) {
-    //     this._name = nameVal;
-    // }
-
-
-
-    // static get categories (): CategoryHierarchyT[] {
-    //     // TODO: this needs to calculate on the fly from `class`
-    //     return [ "Vendor" ];
-    // }
-    // get categories (): CategoryHierarchyT[] {
-    //     return [ "Vendor" ];
-    // }
-
-    // /**
-    //  * All possible Vendor classes / types
-    //  */
-    // static get ClassTypes (): Array<keyof typeof EnumVendorClassEnum> {
-    //     return Object.keys( EnumVendorClassEnum ) as Array<keyof typeof EnumVendorClassEnum>;
-    // }
-
-
-    // // static _ClassTypes: Partial< IEnumVendorMap< VendorExtender<any> > > = {};
-    // static _ClassTypes: IEnumVendorMap;
-
-    // static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T>; }> (
-    //     VendorClass: VendorGqlTypename,
-    //     typeClass: T
-    // ) {
-    //     Vendor._ClassTypes = {
-    //         ...Vendor._ClassTypes,
-    //         ...Object.fromEntries( [ [ VendorClass.toLowerCase(), typeClass ] ] )
-    //     };
-    // }
-
     static get icon (): IconComponentT {
         // return new Promise<IconComponentT>( ( resolve, reject ) => {
         // resolve( CodeIcon );
@@ -195,8 +149,6 @@ export class Vendor implements VendorDataProps {
         // return new Promise( ( resolve, reject ) => resolve(CodeIcon) );
         return ShopOutlined as IconComponentT;
     }
-
-    static useQuery = useGetVendorQuery;
     
     /**
      * common lookup of icon;
@@ -220,47 +172,6 @@ export class Vendor implements VendorDataProps {
         }
     }
 
-    // get iconMatches (): Icon[] {
-    //     return null;
-    // }
-    // get icons (): React.ReactElement[] {
-    //     return null;
-    // }
-    // get labelTemplate (): Label {
-    //     return null;
-    // }
-    // get labelTemplateMatches (): Label[] {
-    //     return null;
-    // }
-    // get labelTemplates (): Label[] {
-    //     return null;
-    // }
-
-    // get dothings () {
-    //     // return <img />;
-    //     apolloClient.query<Icon, GetIconQueryVariables>( {
-    //         query: GetIconDocument,
-    //         variables: { id: 'REPLACE WITH UUID' }
-    //     } ).then( result => {
-    //         message.info( `Saved Successfully` );
-    //     } ).catch( error => {
-    //         console.log( "MUTATE ERROR", error );
-    //         message.error( `Failure during save: ${ error }` );
-    //     } )
-    //     // .finally( () => {
-    //     //     // props.visibleHandler( null );
-    //     // } );
-    //     const result = apolloClient.query<Icon, GetIconQueryVariables>( {
-    //         query: GetIconDocument,
-    //         variables: { id: 'REPLACE WITH UUID' }
-    //     } );
-    //     return result;
-    // }
-
-    // callDoThings () {
-    //     return (await this.dothings).data.data;
-    // }
-
     /**
      * Props which should be included in label (default) 
      * Optionally defined on subclasses
@@ -268,10 +179,6 @@ export class Vendor implements VendorDataProps {
     get labelProps (): Array<keyof Vendor> {
         return Object.keys( this ) as Array<keyof Vendor>;
     }
-    // static get labelProps (): Array<string> {
-    //     console.log( {keysOfThisCls: Object.keys( this ), keysOfVendorCls: Object.keys(Vendor) });
-    //     return Object.keys( this ) as Array<Extract<keyof GenericVendor, string>>;
-    // }
     /**
      * Props to use as display columns (default)
      * Vendored
@@ -402,9 +309,5 @@ export class Vendor implements VendorDataProps {
         // TODO: use for ... in so that enumerable properties are shown
         return ( props ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key, value ] ) => key !== '_object' ) ), null, 2 )}</pre>;
     }
-
-    // get bundle (): Vendor {
-    //     return null;
-    // }
 
 }

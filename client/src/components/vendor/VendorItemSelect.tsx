@@ -72,10 +72,6 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
         }
         // skip: state.loading
     } );
-    // KILL: /(OrderItemInput|VendorItemSelect)/
-    // URGENT STOPPED HERE  !!!!!!!!!!!!!
-    // const updateOptionsFromVendorItem = async ( v: PartialPartial<
-    // Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]>, 'id' | 'vendor' | 'vendor_sku'> ) => {
     function updateOptionsFromVendorItem ( arr: 
         Array<Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]> 
             // | Partial<UpdateVendorItemMutationVariables>
@@ -122,15 +118,6 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
         ] );
 
         console.log( { c: "VendorItemSelect", m: "useEffect", ev: "loaded vendorItems from Gql", data } );
-        //     let opts: OptionT[] = [];
-        //     data.item.forEach( item => {
-        //         item.vendorItems.forEach( v => {
-        //             console.log( "outputting option", v );
-        //             updateOptionsFromVendorItem(v);
-        //         } );
-        //     } );
-        //     // setOptions( opts );
-        // }
     }, [ loading, data, props.defaultValue ] );
     useEffect( () => {
         console.log( "VendorItemSelect -- value changed" );
