@@ -6,10 +6,13 @@ import { AutoComplete, Input, DatePicker, Select, Divider } from "antd";
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { InputProps } from "antd/lib/input";
-import { useGetManufacturerItemsLazyQuery, useSearchManufacturerItemsLazyQuery, useSearchManufacturerItemsQuery, ManufacturerItem as ManufacturerItemGql } from "../../lib/types/graphql";
-import { PlusOutlined } from "@ant-design/icons";
+import { useGetManufacturerItemsLazyQuery, useSearchManufacturerItemsLazyQuery, useSearchManufacturerItemsQuery, ManufacturerItem as ManufacturerItemGql, UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables } from "../../lib/types/graphql";
+import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { ManufacturerItemFormModal } from "./ManufacturerItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
+import { Manufacturer } from "~lib/Manufacturer/Manufacturer";
+import { Union, Unpacked, QueryResultTypePlus, transparentLog } from "~lib/UtilityFunctions";
+import { IconComponentT } from "~lib/item/Item";
 
 
 interface OptionT extends OptionData {
@@ -53,6 +56,45 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
         }
         // skip: state.loading
     } );
+
+    function updateOptionsFromManufacturerItem ( arr:
+        Array<Unpacked<QueryResultTypePlus<typeof useSearchManufacturerItemsQuery>[ 'manufacturerItems' ]>
+            // | Partial<UpdateVendorItemMutationVariables>
+            | Union<Omit<Partial<UpdateManufacturerItemMutationVariables>, 'id'>, { id: 'NEW'; }>
+        >
+    ) {
+        if ( !Array.isArray( arr ) ) { return null; }
+        setOptions(
+            transparentLog( {
+                c: 'ManufacturerItemSelect',
+                e: 'optionsGenerated'
+            },
+                arr.map( ( v ) => {
+                    let ManufacturerIcon: IconComponentT;
+                    if ( v && 'manufactruer' in v ) {
+                        // console.log( "VendorItemSelect: rendering AsyncIcon with this of", v.vendor );
+                        ManufacturerIcon = new Manufacturer( v.manufacturer ).icon;
+                    } else if ( v && 'manufacturer_id' in v && typeof v.manufacturer_id === 'number' ) {
+                        ManufacturerIcon = new Manufacturer( { id: v.manufacturer_id } ).icon;
+                    } else {
+                        console.warn( "ManufacturerItemSelect: not rendering AsyncIcon with this of", v );
+                        ManufacturerIcon = () => <FileUnknownOutlined className="manufacturerIcon" />;
+                    }
+                    return {
+                        id: v.id,
+                        value: v.id,
+                        label: <span className="vendorItemOption">
+                            <VendorIcon />
+                            {/* <span>{v.vendor.name}</span> */}
+                            <span>{v.vendor_sku}</span>
+                            {/* <span>#{v.vendorItem_order_id}</span> */}
+                        </span>
+                        // TODO: Set value to the applicable string, feed value up that is the `order_id`
+                    };
+                } ) )
+        );
+    }
+
     useEffect( () => {
         if ( !loading && !error ) {
             console.log( { class: "ManufacturerItemSelect", "action": "useEffect", event: "loading and error ok", data } );
@@ -89,6 +131,9 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
                 className="ManufacturerItemSelect"
                 placeholder="Manufacturer Item"
                 dropdownClassName="ManufacturerItemSelectDropdown"
+                dropdownMatchSelectWidth={180}
+                defaultValue={defaultIds}
+                value={defaultIds}
                 onSearch={value => {
                     console.log( { event: "onSearch", setSearchText: value } );
                     setSearchText( value );
@@ -138,7 +183,7 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
                     } );
                 }}
                 options={options}
-                {...( value ? { defaultValue: props.value } : {} )}
+                // {...( value ? { defaultValue: props.value } : {} )}
             />
         </React.Fragment>
     );

@@ -12,6 +12,7 @@ import {
     Maybe,
     ManufacturerItem,
     ManufacturerItemAggregate,
+    useGetManufacturerQuery,
 } from "../types/graphql";
 
 import { Integer } from '../types/uint8';
@@ -26,8 +27,10 @@ import { FormInstance } from "antd/lib/form";
 import { resolve } from "url";
 import { rejects } from "assert";
 import { CategoryHierarchyT, IconComponentT, FormMutationHandler } from "../item/Item";
-import { ShoppingCartOutlined, ShopOutlined, CheckOutlined } from "@ant-design/icons";
+import { ShoppingCartOutlined, ShopOutlined, CheckOutlined, WarningOutlined } from "@ant-design/icons";
 import { ApolloQueryResult } from "apollo-client";
+import { AsyncIcon } from "components/Shared/AsyncIcon";
+
 
 interface ManufacturerDataProps extends Pick<ApolloQueryResult<GetManufacturerQuery>['data']['manufacturer'],
     '__typename' |
@@ -52,15 +55,17 @@ export class Manufacturer implements ManufacturerDataProps {
     url: string;
     vendor_id?: Integer;
 
-    constructor ( props: Partial<ApolloQueryResult<GetManufacturerQuery>[ 'data' ][ 'manufacturer' ]> ) {
+    constructor ( props: Partial<ApolloQueryResult<GetManufacturerQuery>[ 'data' ][ 'manufacturer' ]> | Partial<ApolloQueryResult<GetManufacturerQuery>[ 'data' ]> ) {
+        let inputData = ( !( 'manufacturer' in props ) ) ? props : props.manufacturer;
         // constructor( props: Partial<T>){
         // if (!props) return;
         // this.Manufacturer = props;
         // this.id = props.id;
-        for( let key in props ){
-            this[key] = props[key];
+        for ( let key in inputData ) {
+            // console.log(`constructing vendor, ${key} = `, inputData[key]);
+            this[ key ] = inputData[ key ];
         }
-        console.log( "Manufacturer class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
+        console.log( "Manufacturer class created with\n\tprops: \n", inputData, "\n\tand is currently:\n", this );
     }
 
     static [ Symbol.hasInstance ] ( instance: object ) {
@@ -106,6 +111,8 @@ export class Manufacturer implements ManufacturerDataProps {
         return results.map( manufacturerGql => new Manufacturer( manufacturerGql ));
     }
 
+    static useQuery = useGetManufacturerQuery;
+
     /**
      * The GraphQL `__typename`
      */
@@ -123,66 +130,6 @@ export class Manufacturer implements ManufacturerDataProps {
         return simpleObject as ManufacturerDataProps;
     }
 
-    // @enumerable( true )
-    // get name (): string {
-    //     if ( this._name ) {
-    //         return this._name;
-    //     }
-    //     else if ( this._object && this._object.hasOwnProperty( "name" ) ) {
-    //         return this._object[ 'name' ];
-    //     }
-    //     else {
-    //         // should this warn?
-    //         return "";
-    //     }
-    // }
-    // set name ( nameVal: string ) {
-    //     this._name = nameVal;
-    // }
-
-
-
-    // static get categories (): CategoryHierarchyT[] {
-    //     // TODO: this needs to calculate on the fly from `class`
-    //     return [ "Manufacturer" ];
-    // }
-    // get categories (): CategoryHierarchyT[] {
-    //     return [ "Manufacturer" ];
-    // }
-
-    // /**
-    //  * All possible Manufacturer classes / types
-    //  */
-    // static get ClassTypes (): Array<keyof typeof EnumManufacturerClassEnum> {
-    //     return Object.keys( EnumManufacturerClassEnum ) as Array<keyof typeof EnumManufacturerClassEnum>;
-    // }
-
-
-    // // static _ClassTypes: Partial< IEnumManufacturerMap< ManufacturerExtender<any> > > = {};
-    // static _ClassTypes: IEnumManufacturerMap;
-
-    // static RegisterClassType<T extends { new( ...args: any[] ): InstanceType<T>; }> (
-    //     ManufacturerClass: ManufacturerGqlTypename,
-    //     typeClass: T
-    // ) {
-    //     Manufacturer._ClassTypes = {
-    //         ...Manufacturer._ClassTypes,
-    //         ...Object.fromEntries( [ [ ManufacturerClass.toLowerCase(), typeClass ] ] )
-    //     };
-    // }
-
-    /**
-     * Return the class for an input GraphQL `__typename`
-     * @param ManufacturerTypename The GraphQL type for an Manufacturer class, this is what is found in `__typename` and is of the form `Manufacturer_category1_category2_classname`
-     */
-    // public static getClassForType ( ManufacturerTypename: ManufacturerGqlTypename ): typeof Manufacturer {
-    //     let ManufacturerClassLowerCase = ManufacturerTypename.toLowerCase();
-    //     // console.log( { class: 'Manufacturer', method: 'getClassForType', classTypes: Manufacturer._ClassTypes, lookup_key: ManufacturerClass } );
-    //     // if ( ManufacturerClassLowerCase === "Manufacturer" ) {
-    //     //     return Manufacturer;
-    //     // }
-    //     return Manufacturer._ClassTypes[ ManufacturerClassLowerCase ];
-    // }
 
     static get icon (): IconComponentT {
         // return new Promise<IconComponentT>( ( resolve, reject ) => {
@@ -191,32 +138,6 @@ export class Manufacturer implements ManufacturerDataProps {
         // return new Promise( ( resolve, reject ) => resolve(CodeIcon) );
         return ShopOutlined as IconComponentT;
     }
-
-    // get dothings () {
-    //     // return <img />;
-    //     apolloClient.query<Icon, GetIconQueryVariables>( {
-    //         query: GetIconDocument,
-    //         variables: { id: 'REPLACE WITH UUID' }
-    //     } ).then( result => {
-    //         message.info( `Saved Successfully` );
-    //     } ).catch( error => {
-    //         console.log( "MUTATE ERROR", error );
-    //         message.error( `Failure during save: ${ error }` );
-    //     } )
-    //     // .finally( () => {
-    //     //     // props.visibleHandler( null );
-    //     // } );
-    //     const result = apolloClient.query<Icon, GetIconQueryVariables>( {
-    //         query: GetIconDocument,
-    //         variables: { id: 'REPLACE WITH UUID' }
-    //     } );
-    //     return result;
-    // }
-
-    // callDoThings () {
-    //     return (await this.dothings).data.data;
-    // }
-
     /**
      * common lookup of icon;
      * returns dataurl ( SVG )
@@ -224,23 +145,21 @@ export class Manufacturer implements ManufacturerDataProps {
     get icon (): IconComponentT {
         // TODO: better way to retrieve and store icons ?
         // read `<link rel="shortcut icon" type="image/ico" href="/Content/Images/Global/Xtras/favicon.gif" />` from index.html `<head>` ?
-        return () => <img className="manufacturerIcon" src={`${ this.url }/favicon.ico`} />;
+        // return () => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />;
+        // console.log( "Vendor: rendering AsyncIcon with `this` of", this );
+        if ( !this.id ) {
+            console.warn( "Manufacturer missing required id in ", this );
+            return () => < WarningOutlined />;
+        }
+        return () => {
+            console.log( "Vendor Callback: rendering AsyncIcon with this of", this );
+            return <AsyncIcon cls={Manufacturer} vars={{ id: this.id }} cb={
+                // ( ) => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />
+                ( props: { obj: Manufacturer; } ) => <img className="vendorIcon" src={`${ props.obj.url }/favicon.ico`} />
+            } />;
+        };
     }
-    // get iconMatches (): Icon[] {
-    //     return null;
-    // }
-    // get icons (): React.ReactElement[] {
-    //     return null;
-    // }
-    // get labelTemplate (): Label {
-    //     return null;
-    // }
-    // get labelTemplateMatches (): Label[] {
-    //     return null;
-    // }
-    // get labelTemplates (): Label[] {
-    //     return null;
-    // }
+    
     /**
      * Props which should be included in label (default) 
      * Optionally defined on subclasses
