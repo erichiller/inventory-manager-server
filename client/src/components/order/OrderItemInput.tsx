@@ -139,6 +139,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                 />
 
                 <span id="ItemExtraInfo">
+                    {/* TODO: provide `item_id` if known to limit the search of vendor_item */}
                     <VendorItemSelect
                         defaultValue={props.value.vendor_item_id || props.value.vendor_item} 
                         onChange={setVendorItem} />

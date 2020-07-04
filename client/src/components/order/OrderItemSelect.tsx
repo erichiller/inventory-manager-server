@@ -89,7 +89,7 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
             ids: defaultIds
         }
     } );
-    console.log( { c: "OrderItemSelect", e: "init", props, data, loading, error, defaultItemQueryResult, defaultIds, options } );
+    console.log( { c: "OrderItemSelect", e: "init", props, data, defaultItemQueryResult, defaultIds, options } );
 
     useEffect( () => {
         console.log( "OrderItemSelect: calling initial useEffect", defaultItemQueryResult)
@@ -105,16 +105,23 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
             console.log( 'OrderItemSelect: defaultItemQueryResult is already present', defaultItemQueryResult, options ); 
             setOptionsFromItems();
         }
-    }, []);
+    }, [] );
+
     useEffect( () => {
         if ( !loading && !error && data ) {
-            console.log( { c: "OrderItemSelect", f: "useEffect", e: "loading and error ok", data } );
+            console.log( { c: "OrderItemSelect", f: "useEffect", e: "Variants loading and error ok", data, defaultItemQueryResult: defaultItemQueryResult } );
             setOptionsFromVariants();
         }
+    }, [ loading, data ] );
+
+    useEffect( () => {
+        console.log( { c: "OrderItemSelect", f: "useEffect", e: "defaultItemQueryResult.data change detected", data, defaultItemQueryResult: defaultItemQueryResult } );
         if ( !defaultItemQueryResult.loading && !defaultItemQueryResult.error && defaultItemQueryResult.data ) {
+            console.log( { c: "OrderItemSelect", f: "useEffect", e: "defaultItem loading and error ok", data, defaultItemQueryResult: defaultItemQueryResult } );
             setOptionsFromItems();
         }
-    }, [ loading, data, defaultItemQueryResult.data ] );
+
+    }, [ defaultItemQueryResult.loading, defaultItemQueryResult.data ] );
 
     const setOptionsFromVariants = () => {
         setOptions( data.item_variant.map( v => {

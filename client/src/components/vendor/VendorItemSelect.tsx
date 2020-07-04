@@ -11,13 +11,13 @@ import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { VendorItemFormModal } from "./VendorItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
 import { Vendor } from "../../lib/Vendor/Vendor";
-import { QueryResultTypePlus, Unpacked, PartialPartial, flatArrayObjectProperty } from "../../lib/UtilityFunctions";
+import { QueryResultTypePlus, Unpacked, PartialPartial, flatArrayObjectProperty, Union, transparentLog } from "../../lib/UtilityFunctions";
 import { IconComponentT } from "../../lib/item/Item";
 
 
 interface OptionT extends OptionData {
     label?: string | ReactElement;
-    id: number;
+    id: number | 'NEW';
 }
 
 type VT = number | Partial<UpdateVendorItemMutationVariables>;
@@ -40,7 +40,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
     const [ searchText, setSearchText ] = useState<string>( "" );
     const [ options, setOptions ] = useState<OptionT[]>( [] );
 
-    const defaultIds: Array<number | undefined> = [
+    const defaultIds: Array<number | string> = [
         ...(
             typeof props.value === "number" ?
                 [ props.value ] : (
@@ -49,7 +49,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
         ...(
             typeof props.defaultValue === "number" ?
                 [ props.defaultValue ] : (
-                    props.defaultValue ? [ props.defaultValue.id ] : [] )
+                    props.defaultValue && !( 'id' in props.defaultValue ) && 'vendor_id' in props.defaultValue && 'item_id' in props.defaultValue ? [ 'NEW' ] : [] )
         )
     ];
 
@@ -76,17 +76,27 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
     // URGENT STOPPED HERE  !!!!!!!!!!!!!
     // const updateOptionsFromVendorItem = async ( v: PartialPartial<
     // Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]>, 'id' | 'vendor' | 'vendor_sku'> ) => {
-    function updateOptionsFromVendorItem ( arr: Array<Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]> | Partial<UpdateVendorItemMutationVariables>> ) {
+    function updateOptionsFromVendorItem ( arr: 
+        Array<Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]> 
+            // | Partial<UpdateVendorItemMutationVariables>
+            | Union<Omit<Partial<UpdateVendorItemMutationVariables>, 'id'>, { id: 'NEW' }>
+        > 
+        ) {
         if ( !Array.isArray( arr ) ) { return null; }
-        setOptions( arr.map( ( v ) => {
+        setOptions( 
+            transparentLog( {
+                c: 'VendorItemSelect',
+                e: 'optionsGenerated'
+            }, 
+            arr.map( ( v ) => {
             let VendorIcon: IconComponentT;
             if ( v && 'vendor' in v ) {
-                console.log( "VendorItemSelect: rendering AsyncIcon with this of", v.vendor );
+                // console.log( "VendorItemSelect: rendering AsyncIcon with this of", v.vendor );
                 VendorIcon = new Vendor( v.vendor ).icon;
             } else if ( v && 'vendor_id' in v && typeof v.vendor_id === 'number' ) {
                 VendorIcon = new Vendor( { id: v.vendor_id } ).icon;
             } else {
-                console.log( "VendorItemSelect: not rendering AsyncIcon with this of", v );
+                console.warn( "VendorItemSelect: not rendering AsyncIcon with this of", v );
                 VendorIcon = () => <FileUnknownOutlined className="vendorIcon" />;
             }
             return {
@@ -100,17 +110,18 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                 </span>
                 // TODO: Set value to the applicable string, feed value up that is the `order_id`
             };
-        } ))
+        } ) )
+        );
     }
     useEffect( () => {
         updateOptionsFromVendorItem( [
             ...( props.defaultValue && typeof props.defaultValue !== "number" && !props.defaultValue.id
-                ? [ props.defaultValue ]
+                ? [ {...props.defaultValue, id: 'NEW' as 'NEW' } ]
                 : [] ),
             ...( data && data.item ? flatArrayObjectProperty( data.item, 'vendorItems' ) : [] )
         ] );
 
-        console.log( { class: "VendorItemSelect", "action": "useEffect", event: "loading and error ok", data } );
+        console.log( { c: "VendorItemSelect", m: "useEffect", ev: "loaded vendorItems from Gql", data } );
         //     let opts: OptionT[] = [];
         //     data.item.forEach( item => {
         //         item.vendorItems.forEach( v => {
@@ -134,7 +145,9 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                 className="VendorItemSelect"
                 placeholder="Vendor Item"
                 dropdownClassName="VendorItemSelectDropdown"
+                dropdownMatchSelectWidth={180}
                 defaultValue={defaultIds}
+                value={defaultIds}
                 onSearch={value => {
                     console.log( { event: "onSearch", setSearchText: value } );
                     setSearchText( value );
@@ -170,18 +183,20 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                     let vendorItem_id: number = null;
                     if ( typeof value === "number" ) {
                         vendorItem_id = value;
-                    } else if ( typeof value === "string" ) {
+                    } else if ( typeof value === "string" && value !== "NEW" ) {
                         vendorItem_id = parseInt( value );
                         // } else if ( "key" in value ) {
                         //     vendorItem_id = typeof value.value === "number" ? value.value : parseInt( value.value );
                     }
-                    onChange( {
-                        id: vendorItem_id,
-                        // item_id: 1111,
-                        // vendor_id: 2222,
-                        // vendor_sku: "3333",
-                        // description: "4444"
-                    } );
+                    if ( vendorItem_id ) {
+                        onChange( {
+                            id: vendorItem_id,
+                            // item_id: 1111,
+                            // vendor_id: 2222,
+                            // vendor_sku: "3333",
+                            // description: "4444"
+                        } );
+                    }
                 }}
                 options={options}
             // {...( value ? { defaultValue: props.value } : {} )}
