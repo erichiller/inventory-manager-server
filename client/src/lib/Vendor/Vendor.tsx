@@ -31,7 +31,7 @@ import { FormInstance } from "antd/lib/form";
 import { resolve } from "url";
 import { rejects } from "assert";
 import { CategoryHierarchyT, IconComponentT, FormMutationHandler } from "../item/Item";
-import { ShoppingCartOutlined, ShopOutlined, CheckOutlined } from "@ant-design/icons";
+import { ShoppingCartOutlined, ShopOutlined, CheckOutlined, WarningOutlined } from "@ant-design/icons";
 import { ApolloQueryResult } from "apollo-client";
 import { AsyncIcon } from "components/Shared/AsyncIcon";
 
@@ -69,7 +69,7 @@ export class Vendor implements VendorDataProps {
         // this.Vendor = props;
         // this.id = props.id;
         for ( let key in inputData ){
-            console.log(`constructing vendor, ${key} = ${inputData[key]}`)
+            // console.log(`constructing vendor, ${key} = `, inputData[key]);
             this[ key ] = inputData[key];
         }
         if ( inputData ) {
@@ -77,7 +77,7 @@ export class Vendor implements VendorDataProps {
                 this.manufacturer = inputData.manufacturer[ 0 ];
             }
         }
-        console.log( "Vendor class created with\n\tprops: \n", inputData, "\n\tand is currently:\n", this );
+        // console.log( "Vendor class created with\n\tprops: \n", inputData, "\n\tand is currently:\n", this );
     }
 
     static [ Symbol.hasInstance ] ( instance: object ) {
@@ -206,10 +206,10 @@ export class Vendor implements VendorDataProps {
         // TODO: better way to retrieve and store icons ?
         // read `<link rel="shortcut icon" type="image/ico" href="/Content/Images/Global/Xtras/favicon.gif" />` from index.html `<head>` ?
         // return () => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />;
-        // TODO if ! this.id => error icon
-        console.log( "Vendor: rendering AsyncIcon with this of", this );
+        // console.log( "Vendor: rendering AsyncIcon with `this` of", this );
         if ( ! this.id ){
             console.warn( "Vendor missing required id in ", this )
+            return () => < WarningOutlined />
         }
         return () => {
             console.log("Vendor Callback: rendering AsyncIcon with this of", this);

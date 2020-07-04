@@ -1,36 +1,24 @@
 import { QueryHookOptions, QueryResult, BaseQueryOptions } from 'react-apollo';
 import { EnumUnitEnum, Exact } from './graphql';
 
-
+//TODO: ideally there is some sort of 'variadic' type declaration where it wouldn't require & {} & {} ...
 export type Union<A, B, C = {}, D = {}, E = {}, F = {}> = A & B & C & D & E & F;
 
 /**
  * Type of Class (static side, with constructor, not instance type which can be determined with a normal `typeof <Class>`)
- * // FIX: static class properties do not work with this ; as `T` represents the instance type of `T`
+ * This includes the  
+ * - constructor
+ * - static methods, properties, and fields  
+ * @description **NOTE** `InstanceType<ClassType<T>>` === `typeof new T()`
  * @see {@link https://www.typescriptlang.org/docs/handbook/interfaces.html#difference-between-the-static-and-instance-sides-of-classes Difference between the static and instance sides of classes}
  * @see {@link https://www.typescriptlang.org/docs/handbook/classes.html#static-properties Static Properties on Classes in TypeScript}
  */
 export type ClassType<
     T extends new ( ...args: any ) => any,
-    // StaticProps = {}, 
-    // ConstructorArgs = any
 > = Union<
     T, 
-    // StaticProps, // TODO: ideally this would be inferred automatically as the `static` properties of `T`
-    // ConstructorArgsT<T>
     new (...args: ConstructorParameters<T>) => T
 >;
-// type ConstructorArgsT<T> = new (...args: T extends new (...args: infer P) => any ? P : never ) => T;
-
-// export type ClassType2<T> = Union <
-//     { [ K in keyof T ]: T[ K ] },
-//     new (...args: any[]) => T
-// >
-// export interface ClassType2<T> {
-//     { [ K in keyof T ]: T[ K ] }
-// }
-
-// export interface ClassType2 <T, A extends any[] > extends Function, keyof T { new(...args: A): T; }
 
 
 
