@@ -1,32 +1,26 @@
 
 import {
     GetShipmentsQueryHookResult,
-    Icon,
-    Label,
-    ShipmentSelectColumn,
     GetShipmentQueryVariables,
     GetShipmentDocument,
     GetShipmentQuery,
     Scalars,
-    Shipment as ShipmentGql,
-    Maybe,
     Vendor as VendorGql,
+    useGetShipmentQuery,
 } from "../types/graphql";
 
 import { Integer } from '../types/uint8';
 
 import { apolloClient } from '../../index';
-import { message, Tooltip } from "antd";
+import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Union, Unpacked, enumerable, ObjectColumnProperty, sortByCaseInsensitiveText, sortByNumber, makeColumn, SubType } from "../UtilityFunctions";
-import { CodeIcon } from "../../styles/icon";
-import { FormInstance } from "antd/lib/form";
-import { resolve } from "url";
-import { rejects } from "assert";
-import { CategoryHierarchyT, IconComponentT, FormMutationHandler } from "../item/Item";
-import { ShoppingCartOutlined, ShopOutlined, CheckOutlined } from "@ant-design/icons";
+import { makeColumn } from "../UtilityFunctions";
+import { FormMutationHandler } from "../Item/Item";
+import { IconComponentT } from "~lib/types/common";
+import { ShopOutlined, WarningOutlined } from "@ant-design/icons";
 import { ApolloQueryResult } from "apollo-client";
+import { AsyncIcon } from "~components/Shared/AsyncIcon";
 
 interface ShipmentDataProps extends Pick<ApolloQueryResult<GetShipmentQuery>['data']['shipment'],
     '__typename' |
@@ -84,7 +78,6 @@ export class Shipment implements ShipmentDataProps {
             }
         } ).then( result => {
             console.log( { _cls: "Shipment", method: 'ShipmentFactory', msg: "loading Shipment from GraphQL", shipment_data: result } );
-            const data = result.data.shipment;
             let shipment = new Shipment( result.data.shipment );
             // it._name = result.data.object?.main ? result.data.object.name : "";
             // this._class = result.data.object;
@@ -108,6 +101,7 @@ export class Shipment implements ShipmentDataProps {
     static ItemsFactory ( results: ShipmentsGql ): Array<Shipment> {
         return results.map( shipmentGql => new Shipment( shipmentGql ));
     }
+    static useQuery = useGetShipmentQuery;
 
     /**
      * The GraphQL `__typename`
@@ -142,7 +136,19 @@ export class Shipment implements ShipmentDataProps {
     get icon (): IconComponentT {
         // TODO: better way to retrieve and store icons ?
         // read `<link rel="shortcut icon" type="image/ico" href="/Content/Images/Global/Xtras/favicon.gif" />` from index.html `<head>` ?
-        return () => <img className="shipmentIcon" src={`${ this.carrier.url }/favicon.ico`} />;
+        // return () => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />;
+        // console.log( "Vendor: rendering AsyncIcon with `this` of", this );
+        if ( !this.id ) {
+            console.warn( "Vendor missing required id in ", this );
+            return () => < WarningOutlined />;
+        }
+        return () => {
+            console.log( "Shipment Callback: rendering AsyncIcon with this of", this );
+            return <AsyncIcon cls={Shipment} vars={{ id: this.id }} cb={
+                // ( ) => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />
+                ( props: { obj: Shipment; } ) => <img className="shipmentIcon" src={`${ props.obj.carrier.url }/favicon.ico`} />
+            } />;
+        };
     }
     /**
      * Props which should be included in label (default) 
@@ -285,7 +291,7 @@ export class Shipment implements ShipmentDataProps {
      */
     get mouseOverRowComponent (): React.FC {
         // TODO: use for ... in so that enumerable properties are shown
-        return ( props ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key, value ] ) => key !== '_object' ) ), null, 2 )}</pre>;
+        return ( ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key ] ) => key !== '_object' ) ), null, 2 )}</pre>;
     }
 
     // get bundle (): Shipment {

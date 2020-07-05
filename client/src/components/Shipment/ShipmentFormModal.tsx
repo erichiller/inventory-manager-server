@@ -6,18 +6,18 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetShipmentQuery, GetShipmentQueryVariables, useGetShipmentQuery, useInsertShipmentMutation, InsertShipmentMutationVariables, useGetShipmentLazyQuery, useUpdateShipmentMutation, UpdateShipmentMutationVariables, GetShipmentDocument, Shipment as ShipmentGql, ShipmentInsertInput } from '../../lib/types/graphql';
+import { GetShipmentQuery, GetShipmentQueryVariables, useGetShipmentQuery, useInsertShipmentMutation, InsertShipmentMutationVariables, useGetShipmentLazyQuery, useUpdateShipmentMutation, UpdateShipmentMutationVariables, GetShipmentDocument, Shipment as ShipmentGql, ShipmentInsertInput } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Union, filterObject, deepCopy } from '../../lib/UtilityFunctions';
+import { QueryResultTypePlus, Union, filterObject, deepCopy } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
-import { ItemSelect } from '../item/ItemSelect';
+import { ItemSelect } from '~components/Item/ItemSelect';
 import { ShipmentSelect } from './ShipmentSelect';
-import { PageSpin } from '../shared/PageSpin';
-import { UrlSelect } from '../shared/UrlInput';
+import { PageSpin } from '~components/Shared/PageSpin';
+import { UrlSelect } from '~components/Shared/UrlInput';
 import TextArea from 'antd/lib/input/TextArea';
-import { VendorSelect } from '../Vendor/VendorSelect';
-import { OrderSelect } from '../Order/OrderSelect';
+import { VendorSelect } from '~components/Vendor/VendorSelect';
+import { OrderSelect } from '~components/Order/Form/OrderSelect';
 
 
 type ShipmentFormModalProps = Union<{
