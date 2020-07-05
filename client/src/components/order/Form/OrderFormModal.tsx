@@ -6,20 +6,20 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker } from 'antd';
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, UpdateOrderMutationVariables, GetOrdersDocument } from '../../lib/types/graphql';
+import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, UpdateOrderMutationVariables, GetOrdersDocument } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Union, filterObject } from '../../lib/UtilityFunctions';
+import { QueryResultTypePlus, Union, filterObject } from '~lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
-import { VendorSelect } from '../Vendor/VendorSelect';
+import { VendorSelect } from '../../Vendor/VendorSelect';
 import moment from 'moment';
-import { OrderItemInput } from './OrderItemInput';
-import { PageSpin } from '../shared/PageSpin';
-import { Order } from '../../lib/Order/Order';
+import { OrderItemInput } from './OrderItemComposite';
+import { PageSpin } from '../../Shared/PageSpin';
+import { Order } from '~lib/Order/Order';
 import TextArea from 'antd/lib/input/TextArea';
-import { CurlyBracesIcon } from '../../styles/icon';
-import { JsonModal } from '../shared/JsonModal';
+import { CurlyBracesIcon } from '../../../styles/icon';
+import { JsonModal } from '../../Shared/JsonModal';
 
 
 type OrderFormModalProps = Union<{

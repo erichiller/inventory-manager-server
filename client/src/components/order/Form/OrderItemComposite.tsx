@@ -1,19 +1,17 @@
 import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'react';
 import { Form, Input, Divider, Tooltip, InputNumber, Switch, Row, Col, Button, message } from 'antd';
 // import { OptionsType } from 'rc-select/lib/Option';
-import { VendorItem as VendorItemGql, OrderItem as OrderItemGql, VendorItemInsertInput, ManufacturerItemInsertInput, ShipmentInsertInput } from '../../lib/types/graphql';
+import { VendorItem as VendorItemGql, OrderItem as OrderItemGql, VendorItemInsertInput, ManufacturerItemInsertInput, ShipmentInsertInput } from '~lib/types/graphql';
 import TextArea from 'antd/lib/input/TextArea';
 
-import { toMinimumFixed, Union, SubType } from '../../lib/UtilityFunctions';
-import { FormInstance } from 'antd/lib/form';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { toMinimumFixed, Union, SubType } from '~lib/UtilityFunctions';
 import { InputProps } from 'antd/lib/input';
 import { OrderItemSelect, OrderItemSelectSingleValue } from './OrderItemSelect';
-import { Integer } from '../../lib/types/uint8';
+import { Integer } from '~lib/types/uint8';
 import { useHistory, useLocation } from 'react-router-dom';
-import { VendorItemSelect, VendorItemSelectValue } from '../Vendor/VendorItemSelect';
-import { ManufacturerItemSelect, ManufacturerItemSelectValue } from '../manufacturer/ManufacturerItemSelect';
-import { ShipmentSelect, ShipmentSelectValue } from '../Shipment/ShipmentSelect';
+import { VendorItemSelect, VendorItemSelectValue } from '~components/Vendor/VendorItemSelect';
+import { ManufacturerItemSelect, ManufacturerItemSelectValue } from '~components/Manufacturer/ManufacturerItemSelect';
+import { ShipmentSelect, ShipmentSelectValue } from '~components/Shipment/ShipmentSelect';
 
 
 // interface OrderItemDefinition extends Omit<Partial<OrderItemGql>, 'order_id'> {
