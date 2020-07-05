@@ -54,7 +54,7 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
         ...(
             typeof props.defaultValue === "number" ?
                 [ props.defaultValue ] : (
-                    props.defaultValue && !( 'id' in props.defaultValue ) && 'received_date' in props.defaultValue && 'item_id' in props.defaultValue ? [ 'NEW' ] : [] )
+                    props.defaultValue && !( 'id' in props.defaultValue ) && 'received_date' in props.defaultValue && 'carrier_vendor_id' in props.defaultValue ? [ 'NEW' ] : [] )
         )
     ];
     console.log( "ShipmentSelect: init, received props", { props_defaultValue: props.defaultValue, defaultIds, props } );
@@ -77,28 +77,7 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
         }
         // skip: state.loading
     } );
-    // data.shipment[0].
-    // useEffect( () => {
-    //     if ( !loading && !error ) {
-    //         console.log( { class: "ShipmentSelect", "action": "useEffect", event: "loading and error ok", data } );
-    //         let opts: OptionT[] = [];
-    //         data.shipment.forEach( v => {
-    //             console.log( "outputting option", v );
-    //             opts.push( {
-    //                 id: v.id,
-    // //                 value: v.id,
-    //                 label: <span className="shipmentOption">
-    //                     {v && v.carrier ? <img src={`${ v.carrier.url }/favicon.ico`} /> : null}  { /* TODO: real icon code */ }
-    //                     {/* <span>{v.shipment.name}</span> */}
-    //                     <span>{v.carrier.name}</span>
-    //                     <span>#{v.tracking_id}</span>
-    //                 </span>
-    //             } );
-    //         } );
-    //         setOptions( opts );
-    //     }
-    // }, [ loading, data ] );
-    
+    // TODO: intelligently 
 
     function updateOptionsFromShipment ( arr:
         Array<Unpacked<QueryResultTypePlus<typeof useSearchShipmentsQuery>>
@@ -128,7 +107,7 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                     return {
                         id: v.id,
                         value: v.id,
-                        label: <span className="shipmentOption">
+                        label: <span className="ShipmentOption">
                             <CarrierIcon />
                             {/* <span>{v.shipment.name}</span> */}
                             <span>{carrier.name}</span>
