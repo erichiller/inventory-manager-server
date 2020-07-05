@@ -107,21 +107,25 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
         console.log( { c: 'OrderItemInput', f: "setVendorItem", vendor_item });
         onChange( {
             ...props.value,
-            ...( vendor_item.id ? { vendor_item_id: vendor_item.id } : { vendor_item: vendor_item } )
+            ...( vendor_item.id 
+                    ? { vendor_item_id: vendor_item.id, vendor_item: null } 
+                    : { vendor_item: vendor_item, vendor_item_id: null } )
         } );
     };
     const setManufacturerItem = ( manufacturer_item: Partial<ManufacturerItemSelectValue> ) => {
         console.log( { c: 'OrderItemInput', f: "setManufacturerItem", manufacturer_item} );
         onChange( {
             ...props.value,
-            ...( manufacturer_item.id ? { manufacturer_item_id: manufacturer_item.id } : { manufacturer_item: manufacturer_item } )
+            ...( manufacturer_item.id 
+                    ? { manufacturer_item_id: manufacturer_item.id, manufacturer_item: null } 
+                    : { manufacturer_item: manufacturer_item, manufacturer_item_id: null } )
         } );
     };
     const setShipment = ( shipment: Partial<ShipmentSelectValue> ) => {
         console.log( { c: 'OrderItemInput', f: "setShipment", shipment });
         onChange( {
             ...props.value,
-            ...( shipment.id ? { shipment_id: shipment.id } : { shipment: shipment } )
+            ...( shipment.id ? { shipment_id: shipment.id, shipment: null } : { shipment: shipment, shipment_id: null } )
         } );
     };
 
@@ -144,7 +148,8 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                         defaultValue={props.value.vendor_item_id || props.value.vendor_item} 
                         onChange={setVendorItem} />
 
-                    <ManufacturerItemSelect 
+                    <ManufacturerItemSelect
+                        defaultValue={props.value.manufacturer_item_id || props.value.manufacturer_item} 
                         onChange={setManufacturerItem} />
 
                     <Input name="serial_no" 

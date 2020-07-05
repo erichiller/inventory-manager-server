@@ -11,20 +11,20 @@ import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { ManufacturerItemFormModal } from "./ManufacturerItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
 import { Manufacturer } from "~lib/Manufacturer/Manufacturer";
-import { Union, Unpacked, QueryResultTypePlus, transparentLog } from "~lib/UtilityFunctions";
+import { Union, Unpacked, QueryResultTypePlus, transparentLog, flatArrayObjectProperty } from "~lib/UtilityFunctions";
 import { IconComponentT } from "~lib/item/Item";
 
 
 interface OptionT extends OptionData {
     label?: string | ReactElement;
-    id: number;
+    id: number | 'NEW';
 }
-type VT = SelectValue;
+type VT = number | Partial<UpdateManufacturerItemMutationVariables>;
 
 export interface ManufacturerItemSelectValue extends Partial<Pick<ManufacturerItemGql, 'id' | 'description' | 'item_id' | 'manufacturer_id' | 'manufacturer_product_id'>> { }
 
 interface ManufacturerItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
-    forwardRef?: React.MutableRefObject<Input>;
+    forwardRef?: React.MutableRefObject<Select>;
     value?: VT;
     // onChange?: ( id: number ) => void;
     onChange?: ( manufacturer_item: ManufacturerItemSelectValue ) => void;
@@ -36,6 +36,20 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
     const { onChange, value, ...remainingProps } = props;
     const [ searchText, setSearchText ] = useState<string>( "" );
     const [ options, setOptions ] = useState<OptionT[]>( [] );
+
+
+    const defaultIds: Array<number | string> = [
+        ...(
+            typeof props.value === "number" ?
+                [ props.value ] : (
+                    props.value ? [ props.value.id ] : [] )
+        ),
+        ...(
+            typeof props.defaultValue === "number" ?
+                [ props.defaultValue ] : (
+                    props.defaultValue && !( 'id' in props.defaultValue ) && 'manufacturer_id' in props.defaultValue && 'item_id' in props.defaultValue ? [ 'NEW' ] : [] )
+        )
+    ];
 
 
     const [ modal, setModal ] = useState<React.ReactElement>( null );
@@ -56,13 +70,14 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
         }
         // skip: state.loading
     } );
+    console.log( { c: "ManufacturerItemSelect", ev: "init", props, defaultIds, defaultValue: props.defaultValue } );
 
     function updateOptionsFromManufacturerItem ( arr:
         Array<Unpacked<QueryResultTypePlus<typeof useSearchManufacturerItemsQuery>[ 'manufacturerItems' ]>
-            // | Partial<UpdateVendorItemMutationVariables>
             | Union<Omit<Partial<UpdateManufacturerItemMutationVariables>, 'id'>, { id: 'NEW'; }>
         >
     ) {
+        console.log( "ManufacturerItemSelect.updateOptionsFromManufacturerItem", arr );
         if ( !Array.isArray( arr ) ) { return null; }
         setOptions(
             transparentLog( {
@@ -71,8 +86,8 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
             },
                 arr.map( ( v ) => {
                     let ManufacturerIcon: IconComponentT;
-                    if ( v && 'manufactruer' in v ) {
-                        // console.log( "VendorItemSelect: rendering AsyncIcon with this of", v.vendor );
+                    if ( v && 'manufacturer' in v ) {
+                        // console.log( "ManufacturerItemSelect: rendering AsyncIcon with this of", v.manufacturer );
                         ManufacturerIcon = new Manufacturer( v.manufacturer ).icon;
                     } else if ( v && 'manufacturer_id' in v && typeof v.manufacturer_id === 'number' ) {
                         ManufacturerIcon = new Manufacturer( { id: v.manufacturer_id } ).icon;
@@ -83,11 +98,12 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
                     return {
                         id: v.id,
                         value: v.id,
-                        label: <span className="vendorItemOption">
-                            <VendorIcon />
-                            {/* <span>{v.vendor.name}</span> */}
-                            <span>{v.vendor_sku}</span>
-                            {/* <span>#{v.vendorItem_order_id}</span> */}
+                        label: <span className="manufacturerItemOption">
+                            <ManufacturerIcon />
+                            {/* <span>{v.manufacturer.name}</span> */}
+                            <span>{v.manufacturer_product_id}</span>
+                            <span>{v.manufacturer_product_name}</span>
+                            <span>{v.manufacturer_product_series}</span>
                         </span>
                         // TODO: Set value to the applicable string, feed value up that is the `order_id`
                     };
@@ -95,32 +111,41 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
         );
     }
 
+    // useEffect( () => {
+    //     if ( !loading && !error ) {
+    //         console.log( { class: "ManufacturerItemSelect", "action": "useEffect", event: "loading and error ok", data } );
+    //         let opts: OptionT[] = [];
+    //         data.item.forEach( item => {
+    //             item.manufacturerItems.forEach( v => {
+    //                 console.log( "outputting option", v );
+    //                 opts.push( {
+    //                     id: v.id,
+    //                     value: v.id,
+    //                     label: <span className="manufacturerItemOption">
+    //                         {v && v.manufacturer.url ? <img src={`${ v.manufacturer.url }/favicon.ico`} /> : null}
+    //                         {/* <span>{v.manufacturer.name}</span> */}
+    //                         <span>{v.manufacturer_product_id}</span>
+    //                         {/* <span>#{v.manufacturerItem_order_id}</span> */}
+    //                     </span>
+    //                     // TODO: Set value to the applicable string, feed value up that is the `order_id`
+    //                 } );
+    //             } );
+    //         } );
+    //         setOptions( opts );
+    //     }
+    // }, [ loading, data ] );
+
     useEffect( () => {
-        if ( !loading && !error ) {
-            console.log( { class: "ManufacturerItemSelect", "action": "useEffect", event: "loading and error ok", data } );
-            let opts: OptionT[] = [];
-            data.item.forEach( item => {
-                item.manufacturerItems.forEach( v => {
-                    console.log( "outputting option", v );
-                    opts.push( {
-                        id: v.id,
-                        value: v.id,
-                        label: <span className="manufacturerItemOption">
-                            {v && v.manufacturer.url ? <img src={`${ v.manufacturer.url }/favicon.ico`} /> : null}
-                            {/* <span>{v.manufacturer.name}</span> */}
-                            <span>{v.manufacturer_product_id}</span>
-                            {/* <span>#{v.manufacturerItem_order_id}</span> */}
-                        </span>
-                        // TODO: Set value to the applicable string, feed value up that is the `order_id`
-                    } );
-                } );
-            } );
-            setOptions( opts );
-        }
-    }, [ loading, data ] );
-    useEffect( () => {
-        console.log( "ManufacturerItemSelect -- value changed" );
-    }, [ value ] );
+        console.log( { c: "ManufacturerItemSelect", m: "useEffect", ev: "loaded ManufacturerItems from Gql", data } );
+        updateOptionsFromManufacturerItem( [
+            ...( props.defaultValue && typeof props.defaultValue !== "number" && !props.defaultValue.id
+                ? [ { ...props.defaultValue, id: 'NEW' as 'NEW' } ]
+                : [] ),
+            ...( data && data.item ? 
+                flatArrayObjectProperty( data.item, 'manufacturerItems' ) 
+                : [] )
+        ] );
+    }, [ loading, data, props.defaultValue ] );
     return (
         <React.Fragment>
             {modal}
@@ -155,7 +180,7 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
                                     visibilityHandler={handleModalChange}
                                     onFinish={(args) => {
                                         setModal(null);
-                                        onChange(args);
+                                        onChange(transparentLog({c: 'ManufacturerItemSelect', e: 'new created, onchange'}, args));
                                     }} 
                                 /> )}
                         >
@@ -171,16 +196,18 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
                         manufacturerItem_id = value;
                     } else if ( typeof value === "string" ) {
                         manufacturerItem_id = parseInt( value );
-                    } else if ( "key" in value ) {
-                        manufacturerItem_id = typeof value.value === "number" ? value.value : parseInt( value.value );
+                    // } else if ( "key" in value ) {
+                    //     manufacturerItem_id = typeof value.value === "number" ? value.value : parseInt( value.value );
                     }
-                    onChange( {
-                        id: manufacturerItem_id,
-                        // item_id: 1111,
-                        // manufacturer_id: 2222,
-                        // manufacturer_sku: "3333",
-                        // description: "4444"
-                    } );
+                    if ( manufacturerItem_id ) {
+                        onChange( {
+                            id: manufacturerItem_id,
+                            // item_id: 1111,
+                            // manufacturer_id: 2222,
+                            // manufacturer_sku: "3333",
+                            // description: "4444"
+                        } );
+                    }
                 }}
                 options={options}
                 // {...( value ? { defaultValue: props.value } : {} )}

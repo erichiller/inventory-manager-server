@@ -1,10 +1,8 @@
 import React, { useState, useEffect, ReactElement } from "react";
 import { IQuery, ClassType, SubType, FilterFlags, QueryResultTypePlus, Union } from "~lib/UtilityFunctions";
-import { useGetVendorItemQuery, GetVendorItemQueryVariables, GetVendorItemQuery, useGetVendorQuery} from "~lib/types/graphql";
 import { message, Spin } from "antd";
 import { IconComponentT } from "~lib/item/Item";
 import { BaseQueryOptions } from "react-apollo";
-import { Vendor } from "~lib/Vendor/Vendor";
 
 type Class = { new( ...args: any[] ): any; };
 
@@ -46,11 +44,11 @@ interface AsyncIconProps<
 
 /**
  * Retrieve icon from query
- * @param props xxxx
+ * @param props xxxx//TODO
  */
 export function AsyncIcon<
     TQuery, 
-    TVariables extends BaseQueryOptions[ 'variables' ] & InstanceType<TClass>[ FilterFlags<keyof InstanceType<TClass>, string>], 
+    TVariables extends Partial<Pick<InstanceType<TClass>, FilterFlags<keyof InstanceType<TClass>, string> > >, 
     TClass extends Union<TClassProvidingQuery<Class, TQuery, TVariables>, TClassProvidingInstanceWithIcon<Class>>,
 
 > ( props: AsyncIconProps<TQuery, TVariables, TClass> ) {
