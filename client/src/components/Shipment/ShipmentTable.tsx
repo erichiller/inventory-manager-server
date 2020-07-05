@@ -1,13 +1,13 @@
 import { Table, Divider, message } from 'antd';
 import * as React from 'react';
-import { ShipmentSelectColumn, Shipment as ShipmentGql, useGetShipmentsQuery, GetShipmentsQuery, useDeleteShipmentMutation, GetShipmentDocument, GetShipmentsDocument } from '../../lib/types/graphql';
-import { Item } from '../../lib/item';
-import { toTitleCase, computeDefaultPagination } from '../../lib/UtilityFunctions';
+import { ShipmentSelectColumn, Shipment as ShipmentGql, useGetShipmentsQuery, GetShipmentsQuery, useDeleteShipmentMutation, GetShipmentDocument, GetShipmentsDocument } from '~lib/types/graphql';
+import { Item } from '~lib/Item';
+import { toTitleCase, computeDefaultPagination } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ShipmentFormModal } from './ShipmentFormModal';
-import { Shipment } from '../../lib/Shipment/Shipment';
+import { Shipment } from '~lib/Shipment/Shipment';
 import { useState } from 'react';
 // import { history }
 

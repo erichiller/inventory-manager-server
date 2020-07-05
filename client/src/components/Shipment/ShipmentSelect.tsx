@@ -6,21 +6,22 @@ import { AutoComplete, Input, DatePicker, Select, Divider } from "antd";
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { InputProps } from "antd/lib/input";
-import { useGetShipmentsLazyQuery, useSearchShipmentsLazyQuery, useSearchShipmentsQuery, Shipment as ShipmentGql, ShipmentInsertInput } from "../../lib/types/graphql";
-import { PlusOutlined } from "@ant-design/icons";
+import { useGetShipmentsLazyQuery, useSearchShipmentsLazyQuery, useSearchShipmentsQuery, Shipment as ShipmentGql, ShipmentInsertInput, UpdateShipmentMutationVariables } from "~lib/types/graphql";
+import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { ShipmentFormModal } from "./ShipmentFormModal";
 import { useHistory, useLocation } from "react-router-dom";
-import { Union } from "../../lib/UtilityFunctions";
+import { Union, QueryResultTypePlus, Unpacked, transparentLog, flatArrayObjectProperty } from "~lib/UtilityFunctions";
+import { IconComponentT } from "~lib/types/common";
+import { Vendor } from "~lib/Vendor/Vendor";
 
 
 interface OptionT extends OptionData {
     label?: string | ReactElement;
-    id: number;
+    id: number | 'NEW';
 }
-type VT = SelectValue;
+type VT = number | Partial<UpdateShipmentMutationVariables>;
 
 export interface ShipmentSelectValue extends Partial<ShipmentGql> { }
-// interface ShipmentSelectValue extends Partial<Pick<Shipment, 'id' | 'order_id' | 'vendor_invoice_id' | 'shipped_date' | 'received_date' | 'tracking_id' | 'shipping_carrier'>> { }
 
 type ShipmentSelectProps = Union<
     Omit<SelectProps<VT>, 'value' | 'onChange'>,
@@ -44,6 +45,19 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
     const [ searchText, setSearchText ] = useState<string>( "" );
     const [ options, setOptions ] = useState<OptionT[]>( [] );
 
+    const defaultIds: Array<number | string> = [
+        ...(
+            typeof props.value === "number" ?
+                [ props.value ] : (
+                    props.value ? [ props.value.id ] : [] )
+        ),
+        ...(
+            typeof props.defaultValue === "number" ?
+                [ props.defaultValue ] : (
+                    props.defaultValue && !( 'id' in props.defaultValue ) && 'received_date' in props.defaultValue && 'item_id' in props.defaultValue ? [ 'NEW' ] : [] )
+        )
+    ];
+    console.log( "ShipmentSelect: init, received props", { props_defaultValue: props.defaultValue, defaultIds, props } );
 
     const [ modal, setModal ] = useState<React.ReactElement>( null );
     const history = useHistory();
@@ -63,29 +77,79 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
         }
         // skip: state.loading
     } );
+    // data.shipment[0].
+    // useEffect( () => {
+    //     if ( !loading && !error ) {
+    //         console.log( { class: "ShipmentSelect", "action": "useEffect", event: "loading and error ok", data } );
+    //         let opts: OptionT[] = [];
+    //         data.shipment.forEach( v => {
+    //             console.log( "outputting option", v );
+    //             opts.push( {
+    //                 id: v.id,
+    // //                 value: v.id,
+    //                 label: <span className="shipmentOption">
+    //                     {v && v.carrier ? <img src={`${ v.carrier.url }/favicon.ico`} /> : null}  { /* TODO: real icon code */ }
+    //                     {/* <span>{v.shipment.name}</span> */}
+    //                     <span>{v.carrier.name}</span>
+    //                     <span>#{v.tracking_id}</span>
+    //                 </span>
+    //             } );
+    //         } );
+    //         setOptions( opts );
+    //     }
+    // }, [ loading, data ] );
+    
+
+    function updateOptionsFromShipment ( arr:
+        Array<Unpacked<QueryResultTypePlus<typeof useSearchShipmentsQuery>>
+            // | Partial<UpdateVendorItemMutationVariables>
+            | Union<Omit<Partial<UpdateShipmentMutationVariables>, 'id'>, { id: 'NEW'; }>
+        >
+    ) {
+        if ( !Array.isArray( arr ) ) { return null; }
+        setOptions(
+            transparentLog( {
+                c: 'ShipmentSelect',
+                e: 'optionsGenerated'
+            },
+                arr.map( ( v ) => {
+                    let CarrierIcon: IconComponentT;
+                    let carrier: Vendor;
+                    if ( v && 'carrier' in v ) {
+                        carrier = new Vendor( v.carrier );
+                        CarrierIcon = carrier.icon;
+                    } else if ( v && 'carrier_vendor_id' in v && typeof v.carrier_vendor_id === 'number' ) {
+                        carrier = new Vendor( { id: v.carrier_vendor_id } );
+                        CarrierIcon = carrier.icon;
+                    } else {
+                        console.warn( "ShipmentSelect: not rendering AsyncIcon with this of", v );
+                        CarrierIcon = () => <FileUnknownOutlined className="CarrierIcon" />;
+                    }
+                    return {
+                        id: v.id,
+                        value: v.id,
+                        label: <span className="shipmentOption">
+                            <CarrierIcon />
+                            {/* <span>{v.shipment.name}</span> */}
+                            <span>{carrier.name}</span>
+                            <span>#{v.tracking_id}</span>
+                        </span>
+                        // TODO: Set value to the applicable string, feed value up that is the `order_id`
+                    };
+                } ) )
+        );
+    }
     useEffect( () => {
-        if ( !loading && !error ) {
-            console.log( { class: "ShipmentSelect", "action": "useEffect", event: "loading and error ok", data } );
-            let opts: OptionT[] = [];
-            data.shipment.forEach( v => {
-                console.log( "outputting option", v );
-                opts.push( {
-                    id: v.id,
-                    value: v.id,
-                    label: <span className="shipmentOption">
-                        {v && v.carrier ? <img src={`${ v.carrier.url }/favicon.ico`} /> : null}  { /* TODO: real icon code */ }
-                        {/* <span>{v.shipment.name}</span> */}
-                        <span>{v.carrier.name}</span>
-                        <span>#{v.tracking_id}</span>
-                    </span>
-                } );
-            } );
-            setOptions( opts );
-        }
-    }, [ loading, data ] );
-    useEffect( () => {
-        console.log( "ShipmentSelect -- value changed" );
-    }, [ value ] );
+        updateOptionsFromShipment( [
+            ...( props.defaultValue && typeof props.defaultValue !== "number" && !props.defaultValue.id
+                ? [ { ...props.defaultValue, id: 'NEW' as 'NEW' } ]
+                : [] ),
+            ...( data && data.shipment ? data.shipment : [] )
+        ] );
+        console.log( { c: "ShipmentSelect", m: "useEffect", ev: "loaded vendorItems from Gql", data } );
+    }, [ loading, data, props.defaultValue ] );
+
+
     return (
         <React.Fragment>
             {modal}
@@ -96,6 +160,9 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                 className="ShipmentSelect"
                 placeholder="Shipment Item"
                 dropdownClassName="ShipmentSelectDropdown"
+                dropdownMatchSelectWidth={180}
+                defaultValue={defaultIds}
+                value={defaultIds}
                 onSearch={value => {
                     console.log( { event: "onSearch", setSearchText: value } );
                     setSearchText( value );
@@ -133,8 +200,8 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                         shipment_id = value;
                     } else if ( typeof value === "string" ) {
                         shipment_id = parseInt( value );
-                    } else if ( "key" in value ) {
-                        shipment_id = typeof value.value === "number" ? value.value : parseInt( value.value );
+                    // } else if ( "key" in value ) {
+                    //     shipment_id = typeof value.value === "number" ? value.value : parseInt( value.value );
                     }
                     onChange( {
                         id: shipment_id,
@@ -145,7 +212,6 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                     } );
                 }}
                 options={options}
-                {...( value ? { defaultValue: props.value } : {} )}
             />
         </React.Fragment>
     );
