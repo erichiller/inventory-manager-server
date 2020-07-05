@@ -1,13 +1,13 @@
 import { Table, Divider, message } from 'antd';
 import * as React from 'react';
-import { useGetOrdersQuery, GetOrdersQuery, useDeleteOrderMutation, GetOrdersDocument } from '../../lib/types/graphql';
-import { Item } from '../../lib/item';
-import { computeDefaultPagination } from '../../lib/UtilityFunctions';
+import { useGetOrdersQuery, GetOrdersQuery, useDeleteOrderMutation, GetOrdersDocument } from '~lib/types/graphql';
+import { Item } from '~lib/Item';
+import { computeDefaultPagination } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { OrderFormModal } from './OrderFormModal';
-import { Order } from '../../lib/Order/Order';
+import { OrderFormModal } from './Form/OrderFormModal';
+import { Order } from '~lib/Order/Order';
 import { useState } from 'react';
 
 

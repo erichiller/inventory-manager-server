@@ -30,11 +30,11 @@
     "shortid": "^2.2.15"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.16.0",
-    "@graphql-codegen/time": "^1.16.0",
-    "@graphql-codegen/typescript": "^1.16.0",
-    "@graphql-codegen/typescript-operations": "^1.16.0",
-    "@graphql-codegen/typescript-resolvers": "^1.16.0",
+    "@graphql-codegen/cli": "^1.16.2",
+    "@graphql-codegen/time": "^1.16.2",
+    "@graphql-codegen/typescript": "^1.16.2",
+    "@graphql-codegen/typescript-operations": "^1.16.2",
+    "@graphql-codegen/typescript-resolvers": "^1.16.2",
     "@types/cors": "^2.8.6",
     "@types/minio": "^7.0.5",
     "@types/mkdirp": "^0.5.2",
