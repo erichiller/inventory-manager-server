@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import Konva from "konva";
 import ReactKonva, { KonvaNodeComponent, Transformer } from 'react-konva';
 import type { KonvaEventObject } from "konva/types/Node";
-import { Item } from '../../../lib/item';
-import { DrawContext, DrawContextAdditions } from '../LabelDraw';
-import { LabelQR } from '../../../lib/LabelConstituent';
+import { Item } from '~lib/Item';
+import { DrawContext, DrawContextAdditions } from '~components/Draw/LabelDraw';
+import { LabelQR } from '~lib/LabelConstituent';
 
 
 interface QrImageProps extends Pick<DrawContext, 'displayContextMenu' | 'selectedShapeName' | 'updateHistory' | 'setSelectedShapeName'> {

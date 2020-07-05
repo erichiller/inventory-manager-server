@@ -1,15 +1,15 @@
 import type { KonvaEventObject } from 'konva/types/Node';
 import { Component, useState, useEffect } from 'react';
 import { Select, Tooltip, Button } from 'antd';
-import { DISPLAY } from '../../../lib/types/enums';
+import { DISPLAY } from '~lib/types/enums';
 import React from 'react';
 import { Modal } from 'antd';
-import { useGetIconsQuery, GetIconsProps } from '../../../lib/types/graphql';
-import { Item } from '../../../lib/item';
-import { LabelImage } from '../../../lib/LabelConstituent';
-import { DrawContext } from '../LabelDraw';
+import { useGetIconsQuery, GetIconsProps } from '~lib/types/graphql';
+import { Item } from '~lib/Item';
+import { LabelImage } from '~lib/LabelConstituent';
+import { DrawContext } from '~components/Draw/LabelDraw';
 import { StopOutlined, UploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { QueryResultTypePlus } from '../../../lib/UtilityFunctions';
+import { QueryResultTypePlus } from '~lib/UtilityFunctions';
 
 
 interface LabelAddImageProps {

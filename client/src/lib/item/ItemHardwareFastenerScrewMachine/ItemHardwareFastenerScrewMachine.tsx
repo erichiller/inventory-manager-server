@@ -1,4 +1,4 @@
-import { Item, IconComponentT, CategoryHierarchyT, ItemGqlTypename, GenericItem, FormMutationHandler } from '../Item';
+import { Item, CategoryHierarchyT, ItemGqlTypename, GenericItem, FormMutationHandler } from '~lib/Item/Item';
 import { Item as ItemGql, ItemHardwareFastenerScrewMachine as ItemHardwareFastenerScrewMachineGql, ItemHardwareFastenerScrewMachineSelectColumn, Maybe, Scalars, EnumUnitEnum, EnumItemHardwareFastenerDriveEnum, EnumItemHardwareFinishEnum, EnumItemHardwareFastenerScrewHardnessEnum, EnumItemHardwareFastenerScrewHeadEnum, EnumItemHardwareFastenerMaterialEnum, EnumItemHardwareFastenerScrewMachinePointEnum, EnumItemHardwareFastenerScrewMachineStrengthEnum, EnumItemHandednessEnum, EnumItemHardwareFastenerScrewMachineThreadFitEnum, EnumItemHardwareFastenerThreadStandardEnum, EnumItemHardwareFastenerThreadLabelEnum, EnumItemHardwareUseMaterialEnum } from "../../types/graphql";
 import React from 'react';
 import { Integer } from '../../types/uint8';
@@ -8,7 +8,9 @@ import { toTitleCase, enumerable, Union, getUnitFromUnitSystem, sortByCaseInsens
 import { ItemHardwareFastenerScrewMachineForm } from './Form';
 import { ItemHardwareFastenerScrewMachineEditMutationHandler } from './Edit';
 import { ItemHardwareFastenerScrewMachineAddMutationHandler } from './Add';
-import { ItemHardwareFastenerScrewMachineDriveTypeIconMap } from './icon';
+import { ItemHardwareFastenerScrewMachineDriveTypeIconMap } from './Icon/Index';
+import { IconComponentT } from "~lib/types/common";
+
 
 
 type ItemPlusClassT<T extends GenericItem, C extends ItemGqlTypename> = Exclude<ItemHardwareFastenerScrewMachineGql, 'class'>;

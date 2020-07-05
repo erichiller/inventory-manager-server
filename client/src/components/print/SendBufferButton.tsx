@@ -1,10 +1,10 @@
 import { Spin, Button, message } from "antd";
 import React, { useEffect } from "react";
-import { PixelMap } from "../../lib/canvasToBuffer";
+import { PixelMap } from "~lib/canvasToBuffer";
 import { ButtonProps } from "antd/lib/button/button";
-import { PageSpin } from "../shared/PageSpin";
+import { PageSpin } from "../Shared/PageSpin";
 import { PrinterOutlined } from "@ant-design/icons";
-import { useSendBufferMutation } from "../../lib/types/graphql";
+import { useSendBufferMutation } from "~lib/types/graphql";
 import Group from "antd/lib/input/Group";
 
 

@@ -1,4 +1,5 @@
-import { Item, IconComponentT, CategoryHierarchyT, ItemGqlTypename, GenericItem } from '../Item';
+import { Item, CategoryHierarchyT, ItemGqlTypename, GenericItem } from '~lib/Item/Item';
+import { IconComponentT } from "~lib/types/common";
 import { 
     Item as ItemGql, 
     ItemBundle as ItemBundleGql, 

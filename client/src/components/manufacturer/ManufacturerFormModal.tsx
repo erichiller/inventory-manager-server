@@ -6,20 +6,18 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetManufacturerQuery, GetManufacturerQueryVariables, useGetManufacturerQuery, useInsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables, useGetManufacturerLazyQuery, useUpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables, useDeleteManufacturerMutation, GetManufacturerDocument, GetManufacturersDocument, useDeleteVendorMutation, useInsertVendorMutation, useInsertVendorWithExistingManufacturerMutation } from '../../lib/types/graphql';
+import { GetManufacturerQuery, GetManufacturerQueryVariables, useGetManufacturerQuery, useInsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables, useGetManufacturerLazyQuery, useUpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables, useDeleteManufacturerMutation, GetManufacturerDocument, GetManufacturersDocument, useDeleteVendorMutation, useInsertVendorMutation, useInsertVendorWithExistingManufacturerMutation } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Union, filterObject, deepCopy } from '../../lib/UtilityFunctions';
+import { QueryResultTypePlus, Union, filterObject, deepCopy } from '~lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
 import { QueryResult } from 'react-apollo';
-import { ItemSelect } from '../item/ItemSelect';
-import { ManufacturerSelect } from './ManufacturerSelect';
 import moment from 'moment';
 import { Store } from 'antd/lib/form/interface';
-import { PageSpin } from '../shared/PageSpin';
-import { Manufacturer } from '../../lib/Manufacturer/Manufacturer';
-import { UrlSelect } from '../shared/UrlInput';
+import { PageSpin } from '~components/Shared/PageSpin';
+import { Manufacturer } from '~lib/Manufacturer/Manufacturer';
+import { UrlSelect } from '~components/Shared/UrlInput';
 
 
 type ManufacturerFormModalProps = Union<{

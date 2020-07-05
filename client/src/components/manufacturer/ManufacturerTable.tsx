@@ -1,13 +1,13 @@
 import { Table, Divider, message } from 'antd';
 import * as React from 'react';
-import { ManufacturerSelectColumn, Manufacturer as ManufacturerGql, useGetManufacturersQuery, GetManufacturersQuery, useDeleteManufacturerMutation, GetManufacturerDocument, GetManufacturersDocument } from '../../lib/types/graphql';
-import { Item } from '../../lib/item';
-import { toTitleCase, computeDefaultPagination } from '../../lib/UtilityFunctions';
+import { ManufacturerSelectColumn, Manufacturer as ManufacturerGql, useGetManufacturersQuery, GetManufacturersQuery, useDeleteManufacturerMutation, GetManufacturerDocument, GetManufacturersDocument } from '~lib/types/graphql';
+import { Item } from '~lib/Item';
+import { toTitleCase, computeDefaultPagination } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ManufacturerFormModal } from './ManufacturerFormModal';
-import { Manufacturer } from '../../lib/Manufacturer/Manufacturer';
+import { Manufacturer } from '~lib/Manufacturer/Manufacturer';
 import { useState } from 'react';
 // import { history }
 

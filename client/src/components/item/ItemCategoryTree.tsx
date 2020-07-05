@@ -1,11 +1,11 @@
-import { Item } from "../../lib/item";
+import { Item } from "~lib/Item";
 import React, { useState } from "react";
 import { Tree, Popover, Menu } from "antd";
 import { DataNode } from 'rc-tree/lib/interface';
 import { DownOutlined, PlusOutlined } from "@ant-design/icons";
-import { EnumItemClassEnum } from "../../lib/types/graphql";
+import { EnumItemClassEnum } from "~lib/types/graphql";
 import { TreeProps } from "antd/lib/tree";
-import { toTitleCase } from "../../lib/UtilityFunctions";
+import { toTitleCase } from "~lib/UtilityFunctions";
 import { ItemFormModal } from "./ItemFormModal";
 
 const { TreeNode } = Tree;

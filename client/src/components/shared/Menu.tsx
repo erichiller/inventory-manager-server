@@ -2,7 +2,7 @@ import { Menu } from "antd";
 import React from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
 import { DashboardOutlined, ContainerOutlined, ShareAltOutlined, TagOutlined, ShoppingCartOutlined, PlusCircleOutlined, UnorderedListOutlined, ShopOutlined, PlusSquareOutlined } from "@ant-design/icons";
-import { PrintListButton } from "../print/PrintListButton";
+import { PrintListButton } from "~components/Print/PrintListButton";
 import { CurlyBracesIcon, FactoryIcon } from "../../styles/icon";
 
 

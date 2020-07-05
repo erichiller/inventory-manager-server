@@ -1,7 +1,7 @@
 import React, {  } from 'react';
 import Input, { InputProps } from 'antd/lib/input';
 import { Form } from 'antd';
-import { Union } from '../../lib/UtilityFunctions';
+import { Union } from '~lib/UtilityFunctions';
 import { FormItemProps, Rule } from 'antd/lib/form';
 
 

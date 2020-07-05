@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Item, ItemHardwareFastenerScrewMachine } from '../../lib/item';
+import { Item, ItemHardwareFastenerScrewMachine } from '~lib/Item';
 // import Search from "antd/lib/input/Search";
 import { Select, Row, Col, Button } from "antd";
 
@@ -8,7 +8,7 @@ import { Select, Row, Col, Button } from "antd";
 // import * as ReactRouter from 'react-router';
 import { SelectValue, LabeledValue } from 'antd/lib/select';
 import { SearchOutlined, TagOutlined, FontSizeOutlined } from '@ant-design/icons';
-import { useSearchItemsQuery, EnumItemClassEnum, useSearchItemsLazyQuery } from "../../lib/types/graphql";
+import { useSearchItemsQuery, EnumItemClassEnum, useSearchItemsLazyQuery } from "~lib/types/graphql";
 
 const { Option } = Select;
 

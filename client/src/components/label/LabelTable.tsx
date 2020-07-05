@@ -1,12 +1,9 @@
 import { Table, Divider } from 'antd';
 import * as React from 'react';
-import { useGetLabelsQuery, LabelSelectColumn, Label, GetLabelsQuery } from '../../lib/types/graphql';
-import { LabelDrawModal } from './../draw/LabelDrawModal';
-import { Item } from '../../lib/item';
-import { DISPLAY } from '../../lib/types/enums';
-import { toTitleCase } from '../../lib/UtilityFunctions';
-import { get } from 'http';
-import { render } from 'bwip-js';
+import { useGetLabelsQuery, LabelSelectColumn, Label, GetLabelsQuery } from '~lib/types/graphql';
+import { LabelDrawModal } from '~components/Draw/LabelDrawModal';
+import { Item } from '~lib/Item';
+import { toTitleCase } from '~lib/UtilityFunctions';
 import { ColumnProps } from 'antd/lib/table';
 
 

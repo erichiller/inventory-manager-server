@@ -1,13 +1,12 @@
 import React from 'react';
 import { matchPath } from 'react-router-dom';
-import { ItemTable } from '../components/item/ItemTable';
-import { LabelTable } from '../components/label/LabelTable';
-import { ItemIndex } from '../components/item/Index';
-import { ItemFormModal } from '../components/item/ItemFormModal';
+import { ItemTable } from '../components/Item/ItemTable';
+import { LabelTable } from '../components/Label/LabelTable';
+import { ItemIndex } from '../components/Item/Index';
 import { OrderTable } from '../components/Order/OrderTable';
 import { VendorTable } from '../components/Vendor/VendorTable';
-import { ManufacturerTable } from '../components/manufacturer/ManufacturerTable';
-import { ObjectTable } from '../components/generic/ObjectTable';
+import { ManufacturerTable } from '../components/Manufacturer/ManufacturerTable';
+import { ObjectTable } from '../components/Generic/ObjectTable';
 
 type ReactFunctionComponent = ( ( route?: RouteEntry, match?: RouterMatch ) => JSX.Element );
 

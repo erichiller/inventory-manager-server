@@ -1,8 +1,8 @@
 import { Menu, Popconfirm, message } from "antd";
 import React, { CSSProperties, useContext } from "react";
 import { PrintContext } from "./PrintContextHandler";
-import { useSendBufferMutation } from "../../lib/types/graphql";
-import { filterObject } from "../../lib/UtilityFunctions";
+import { useSendBufferMutation } from "~lib/types/graphql";
+import { filterObject } from "~lib/UtilityFunctions";
 import { PrinterOutlined } from "@ant-design/icons";
 import { render } from "bwip-js";
 

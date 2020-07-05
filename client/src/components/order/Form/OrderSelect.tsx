@@ -6,10 +6,10 @@ import moment from 'moment';
 
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
-import { toTitleCase, getDaysInMonth, toMinimumFixed } from "../../../lib/UtilityFunctions";
+import { toTitleCase, getDaysInMonth, toMinimumFixed } from "~lib/UtilityFunctions";
 import { InputProps } from "antd/lib/input";
-import { useGetOrdersByDateRangeQuery } from "../../../lib/types/graphql";
-import { Vendor } from "../../../lib/Vendor/Vendor";
+import { useGetOrdersByDateRangeQuery } from "~lib/types/graphql";
+import { Vendor } from "~lib/Vendor/Vendor";
 
 
 interface OptionT {

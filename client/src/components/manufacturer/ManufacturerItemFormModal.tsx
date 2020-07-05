@@ -6,15 +6,15 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetManufacturerItemQuery, GetManufacturerItemQueryVariables, useGetManufacturerItemQuery, useInsertManufacturerItemMutation, InsertManufacturerItemMutationVariables, useGetManufacturerItemLazyQuery, useUpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables, GetManufacturerItemDocument, ManufacturerItem as ManufacturerItemGql } from '../../lib/types/graphql';
+import { GetManufacturerItemQuery, GetManufacturerItemQueryVariables, useGetManufacturerItemQuery, useInsertManufacturerItemMutation, InsertManufacturerItemMutationVariables, useGetManufacturerItemLazyQuery, useUpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables, GetManufacturerItemDocument, ManufacturerItem as ManufacturerItemGql } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Union, filterObject, deepCopy } from '../../lib/UtilityFunctions';
+import { QueryResultTypePlus, Union, filterObject, deepCopy } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
-import { ItemSelect } from '../item/ItemSelect';
+import { ItemSelect } from '../Item/ItemSelect';
 import { ManufacturerSelect } from './ManufacturerSelect';
-import { PageSpin } from '../shared/PageSpin';
-import { UrlSelect } from '../shared/UrlInput';
+import { PageSpin } from '~components/Shared/PageSpin';
+import { UrlSelect } from '~components/Shared/UrlInput';
 import TextArea from 'antd/lib/input/TextArea';
 
 

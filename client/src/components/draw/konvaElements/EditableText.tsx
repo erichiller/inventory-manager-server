@@ -2,10 +2,10 @@ import React, { useState }  from 'react';
 import Konva from "konva";
 import ReactKonva, { KonvaNodeComponent, Transformer } from 'react-konva';
 import type { KonvaEventObject } from "konva/types/Node";
-import { LabelText } from '../../../lib/LabelConstituent';
-import { Item } from '../../../lib/item';
-import { DrawContext } from '../LabelDraw';
-import { stringTemplateRender } from '../../../lib/stringTemplates';
+import { LabelText } from '~lib/LabelConstituent';
+import { Item } from '~lib/Item';
+import { DrawContext } from '~components/Draw/LabelDraw';
+import { stringTemplateRender } from '~lib/stringTemplates';
 
 
 interface EditableTextProps extends Pick<DrawContext, 'displayContextMenu' | 'selectedShapeName' | 'updateHistory' | 'setSelectedShapeName'> {

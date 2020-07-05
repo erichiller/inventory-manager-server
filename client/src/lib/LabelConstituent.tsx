@@ -5,7 +5,7 @@ import { v4 as UUIDv4 } from 'uuid';
 import { EnumItemClassEnum, Scalars, LabelAggregate } from './types/graphql';
 import { Integer } from './types/uint8';
 import { Label } from "./types/graphql";
-import { Item } from "./item";
+import { Item } from "./Item";
 import bwipjs from 'bwip-js';
 import { DrawingSVG } from './BwipJsSvg';
 import { message, Alert } from 'antd';

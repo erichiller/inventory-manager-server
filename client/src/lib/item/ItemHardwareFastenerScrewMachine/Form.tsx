@@ -4,17 +4,17 @@ import { ItemFormProps } from '../Item';
 import { EnumItemHardwareFastenerScrewHeadEnum, EnumItemHardwareFastenerDriveEnum, EnumItemHardwareFinishEnum, EnumItemHardwareFastenerMaterialEnum, EnumItemHandednessEnum, EnumItemHardwareFastenerThreadStandardEnum, EnumItemHardwareFastenerScrewMachineThreadFitEnum, EnumItemHardwareFastenerScrewMachinePointEnum, EnumItemHardwareFastenerScrewHardnessEnum, EnumItemHardwareFastenerScrewMachineStrengthEnum, useGetEnumItemHardwareFastenerThreadStandardQuery, EnumItemHardwareUseMaterialEnum, EnumItemHardwareFastenerThreadLabelEnum } from '../../types/graphql';
 
 import { EnumItemHardwareFastenerSpecificationsEnum } from './types/types';
-import { UnitSelect } from './formComponents/UnitSelect';
-import { MeasurementInput } from './formComponents/MeasurementInput';
-import { EnumSelect } from './formComponents/EnumSelect';
-import { ScrewSizeInput, ScrewSizeInputOptionData } from './formComponents/ScrewSizeInput';
+import { UnitSelect } from './FormComponents/UnitSelect';
+import { MeasurementInput } from './FormComponents/MeasurementInput';
+import { EnumSelect } from './FormComponents/EnumSelect';
+import { ScrewSizeInput, ScrewSizeInputOptionData } from './FormComponents/ScrewSizeInput';
 import { toMinimumFixed, Union, toTitleCase, EnumUnitKeys } from '../../UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { ItemHardwareFastenerScrewMachine } from './Index';
-import { ScrewThreadIcon, ScrewEmbeddedLengthIcon, ScrewHeadDiameterIcon, ScrewHeadHeightIcon, ItemHardwareFastenerScrewMachineDriveTypeIconMap, ItemHardwareFastenerScrewMachinePointIconMap } from './icon';
-import { getUnitPrefixFromUnitSystem } from './formComponents/helpers';
-import { ThreadDirection_RightHandRuleIcon } from './icon';
-import { DescriptionTableTooltip } from './formComponents/DescriptionTableTooltip';
+import { ScrewThreadIcon, ScrewEmbeddedLengthIcon, ScrewHeadDiameterIcon, ScrewHeadHeightIcon, ItemHardwareFastenerScrewMachineDriveTypeIconMap, ItemHardwareFastenerScrewMachinePointIconMap } from './Icon/Index';
+import { getUnitPrefixFromUnitSystem } from './FormComponents/helpers';
+import { ThreadDirection_RightHandRuleIcon } from './Icon/Index';
+import { DescriptionTableTooltip } from './FormComponents/DescriptionTableTooltip';
 import { FormIconTooltip } from '../../FormHelpers';
 
 

@@ -6,13 +6,13 @@ import { AutoComplete, Input, DatePicker, Select, Divider } from "antd";
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { InputProps } from "antd/lib/input";
-import { useGetVendorItemsLazyQuery, useSearchVendorItemsLazyQuery, useSearchVendorItemsQuery, VendorItem as VendorItemGql, VendorItemInsertInput, UpdateVendorItemMutationVariables } from "../../lib/types/graphql";
+import { useGetVendorItemsLazyQuery, useSearchVendorItemsLazyQuery, useSearchVendorItemsQuery, VendorItem as VendorItemGql, VendorItemInsertInput, UpdateVendorItemMutationVariables } from "~lib/types/graphql";
 import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { VendorItemFormModal } from "./VendorItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
-import { Vendor } from "../../lib/Vendor/Vendor";
-import { QueryResultTypePlus, Unpacked, PartialPartial, flatArrayObjectProperty, Union, transparentLog } from "../../lib/UtilityFunctions";
-import { IconComponentT } from "../../lib/item/Item";
+import { Vendor } from "~lib/Vendor/Vendor";
+import { QueryResultTypePlus, Unpacked, PartialPartial, flatArrayObjectProperty, Union, transparentLog } from "~lib/UtilityFunctions";
+import { IconComponentT } from "~lib/types/common";
 
 
 interface OptionT extends OptionData {

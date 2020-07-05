@@ -6,7 +6,7 @@ import { AutoComplete, Input, DatePicker, Select } from "antd";
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { InputProps } from "antd/lib/input";
-import { useGetManufacturersLazyQuery, useSearchManufacturersLazyQuery, useSearchManufacturersQuery } from "../../lib/types/graphql";
+import { useGetManufacturersLazyQuery, useSearchManufacturersLazyQuery, useSearchManufacturersQuery } from "~lib/types/graphql";
 
 
 interface OptionT extends OptionData {

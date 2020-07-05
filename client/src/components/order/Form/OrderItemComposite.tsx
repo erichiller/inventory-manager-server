@@ -123,7 +123,9 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
         console.log( { c: 'OrderItemInput', f: "setShipment", shipment });
         onChange( {
             ...props.value,
-            ...( shipment.id ? { shipment_id: shipment.id, shipment: null } : { shipment: shipment, shipment_id: null } )
+            ...( shipment.id 
+                    ? { shipment_id: shipment.id, shipment: null } 
+                    : { shipment: shipment, shipment_id: null } )
         } );
     };
 
@@ -195,7 +197,10 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                     placeholder="total" />
             </span >
 
-            <ShipmentSelect excludeOrderInput onChange={setShipment} />
+            <ShipmentSelect 
+                excludeOrderInput
+                defaultValue={props.value.shipment_id || props.value.shipment} 
+                onChange={setShipment} />
 
         </div>
     );

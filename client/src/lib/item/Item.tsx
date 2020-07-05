@@ -20,7 +20,8 @@ import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { resolve } from "url";
 import { rejects } from "assert";
-import { ItemSelect } from "../../components/item/ItemSelect";
+import { ItemSelect } from "../../components/Item/ItemSelect";
+import { IconComponentT } from "~lib/types/common";
 
 export type GenericItem = Pick<ItemGql, 'id'>
     & Partial<Pick<ItemGql, | 'object'>
@@ -55,17 +56,6 @@ export type CategoryHierarchyT = "Item"
     | "Screw"
     | "Nut"
     | "Washer";
-
-export type IconComponentT<P = {}> =
-    React.FunctionComponent<
-        P &
-        React.DetailedHTMLProps<
-            React.ImgHTMLAttributes<HTMLImageElement>,
-            HTMLImageElement
-        >
-    >
-    | React.FunctionComponent<P & React.SVGProps<SVGSVGElement>>;
-
 
 export class Item<T extends GenericItem> {
     __typename: string;

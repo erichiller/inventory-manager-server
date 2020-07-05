@@ -1,16 +1,16 @@
 import { useContext, useState } from "react";
-import { DISPLAY } from '../../lib/types/enums';
-import { Label, useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument } from "../../lib/types/graphql";
+import { DISPLAY } from '~lib/types/enums';
+import { Label, useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument } from "~lib/types/graphql";
 import { Modal, Descriptions, Button, Tooltip, message, Input } from "antd";
 import React from "react";
 import { LabelDraw } from "./LabelDraw";
-import { PrintContext } from "../print/PrintContextHandler";
-import { LabelExport } from "../../lib/LabelConstituent";
-import { SendBufferButton } from "../print/SendBufferButton";
-import { visibleHandler } from "../item/ItemTable";
-import { Item } from "../../lib/item";
+import { PrintContext } from "~components/Print/PrintContextHandler";
+import { LabelExport } from "~lib/LabelConstituent";
+import { SendBufferButton } from "~components/Print/SendBufferButton";
+import { visibleHandler } from "../Item/ItemTable";
+import { Item } from "~lib/Item";
 import { StopOutlined, DatabaseOutlined, SaveOutlined } from "@ant-design/icons";
-import { toTitleCase } from "../../lib/UtilityFunctions";
+import { toTitleCase } from "~lib/UtilityFunctions";
 
 type LabelDrawModalProps = {
     visibleHandler: visibleHandler;
