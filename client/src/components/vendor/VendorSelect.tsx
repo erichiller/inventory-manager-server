@@ -16,7 +16,7 @@ interface OptionT extends OptionData {
 type VT = SelectValue;
 
 interface VendorSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
-    forwardRef?: React.MutableRefObject<Input>;
+    // forwardRef?: React.MutableRefObject<Select>;
     value?: VT;
     onChange?: ( id: number ) => void;
 }

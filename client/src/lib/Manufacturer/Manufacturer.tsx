@@ -1,6 +1,5 @@
 
 import {
-    Manufacturer as ManufacturerGql,
     GetManufacturersQueryHookResult,
     Icon,
     Label,
@@ -30,6 +29,8 @@ import { CategoryHierarchyT, IconComponentT, FormMutationHandler } from "../item
 import { ShoppingCartOutlined, ShopOutlined, CheckOutlined, WarningOutlined } from "@ant-design/icons";
 import { ApolloQueryResult } from "apollo-client";
 import { AsyncIcon } from "components/Shared/AsyncIcon";
+
+import { IQuery, ClassType, SubType, FilterFlags, QueryResultTypePlus } from "~lib/UtilityFunctions";
 
 
 interface ManufacturerDataProps extends Pick<ApolloQueryResult<GetManufacturerQuery>['data']['manufacturer'],
@@ -302,3 +303,8 @@ export class Manufacturer implements ManufacturerDataProps {
     // }
 
 }
+
+
+// foo is now keys of instance that are strings
+type foo = FilterFlags<keyof InstanceType<typeof Manufacturer>, string>;
+let fooVars: InstanceType<typeof Manufacturer>[ foo ] ;

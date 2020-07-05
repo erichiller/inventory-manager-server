@@ -116,12 +116,9 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                 : [] ),
             ...( data && data.item ? flatArrayObjectProperty( data.item, 'vendorItems' ) : [] )
         ] );
-
         console.log( { c: "VendorItemSelect", m: "useEffect", ev: "loaded vendorItems from Gql", data } );
     }, [ loading, data, props.defaultValue ] );
-    useEffect( () => {
-        console.log( "VendorItemSelect -- value changed" );
-    }, [ value ] );
+    
     return (
         <React.Fragment>
             {modal}

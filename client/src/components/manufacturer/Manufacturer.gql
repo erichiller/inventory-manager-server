@@ -170,7 +170,7 @@ query SearchManufacturerItems (
         args: {
             query_text: $query_text
         }
-        where: {vendorItems: {}}
+        where: {manufacturerItems: {}}
     ) {
         id
         name: object(path: "name")

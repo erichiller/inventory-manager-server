@@ -28528,7 +28528,7 @@ export type GetManufacturerItemsLazyQueryHookResult = ReturnType<typeof useGetMa
 export type GetManufacturerItemsQueryResult = ApolloReactCommon.QueryResult<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>;
 export const SearchManufacturerItemsDocument = gql`
     query SearchManufacturerItems($query_text: String!) {
-  item: search_item(args: {query_text: $query_text}, where: {vendorItems: {}}) {
+  item: search_item(args: {query_text: $query_text}, where: {manufacturerItems: {}}) {
     id
     name: object(path: "name")
     object
@@ -30800,4 +30800,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-07-03T11:20:01-06:00
+// graphql typescript defs generated on 2020-07-04T18:08:11-06:00
