@@ -1,8 +1,8 @@
 import React, { useState, useEffect, ReactElement } from "react";
 import { IQuery, ClassType, SubType, FilterFlags, QueryResultTypePlus, Union } from "~lib/UtilityFunctions";
 import { message, Spin } from "antd";
-import { IconComponentT } from "~lib/item/Item";
-import { BaseQueryOptions } from "react-apollo";
+import { IconComponentT } from "~lib/types/common";
+
 
 type Class = { new( ...args: any[] ): any; };
 

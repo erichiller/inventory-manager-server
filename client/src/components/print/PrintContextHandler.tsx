@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { LabelExport } from '../../lib/LabelConstituent';
-import { PixelMap, canvasToBuffer } from '../../lib/canvasToBuffer';
+import { LabelExport } from '~lib/LabelConstituent';
+import { PixelMap, canvasToBuffer } from '~lib/canvasToBuffer';
 
 export const PrintContext = React.createContext( {
 } as {

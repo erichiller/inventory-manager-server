@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { EnumItemClassEnum, useGetItemsQuery } from '../../lib/types/graphql';
-import { Item } from '../../lib/item';
+import { EnumItemClassEnum, useGetItemsQuery } from '~lib/types/graphql';
+import { Item } from '~lib/Item';
 import { ItemSearch } from './ItemSearch';
 import {
     useLocation

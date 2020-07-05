@@ -7,11 +7,11 @@ import { useQuery } from '@apollo/react-hooks';
 import { Stage, Layer } from 'react-konva';
 import { Spin, InputNumber, Input } from "antd";
 
-import { GetPrinterStatusQuery, GetPrinterStatusDocument } from "../../lib/types/graphql";
-import { DrawContext } from "../draw/LabelDraw";
+import { GetPrinterStatusQuery, GetPrinterStatusDocument } from "~lib/types/graphql";
+import { DrawContext } from "~components/Draw/LabelDraw";
 import type { KonvaEventObject } from 'konva/types/Node';
-import { TapeColorMap } from '../../lib/types/labelCanvasColors';
-import { LabelQR, LabelText, LabelImage } from '../../lib/LabelConstituent';
+import { TapeColorMap } from '~lib/types/labelCanvasColors';
+import { LabelQR, LabelText, LabelImage } from '~lib/LabelConstituent';
 
 // interface LabelComponentState {
 //     selectedShapeName: string;

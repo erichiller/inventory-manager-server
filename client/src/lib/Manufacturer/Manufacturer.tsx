@@ -20,15 +20,16 @@ import { apolloClient } from '../../index';
 import { message, Tooltip } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Union, Unpacked, enumerable, ObjectColumnProperty, sortByCaseInsensitiveText, sortByNumber, makeColumn } from "../UtilityFunctions";
+import { toTitleCase, Union, Unpacked, enumerable, ObjectColumnProperty, sortByCaseInsensitiveText, sortByNumber, makeColumn } from "~lib/UtilityFunctions";
 import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { resolve } from "url";
 import { rejects } from "assert";
-import { CategoryHierarchyT, IconComponentT, FormMutationHandler } from "../item/Item";
+import { CategoryHierarchyT, FormMutationHandler } from "~lib/Item/Item";
+import { IconComponentT } from "~lib/types/common";
 import { ShoppingCartOutlined, ShopOutlined, CheckOutlined, WarningOutlined } from "@ant-design/icons";
 import { ApolloQueryResult } from "apollo-client";
-import { AsyncIcon } from "components/Shared/AsyncIcon";
+import { AsyncIcon } from "~components/Shared/AsyncIcon";
 
 import { IQuery, ClassType, SubType, FilterFlags, QueryResultTypePlus } from "~lib/UtilityFunctions";
 

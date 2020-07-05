@@ -8,8 +8,8 @@ import {
 import { createBrowserHistory } from 'history';
 import './styles/app.scss';
 import { flatRoutes, singularFullPath } from './config/routes';
-import { PrintContextHandler } from './components/print/PrintContextHandler';
-import { MainMenu } from './components/shared/Menu';
+import { PrintContextHandler } from './components/Print/PrintContextHandler';
+import { MainMenu } from './components/Shared/Menu';
 
 export const history = createBrowserHistory( {
     basename: '', // The base URL of the app (see below)

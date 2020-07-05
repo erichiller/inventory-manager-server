@@ -28,7 +28,8 @@ import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { resolve } from "url";
 import { rejects } from "assert";
-import { CategoryHierarchyT, IconComponentT, FormMutationHandler } from "../item/Item";
+import { CategoryHierarchyT, FormMutationHandler } from "../Item/Item";
+import { IconComponentT } from "~lib/types/common";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 
 interface OrderDataProps extends Pick<OrderGql,

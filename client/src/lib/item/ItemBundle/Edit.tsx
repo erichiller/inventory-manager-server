@@ -3,11 +3,11 @@ import { Form, Input, Divider, Tooltip, InputNumber, Switch, Row, Col, Button } 
 // import { OptionsType } from 'rc-select/lib/Option';
 import { ItemFormProps } from '../Item';
 
-import { toMinimumFixed, Union } from '../../UtilityFunctions';
+import { toMinimumFixed, Union } from '~lib/UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { ItemBundle } from './Index';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { ItemSelect } from '../../../components/item/ItemSelect';
+import { ItemSelect } from '~components/Item/ItemSelect';
 
 
 interface ItemBundleEditFormProps extends Union<ItemFormProps, ItemBundle> {

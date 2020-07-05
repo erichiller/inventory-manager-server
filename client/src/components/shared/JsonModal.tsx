@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import JSONEditor, { JSONEditorMode, JSONEditorOptions } from 'jsoneditor';
-import { Union, deepCopy, deepEqual } from "../../lib/UtilityFunctions";
+import { Union, deepCopy, deepEqual } from "~lib/UtilityFunctions";
 import { Button, Modal } from "antd";
 
 interface JsonModalProps {

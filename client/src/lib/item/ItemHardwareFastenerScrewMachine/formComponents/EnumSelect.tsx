@@ -5,7 +5,7 @@ import { Select } from "antd";
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { toTitleCase } from "../../../UtilityFunctions";
-import { IconMapT } from "../icon";
+import { IconMapT } from "../Icon/Index";
 
 interface EnumSelectProps<T extends string> extends SelectProps<T> {
     enumKeys: string[];

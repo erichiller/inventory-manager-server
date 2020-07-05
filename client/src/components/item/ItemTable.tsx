@@ -5,9 +5,9 @@ import {
     // withItemHardwareFastenerScrewMachine, ItemHardwareFastenerScrewMachineProps, ItemHardwareFastenerScrewMachineSelectColumn, useItemHardwareFastenerScrewMachineQuery, useGetIconQuery, 
     useGetItemsQuery, GetItemsQueryVariables, GetItemsQuery,
     // ItemSelectColumn 
-} from '../../lib/types/graphql';
-import { LabelDrawModal } from '../draw/LabelDrawModal';
-import { Item } from '../../lib/item';
+} from '~lib/types/graphql';
+import { LabelDrawModal } from '../Draw/LabelDrawModal';
+import { Item } from '~lib/Item';
 
 import { QueryResult } from '@apollo/react-common';
 import { EditOutlined, PrinterOutlined, DeleteOutlined, TagOutlined } from '@ant-design/icons';
@@ -16,7 +16,7 @@ import { ItemFormModal } from './ItemFormModal';
 import { useParams, Link } from 'react-router-dom';
 import { PaginationConfig } from 'antd/lib/pagination';
 import { SorterResult, TableCurrentDataSource } from 'antd/lib/table/interface';
-import { computeDefaultPagination } from '../../lib/UtilityFunctions';
+import { computeDefaultPagination } from '~lib/UtilityFunctions';
 // import DocumentNode from 'graphql-tag';
 
 

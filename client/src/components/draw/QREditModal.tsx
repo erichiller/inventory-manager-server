@@ -1,15 +1,15 @@
 import type { KonvaEventObject } from 'konva/types/Node';
 import { Component, useEffect, useContext, useState, Ref, MouseEvent } from 'react';
-import { DISPLAY } from '../../lib/types/enums';
+import { DISPLAY } from '~lib/types/enums';
 import React from 'react';
 import { Modal, message, Checkbox, Button } from 'antd';
-import { Item } from '../../lib/item';
+import { Item } from '~lib/Item';
 import bwipjs from 'bwip-js';
-import { LabelQR } from '../../lib/LabelConstituent';
+import { LabelQR } from '~lib/LabelConstituent';
 import { DrawContext } from './LabelDraw';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { AntTreeNode } from 'antd/lib/tree';
-import DraggableModal from '../shared/DraggableModal';
+import DraggableModal from '../Shared/DraggableModal';
 
 interface QREditModalProps {
     event?: KonvaEventObject<MouseEvent>;

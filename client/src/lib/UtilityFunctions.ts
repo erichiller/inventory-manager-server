@@ -1,9 +1,8 @@
 import { Integer } from './types/uint8';
 import { Store } from 'antd/lib/form/interface';
-import { Item, ItemHardwareFastenerScrewMachine } from './item';
+import { Item, ItemHardwareFastenerScrewMachine } from './Item';
 import { EnumUnitKeys, SubType, Unpacked } from './types/UtilityTypes';
 import { EnumUnitEnum, Query, MutationRootInsertEnumItemCableConnectorArgs } from './types/graphql';
-import { GenericItem } from './item/Item';
 import { ColumnProps } from 'antd/lib/table';
 import { LabeledValue } from 'antd/lib/select';
 import { QueryResult } from 'react-apollo';

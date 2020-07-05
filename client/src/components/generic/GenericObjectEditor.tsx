@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import schema from "../../lib/Item/ItemHardwareFastenerScrewMachine/config/ScrewSizeOptions.schema.json";
+import schema from "~lib/Item/ItemHardwareFastenerScrewMachine/config/ScrewSizeOptions.schema.json";
 // import "@fortawesome/fontawesome-free/css/all.css";
 // const JSONEditor = require( "@json-editor/json-editor" ).JSONEditor;
 // import JSONEditorM = require( "@json-editor/json-editor" );

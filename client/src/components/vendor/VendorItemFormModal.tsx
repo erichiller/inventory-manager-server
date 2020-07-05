@@ -6,14 +6,14 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetVendorItemQuery, GetVendorItemQueryVariables, useGetVendorItemQuery, useInsertVendorItemMutation, InsertVendorItemMutationVariables, useGetVendorItemLazyQuery, useUpdateVendorItemMutation, UpdateVendorItemMutationVariables, GetVendorItemDocument, VendorItem as VendorItemGql } from '../../lib/types/graphql';
+import { GetVendorItemQuery, GetVendorItemQueryVariables, useGetVendorItemQuery, useInsertVendorItemMutation, InsertVendorItemMutationVariables, useGetVendorItemLazyQuery, useUpdateVendorItemMutation, UpdateVendorItemMutationVariables, GetVendorItemDocument, VendorItem as VendorItemGql } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Union, filterObject, deepCopy } from '../../lib/UtilityFunctions';
+import { QueryResultTypePlus, Union, filterObject, deepCopy } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
-import { ItemSelect } from '../item/ItemSelect';
+import { ItemSelect } from '../Item/ItemSelect';
 import { VendorSelect } from './VendorSelect';
-import { PageSpin } from '../shared/PageSpin';
+import { PageSpin } from '../Shared/PageSpin';
 
 
 type VendorItemFormModalProps = Union<{

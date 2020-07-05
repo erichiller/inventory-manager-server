@@ -30,10 +30,11 @@ import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { resolve } from "url";
 import { rejects } from "assert";
-import { CategoryHierarchyT, IconComponentT, FormMutationHandler } from "../item/Item";
+import { CategoryHierarchyT, FormMutationHandler } from "../Item/Item";
+import { IconComponentT } from "~lib/types/common";
 import { ShoppingCartOutlined, ShopOutlined, CheckOutlined, WarningOutlined } from "@ant-design/icons";
 import { ApolloQueryResult } from "apollo-client";
-import { AsyncIcon } from "components/Shared/AsyncIcon";
+import { AsyncIcon } from "~components/Shared/AsyncIcon";
 
 interface VendorDataProps extends Pick<ApolloQueryResult<GetVendorQuery>['data']['vendor'],
     '__typename' |

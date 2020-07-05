@@ -1,13 +1,13 @@
 import { Table, Divider, message } from 'antd';
 import * as React from 'react';
-import { VendorSelectColumn, Vendor as VendorGql, useGetVendorsQuery, GetVendorsQuery, useDeleteVendorMutation, GetVendorDocument, GetVendorsDocument } from '../../lib/types/graphql';
-import { Item } from '../../lib/item';
-import { toTitleCase, computeDefaultPagination } from '../../lib/UtilityFunctions';
+import { VendorSelectColumn, Vendor as VendorGql, useGetVendorsQuery, GetVendorsQuery, useDeleteVendorMutation, GetVendorDocument, GetVendorsDocument } from '~lib/types/graphql';
+import { Item } from '~lib/Item';
+import { toTitleCase, computeDefaultPagination } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { VendorFormModal } from './VendorFormModal';
-import { Vendor } from '../../lib/Vendor/Vendor';
+import { Vendor } from '~lib/Vendor/Vendor';
 import { useState } from 'react';
 // import { history }
 

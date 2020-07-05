@@ -5,23 +5,23 @@ import type { KonvaEventObject } from 'konva/types/Node';
 import { Button, Tooltip, message } from 'antd';
 import { MedicineBoxOutlined, FontSizeOutlined, QrcodeOutlined, PictureOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
-import { Item } from '../../lib/item';
-import { DISPLAY } from '../../lib/types/enums';
+import { Item } from '~lib/Item';
+import { DISPLAY } from '~lib/types/enums';
 import { DrawContextMenu } from './DrawContextMenu';
 import { DrawEditText } from './DrawEditText';
-import { LabelAddImageModal } from './image/LabelAddImageModal';
+import { LabelAddImageModal } from './Image/LabelAddImageModal';
 
 import { QREditModal } from './QREditModal';
-import { Integer } from '../../lib/types/uint8';
-import { LabelText, LabelImage, LabelQR, FormatOptionsT, LabelExport } from '../../lib/LabelConstituent';
+import { Integer } from '~lib/types/uint8';
+import { LabelText, LabelImage, LabelQR, FormatOptionsT, LabelExport } from '~lib/LabelConstituent';
 
-import { NewImageUploadModal } from './image/NewImageUploadModal';
-import { PrintContext } from '../print/PrintContextHandler';
-import { LabelComponent } from '../label/LabelComponent';
+import { NewImageUploadModal } from './Image/NewImageUploadModal';
+import { PrintContext } from '~components/Print/PrintContextHandler';
+import { LabelComponent } from '~components/Label/LabelComponent';
 import { CodeIcon } from '../../styles/icon';
-import { EditableText } from './konvaElements/EditableText';
-import { TransformableImage } from './konvaElements/TransformableImage';
-import { TransformableQR } from './konvaElements/TransformableQR';
+import { EditableText } from './KonvaElements/EditableText';
+import { TransformableImage } from './KonvaElements/TransformableImage';
+import { TransformableQR } from './KonvaElements/TransformableQR';
 
 
 

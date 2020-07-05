@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useForm, FormProps } from 'antd/lib/form/Form';
 import { Form, Modal, Input, Button } from 'antd';
 import { visibleHandler } from './ItemTable';
-import { Item } from '../../lib/item';
-import { ItemFormProps, FormMutationHandler } from '../../lib/item/Item';
+import { Item } from '~lib/Item';
+import { ItemFormProps, FormMutationHandler } from '~lib/Item/Item';
 import TextArea from 'antd/lib/input/TextArea';
-import { QtyInput } from '../../lib/item/common/QtyInput';
-import { OrderSelect } from '../Order/OrderSelect';
+import { QtyInput } from '~lib/Item/Common/QtyInput';
+import { OrderSelect } from '../Order/Form/OrderSelect';
 import { useHistory } from 'react-router-dom';
 
 type ItemFormModalProps = {

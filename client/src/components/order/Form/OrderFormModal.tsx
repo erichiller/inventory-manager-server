@@ -15,11 +15,11 @@ import { useForm } from 'antd/lib/form/Form';
 import { VendorSelect } from '../../Vendor/VendorSelect';
 import moment from 'moment';
 import { OrderItemInput } from './OrderItemComposite';
-import { PageSpin } from '../../Shared/PageSpin';
+import { PageSpin } from '~components/Shared/PageSpin';
 import { Order } from '~lib/Order/Order';
 import TextArea from 'antd/lib/input/TextArea';
 import { CurlyBracesIcon } from '../../../styles/icon';
-import { JsonModal } from '../../Shared/JsonModal';
+import { JsonModal } from '~components/Shared/JsonModal';
 
 
 type OrderFormModalProps = Union<{
