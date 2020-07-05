@@ -8,7 +8,7 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker } from 'antd';
  **/
 import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, UpdateOrderMutationVariables, GetOrdersDocument } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Union, filterObject } from '~lib/UtilityFunctions';
+import { QueryResultTypePlus, Union, filterObject, transparentLog } from '~lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
@@ -204,7 +204,9 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         Union<
             Pick<Order, 'placed_date'>,
             { items: Array<object>; }
-        > = {};
+        > = {
+            // fulfilled_date: undefined
+        };
     if ( order ) {
         for ( let key in order ) {
             console.log( key );
@@ -212,7 +214,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                 'fulfilled_date',
                 'placed_date'
             ].includes( key ) ) {
-                initialValues[ key ] = moment( order[ key ] );
+                initialValues[ key ] = moment( order[ key ] ? transparentLog({orderKey: `order[${key}]=${order[key]}`}, order[ key ]) : null );
             } else {
                 // default
                 initialValues[ key ] = order[ key ];
@@ -221,12 +223,15 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                 initialValues.order_items = [];
             }
         }
+        if ( initialValues.fulfilled_date === null || initialValues.fulfilled_date.toString() === "Invalid date" || initialValues.fulfilled_date === undefined ) {
+            delete initialValues['fulfilled_date'];
+        }
     } else {
-        initialValues = { placed_date: moment(), items: [] };
+        initialValues = { placed_date: moment(), fulfilled_date: null, items: [] };
     }
 
 
-    console.log( "initialValues", { order, initialValues } );
+    console.log( "initialValues", { order, initialValues: JSON.stringify(initialValues) } );
 
     return <Modal
         visible={true}
@@ -277,6 +282,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                 </Form.Item>
                 <Form.Item name="fulfilled_date" label="Date Fulfilled">
                     <DatePicker
+                        defaultValue={undefined}
                     // id="datepicker_monthpicker"
                     // defaultValue={moment()}
                     />
