@@ -9,7 +9,7 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker } from 'antd';
 import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, UpdateOrderMutationVariables, GetOrdersDocument } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Union, filterObject, transparentLog } from '~lib/UtilityFunctions';
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined, MinusCircleOutlined, StopOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
 import { VendorSelect } from '../../Vendor/VendorSelect';
@@ -247,7 +247,17 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                 key="order_form_debug_button"
                 icon={<CurlyBracesIcon height={16} />} 
                 children="Debug"
-                onClick={() => setModal(<JsonModal json={form.getFieldsValue()} visibilityHandler={setModal} />)} />
+                onClick={() => setModal(<JsonModal json={form.getFieldsValue()} visibilityHandler={setModal} />)} />,
+
+            <Button key="cancel" danger type="default" onClick={() => exitModal()}>
+                <StopOutlined />
+                Cancel
+            </Button>,
+
+            <Button key="submit" type="primary" onClick={() => { form.submit() }}>
+                <CheckCircleOutlined />
+                Confirm
+            </Button>
         ]}
     >
         {modal}

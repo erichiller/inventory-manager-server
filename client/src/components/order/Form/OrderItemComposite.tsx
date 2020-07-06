@@ -139,34 +139,36 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                     onChange={setItemId}
                     suffixIcon={props.suffix}
                     vendorId={props.vendorId}
-                    defaultValue={ props.value.item_id }
+                    defaultValue={ props.value?.item_id }
                 />
 
                 <span id="ItemExtraInfo">
                     {/* TODO: provide `item_id` if known to limit the search of vendor_item */}
                     <VendorItemSelect
-                        defaultValue={props.value.vendor_item_id || props.value.vendor_item} 
+                        defaultValue={props.value?.vendor_item_id || props.value?.vendor_item} 
                         onChange={setVendorItem} />
 
+
+                    {/* TODO: provide `item_id` if known to limit the search of manufacturer_item */}
                     <ManufacturerItemSelect
-                        defaultValue={props.value.manufacturer_item_id || props.value.manufacturer_item} 
+                        defaultValue={props.value?.manufacturer_item_id || props.value?.manufacturer_item} 
                         onChange={setManufacturerItem} />
 
                     <Input name="serial_no" 
-                        defaultValue={props.value.serial_no}
+                        defaultValue={props.value?.serial_no}
                         onChange={setSerialNo} 
                         placeholder="Serial #" />
                 </span>
             </span>
 
             <Input name="quantity" 
-                    defaultValue={props.value.quantity}
+                    defaultValue={props.value?.quantity}
                     aria-valuemin={1} 
                     onChange={setQuantity} 
                     placeholder="Qty" />
             <span id="cost_item">
                 <Input name="cost_item" 
-                        defaultValue={props.value.cost_item}
+                        defaultValue={props.value?.cost_item}
                         type="number" 
                         step="0.01" 
                         min="0" 
@@ -175,9 +177,10 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                         placeholder="item" />
             </span>
 
+            {/* TODO: display (in tooltip?) the tax rate this equals */}
             <span id="cost_tax">
                 <Input name="cost_tax"
-                    defaultValue={props.value.cost_tax}
+                    defaultValue={props.value?.cost_tax}
                     type="number"
                     step="0.01"
                     min="0"
@@ -186,9 +189,10 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                     placeholder="tax" />
             </span>
 
+            {/* TODO: auto-calculate `cost_total` from `cost_tax` and `cost_item` */}
             <span id="cost_total">
                 <Input name="cost_total"
-                    defaultValue={props.value.cost_total}
+                    defaultValue={props.value?.cost_total}
                     type="number"
                     step="0.01"
                     min="0"
@@ -197,9 +201,10 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                     placeholder="total" />
             </span >
 
+            {/* TODO: Shipments created in one `order_item` for the form should be available to select within all order_items of the form */}
             <ShipmentSelect 
                 excludeOrderInput
-                defaultValue={props.value.shipment_id || props.value.shipment} 
+                defaultValue={props.value?.shipment_id || props.value?.shipment} 
                 onChange={setShipment} />
 
         </div>
