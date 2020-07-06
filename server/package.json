@@ -41,7 +41,7 @@
     "@types/node": "^12.7.8",
     "@types/shortid": "0.0.29",
     "@types/webpack-env": "^1.14.0",
-    "graphql": "15.2.0",
+    "graphql": "15.3.0",
     "graphql-tools": "^6.0.12",
     "graphql-tools-fork": "^9.0.1",
     "nodemon": "^2.0.4",
