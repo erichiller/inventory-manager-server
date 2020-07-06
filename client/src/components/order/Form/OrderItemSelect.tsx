@@ -187,9 +187,9 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
 
     const optionsToOptionElements: ( opts: typeof options ) => JSX.Element[] = ( opts ) => {
         return opts.map( v => {
-            console.log( "select with options", v );
+            console.log( "select with option", { v, key: v.variant_id | v.item_id} );
             return <Select.Option
-                key={v.variant_id | v.item_id} 
+                key={v.variant_id || v.item_id} 
                 value={v.item_id}>
                     {v.label}
                 </Select.Option>;
@@ -197,7 +197,9 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
         } )
     }
 
-    if ( defaultIds && ( ! options || options.length === 0 ) ){
+    if ( defaultIds && 
+         ( Array.isArray(defaultIds) && defaultIds.length > 0) &&
+        ( ! options || options.length === 0 ) ){
         return <Spin />
     }
 

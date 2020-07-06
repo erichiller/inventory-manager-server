@@ -77,7 +77,6 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
         }
         // skip: state.loading
     } );
-    // TODO: intelligently 
 
     function updateOptionsFromShipment ( arr:
         Array<Unpacked<QueryResultTypePlus<typeof useSearchShipmentsQuery>>
@@ -113,7 +112,6 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                             <span>{carrier.name}</span>
                             <span>#{v.tracking_id}</span>
                         </span>
-                        // TODO: Set value to the applicable string, feed value up that is the `order_id`
                     };
                 } ) )
         );
@@ -160,6 +158,7 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                             className="ShipmentSelectNewSelectOption"
                             onClick={() => handleModalChange( 
                                 <ShipmentFormModal 
+                                    excludeOrderInput={props.excludeOrderInput}
                                     visibilityHandler={handleModalChange}
                                     onFinish={(args) => {
                                         setModal(null);
