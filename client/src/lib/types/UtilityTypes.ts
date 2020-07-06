@@ -119,3 +119,26 @@ export type AllowedNames<Base, Condition> =
  */
 export type SubType<Base, Condition> =
     Pick<Base, AllowedNames<Base, Condition>>;
+
+
+
+
+
+
+
+
+/**
+ * type of object and array wrapped in `{data: obj | array}`
+ * @see {encapsulateChildObjectsIntoDataProp}
+ */
+export type TRecursiveDataWrap<Base> = 
+    Base extends object ?
+        {
+            [Key in keyof Base]:
+                Base[Key] extends Array<any> | object 
+                    ? { data: TRecursiveDataWrap<Base[Key]>} 
+                    : Base[Key]
+        } :
+    Base extends Array<object> ?
+        Array<TRecursiveDataWrap<Unpacked<Base>>>
+        : never
