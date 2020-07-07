@@ -126,7 +126,7 @@ query GetOrder($id: Int!) {
 mutation InsertOrder(
     # $id: Int
     $fulfilled_date: date
-    $order_items: [order_item_insert_input!]!
+    $order_items: order_item_arr_rel_insert_input
     $items_cost: numeric
     $payment_method: payment_method_obj_rel_insert_input
     $payment_method_id: Int
@@ -142,8 +142,8 @@ mutation InsertOrder(
 ) {
     order: insert_order_one (
         object: {
-            order_items: { data: $order_items } # objects
-            payment_method: $payment_method # objects
+            order_items: $order_items # Array[object]
+            payment_method: $payment_method # object
             shipments: $shipments # objects
             vendor: $vendor # object
             fulfilled_date: $fulfilled_date

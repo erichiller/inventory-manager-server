@@ -26420,6 +26420,62 @@ export type VendorVarianceOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
+export type InsertIconMutationVariables = Exact<{
+  mimeData?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  title?: Maybe<Scalars['String']>;
+  categories?: Maybe<IconItemCategoryMapArrRelInsertInput>;
+  labels?: Maybe<IconLabelMapArrRelInsertInput>;
+}>;
+
+
+export type InsertIconMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_icon?: Maybe<(
+    { __typename?: 'icon_mutation_response' }
+    & Pick<IconMutationResponse, 'affected_rows'>
+  )> }
+);
+
+export type GetIconQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type GetIconQuery = (
+  { __typename?: 'query_root' }
+  & { icon?: Maybe<(
+    { __typename?: 'icon' }
+    & Pick<Icon, 'data' | 'description' | 'id' | 'title'>
+    & { categories: Array<(
+      { __typename?: 'icon_item_category_map' }
+      & Pick<IconItemCategoryMap, 'category' | 'criteria' | 'sequence'>
+    )>, labels: Array<(
+      { __typename?: 'icon_label_map' }
+      & Pick<IconLabelMap, 'label_id'>
+    )> }
+  )> }
+);
+
+export type GetIconsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetIconsQuery = (
+  { __typename?: 'query_root' }
+  & { icon: Array<(
+    { __typename?: 'icon' }
+    & Pick<Icon, 'data' | 'description' | 'id' | 'title'>
+    & { categories: Array<(
+      { __typename?: 'icon_item_category_map' }
+      & Pick<IconItemCategoryMap, 'category' | 'criteria' | 'sequence'>
+    )>, labels: Array<(
+      { __typename?: 'icon_label_map' }
+      & Pick<IconLabelMap, 'label_id'>
+    )> }
+  )> }
+);
+
 export type SearchItemsQueryVariables = Exact<{
   containsFilter?: Maybe<Scalars['jsonb']>;
   hasAnyKeysFilter?: Maybe<Array<Scalars['String']>>;
@@ -26869,7 +26925,7 @@ export type GetOrderQuery = (
 
 export type InsertOrderMutationVariables = Exact<{
   fulfilled_date?: Maybe<Scalars['date']>;
-  order_items: Array<OrderItemInsertInput>;
+  order_items?: Maybe<OrderItemArrRelInsertInput>;
   items_cost?: Maybe<Scalars['numeric']>;
   payment_method?: Maybe<PaymentMethodObjRelInsertInput>;
   payment_method_id?: Maybe<Scalars['Int']>;
@@ -27301,62 +27357,6 @@ export type DeleteVendorItemMutation = (
   )> }
 );
 
-export type InsertIconMutationVariables = Exact<{
-  mimeData?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  title?: Maybe<Scalars['String']>;
-  categories?: Maybe<IconItemCategoryMapArrRelInsertInput>;
-  labels?: Maybe<IconLabelMapArrRelInsertInput>;
-}>;
-
-
-export type InsertIconMutation = (
-  { __typename?: 'mutation_root' }
-  & { insert_icon?: Maybe<(
-    { __typename?: 'icon_mutation_response' }
-    & Pick<IconMutationResponse, 'affected_rows'>
-  )> }
-);
-
-export type GetIconQueryVariables = Exact<{
-  id: Scalars['uuid'];
-}>;
-
-
-export type GetIconQuery = (
-  { __typename?: 'query_root' }
-  & { icon?: Maybe<(
-    { __typename?: 'icon' }
-    & Pick<Icon, 'data' | 'description' | 'id' | 'title'>
-    & { categories: Array<(
-      { __typename?: 'icon_item_category_map' }
-      & Pick<IconItemCategoryMap, 'category' | 'criteria' | 'sequence'>
-    )>, labels: Array<(
-      { __typename?: 'icon_label_map' }
-      & Pick<IconLabelMap, 'label_id'>
-    )> }
-  )> }
-);
-
-export type GetIconsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetIconsQuery = (
-  { __typename?: 'query_root' }
-  & { icon: Array<(
-    { __typename?: 'icon' }
-    & Pick<Icon, 'data' | 'description' | 'id' | 'title'>
-    & { categories: Array<(
-      { __typename?: 'icon_item_category_map' }
-      & Pick<IconItemCategoryMap, 'category' | 'criteria' | 'sequence'>
-    )>, labels: Array<(
-      { __typename?: 'icon_label_map' }
-      & Pick<IconLabelMap, 'label_id'>
-    )> }
-  )> }
-);
-
 export type ItemFieldsFragment = (
   { __typename?: 'item' }
   & Pick<Item, 'id' | 'class' | 'object'>
@@ -27715,6 +27715,169 @@ export const ItemHardwareFastenerScrewMachineFieldsFragmentDoc = gql`
   use_material
 }
     `;
+export const InsertIconDocument = gql`
+    mutation InsertIcon($mimeData: String, $description: String, $id: uuid, $title: String, $categories: icon_item_category_map_arr_rel_insert_input, $labels: icon_label_map_arr_rel_insert_input) {
+  insert_icon(objects: {data: $mimeData, description: $description, id: $id, title: $title, categories: $categories, labels: $labels}) {
+    affected_rows
+  }
+}
+    `;
+export type InsertIconMutationFn = ApolloReactCommon.MutationFunction<InsertIconMutation, InsertIconMutationVariables>;
+export type InsertIconProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertIconMutation, InsertIconMutationVariables>
+    } & TChildProps;
+export function withInsertIcon<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  InsertIconMutation,
+  InsertIconMutationVariables,
+  InsertIconProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, InsertIconMutation, InsertIconMutationVariables, InsertIconProps<TChildProps, TDataName>>(InsertIconDocument, {
+      alias: 'insertIcon',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useInsertIconMutation__
+ *
+ * To run a mutation, you first call `useInsertIconMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertIconMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertIconMutation, { data, loading, error }] = useInsertIconMutation({
+ *   variables: {
+ *      mimeData: // value for 'mimeData'
+ *      description: // value for 'description'
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *      categories: // value for 'categories'
+ *      labels: // value for 'labels'
+ *   },
+ * });
+ */
+export function useInsertIconMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertIconMutation, InsertIconMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertIconMutation, InsertIconMutationVariables>(InsertIconDocument, baseOptions);
+      }
+export type InsertIconMutationHookResult = ReturnType<typeof useInsertIconMutation>;
+export type InsertIconMutationResult = ApolloReactCommon.MutationResult<InsertIconMutation>;
+export type InsertIconMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertIconMutation, InsertIconMutationVariables>;
+export const GetIconDocument = gql`
+    query GetIcon($id: uuid!) {
+  icon: icon_by_pk(id: $id) {
+    data
+    description
+    id
+    title
+    categories {
+      category
+      criteria
+      sequence
+    }
+    labels {
+      label_id
+    }
+  }
+}
+    `;
+export type GetIconProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetIconQuery, GetIconQueryVariables>
+    } & TChildProps;
+export function withGetIcon<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetIconQuery,
+  GetIconQueryVariables,
+  GetIconProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetIconQuery, GetIconQueryVariables, GetIconProps<TChildProps, TDataName>>(GetIconDocument, {
+      alias: 'getIcon',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetIconQuery__
+ *
+ * To run a query within a React component, call `useGetIconQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIconQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIconQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetIconQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
+      }
+export function useGetIconLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
+        }
+export type GetIconQueryHookResult = ReturnType<typeof useGetIconQuery>;
+export type GetIconLazyQueryHookResult = ReturnType<typeof useGetIconLazyQuery>;
+export type GetIconQueryResult = ApolloReactCommon.QueryResult<GetIconQuery, GetIconQueryVariables>;
+export const GetIconsDocument = gql`
+    query GetIcons {
+  icon {
+    data
+    description
+    id
+    title
+    categories {
+      category
+      criteria
+      sequence
+    }
+    labels {
+      label_id
+    }
+  }
+}
+    `;
+export type GetIconsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetIconsQuery, GetIconsQueryVariables>
+    } & TChildProps;
+export function withGetIcons<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetIconsQuery,
+  GetIconsQueryVariables,
+  GetIconsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetIconsQuery, GetIconsQueryVariables, GetIconsProps<TChildProps, TDataName>>(GetIconsDocument, {
+      alias: 'getIcons',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetIconsQuery__
+ *
+ * To run a query within a React component, call `useGetIconsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIconsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIconsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetIconsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
+      }
+export function useGetIconsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
+        }
+export type GetIconsQueryHookResult = ReturnType<typeof useGetIconsQuery>;
+export type GetIconsLazyQueryHookResult = ReturnType<typeof useGetIconsLazyQuery>;
+export type GetIconsQueryResult = ApolloReactCommon.QueryResult<GetIconsQuery, GetIconsQueryVariables>;
 export const SearchItemsDocument = gql`
     query SearchItems($containsFilter: jsonb, $hasAnyKeysFilter: [String!]) {
   item(order_by: {class: asc}, where: {object: {_has_keys_any: $hasAnyKeysFilter, _contains: $containsFilter}}) {
@@ -28972,8 +29135,8 @@ export type GetOrderQueryHookResult = ReturnType<typeof useGetOrderQuery>;
 export type GetOrderLazyQueryHookResult = ReturnType<typeof useGetOrderLazyQuery>;
 export type GetOrderQueryResult = ApolloReactCommon.QueryResult<GetOrderQuery, GetOrderQueryVariables>;
 export const InsertOrderDocument = gql`
-    mutation InsertOrder($fulfilled_date: date, $order_items: [order_item_insert_input!]!, $items_cost: numeric, $payment_method: payment_method_obj_rel_insert_input, $payment_method_id: Int, $placed_date: date, $pon: String, $shipments: shipment_arr_rel_insert_input, $tax_cost: numeric, $total_cost: numeric, $url: String, $vendor: vendor_obj_rel_insert_input, $vendor_id: Int, $vendor_order_id: String) {
-  order: insert_order_one(object: {order_items: {data: $order_items}, payment_method: $payment_method, shipments: $shipments, vendor: $vendor, fulfilled_date: $fulfilled_date, items_cost: $items_cost, payment_method_id: $payment_method_id, placed_date: $placed_date, pon: $pon, tax_cost: $tax_cost, total_cost: $total_cost, url: $url, vendor_id: $vendor_id, vendor_order_id: $vendor_order_id}) {
+    mutation InsertOrder($fulfilled_date: date, $order_items: order_item_arr_rel_insert_input, $items_cost: numeric, $payment_method: payment_method_obj_rel_insert_input, $payment_method_id: Int, $placed_date: date, $pon: String, $shipments: shipment_arr_rel_insert_input, $tax_cost: numeric, $total_cost: numeric, $url: String, $vendor: vendor_obj_rel_insert_input, $vendor_id: Int, $vendor_order_id: String) {
+  order: insert_order_one(object: {order_items: $order_items, payment_method: $payment_method, shipments: $shipments, vendor: $vendor, fulfilled_date: $fulfilled_date, items_cost: $items_cost, payment_method_id: $payment_method_id, placed_date: $placed_date, pon: $pon, tax_cost: $tax_cost, total_cost: $total_cost, url: $url, vendor_id: $vendor_id, vendor_order_id: $vendor_order_id}) {
     ...basicOrderFields
     ...objectOrderFields
   }
@@ -30163,169 +30326,6 @@ export function useDeleteVendorItemMutation(baseOptions?: ApolloReactHooks.Mutat
 export type DeleteVendorItemMutationHookResult = ReturnType<typeof useDeleteVendorItemMutation>;
 export type DeleteVendorItemMutationResult = ApolloReactCommon.MutationResult<DeleteVendorItemMutation>;
 export type DeleteVendorItemMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>;
-export const InsertIconDocument = gql`
-    mutation InsertIcon($mimeData: String, $description: String, $id: uuid, $title: String, $categories: icon_item_category_map_arr_rel_insert_input, $labels: icon_label_map_arr_rel_insert_input) {
-  insert_icon(objects: {data: $mimeData, description: $description, id: $id, title: $title, categories: $categories, labels: $labels}) {
-    affected_rows
-  }
-}
-    `;
-export type InsertIconMutationFn = ApolloReactCommon.MutationFunction<InsertIconMutation, InsertIconMutationVariables>;
-export type InsertIconProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertIconMutation, InsertIconMutationVariables>
-    } & TChildProps;
-export function withInsertIcon<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  InsertIconMutation,
-  InsertIconMutationVariables,
-  InsertIconProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, InsertIconMutation, InsertIconMutationVariables, InsertIconProps<TChildProps, TDataName>>(InsertIconDocument, {
-      alias: 'insertIcon',
-      ...operationOptions
-    });
-};
-
-/**
- * __useInsertIconMutation__
- *
- * To run a mutation, you first call `useInsertIconMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertIconMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertIconMutation, { data, loading, error }] = useInsertIconMutation({
- *   variables: {
- *      mimeData: // value for 'mimeData'
- *      description: // value for 'description'
- *      id: // value for 'id'
- *      title: // value for 'title'
- *      categories: // value for 'categories'
- *      labels: // value for 'labels'
- *   },
- * });
- */
-export function useInsertIconMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertIconMutation, InsertIconMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertIconMutation, InsertIconMutationVariables>(InsertIconDocument, baseOptions);
-      }
-export type InsertIconMutationHookResult = ReturnType<typeof useInsertIconMutation>;
-export type InsertIconMutationResult = ApolloReactCommon.MutationResult<InsertIconMutation>;
-export type InsertIconMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertIconMutation, InsertIconMutationVariables>;
-export const GetIconDocument = gql`
-    query GetIcon($id: uuid!) {
-  icon: icon_by_pk(id: $id) {
-    data
-    description
-    id
-    title
-    categories {
-      category
-      criteria
-      sequence
-    }
-    labels {
-      label_id
-    }
-  }
-}
-    `;
-export type GetIconProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetIconQuery, GetIconQueryVariables>
-    } & TChildProps;
-export function withGetIcon<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetIconQuery,
-  GetIconQueryVariables,
-  GetIconProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetIconQuery, GetIconQueryVariables, GetIconProps<TChildProps, TDataName>>(GetIconDocument, {
-      alias: 'getIcon',
-      ...operationOptions
-    });
-};
-
-/**
- * __useGetIconQuery__
- *
- * To run a query within a React component, call `useGetIconQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetIconQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetIconQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetIconQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
-      }
-export function useGetIconLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
-        }
-export type GetIconQueryHookResult = ReturnType<typeof useGetIconQuery>;
-export type GetIconLazyQueryHookResult = ReturnType<typeof useGetIconLazyQuery>;
-export type GetIconQueryResult = ApolloReactCommon.QueryResult<GetIconQuery, GetIconQueryVariables>;
-export const GetIconsDocument = gql`
-    query GetIcons {
-  icon {
-    data
-    description
-    id
-    title
-    categories {
-      category
-      criteria
-      sequence
-    }
-    labels {
-      label_id
-    }
-  }
-}
-    `;
-export type GetIconsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetIconsQuery, GetIconsQueryVariables>
-    } & TChildProps;
-export function withGetIcons<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetIconsQuery,
-  GetIconsQueryVariables,
-  GetIconsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetIconsQuery, GetIconsQueryVariables, GetIconsProps<TChildProps, TDataName>>(GetIconsDocument, {
-      alias: 'getIcons',
-      ...operationOptions
-    });
-};
-
-/**
- * __useGetIconsQuery__
- *
- * To run a query within a React component, call `useGetIconsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetIconsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetIconsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetIconsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
-      }
-export function useGetIconsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
-        }
-export type GetIconsQueryHookResult = ReturnType<typeof useGetIconsQuery>;
-export type GetIconsLazyQueryHookResult = ReturnType<typeof useGetIconsLazyQuery>;
-export type GetIconsQueryResult = ApolloReactCommon.QueryResult<GetIconsQuery, GetIconsQueryVariables>;
 export const GetItemsDocument = gql`
     query GetItems($categories: [enum_item_class_enum!]) {
   items: item(where: {class: {_in: $categories}}, order_by: {id: asc}) {
@@ -30800,4 +30800,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-07-04T18:08:11-06:00
+// graphql typescript defs generated on 2020-07-07T05:45:05-06:00
