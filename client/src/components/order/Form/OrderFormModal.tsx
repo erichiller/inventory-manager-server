@@ -6,7 +6,7 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker } from 'antd';
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, UpdateOrderMutationVariables, GetOrdersDocument } from '~lib/types/graphql';
+import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, UpdateOrderMutationVariables, GetOrdersDocument, Order as OrderGql } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Union, filterObject, transparentLog } from '~lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined, StopOutlined, CheckCircleOutlined } from '@ant-design/icons';
@@ -20,6 +20,7 @@ import { Order } from '~lib/Order/Order';
 import TextArea from 'antd/lib/input/TextArea';
 import { CurlyBracesIcon } from '../../../styles/icon';
 import { JsonModal } from '~components/Shared/JsonModal';
+import { encapsulateChildObjectsIntoDataProp } from '~lib/FormHelpers';
 
 
 type OrderFormModalProps = Union<{
@@ -165,8 +166,9 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                 }
             } );
         } else {
-            // insert new (add)
-            let formFieldValues = form.getFieldsValue() as Exclude<InsertOrderMutationVariables, 'id'>;
+            let formFieldValues = encapsulateChildObjectsIntoDataProp(
+                                        form.getFieldsValue() as Exclude<OrderGql, 'id'>
+                                    );
             insertOrder( {
                 variables: {
                     ...formFieldValues

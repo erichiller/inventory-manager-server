@@ -14,8 +14,8 @@
         validate: {
             extends: "gql-rules-query",
             rules: {
-            KnownFragmentNames: "off",
-            NoUnusedFragments: "off"
+                KnownFragmentNames: "off",
+                NoUnusedFragments: "off",
             }
         }
       },

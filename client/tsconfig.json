@@ -44,7 +44,8 @@
     },
     "include": [
         "src/**/*",
-        "../typings/*.d.ts"
+        "../typings/*.d.ts",
+        "test/**/*"
     ],
     "exclude": [
         "node_modules"
