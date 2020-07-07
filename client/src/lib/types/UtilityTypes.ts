@@ -135,10 +135,50 @@ export type TRecursiveDataWrap<Base> =
     Base extends object ?
         {
             [Key in keyof Base]:
-                Base[Key] extends Array<any> | object 
+                Base[Key] extends Array<object> | object 
                     ? { data: TRecursiveDataWrap<Base[Key]>} 
                     : Base[Key]
         } :
     Base extends Array<object> ?
         Array<TRecursiveDataWrap<Unpacked<Base>>>
-        : never
+        : never;
+
+        /**
+         * 
+interface Test1I {
+    foo: 'hello'
+}
+
+interface Test2I extends Test1I {
+    propArray: [ 'hello' ]
+}
+interface Test3I extends Test2I {
+    propArray: [ 'hello' ]
+    propObject: {
+        propSubObject1_1: string;
+    }
+}
+
+let foo1: TRecursiveDataWrap<Test1I> = {
+    foo: 'hello'
+}
+
+let foo2: TRecursiveDataWrap<Test2I> = {
+    foo: 'hello',
+    propArray: {
+        data: [ 'hello' ]
+    }
+}
+
+let foo3: TRecursiveDataWrap<Test3I> = {
+    foo: 'hello',
+    propArray: {
+        data: [ 'hello' ]
+    },
+    propObject: {
+        data: {
+            propSubObject1_1: 'hello'
+        }
+    }
+}
+         */

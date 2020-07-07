@@ -75,26 +75,27 @@ export const FormIconTooltip: React.FC<FormIconTooltipProps> = ( { icon, text, l
  */
 export function encapsulateChildObjectsIntoDataProp<T extends object> ( inputObj: T ): TRecursiveDataWrap<T> {
     // will continue until all non-primitive elements/properties have been encapsulated in `{data: obj}`
-    function wrap<C extends object | Array<any>> ( o: C ): TRecursiveDataWrap<C> {
-        let [ arr, isArray ]: [ Array<any>, boolean ] = ( Array.isArray( o ) ? [o, true] : [ [ o ], false ] );
+    function wrap<C extends object | Array<object>> ( o: C ): TRecursiveDataWrap<C> {
+        let [ arr, isArray ]: [ Array<object>, boolean ] = ( Array.isArray( o ) ? [o, true] : [ [ o ], false ] );
         arr.map( el => {
             if ( typeof el === "object" ) {
                 for ( let k in el ) {
                     if ( Array.isArray( el[ k ] ) ) {
                         el[ k ] = { data: wrap( el[ k ] ) };
+                    } else if ( typeof el[ k ] === "object" ) {
+                        el[ k ] = { data: wrap( el[ k ] ) };
+                    } else {
+                        el[ k ] = el[ k ];
                     }
-                    if ( typeof el[k] === "object" ){
-                        el[k] = { data: wrap(el[k])}
-                    }
-                    el[k] = el[k];
                 }
             }
             return el;
         })
         if ( ! isArray ){
-            return arr[0];
+            return arr[0] as TRecursiveDataWrap<C>;
         }
-        return arr;
+        return arr as TRecursiveDataWrap<C>;
     }
     return wrap(inputObj);
 }
+
