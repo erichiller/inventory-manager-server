@@ -104,6 +104,53 @@ export function matchFirstOfArrayOrNull<T> ( array: T[], match?: T ): T | null {
     return array[ 0 ];
 }
 
+
+export type nullIfArrayLengthZero<T extends Array<any>> = 
+    LengthIsNonZeroT<T> extends false ?
+    null :
+    T;
+
+export type List<A = any> = ReadonlyArray<A>
+
+// export type Length<L extends List, fmt extends Formats = 'n'> =  {
+//     's': NumberOf<L['length']>
+//     'n': L['length']
+// }[fmt]
+
+// export type NumberOf<N extends any> =
+//     N extends number
+//     ? _NumberOf<N, NumberMap>
+//     : N
+
+// export type Head<L extends List> =
+//     Length<L> extends 0
+//     ? never
+//     : L[0]
+
+type Length<T extends Array<any>> = T['length'];
+
+type LengthIsNonZeroT<T extends Array<any>> = T['length'] extends 0 ? false : true;
+
+// export function lengthZeroArrayToNull<T extends Array<any>> ( inputArray: T ): Length<T> {
+// export function lengthZeroArrayToNull<T extends Array<any>> ( inputArray: T ): Length<T> extends 0 ? null : T {
+// export function lengthZeroArrayToNull<T extends Array<any>> ( inputArray: T ): nullIfArrayLengthZero<T> {
+export function lengthZeroArrayToNull<T extends Array<any>> ( inputArray: T ): LengthIsNonZeroT<T>  {
+    if ( Array.isArray( inputArray ) && inputArray['length'] !== 0 ){
+        // return inputArray as nullIfArrayLengthZero<T>;
+    }
+    return null;
+}
+
+let q: Length<[]>;
+
+let r: LengthIsNonZeroT<[]>
+
+let fooT: nullIfArrayLengthZero<[]>;
+let zeroArray = [];
+let foo: nullIfArrayLengthZero<[]> = lengthZeroArrayToNull(zeroArray);
+let fooZ = lengthZeroArrayToNull([]);
+let fooW = lengthZeroArrayToNull([1]);
+
 /**
  * ParseInt, but it won't error when passed a number
  */

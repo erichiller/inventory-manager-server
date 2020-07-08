@@ -169,6 +169,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             let formFieldValues = encapsulateChildObjectsIntoDataProp(
                                         form.getFieldsValue() as Exclude<OrderGql, 'id'>
                                     );
+            console.log( { formFieldValues_encapsulated: JSON.stringify(formFieldValues, null, 2)});
             insertOrder( {
                 variables: {
                     ...formFieldValues

@@ -1,10 +1,8 @@
-import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'react';
-import { Form, Input, Divider, Tooltip, InputNumber, Switch, Row, Col, Button, message } from 'antd';
-// import { OptionsType } from 'rc-select/lib/Option';
-import { VendorItem as VendorItemGql, OrderItem as OrderItemGql, VendorItemInsertInput, ManufacturerItemInsertInput, ShipmentInsertInput } from '~lib/types/graphql';
-import TextArea from 'antd/lib/input/TextArea';
+import React, { useState } from 'react';
+import { Input } from 'antd';
+import { OrderItem as OrderItemGql } from '~lib/types/graphql';
 
-import { toMinimumFixed, Union, SubType } from '~lib/UtilityFunctions';
+import { SubType } from '~lib/UtilityFunctions';
 import { InputProps } from 'antd/lib/input';
 import { OrderItemSelect, OrderItemSelectSingleValue } from './OrderItemSelect';
 import { Integer } from '~lib/types/uint8';
@@ -14,7 +12,6 @@ import { ManufacturerItemSelect, ManufacturerItemSelectValue } from '~components
 import { ShipmentSelect, ShipmentSelectValue } from '~components/Shipment/ShipmentSelect';
 
 
-// interface OrderItemDefinition extends Omit<Partial<OrderItemGql>, 'order_id'> {
 interface OrderItemInputValue extends Partial<SubType<OrderItemGql, string | number>> {
     vendor_item: VendorItemSelectValue;
     manufacturer_item: ManufacturerItemSelectValue;
@@ -23,10 +20,7 @@ interface OrderItemInputValue extends Partial<SubType<OrderItemGql, string | num
 }
 
 interface OrderItemInputProps extends Omit<InputProps, 'value' | 'onChange'> {
-    // placeholder:'value' | 'onChange'> {
-    // forwardRef?: React.MutableRefObject<Input>;
     value?: OrderItemInputValue;
-    // onChange?: ( items: { item_id: number; }[] ) => void;
     onChange?: ( item: OrderItemInputValue ) => void;
     vendorId: Integer;
 }
@@ -36,30 +30,15 @@ interface OrderItemInputProps extends Omit<InputProps, 'value' | 'onChange'> {
  * @param props ItemBundleEditFormProps
  */
 export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemInputProps ) => {
-    const { onChange, ...remainingProps } = props;
+    const { onChange } = props;
     console.log("OrderItemInput received props", props);
 
-    const [ modal, setModal ] = useState<React.ReactElement>( null );
+    const [ modal, setModal ] = useState<React.ReactElement>( undefined );
     const history = useHistory();
     const location = useLocation();
-    const handleModalChange = ( modal: React.ReactElement ) => {
-        if ( modal === null ) {
-            history.push( location.pathname );
-        }
-        setModal( modal );
-    };
 
     const setItemId = ( value: OrderItemSelectSingleValue ) => {
         console.log( { c: 'OrderItemInput', f: "setItem", value } );
-        // let item_id: number = null;
-        // // unpack value from ItemSelect
-        // if ( value && Array.isArray( value ) ) {
-        //     if ( value.length !== 1 ) {
-        //         message.error( "Invalid Input received from ItemSelect" );
-        //     } else {
-        //         item_id = value[ 0 ].item_id;
-        //     }
-        // }
         onChange( {
             ...props.value,
             item_id: value
@@ -106,8 +85,8 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
         onChange( {
             ...props.value,
             ...( vendor_item.id 
-                    ? { vendor_item_id: vendor_item.id, vendor_item: null } 
-                    : { vendor_item: vendor_item, vendor_item_id: null } )
+                ? { vendor_item_id: vendor_item.id, vendor_item: undefined } 
+                : { vendor_item: vendor_item, vendor_item_id: undefined } )
         } );
     };
     const setManufacturerItem = ( manufacturer_item: Partial<ManufacturerItemSelectValue> ) => {
@@ -115,8 +94,8 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
         onChange( {
             ...props.value,
             ...( manufacturer_item.id 
-                    ? { manufacturer_item_id: manufacturer_item.id, manufacturer_item: null } 
-                    : { manufacturer_item: manufacturer_item, manufacturer_item_id: null } )
+                ? { manufacturer_item_id: manufacturer_item.id, manufacturer_item: undefined } 
+                : { manufacturer_item: manufacturer_item, manufacturer_item_id: undefined } )
         } );
     };
     const setShipment = ( shipment: Partial<ShipmentSelectValue> ) => {
@@ -124,8 +103,8 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
         onChange( {
             ...props.value,
             ...( shipment.id 
-                    ? { shipment_id: shipment.id, shipment: null } 
-                    : { shipment: shipment, shipment_id: null } )
+                    ? { shipment_id: shipment.id, shipment: undefined } 
+                : { shipment: shipment, shipment_id: undefined } )
         } );
     };
 
