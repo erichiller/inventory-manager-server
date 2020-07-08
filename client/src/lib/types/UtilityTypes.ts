@@ -39,10 +39,10 @@ export type IQuery<TQuery, TVariables extends BaseQueryOptions['variables']> = (
 export type QueryResultReturnKey<Q extends IQuery<any, any>> = keyof Omit<Exclude<ReturnType<Q>[ 'data' ], undefined>, '__typename'>;
 
 /**
- * `Q` should be a query of the form `use...Query` from codegen.
- * Returns Type that is the result of the Query
- * This is the type when fully unpacked,
- * the result of the GraphQL query stored within `data.<typename>`
+ * `Q` should be a query of the form `typeof use...Query` from codegen.  
+ * Returns Type that is the result of the Query  
+ * This is the type when fully unpacked,  
+ * ie. the result of the GraphQL query stored within `data.<typename>`  
 **/
 export type QueryResultTypePlus<Q extends IQuery<any, any>> = Unpacked<Exclude<ReturnType<Q>[ 'data' ], undefined>[ QueryResultReturnKey<Q> ]>;
 
@@ -135,7 +135,7 @@ export type TRecursiveDataWrap<Base> =
     Base extends object ?
         {
             [Key in keyof Base]:
-                Base[Key] extends Array<object>
+                Base[Key] extends Array<any>
                     // ? TRecursiveDataWrap<Base[Key]> 
                     // ? { data: Base[Key]} 
                     ? { data: Array<TRecursiveDataWrap<Unpacked<Base[Key]>>>} 
@@ -143,9 +143,9 @@ export type TRecursiveDataWrap<Base> =
                         ? { data: TRecursiveDataWrap< Base[Key] > }
                         : Base[Key]
         } :
-    Base extends Array<object> ?
+    Base extends Array<any> ?
         // Array<Unpacked<Base>>
         { data: Array<TRecursiveDataWrap<Unpacked<Base>>> }
         // Array<TRecursiveDataWrap<Unpacked<Base>>>
         // TRecursiveDataWrap< Array< Unpacked<Base> > >
-        : never;
+        : Base;

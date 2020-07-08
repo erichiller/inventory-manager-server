@@ -47,6 +47,30 @@ fragment basicOrderItemFields on order_item {
     # vendor_item_id: Int
 }
 
+fragment objectItemVariantFields on item_variant {
+    id
+    item_id
+    item {
+        id
+        __typename
+        class
+    }
+    name: object(path: "name")
+    object
+    vendor_item_id
+    vendor {
+        id
+        name
+        url
+    }
+    manufacturer_item_id
+    manufacturer {
+        id
+        name
+        url
+    }
+}
+
 query GetOrdersByDateRange($date_start_gte: date, $date_end_lte: date) {
     order(
         where: { placed_date: { _gte: $date_start_gte, _lte: $date_end_lte } }
@@ -301,23 +325,29 @@ query GetItemVariants (
             id: asc
         }
     ) {
-        id
-        item {
-            id
-            __typename
-            class
+        ...objectItemVariantFields
+    }
+}
+
+query GetItemVariantByAttached(
+    $item_id: [Int!]
+    $manufacturer_item_id: [Int!]
+    $vendor_item_id: [Int!]
+    $vendor_id: [Int!]
+) {
+    item_variant(
+        where: {
+            manufacturer_item_id: {_in: $manufacturer_item_id}, 
+            vendor_item_id: {_in: $vendor_item_id}, 
+            vendor_id: {_in: $vendor_id}, 
+            item_id: {_in: $item_id}
         }
-        name: object(path: "name")
-        object
-        vendor {
-            id
-            name
-            url
+        order_by: {
+            vendor_id: asc, 
+            manufacturer_id: asc, 
+            id: asc
         }
-        manufacturer {
-            id
-            name
-            url
-        }
+    ) {
+        ...objectItemVariantFields
     }
 }

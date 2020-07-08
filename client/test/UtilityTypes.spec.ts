@@ -31,6 +31,7 @@ interface Test5I extends Test4I {
     }
     propArrayOfObjects: [
         { 
+            propObj1_Prop1: number;
             propObjLevel2_Prop1: number;
             propObjLevel2_propArrayOfObjects_Prop2: [
                 {
@@ -96,6 +97,7 @@ let foo5: TRecursiveDataWrap<Test5I> = {
     propArrayOfObjects: {
         data: [
             { 
+                propObj1_Prop1: 4,
                 propObjLevel2_Prop1: 3,
                 propObjLevel2_propArrayOfObjects_Prop2: {
                     data: [

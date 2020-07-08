@@ -2,6 +2,8 @@ import React, { ReactText, ReactElement } from "react";
 import { Tooltip } from "antd";
 import { EnumUnitEnum, InsertIconMutation } from "./types/graphql";
 import { EnumUnitKeys, TRecursiveDataWrap } from "./types/UtilityTypes";
+import moment from "moment";
+import { transparentLog } from "./UtilityFunctions";
 
 
 interface FormIconTooltipProps {
@@ -27,6 +29,7 @@ export const FormIconTooltip: React.FC<FormIconTooltipProps> = ( { icon, text, l
 /**
  * Wrap each child object that is a property of the parent object into a `{data: <ChildObject}` wrapper object
  * @param inputObj object without each child being within a `{data: <ChildObject>}` wrapper
+ * @see `UtilityTypes.spec.ts`
  * @example
  *  inputObj = {
  *      propA: 'A',
@@ -55,9 +58,8 @@ export const FormIconTooltip: React.FC<FormIconTooltipProps> = ( { icon, text, l
  *      },
  *      propC: {
  *          data: {
- *              childPropCA: 'C-A'
+ *              childPropCA: 'C-A',
  *              childPropCB: {
- *
  *                  data: {
  *                      childPropCBA: 'C-B-A'
  *                  }
@@ -74,28 +76,53 @@ export const FormIconTooltip: React.FC<FormIconTooltipProps> = ( { icon, text, l
  *  }
  */
 export function encapsulateChildObjectsIntoDataProp<T extends object> ( inputObj: T ): TRecursiveDataWrap<T> {
+    transparentLog( { m: "encapsulateChildObjectsIntoDataProps", e: 'input' }, inputObj );
     // will continue until all non-primitive elements/properties have been encapsulated in `{data: obj}`
-    function wrap<C extends object | Array<object>> ( o: C ): TRecursiveDataWrap<C> {
-        let [ arr, isArray ]: [ Array<object>, boolean ] = ( Array.isArray( o ) ? [o, true] : [ [ o ], false ] );
-        arr.map( el => {
-            if ( typeof el === "object" ) {
+    function wrap ( el: any, dataWrap: boolean = true ): TRecursiveDataWrap<any> {
+    // function wrap<C extends object | Array<object>> ( o: C ): TRecursiveDataWrap<C> {
+        // let [ arr, isArray ]: [ Array<any>, boolean ] = ( Array.isArray( o ) ? [ o, true ] : [ [ o ], false ] );
+        // let retarr = [ ];
+        // ( (arr) => {
+            // let el = o;
+        // arr.map( el => {
+            if (typeof el === "undefined" ) {
+                return el;
+            } else if ( el === null ){
+                return el as null;
+            } else if ( Array.isArray( el ) ) {
+                console.log( `is Array`, el );
+                return { data: el.map( arrayElement => wrap( arrayElement, false ) ) };
+            } else if ( moment.isMoment( el ) ) {
+                console.log( `is Moment`, el, " >>>> ", el.toISOString() );
+                return el.toISOString();
+            } else if ( typeof el === "object" ) {
+                console.log( "****************************************\nis object", el );
+                // let _obj: typeof el = {};
                 for ( let k in el ) {
-                    if ( Array.isArray( el[ k ] ) ) {
-                        el[ k ] = { data: wrap( el[ k ] ) };
-                    } else if ( typeof el[ k ] === "object" ) {
-                        el[ k ] = { data: wrap( el[ k ] ) };
-                    } else {
-                        el[ k ] = el[ k ];
-                    }
+                    console.log( "is object, k: ", k, "\nof el:", el );
+                    el[ k ] = wrap( el[ k ] );
                 }
+                if ( dataWrap ){
+                    return { data: el };
+                }
+                return el;
+                // }
+            } else {
+                console.log( `is default`, el );
+                return el;
+                // do nothing
             }
-            return el;
-        })
-        if ( ! isArray ){
-            return arr[0] as TRecursiveDataWrap<C>;
-        }
-        return arr as TRecursiveDataWrap<C>;
+            // console.log( "returning\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", el );
+            // return el;
+        // } );
+        // if ( !isArray ) {
+        //     return arr[ 0 ] as TRecursiveDataWrap<C>;
+        // }
+        // return arr as TRecursiveDataWrap<C>;
     }
-    return wrap(inputObj);
+
+    return transparentLog( { m: "encapsulateChildObjectsIntoDataProps", e: 'output' }, wrap( inputObj, false ) );
 }
 
+let foo: TRecursiveDataWrap<number> = 3;
+let foo2: TRecursiveDataWrap<string> = "hello";

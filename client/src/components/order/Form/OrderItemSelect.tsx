@@ -1,13 +1,12 @@
-import { SelectProps, SelectValue, LabeledValue } from "antd/lib/select";
+import { SelectProps } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
-import { AutoComplete, Input, DatePicker, Select, Spin } from "antd";
+import { Input, Select, Spin } from "antd";
 
 
 
-import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
-import { toTitleCase, getDaysInMonth, Union, is, parseIntSafe, isNumberArray } from "~lib/UtilityFunctions";
-import { InputProps } from "antd/lib/input";
-import { useGetOrdersByDateRangeQuery, useGetItemsQuery, useGetItemVariantsQuery, ItemInsertInput, useGetItemLazyQuery, useGetItemsLazyQuery, useGetItemsByIdLazyQuery } from "~lib/types/graphql";
+import { Union, is, parseIntSafe, flatArrayObjectProperty, QueryResultTypePlus } from "~lib/UtilityFunctions";
+import { useGetItemVariantsQuery, ItemInsertInput, useGetItemsByIdLazyQuery, useGetItemVariantByAttachedLazyQuery,
+    useGetItemVariantByAttachedQuery } from "~lib/types/graphql";
 import { Integer } from "~lib/types/uint8";
 import { Manufacturer } from "~lib/Manufacturer/Manufacturer";
 import { Vendor } from "~lib/Vendor/Vendor";
@@ -21,25 +20,17 @@ interface OptionT {
     vendor_id?: number | null;
     manufacturer_id?: number | null;
 }
-type VT = number | ItemInsertInput;
+type TOrderItemSelectValue = number | Partial<QueryResultTypePlus<typeof useGetItemVariantByAttachedQuery>>;
 
-export type OrderItemSelectMultipleValue = Array<{ item_id: number; }>;
+export type OrderItemSelectMultipleValue = Array<TOrderItemSelectValue>;
 /** item_id */
-export type OrderItemSelectSingleValue = number;
-
-// interface OrderItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
-//     forwardRef?: React.MutableRefObject<Input>;
-//     value?: VT;
-//     vendorId: Integer;
-//     onChange?: ( items: OrderItemSelectValue ) => void;
-// }
-
+export type OrderItemSelectSingleValue = TOrderItemSelectValue;
 
 type OrderItemSelectProps = Union<
-    Omit<SelectProps<VT>, 'value' | 'onChange' | 'mode'>,
+    Omit<SelectProps<TOrderItemSelectValue | TOrderItemSelectValue[]>, 'value' | 'onChange' | 'mode'>,
     {
         forwardRef?: React.MutableRefObject<Input>;
-        value?: VT;
+        value?: TOrderItemSelectValue | TOrderItemSelectValue[];
         vendorId: Integer;
     },
     {
@@ -63,19 +54,26 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
         // ...remainingProps 
     } = props;
     const mode: 'multiple' | 'tags' | null = props.mode === 'single' ? null : ( props.mode ?? 'multiple' );
-    const defaultIds: number[] = [
-        ...(
-            typeof props.value === "number" ?
-                [ props.value ] : (
-                    props.value ? [ props.value.id ] : [] )
-        ),
-        ...(
-            typeof props.defaultValue === "number" ?
-                [ props.defaultValue ] : (
-                    props.defaultValue ? [ props.defaultValue.id ] : [] )
-        )
-    ];
-    // let defaultOptionElements: JSX.Element[] = [];
+
+    const calculateDefaults = ( values: Array<typeof props.value> ): [ number[], Exclude<TOrderItemSelectValue, number>[] ] => {
+        let _defaultIds: number[] = [];
+        let _defaultObjects: Exclude<TOrderItemSelectValue, number>[] = [];
+        values.forEach( value => {
+            if ( typeof value === "number" ) {
+                _defaultIds.push( value );
+            }
+            if ( typeof value === 'object' && 'id' in value ){
+                _defaultIds.push(value.id);
+                _defaultObjects.push(value);
+            }
+        });
+        return [ _defaultIds, _defaultObjects ];
+    }
+    const [ defaultIds, defaultObjects ] = calculateDefaults(
+        [ 
+            ...(Array.isArray(props.value) ? props.value : [ props.value ]),
+            ...( Array.isArray( props.defaultValue ) ? props.defaultValue : [ props.defaultValue ] ),
+         ])
     const [ searchText, setSearchText ] = useState<string>();
     const [ options, setOptions ] = useState<OptionT[]>( [] );
     const { data, loading, error } = useGetItemVariantsQuery( {
@@ -84,18 +82,26 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
             prefer_vendor_id: vendorId
         }
     } );
-    const [ runDefaultItemQuery, defaultItemQueryResult ] = useGetItemsByIdLazyQuery( {
-        variables: {
-            ids: defaultIds
-        }
-    } );
+    // const [ runDefaultItemQuery, defaultItemQueryResult ] = useGetItemsByIdLazyQuery( {
+    //     variables: {
+    //         ids: defaultIds
+    //     }
+    // } );
+    const [ runDefaultItemQuery, defaultItemQueryResult ] = useGetItemVariantByAttachedLazyQuery( );
     console.log( { c: "OrderItemSelect", e: "init", props, data, defaultItemQueryResult, defaultIds, options } );
 
     useEffect( () => {
         console.log( "OrderItemSelect: calling initial useEffect", defaultItemQueryResult)
         if ( defaultIds && defaultItemQueryResult.called === false ){
             console.log("runDefaultItemQuery")
-            runDefaultItemQuery( ); 
+            runDefaultItemQuery( {
+                variables: {
+                    item_id: defaultIds,
+                    manufacturer_item_id: flatArrayObjectProperty(defaultObjects, 'manufacturer_item_id'),
+                    vendor_item_id: flatArrayObjectProperty( defaultObjects, 'vendor_item_id' ),
+                    vendor_id: flatArrayObjectProperty( defaultObjects, 'vendor_id' ),
+                }
+            }); 
         }
         if ( data && ( !options || options.length === 0 ) ) {
             console.log( 'OrderItemSelect: data is already present', data, options ); 
@@ -147,7 +153,6 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                     <span>{v.manufacturer?.name}</span>
                     <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span>
                 </span>
-                // TODO: Set value to the applicable string, feed value up that is the `order_id`
             };
         } ) );
     }
@@ -179,7 +184,6 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                     {/* <span>{v.manufacturer?.name}</span> */}<span></span>
                     {/* <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span> */}<span></span>
                 </span>
-                // TODO: Set value to the applicable string, feed value up that is the `order_id`
             };
         } ));
     }
@@ -190,10 +194,9 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
             console.log( "select with option", { v, key: v.variant_id | v.item_id} );
             return <Select.Option
                 key={v.variant_id || v.item_id} 
-                value={v.item_id}>
+                value={ v.variant_id }>
                     {v.label}
                 </Select.Option>;
-            //TODO - how to encode multi-value item, vendor, manufacturer
         } )
     }
 
@@ -225,11 +228,11 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                     if ( is<( input: number ) => void>( onChange, props.mode === null || props.mode === "single" ) ) {
                         onChange( parseIntSafe( value ) );
                     } else {
-                        let arrayOfItemProps: { item_id: number; }[] = [];
+                        let arrayOfItemProps: TOrderItemSelectValue[] = [];
                         if ( typeof value === "number" ) {
-                            arrayOfItemProps = [ { item_id: value } ];
+                            arrayOfItemProps = [ { id: value } ];
                         } else if ( typeof value === "string" ) {
-                            arrayOfItemProps = [ { item_id: parseInt( value ) } ];
+                            arrayOfItemProps = [ { id: parseInt( value ) } ];
                         }
                         onChange( arrayOfItemProps );
                     }

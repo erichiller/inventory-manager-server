@@ -26857,6 +26857,22 @@ export type BasicOrderItemFieldsFragment = (
   & Pick<OrderItem, 'id' | 'cost_item' | 'cost_tax' | 'cost_total' | 'item_id' | 'shipment_id' | 'vendor_item_id' | 'serial_no' | 'quantity' | 'order_id' | 'manufacturer_item_id'>
 );
 
+export type ObjectItemVariantFieldsFragment = (
+  { __typename?: 'item_variant' }
+  & Pick<ItemVariant, 'id' | 'item_id' | 'object' | 'vendor_item_id' | 'manufacturer_item_id'>
+  & { name: ItemVariant['object'] }
+  & { item?: Maybe<(
+    { __typename: 'item' }
+    & Pick<Item, 'id' | 'class'>
+  )>, vendor?: Maybe<(
+    { __typename?: 'vendor' }
+    & Pick<Vendor, 'id' | 'name' | 'url'>
+  )>, manufacturer?: Maybe<(
+    { __typename?: 'manufacturer' }
+    & Pick<Manufacturer, 'id' | 'name' | 'url'>
+  )> }
+);
+
 export type GetOrdersByDateRangeQueryVariables = Exact<{
   date_start_gte?: Maybe<Scalars['date']>;
   date_end_lte?: Maybe<Scalars['date']>;
@@ -26997,18 +27013,23 @@ export type GetItemVariantsQuery = (
   { __typename?: 'query_root' }
   & { item_variant: Array<(
     { __typename?: 'item_variant' }
-    & Pick<ItemVariant, 'id' | 'object'>
-    & { name: ItemVariant['object'] }
-    & { item?: Maybe<(
-      { __typename: 'item' }
-      & Pick<Item, 'id' | 'class'>
-    )>, vendor?: Maybe<(
-      { __typename?: 'vendor' }
-      & Pick<Vendor, 'id' | 'name' | 'url'>
-    )>, manufacturer?: Maybe<(
-      { __typename?: 'manufacturer' }
-      & Pick<Manufacturer, 'id' | 'name' | 'url'>
-    )> }
+    & ObjectItemVariantFieldsFragment
+  )> }
+);
+
+export type GetItemVariantByAttachedQueryVariables = Exact<{
+  item_id?: Maybe<Array<Scalars['Int']>>;
+  manufacturer_item_id?: Maybe<Array<Scalars['Int']>>;
+  vendor_item_id?: Maybe<Array<Scalars['Int']>>;
+  vendor_id?: Maybe<Array<Scalars['Int']>>;
+}>;
+
+
+export type GetItemVariantByAttachedQuery = (
+  { __typename?: 'query_root' }
+  & { item_variant: Array<(
+    { __typename?: 'item_variant' }
+    & ObjectItemVariantFieldsFragment
   )> }
 );
 
@@ -27601,6 +27622,31 @@ export const ObjectOrderFieldsFragmentDoc = gql`
   }
 }
     ${BasicVendorFieldsFragmentDoc}`;
+export const ObjectItemVariantFieldsFragmentDoc = gql`
+    fragment objectItemVariantFields on item_variant {
+  id
+  item_id
+  item {
+    id
+    __typename
+    class
+  }
+  name: object(path: "name")
+  object
+  vendor_item_id
+  vendor {
+    id
+    name
+    url
+  }
+  manufacturer_item_id
+  manufacturer {
+    id
+    name
+    url
+  }
+}
+    `;
 export const BasicShipmentFieldsFragmentDoc = gql`
     fragment basicShipmentFields on shipment {
   id
@@ -29299,27 +29345,10 @@ export type DeleteOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<D
 export const GetItemVariantsDocument = gql`
     query GetItemVariants($query_text: String!, $prefer_vendor_id: Int) {
   item_variant: search_item_variant(args: {query_text: $query_text}, where: {_or: [{vendor_id: {_eq: $prefer_vendor_id}}, {vendor_id: {_is_null: true}}]}, order_by: {vendor_id: asc, manufacturer_id: asc, id: asc}) {
-    id
-    item {
-      id
-      __typename
-      class
-    }
-    name: object(path: "name")
-    object
-    vendor {
-      id
-      name
-      url
-    }
-    manufacturer {
-      id
-      name
-      url
-    }
+    ...objectItemVariantFields
   }
 }
-    `;
+    ${ObjectItemVariantFieldsFragmentDoc}`;
 export type GetItemVariantsProps<TChildProps = {}, TDataName extends string = 'data'> = {
       [key in TDataName]: ApolloReactHoc.DataValue<GetItemVariantsQuery, GetItemVariantsQueryVariables>
     } & TChildProps;
@@ -29360,6 +29389,55 @@ export function useGetItemVariantsLazyQuery(baseOptions?: ApolloReactHooks.LazyQ
 export type GetItemVariantsQueryHookResult = ReturnType<typeof useGetItemVariantsQuery>;
 export type GetItemVariantsLazyQueryHookResult = ReturnType<typeof useGetItemVariantsLazyQuery>;
 export type GetItemVariantsQueryResult = ApolloReactCommon.QueryResult<GetItemVariantsQuery, GetItemVariantsQueryVariables>;
+export const GetItemVariantByAttachedDocument = gql`
+    query GetItemVariantByAttached($item_id: [Int!], $manufacturer_item_id: [Int!], $vendor_item_id: [Int!], $vendor_id: [Int!]) {
+  item_variant(where: {manufacturer_item_id: {_in: $manufacturer_item_id}, vendor_item_id: {_in: $vendor_item_id}, vendor_id: {_in: $vendor_id}, item_id: {_in: $item_id}}, order_by: {vendor_id: asc, manufacturer_id: asc, id: asc}) {
+    ...objectItemVariantFields
+  }
+}
+    ${ObjectItemVariantFieldsFragmentDoc}`;
+export type GetItemVariantByAttachedProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>
+    } & TChildProps;
+export function withGetItemVariantByAttached<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetItemVariantByAttachedQuery,
+  GetItemVariantByAttachedQueryVariables,
+  GetItemVariantByAttachedProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables, GetItemVariantByAttachedProps<TChildProps, TDataName>>(GetItemVariantByAttachedDocument, {
+      alias: 'getItemVariantByAttached',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetItemVariantByAttachedQuery__
+ *
+ * To run a query within a React component, call `useGetItemVariantByAttachedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetItemVariantByAttachedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetItemVariantByAttachedQuery({
+ *   variables: {
+ *      item_id: // value for 'item_id'
+ *      manufacturer_item_id: // value for 'manufacturer_item_id'
+ *      vendor_item_id: // value for 'vendor_item_id'
+ *      vendor_id: // value for 'vendor_id'
+ *   },
+ * });
+ */
+export function useGetItemVariantByAttachedQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>(GetItemVariantByAttachedDocument, baseOptions);
+      }
+export function useGetItemVariantByAttachedLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>(GetItemVariantByAttachedDocument, baseOptions);
+        }
+export type GetItemVariantByAttachedQueryHookResult = ReturnType<typeof useGetItemVariantByAttachedQuery>;
+export type GetItemVariantByAttachedLazyQueryHookResult = ReturnType<typeof useGetItemVariantByAttachedLazyQuery>;
+export type GetItemVariantByAttachedQueryResult = ApolloReactCommon.QueryResult<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
   PrinterStatus {
@@ -30800,4 +30878,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-07-07T05:45:05-06:00
+// graphql typescript defs generated on 2020-07-08T06:20:00-06:00

@@ -1,24 +1,27 @@
 /** Requires:
  * playlfe/gql (nodejs)
  * Facebook Watchman (windows binary)
+
 **/
 {
-  schema: {
-    files: 'client/src/lib/types/schema.graphql'
-  },
-  query: {
-    files: [
-      {
-        match: 'client/src/**/*.gql',
-        parser: 'QueryParser',
-        validate: {
-            extends: "gql-rules-query",
-            rules: {
-                KnownFragmentNames: "off",
-                NoUnusedFragments: "off",
-            }
-        }
-      },
-    ]
-  }
+    schema: {
+        files: 'client/src/lib/types/schema.graphql'
+    },
+    query: {
+        files: [
+            {
+                // match: { include: 'client/src/**/*.gql', ignore: 'client/src/lib/types/schema.graphql' },
+                match: 'client/src/**/*.gql',
+                parser: 'QueryParser',
+                validate: {
+                    extends: "gql-rules-query",
+                    rules: {
+                        KnownFragmentNames: "off",
+                        NoUnusedFragments: "off",
+                        // NoUnusedTypeDefinition: "off"
+                    }
+                }
+            },
+        ]
+    }
 }
