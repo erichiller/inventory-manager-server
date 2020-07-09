@@ -1,11 +1,21 @@
 /** Requires:
  * playlfe/gql (nodejs)
  * Facebook Watchman (windows binary)
-
+ * [Docs](https://github.com/Mayank1791989/gql#gqlconfig)
+ * 
 **/
 {
     schema: {
-        files: 'client/src/lib/types/schema.graphql'
+        files: 'client/src/lib/types/schema.graphql',
+        validate: {
+            extends: "gql-rules-schema",
+            rules: {
+                // KnownFragmentNames: "off",
+                // NoUnusedFragments: "off",
+                // https://github.com/Mayank1791989/gql/tree/master/src/schema/validation/rules/gql-rules-schema
+                NoUnusedTypeDefinition: "off"
+            }
+        }
     },
     query: {
         files: [
