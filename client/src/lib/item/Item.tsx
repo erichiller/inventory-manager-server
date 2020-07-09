@@ -1,7 +1,6 @@
 
 import {
-    Item as ItemGql, Icon, Label, GetIconQueryResult, GetIconDocument, GetIconQueryVariables, GetIconQuery,
-    EnumItemClassEnum,
+    Item as ItemGql, Icon, Label, EnumItemClassEnum,
     ItemSelectColumn,
     GetItemQueryVariables,
     GetItemDocument,
@@ -9,18 +8,14 @@ import {
     Scalars
 } from "../types/graphql";
 
-import { Integer } from '../types/uint8';
 
 import { apolloClient } from '../../index';
-import { message, Tooltip } from "antd";
+import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Union, Unpacked, enumerable } from "../UtilityFunctions";
+import { toTitleCase, Union, enumerable } from "../UtilityFunctions";
 import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
-import { resolve } from "url";
-import { rejects } from "assert";
-import { ItemSelect } from "../../components/Item/ItemSelect";
 import { IconComponentT } from "~lib/types/common";
 
 export type GenericItem = Pick<ItemGql, 'id'>
@@ -88,7 +83,7 @@ export class Item<T extends GenericItem> {
         return false;
     }
 
-    static async ItemFactory<Q extends typeof GetItemDocument> ( variables: GetItemQueryVariables, query: Q = GetItemDocument as Q ): Promise<Item<any>> {
+    static async ItemFactory<Q extends typeof GetItemDocument> ( variables: GetItemQueryVariables ): Promise<Item<any>> {
 
         return new Promise( ( resolve, reject ) => apolloClient.query<GetItemQuery, GetItemQueryVariables>( {
             query: GetItemDocument,
@@ -435,7 +430,7 @@ export class Item<T extends GenericItem> {
      */
     get mouseOverRowComponent (): React.FC {
         // TODO: use for ... in so that enumerable properties are shown
-        return ( props ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key, value ] ) => key !== '_object' ) ), Object.keys( this ).sort(), 2 )}</pre>;
+        return ( ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key ] ) => key !== '_object' ) ), Object.keys( this ).sort(), 2 )}</pre>;
     }
 
     // get bundle (): Item {

@@ -11640,6 +11640,8 @@ export type ItemVariant = {
   item_id?: Maybe<Scalars['Int']>;
   /** An object relationship */
   manufacturer?: Maybe<Manufacturer>;
+  /** An object relationship */
+  manufacturerItem?: Maybe<ManufacturerItem>;
   manufacturer_id?: Maybe<Scalars['Int']>;
   manufacturer_item_id?: Maybe<Scalars['Int']>;
   object?: Maybe<Scalars['jsonb']>;
@@ -11647,6 +11649,8 @@ export type ItemVariant = {
   order_item_id?: Maybe<Scalars['Int']>;
   /** An object relationship */
   vendor?: Maybe<Vendor>;
+  /** An object relationship */
+  vendorItem?: Maybe<VendorItem>;
   vendor_id?: Maybe<Scalars['Int']>;
   vendor_item_id?: Maybe<Scalars['Int']>;
 };
@@ -11747,12 +11751,14 @@ export type ItemVariantBoolExp = {
   item?: Maybe<ItemBoolExp>;
   item_id?: Maybe<IntComparisonExp>;
   manufacturer?: Maybe<ManufacturerBoolExp>;
+  manufacturerItem?: Maybe<ManufacturerItemBoolExp>;
   manufacturer_id?: Maybe<IntComparisonExp>;
   manufacturer_item_id?: Maybe<IntComparisonExp>;
   object?: Maybe<JsonbComparisonExp>;
   order_id?: Maybe<IntComparisonExp>;
   order_item_id?: Maybe<IntComparisonExp>;
   vendor?: Maybe<VendorBoolExp>;
+  vendorItem?: Maybe<VendorItemBoolExp>;
   vendor_id?: Maybe<IntComparisonExp>;
   vendor_item_id?: Maybe<IntComparisonExp>;
 };
@@ -11833,12 +11839,14 @@ export type ItemVariantOrderBy = {
   item?: Maybe<ItemOrderBy>;
   item_id?: Maybe<OrderBy>;
   manufacturer?: Maybe<ManufacturerOrderBy>;
+  manufacturerItem?: Maybe<ManufacturerItemOrderBy>;
   manufacturer_id?: Maybe<OrderBy>;
   manufacturer_item_id?: Maybe<OrderBy>;
   object?: Maybe<OrderBy>;
   order_id?: Maybe<OrderBy>;
   order_item_id?: Maybe<OrderBy>;
   vendor?: Maybe<VendorOrderBy>;
+  vendorItem?: Maybe<VendorItemOrderBy>;
   vendor_id?: Maybe<OrderBy>;
   vendor_item_id?: Maybe<OrderBy>;
 };
@@ -26859,11 +26867,17 @@ export type BasicOrderItemFieldsFragment = (
 
 export type ObjectItemVariantFieldsFragment = (
   { __typename?: 'item_variant' }
-  & Pick<ItemVariant, 'id' | 'item_id' | 'object' | 'vendor_item_id' | 'manufacturer_item_id'>
+  & Pick<ItemVariant, 'id' | 'item_id' | 'object' | 'vendor_item_id' | 'vendor_id' | 'manufacturer_item_id'>
   & { name: ItemVariant['object'] }
   & { item?: Maybe<(
     { __typename: 'item' }
     & Pick<Item, 'id' | 'class'>
+  )>, vendorItem?: Maybe<(
+    { __typename?: 'vendor_item' }
+    & Pick<VendorItem, 'vendor_sku'>
+  )>, manufacturerItem?: Maybe<(
+    { __typename?: 'manufacturer_item' }
+    & Pick<ManufacturerItem, 'id' | 'description' | 'manufacturer_product_id' | 'manufacturer_product_name' | 'manufacturer_product_series'>
   )>, vendor?: Maybe<(
     { __typename?: 'vendor' }
     & Pick<Vendor, 'id' | 'name' | 'url'>
@@ -27634,6 +27648,17 @@ export const ObjectItemVariantFieldsFragmentDoc = gql`
   name: object(path: "name")
   object
   vendor_item_id
+  vendorItem {
+    vendor_sku
+  }
+  manufacturerItem {
+    id
+    description
+    manufacturer_product_id
+    manufacturer_product_name
+    manufacturer_product_series
+  }
+  vendor_id
   vendor {
     id
     name
@@ -30878,4 +30903,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-07-08T06:20:00-06:00
+// graphql typescript defs generated on 2020-07-09T05:42:45-06:00

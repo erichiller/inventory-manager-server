@@ -28,5 +28,5 @@
         "**/client/src/lib/item/*.json": "jsonc"
     },
     "svg.preview.background": "transparent",
-    "eslint.enable": false
+    "eslint.enable": true
 }

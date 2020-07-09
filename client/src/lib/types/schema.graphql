@@ -11370,6 +11370,9 @@ type item_variant {
 
   # An object relationship
   manufacturer: manufacturer
+
+  # An object relationship
+  manufacturerItem: manufacturer_item
   manufacturer_id: Int
   manufacturer_item_id: Int
   object(
@@ -11381,6 +11384,9 @@ type item_variant {
 
   # An object relationship
   vendor: vendor
+
+  # An object relationship
+  vendorItem: vendor_item
   vendor_id: Int
   vendor_item_id: Int
 }
@@ -11460,12 +11466,14 @@ input item_variant_bool_exp {
   item: item_bool_exp
   item_id: Int_comparison_exp
   manufacturer: manufacturer_bool_exp
+  manufacturerItem: manufacturer_item_bool_exp
   manufacturer_id: Int_comparison_exp
   manufacturer_item_id: Int_comparison_exp
   object: jsonb_comparison_exp
   order_id: Int_comparison_exp
   order_item_id: Int_comparison_exp
   vendor: vendor_bool_exp
+  vendorItem: vendor_item_bool_exp
   vendor_id: Int_comparison_exp
   vendor_item_id: Int_comparison_exp
 }
@@ -11544,12 +11552,14 @@ input item_variant_order_by {
   item: item_order_by
   item_id: order_by
   manufacturer: manufacturer_order_by
+  manufacturerItem: manufacturer_item_order_by
   manufacturer_id: order_by
   manufacturer_item_id: order_by
   object: order_by
   order_id: order_by
   order_item_id: order_by
   vendor: vendor_order_by
+  vendorItem: vendor_item_order_by
   vendor_id: order_by
   vendor_item_id: order_by
 }
