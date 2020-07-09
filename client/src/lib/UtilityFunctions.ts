@@ -1,7 +1,7 @@
 import { Integer } from './types/uint8';
 import { Store } from 'antd/lib/form/interface';
 import { Item, ItemHardwareFastenerScrewMachine } from './Item';
-import { EnumUnitKeys, SubType, Unpacked } from './types/UtilityTypes';
+import { EnumUnitKeys, SubType, Unpacked, FilterFlags, StringKeys } from './types/UtilityTypes';
 import { EnumUnitEnum, Query, MutationRootInsertEnumItemCableConnectorArgs } from './types/graphql';
 import { ColumnProps } from 'antd/lib/table';
 import { LabeledValue } from 'antd/lib/select';
@@ -32,12 +32,12 @@ export function toTitleCase ( s: string ): string {
  * `allow` and `exclude` are exclusive, they can not be supplied together. If they are `allow` will always take precedence.
  * @param o object to filter properties of
  * @param allow array of propertyname strings that should be **included**
- * @param exclude array of propertyname strings that should be **excluded**
+ * @param exclude array of propertyname strings that should be **excluded**. defaults to `null`
  */
-export function filterObject<T, P extends keyof T> ( o: T, allow: Array<P>, exclude: null | undefined ): Pick<T, P>;
-export function filterObject<T, P extends keyof T> ( o: T, allow: null | undefined, exclude: Array<P> ): Omit<T, P>;
-export function filterObject ( o: object, allow: undefined | null | string[], exclude: undefined | null | string[] ): object {
-    let f: ( key ) => boolean = allow
+export function filterObject<T, P extends StringKeys<T>> ( o: T, allow: Array<P>): Pick<T, P>;
+export function filterObject<T, P extends StringKeys<T>> ( o: T, allow: null | undefined, exclude: Array<P> ): Omit<T, P>;
+export function filterObject<T, P extends StringKeys<T>> ( o: object, allow: undefined | null | Array<P>, exclude: undefined | null | Array<P> = null ): object {
+    let f: ( key: P ) => boolean = allow
         ? ( key ) => allow.includes( key )
         : exclude
             ? ( key ) => !exclude.includes( key )
@@ -105,51 +105,18 @@ export function matchFirstOfArrayOrNull<T> ( array: T[], match?: T ): T | null {
 }
 
 
-export type nullIfArrayLengthZero<T extends Array<any>> = 
-    LengthIsNonZeroT<T> extends false ?
-    null :
-    T;
 
-export type List<A = any> = ReadonlyArray<A>
-
-// export type Length<L extends List, fmt extends Formats = 'n'> =  {
-//     's': NumberOf<L['length']>
-//     'n': L['length']
-// }[fmt]
-
-// export type NumberOf<N extends any> =
-//     N extends number
-//     ? _NumberOf<N, NumberMap>
-//     : N
-
-// export type Head<L extends List> =
-//     Length<L> extends 0
-//     ? never
-//     : L[0]
-
-type Length<T extends Array<any>> = T['length'];
-
-type LengthIsNonZeroT<T extends Array<any>> = T['length'] extends 0 ? false : true;
-
-// export function lengthZeroArrayToNull<T extends Array<any>> ( inputArray: T ): Length<T> {
-// export function lengthZeroArrayToNull<T extends Array<any>> ( inputArray: T ): Length<T> extends 0 ? null : T {
-// export function lengthZeroArrayToNull<T extends Array<any>> ( inputArray: T ): nullIfArrayLengthZero<T> {
-export function lengthZeroArrayToNull<T extends Array<any>> ( inputArray: T ): LengthIsNonZeroT<T>  {
+/**
+ * Returns `null` if the `inputArray.length === 0`
+ * @param inputArray array to check length of
+ */
+export function lengthZeroArrayToNull<T extends ReadonlyArray<any>> ( inputArray: T ):  T | null  {
     if ( Array.isArray( inputArray ) && inputArray['length'] !== 0 ){
-        // return inputArray as nullIfArrayLengthZero<T>;
+        return inputArray;
     }
     return null;
 }
 
-let q: Length<[]>;
-
-let r: LengthIsNonZeroT<[]>
-
-let fooT: nullIfArrayLengthZero<[]>;
-let zeroArray = [];
-let foo: nullIfArrayLengthZero<[]> = lengthZeroArrayToNull(zeroArray);
-let fooZ = lengthZeroArrayToNull([]);
-let fooW = lengthZeroArrayToNull([1]);
 
 /**
  * ParseInt, but it won't error when passed a number

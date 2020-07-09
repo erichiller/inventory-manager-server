@@ -58,6 +58,17 @@ fragment objectItemVariantFields on item_variant {
     name: object(path: "name")
     object
     vendor_item_id
+    vendorItem {
+        vendor_sku
+    }
+    manufacturerItem {
+        id
+        description
+        manufacturer_product_id
+        manufacturer_product_name
+        manufacturer_product_series
+    }
+    vendor_id
     vendor {
         id
         name

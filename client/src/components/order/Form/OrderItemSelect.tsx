@@ -1,10 +1,10 @@
 import { SelectProps } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
-import { Input, Select, Spin } from "antd";
+import { Input, Select, Spin, Tooltip } from "antd";
 
 
 
-import { Union, is, parseIntSafe, flatArrayObjectProperty, QueryResultTypePlus } from "~lib/UtilityFunctions";
+import { Union, is, parseIntSafe, flatArrayObjectProperty, QueryResultTypePlus, filterObject, transparentLog } from "~lib/UtilityFunctions";
 import { useGetItemVariantsQuery, ItemInsertInput, useGetItemsByIdLazyQuery, useGetItemVariantByAttachedLazyQuery,
     useGetItemVariantByAttachedQuery } from "~lib/types/graphql";
 import { Integer } from "~lib/types/uint8";
@@ -105,18 +105,18 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
         }
         if ( data && ( !options || options.length === 0 ) ) {
             console.log( 'OrderItemSelect: data is already present', data, options ); 
-            setOptionsFromVariants();
+            setOptionsFromVariants( data.item_variant );
         }
         if ( defaultItemQueryResult.data && ( !options || options.length === 0 ) ) {
             console.log( 'OrderItemSelect: defaultItemQueryResult is already present', defaultItemQueryResult, options ); 
-            setOptionsFromItems();
+            setOptionsFromVariants( defaultItemQueryResult.data.item_variant );
         }
     }, [] );
 
     useEffect( () => {
         if ( !loading && !error && data ) {
             console.log( { c: "OrderItemSelect", f: "useEffect", e: "Variants loading and error ok", data, defaultItemQueryResult: defaultItemQueryResult } );
-            setOptionsFromVariants();
+            setOptionsFromVariants( data.item_variant );
         }
     }, [ loading, data ] );
 
@@ -124,12 +124,12 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
         console.log( { c: "OrderItemSelect", f: "useEffect", e: "defaultItemQueryResult.data change detected", data, defaultItemQueryResult: defaultItemQueryResult } );
         if ( !defaultItemQueryResult.loading && !defaultItemQueryResult.error && defaultItemQueryResult.data ) {
             console.log( { c: "OrderItemSelect", f: "useEffect", e: "defaultItem loading and error ok", data, defaultItemQueryResult: defaultItemQueryResult } );
-            setOptionsFromItems();
+            setOptionsFromVariants( defaultItemQueryResult.data.item_variant );
         }
     }, [ defaultItemQueryResult.loading, defaultItemQueryResult.data ] );
 
-    const setOptionsFromVariants = () => {
-        setOptions( data.item_variant.map( v => {
+    const setOptionsFromVariants = ( variants: typeof data.item_variant | typeof defaultItemQueryResult.data.item_variant ) => {
+        setOptions( variants.map( v => {
             let ManufacturerIcon = v.manufacturer ? new Manufacturer( v.manufacturer ).icon : null;
             let VendorIcon = v.vendor ? new Vendor( v.vendor ).icon : null;
             console.log( "adding option object for ", {
@@ -144,49 +144,53 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                 item_id: v.item.id,
                 manufacturer_id: v.manufacturer?.id,
                 vendor_id: v.vendor?.id,
-                label: <span className="orderItemOption">
-                    {<item.icon />}
-                    <span>{v.name}</span>
-                    <span>{v.vendor?.name}</span>
-                    <span>{VendorIcon ? <VendorIcon /> : null}</span>
-                    <span>{v.object?.description || v.id}</span>
-                    <span>{v.manufacturer?.name}</span>
-                    <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span>
-                </span>
+                manufacturer_item_id: v.manufacturer_item_id,
+                vendor_item_id: v.vendor_item_id,
+                label: <Tooltip title={<pre>{JSON.stringify(filterObject(v, [ 'id', 'item_id', 'vendorItem', 'manufacturerItem' ]), null, 2)}</pre>}>
+                    <span className="orderItemOption">
+                        {<item.icon />}
+                        <span>{v.name}</span>
+                        <span>{v.vendorItem?.vendor_sku || v.vendor?.name}</span>
+                        <span>{VendorIcon ? <VendorIcon /> : null}</span>
+                        <span>{v.object?.description || v.item_id}</span>
+                        <span>{v.manufacturerItem?.manufacturer_product_name || v.manufacturerItem?.manufacturer_product_id || v.manufacturer?.name}</span>
+                        <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span>
+                    </span>
+                </Tooltip>
             };
         } ) );
     }
 
-    const setOptionsFromItems = () => {
-        setOptions( defaultItemQueryResult.data.items.map( v => {
-            // let ManufacturerIcon = v.manufacturer ? new Manufacturer( v.manufacturer ).icon : null;
-            // let VendorIcon = v.vendor ? new Vendor( v.vendor ).icon : null;
-            console.log( "adding option object for ", {
-                item_id: v.id,
-                // item_id: v.item_id,
-                // manufacturer_id: v.manufacturer?.id,
-                // vendor_id: v.vendor?.id
-            } );
+    // const setOptionsFromItems = () => {
+    //     setOptions( defaultItemQueryResult.data.items.map( v => {
+    //         // let ManufacturerIcon = v.manufacturer ? new Manufacturer( v.manufacturer ).icon : null;
+    //         // let VendorIcon = v.vendor ? new Vendor( v.vendor ).icon : null;
+    //         console.log( "adding option object for ", {
+    //             item_id: v.id,
+    //             // item_id: v.item_id,
+    //             // manufacturer_id: v.manufacturer?.id,
+    //             // vendor_id: v.vendor?.id
+    //         } );
 
-            let item = Item.ItemsFactory( v );
-            return {
-                // variant_id: v.id,
-                item_id: v.id,
-                // manufacturer_id: v.manufacturer?.id,
-                // vendor_id: v.vendor?.id,
-                label: <span className="orderItemOption">
-                    {<item.icon />}
-                    <span>{v.name}</span>
-                    {/* <span>{v.vendor?.name}</span> */}<span></span>
-                    {/* <span>{VendorIcon ? <VendorIcon /> : null}</span> */}<span></span>
+    //         let item = Item.ItemsFactory( v );
+    //         return {
+    //             // variant_id: v.id,
+    //             item_id: v.id,
+    //             // manufacturer_id: v.manufacturer?.id,
+    //             // vendor_id: v.vendor?.id,
+    //             label: <span className="orderItemOption">
+    //                 {<item.icon />}
+    //                 <span>{v.name}</span>
+    //                 {/* <span>{v.vendor?.name}</span> */}<span></span>
+    //                 {/* <span>{VendorIcon ? <VendorIcon /> : null}</span> */}<span></span>
 
-                    <span>{v.object?.description || v.id}</span>
-                    {/* <span>{v.manufacturer?.name}</span> */}<span></span>
-                    {/* <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span> */}<span></span>
-                </span>
-            };
-        } ));
-    }
+    //                 <span>{v.object?.description || v.id}</span>
+    //                 {/* <span>{v.manufacturer?.name}</span> */}<span></span>
+    //                 {/* <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span> */}<span></span>
+    //             </span>
+    //         };
+    //     } ));
+    // }
 
 
     const optionsToOptionElements: ( opts: typeof options ) => JSX.Element[] = ( opts ) => {
@@ -198,6 +202,32 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                     {v.label}
                 </Select.Option>;
         } )
+    }
+
+    const selectedOptionsOnChange = ( selectedOptionValues: OrderItemSelectSingleValue | OrderItemSelectMultipleValue ): void => {
+        // const optionLookup
+        if ( Array.isArray( selectedOptionValues) ){
+            onChange( 
+                transparentLog(
+                    {
+                        c: "OrderItemSelect",
+                        e: "onChange - multiple"
+                    },
+                    options.filter( el => selectedOptionValues.includes(el.variant_id) ) )
+            );
+            return;
+        }
+        if ( mode == null && is<( input: Exclude<TOrderItemSelectValue, number> ) => void>( onChange, props.mode === null || props.mode === "single" ) ){
+            onChange(
+                transparentLog(
+                    {
+                        c: "OrderItemSelect",
+                        e: "onChange - single"
+                    },
+                    options.find( el => el.variant_id === selectedOptionValues ) 
+                )
+            )
+        }
     }
 
     if ( defaultIds && 
@@ -225,17 +255,18 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                 defaultValue={defaultIds}
                 onChange={( value, opt ) => {
                     console.log( { cls: 'orderItemSelect', evt: "onChange", value, opt } );
-                    if ( is<( input: number ) => void>( onChange, props.mode === null || props.mode === "single" ) ) {
-                        onChange( parseIntSafe( value ) );
-                    } else {
-                        let arrayOfItemProps: TOrderItemSelectValue[] = [];
-                        if ( typeof value === "number" ) {
-                            arrayOfItemProps = [ { id: value } ];
-                        } else if ( typeof value === "string" ) {
-                            arrayOfItemProps = [ { id: parseInt( value ) } ];
-                        }
-                        onChange( arrayOfItemProps );
-                    }
+                    selectedOptionsOnChange(value);
+                    // if ( is<( input: number ) => void>( onChange, props.mode === null || props.mode === "single" ) ) {
+                    //     onChange( parseIntSafe( value ) );
+                    // } else {
+                    //     let arrayOfItemProps: TOrderItemSelectValue[] = [];
+                    //     if ( typeof value === "number" ) {
+                    //         arrayOfItemProps = [ { id: value } ];
+                    //     } else if ( typeof value === "string" ) {
+                    //         arrayOfItemProps = [ { id: parseInt( value ) } ];
+                    //     }
+                    //     onChange( arrayOfItemProps );
+                    // }
                 }}
             >
                 {...optionsToOptionElements(options)}

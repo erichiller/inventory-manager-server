@@ -60,6 +60,7 @@ export type ObjectColumnProperty<T> = Partial<Extract<keyof T, string>> | [ keyo
  */
 export type EnumUnitKeys = keyof typeof EnumUnitEnum;
 
+
 /**
  * Type with only certain keys made partial
  * @example
@@ -149,3 +150,9 @@ export type TRecursiveDataWrap<Base> =
         // Array<TRecursiveDataWrap<Unpacked<Base>>>
         // TRecursiveDataWrap< Array< Unpacked<Base> > >
         : Base;
+
+
+/**
+ * Simple type which consists of only the keys of `T` that are `string`
+ */
+export type StringKeys<T> = Extract<keyof T, string>;

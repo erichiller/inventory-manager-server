@@ -41,7 +41,15 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
         console.log( { c: 'OrderItemInput', f: "setItem", value } );
         onChange( {
             ...props.value,
-            item_id: value
+            ...( typeof value === "number" ?
+                {
+                    item_id: value
+                } :
+                {
+                    item_id: value.item_id,
+                    manufacturer_item_id: value.manufacturer_item_id,
+                    vendor_item_id: value.vendor_item_id,
+                })
         } );
     };
 
