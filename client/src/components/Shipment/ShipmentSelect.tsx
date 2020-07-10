@@ -10,7 +10,7 @@ import { useGetShipmentsLazyQuery, useSearchShipmentsLazyQuery, useSearchShipmen
 import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { ShipmentFormModal } from "./ShipmentFormModal";
 import { useHistory, useLocation } from "react-router-dom";
-import { Union, QueryResultTypePlus, Unpacked, transparentLog, flatArrayObjectProperty } from "~lib/UtilityFunctions";
+import { Intersection, QueryResultTypePlus, Unpacked, transparentLog, flatArrayObjectProperty } from "~lib/UtilityFunctions";
 import { IconComponentT } from "~lib/types/common";
 import { Vendor } from "~lib/Vendor/Vendor";
 
@@ -23,7 +23,7 @@ type VT = number | Partial<UpdateShipmentMutationVariables>;
 
 export interface ShipmentSelectValue extends Partial<ShipmentGql> { }
 
-type ShipmentSelectProps = Union<
+type ShipmentSelectProps = Intersection<
     Omit<SelectProps<VT>, 'value' | 'onChange'>,
     {
         forwardRef?: React.MutableRefObject<Input>;
@@ -81,7 +81,7 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
     function updateOptionsFromShipment ( arr:
         Array<Unpacked<QueryResultTypePlus<typeof useSearchShipmentsQuery>>
             // | Partial<UpdateVendorItemMutationVariables>
-            | Union<Omit<Partial<UpdateShipmentMutationVariables>, 'id'>, { id: 'NEW'; }>
+            | Intersection<Omit<Partial<UpdateShipmentMutationVariables>, 'id'>, { id: 'NEW'; }>
         >
     ) {
         if ( !Array.isArray( arr ) ) { return null; }

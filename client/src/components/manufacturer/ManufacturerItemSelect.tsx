@@ -11,7 +11,7 @@ import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { ManufacturerItemFormModal } from "./ManufacturerItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
 import { Manufacturer } from "~lib/Manufacturer/Manufacturer";
-import { Union, Unpacked, QueryResultTypePlus, transparentLog, flatArrayObjectProperty } from "~lib/UtilityFunctions";
+import { Intersection, Unpacked, QueryResultTypePlus, transparentLog, flatArrayObjectProperty } from "~lib/UtilityFunctions";
 import { IconComponentT } from "~lib/types/common";
 
 
@@ -74,7 +74,7 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
 
     function updateOptionsFromManufacturerItem ( arr:
         Array<Unpacked<QueryResultTypePlus<typeof useSearchManufacturerItemsQuery>[ 'manufacturerItems' ]>
-            | Union<Omit<Partial<UpdateManufacturerItemMutationVariables>, 'id'>, { id: 'NEW'; }>
+            | Intersection<Omit<Partial<UpdateManufacturerItemMutationVariables>, 'id'>, { id: 'NEW'; }>
         >
     ) {
         console.log( "ManufacturerItemSelect.updateOptionsFromManufacturerItem", arr );

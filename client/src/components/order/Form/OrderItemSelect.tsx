@@ -4,7 +4,7 @@ import { Input, Select, Spin, Tooltip } from "antd";
 
 
 
-import { Union, is, parseIntSafe, flatArrayObjectProperty, QueryResultTypePlus, filterObject, transparentLog } from "~lib/UtilityFunctions";
+import { Intersection, is, parseIntSafe, flatArrayObjectProperty, QueryResultTypePlus, filterObject, transparentLog } from "~lib/UtilityFunctions";
 import { useGetItemVariantsQuery, ItemInsertInput, useGetItemsByIdLazyQuery, useGetItemVariantByAttachedLazyQuery,
     useGetItemVariantByAttachedQuery } from "~lib/types/graphql";
 import { Integer } from "~lib/types/uint8";
@@ -26,7 +26,7 @@ export type OrderItemSelectMultipleValue = Array<TOrderItemSelectValue>;
 /** item_id */
 export type OrderItemSelectSingleValue = TOrderItemSelectValue;
 
-type OrderItemSelectProps = Union<
+type OrderItemSelectProps = Intersection<
     Omit<SelectProps<TOrderItemSelectValue | TOrderItemSelectValue[]>, 'value' | 'onChange' | 'mode'>,
     {
         forwardRef?: React.MutableRefObject<Input>;

@@ -8,7 +8,7 @@ import { UnitSelect } from './FormComponents/UnitSelect';
 import { MeasurementInput } from './FormComponents/MeasurementInput';
 import { EnumSelect } from './FormComponents/EnumSelect';
 import { ScrewSizeInput, ScrewSizeInputOptionData } from './FormComponents/ScrewSizeInput';
-import { toMinimumFixed, Union, toTitleCase, EnumUnitKeys } from '../../UtilityFunctions';
+import { toMinimumFixed, Intersection, toTitleCase, EnumUnitKeys } from '../../UtilityFunctions';
 import { FormInstance } from 'antd/lib/form';
 import { ItemHardwareFastenerScrewMachine } from './Index';
 import { ScrewThreadIcon, ScrewEmbeddedLengthIcon, ScrewHeadDiameterIcon, ScrewHeadHeightIcon, ItemHardwareFastenerScrewMachineDriveTypeIconMap, ItemHardwareFastenerScrewMachinePointIconMap } from './Icon/Index';
@@ -18,7 +18,7 @@ import { DescriptionTableTooltip } from './FormComponents/DescriptionTableToolti
 import { FormIconTooltip } from '../../FormHelpers';
 
 
-interface ItemHardwareFastenerScrewMachineFormProps extends Union<ItemFormProps, ItemHardwareFastenerScrewMachine> {
+interface ItemHardwareFastenerScrewMachineFormProps extends Intersection<ItemFormProps, ItemHardwareFastenerScrewMachine> {
 
 }
 

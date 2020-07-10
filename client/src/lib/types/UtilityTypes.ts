@@ -2,7 +2,7 @@ import { QueryHookOptions, QueryResult, BaseQueryOptions } from 'react-apollo';
 import { EnumUnitEnum, Exact } from './graphql';
 
 //TODO: ideally there is some sort of 'variadic' type declaration where it wouldn't require & {} & {} ...
-export type Union<A, B, C = {}, D = {}, E = {}, F = {}> = A & B & C & D & E & F;
+export type Intersection<A, B, C = {}, D = {}, E = {}, F = {}> = A & B & C & D & E & F;
 
 /**
  * Type of Class (static side, with constructor, not instance type which can be determined with a normal `typeof <Class>`)
@@ -15,7 +15,7 @@ export type Union<A, B, C = {}, D = {}, E = {}, F = {}> = A & B & C & D & E & F;
  */
 export type ClassType<
     T extends new ( ...args: any ) => any,
-> = Union<
+> = Intersection<
     T, 
     new (...args: ConstructorParameters<T>) => T
 >;
@@ -78,7 +78,7 @@ export type EnumUnitKeys = keyof typeof EnumUnitEnum;
  * //     
  * // }
  */
-export type PartialPartial<T, K extends keyof T> = Union<
+export type PartialPartial<T, K extends keyof T> = Intersection<
     Omit<T, K>,
     Partial<Pick<T, K>>
 >;
@@ -156,3 +156,4 @@ export type TRecursiveDataWrap<Base> =
  * Simple type which consists of only the keys of `T` that are `string`
  */
 export type StringKeys<T> = Extract<keyof T, string>;
+

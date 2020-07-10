@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import JSONEditor, { JSONEditorMode, JSONEditorOptions } from 'jsoneditor';
-import { Union, deepCopy, deepEqual } from "~lib/UtilityFunctions";
+import { Intersection, deepCopy, deepEqual } from "~lib/UtilityFunctions";
 import { Button, Modal } from "antd";
 
 interface JsonModalProps {
@@ -43,7 +43,7 @@ export const JsonModal: React.FC<JsonModalProps> = ( props ) => {
 
 
 
-type JsonEditorProps = Union<{
+type JsonEditorProps = Intersection<{
     json: object;
     text?: string;
 } | {

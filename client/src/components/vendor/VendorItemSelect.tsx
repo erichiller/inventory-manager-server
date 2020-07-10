@@ -11,7 +11,7 @@ import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { VendorItemFormModal } from "./VendorItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
 import { Vendor } from "~lib/Vendor/Vendor";
-import { QueryResultTypePlus, Unpacked, PartialPartial, flatArrayObjectProperty, Union, transparentLog } from "~lib/UtilityFunctions";
+import { QueryResultTypePlus, Unpacked, PartialPartial, flatArrayObjectProperty, Intersection, transparentLog } from "~lib/UtilityFunctions";
 import { IconComponentT } from "~lib/types/common";
 
 
@@ -75,7 +75,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
     function updateOptionsFromVendorItem ( arr: 
         Array<Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]> 
             // | Partial<UpdateVendorItemMutationVariables>
-            | Union<Omit<Partial<UpdateVendorItemMutationVariables>, 'id'>, { id: 'NEW' }>
+            | Intersection<Omit<Partial<UpdateVendorItemMutationVariables>, 'id'>, { id: 'NEW' }>
         > 
         ) {
         if ( !Array.isArray( arr ) ) { return null; }

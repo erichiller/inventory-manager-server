@@ -8,7 +8,7 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  **/
 import { GetShipmentQuery, GetShipmentQueryVariables, useGetShipmentQuery, useInsertShipmentMutation, InsertShipmentMutationVariables, useGetShipmentLazyQuery, useUpdateShipmentMutation, UpdateShipmentMutationVariables, GetShipmentDocument, Shipment as ShipmentGql, ShipmentInsertInput } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Union, filterObject, deepCopy } from '~lib/UtilityFunctions';
+import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
 import { ItemSelect } from '~components/Item/ItemSelect';
@@ -20,7 +20,7 @@ import { VendorSelect } from '~components/Vendor/VendorSelect';
 import { OrderSelect } from '~components/Order/Form/OrderSelect';
 
 
-type ShipmentFormModalProps = Union<{
+type ShipmentFormModalProps = Intersection<{
     shipment: QueryResultTypePlus<typeof useGetShipmentQuery>;
     shipmentId?: null;
 } | {
