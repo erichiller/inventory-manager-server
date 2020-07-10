@@ -1,4 +1,4 @@
-import { TRecursiveDataWrap, FilterFlags, AllowedNames, StringKeys } from '~lib/types/UtilityTypes'
+import { TRecursiveDataWrap, StringKeys } from '~lib/types/UtilityTypes'
 // client\src\lib\types\UtilityTypes.ts
 interface Test1I {
     foo: 'hello'
@@ -110,6 +110,9 @@ let foo5: TRecursiveDataWrap<Test5I> = {
         ]
     }
 }
+
+let numberAsTRecursiveDataWrap: TRecursiveDataWrap<number> = 3;
+let stringAsTRecursiveDataWrap: TRecursiveDataWrap<string> = "hello";
 
 
 interface StringKeysTestInterface {

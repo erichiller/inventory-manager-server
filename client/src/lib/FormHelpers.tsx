@@ -123,6 +123,3 @@ export function encapsulateChildObjectsIntoDataProp<T extends object> ( inputObj
 
     return transparentLog( { m: "encapsulateChildObjectsIntoDataProps", e: 'output' }, wrap( inputObj, false ) );
 }
-
-let foo: TRecursiveDataWrap<number> = 3;
-let foo2: TRecursiveDataWrap<string> = "hello";
