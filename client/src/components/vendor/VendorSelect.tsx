@@ -14,7 +14,7 @@ interface OptionT extends OptionData {
 type VT = SelectValue;
 
 interface VendorSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
-    forwardRef?: React.MutableRefObject<Select>;
+    // forwardRef?: React.MutableRefObject<Select>;
     value?: VT;
     onChange?: ( id: number ) => void;
 }
@@ -23,7 +23,7 @@ interface VendorSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> 
  * Form Select Input for Vendors
  */
 export const VendorSelect: React.FC<VendorSelectProps> = React.forwardRef( (props, ref) => {
-    const { onChange, value, forwardRef } = props;
+    const { onChange, value } = props;
     const [ searchText, setSearchText ] = useState<string>("");
     const [ options, setOptions ] = useState<OptionT[]>( [] );
     // const { data, loading, error } = useVendorSearchQuery( {
