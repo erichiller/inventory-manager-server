@@ -6,7 +6,7 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Select } from
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, UpdateOrderMutationVariables, GetOrdersDocument, Order as OrderGql } from '~lib/types/graphql';
+import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, UpdateOrderMutationVariables, GetOrdersDocument, Order as OrderGql, Shipment } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject, transparentLog } from '~lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined, StopOutlined, CheckCircleOutlined } from '@ant-design/icons';
@@ -46,6 +46,9 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
 
     const [ order, setOrder ] = useState<QueryResultTypePlus<typeof useGetOrderQuery>>( props.order );
     const [ modal, setModal ] = useState<React.ReactElement | null>( null );
+    // URGENT: need to track shipments (see below)
+    /** track shipments used and new shipments created by any OrderItem for default use in subsequent order items */
+    const [ shipments, setShipments ] = useState<Shipment[]>( [] );
 
     const [ runGetOrder, lookupResult ] = useGetOrderLazyQuery( {
         partialRefetch: true,
