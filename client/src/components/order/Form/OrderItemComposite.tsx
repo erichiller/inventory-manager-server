@@ -29,9 +29,9 @@ interface OrderItemInputProps extends Omit<InputProps, 'value' | 'onChange'> {
  * This Modal is for controlling the OrderItem entry
  * @param props ItemBundleEditFormProps
  */
-export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemInputProps ) => {
+export const OrderItemInput: React.FC<OrderItemInputProps> = React.forwardRef( ( props, ref ) => {
     const { onChange } = props;
-    console.log("OrderItemInput received props", props);
+    console.log( "OrderItemInput received props", props );
 
     const [ modal, setModal ] = useState<React.ReactElement>( undefined );
     const history = useHistory();
@@ -49,7 +49,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                     item_id: value.item_id,
                     manufacturer_item_id: value.manufacturer_item_id,
                     vendor_item_id: value.vendor_item_id,
-                })
+                } )
         } );
     };
 
@@ -61,57 +61,57 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
         } );
     };
     const setSerialNo = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log( { c: 'OrderItemInput', f: "setSerialNo", event_value: event.target.value });
+        console.log( { c: 'OrderItemInput', f: "setSerialNo", event_value: event.target.value } );
         onChange( {
             ...props.value,
             serial_no: event.target.value
         } );
     };
     const setCostItem = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log( { c: 'OrderItemInput', f: "setCostItem", event_value: event.target.value} );
+        console.log( { c: 'OrderItemInput', f: "setCostItem", event_value: event.target.value } );
         onChange( {
             ...props.value,
             serial_no: event.target.value
         } );
     };
     const setCostTax = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log( { c: 'OrderItemInput', f: "setCostTax", event_value: event.target.value} );
+        console.log( { c: 'OrderItemInput', f: "setCostTax", event_value: event.target.value } );
         onChange( {
             ...props.value,
             serial_no: event.target.value
         } );
     };
     const setCostTotal = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log( { c: 'OrderItemInput', f: "setCostTotal", event_value: event.target.value} );
+        console.log( { c: 'OrderItemInput', f: "setCostTotal", event_value: event.target.value } );
         onChange( {
             ...props.value,
             serial_no: event.target.value
         } );
     };
     const setVendorItem = ( vendor_item: Partial<VendorItemSelectValue> ) => {
-        console.log( { c: 'OrderItemInput', f: "setVendorItem", vendor_item });
+        console.log( { c: 'OrderItemInput', f: "setVendorItem", vendor_item } );
         onChange( {
             ...props.value,
-            ...( vendor_item.id 
-                ? { vendor_item_id: vendor_item.id, vendor_item: undefined } 
+            ...( vendor_item.id
+                ? { vendor_item_id: vendor_item.id, vendor_item: undefined }
                 : { vendor_item: vendor_item, vendor_item_id: undefined } )
         } );
     };
     const setManufacturerItem = ( manufacturer_item: Partial<ManufacturerItemSelectValue> ) => {
-        console.log( { c: 'OrderItemInput', f: "setManufacturerItem", manufacturer_item} );
+        console.log( { c: 'OrderItemInput', f: "setManufacturerItem", manufacturer_item } );
         onChange( {
             ...props.value,
-            ...( manufacturer_item.id 
-                ? { manufacturer_item_id: manufacturer_item.id, manufacturer_item: undefined } 
+            ...( manufacturer_item.id
+                ? { manufacturer_item_id: manufacturer_item.id, manufacturer_item: undefined }
                 : { manufacturer_item: manufacturer_item, manufacturer_item_id: undefined } )
         } );
     };
     const setShipment = ( shipment: Partial<ShipmentSelectValue> ) => {
-        console.log( { c: 'OrderItemInput', f: "setShipment", shipment });
+        console.log( { c: 'OrderItemInput', f: "setShipment", shipment } );
         onChange( {
             ...props.value,
-            ...( shipment.id 
-                    ? { shipment_id: shipment.id, shipment: undefined } 
+            ...( shipment.id
+                ? { shipment_id: shipment.id, shipment: undefined }
                 : { shipment: shipment, shipment_id: undefined } )
         } );
     };
@@ -126,42 +126,42 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
                     onChange={setItemId}
                     suffixIcon={props.suffix}
                     vendorId={props.vendorId}
-                    defaultValue={ props.value?.item_id }
+                    defaultValue={props.value?.item_id}
                 />
 
                 <span id="ItemExtraInfo">
                     {/* TODO: provide `item_id` if known to limit the search of vendor_item */}
                     <VendorItemSelect
-                        defaultValue={props.value?.vendor_item_id || props.value?.vendor_item} 
+                        defaultValue={props.value?.vendor_item_id || props.value?.vendor_item}
                         onChange={setVendorItem} />
 
 
                     {/* TODO: provide `item_id` if known to limit the search of manufacturer_item */}
                     <ManufacturerItemSelect
-                        defaultValue={props.value?.manufacturer_item_id || props.value?.manufacturer_item} 
+                        defaultValue={props.value?.manufacturer_item_id || props.value?.manufacturer_item}
                         onChange={setManufacturerItem} />
 
-                    <Input name="serial_no" 
+                    <Input name="serial_no"
                         defaultValue={props.value?.serial_no}
-                        onChange={setSerialNo} 
+                        onChange={setSerialNo}
                         placeholder="Serial #" />
                 </span>
             </span>
 
-            <Input name="quantity" 
-                    defaultValue={props.value?.quantity}
-                    aria-valuemin={1} 
-                    onChange={setQuantity} 
-                    placeholder="Qty" />
+            <Input name="quantity"
+                defaultValue={props.value?.quantity}
+                aria-valuemin={1}
+                onChange={setQuantity}
+                placeholder="Qty" />
             <span id="cost_item">
-                <Input name="cost_item" 
-                        defaultValue={props.value?.cost_item}
-                        type="number" 
-                        step="0.01" 
-                        min="0" 
-                        prefix="$" 
-                        onChange={setCostItem} 
-                        placeholder="item" />
+                <Input name="cost_item"
+                    defaultValue={props.value?.cost_item}
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    prefix="$"
+                    onChange={setCostItem}
+                    placeholder="item" />
             </span>
 
             {/* TODO: display (in tooltip?) the tax rate this equals */}
@@ -189,13 +189,13 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = ( props: OrderItemI
             </span >
 
             {/* TODO: Shipments created in one `order_item` for the form should be available to select within all order_items of the form */}
-            <ShipmentSelect 
+            <ShipmentSelect
                 excludeOrderInput
-                defaultValue={props.value?.shipment_id || props.value?.shipment} 
+                defaultValue={props.value?.shipment_id || props.value?.shipment}
                 onChange={setShipment} />
 
         </div>
     );
 
 
-};
+});

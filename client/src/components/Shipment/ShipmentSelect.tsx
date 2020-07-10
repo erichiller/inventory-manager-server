@@ -109,7 +109,7 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                         label: <span className="ShipmentOption">
                             <CarrierIcon />
                             {/* <span>{v.shipment.name}</span> */}
-                            <span>{carrier.name}</span>
+                            <span>{carrier?.name}</span>
                             <span>#{v.tracking_id}</span>
                         </span>
                     };
