@@ -1,11 +1,10 @@
-import { SelectProps, SelectValue, LabeledValue } from "antd/lib/select";
+import { SelectProps, SelectValue } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
-import { AutoComplete, Input, DatePicker, Select } from "antd";
+import { Select } from "antd";
 
 
-import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
-import { InputProps } from "antd/lib/input";
-import { useGetVendorsLazyQuery, useSearchVendorsLazyQuery, useSearchVendorsQuery } from "~lib/types/graphql";
+import { OptionData } from 'rc-select/lib/interface';
+import { useSearchVendorsQuery } from "~lib/types/graphql";
 
 
 interface OptionT extends OptionData {
@@ -24,7 +23,7 @@ interface VendorSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> 
  * Form Select Input for Vendors
  */
 export const VendorSelect: React.FC<VendorSelectProps> = React.forwardRef( (props, ref) => {
-    const { onChange, value, forwardRef, ...remainingProps } = props;
+    const { onChange, value, forwardRef } = props;
     const [ searchText, setSearchText ] = useState<string>("");
     const [ options, setOptions ] = useState<OptionT[]>( [] );
     // const { data, loading, error } = useVendorSearchQuery( {
