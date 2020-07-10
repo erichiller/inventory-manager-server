@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactElement } from "react";
-import { IQuery, ClassType, SubType, FilterFlags, QueryResultTypePlus, Union } from "~lib/UtilityFunctions";
+import { IQuery, ClassType, SubType, FilterFlags, QueryResultTypePlus, Intersection } from "~lib/UtilityFunctions";
 import { message, Spin } from "antd";
 import { IconComponentT } from "~lib/types/common";
 
@@ -13,7 +13,7 @@ type TClassProvidingInstanceWithIcon<T extends Class, I extends { icon: IconComp
 interface AsyncIconProps<
     TQuery, 
     TVariables extends InstanceType<TClass>[ FilterFlags<keyof TClass, string> ], 
-    TClass extends Union<TClassProvidingQuery<Class, TQuery, TVariables>, TClassProvidingInstanceWithIcon<Class>>,
+    TClass extends Intersection<TClassProvidingQuery<Class, TQuery, TVariables>, TClassProvidingInstanceWithIcon<Class>>,
      > {
     vars: TVariables;
     cls: TClass;
@@ -49,7 +49,7 @@ interface AsyncIconProps<
 export function AsyncIcon<
     TQuery, 
     TVariables extends Partial<Pick<InstanceType<TClass>, FilterFlags<keyof InstanceType<TClass>, string> > >, 
-    TClass extends Union<TClassProvidingQuery<Class, TQuery, TVariables>, TClassProvidingInstanceWithIcon<Class>>,
+    TClass extends Intersection<TClassProvidingQuery<Class, TQuery, TVariables>, TClassProvidingInstanceWithIcon<Class>>,
 
 > ( props: AsyncIconProps<TQuery, TVariables, TClass> ) {
     // console.log({c: 'AsyncIcon', e: 'init', cls: props.cls, id: props.vars['id'], vars: props.vars})

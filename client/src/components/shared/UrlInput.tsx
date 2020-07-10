@@ -1,11 +1,11 @@
 import React, {  } from 'react';
 import Input, { InputProps } from 'antd/lib/input';
 import { Form } from 'antd';
-import { Union } from '~lib/UtilityFunctions';
+import { Intersection } from '~lib/UtilityFunctions';
 import { FormItemProps, Rule } from 'antd/lib/form';
 
 
-interface UrlSelectProps extends Union<InputProps, FormItemProps> {
+interface UrlSelectProps extends Intersection<InputProps, FormItemProps> {
     name: string;
     /** if not present _URL_ is used */
     label: string;

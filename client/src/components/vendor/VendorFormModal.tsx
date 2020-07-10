@@ -8,7 +8,7 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  **/
 import { GetVendorQuery, GetVendorQueryVariables, useGetVendorQuery, useInsertVendorMutation, InsertVendorMutationVariables, useGetVendorLazyQuery, useUpdateVendorMutation, useInsertManufacturerMutation, UpdateVendorMutationVariables, useDeleteManufacturerMutation, GetVendorDocument, GetVendorsDocument } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Union, filterObject, deepCopy } from '~lib/UtilityFunctions';
+import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
@@ -22,7 +22,7 @@ import { Vendor } from '~lib/Vendor/Vendor';
 import { UrlSelect } from '../Shared/UrlInput';
 
 
-type VendorFormModalProps = Union<{
+type VendorFormModalProps = Intersection<{
     vendor: QueryResultTypePlus<typeof useGetVendorQuery>;
     vendorId?: null;
 } | {
@@ -196,7 +196,7 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
         return <PageSpin />;
     }
 
-    let initialValues: Partial<Union<
+    let initialValues: Partial<Intersection<
         Omit<Vendor, 'manufacturer'>,
         { manufacturer: boolean; }
     >> = {};

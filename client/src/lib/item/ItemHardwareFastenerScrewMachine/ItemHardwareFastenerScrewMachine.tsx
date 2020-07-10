@@ -4,7 +4,7 @@ import React from 'react';
 import { Integer } from '../../types/uint8';
 import { HexBoltIcon } from '../../../styles/icon';
 import { ColumnProps } from 'antd/lib/table';
-import { toTitleCase, enumerable, Union, getUnitFromUnitSystem, sortByCaseInsensitiveText, sortByNumber, tableFilterFromEnum, makeColumn, commonFilterConfig } from '../../UtilityFunctions';
+import { toTitleCase, enumerable, Intersection, getUnitFromUnitSystem, sortByCaseInsensitiveText, sortByNumber, tableFilterFromEnum, makeColumn, commonFilterConfig } from '../../UtilityFunctions';
 import { ItemHardwareFastenerScrewMachineForm } from './Form';
 import { ItemHardwareFastenerScrewMachineEditMutationHandler } from './Edit';
 import { ItemHardwareFastenerScrewMachineAddMutationHandler } from './Add';
@@ -261,7 +261,7 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
     get editHandler (): React.FC<FormMutationHandler> {
         return ItemHardwareFastenerScrewMachineEditMutationHandler;
     }
-    get editFormInitialValues (): Union<ItemHardwareFastenerScrewMachineGql, { screw_size: ItemHardwareFastenerScrewMachineGql; }> {
+    get editFormInitialValues (): Intersection<ItemHardwareFastenerScrewMachineGql, { screw_size: ItemHardwareFastenerScrewMachineGql; }> {
         return Object.assign(
             {},
             {

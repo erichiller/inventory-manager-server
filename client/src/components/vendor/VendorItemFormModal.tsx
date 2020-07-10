@@ -8,7 +8,7 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  **/
 import { GetVendorItemQuery, GetVendorItemQueryVariables, useGetVendorItemQuery, useInsertVendorItemMutation, InsertVendorItemMutationVariables, useGetVendorItemLazyQuery, useUpdateVendorItemMutation, UpdateVendorItemMutationVariables, GetVendorItemDocument, VendorItem as VendorItemGql } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Union, filterObject, deepCopy } from '~lib/UtilityFunctions';
+import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
 import { ItemSelect } from '../Item/ItemSelect';
@@ -16,7 +16,7 @@ import { VendorSelect } from './VendorSelect';
 import { PageSpin } from '../Shared/PageSpin';
 
 
-type VendorItemFormModalProps = Union<{
+type VendorItemFormModalProps = Intersection<{
     vendorItem: QueryResultTypePlus<typeof useGetVendorItemQuery>;
     vendorItemId?: null;
 } | {

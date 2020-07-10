@@ -8,7 +8,7 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  **/
 import { GetManufacturerItemQuery, GetManufacturerItemQueryVariables, useGetManufacturerItemQuery, useInsertManufacturerItemMutation, InsertManufacturerItemMutationVariables, useGetManufacturerItemLazyQuery, useUpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables, GetManufacturerItemDocument, ManufacturerItem as ManufacturerItemGql } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Union, filterObject, deepCopy } from '~lib/UtilityFunctions';
+import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
 import { ItemSelect } from '../Item/ItemSelect';
@@ -18,7 +18,7 @@ import { UrlSelect } from '~components/Shared/UrlInput';
 import TextArea from 'antd/lib/input/TextArea';
 
 
-type ManufacturerItemFormModalProps = Union<{
+type ManufacturerItemFormModalProps = Intersection<{
     manufacturerItem: QueryResultTypePlus<typeof useGetManufacturerItemQuery>;
     manufacturerItemId?: null;
 } | {

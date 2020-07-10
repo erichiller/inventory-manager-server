@@ -5,7 +5,7 @@ import { AutoComplete, Input, DatePicker, Select } from "antd";
 
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
-import { toTitleCase, getDaysInMonth, Union, is, parseIntSafe } from "~lib/UtilityFunctions";
+import { toTitleCase, getDaysInMonth, Intersection, is, parseIntSafe } from "~lib/UtilityFunctions";
 import { InputProps } from "antd/lib/input";
 import { useGetOrdersByDateRangeQuery, useGetItemsQuery, useItemSearchQuery } from "~lib/types/graphql";
 
@@ -41,7 +41,7 @@ export type ItemSelectMultipleProvidesValue = Array<{ item_id: number; }>;
 //     onFinish?: ( values: Partial<UpdateVendorItemMutationVariables> ) => void;
 // }>;
 
-type ItemSelectProps = Union<
+type ItemSelectProps = Intersection<
     Omit<SelectProps<VT>, 'value' | 'onChange' | 'mode'>,
     {
         forwardRef?: React.MutableRefObject<Input>;

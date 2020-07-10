@@ -13,7 +13,7 @@ import { apolloClient } from '../../index';
 import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Union, enumerable } from "../UtilityFunctions";
+import { toTitleCase, Intersection, enumerable } from "../UtilityFunctions";
 import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { IconComponentT } from "~lib/types/common";
@@ -366,7 +366,7 @@ export class Item<T extends GenericItem> {
      * These are also the properties that can possibly be added to LabelQR
      * Optionally defined on subclasses
      */
-    get labelProps (): Array<Extract<keyof Union<Item<T>, T>, string>> {
+    get labelProps (): Array<Extract<keyof Intersection<Item<T>, T>, string>> {
         // return Object.keys(this) as Array<keyof T>;
         //     const exclude: Array<Partial< keyof Item<T> >> =[
         //         '_object'
@@ -383,7 +383,7 @@ export class Item<T extends GenericItem> {
      * Ordered
      * Optionally defined on subclasses
      */
-    get defaultQrProps (): Array<Extract<keyof Union<Item<T>,T>, string>> {
+    get defaultQrProps (): Array<Extract<keyof Intersection<Item<T>,T>, string>> {
         return [];
     }
 

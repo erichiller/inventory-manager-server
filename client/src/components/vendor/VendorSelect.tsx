@@ -3,7 +3,6 @@ import React, { useState, useEffect, ReactElement } from "react";
 import { AutoComplete, Input, DatePicker, Select } from "antd";
 
 
-
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { InputProps } from "antd/lib/input";
 import { useGetVendorsLazyQuery, useSearchVendorsLazyQuery, useSearchVendorsQuery } from "~lib/types/graphql";
@@ -16,15 +15,16 @@ interface OptionT extends OptionData {
 type VT = SelectValue;
 
 interface VendorSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
-    // forwardRef?: React.MutableRefObject<Select>;
+    forwardRef?: React.MutableRefObject<Select>;
     value?: VT;
     onChange?: ( id: number ) => void;
 }
+
 /**
  * Form Select Input for Vendors
  */
-export const VendorSelect: React.FC<VendorSelectProps> = ( props ) => {
-    const { onChange, value, ...remainingProps } = props;
+export const VendorSelect: React.FC<VendorSelectProps> = React.forwardRef( (props, ref) => {
+    const { onChange, value, forwardRef, ...remainingProps } = props;
     const [ searchText, setSearchText ] = useState<string>("");
     const [ options, setOptions ] = useState<OptionT[]>( [] );
     // const { data, loading, error } = useVendorSearchQuery( {
@@ -61,11 +61,10 @@ export const VendorSelect: React.FC<VendorSelectProps> = ( props ) => {
         }
     }, [ loading, data ] );
     return (
-        <div 
-        >
             <Select
                 filterOption={false}
                 showSearch={true}
+                // ref={forwardRef}
                 // className="VendorSelect"
                 placeholder="type to search Vendors"
                 onSearch={value => {
@@ -99,12 +98,5 @@ export const VendorSelect: React.FC<VendorSelectProps> = ( props ) => {
                 options={options}
                 {...( value ? { defaultValue: props.value } : {} )}
                 />
-            {/* >
-                {...options.map( v => {
-                    console.log( "select with options", v );
-                    return <Select.Option key={v.id} value={v.id.toString()}>{v.label}</Select.Option>;
-                } )}
-            </Select> */}
-        </div>
     );
-};
+});

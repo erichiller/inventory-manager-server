@@ -20,7 +20,7 @@ import { apolloClient } from '../../index';
 import { message, Tooltip } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Union, Unpacked, enumerable, ObjectColumnProperty, sortByCaseInsensitiveText, sortByNumber, makeColumn } from "~lib/UtilityFunctions";
+import { toTitleCase, Intersection, Unpacked, enumerable, ObjectColumnProperty, sortByCaseInsensitiveText, sortByNumber, makeColumn } from "~lib/UtilityFunctions";
 import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { resolve } from "url";
