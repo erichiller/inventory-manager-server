@@ -6,9 +6,9 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Select } from
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, UpdateOrderMutationVariables, GetOrdersDocument, Order as OrderGql, Shipment } from '~lib/types/graphql';
+import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, UpdateOrderMutationVariables, GetOrdersDocument, Order as OrderGql, Shipment, useUpdateOrderItemMutation } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Intersection, filterObject, transparentLog } from '~lib/UtilityFunctions';
+import { QueryResultTypePlus, Intersection, filterObject, transparentLog, Unpacked, propValuesEqual } from '~lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined, StopOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
@@ -57,6 +57,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
 
     //edit
     const [ updateOrder, updateOrderResult ] = useUpdateOrderMutation();
+    const [ updateOrderItem, updateOrderItemResult ] = useUpdateOrderItemMutation();
     // add new
     const [ insertOrder, insertOrderResult ] = useInsertOrderMutation( {
         refetchQueries: [
@@ -119,21 +120,6 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         }
     }, [ insertOrderResult, updateOrderResult ] ); // , insertManufacturerResult, deleteManufacturerResult
 
-
-
-    // useEffect( () => {
-    //     if ( error ) {
-    //         // completeCallback( false );
-    //         message.error( `${ error.name }: ${ error.message }` );
-    //     } else if ( data ) {
-    //         message.success( `successfully created ${ data.__typename } with id ${ data.insert_order.id }` );
-    //         return () => {
-    //             form.resetFields();
-    //             exitModal();
-    //         };
-    //     }
-    // }, [ data, loading, error ] );
-
     /***************************************************************************/
 
     const exitModal = () => {
@@ -143,13 +129,10 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
     const onFinish = ( values: {
         [ name: string ]: any;
     } ) => {
-        // URGENT: need to wrap **ANY** **OBJECTS** within { data: <object> } BEFORE INSERT / UPDATE / ETC
         console.log( { class: 'OrderEditModal', method: 'onFinish', values, order, formFieldValues: form.getFieldsValue() } );
         if ( orderId ) {
             // set to InsertOrderMutationVariables rather than UpdateOrderMutationVariables here because thats what the form contains
-            let formFieldValues = form.getFieldsValue() as Exclude<InsertOrderMutationVariables, 'id'> & {
-                manufacturer: boolean;
-            };
+            let formFieldValues = form.getFieldsValue() as Exclude<OrderGql, 'id'>;
             // edit
             // if id now, but not before
             // if ( formFieldValues.manufacturer && !order.manufacturer ) {
@@ -175,6 +158,17 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                     ...filterObject( formFieldValues, null, [ 'order_items' ] )
                 }
             } );
+            formFieldValues.order_items.forEach( order_item => {
+                let existingOrderItem: Unpacked<typeof order['order_items']> = order.order_items.find( el => el.id === order_item.id );
+                if ( ! propValuesEqual(existingOrderItem, order_item) ){
+                    console.log(`update order_item with id=${order_item.id}`);
+                    updateOrderItem({
+                        variables: {
+                            ...filterObject( order_item, null, [ '__typename' ] )
+                        }
+                    });
+                }
+            });
         } else {
             let formFieldValues = encapsulateChildObjectsIntoDataProp(
                 form.getFieldsValue() as Exclude<OrderGql, 'id'>
@@ -258,7 +252,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             console.log( { class: 'OrderEditModal', method: 'onOk', e, values: form.getFieldsValue() } );
             form.submit();
         }}
-        onCancel={event => exitModal()}
+        onCancel={ ( _ ) => exitModal()}
         footer={[
             <Button
                 key="order_form_debug_button"

@@ -5,7 +5,6 @@ import { EnumUnitKeys, SubType, Unpacked, FilterFlags, StringKeys } from './type
 import { EnumUnitEnum, Query, MutationRootInsertEnumItemCableConnectorArgs } from './types/graphql';
 import { ColumnProps } from 'antd/lib/table';
 import { LabeledValue } from 'antd/lib/select';
-import { QueryResult } from 'react-apollo';
 
 export * from './types/UtilityTypes';
 
@@ -112,6 +111,9 @@ export function matchFirstOfArrayOrNull<T> ( array: T[], match?: T ): T | null {
  */
 export function lengthZeroArrayToNull<T extends ReadonlyArray<any>> ( inputArray: T ):  T | null  {
     if ( Array.isArray( inputArray ) && inputArray['length'] !== 0 ){
+        // if ( inputArray[0] === undefined || inputArray[0] === null ){
+        //     return null;
+        // }
         return inputArray;
     }
     return null;
@@ -424,14 +426,14 @@ export function deepEqual(objA: any, objB: any): objA is typeof objB {
         return false;
     }
     console.log({objA, objB, });
-    console.log({parsedA: JSON.stringify( objA, Object.keys( objA ).sort()), parsedB: JSON.stringify( objB, Object.keys( objB ).sort() )})
+    console.log({parsedA: JSON.stringify( objA, Object.keys( objA ).sort()), parsedB: JSON.stringify( objB, Object.keys( objB ).sort() )});
     return JSON.stringify( objA, Object.keys( objA ).sort()) === JSON.stringify( objB, Object.keys( objB ).sort() );
 }
 
 
 
 export interface TypedColumnProps< T > extends Omit<ColumnProps<T>, 'dataIndex' | 'key'> {
-    key: keyof T | [ keyof T, keyof T[keyof T] ]
+    key: keyof T | [ keyof T, keyof T[keyof T] ];
     dataIndex?: keyof T;
 }
 
@@ -517,6 +519,9 @@ export function flatArrayObjectProperty<T extends SubType<T, string>, K extends 
     let ret: Array<Unpacked<T[ K ]>> = [];
     arr.forEach( ( obj => {
         let propertyValue: Array< T[K] > = obj[property];
+        if ( propertyValue == null ){
+            return [];
+        }
         if ( Array.isArray( propertyValue ) ){
             propertyValue.forEach( v => {
                 ret.push(v);
@@ -524,20 +529,20 @@ export function flatArrayObjectProperty<T extends SubType<T, string>, K extends 
         } else {
             ret.push(propertyValue);
         }
-    }))
+    }));
     return ret;
 }
-// // CREATETEST
-// let arr = [
-//      {
-//          propA: [ 1 , 2 , 3]
-//      },
-//      {
-//          propA: 4
-//      },
-//      {
-//          propA: [5 , 6]
-//      }
-// ]
-// let test = flatArrayObjectProperty(arr, 'propA');
-// // should be `let test: number[]`
+
+
+
+
+
+/** check if the values in a equal the values in b */
+export function propValuesEqual ( a: object | Array<any>, b: object | Array<any> ): boolean {
+    for ( let i in a ){
+        if( a[i] !== b[i] ){
+            return false;
+        }
+    }
+    return true;
+}

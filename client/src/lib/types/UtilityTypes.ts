@@ -139,14 +139,14 @@ export type TRecursiveDataWrap<Base> =
                 Base[Key] extends Array<any>
                     // ? TRecursiveDataWrap<Base[Key]> 
                     // ? { data: Base[Key]} 
-                    ? { data: Array<TRecursiveDataWrap<Unpacked<Base[Key]>>>} 
+                    ? { data: Array<TRecursiveDataWrap<Unpacked<Base[Key]>>>;}
                     : Base[Key] extends object
-                        ? { data: TRecursiveDataWrap< Base[Key] > }
+                        ? { data: TRecursiveDataWrap< Base[Key] >; }
                         : Base[Key]
         } :
     Base extends Array<any> ?
         // Array<Unpacked<Base>>
-        { data: Array<TRecursiveDataWrap<Unpacked<Base>>> }
+        { data: Array<TRecursiveDataWrap<Unpacked<Base>>>; }
         // Array<TRecursiveDataWrap<Unpacked<Base>>>
         // TRecursiveDataWrap< Array< Unpacked<Base> > >
         : Base;

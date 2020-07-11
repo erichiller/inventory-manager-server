@@ -4,9 +4,11 @@ import { Input, Select, Spin, Tooltip } from "antd";
 
 
 
-import { Intersection, is, parseIntSafe, flatArrayObjectProperty, QueryResultTypePlus, filterObject, transparentLog } from "~lib/UtilityFunctions";
-import { useGetItemVariantsQuery, ItemInsertInput, useGetItemsByIdLazyQuery, useGetItemVariantByAttachedLazyQuery,
-    useGetItemVariantByAttachedQuery } from "~lib/types/graphql";
+import { Intersection, is, parseIntSafe, flatArrayObjectProperty, QueryResultTypePlus, filterObject, transparentLog, lengthZeroArrayToNull } from "~lib/UtilityFunctions";
+import {
+    useGetItemVariantsQuery, ItemInsertInput, useGetItemsByIdLazyQuery, useGetItemVariantByAttachedLazyQuery,
+    useGetItemVariantByAttachedQuery
+} from "~lib/types/graphql";
 import { Integer } from "~lib/types/uint8";
 import { Manufacturer } from "~lib/Manufacturer/Manufacturer";
 import { Vendor } from "~lib/Vendor/Vendor";
@@ -62,18 +64,18 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
             if ( typeof value === "number" ) {
                 _defaultIds.push( value );
             }
-            if ( typeof value === 'object' && 'id' in value ){
-                _defaultIds.push(value.id);
-                _defaultObjects.push(value);
+            if ( typeof value === 'object' && 'id' in value ) {
+                _defaultIds.push( value.id );
+                _defaultObjects.push( value );
             }
-        });
+        } );
         return [ _defaultIds, _defaultObjects ];
-    }
-    const [ defaultIds, defaultObjects ] = calculateDefaults(
-        [ 
-            ...(Array.isArray(props.value) ? props.value : [ props.value ]),
+    };
+    let [ defaultIds, defaultObjects ] = calculateDefaults(
+        [
+            ...( Array.isArray( props.value ) ? props.value : [ props.value ] ),
             ...( Array.isArray( props.defaultValue ) ? props.defaultValue : [ props.defaultValue ] ),
-         ])
+        ] );
     const [ searchText, setSearchText ] = useState<string>();
     const [ options, setOptions ] = useState<OptionT[]>( [] );
     const { data, loading, error } = useGetItemVariantsQuery( {
@@ -82,33 +84,33 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
             prefer_vendor_id: vendorId
         }
     } );
-    // const [ runDefaultItemQuery, defaultItemQueryResult ] = useGetItemsByIdLazyQuery( {
-    //     variables: {
-    //         ids: defaultIds
-    //     }
-    // } );
-    const [ runDefaultItemQuery, defaultItemQueryResult ] = useGetItemVariantByAttachedLazyQuery( );
-    console.log( { c: "OrderItemSelect", e: "init", props, data, defaultItemQueryResult, defaultIds, options } );
+    const [ runDefaultItemQuery, defaultItemQueryResult ] = useGetItemVariantByAttachedLazyQuery();
+    console.log( { c: "OrderItemSelect", e: "init", props, data, defaultItemQueryResult, defaultIds, defaultObjects, options } );
 
     useEffect( () => {
-        console.log( "OrderItemSelect: calling initial useEffect", defaultItemQueryResult)
-        if ( defaultIds && defaultItemQueryResult.called === false ){
-            console.log("runDefaultItemQuery")
+        console.log( "OrderItemSelect: calling initial useEffect", defaultItemQueryResult );
+        if ( defaultIds && defaultItemQueryResult.called === false ) {
+            console.log( "runDefaultItemQuery" );
             runDefaultItemQuery( {
                 variables: {
                     item_id: defaultIds,
-                    manufacturer_item_id: flatArrayObjectProperty(defaultObjects, 'manufacturer_item_id'),
-                    vendor_item_id: flatArrayObjectProperty( defaultObjects, 'vendor_item_id' ),
-                    vendor_id: flatArrayObjectProperty( defaultObjects, 'vendor_id' ),
+                    manufacturer_item_id: lengthZeroArrayToNull( flatArrayObjectProperty( defaultObjects, 'manufacturer_item_id' ) ),
+                    vendor_item_id: lengthZeroArrayToNull( flatArrayObjectProperty( defaultObjects, 'vendor_item_id' ) ),
+                    vendor_id: lengthZeroArrayToNull( 
+                        transparentLog( 
+                            { c: "OrderItemSelect", e: "flatArrayObjectProperty", }, 
+                            flatArrayObjectProperty( defaultObjects, 'vendor_id' ) )
+                        ),
+                    limit: 1
                 }
-            }); 
+            } );
         }
         if ( data && ( !options || options.length === 0 ) ) {
-            console.log( 'OrderItemSelect: data is already present', data, options ); 
+            console.log( 'OrderItemSelect: data is already present', data, options );
             setOptionsFromVariants( data.item_variant );
         }
         if ( defaultItemQueryResult.data && ( !options || options.length === 0 ) ) {
-            console.log( 'OrderItemSelect: defaultItemQueryResult is already present', defaultItemQueryResult, options ); 
+            console.log( 'OrderItemSelect: defaultItemQueryResult is already present', defaultItemQueryResult, options );
             setOptionsFromVariants( defaultItemQueryResult.data.item_variant );
         }
     }, [] );
@@ -146,7 +148,7 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                 vendor_id: v.vendor?.id,
                 manufacturer_item_id: v.manufacturer_item_id,
                 vendor_item_id: v.vendor_item_id,
-                label: <Tooltip title={<pre>{JSON.stringify(filterObject(v, [ 'id', 'item_id', 'vendorItem', 'manufacturerItem' ]), null, 2)}</pre>}>
+                label: <Tooltip title={<pre>{JSON.stringify( filterObject( v, [ 'id', 'item_id', 'vendorItem', 'manufacturerItem' ] ), null, 2 )}</pre>}>
                     <span className="orderItemOption">
                         {<item.icon />}
                         <span>{v.name}</span>
@@ -159,82 +161,67 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                 </Tooltip>
             };
         } ) );
-    }
-
-    // const setOptionsFromItems = () => {
-    //     setOptions( defaultItemQueryResult.data.items.map( v => {
-    //         // let ManufacturerIcon = v.manufacturer ? new Manufacturer( v.manufacturer ).icon : null;
-    //         // let VendorIcon = v.vendor ? new Vendor( v.vendor ).icon : null;
-    //         console.log( "adding option object for ", {
-    //             item_id: v.id,
-    //             // item_id: v.item_id,
-    //             // manufacturer_id: v.manufacturer?.id,
-    //             // vendor_id: v.vendor?.id
-    //         } );
-
-    //         let item = Item.ItemsFactory( v );
-    //         return {
-    //             // variant_id: v.id,
-    //             item_id: v.id,
-    //             // manufacturer_id: v.manufacturer?.id,
-    //             // vendor_id: v.vendor?.id,
-    //             label: <span className="orderItemOption">
-    //                 {<item.icon />}
-    //                 <span>{v.name}</span>
-    //                 {/* <span>{v.vendor?.name}</span> */}<span></span>
-    //                 {/* <span>{VendorIcon ? <VendorIcon /> : null}</span> */}<span></span>
-
-    //                 <span>{v.object?.description || v.id}</span>
-    //                 {/* <span>{v.manufacturer?.name}</span> */}<span></span>
-    //                 {/* <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span> */}<span></span>
-    //             </span>
-    //         };
-    //     } ));
-    // }
-
+    };
 
     const optionsToOptionElements: ( opts: typeof options ) => JSX.Element[] = ( opts ) => {
         return opts.map( v => {
-            console.log( "select with option", { v, key: v.variant_id | v.item_id} );
+            console.log( "select with option", { v, key: v.variant_id | v.item_id } );
             return <Select.Option
-                key={v.variant_id || v.item_id} 
-                value={ v.variant_id }>
-                    {v.label}
-                </Select.Option>;
-        } )
-    }
+                key={v.variant_id || v.item_id}
+                value={v.variant_id}>
+                {v.label}
+            </Select.Option>;
+        } );
+    };
 
     const selectedOptionsOnChange = ( selectedOptionValues: OrderItemSelectSingleValue | OrderItemSelectMultipleValue ): void => {
         // const optionLookup
-        if ( Array.isArray( selectedOptionValues) ){
-            onChange( 
+        if ( Array.isArray( selectedOptionValues ) ) {
+            onChange(
                 transparentLog(
                     {
                         c: "OrderItemSelect",
                         e: "onChange - multiple"
                     },
-                    options.filter( el => selectedOptionValues.includes(el.variant_id) ) )
+                    options.filter( el => selectedOptionValues.includes( el.variant_id ) ) )
             );
             return;
         }
-        if ( mode == null && is<( input: Exclude<TOrderItemSelectValue, number> ) => void>( onChange, props.mode === null || props.mode === "single" ) ){
+        if ( mode == null && is<( input: Exclude<TOrderItemSelectValue, number> ) => void>( onChange, props.mode === null || props.mode === "single" ) ) {
             onChange(
                 transparentLog(
                     {
                         c: "OrderItemSelect",
                         e: "onChange - single"
                     },
-                    options.find( el => el.variant_id === selectedOptionValues ) 
+                    options.find( el => el.variant_id === selectedOptionValues )
                 )
-            )
+            );
         }
+    };
+
+    if ( defaultIds &&
+        ( Array.isArray( defaultIds ) && defaultIds.length > 0 ) &&
+        ( !options || options.length === 0 ) ) {
+        return <Spin />;
     }
 
-    if ( defaultIds && 
-         ( Array.isArray(defaultIds) && defaultIds.length > 0) &&
-        ( ! options || options.length === 0 ) ){
-        return <Spin />
-    }
+    defaultItemQueryResult.data.item_variant.forEach( obj => {
+        console.log(
+            {
+                c: "OrderItemSelect",
+                e: "checking if need to change defaultIds"
+            }, obj );
+            // since the defaultItemQueryResult loads later, the defaultIds must be set to its result
+        if ( ! defaultIds.includes(obj.id) ){
+            defaultIds = [obj.id];
+        } 
+    });
+    console.log(
+        {
+            c: "OrderItemSelect",
+            e: "changing defaultIds"
+        }, defaultIds );
 
     // KILL: debug with  /(OrderItemSelect|OrderItemInput)/
     return (
@@ -255,7 +242,7 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                 defaultValue={defaultIds}
                 onChange={( value, opt ) => {
                     console.log( { cls: 'orderItemSelect', evt: "onChange", value, opt } );
-                    selectedOptionsOnChange(value);
+                    selectedOptionsOnChange( value );
                     // if ( is<( input: number ) => void>( onChange, props.mode === null || props.mode === "single" ) ) {
                     //     onChange( parseIntSafe( value ) );
                     // } else {
@@ -269,7 +256,7 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                     // }
                 }}
             >
-                {...optionsToOptionElements(options)}
+                {...optionsToOptionElements( options )}
             </Select>
         </div>
     );
