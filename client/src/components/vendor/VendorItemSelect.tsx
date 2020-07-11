@@ -1,18 +1,18 @@
-import { SelectProps, SelectValue, LabeledValue } from "antd/lib/select";
-import React, { useState, useEffect, ReactElement, useRef } from "react";
-import { AutoComplete, Input, DatePicker, Select, Divider } from "antd";
+import { SelectProps } from "antd/lib/select";
+import React, { useState, useEffect, ReactElement } from "react";
+import { Input, Select, Divider } from "antd";
 
 
 
-import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
-import { InputProps } from "antd/lib/input";
-import { useGetVendorItemsLazyQuery, useSearchVendorItemsLazyQuery, useSearchVendorItemsQuery, VendorItem as VendorItemGql, VendorItemInsertInput, UpdateVendorItemMutationVariables } from "~lib/types/graphql";
+import { OptionData } from 'rc-select/lib/interface';
+import { useSearchVendorItemsQuery, VendorItem as VendorItemGql, UpdateVendorItemMutationVariables } from "~lib/types/graphql";
 import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { VendorItemFormModal } from "./VendorItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
 import { Vendor } from "~lib/Vendor/Vendor";
-import { QueryResultTypePlus, Unpacked, PartialPartial, flatArrayObjectProperty, Intersection, transparentLog } from "~lib/UtilityFunctions";
+import { QueryResultTypePlus, Unpacked, flatArrayObjectProperty, Intersection, transparentLog } from "~lib/UtilityFunctions";
 import { IconComponentT } from "~lib/types/common";
+import { Integer } from "~lib/types/uint8";
 
 
 interface OptionT extends OptionData {
@@ -22,21 +22,19 @@ interface OptionT extends OptionData {
 
 type VT = number | Partial<UpdateVendorItemMutationVariables>;
 
-export interface VendorItemSelectValue extends Partial<Pick<VendorItemGql, 'id' | 'description' | 'item_id' | 'vendor_id' | 'vendor_sku'>> { }
+export interface VendorItemSelectValue extends Partial<UpdateVendorItemMutationVariables> { }
 
 interface VendorItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
     forwardRef?: React.MutableRefObject<Input>;
     value?: VT;
-    // onChange?: ( id: number ) => void;
-    onChange?: ( vendor_item: VendorItemSelectValue ) => void;
-
-    // URGENT: provide item_id ; and only show vendor_id that matches this.
+    item_id?: Integer;
+    onChange: ( vendor_item: VendorItemSelectValue ) => void;
 }
 /**
  * Form Select Input for VendorItems
  */
 export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
-    const { onChange, value, ...remainingProps } = props;
+    const { onChange } = props;
     const [ searchText, setSearchText ] = useState<string>( "" );
     const [ options, setOptions ] = useState<OptionT[]>( [] );
 
@@ -44,7 +42,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
         ...(
             typeof props.value === "number" ?
                 [ props.value ] : (
-                    props.value ? [ props.value.id ] : [] )
+                    props.value && props.value.id ? [ props.value.id ] : [] )
         ),
         ...(
             typeof props.defaultValue === "number" ?
@@ -54,7 +52,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
     ];
 
     console.log( "VendorItemSelect: init, received props", { props_defaultValue: props.defaultValue, defaultIds, props } );
-    const [ modal, setModal ] = useState<React.ReactElement>( null );
+    const [ modal, setModal ] = useState<React.ReactElement | null>( null );
     const history = useHistory();
     const location = useLocation();
     const handleModalChange = ( modal: React.ReactElement ) => {
@@ -64,11 +62,12 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
         setModal( modal );
     };
 
-    const { data, error, loading } = useSearchVendorItemsQuery( {
+    const { data, loading } = useSearchVendorItemsQuery( {
         partialRefetch: true,
         returnPartialData: true,
         variables: {
-            query_text: `${ searchText }%`
+            query_text: `${ searchText }%`,
+            item_id: props.item_id
         }
         // skip: state.loading
     } );
@@ -138,14 +137,14 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                 }}
                 onKeyDown={( e ) => {
                     if ( e.nativeEvent.keyCode === 13 ) {
-                        e.preventDefault(); // keep Enter from submitting form within Selects so that autofill options can be triggered and selected.
+                        // keep Enter from submitting form within Selects so that autofill options can be triggered and selected.
+                        e.preventDefault(); 
                     }
                 }}
                 dropdownRender={menu => (
                     <div>
                         {menu}
                         <Divider style={{ margin: '4px 0' }} />
-                        {/* <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}> */}
                         <a
                             className="VendorItemSelectNewSelectOption"
                             onClick={() => handleModalChange(
@@ -153,7 +152,9 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                                     visibilityHandler={handleModalChange}
                                     onFinish={( args ) => {
                                         setModal( null );
-                                        onChange( args );
+                                        if ( args ){
+                                            onChange( args );
+                                        }
                                     }}
                                 /> )}
                         >
@@ -164,7 +165,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                 )}
                 onChange={( value, opt ) => {
                     console.log( { event: "onChange", value, opt } );
-                    let vendorItem_id: number = null;
+                    let vendorItem_id: number | null = null;
                     if ( typeof value === "number" ) {
                         vendorItem_id = value;
                     } else if ( typeof value === "string" && value !== "NEW" ) {
@@ -175,6 +176,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                     if ( vendorItem_id ) {
                         onChange( {
                             id: vendorItem_id,
+                            // item_id: item
                             // item_id: 1111,
                             // vendor_id: 2222,
                             // vendor_sku: "3333",
