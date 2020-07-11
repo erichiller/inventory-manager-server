@@ -1,12 +1,11 @@
-import { SelectProps, SelectValue, LabeledValue } from "antd/lib/select";
+import { SelectProps } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
-import { AutoComplete, Input, DatePicker, Select, Divider, message } from "antd";
+import { Select, Divider, message } from "antd";
 
 
 
-import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
-import { InputProps } from "antd/lib/input";
-import { useGetManufacturerItemsLazyQuery, useSearchManufacturerItemsLazyQuery, useSearchManufacturerItemsQuery, ManufacturerItem as ManufacturerItemGql, UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables } from "~lib/types/graphql";
+import { OptionData } from 'rc-select/lib/interface';
+import { useSearchManufacturerItemsQuery, ManufacturerItem as ManufacturerItemGql, UpdateManufacturerItemMutationVariables } from "~lib/types/graphql";
 import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { ManufacturerItemFormModal } from "./ManufacturerItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";

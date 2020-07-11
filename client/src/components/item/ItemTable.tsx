@@ -1,6 +1,6 @@
 import { Table, Divider, message, Spin } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { ColumnProps, TablePaginationConfig } from 'antd/es/table';
+import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import {
     // withItemHardwareFastenerScrewMachine, ItemHardwareFastenerScrewMachineProps, ItemHardwareFastenerScrewMachineSelectColumn, useItemHardwareFastenerScrewMachineQuery, useGetIconQuery, 
     useGetItemsQuery, GetItemsQueryVariables, GetItemsQuery,

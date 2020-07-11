@@ -27037,6 +27037,7 @@ export type GetItemVariantByAttachedQueryVariables = Exact<{
   manufacturer_item_id?: Maybe<Array<Scalars['Int']>>;
   vendor_item_id?: Maybe<Array<Scalars['Int']>>;
   vendor_id?: Maybe<Array<Scalars['Int']>>;
+  limit?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -27045,6 +27046,29 @@ export type GetItemVariantByAttachedQuery = (
   & { item_variant: Array<(
     { __typename?: 'item_variant' }
     & ObjectItemVariantFieldsFragment
+  )> }
+);
+
+export type UpdateOrderItemMutationVariables = Exact<{
+  id: Scalars['Int'];
+  cost_item?: Maybe<Scalars['numeric']>;
+  cost_tax?: Maybe<Scalars['numeric']>;
+  cost_total?: Maybe<Scalars['numeric']>;
+  item_id?: Maybe<Scalars['Int']>;
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
+  order_id?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['numeric']>;
+  serial_no?: Maybe<Scalars['String']>;
+  shipment_id?: Maybe<Scalars['Int']>;
+  vendor_item_id?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type UpdateOrderItemMutation = (
+  { __typename?: 'mutation_root' }
+  & { order_item?: Maybe<(
+    { __typename?: 'order_item' }
+    & BasicOrderItemFieldsFragment
   )> }
 );
 
@@ -29418,8 +29442,8 @@ export type GetItemVariantsQueryHookResult = ReturnType<typeof useGetItemVariant
 export type GetItemVariantsLazyQueryHookResult = ReturnType<typeof useGetItemVariantsLazyQuery>;
 export type GetItemVariantsQueryResult = ApolloReactCommon.QueryResult<GetItemVariantsQuery, GetItemVariantsQueryVariables>;
 export const GetItemVariantByAttachedDocument = gql`
-    query GetItemVariantByAttached($item_id: [Int!], $manufacturer_item_id: [Int!], $vendor_item_id: [Int!], $vendor_id: [Int!]) {
-  item_variant(where: {manufacturer_item_id: {_in: $manufacturer_item_id}, vendor_item_id: {_in: $vendor_item_id}, vendor_id: {_in: $vendor_id}, item_id: {_in: $item_id}}, order_by: {vendor_id: asc, manufacturer_id: asc, id: asc}) {
+    query GetItemVariantByAttached($item_id: [Int!], $manufacturer_item_id: [Int!], $vendor_item_id: [Int!], $vendor_id: [Int!], $limit: Int) {
+  item_variant(where: {manufacturer_item_id: {_in: $manufacturer_item_id}, vendor_item_id: {_in: $vendor_item_id}, vendor_id: {_in: $vendor_id}, item_id: {_in: $item_id}}, order_by: {vendor_id: asc, manufacturer_id: asc, id: asc}, limit: $limit) {
     ...objectItemVariantFields
   }
 }
@@ -29454,6 +29478,7 @@ export function withGetItemVariantByAttached<TProps, TChildProps = {}, TDataName
  *      manufacturer_item_id: // value for 'manufacturer_item_id'
  *      vendor_item_id: // value for 'vendor_item_id'
  *      vendor_id: // value for 'vendor_id'
+ *      limit: // value for 'limit'
  *   },
  * });
  */
@@ -29466,6 +29491,61 @@ export function useGetItemVariantByAttachedLazyQuery(baseOptions?: ApolloReactHo
 export type GetItemVariantByAttachedQueryHookResult = ReturnType<typeof useGetItemVariantByAttachedQuery>;
 export type GetItemVariantByAttachedLazyQueryHookResult = ReturnType<typeof useGetItemVariantByAttachedLazyQuery>;
 export type GetItemVariantByAttachedQueryResult = ApolloReactCommon.QueryResult<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>;
+export const UpdateOrderItemDocument = gql`
+    mutation UpdateOrderItem($id: Int!, $cost_item: numeric, $cost_tax: numeric, $cost_total: numeric, $item_id: Int, $manufacturer_item_id: Int, $order_id: Int, $quantity: numeric, $serial_no: String, $shipment_id: Int, $vendor_item_id: Int) {
+  order_item: update_order_item_by_pk(_set: {cost_item: $cost_item, cost_tax: $cost_tax, cost_total: $cost_total, item_id: $item_id, manufacturer_item_id: $manufacturer_item_id, order_id: $order_id, quantity: $quantity, serial_no: $serial_no, shipment_id: $shipment_id, vendor_item_id: $vendor_item_id}, pk_columns: {id: $id}) {
+    ...basicOrderItemFields
+  }
+}
+    ${BasicOrderItemFieldsFragmentDoc}`;
+export type UpdateOrderItemMutationFn = ApolloReactCommon.MutationFunction<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>;
+export type UpdateOrderItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>
+    } & TChildProps;
+export function withUpdateOrderItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  UpdateOrderItemMutation,
+  UpdateOrderItemMutationVariables,
+  UpdateOrderItemProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, UpdateOrderItemMutation, UpdateOrderItemMutationVariables, UpdateOrderItemProps<TChildProps, TDataName>>(UpdateOrderItemDocument, {
+      alias: 'updateOrderItem',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useUpdateOrderItemMutation__
+ *
+ * To run a mutation, you first call `useUpdateOrderItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOrderItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOrderItemMutation, { data, loading, error }] = useUpdateOrderItemMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      cost_item: // value for 'cost_item'
+ *      cost_tax: // value for 'cost_tax'
+ *      cost_total: // value for 'cost_total'
+ *      item_id: // value for 'item_id'
+ *      manufacturer_item_id: // value for 'manufacturer_item_id'
+ *      order_id: // value for 'order_id'
+ *      quantity: // value for 'quantity'
+ *      serial_no: // value for 'serial_no'
+ *      shipment_id: // value for 'shipment_id'
+ *      vendor_item_id: // value for 'vendor_item_id'
+ *   },
+ * });
+ */
+export function useUpdateOrderItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>(UpdateOrderItemDocument, baseOptions);
+      }
+export type UpdateOrderItemMutationHookResult = ReturnType<typeof useUpdateOrderItemMutation>;
+export type UpdateOrderItemMutationResult = ApolloReactCommon.MutationResult<UpdateOrderItemMutation>;
+export type UpdateOrderItemMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
   PrinterStatus {
@@ -30907,4 +30987,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-07-11T06:20:38-06:00
+// graphql typescript defs generated on 2020-07-11T10:40:35-06:00

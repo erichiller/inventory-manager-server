@@ -44,6 +44,11 @@
         },
         "baseUrl": "src"
     },
+    // "typeAcquisition": {
+    //     "include": [
+    //         "jest"
+    //     ]
+    // },
     "include": [
         "src/**/*",
         // "../typings/*.d.ts",

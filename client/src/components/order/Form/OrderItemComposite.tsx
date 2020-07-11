@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from 'antd';
 import { OrderItem as OrderItemGql } from '~lib/types/graphql';
 
-import { SubType } from '~lib/UtilityFunctions';
+import { SubType, toMinimumFixed } from '~lib/UtilityFunctions';
 import { InputProps } from 'antd/lib/input';
 import { OrderItemSelect, OrderItemSelectSingleValue } from './OrderItemSelect';
 import { Integer } from '~lib/types/uint8';
@@ -120,7 +120,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = React.forwardRef( (
                     onChange={setItemId}
                     suffixIcon={props.suffix}
                     vendorId={props.vendorId}
-                    defaultValue={props.value?.item_id}
+                    defaultValue={{ id: props.value?.item_id, vendor_item_id: props.value?.vendor_item_id, manufacturer_item_id: props.value?.manufacturer_item_id }}
                 />
 
                 <span id="ItemExtraInfo">
@@ -130,7 +130,6 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = React.forwardRef( (
                         onChange={setVendorItem} />
 
 
-                    {/* TODO: provide `item_id` if known to limit the search of manufacturer_item */}
                     <ManufacturerItemSelect
                         item_id={props.value?.item_id}
                         defaultValue={props.value?.manufacturer_item_id || props.value?.manufacturer_item}
@@ -150,7 +149,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = React.forwardRef( (
                 placeholder="Qty" />
             <span id="cost_item">
                 <Input name="cost_item"
-                    defaultValue={props.value?.cost_item}
+                    defaultValue={toMinimumFixed( props.value?.cost_item, 2 )}
                     type="number"
                     step="0.01"
                     min="0"
@@ -162,7 +161,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = React.forwardRef( (
             {/* TODO: display (in tooltip?) the tax rate this equals */}
             <span id="cost_tax">
                 <Input name="cost_tax"
-                    defaultValue={props.value?.cost_tax}
+                    defaultValue={toMinimumFixed( props.value?.cost_tax, 2 )}
                     type="number"
                     step="0.01"
                     min="0"
@@ -174,7 +173,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = React.forwardRef( (
             {/* TODO: auto-calculate `cost_total` from `cost_tax` and `cost_item` */}
             <span id="cost_total">
                 <Input name="cost_total"
-                    defaultValue={props.value?.cost_total}
+                    defaultValue={toMinimumFixed( props.value?.cost_total, 2 )}
                     type="number"
                     step="0.01"
                     min="0"
