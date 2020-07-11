@@ -1,6 +1,6 @@
 import { SelectProps, SelectValue, LabeledValue } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
-import { AutoComplete, Input, DatePicker, Select, Divider } from "antd";
+import { AutoComplete, Input, DatePicker, Select, Divider, message } from "antd";
 
 
 
@@ -13,6 +13,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { Manufacturer } from "~lib/Manufacturer/Manufacturer";
 import { Intersection, Unpacked, QueryResultTypePlus, transparentLog, flatArrayObjectProperty } from "~lib/UtilityFunctions";
 import { IconComponentT } from "~lib/types/common";
+import { Integer } from "~lib/types/uint8";
 
 
 interface OptionT extends OptionData {
@@ -26,14 +27,14 @@ export interface ManufacturerItemSelectValue extends Partial<Pick<ManufacturerIt
 interface ManufacturerItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
     forwardRef?: React.MutableRefObject<Select>;
     value?: VT;
-    // onChange?: ( id: number ) => void;
-    onChange?: ( manufacturer_item: ManufacturerItemSelectValue ) => void;
+    item_id?: Integer;
+    onChange: ( manufacturer_item: ManufacturerItemSelectValue ) => void;
 }
 /**
  * Form Select Input for ManufacturerItems
  */
 export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( props ) => {
-    const { onChange, value, ...remainingProps } = props;
+    const { onChange } = props;
     const [ searchText, setSearchText ] = useState<string>( "" );
     const [ options, setOptions ] = useState<OptionT[]>( [] );
 
@@ -42,7 +43,7 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
         ...(
             typeof props.value === "number" ?
                 [ props.value ] : (
-                    props.value ? [ props.value.id ] : [] )
+                    props.value && props.value.id? [ props.value.id ] : [] )
         ),
         ...(
             typeof props.defaultValue === "number" ?
@@ -52,7 +53,7 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
     ];
 
 
-    const [ modal, setModal ] = useState<React.ReactElement>( null );
+    const [ modal, setModal ] = useState<React.ReactElement | null>( null );
     const history = useHistory();
     const location = useLocation();
     const handleModalChange = ( modal: React.ReactElement ) => {
@@ -66,7 +67,8 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
         partialRefetch: true,
         returnPartialData: true,
         variables: {
-            query_text: `${ searchText }%`
+            query_text: `${ searchText }%`,
+            item_id: props.item_id
         }
         // skip: state.loading
     } );
@@ -105,36 +107,16 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
                             <span>{v.manufacturer_product_name}</span>
                             <span>{v.manufacturer_product_series}</span>
                         </span>
-                        // TODO: Set value to the applicable string, feed value up that is the `order_id`
                     };
                 } ) )
         );
     }
 
-    // useEffect( () => {
-    //     if ( !loading && !error ) {
-    //         console.log( { class: "ManufacturerItemSelect", "action": "useEffect", event: "loading and error ok", data } );
-    //         let opts: OptionT[] = [];
-    //         data.item.forEach( item => {
-    //             item.manufacturerItems.forEach( v => {
-    //                 console.log( "outputting option", v );
-    //                 opts.push( {
-    //                     id: v.id,
-    //                     value: v.id,
-    //                     label: <span className="manufacturerItemOption">
-    //                         {v && v.manufacturer.url ? <img src={`${ v.manufacturer.url }/favicon.ico`} /> : null}
-    //                         {/* <span>{v.manufacturer.name}</span> */}
-    //                         <span>{v.manufacturer_product_id}</span>
-    //                         {/* <span>#{v.manufacturerItem_order_id}</span> */}
-    //                     </span>
-    //                     // TODO: Set value to the applicable string, feed value up that is the `order_id`
-    //                 } );
-    //             } );
-    //         } );
-    //         setOptions( opts );
-    //     }
-    // }, [ loading, data ] );
-
+    useEffect( () => {
+        if (error) {
+            message.error(error);
+        }
+    }, [error]);
     useEffect( () => {
         console.log( { c: "ManufacturerItemSelect", m: "useEffect", ev: "loaded ManufacturerItems from Gql", data } );
         updateOptionsFromManufacturerItem( [
@@ -172,7 +154,6 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
                     <div>
                         {menu}
                         <Divider style={{ margin: '4px 0' }} />
-                        {/* <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}> */}
                         <a
                             className="ManufacturerItemSelectNewSelectOption"
                             onClick={() => handleModalChange( 
@@ -186,12 +167,11 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
                         >
                             <PlusOutlined />New
                         </a>
-                        {/* </div> */}
                     </div>
                 )}
                 onChange={( value, opt ) => {
                     console.log( { event: "onChange", value, opt } );
-                    let manufacturerItem_id: number = null;
+                    let manufacturerItem_id: number | null = null;
                     if ( typeof value === "number" ) {
                         manufacturerItem_id = value;
                     } else if ( typeof value === "string" ) {

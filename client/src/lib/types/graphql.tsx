@@ -26762,6 +26762,7 @@ export type GetManufacturerItemsQuery = (
 
 export type SearchManufacturerItemsQueryVariables = Exact<{
   query_text: Scalars['String'];
+  item_id?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -27313,6 +27314,7 @@ export type GetVendorItemsQuery = (
 
 export type SearchVendorItemsQueryVariables = Exact<{
   query_text: Scalars['String'];
+  item_id?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -28761,8 +28763,8 @@ export type GetManufacturerItemsQueryHookResult = ReturnType<typeof useGetManufa
 export type GetManufacturerItemsLazyQueryHookResult = ReturnType<typeof useGetManufacturerItemsLazyQuery>;
 export type GetManufacturerItemsQueryResult = ApolloReactCommon.QueryResult<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>;
 export const SearchManufacturerItemsDocument = gql`
-    query SearchManufacturerItems($query_text: String!) {
-  item: search_item(args: {query_text: $query_text}, where: {manufacturerItems: {}}) {
+    query SearchManufacturerItems($query_text: String!, $item_id: Int) {
+  item: search_item(args: {query_text: $query_text}, where: {manufacturerItems: {}, id: {_eq: $item_id}}) {
     id
     name: object(path: "name")
     object
@@ -28804,6 +28806,7 @@ export function withSearchManufacturerItems<TProps, TChildProps = {}, TDataName 
  * const { data, loading, error } = useSearchManufacturerItemsQuery({
  *   variables: {
  *      query_text: // value for 'query_text'
+ *      item_id: // value for 'item_id'
  *   },
  * });
  */
@@ -30185,8 +30188,8 @@ export type GetVendorItemsQueryHookResult = ReturnType<typeof useGetVendorItemsQ
 export type GetVendorItemsLazyQueryHookResult = ReturnType<typeof useGetVendorItemsLazyQuery>;
 export type GetVendorItemsQueryResult = ApolloReactCommon.QueryResult<GetVendorItemsQuery, GetVendorItemsQueryVariables>;
 export const SearchVendorItemsDocument = gql`
-    query SearchVendorItems($query_text: String!) {
-  item: search_item(args: {query_text: $query_text}, where: {vendorItems: {}}) {
+    query SearchVendorItems($query_text: String!, $item_id: Int) {
+  item: search_item(args: {query_text: $query_text}, where: {vendorItems: {}, id: {_eq: $item_id}}) {
     id
     name: object(path: "name")
     object
@@ -30229,6 +30232,7 @@ export function withSearchVendorItems<TProps, TChildProps = {}, TDataName extend
  * const { data, loading, error } = useSearchVendorItemsQuery({
  *   variables: {
  *      query_text: // value for 'query_text'
+ *      item_id: // value for 'item_id'
  *   },
  * });
  */
@@ -30903,4 +30907,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-07-09T05:42:45-06:00
+// graphql typescript defs generated on 2020-07-11T06:20:38-06:00

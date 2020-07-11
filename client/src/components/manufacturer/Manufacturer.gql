@@ -165,12 +165,18 @@ query GetManufacturerItems {
 
 query SearchManufacturerItems (
     $query_text: String!
+    $item_id: Int
 ) {
     item: search_item(
         args: {
             query_text: $query_text
         }
-        where: {manufacturerItems: {}}
+        where: {
+            manufacturerItems: {}
+            id: {
+                _eq: $item_id
+            }
+        }
     ) {
         id
         name: object(path: "name")
