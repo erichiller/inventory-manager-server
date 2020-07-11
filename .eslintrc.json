@@ -11,6 +11,9 @@
     },
     "root": true,
     "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "sourceType": "module"
+    },
     "plugins": [
         "@typescript-eslint",
         "react"
@@ -25,76 +28,96 @@
         // "plugin:react-hooks/recommended"
     ],
     "rules": {
+        // https://eslint.org/docs/rules/semi
         // https: //github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/semi.md
         // note you must disable the base rule as it can report incorrect errors
         "semi": "off",
         "@typescript-eslint/semi": [
             "error",
-            "always",
-            {
-                "omitLastInOneLineBlock": true
-            }
+            "always"
+            // ,
+            // {
+            //     "omitLastInOneLineBlock": true
+            // }
         ],
+        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-extra-semi.md
+        // "no-extra-semi": "off",
+        // "@typescript-eslint/no-extra-semi": [
+        //     "off"
+        // ],
+        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-delimiter-style.md
+        "@typescript-eslint/member-delimiter-style": [
+            "error",
+            {
+                "multiline": {
+                    "delimiter": "semi",
+                    "requireLast": true
+                },
+                "singleline": {
+                    "delimiter": "semi",
+                    "requireLast": true
+                }
+            }
+        ]
         // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/function-component-definition.md
-    //     "react/function-component-definition": [
-    //         "error", 
-    //         {
-    //             "namedComponents": "arrow-function",
-    //             "unnamedComponents": "arrow-function"
-    //         }
-    //     ],
-    //     "quote-props": [
-    //         "error",
-    //         "consistent-as-needed"
-    //     ],
-    //     "max-statements": [
-    //         "warn",
-    //         10,
-    //         {
-    //             "ignoreTopLevelFunctions": true
-    //         }
-    //     ],
-    //     "max-lines-per-function": [
-    //         "off"
-    //     ],
-    //     // note you must disable the base rule as it can report incorrect errors
-    //     "keyword-spacing": "off",
-    //     "@typescript-eslint/keyword-spacing": [  // https://eslint.org/docs/rules/keyword-spacing
-    //         "error"
-    //     ],
-    //     //
-    //     "space-before-blocks": [
-    //         "error",
-    //         {
-    //             "functions": "never",
-    //             "keywords": "always",
-    //             "classes": "always"
-    //         }
-    //     ],
-    //     "space-in-parens": [
-    //         "error",
-    //         "always"
-    //     ],
-    //     "no-console": [ "off" ],
-    //     // note you must disable the base rule as it can report incorrect errors
-    //     "no-use-before-define": "off",
-    //     "@typescript-eslint/no-use-before-define": [
-    //         // "error"
-    //         "off"
-    //     ],
-    //     "id-length": [ "off" ],
-    //     "padded-blocks": [
-    //         "error", 
-    //         {
-    //             "blocks": "never",
-    //             "classes": "always",
-    //             "switches": "never"
-    //         },
-    //         {
-    //             "allowSingleLineBlocks": true
-    //         }
-    //     ]
-        
-
-    // }
-}
+        //     "react/function-component-definition": [
+        //         "error", 
+        //         {
+        //             "namedComponents": "arrow-function",
+        //             "unnamedComponents": "arrow-function"
+        //         }
+        //     ],
+        //     "quote-props": [
+        //         "error",
+        //         "consistent-as-needed"
+        //     ],
+        //     "max-statements": [
+        //         "warn",
+        //         10,
+        //         {
+        //             "ignoreTopLevelFunctions": true
+        //         }
+        //     ],
+        //     "max-lines-per-function": [
+        //         "off"
+        //     ],
+        //     // note you must disable the base rule as it can report incorrect errors
+        //     "keyword-spacing": "off",
+        //     "@typescript-eslint/keyword-spacing": [  // https://eslint.org/docs/rules/keyword-spacing
+        //         "error"
+        //     ],
+        //     //
+        //     "space-before-blocks": [
+        //         "error",
+        //         {
+        //             "functions": "never",
+        //             "keywords": "always",
+        //             "classes": "always"
+        //         }
+        //     ],
+        //     "space-in-parens": [
+        //         "error",
+        //         "always"
+        //     ],
+        //     "no-console": [ "off" ],
+        //     // note you must disable the base rule as it can report incorrect errors
+        //     "no-use-before-define": "off",
+        //     "@typescript-eslint/no-use-before-define": [
+        //         // "error"
+        //         "off"
+        //     ],
+        //     "id-length": [ "off" ],
+        //     "padded-blocks": [
+        //         "error", 
+        //         {
+        //             "blocks": "never",
+        //             "classes": "always",
+        //             "switches": "never"
+        //         },
+        //         {
+        //             "allowSingleLineBlocks": true
+        //         }
+        //     ]
+        // }
+    } // end rules
+} // end
