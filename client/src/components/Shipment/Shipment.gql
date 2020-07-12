@@ -62,7 +62,7 @@ mutation InsertShipment(
     $tracking_id: String!, 
     $carrier_vendor_id: Int!, 
     $shipped_date: date, 
-    $received_date: date!, 
+    $received_date: date, 
     $order_id: Int
 ) {
     shipment: insert_shipment_one(
@@ -84,7 +84,7 @@ mutation UpdateShipment(
     $id: Int!,
     $tracking_id: String!, 
     $carrier_vendor_id: Int!, 
-    $received_date: date!, 
+    $received_date: date, 
     $shipped_date: date, 
     $vendor_invoice_id: String,
     $order_id: Int

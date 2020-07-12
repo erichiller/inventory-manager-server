@@ -21954,9 +21954,9 @@ type shipment {
     where: order_item_bool_exp
   ): order_item_aggregate!
   order_id: Int
-  received_date: date!
+  received_date: date
   shipped_date: date
-  tracking_id: String
+  tracking_id: String!
   vendor_invoice_id: String
 }
 
@@ -22037,6 +22037,9 @@ input shipment_bool_exp {
 enum shipment_constraint {
   # unique or primary key constraint
   shipment_pkey
+
+  # unique or primary key constraint
+  shipment_tracking_id_key
 }
 
 # input type for incrementing integer column in table "shipment"

@@ -33,7 +33,7 @@ export function toTitleCase ( s: string ): string {
  * @param allow array of propertyname strings that should be **included**
  * @param exclude array of propertyname strings that should be **excluded**. defaults to `null`
  */
-export function filterObject<T, P extends StringKeys<T>> ( o: T, allow: Array<P>): Pick<T, P>;
+export function filterObject<T, P extends StringKeys<T>> ( o: T, allow: Array<P> ): Pick<T, P>;
 export function filterObject<T, P extends StringKeys<T>> ( o: T, allow: null | undefined, exclude: Array<P> ): Omit<T, P>;
 export function filterObject<T, P extends StringKeys<T>> ( o: object, allow: undefined | null | Array<P>, exclude: undefined | null | Array<P> = null ): object {
     let f: ( key: P ) => boolean = allow
@@ -125,15 +125,15 @@ export function lengthZeroArrayToNull<T extends ReadonlyArray<any>> ( inputArray
  */
 export function parseIntSafe ( input: string | number | LabeledValue | ( string | number | LabeledValue )[] ): Integer {
     // export function parseIntSafe ( input: string | number | (string | number)[] ): Integer {
-    if ( Array.isArray(input) ){
+    if ( Array.isArray( input ) ){
         if ( input.length !== 1 ){
-            throw new Error("input is an array with more than one value; undefined behavior");
+            throw new Error( "input is an array with more than one value; undefined behavior" );
         }
         input = input[0];
     }
     if ( typeof input === "number" ) { return input; }
     if ( typeof input === "string" ) { return parseInt( input ); }
-    if ( typeof input !== "string" && "key" in input ) { return typeof input.value === "string" ? parseInt(input.value) : input.value ; };
+    if ( typeof input !== "string" && "key" in input ) { return typeof input.value === "string" ? parseInt( input.value ) : input.value ; };
 }
 /**
  * ParseFloat, but it won't error when passed a number, and it will return default if NaN
@@ -382,7 +382,7 @@ export function sortByNumber<T> ( propertyName: Extract<keyof SubType<T, number>
  * Return antd table usable filter options.
  * @param e any object that has keys and values
  */
-export function tableFilterFromEnum( e: object){
+export function tableFilterFromEnum( e: object ){
     return Object.keys( e ).map( k => {
         return {
             text: toTitleCase( k ),
@@ -410,7 +410,7 @@ export function deepCopy<T extends Object>( obj: T ): T {
     if ( ! ( typeof obj === "object" ) ){
         return obj;
     }
-    console.log({obj, obj_string: JSON.stringify( obj ), });
+    console.log( {obj, obj_string: JSON.stringify( obj ), } );
     return JSON.parse( JSON.stringify( obj ) );
 }
 
@@ -420,14 +420,13 @@ export function deepCopy<T extends Object>( obj: T ): T {
  * @param objB second comparison object
  * @returns true when `objA` and `objB` are equal, even in nested properties.
  */
-export function deepEqual(objA: any, objB: any): objA is typeof objB {
-
-    if ( ! ( ( typeof objA === "object" ) && ( typeof objB === "object") ) ){
+export function deepEqual( objA: any, objB: any ): objA is typeof objB {
+    if ( ! ( ( typeof objA === "object" ) && ( typeof objB === "object" ) ) ){
         return false;
     }
-    console.log({objA, objB, });
-    console.log({parsedA: JSON.stringify( objA, Object.keys( objA ).sort()), parsedB: JSON.stringify( objB, Object.keys( objB ).sort() )});
-    return JSON.stringify( objA, Object.keys( objA ).sort()) === JSON.stringify( objB, Object.keys( objB ).sort() );
+    console.log( {objA, objB, } );
+    console.log( {parsedA: JSON.stringify( objA, Object.keys( objA ).sort() ), parsedB: JSON.stringify( objB, Object.keys( objB ).sort() )} );
+    return JSON.stringify( objA, Object.keys( objA ).sort() ) === JSON.stringify( objB, Object.keys( objB ).sort() );
 }
 
 
@@ -515,7 +514,7 @@ export function commonFilterConfig<T> ( property: Extract<keyof T, string>, opti
  * flatArrayObjectProperty(arr, 'propA');
  * // returns [ 1, 2, 3, 4, 5, 6 ] of type `number[]`
  */
-export function flatArrayObjectProperty<T extends SubType<T, string>, K extends keyof T>( arr: T[], property: K): Array< Unpacked<T[K]> > {
+export function flatArrayObjectProperty<T extends SubType<T, string>, K extends keyof T>( arr: T[], property: K ): Array< Unpacked<T[K]> > {
     let ret: Array<Unpacked<T[ K ]>> = [];
     arr.forEach( ( obj => {
         let propertyValue: Array< T[K] > = obj[property];
@@ -524,12 +523,12 @@ export function flatArrayObjectProperty<T extends SubType<T, string>, K extends 
         }
         if ( Array.isArray( propertyValue ) ){
             propertyValue.forEach( v => {
-                ret.push(v);
-            });
+                ret.push( v );
+            } );
         } else {
-            ret.push(propertyValue);
+            ret.push( propertyValue );
         }
-    }));
+    } ) );
     return ret;
 }
 

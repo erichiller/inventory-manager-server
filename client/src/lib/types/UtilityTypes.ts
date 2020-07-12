@@ -124,10 +124,6 @@ export type SubType<Base, Condition> =
 
 
 
-
-
-
-
 /**
  * type of object and array wrapped in `{data: obj | array}`
  * @see {encapsulateChildObjectsIntoDataProp}
@@ -157,3 +153,9 @@ export type TRecursiveDataWrap<Base> =
  */
 export type StringKeys<T> = Extract<keyof T, string>;
 
+
+/**
+ * Just like `Partial` but also could be `null`
+ * complements `Maybe` of graphql codegen well as an "every property on object" version
+ */
+ export type PartialNullable<T> = { [P in keyof T]?: T[P] | undefined | null; };

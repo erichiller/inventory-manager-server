@@ -5,7 +5,7 @@ import { Input, Select, Divider } from "antd";
 
 
 import { OptionData } from 'rc-select/lib/interface';
-import { useSearchVendorItemsQuery, VendorItem as VendorItemGql, UpdateVendorItemMutationVariables } from "~lib/types/graphql";
+import { useSearchVendorItemsQuery, UpdateVendorItemMutationVariables } from "~lib/types/graphql";
 import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { VendorItemFormModal } from "./VendorItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
@@ -74,7 +74,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
     function updateOptionsFromVendorItem ( arr: 
         Array<Unpacked<QueryResultTypePlus<typeof useSearchVendorItemsQuery>[ 'vendorItems' ]> 
             // | Partial<UpdateVendorItemMutationVariables>
-            | Intersection<Omit<Partial<UpdateVendorItemMutationVariables>, 'id'>, { id: 'NEW' }>
+            | Intersection<Omit<Partial<UpdateVendorItemMutationVariables>, 'id'>, { id: 'NEW'; }>
         > 
         ) {
         if ( !Array.isArray( arr ) ) { return null; }

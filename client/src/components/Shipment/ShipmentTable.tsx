@@ -43,14 +43,14 @@ export const ShipmentTable: React.FC<ShipmentTableProps> = ( props ) => {
     const history = useHistory();
 
     const handleModalChange = ( modal: React.ReactElement ) => {
-        if (modal === null ){
-            history.push('/shipment');
+        if ( modal === null ){
+            history.push( '/shipment' );
         }
-        setModal(modal);
-    }
+        setModal( modal );
+    };
 
     React.useEffect( () => {
-        console.log({'position': 'React.useEffect', shipment_id: params.shipment_id, action: params.action});
+        console.log( {position: 'React.useEffect', shipment_id: params.shipment_id, action: params.action} );
         switch ( params.action ) {
             case "edit":
                 if ( params.shipment_id ) {
@@ -77,16 +77,16 @@ export const ShipmentTable: React.FC<ShipmentTableProps> = ( props ) => {
     React.useEffect( () => {
         console.log( "updating shipment objects from result.data" );
         if ( result.data ) {
-            console.log("updating shipment objects from result.data");
+            console.log( "updating shipment objects from result.data" );
             setShipments( Shipment.ItemsFactory( result.data.shipment ) );
         }
     }, [ result.data ] );
 
     React.useEffect( () => {
         if ( deleteShipmentResult.error ){
-            message.error( `Error deleting shipment: \n${deleteShipmentResult.error}`);
+            message.error( `Error deleting shipment: \n${deleteShipmentResult.error}` );
         } else if ( deleteShipmentResult.data ) {
-            message.info( `Successfully deleted shipment.`);
+            message.info( `Successfully deleted shipment.` );
         }
     }, [ deleteShipmentResult ] );
 
@@ -102,7 +102,7 @@ export const ShipmentTable: React.FC<ShipmentTableProps> = ( props ) => {
                         <Link to={`/shipment/${ record.id }/edit`}><EditOutlined className="IconButton" /></Link>
                         <Divider type="vertical" />
                         <a><DeleteOutlined className="IconButton" onClick={ ( ) => {
-                            deleteShipment({variables: {id: record.id }});
+                            deleteShipment( {variables: {id: record.id }} );
                         }}/></a>
                     </span >
                 ),

@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHoc from '@apollo/react-hoc';
 import * as ApolloReactHooks from '@apollo/react-hooks';
-export type Maybe<T> = T | null;
+export type Maybe<T> = T | null | undefined;
 export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -12,16 +12,16 @@ export type Scalars = {
   Int: number;
   Float: number;
   Upload: any;
-  bigint: any;
+  bigint: number;
   date: any;
   jsonb: any;
-  numeric: any;
-  smallint: any;
+  numeric: number;
+  smallint: number;
   timestamptz: any;
   tsvector: any;
   /** uint8 (unsigned int between 0 and 255) scalar type for Apollo GraphQL */
-  uint8: any;
-  uuid: any;
+  uint8: number;
+  uuid: string;
 };
 
 /** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
@@ -22071,9 +22071,9 @@ export type Shipment = {
   /** An aggregated array relationship */
   orderItems_aggregate: OrderItemAggregate;
   order_id?: Maybe<Scalars['Int']>;
-  received_date: Scalars['date'];
+  received_date?: Maybe<Scalars['date']>;
   shipped_date?: Maybe<Scalars['date']>;
-  tracking_id?: Maybe<Scalars['String']>;
+  tracking_id: Scalars['String'];
   vendor_invoice_id?: Maybe<Scalars['String']>;
 };
 
@@ -22193,7 +22193,9 @@ export type ShipmentBoolExp = {
 /** unique or primary key constraints on table "shipment" */
 export enum ShipmentConstraint {
   /** unique or primary key constraint */
-  shipment_pkey = 'shipment_pkey'
+  shipment_pkey = 'shipment_pkey',
+  /** unique or primary key constraint */
+  shipment_tracking_id_key = 'shipment_tracking_id_key'
 }
 
 /** input type for incrementing integer column in table "shipment" */
@@ -27168,7 +27170,7 @@ export type InsertShipmentMutationVariables = Exact<{
   tracking_id: Scalars['String'];
   carrier_vendor_id: Scalars['Int'];
   shipped_date?: Maybe<Scalars['date']>;
-  received_date: Scalars['date'];
+  received_date?: Maybe<Scalars['date']>;
   order_id?: Maybe<Scalars['Int']>;
 }>;
 
@@ -27185,7 +27187,7 @@ export type UpdateShipmentMutationVariables = Exact<{
   id: Scalars['Int'];
   tracking_id: Scalars['String'];
   carrier_vendor_id: Scalars['Int'];
-  received_date: Scalars['date'];
+  received_date?: Maybe<Scalars['date']>;
   shipped_date?: Maybe<Scalars['date']>;
   vendor_invoice_id?: Maybe<Scalars['String']>;
   order_id?: Maybe<Scalars['Int']>;
@@ -29792,7 +29794,7 @@ export type SearchShipmentsQueryHookResult = ReturnType<typeof useSearchShipment
 export type SearchShipmentsLazyQueryHookResult = ReturnType<typeof useSearchShipmentsLazyQuery>;
 export type SearchShipmentsQueryResult = ApolloReactCommon.QueryResult<SearchShipmentsQuery, SearchShipmentsQueryVariables>;
 export const InsertShipmentDocument = gql`
-    mutation InsertShipment($vendor_invoice_id: String, $tracking_id: String!, $carrier_vendor_id: Int!, $shipped_date: date, $received_date: date!, $order_id: Int) {
+    mutation InsertShipment($vendor_invoice_id: String, $tracking_id: String!, $carrier_vendor_id: Int!, $shipped_date: date, $received_date: date, $order_id: Int) {
   shipment: insert_shipment_one(object: {vendor_invoice_id: $vendor_invoice_id, tracking_id: $tracking_id, carrier_vendor_id: $carrier_vendor_id, shipped_date: $shipped_date, received_date: $received_date, order_id: $order_id}) {
     ...basicShipmentFields
   }
@@ -29842,7 +29844,7 @@ export type InsertShipmentMutationHookResult = ReturnType<typeof useInsertShipme
 export type InsertShipmentMutationResult = ApolloReactCommon.MutationResult<InsertShipmentMutation>;
 export type InsertShipmentMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertShipmentMutation, InsertShipmentMutationVariables>;
 export const UpdateShipmentDocument = gql`
-    mutation UpdateShipment($id: Int!, $tracking_id: String!, $carrier_vendor_id: Int!, $received_date: date!, $shipped_date: date, $vendor_invoice_id: String, $order_id: Int) {
+    mutation UpdateShipment($id: Int!, $tracking_id: String!, $carrier_vendor_id: Int!, $received_date: date, $shipped_date: date, $vendor_invoice_id: String, $order_id: Int) {
   shipment: update_shipment_by_pk(pk_columns: {id: $id}, _set: {vendor_invoice_id: $vendor_invoice_id, tracking_id: $tracking_id, carrier_vendor_id: $carrier_vendor_id, shipped_date: $shipped_date, received_date: $received_date, order_id: $order_id}) {
     ...basicShipmentFields
   }
@@ -30987,4 +30989,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-07-11T10:40:35-06:00
+// graphql typescript defs generated on 2020-07-12T09:41:52-06:00
