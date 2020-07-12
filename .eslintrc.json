@@ -58,7 +58,7 @@
                     "requireLast": true
                 }
             }
-        ]
+        ],
         // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/function-component-definition.md
         //     "react/function-component-definition": [
         //         "error", 
@@ -67,10 +67,10 @@
         //             "unnamedComponents": "arrow-function"
         //         }
         //     ],
-        //     "quote-props": [
-        //         "error",
-        //         "consistent-as-needed"
-        //     ],
+            "quote-props": [
+                "error",
+                "consistent-as-needed"
+            ],
         //     "max-statements": [
         //         "warn",
         //         10,
@@ -95,10 +95,10 @@
         //             "classes": "always"
         //         }
         //     ],
-        //     "space-in-parens": [
-        //         "error",
-        //         "always"
-        //     ],
+            "space-in-parens": [
+                "warn",
+                "always"
+            ],
         //     "no-console": [ "off" ],
         //     // note you must disable the base rule as it can report incorrect errors
         //     "no-use-before-define": "off",
@@ -107,17 +107,23 @@
         //         "off"
         //     ],
         //     "id-length": [ "off" ],
-        //     "padded-blocks": [
-        //         "error", 
-        //         {
-        //             "blocks": "never",
-        //             "classes": "always",
-        //             "switches": "never"
-        //         },
-        //         {
-        //             "allowSingleLineBlocks": true
-        //         }
-        //     ]
+            "padded-blocks": [
+                "warn", 
+                {
+                    "blocks": "never",
+                    "classes": "always",
+                    "switches": "never"
+                },
+                {
+                    "allowSingleLineBlocks": true
+                }
+            ],
+            // https://eslint.org/docs/rules/no-mixed-spaces-and-tabs
+            "no-mixed-spaces-and-tabs": "error",
+            // https://eslint.org/docs/rules/no-mixed-operators
+            "no-mixed-operators": ["error", {
+                    "allowSamePrecedence": true
+                }]
         // }
     } // end rules
 } // end

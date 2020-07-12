@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Divider, Button, Modal, message, Input, DatePicker, Select } from 'antd';
+import { Form, Divider, Button, Modal, message, Input, DatePicker } from 'antd';
 /**
  * // TODO: consider removing momentjs for a (SMALLER) alternative
  * antd - remove momentjs
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetOrderQuery, GetOrderQueryVariables, useGetOrderQuery, useInsertOrderMutation, InsertOrderMutationVariables, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, UpdateOrderMutationVariables, GetOrdersDocument, Order as OrderGql, Shipment, useUpdateOrderItemMutation } from '~lib/types/graphql';
+import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, useUpdateOrderItemMutation } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject, transparentLog, Unpacked, propValuesEqual } from '~lib/UtilityFunctions';
 import { PlusOutlined, MinusCircleOutlined, StopOutlined, CheckCircleOutlined } from '@ant-design/icons';
@@ -21,9 +21,9 @@ import TextArea from 'antd/lib/input/TextArea';
 import { CurlyBracesIcon } from '../../../styles/icon';
 import { JsonModal } from '~components/Shared/JsonModal';
 import { encapsulateChildObjectsIntoDataProp } from '~lib/FormHelpers';
-import { ManufacturerSelect } from '~components/Manufacturer/ManufacturerSelect';
 
 import { Callbacks } from 'rc-field-form/lib/interface';
+import { ShipmentSelectValue, ShipmentAdditionalOption } from '~components/Shipment/ShipmentSelect';
 
 
 type OrderFormModalProps = Intersection<{
@@ -48,7 +48,16 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
     const [ modal, setModal ] = useState<React.ReactElement | null>( null );
     // URGENT: need to track shipments (see below)
     /** track shipments used and new shipments created by any OrderItem for default use in subsequent order items */
-    const [ shipments, setShipments ] = useState<Shipment[]>( [] );
+    const [ shipments, setShipments ] = useState<ShipmentAdditionalOption[]>( [
+        // {
+        //     temp_id: 'zero',
+        //     carrier_vendor_id: 1,
+        //     received_date: undefined,
+        //     shipped_date: undefined,
+        //     tracking_id: "ff",
+        //     vendor_invoice_id: undefined
+        // }
+    ] );
 
     const [ runGetOrder, lookupResult ] = useGetOrderLazyQuery( {
         partialRefetch: true,
@@ -57,7 +66,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
 
     //edit
     const [ updateOrder, updateOrderResult ] = useUpdateOrderMutation();
-    const [ updateOrderItem, updateOrderItemResult ] = useUpdateOrderItemMutation();
+    const [ updateOrderItem ] = useUpdateOrderItemMutation();
     // add new
     const [ insertOrder, insertOrderResult ] = useInsertOrderMutation( {
         refetchQueries: [
@@ -365,11 +374,20 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                                     <Form.Item
                                         {...field}
                                         // label="Item"
-                                        getValueFromEvent={ ( args ) => {
+                                        getValueFromEvent={ ( args: { shipment?: ShipmentSelectValue; } ) => {
                                             console.log( 'OrderFormModal getValueFromEvent (OrderFormModal.items)', { field, index, args } );
-                                            if ( ! ( args.shipment == null || 'id' in args.shipment )  ){
-                                                console.log( "OrderFormModal, new shipment detected", args.shipment );
-                                                setShipments( [ ...shipments, args.shipment] );
+                                            let shipment = args.shipment;
+                                            if ( shipment ){
+                                                if ( ! (  'id' in shipment  ) ){
+                                                    if ( 'carrier_vendor_id' in shipment ){
+                                                    console.log( "OrderFormModal, new shipment detected", shipment );
+                                                    let shipmentFiltered = filterObject( shipment, null, [ 'id' ] );
+                                                    // shipmentFiltered.carrier_vendor_id
+                                                    setShipments( [ shipmentFiltered ] );
+                                                        // setShipments( [ ...shipments, shipmentFiltered ] );
+
+                                                    }
+                                                }
                                             }
                                             return args;
                                         }}

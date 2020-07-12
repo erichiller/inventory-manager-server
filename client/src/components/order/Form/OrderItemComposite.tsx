@@ -2,13 +2,13 @@ import React from 'react';
 import { Input } from 'antd';
 import { OrderItem as OrderItemGql, Shipment, Maybe, Scalars } from '~lib/types/graphql';
 
-import { SubType, toMinimumFixed, PartialNullable } from '~lib/UtilityFunctions';
+import { SubType, toMinimumFixed, PartialNullable, transparentLog } from '~lib/UtilityFunctions';
 import { InputProps } from 'antd/lib/input';
 import { OrderItemSelect, OrderItemSelectSingleValue } from './OrderItemSelect';
 import { Integer } from '~lib/types/uint8';
 import { VendorItemSelect, VendorItemSelectValue } from '~components/Vendor/VendorItemSelect';
 import { ManufacturerItemSelect, ManufacturerItemSelectValue } from '~components/Manufacturer/ManufacturerItemSelect';
-import { ShipmentSelect, ShipmentSelectValue } from '~components/Shipment/ShipmentSelect';
+import { ShipmentSelect, ShipmentSelectValue, ShipmentAdditionalOption } from '~components/Shipment/ShipmentSelect';
 
 
 interface OrderItemInputValue extends PartialNullable<SubType<OrderItemGql, string | undefined | null | number>> {
@@ -36,7 +36,7 @@ interface OrderItemInputProps extends Omit<InputProps, 'value' | 'onChange'> {
     onChange?: ( item: Partial<OrderItemInputValue> ) => void;
     vendorId: Integer;
     /** Array of Shipments that have been created locally and not yet posted to GraphQL */
-    additionalShipmentOptions?: Shipment[];
+    additionalShipmentOptions?: ShipmentAdditionalOption[];
 }
 
 /**
@@ -128,13 +128,14 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = React.forwardRef( (
                 : { manufacturer_item: manufacturer_item, manufacturer_item_id: undefined } )
         } );
     };
-    const setShipment = ( shipment: Partial<ShipmentSelectValue> ) => {
-        console.log( { c: 'OrderItemInput', f: "setShipment", shipment } );
+    const setShipment = ( shipment: ShipmentSelectValue ) => {
         onChange( {
             ...props.value,
-            ...( shipment.id
+            ...transparentLog( { c: 'OrderItemInput', f: "setShipment", shipment },
+            ( shipment.id
                 ? { shipment_id: shipment.id, shipment: undefined }
                 : { shipment: shipment, shipment_id: undefined } )
+            )
         } );
     };
 

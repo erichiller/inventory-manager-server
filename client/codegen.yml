@@ -17,13 +17,25 @@ config:
     apolloReactComponentsImportFrom: "@apollo/react-components"
     apolloReactHocImportFrom: "@apollo/react-hoc"
     apolloReactHooksImportFrom: "@apollo/react-hooks"
+    AvoidOptionalsConfig: false
     transformUnderscore: true
+    # https://graphql-code-generator.com/docs/plugins/typescript
+    # Allow to override the type value of Maybe.
+    maybeValue: T | null | undefined
     namingConvention:
         typeNames: change-case#pascalCase
         enumValues: keep
     # globalNamespace: true
     # operationResultSuffix: "xxx"
     # withComponent: true
+    scalars:
+      numeric: number
+      bigint: number # while this should be type `bigint` hasura says its type `String` and the actual JSON is of type `number`
+      smallint: number
+      uint8: number
+      uuid: string
+      # DateTime: Date
+      # JSON: "{ [key: string]: any }"
     withComponent: false
     withResultType: true
     dedupeOperationSuffix: true

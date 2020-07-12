@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from 'antd';
+import { Form, Modal, message, Input, DatePicker } from 'antd';
 /**
  * // TODO: consider removing momentjs for a (SMALLER) alternative
  * antd - remove momentjs
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetShipmentQuery, GetShipmentQueryVariables, useGetShipmentQuery, useInsertShipmentMutation, InsertShipmentMutationVariables, useGetShipmentLazyQuery, useUpdateShipmentMutation, UpdateShipmentMutationVariables, GetShipmentDocument, Shipment as ShipmentGql, ShipmentInsertInput } from '~lib/types/graphql';
+import { useGetShipmentQuery, useInsertShipmentMutation, InsertShipmentMutationVariables, useGetShipmentLazyQuery, useUpdateShipmentMutation, UpdateShipmentMutationVariables, GetShipmentDocument, ShipmentInsertInput } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';
+import { QueryResultTypePlus, Intersection, PartialPartial } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
-import { ItemSelect } from '~components/Item/ItemSelect';
-import { ShipmentSelect } from './ShipmentSelect';
 import { PageSpin } from '~components/Shared/PageSpin';
-import { UrlSelect } from '~components/Shared/UrlInput';
-import TextArea from 'antd/lib/input/TextArea';
 import { VendorSelect } from '~components/Vendor/VendorSelect';
 import { OrderSelect } from '~components/Order/Form/OrderSelect';
 
@@ -31,14 +27,14 @@ type ShipmentFormModalProps = Intersection<{
     shipmentId?: null;
 }, {
     visibilityHandler: ( modal: React.ReactElement ) => void;
-    onFinish?: ( values: Partial<UpdateShipmentMutationVariables> ) => void;
+        onFinish?: ( values: PartialPartial<UpdateShipmentMutationVariables, 'id'> ) => void;
 },
 {
     excludeOrderInput?: null | undefined;
-    onChange?: ( shipment_item: ShipmentInsertInput ) => void;
+    onChange?: ( shipment_item: InsertShipmentMutationVariables ) => void;
 } | {
     excludeOrderInput: true;
-    onChange?: ( shipment_item: Exclude<ShipmentInsertInput, 'order_id'> ) => void;
+    onChange?: ( shipment_item: Exclude<InsertShipmentMutationVariables, 'order_id'> ) => void;
 }>;
 
 export const ShipmentFormModal: React.FC<ShipmentFormModalProps> = ( props ) => {
@@ -127,9 +123,7 @@ export const ShipmentFormModal: React.FC<ShipmentFormModalProps> = ( props ) => 
         props.visibilityHandler( null );
     };
 
-    const onFinish = ( values: {
-        [ name: string ]: any;
-    } ) => {
+    const onFinish = ( values: PartialPartial<UpdateShipmentMutationVariables, 'id'> ) => {
         console.log( { class: 'ShipmentEditModal', method: 'onFinish', values, shipment, formFieldValues: form.getFieldsValue() } );
         if ( props.onFinish ){
             console.log( { class: 'ShipmentEditModal', method: 'onFinish', event: 'calling props supplied onFinish()' } );
