@@ -1,8 +1,8 @@
 import React from 'react';
 import { Input } from 'antd';
-import { OrderItem as OrderItemGql } from '~lib/types/graphql';
+import { OrderItem as OrderItemGql, Shipment, Maybe, Scalars } from '~lib/types/graphql';
 
-import { SubType, toMinimumFixed } from '~lib/UtilityFunctions';
+import { SubType, toMinimumFixed, PartialNullable } from '~lib/UtilityFunctions';
 import { InputProps } from 'antd/lib/input';
 import { OrderItemSelect, OrderItemSelectSingleValue } from './OrderItemSelect';
 import { Integer } from '~lib/types/uint8';
@@ -11,17 +11,32 @@ import { ManufacturerItemSelect, ManufacturerItemSelectValue } from '~components
 import { ShipmentSelect, ShipmentSelectValue } from '~components/Shipment/ShipmentSelect';
 
 
-interface OrderItemInputValue extends Partial<SubType<OrderItemGql, string | number>> {
+interface OrderItemInputValue extends PartialNullable<SubType<OrderItemGql, string | undefined | null | number>> {
     vendor_item: VendorItemSelectValue;
     manufacturer_item: ManufacturerItemSelectValue;
     shipment: ShipmentSelectValue;
     item_id: number;
 }
 
+// let foo: SubType<OrderItemGql, Partial<string | undefined | null | number>>;
+// foo.i
+
+
+
+// interface fooI {
+//     prop1: string;
+//     prop2?: string;
+// }
+
+// let foo: SubType<fooI, string | undefined>;
+// foo.
+
 interface OrderItemInputProps extends Omit<InputProps, 'value' | 'onChange'> {
     value?: OrderItemInputValue;
-    onChange?: ( item: OrderItemInputValue ) => void;
+    onChange?: ( item: Partial<OrderItemInputValue> ) => void;
     vendorId: Integer;
+    /** Array of Shipments that have been created locally and not yet posted to GraphQL */
+    additionalShipmentOptions?: Shipment[];
 }
 
 /**
@@ -34,17 +49,29 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = React.forwardRef( (
 
     const setItemId = ( value: OrderItemSelectSingleValue ) => {
         console.log( { c: 'OrderItemInput', f: "setItem", value } );
+        // if ( value == null ){
+        //     onChange( {
+        //         ...props.value,
+        //         item_id: null,
+                
+        //     })
+        // }
         onChange( {
             ...props.value,
-            ...( typeof value === "number" ?
-                {
-                    item_id: value
-                } :
-                {
-                    item_id: value.item_id,
-                    manufacturer_item_id: value.manufacturer_item_id,
-                    vendor_item_id: value.vendor_item_id,
-                } )
+            ...( value == null ?
+                    {} :
+                    typeof value === "number" ?
+                        {
+                            item_id: value
+                        } :
+                        value.item_id ? 
+                            {
+                                item_id: value.item_id,
+                                manufacturer_item_id: value.manufacturer_item_id,
+                                vendor_item_id: value.vendor_item_id,
+                            } 
+                            : {}
+                )
         } );
     };
 
@@ -52,7 +79,7 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = React.forwardRef( (
         console.log( { c: 'OrderItemInput', f: "setQuantity", event_value: event.target.value } );
         onChange( {
             ...props.value,
-            quantity: parseInt(event.target.value)
+            quantity: parseInt( event.target.value )
         } );
     };
     const setSerialNo = ( event: React.ChangeEvent<HTMLInputElement> ) => {
@@ -66,21 +93,21 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = React.forwardRef( (
         console.log( { c: 'OrderItemInput', f: "setCostItem", event_value: event.target.value } );
         onChange( {
             ...props.value,
-            cost_item: parseFloat(event.target.value)
+            cost_item: parseFloat( event.target.value )
         } );
     };
     const setCostTax = ( event: React.ChangeEvent<HTMLInputElement> ) => {
         console.log( { c: 'OrderItemInput', f: "setCostTax", event_value: event.target.value } );
         onChange( {
             ...props.value,
-            cost_tax: parseFloat(event.target.value)
+            cost_tax: parseFloat( event.target.value )
         } );
     };
     const setCostTotal = ( event: React.ChangeEvent<HTMLInputElement> ) => {
         console.log( { c: 'OrderItemInput', f: "setCostTotal", event_value: event.target.value } );
         onChange( {
             ...props.value,
-            cost_total: parseFloat(event.target.value)
+            cost_total: parseFloat( event.target.value )
         } );
     };
     const setVendorItem = ( vendor_item: Partial<VendorItemSelectValue> ) => {
@@ -120,7 +147,11 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = React.forwardRef( (
                     onChange={setItemId}
                     suffixIcon={props.suffix}
                     vendorId={props.vendorId}
-                    defaultValue={{ id: props.value?.item_id, vendor_item_id: props.value?.vendor_item_id, manufacturer_item_id: props.value?.manufacturer_item_id }}
+                    defaultValue={ props.value && props.value.item_id ? { 
+                        id: props.value?.item_id, 
+                        vendor_item_id: props.value?.vendor_item_id, 
+                        manufacturer_item_id: props.value?.manufacturer_item_id 
+                    } : null}
                 />
 
                 <span id="ItemExtraInfo">
@@ -182,14 +213,13 @@ export const OrderItemInput: React.FC<OrderItemInputProps> = React.forwardRef( (
                     placeholder="total" />
             </span >
 
-            {/* TODO: Shipments created in one `order_item` for the form should be available to select within all order_items of the form */}
+            {/* URGENT: Shipments created in one `order_item` for the form should be available to select within all order_items of the form */}
             <ShipmentSelect
                 excludeOrderInput
+                additionalShipmentOptions={props.additionalShipmentOptions}
                 defaultValue={props.value?.shipment_id || props.value?.shipment}
                 onChange={setShipment} />
 
         </div>
     );
-
-
-});
+} );

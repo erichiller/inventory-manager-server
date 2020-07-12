@@ -4,7 +4,7 @@ import { Input, Select, Spin, Tooltip } from "antd";
 
 
 
-import { Intersection, is, parseIntSafe, flatArrayObjectProperty, QueryResultTypePlus, filterObject, transparentLog, lengthZeroArrayToNull } from "~lib/UtilityFunctions";
+import { Intersection, is, parseIntSafe, flatArrayObjectProperty, QueryResultTypePlus, filterObject, transparentLog, lengthZeroArrayToNull, PartialNullable } from "~lib/UtilityFunctions";
 import {
     useGetItemVariantsQuery, ItemInsertInput, useGetItemsByIdLazyQuery, useGetItemVariantByAttachedLazyQuery,
     useGetItemVariantByAttachedQuery
@@ -22,7 +22,7 @@ interface OptionT {
     vendor_id?: number | null;
     manufacturer_id?: number | null;
 }
-type TOrderItemSelectValue = number | Partial<QueryResultTypePlus<typeof useGetItemVariantByAttachedQuery>>;
+type TOrderItemSelectValue = number | PartialNullable<QueryResultTypePlus<typeof useGetItemVariantByAttachedQuery>>;
 
 export type OrderItemSelectMultipleValue = Array<TOrderItemSelectValue>;
 /** item_id */
@@ -61,10 +61,11 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
         let _defaultIds: number[] = [];
         let _defaultObjects: Exclude<TOrderItemSelectValue, number>[] = [];
         values.forEach( value => {
-            if ( typeof value === "number" ) {
+            if ( value == null ) {
+                //nothing
+            } else if ( typeof value === "number" ) {
                 _defaultIds.push( value );
-            }
-            if ( typeof value === 'object' && 'id' in value ) {
+            } else if ( typeof value === 'object' && 'id' in value ) {
                 _defaultIds.push( value.id );
                 _defaultObjects.push( value );
             }
@@ -96,11 +97,11 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                     item_id: defaultIds,
                     manufacturer_item_id: lengthZeroArrayToNull( flatArrayObjectProperty( defaultObjects, 'manufacturer_item_id' ) ),
                     vendor_item_id: lengthZeroArrayToNull( flatArrayObjectProperty( defaultObjects, 'vendor_item_id' ) ),
-                    vendor_id: lengthZeroArrayToNull( 
-                        transparentLog( 
-                            { c: "OrderItemSelect", e: "flatArrayObjectProperty", }, 
+                    vendor_id: lengthZeroArrayToNull(
+                        transparentLog(
+                            { c: "OrderItemSelect", e: "flatArrayObjectProperty", },
                             flatArrayObjectProperty( defaultObjects, 'vendor_id' ) )
-                        ),
+                    ),
                     limit: 1
                 }
             } );
@@ -206,24 +207,25 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
         return <Spin />;
     }
 
-    defaultItemQueryResult.data.item_variant.forEach( obj => {
-        console.log(
-            {
-                c: "OrderItemSelect",
-                e: "checking if need to change defaultIds"
-            }, obj );
+    if ( defaultItemQueryResult.data?.item_variant ) {
+        defaultItemQueryResult.data.item_variant.forEach( obj => {
+            console.log(
+                {
+                    c: "OrderItemSelect",
+                    e: "checking if need to change defaultIds"
+                }, obj );
             // since the defaultItemQueryResult loads later, the defaultIds must be set to its result
-        if ( ! defaultIds.includes(obj.id) ){
-            defaultIds = [obj.id];
-        } 
-    });
+            if ( !defaultIds.includes( obj.id ) ) {
+                defaultIds = [ obj.id ];
+            }
+        } );
+    }
     console.log(
         {
             c: "OrderItemSelect",
             e: "changing defaultIds"
         }, defaultIds );
 
-    // KILL: debug with  /(OrderItemSelect|OrderItemInput)/
     return (
         <div className={`OrderItemSelect ${ props.className ?? '' }`}>
             <Select

@@ -160,15 +160,15 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             } );
             formFieldValues.order_items.forEach( order_item => {
                 let existingOrderItem: Unpacked<typeof order['order_items']> = order.order_items.find( el => el.id === order_item.id );
-                if ( ! propValuesEqual(existingOrderItem, order_item) ){
-                    console.log(`update order_item with id=${order_item.id}`);
-                    updateOrderItem({
+                if ( ! propValuesEqual( existingOrderItem, order_item ) ){
+                    console.log( `update order_item with id=${order_item.id}` );
+                    updateOrderItem( {
                         variables: {
                             ...filterObject( order_item, null, [ '__typename' ] )
                         }
-                    });
+                    } );
                 }
-            });
+            } );
         } else {
             let formFieldValues = encapsulateChildObjectsIntoDataProp(
                 form.getFieldsValue() as Exclude<OrderGql, 'id'>
@@ -241,9 +241,8 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         initialValues = { placed_date: moment(), fulfilled_date: null, items: [] };
     }
 
-
     console.log( "initialValues", { order, initialValues: JSON.stringify( initialValues ) } );
-
+    
     return <Modal
         visible={true}
         title={`Order` + ( 'id' in initialValues ? ` #${ initialValues.id }` : '' )}
@@ -311,7 +310,6 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                     />
                 </Form.Item>
 
-
                 <Form.Item name="items_cost" label="Items Cost">
                     <Input type="number" step="0.01" min="0" prefix="$" />
                 </Form.Item>
@@ -346,6 +344,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                 </Form.Item>
 
                 {/* TODO: select payment_method_id */}
+                
 
 
 
@@ -360,12 +359,18 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                     {( fields, { add, remove } ) => {
                         return (
                             <React.Fragment>
+                                {/* URGENT: Shipments created in one `order_item` for the form should be available to select within all order_items of the form */}
+
                                 {fields.map( ( field, index ) => (
                                     <Form.Item
                                         {...field}
                                         // label="Item"
-                                        getValueFromEvent={( args ) => {
-                                            console.log( 'form getValueFromEvent (OrderFormModal.items)', { field, index, args } );
+                                        getValueFromEvent={ ( args ) => {
+                                            console.log( 'OrderFormModal getValueFromEvent (OrderFormModal.items)', { field, index, args } );
+                                            if ( ! ( args.shipment == null || 'id' in args.shipment )  ){
+                                                console.log( "OrderFormModal, new shipment detected", args.shipment );
+                                                setShipments( [ ...shipments, args.shipment] );
+                                            }
                                             return args;
                                         }}
                                         className="full-width-form-item"
@@ -375,6 +380,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                                     >
                                         <OrderItemInput placeholder="Search for Item"
                                             vendorId={form.getFieldValue( "vendor_id" )}
+                                            additionalShipmentOptions={shipments}
                                             suffix={
                                                 <MinusCircleOutlined
                                                     className="dynamic-delete-button"
