@@ -1,10 +1,10 @@
-import { Table, Divider } from 'antd';
-import * as React from 'react';
+import { Table, Divider } from '~components/Label/node_modules/antd';
+import * as React from '~components/Label/node_modules/react';
 import { useGetLabelsQuery, LabelSelectColumn, Label, GetLabelsQuery } from '~lib/types/graphql';
 import { LabelDrawModal } from '~components/Draw/LabelDrawModal';
 import { Item } from '~lib/Item';
 import { toTitleCase } from '~lib/UtilityFunctions';
-import { ColumnProps } from 'antd/lib/table';
+import { ColumnProps } from '~components/Label/node_modules/antd/lib/table';
 
 
 
