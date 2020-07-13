@@ -33,7 +33,7 @@
         // note you must disable the base rule as it can report incorrect errors
         "semi": "off",
         "@typescript-eslint/semi": [
-            "error",
+            "warn",
             "always"
             // ,
             // {
@@ -119,7 +119,7 @@
                 }
             ],
             // https://eslint.org/docs/rules/no-mixed-spaces-and-tabs
-            "no-mixed-spaces-and-tabs": "error",
+            "no-mixed-spaces-and-tabs": "warn",
             // https://eslint.org/docs/rules/no-mixed-operators
             "no-mixed-operators": ["error", {
                     "allowSamePrecedence": true

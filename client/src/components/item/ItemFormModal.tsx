@@ -24,14 +24,14 @@ type ItemFormModalProps = {
 export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
     const [ form ] = useForm();
     console.log( { class: 'ItemEditModal', msg: 'load FC', props } );
-    const [ formSubmitted, setFormSubmitted ] = useState<boolean>(false);
+    const [ formSubmitted, setFormSubmitted ] = useState<boolean>( false );
     const history = useHistory();
 
     const onFinish = ( values: {
         [ name: string ]: any;
     } ) => {
         console.log( { class: 'ItemEditModal', method: 'onFinish', values } );
-        setFormSubmitted(true);
+        setFormSubmitted( true );
     };
 
     const onFinishFailed = ( errorInfo ) => {
@@ -44,7 +44,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
 
     const mutationCompleteCallback: ( success: boolean ) => void = ( success: boolean ) => {
         if ( ! success ){
-            setFormSubmitted(false);
+            setFormSubmitted( false );
         } else {
             exitModal();
         }
@@ -53,9 +53,9 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
     const exitModal = () => {
         console.log( "cancelling modal, history.goBack, history is currently", { history } );
         history.goBack();
-    }
+    };
 
-    console.log( { item: props.item, "initialValues=": props.item ? props.item.simpleObject : {} });
+    console.log( { "item": props.item, "initialValues=": props.item ? props.item.simpleObject : {} } );
 
     return <Modal
         visible={true}
@@ -80,7 +80,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
             // wrapperCol={{span: 9 }}
             // name="item-add-edit-delete"
             onKeyPress={( event ) => {
-                console.log({ log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode });
+                console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode } );
                 if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
             }}
             initialValues={props.item?.editFormInitialValues}
@@ -104,9 +104,9 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
                 <Form.Item name="stock" label="Qty">
                     <QtyInput />
                 </Form.Item>
-                <Form.Item name="order" label="Order">
+                {/* <Form.Item name="order" label="Order">
                     <OrderSelect />
-                </Form.Item>
+                </Form.Item> */}
                 {/* TODO: then here have a type selector when in the generic add form */}
             </div>
             
