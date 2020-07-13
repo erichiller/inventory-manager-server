@@ -1,5 +1,5 @@
 import { uint8 } from "./types/uint8";
-import { buf2hex } from "./UtilityFunctions";
+import { buf2hex } from "~lib/UtilityFunctions";
 
 
 /**

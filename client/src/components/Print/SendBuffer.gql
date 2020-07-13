@@ -1,0 +1,10 @@
+mutation SendBuffer($buffer: [[[uint8]]]!) {
+    putLabelMonochromeBuffer(imageBuffer: $buffer) {
+        result
+    }
+}
+# mutation SendBuffer ($buffer: [[[Int]]]) {
+#   putLabelMonochromeBuffer(imageBuffer: $buffer)
+# }
+
+# [[[256,0,256,0,256],[0,256,0,256,0]]]

@@ -9,8 +9,13 @@ import { Item } from "./Item";
 import bwipjs from 'bwip-js';
 import { DrawingSVG } from './BwipJsSvg';
 import { message, Alert } from 'antd';
-import { enumerable } from './UtilityFunctions';
+// import { enumerable } from '~lib/UtilityFunctions';
 
+function enumerable ( value: boolean ) {
+    return function ( target: any, propertyKey: string, descriptor: PropertyDescriptor ) {
+        descriptor.enumerable = value;
+    };
+}
 
 
 

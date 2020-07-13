@@ -36,17 +36,6 @@ export interface ShipmentAdditionalOption extends Omit<ShipmentSelectValueObject
     // id: string;
     // temp_id?: string;
 }
-// interface ShipmentAdditionalOptionNormalized extends Omit<ShipmentAdditionalOption, 'id'> {
-//     id: string | number;
-// }
-
-
-let foo: ShipmentSelectValue;
-if ( 'carrier_vendor_id' in foo ){
-foo.carrier_vendor_id;
-}
-
-// let sao: 
 
 
 

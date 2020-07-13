@@ -15,7 +15,7 @@ import { apolloClient } from '../../index';
 import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { makeColumn } from "../UtilityFunctions";
+import { makeColumn } from "~lib/UtilityFunctions";
 import { FormMutationHandler } from "../Item/Item";
 import { IconComponentT } from "~lib/types/common";
 import { ShopOutlined, WarningOutlined } from "@ant-design/icons";

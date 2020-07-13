@@ -1,0 +1,49 @@
+{
+    "$schema": "./ScrewSizeOptions.schema.json",
+    "iso": {
+        "m0.25": {
+            "pitch": {
+                "0.075": {
+                    "label": "wrong", // should error
+
+                    "tolerance": {
+                        "6g": {
+                            "major_diameter": {
+                                "max": 0.250,
+                                "min": 0.235
+                            },
+                            "pitch_diameter": {
+                                "max": 0.201,
+                                "min": 0.187
+                            },
+                            "minor_diameter": {
+                                "max": 0.160,
+                                "min": 0.140
+                            }
+                        },
+                        "4g6g": {
+                            "major_diameter": {
+                                "max": 0.250,
+                                "min": 0.235
+                            },
+                            "pitch_diameter": {
+                                "max": 0.201,
+                                "min": 0.193
+                            },
+                            "minor_diameter": {
+                                "max": 0.160,
+                                "min": 0.152
+                            }
+                        }
+                    }
+                },
+                "q": {} // should error
+            },
+            "hardness": {
+                "grade_8": {}
+            },
+            "someinvalidproperty": false // should error
+        }
+
+    }
+}
