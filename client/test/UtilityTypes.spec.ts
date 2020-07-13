@@ -125,4 +125,4 @@ let stringKeys1: StringKeys<StringKeysTestInterface> = 'prop1';
 let stringKeys3: StringKeys<StringKeysTestInterface> = 'prop3';
 
 
-test( 'if the file compiled, the type checking tests are good', () => true);
+test( 'if the file compiled, the type checking tests are good', () => {expect( true ).toEqual( true ); } );

@@ -1,0 +1,401 @@
+fragment basicOrderFields on order {
+    id
+    vendor_order_id
+    url
+    total_cost
+    tax_cost
+    pon
+    placed_date
+    payment_method_id
+    items_cost
+    fulfilled_date
+}
+fragment objectOrderFields on order {
+    vendor {
+        ...basicVendorFields
+    }
+}
+
+fragment basicOrderItemFields on order_item {
+    id
+    cost_item
+    cost_tax
+    cost_total
+    item_id
+    shipment_id
+    vendor_item_id
+    serial_no
+    quantity
+    order_id
+    manufacturer_item_id
+    # cost_item: numeric
+    # cost_tax: numeric
+    # cost_total: numeric
+    # id: Int!
+    # item: item! # An object relationship
+    # item_id: Int!
+    # manufacturer_item: manufacturer_item # An object relationship
+    # manufacturer_item_id: Int
+    # link to manufacturer item, which in turn links to item
+    # order: order! # An object relationship
+    # order_id: Int!
+    # quantity: numeric
+    # serial_no: String # individual items unique id (as provided by manufacturer)
+    # shipment: shipment # An object relationship
+    # shipment_id: Int
+    # vendor_item: vendor_item # An object relationship
+    # vendor_item_id: Int
+}
+
+fragment objectItemVariantFields on item_variant {
+    id
+    item_id
+    item {
+        id
+        __typename
+        class
+    }
+    name: object(path: "name")
+    object
+    vendor_item_id
+    vendorItem {
+        vendor_sku
+    }
+    manufacturerItem {
+        id
+        description
+        manufacturer_product_id
+        manufacturer_product_name
+        manufacturer_product_series
+    }
+    vendor_id
+    vendor {
+        id
+        name
+        url
+    }
+    manufacturer_item_id
+    manufacturer {
+        id
+        name
+        url
+    }
+}
+
+query GetOrdersByDateRange($date_start_gte: date, $date_end_lte: date) {
+    order(
+        where: { placed_date: { _gte: $date_start_gte, _lte: $date_end_lte } }
+    ) {
+        ...basicOrderFields
+        ...objectOrderFields
+    }
+}
+
+query GetOrders {
+    order(order_by: { placed_date: desc }) {
+        ...basicOrderFields
+        ...objectOrderFields
+    }
+}
+
+query GetOrder($id: Int!) {
+    order: order_by_pk(id: $id) {
+        vendor_order_id
+        vendor_id
+        url
+        total_cost
+        tax_cost
+        pon
+        placed_date
+        payment_method_id
+        items_cost
+        id
+        fulfilled_date
+        order_items {
+            id
+            cost_item
+            cost_tax
+            cost_total
+            item_id
+            manufacturer_item_id
+            order_id
+            quantity
+            serial_no
+            shipment_id
+            vendor_item_id
+        }
+        order_items_aggregate {
+            aggregate {
+                count
+            }
+        }
+        vendor {
+            id
+            account_id
+            name
+            url
+        }
+        shipments(distinct_on: id, limit: 10, offset: 10) {
+            id
+            order_id
+            received_date
+            shipped_date
+            carrier_vendor_id
+            carrier {
+                id
+                name
+                url
+            }
+            tracking_id
+            vendor_invoice_id
+        }
+
+        shipments_aggregate {
+            aggregate {
+                count
+            }
+        }
+    }
+}
+
+mutation InsertOrder(
+    # $id: Int
+    $fulfilled_date: date
+    $order_items: order_item_arr_rel_insert_input
+    $items_cost: numeric
+    $payment_method: payment_method_obj_rel_insert_input
+    $payment_method_id: Int
+    $placed_date: date
+    $pon: String
+    $shipments: shipment_arr_rel_insert_input
+    $tax_cost: numeric
+    $total_cost: numeric
+    $url: String
+    $vendor: vendor_obj_rel_insert_input
+    $vendor_id: Int
+    $vendor_order_id: String
+) {
+    order: insert_order_one (
+        object: {
+            order_items: $order_items # Array[object]
+            payment_method: $payment_method # object
+            shipments: $shipments # objects
+            vendor: $vendor # object
+            fulfilled_date: $fulfilled_date
+            items_cost: $items_cost
+            payment_method_id: $payment_method_id
+            placed_date: $placed_date
+            pon: $pon
+            tax_cost: $tax_cost
+            total_cost: $total_cost
+            url: $url
+            vendor_id: $vendor_id
+            vendor_order_id: $vendor_order_id
+        }
+    ) {
+        ...basicOrderFields
+        ...objectOrderFields
+    }
+}
+
+# mutation InsertOrder(
+#     # $id: Int
+#     $fulfilled_date: date
+#     $order_items: [order_item_insert_input!]!
+#     $items_cost: numeric
+#     $payment_method: payment_method_obj_rel_insert_input
+#     $payment_method_id: Int
+#     $placed_date: date
+#     $pon: String
+#     $shipments: shipment_arr_rel_insert_input
+#     $tax_cost: numeric
+#     $total_cost: numeric
+#     $url: String
+#     $vendor: vendor_obj_rel_insert_input
+#     $vendor_id: Int
+#     $vendor_order_id: String
+# ) {
+#     order: insert_order_one (
+#         object: {
+#             payment_method: $payment_method # objects
+#             shipments: $shipments # objects
+#             vendor: $vendor # object
+#             fulfilled_date: $fulfilled_date
+#             items_cost: $items_cost
+#             payment_method_id: $payment_method_id
+#             placed_date: $placed_date
+#             pon: $pon
+#             tax_cost: $tax_cost
+#             total_cost: $total_cost
+#             url: $url
+#             vendor_id: $vendor_id
+#             vendor_order_id: $vendor_order_id
+#             order_items: {
+#                 data: $order_items
+#                 # [
+#                 # {
+#                 #   vendor_item: {
+#                 #     data: {
+#                 #       id: 165
+#                 #       vendor_id: 1
+#                 #       vendor_sku: "qq"
+#                 #       item_id: 143
+#                 #       description: "vendor item existing insert / upsert"
+#                 #     }, 
+#                 #     on_conflict: {
+#                 #       constraint: vendor_item_pkey, 
+#                 #       update_columns: [id]
+#                 #     }
+#                 #   }
+#                 #   item_id: 143, 
+#                 #   quantity: 1
+#                 #   # order_id: 1
+#                 # }
+#                 # ]
+#             }
+#             # vendor_id: 1
+#             # vendor_order_id: "VENDOR_ORDER_ID_AAAA"
+#             # placed_date: "2020-06-26"
+#   }) {
+#     id
+#     order_items {
+#       id
+#       vendor_item {
+#         id
+#       }
+#     }
+#   }
+# }
+
+mutation UpdateOrder (
+    $id: Int!
+    $fulfilled_date: date
+    $items_cost: numeric
+    $payment_method_id: Int
+    $placed_date: date
+    $pon: String
+    $tax_cost: numeric
+    $total_cost: numeric
+    $url: String
+    $vendor_id: Int
+    $vendor_order_id: String
+) {
+    order: update_order_by_pk(
+    pk_columns: {
+        id: $id, 
+    }
+    _set: {
+        fulfilled_date: $fulfilled_date
+        items_cost: $items_cost
+        payment_method_id: $payment_method_id
+        placed_date: $placed_date
+        pon: $pon
+        tax_cost: $tax_cost
+        total_cost: $total_cost
+        url: $url
+        vendor_id: $vendor_id
+        vendor_order_id: $vendor_order_id
+    }
+    ) {
+        ...basicOrderFields
+        ...objectOrderFields
+    }
+}
+
+mutation DeleteOrder (
+$id: Int!
+) {
+    delete_order_by_pk(id: $id) {
+        ...basicOrderFields
+    }
+}
+
+
+
+###########
+## Items ##
+###########
+
+query GetItemVariants (
+    $query_text: String!
+    $prefer_vendor_id: Int
+) {
+    item_variant: search_item_variant(
+        args: {
+            query_text: $query_text
+        }
+        where: {
+            _or: [
+                {vendor_id: {_eq: $prefer_vendor_id}}
+                {vendor_id: {_is_null: true}}
+            ]
+        },
+        order_by: {
+            vendor_id: asc, 
+            manufacturer_id: asc, 
+            id: asc
+        }
+    ) {
+        ...objectItemVariantFields
+    }
+}
+
+query GetItemVariantByAttached(
+    $item_id: [Int!]
+    $manufacturer_item_id: [Int!]
+    $vendor_item_id: [Int!]
+    $vendor_id: [Int!]
+    $limit: Int
+) {
+    item_variant(
+        where: {
+            manufacturer_item_id: {_in: $manufacturer_item_id}, 
+            vendor_item_id: {_in: $vendor_item_id}, 
+            vendor_id: {_in: $vendor_id}, 
+            item_id: {_in: $item_id}
+        }
+        order_by: {
+            vendor_id: asc, 
+            manufacturer_id: asc, 
+            id: asc
+        }
+        limit: $limit
+    ) {
+        ...objectItemVariantFields
+    }
+}
+
+mutation UpdateOrderItem(
+    $id: Int!
+    $cost_item: numeric
+    $cost_tax: numeric
+    $cost_total: numeric
+    $item_id: Int
+    $manufacturer_item_id: Int
+    $order_id: Int
+    $quantity: numeric
+    $serial_no: String
+    $shipment_id: Int
+    $vendor_item_id: Int
+    
+) {
+    order_item: update_order_item_by_pk(
+        _set: {
+            cost_item: $cost_item
+            cost_tax: $cost_tax
+            cost_total: $cost_total
+            item_id: $item_id
+            manufacturer_item_id: $manufacturer_item_id
+            order_id: $order_id
+            quantity: $quantity
+            serial_no: $serial_no
+            shipment_id: $shipment_id
+            vendor_item_id: $vendor_item_id
+        }
+        pk_columns: {
+            id: $id
+        }
+    ) {
+        ...basicOrderItemFields
+    }
+}

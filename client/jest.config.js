@@ -4,19 +4,20 @@
 // };
 const { defaults } = require('jest-config');
 
+
 /** @typedef {import('ts-jest')} */
 /** @type {import('@jest/types').Config.InitialOptions} */
 
 // https://jestjs.io/docs/en/expect
 const config = {
+    // testEnvironment: 'jsdom',
     // [...]
     globals: {
         'ts-jest': {
             // testPathDirs: ['/test'],
             // preset: 'ts-jest',
-            preset: 'ts-jest/presets/js-with-ts',
-            testEnvironment: 'node',
-            tsconfig: './tsconfig.json',
+            // preset: 'ts-jest/presets/js-with-ts',
+            tsconfig: './test/tsconfig.spec.json',
             
         },
     },
@@ -34,6 +35,11 @@ const config = {
     //     './client'
     // ],
     coverageDirectory: "coverage",
+    collectCoverage: true,
+    transform: {
+        "^.+\\.tsx?$": "ts-jest"
+    },
+    // bail: true,
     testMatch: [
         // 'test/tests.ts',
         // "<rootDir>/**/*.ts",
@@ -41,6 +47,7 @@ const config = {
         // "<rootDir>/client/test/*.ts",
         // "<rootDir>/server/test/*.ts",
     ],
+    tes
     preset: 'ts-jest/presets/js-with-ts',
 };
 module.exports = config;

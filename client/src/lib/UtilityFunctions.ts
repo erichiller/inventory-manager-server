@@ -1,6 +1,6 @@
 import { Integer } from './types/uint8';
 import { Store } from 'antd/lib/form/interface';
-import { Item, ItemHardwareFastenerScrewMachine } from './Item';
+import { Item } from './Item';
 import { EnumUnitKeys, SubType, Unpacked, FilterFlags, StringKeys } from './types/UtilityTypes';
 import { EnumUnitEnum, Query, MutationRootInsertEnumItemCableConnectorArgs } from './types/graphql';
 import { ColumnProps } from 'antd/lib/table';

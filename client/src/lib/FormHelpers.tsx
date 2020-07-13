@@ -3,7 +3,7 @@ import { Tooltip } from "antd";
 import { EnumUnitEnum, InsertIconMutation } from "./types/graphql";
 import { EnumUnitKeys, TRecursiveDataWrap } from "./types/UtilityTypes";
 import moment from "moment";
-import { transparentLog } from "./UtilityFunctions";
+import { transparentLog } from "~lib/UtilityFunctions";
 
 
 interface FormIconTooltipProps {

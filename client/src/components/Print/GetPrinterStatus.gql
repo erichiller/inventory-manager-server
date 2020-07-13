@@ -1,0 +1,19 @@
+
+
+query GetPrinterStatus {
+  PrinterStatus {
+    labelType
+    heightInch
+    labelStatus {
+      mediaType
+      tapeColor
+      textColor
+      labelCharacteristic {
+        pinsRight
+        pinsPrint
+        pinsLeft
+        widthMillimeters
+      }
+    }
+  }
+}
