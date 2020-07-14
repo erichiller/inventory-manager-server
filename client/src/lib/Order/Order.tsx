@@ -20,7 +20,7 @@ import {
 import { Integer } from '../types/uint8';
 
 
-import { apolloClient } from '~/App';
+import { apolloClient } from '~/Apollo';
 import { message, Tooltip } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";

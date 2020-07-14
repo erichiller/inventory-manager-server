@@ -1,11 +1,11 @@
-// import { flatArrayObjectProperty } from "~lib/UtilityFunctions";
-
-// https://www.npmjs.com/package/jest-fetch-mock
-// api.test.ts
-
-// import fetch from 'node-fetch';
 import { mocked } from 'ts-jest/utils';
+import { enumerable, flatArrayObjectProperty } from "~lib/UtilityFunctions";
 
+/**
+ * https://jestjs.io/docs/en/expect
+ * https://jestjs.io/docs/en/configuration
+ * https://jestjs.io/docs/en/webpack
+ */
 
 
 global.fetch = jest.fn( () =>
@@ -19,42 +19,33 @@ beforeEach( () => {
     mocked( fetch ).mockClear();
 } );
 
-// import { QtyInput } from "~lib/Item/Common/QtyInput";
-// import { enumerable } from "~lib/UtilityFunctions";
 
-
-
-function enumerable ( value: boolean ) {
-    return function ( target: any, propertyKey: string, descriptor: PropertyDescriptor ) {
-        descriptor.enumerable = value;
-    };
-}
 
 
 
 let arr = [
-     {
-         propA: [ 1 , 2 , 3]
-     },
-     {
-         propA: 4
-     },
-     {
-         propA: [5 , 6]
-     }
+    {
+        propA: [ 1 , 2 , 3]
+    },
+    {
+        propA: 4
+    },
+    {
+        propA: [5 , 6]
+    }
 ];
 // should be `let test: number[]`
-// test( 'check that flatArrayObjectProperty output is correct', () => {
-//   expect( flatArrayObjectProperty( arr, 'propA' ) ).toBe( [1,2,3,4,5,6] );
-// } );
-
-// test( ' ', () => {
-//     expect( true ).toBe( true );
-// })
+test( 'check that flatArrayObjectProperty output is correct', () => {
+    let result = flatArrayObjectProperty( arr, 'propA' );
+    expect( Array.isArray( result ) ).toBe( true );
+    expect( typeof result[0] ).toBe( "number" );
+    expect( result ).toStrictEqual( [ 1, 2, 3, 4, 5, 6 ] );
+} );
 
 
 class TestClass {
 
+    // if there are additional problems with `@enumerable` see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Not_a_function
     @enumerable( true )
     get prop1(): string {
         return "hello";
@@ -69,7 +60,7 @@ test( ' ', () => {
 
 test( ' ', () => {
     expect( new TestClass().prop1 ).toBe( "hello" );
-} )
+} );
 
 
 

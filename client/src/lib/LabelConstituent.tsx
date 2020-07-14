@@ -19,9 +19,11 @@ export type FormatOptionsT = "bold" | "italic" | "underline";
 
 
 class LabelExportConstituents {
+
     texts: LabelText[];
     images: LabelImage[];
     qrs: LabelQR[];
+
 }
 
 interface LabelExportConstructorProps extends LabelExportConstituents {
@@ -35,6 +37,7 @@ interface LabelExportConstructorProps extends LabelExportConstituents {
 
 
 export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate' | 'item'>> {
+
     static DEFAULT_WIDTH = 300;
     id: UUIDStringT;
 
@@ -186,9 +189,11 @@ export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate' | 
     public isEqual ( comparisonLabel: LabelExport ): boolean {
         return this.content.qrs && this.content.texts === comparisonLabel.content.texts && this.content.qrs === comparisonLabel.content.qrs && this.content.images === comparisonLabel.content.images && this.imgData === comparisonLabel.imgData;
     }
+
 }
 
 class DrawAttrs {
+
     id: UUIDStringT;
     x: Integer;
     y: Integer;
@@ -203,6 +208,7 @@ class DrawAttrs {
 
 
 class LabelConstituent extends DrawAttrs {
+
     constructor ( options?: Partial<LabelConstituent> ) {
         super();
         if ( options && options.id ) {
@@ -252,13 +258,14 @@ class LabelConstituent extends DrawAttrs {
 
 
 export class LabelText extends LabelConstituent {
+
     text: string = "";
     _fontSize: Integer = 36; // default is 36
     bold: boolean;
     italic: boolean;
     underline: boolean;
 
-    @enumerable(true)
+    @enumerable( true )
     get fontSize (): Integer {
         return this._fontSize;
     }
@@ -275,7 +282,7 @@ export class LabelText extends LabelConstituent {
     get signature () {
         return `${ this.text }-${ this.fontSize }-${ this.bold }-${ this.italic }-${ this.underline }-${ this.x }-${ this.y }`;
     }
-    @enumerable(true)
+    @enumerable( true )
     get formatOptions (): FormatOptionsT[] {
         let opts: FormatOptionsT[] = [];
         if ( this.bold ) { opts.push( "bold" ); }
@@ -310,6 +317,7 @@ export class LabelText extends LabelConstituent {
     static is ( input: any ): input is LabelText {
         return LabelConstituent.is( input ) && ( "text" in input );
     }
+
 }
 
 
@@ -318,6 +326,7 @@ export class LabelText extends LabelConstituent {
  */
 
 export class LabelImage extends LabelConstituent {
+
     data: string;
     width: Integer;
     height: Integer;
@@ -339,11 +348,13 @@ export class LabelImage extends LabelConstituent {
     static is ( input: any ): input is LabelImage {
         return LabelConstituent.is( input ) && ( "data" in input ) && ( "width" in input ) && ( "height" in input );
     }
+
 }
 
 
 
 export class LabelQR extends LabelConstituent {
+
     // properties: [ Partial<keyof T> ];
     // get properties() {
     //     return this.
@@ -405,7 +416,7 @@ export class LabelQR extends LabelConstituent {
         // get svg(): HTMLImageElement {
         // console.group( 'DrawingSVG' );
         if ( ! this.encodedText ){
-            message.error('nothing is being encoded within the QR');
+            message.error( 'nothing is being encoded within the QR' );
             return;
         }
         let opts = {
@@ -417,8 +428,8 @@ export class LabelQR extends LabelConstituent {
             monochrome: true,
         };
         bwipjs.fixupOptions( opts );
-        const src = bwipjs.render( opts, new DrawingSVG( opts, bwipjs.FontLib ));
-        console.log({method: 'get svg ()', src, opts});
+        const src = bwipjs.render( opts, new DrawingSVG( opts, bwipjs.FontLib ) );
+        console.log( {method: 'get svg ()', src, opts} );
         // image.src = `data:image/svg+xml;base64,${ btoa(src) }`;
         
         // image.src = `data:image/svg+xml,${src}`;
@@ -436,7 +447,7 @@ export class LabelQR extends LabelConstituent {
     get encodedText (): string {
         let result: string = "";
         if ( this.properties ) {
-            if ( this.properties.length === 1 && this.properties.includes('url')){
+            if ( this.properties.length === 1 && this.properties.includes( 'url' ) ){
                 result = this.item['url'];
             } else {
                 result = this.properties.map( p => {
@@ -453,4 +464,5 @@ export class LabelQR extends LabelConstituent {
     static is ( input: any ): input is LabelQR {
         return LabelConstituent.is( input ) && ( "properties" in input ) && ( "canvasElement" in input ) && ( "dataURL" in input );
     }
+
 }
