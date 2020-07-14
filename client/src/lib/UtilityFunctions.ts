@@ -1,8 +1,6 @@
 import { Integer } from './types/uint8';
-import { Store } from 'antd/lib/form/interface';
-import { Item } from './Item';
-import { EnumUnitKeys, SubType, Unpacked, FilterFlags, StringKeys } from './types/UtilityTypes';
-import { EnumUnitEnum, Query, MutationRootInsertEnumItemCableConnectorArgs } from './types/graphql';
+import { EnumUnitKeys, SubType, Unpacked, StringKeys } from './types/UtilityTypes';
+import { EnumUnitEnum } from './types/graphql';
 import { ColumnProps } from 'antd/lib/table';
 import { LabeledValue } from 'antd/lib/select';
 
@@ -308,17 +306,6 @@ export function enumerable ( value: boolean ) {
     };
 }
 
-
-export function applyDefaults<T extends Item<any>> ( fieldValues: Store, defaults: Partial<T> ): Store {
-    fieldValues.default_fields = Array.isArray( fieldValues.default_fields ) ? fieldValues.default_fields : [];
-    Object.keys( defaults ).forEach( key => {
-        if ( !fieldValues[ key ] ) {
-            fieldValues[ key ] = defaults[ key ];
-            fieldValues.default_fields.push( key );
-        }
-    } );
-    return fieldValues;
-}
 
 
 /**
