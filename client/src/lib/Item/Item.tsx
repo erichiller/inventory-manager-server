@@ -53,6 +53,7 @@ export type CategoryHierarchyT = "Item"
     | "Washer";
 
 export class Item<T extends GenericItem> {
+
     __typename: string;
     id: Scalars[ 'Int' ];
 
@@ -84,7 +85,6 @@ export class Item<T extends GenericItem> {
     }
 
     static async ItemFactory<Q extends typeof GetItemDocument> ( variables: GetItemQueryVariables ): Promise<Item<any>> {
-
         return new Promise( ( resolve, reject ) => apolloClient.query<GetItemQuery, GetItemQueryVariables>( {
             query: GetItemDocument,
             variables: {
@@ -124,7 +124,7 @@ export class Item<T extends GenericItem> {
             return null;
         }
         let items: Item<any>[] = [];
-        ( Array.isArray( gqlResultData ) ? gqlResultData : [ gqlResultData ]).forEach( i => {
+        ( Array.isArray( gqlResultData ) ? gqlResultData : [ gqlResultData ] ).forEach( i => {
             let cls = this.getClassForType( i.class || i.__typename );
             if ( ! cls ) {
                 throw `class '${ i.class }' (__typename: '${ i.__typename }') is not registered in 'getClassForType', received '${ cls}' `;
@@ -133,7 +133,7 @@ export class Item<T extends GenericItem> {
             // console.log( { _cls: "Item", method: 'ItemsFactory', msg: "loading class of type", item_class: cls, item_class_name: cls.name } );
             items.push( new cls( i ) );
         } );
-        if ( ! Array.isArray( gqlResultData) ){
+        if ( ! Array.isArray( gqlResultData ) ){
             return items[0];
         }
         return items;
@@ -150,7 +150,7 @@ export class Item<T extends GenericItem> {
      */
     get simpleObject (): T {
         let simpleObject: {[key: string]: any; } = {};
-        for( let propertyKey in this){
+        for( let propertyKey in this ){
             simpleObject[propertyKey] = this[propertyKey];
         }
         return simpleObject as T;
@@ -169,7 +169,7 @@ export class Item<T extends GenericItem> {
             return "";
         }
     }
-    set name (nameVal: string) {
+    set name ( nameVal: string ) {
         this._name = nameVal;
     }
 
@@ -294,7 +294,7 @@ export class Item<T extends GenericItem> {
          */
         // return Item.icon;
         // return Item<T>.getClassForType( this._class ).icon;
-        return Item.getClassForType(this._class).icon;
+        return Item.getClassForType( this._class ).icon;
     }
     get iconMatches (): Icon[] {
         return null;
