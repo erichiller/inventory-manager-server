@@ -1,4 +1,4 @@
-import { TRecursiveDataWrap, StringKeys } from '~lib/types/UtilityTypes';
+import { TRecursiveDataWrap, StringKeys, SubType } from '~lib/types/UtilityTypes';
 // client\src\lib\types\UtilityTypes.ts
 interface Test1I {
     foo: 'hello';
@@ -125,6 +125,42 @@ let stringKeys1: StringKeys<StringKeysTestInterface> = 'prop1';
 let stringKeys3: StringKeys<StringKeysTestInterface> = 'prop3';
 
 
+let SubTypeTestVar: SubType<StringKeysTestInterface, string> = {
+    prop1: 'foo'
+};
+
+let SubTypeTestVarKeys: keyof typeof SubTypeTestVar = 'prop1';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 test( 'if the file compiled, the type checking tests are good', () => {
     expect( true ).toBe( true );
 });
+
+
+

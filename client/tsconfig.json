@@ -3,6 +3,7 @@
     "compilerOptions": {
         "allowJs": true, // new
         "allowSyntheticDefaultImports": true,
+        "alwaysStrict": true,
         "emitDecoratorMetadata": true,
         "esModuleInterop": true,
         "experimentalDecorators": true,
@@ -12,7 +13,7 @@
         // "jsx": "preserve", // this must be react unless using whatever create-react-app uses
         "module": "esnext",
         "moduleResolution": "node",
-        "noErrorTruncation": true,
+        // "noErrorTruncation": true,
         // "strictNullChecks": true,
         "outDir": "../dist/client/",
         "removeComments": false,
