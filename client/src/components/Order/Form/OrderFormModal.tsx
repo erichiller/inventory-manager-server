@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Divider, Button, Modal, message, Input, DatePicker } from 'antd';
+import { PlusOutlined, MinusCircleOutlined, StopOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { useHistory } from 'react-router-dom';
+import { useForm } from 'antd/lib/form/Form';
+import TextArea from 'antd/lib/input/TextArea';
 /**
  * // TODO: consider removing momentjs for a (SMALLER) alternative
  * antd - remove momentjs
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, useUpdateOrderItemMutation } from '~lib/types/graphql';
+import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, useUpdateOrderItemMutation, InsertOrderMutationVariables, ShipmentConstraint, ShipmentUpdateColumn } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject, transparentLog, Unpacked, propValuesEqual } from '~lib/UtilityFunctions';
-import { PlusOutlined, MinusCircleOutlined, StopOutlined, CheckCircleOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router-dom';
-import { useForm } from 'antd/lib/form/Form';
 import { VendorSelect } from '../../Vendor/VendorSelect';
 import moment from 'moment';
 import { OrderItemInput } from './OrderItemComposite';
 import { PageSpin } from '~components/Shared/PageSpin';
 import { Order } from '~lib/Order/Order';
-import TextArea from 'antd/lib/input/TextArea';
 import { CurlyBracesIcon } from '../../../styles/icon';
 import { JsonModal } from '~components/Shared/JsonModal';
 import { encapsulateChildObjectsIntoDataProp } from '~lib/FormHelpers';
@@ -48,7 +48,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
     const [ modal, setModal ] = useState<React.ReactElement | null>( null );
     // URGENT: need to track shipments (see below)
     /** track shipments used and new shipments created by any OrderItem for default use in subsequent order items */
-    const [ shipments, setShipments ] = useState<ShipmentAdditionalOption[]>( [
+    const [ shipments, setShipments ] = useState<ShipmentAdditionalOption[]>([
         // {
         //     temp_id: 'zero',
         //     carrier_vendor_id: 1,
@@ -57,22 +57,22 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         //     tracking_id: "ff",
         //     vendor_invoice_id: undefined
         // }
-    ] );
+    ]);
 
-    const [ runGetOrder, lookupResult ] = useGetOrderLazyQuery( {
+    const [ runGetOrder, lookupResult ] = useGetOrderLazyQuery({
         partialRefetch: true,
         returnPartialData: true,
-    } );
+    });
 
     //edit
     const [ updateOrder, updateOrderResult ] = useUpdateOrderMutation();
     const [ updateOrderItem ] = useUpdateOrderItemMutation();
     // add new
-    const [ insertOrder, insertOrderResult ] = useInsertOrderMutation( {
+    const [ insertOrder, insertOrderResult ] = useInsertOrderMutation({
         refetchQueries: [
             { query: GetOrderDocument }
         ]
-    } );
+    });
 
     /***************************************** Effects *****************************************/
 
@@ -85,15 +85,15 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             if ( !order && lookupResult.data?.order ) {
                 setOrder( lookupResult.data.order );
             } else if ( !order && orderId ) {
-                runGetOrder( {
+                runGetOrder({
                     variables: {
                         id: orderId
                     }
-                } );
+                });
             } else if ( !order ) {
                 console.debug( `No Order received, this must be a new Order entry.` );
             } else {
-                console.debug( `Order received in props not running GraphQL`, { order: props.order } );
+                console.debug( `Order received in props not running GraphQL`, { order: props.order });
             }
             if ( lookupResult.error ) {
                 message.error( lookupResult.error );
@@ -109,7 +109,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             }
         }
         console.debug( `no orderId present, not loading from GraphQL` );
-    }, [ orderId, lookupResult.data, lookupResult.error ] );
+    }, [ orderId, lookupResult.data, lookupResult.error ]);
 
     /**
      * Handle Mutations results
@@ -127,18 +127,18 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             exitModal();
             // };
         }
-    }, [ insertOrderResult, updateOrderResult ] ); // , insertManufacturerResult, deleteManufacturerResult
+    }, [ insertOrderResult, updateOrderResult ]); // , insertManufacturerResult, deleteManufacturerResult
 
     /***************************************************************************/
 
     const exitModal = () => {
-        console.log( "cancelling modal, history.goBack, history is currently", { history } );
+        console.log( "cancelling modal, history.goBack, history is currently", { history });
         props.visibilityHandler( null );
     };
     const onFinish = ( values: {
         [ name: string ]: any;
-    } ) => {
-        console.log( { class: 'OrderEditModal', method: 'onFinish', values, order, formFieldValues: form.getFieldsValue() } );
+    }) => {
+        console.log({ class: 'OrderEditModal', method: 'onFinish', values, order, formFieldValues: form.getFieldsValue() });
         if ( orderId ) {
             // set to InsertOrderMutationVariables rather than UpdateOrderMutationVariables here because thats what the form contains
             let formFieldValues = form.getFieldsValue() as Exclude<OrderGql, 'id'>;
@@ -161,30 +161,44 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             //         }
             //     } );
             // }
-            updateOrder( {
+            updateOrder({
                 variables: {
                     id: orderId,
-                    ...filterObject( formFieldValues, null, [ 'order_items' ] )
+                    ...filterObject( formFieldValues, null, [ 'order_items' ])
                 }
-            } );
+            });
             formFieldValues.order_items.forEach( order_item => {
                 let existingOrderItem: Unpacked<typeof order['order_items']> = order.order_items.find( el => el.id === order_item.id );
                 if ( ! propValuesEqual( existingOrderItem, order_item ) ){
                     console.log( `update order_item with id=${order_item.id}` );
-                    updateOrderItem( {
+                    updateOrderItem({
                         variables: {
-                            ...filterObject( order_item, null, [ '__typename' ] )
+                            ...filterObject( order_item, null, [ '__typename' ])
                         }
-                    } );
+                    });
                 }
-            } );
+            });
         } else {
-            let formFieldValues = encapsulateChildObjectsIntoDataProp(
+            let formFieldValues: InsertOrderMutationVariables = encapsulateChildObjectsIntoDataProp(
                 form.getFieldsValue() as Exclude<OrderGql, 'id'>
             );
-            console.log( { formFieldValues_encapsulated: JSON.stringify( formFieldValues, null, 2 ) } );
+            // formFieldValue.injectOnConflictGql( formFieldValues[,  );
+            console.log({ formFieldValues_encapsulated: JSON.stringify( formFieldValues, null, 2 ) });
+            if ( formFieldValues?.order_items?.data != null && Array.isArray( formFieldValues.order_items.data ) && formFieldValues.order_items.data.length > 0 ){
+                formFieldValues.order_items.data.map( v => {
+                    if ( v?.shipment != null ){
+                        v.shipment.on_conflict = {
+                            constraint: ShipmentConstraint.shipment_tracking_id_key,
+                            update_columns: [ ShipmentUpdateColumn.tracking_id ]
+                        };
+                    }
+                    return {
+                        ...v,
+                    };
+                });
+            }
             if ( formFieldValues ) {
-                insertOrder( {
+                insertOrder({
                     variables: {
                         ...formFieldValues
                         // ...filterObject( formFieldValues, null, [ 'manufacturer' ] ),
@@ -200,7 +214,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                     refetchQueries: [
                         { query: GetOrdersDocument }
                     ]
-                } );
+                });
             } else {
                 console.warn( "invalid form data, can not insert order" );
             }
@@ -209,11 +223,11 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
 
 
     const onFinishFailed: Callbacks['onFinishFailed'] = ( errorInfo ) => {
-        console.error( { class: 'OrderEditModal', method: 'onFinishFailed', errorInfo } );
+        console.error({ class: 'OrderEditModal', method: 'onFinishFailed', errorInfo });
     };
 
     const onFieldsChange = ( changedFields, values ) => {
-        console.log( { class: 'OrderEditModal', method: 'onFieldsChange', changedFields, values } );
+        console.log({ class: 'OrderEditModal', method: 'onFieldsChange', changedFields, values });
     };
 
     if ( !order && orderId ) {
@@ -234,7 +248,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                 'fulfilled_date',
                 'placed_date'
             ].includes( key ) ) {
-                initialValues[ key ] = moment( order[ key ] ? transparentLog( { orderKey: `order[${ key }]=${ order[ key ] }` }, order[ key ] ) : null );
+                initialValues[ key ] = moment( order[ key ] ? transparentLog({ orderKey: `order[${ key }]=${ order[ key ] }` }, order[ key ]) : null );
             } else {
                 // default
                 initialValues[ key ] = order[ key ];
@@ -250,14 +264,14 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         initialValues = { placed_date: moment(), fulfilled_date: null, items: [] };
     }
 
-    console.log( "initialValues", { order, initialValues: JSON.stringify( initialValues ) } );
+    console.log( "initialValues", { order, initialValues: JSON.stringify( initialValues ) });
     
     return <Modal
         visible={true}
         title={`Order` + ( 'id' in initialValues ? ` #${ initialValues.id }` : '' )}
         width={650}
         onOk={e => {
-            console.log( { class: 'OrderEditModal', method: 'onOk', e, values: form.getFieldsValue() } );
+            console.log({ class: 'OrderEditModal', method: 'onOk', e, values: form.getFieldsValue() });
             form.submit();
         }}
         onCancel={ ( _ ) => exitModal()}
@@ -288,7 +302,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             wrapperCol={{ span: 16 }}
             // name="Order-add-edit-delete"
             onKeyPress={( event ) => {
-                console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode } );
+                console.log({ log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode });
                 if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
             }}
             initialValues={initialValues}
@@ -365,7 +379,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                 {/* <OrderItemInput />
                 </Form.Item> */}
                 <Form.List name="order_items">
-                    {( fields, { add, remove } ) => {
+                    {( fields, { add, remove }) => {
                         return (
                             <React.Fragment>
                                 {/* URGENT: Shipments created in one `order_item` for the form should be available to select within all order_items of the form */}
@@ -374,18 +388,17 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                                     <Form.Item
                                         {...field}
                                         // label="Item"
-                                        getValueFromEvent={ ( args: { shipment?: ShipmentSelectValue; } ) => {
-                                            console.log( 'OrderFormModal getValueFromEvent (OrderFormModal.items)', { field, index, args } );
+                                        getValueFromEvent={ ( args: { shipment?: ShipmentSelectValue; }) => {
+                                            console.log( 'OrderFormModal getValueFromEvent (OrderFormModal.items)', { field, index, args });
                                             let shipment = args.shipment;
                                             if ( shipment ){
                                                 if ( ! (  'id' in shipment  ) ){
                                                     if ( 'carrier_vendor_id' in shipment ){
                                                     console.log( "OrderFormModal, new shipment detected", shipment );
-                                                    let shipmentFiltered = filterObject( shipment, null, [ 'id' ] );
+                                                    let shipmentFiltered = filterObject( shipment, null, [ 'id' ]);
                                                     // shipmentFiltered.carrier_vendor_id
-                                                    setShipments( [ shipmentFiltered ] );
+                                                    setShipments([ shipmentFiltered ]);
                                                         // setShipments( [ ...shipments, shipmentFiltered ] );
-
                                                     }
                                                 }
                                             }

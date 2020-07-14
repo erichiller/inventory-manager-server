@@ -519,10 +519,6 @@ export function flatArrayObjectProperty<T extends SubType<T, string>, K extends 
     return ret;
 }
 
-
-
-
-
 /** check if the values in a equal the values in b */
 export function propValuesEqual ( a: object | Array<any>, b: object | Array<any> ): boolean {
     for ( let i in a ){
@@ -532,3 +528,55 @@ export function propValuesEqual ( a: object | Array<any>, b: object | Array<any>
     }
     return true;
 }
+
+// export type WithOnConflict<T extends object, CONSTRAINT extends string, UPDATE extends string> = T & { 
+//     on_conflict: {
+//         constraint: CONSTRAINT;
+//         update: UPDATE;
+//     };
+// };
+// export type OnConflictInjectedDataGql<
+//     T extends object,
+//     P extends keyof T, 
+//     CONSTRAINT extends string, 
+//     UPDATE extends string
+// > = 
+//     T[P] extends object ?
+//     Omit<T, P> & WithOnConflict<T[P], CONSTRAINT, UPDATE>
+//     : T; 
+
+
+// export function injectOnConflictGql<T extends object, P extends keyof T, C extends string, U extends string>( 
+//     obj: T, 
+//     prop: P, 
+//     constraint: C, 
+//     update_column: U 
+// ): OnConflictInjectedDataGql<T, P, C, U> {
+//     if ( typeof obj[prop] !== "object" ) {
+//         throw TypeError( `property ${prop} of object is not an object, it is of type ${typeof obj[prop]}` );
+//     }
+//     obj[prop] = {
+//         ...obj[prop],
+//         on_conflict: {
+//             constraint: constraint,
+//             update_columns: update_column
+//         }
+//     };
+//     return obj as OnConflictInjectedDataGql<T, P, C, U>;
+// }
+
+
+// type DataObjectT<T> = 
+//     T extends Array<{ data: infer U}> ? 
+
+// Unpacked<T> =
+//     T extends (infer U)[] ? U :
+//     T extends (...args: any[]) => infer U ? U :
+//     T extends Promise<infer U> ? U :
+//     T;
+
+// export function injectOnConflictRecurringGql<T extends Array<{data: U; }>, U extends object>( arr: T, subObjProp: keyofconflictConstraint: string, conflictColumn: keyof U ){
+//     if ( ! Array.isArray(obj) || obj)
+
+
+// }

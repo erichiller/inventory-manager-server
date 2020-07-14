@@ -95,6 +95,9 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
         // skip: state.loading
     } );
 
+    // track shipment IDs added to options to prevent duplicates
+    let shipmentOptionIds: Array< string | number > = [];
+
     // function normalizeAdditionalShipmentOptions ( shipmentArray: ShipmentAdditionalOption[] ): ShipmentAdditionalOptionNormalized[] {
     //     let options: ShipmentAdditionalOptionNormalized[] = [];
     //     shipmentArray.forEach( s => {
@@ -122,9 +125,15 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                     ...additionalShipmentOptions,
                     // ...normalizeAdditionalShipmentOptions( additionalShipmentOptions ),
                     ...arr
-                ].map( ( v ) => {
+                ].filter( v => {
+                    let id = 'id' in v ? v.id : v.tracking_id;
+                    let found = shipmentOptionIds.includes( id );
+                    shipmentOptionIds.push( id );
+                    return ! found;
+                } ).map( ( v ) => {
                     let CarrierIcon: IconComponentT;
                     let carrier: Vendor;
+                    let id = 'id' in v ? v.id : v.tracking_id;
                     if ( v && 'carrier' in v ) {
                         carrier = new Vendor( v.carrier );
                         CarrierIcon = carrier.icon;
@@ -136,8 +145,8 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                         CarrierIcon = () => <FileUnknownOutlined className="CarrierIcon" />;
                     }
                     return {
-                        id: 'id' in v ? v.id : v.tracking_id,
-                        value: 'id' in v ? v.id : v.tracking_id,
+                        id: id,
+                        value: id,
                         label: <span className="ShipmentOption">
                             <CarrierIcon />
                             {/* <span>{v.shipment.name}</span> */}

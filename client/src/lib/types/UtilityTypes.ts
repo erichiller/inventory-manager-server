@@ -123,7 +123,6 @@ export type SubType<Base, Condition> =
 
 
 
-
 /**
  * type of object and array wrapped in `{data: obj | array}`
  * @see {encapsulateChildObjectsIntoDataProp}
@@ -137,7 +136,14 @@ export type TRecursiveDataWrap<Base> =
                     // ? { data: Base[Key]} 
                     ? { data: Array<TRecursiveDataWrap<Unpacked<Base[Key]>>>;}
                     : Base[Key] extends object
-                        ? { data: TRecursiveDataWrap< Base[Key] >; }
+                        ? { 
+                            data: TRecursiveDataWrap< Base[Key] >; 
+                            // on_conflict?: {
+                                // constraint: any;
+                                // update_columns: Array<Exclude<keyof SubType<Base[Key], string | number>, 
+                                // 'object' | '__typename'> >;
+                            // };
+                        }
                         : Base[Key]
         } :
     Base extends Array<any> ?
