@@ -1,8 +1,6 @@
 
 import {
     Order as OrderGql,
-    Icon,
-    Label,
     OrderSelectColumn,
     GetOrderQueryVariables,
     GetOrderDocument,
@@ -17,19 +15,14 @@ import {
     Vendor
 } from "../types/graphql";
 
-import { Integer } from '../types/uint8';
 
 
 import { apolloClient } from '~/Apollo';
-import { message, Tooltip } from "antd";
+import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Intersection, Unpacked, enumerable, ObjectColumnProperty } from "~lib/UtilityFunctions";
-import { CodeIcon } from "../../styles/icon";
-import { FormInstance } from "antd/lib/form";
-import { resolve } from "url";
-import { rejects } from "assert";
-import { CategoryHierarchyT, FormMutationHandler } from "../Item/Item";
+import { toTitleCase, ObjectColumnProperty } from "~lib/UtilityFunctions";
+import { FormMutationHandler } from "../Item/Item";
 import { IconComponentT } from "~lib/types/common";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 
@@ -56,6 +49,7 @@ interface OrderDataProps extends Pick<OrderGql,
 
 
 export class Order implements OrderDataProps {
+
     __typename: 'order' = 'order';
 
     id: Scalars[ 'Int' ];
@@ -93,7 +87,6 @@ export class Order implements OrderDataProps {
     }
 
     static async OrderFactory<Q extends typeof GetOrderDocument> ( variables: GetOrderQueryVariables, query: Q = GetOrderDocument as Q ): Promise<Order> {
-
         return new Promise( ( resolve, reject ) => apolloClient.query<GetOrderQuery, GetOrderQueryVariables>( {
             query: query,
             variables: {
@@ -101,7 +94,6 @@ export class Order implements OrderDataProps {
             }
         } ).then( result => {
             console.log( { _cls: "Order", method: 'OrderFactory', msg: "loading order from GraphQL", order_data: result } );
-            const data = result.data.order;
             let order = new Order( result.data.order );
             // it._name = result.data.object?.main ? result.data.object.name : "";
             // this._class = result.data.object;
@@ -179,7 +171,7 @@ export class Order implements OrderDataProps {
                 } as ColumnProps<ObjectColumnProperty<Order>>;
             }
 
-            if ( Array.isArray(key) ) {
+            if ( Array.isArray( key ) ) {
                 return {
                     key: `${key[0]}_${key[1]}`,
                     title: toTitleCase( `${ key[ 0 ] }_${ key[ 1 ] }` ),
@@ -275,7 +267,7 @@ export class Order implements OrderDataProps {
      */
     get mouseOverRowComponent (): React.FC {
         // TODO: use for ... in so that enumerable properties are shown
-        return ( props ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key, value ] ) => key !== '_object' ) ), null, 2 )}</pre>;
+        return ( ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key ] ) => key !== '_object' ) ), null, 2 )}</pre>;
     }
 
     // get bundle (): Order {

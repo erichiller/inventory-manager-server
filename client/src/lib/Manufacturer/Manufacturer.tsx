@@ -1,16 +1,9 @@
 
 import {
     GetManufacturersQueryHookResult,
-    Icon,
-    Label,
-    ManufacturerSelectColumn,
     GetManufacturerQueryVariables,
     GetManufacturerDocument,
     GetManufacturerQuery,
-    Scalars,
-    Maybe,
-    ManufacturerItem,
-    ManufacturerItemAggregate,
     useGetManufacturerQuery,
 } from "../types/graphql";
 
@@ -18,21 +11,17 @@ import { Integer } from '../types/uint8';
 
 
 import { apolloClient } from '~/Apollo';
-import { message, Tooltip } from "antd";
+import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Intersection, Unpacked, enumerable, ObjectColumnProperty, sortByCaseInsensitiveText, sortByNumber, makeColumn } from "~lib/UtilityFunctions";
-import { CodeIcon } from "../../styles/icon";
-import { FormInstance } from "antd/lib/form";
-import { resolve } from "url";
-import { rejects } from "assert";
-import { CategoryHierarchyT, FormMutationHandler } from "~lib/Item/Item";
+import { sortByCaseInsensitiveText, makeColumn } from "~lib/UtilityFunctions";
+import { FormMutationHandler } from "~lib/Item/Item";
 import { IconComponentT } from "~lib/types/common";
-import { ShoppingCartOutlined, ShopOutlined, CheckOutlined, WarningOutlined } from "@ant-design/icons";
+import { ShopOutlined, CheckOutlined, WarningOutlined } from "@ant-design/icons";
 import { ApolloQueryResult } from "apollo-client";
 import { AsyncIcon } from "~components/Shared/AsyncIcon";
 
-import { IQuery, ClassType, SubType, FilterFlags, QueryResultTypePlus } from "~lib/UtilityFunctions";
+import { FilterFlags } from "~lib/UtilityFunctions";
 
 
 interface ManufacturerDataProps extends Pick<ApolloQueryResult<GetManufacturerQuery>['data']['manufacturer'],
@@ -49,6 +38,7 @@ type ManufacturersGql = GetManufacturersQueryHookResult[ 'data' ][ 'manufacturer
 
 
 export class Manufacturer implements ManufacturerDataProps {
+
     __typename: 'manufacturer' = 'manufacturer';
     id: Integer;
     // manufacturer?: Maybe<Manufacturer>;
@@ -81,7 +71,6 @@ export class Manufacturer implements ManufacturerDataProps {
     }
 
     static async ManufacturerFactory<Q extends typeof GetManufacturerDocument> ( variables: GetManufacturerQueryVariables, query: Q = GetManufacturerDocument as Q ): Promise<Manufacturer> {
-
         return new Promise( ( resolve, reject ) => apolloClient.query<GetManufacturerQuery, GetManufacturerQueryVariables>( {
             query: query,
             variables: {
@@ -89,7 +78,6 @@ export class Manufacturer implements ManufacturerDataProps {
             }
         } ).then( result => {
             console.log( { _cls: "Manufacturer", method: 'ManufacturerFactory', msg: "loading Manufacturer from GraphQL", manufacturer_data: result } );
-            const data = result.data.manufacturer;
             let manufacturer = new Manufacturer( result.data.manufacturer );
             // it._name = result.data.object?.main ? result.data.object.name : "";
             // this._class = result.data.object;
@@ -111,7 +99,7 @@ export class Manufacturer implements ManufacturerDataProps {
      * @param results Output from `GetManufacturer` GraphQL query (`data` property)
      */
     static ItemsFactory ( results: ManufacturersGql ): Array<Manufacturer> {
-        return results.map( manufacturerGql => new Manufacturer( manufacturerGql ));
+        return results.map( manufacturerGql => new Manufacturer( manufacturerGql ) );
     }
 
     static useQuery = useGetManufacturerQuery;
@@ -180,7 +168,6 @@ export class Manufacturer implements ManufacturerDataProps {
      * Optionally defined on subclasses
      */
     static get Columns (): ColumnProps<Manufacturer>[] {
-
         return makeColumn(
             [
                 {
@@ -208,7 +195,7 @@ export class Manufacturer implements ManufacturerDataProps {
                     title: 'Vendor?',
                     responsive: ['lg'],
                     render: ( text, record: Manufacturer ) => {
-                        return ( record.vendor_id ? <CheckOutlined /> : null )
+                        return ( record.vendor_id ? <CheckOutlined /> : null );
                     }
                 }
             ]
@@ -297,7 +284,7 @@ export class Manufacturer implements ManufacturerDataProps {
      */
     get mouseOverRowComponent (): React.FC {
         // TODO: use for ... in so that enumerable properties are shown
-        return ( props ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key, value ] ) => key !== '_object' ) ), null, 2 )}</pre>;
+        return ( ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key ] ) => key !== '_object' ) ), null, 2 )}</pre>;
     }
 
     // get bundle (): Manufacturer {
@@ -309,4 +296,4 @@ export class Manufacturer implements ManufacturerDataProps {
 
 // foo is now keys of instance that are strings
 type foo = FilterFlags<keyof InstanceType<typeof Manufacturer>, string>;
-let fooVars: InstanceType<typeof Manufacturer>[ foo ] ;
+

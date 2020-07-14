@@ -39,6 +39,7 @@ type ShipmentsGql = GetShipmentsQueryHookResult[ 'data' ][ 'shipment' ];
 
 
 export class Shipment implements ShipmentDataProps {
+
     __typename: 'shipment' = 'shipment';
     id: Integer;
     order_id?: Integer;
@@ -71,7 +72,6 @@ export class Shipment implements ShipmentDataProps {
     }
 
     static async ShipmentFactory<Q extends typeof GetShipmentDocument> ( variables: GetShipmentQueryVariables, query: Q = GetShipmentDocument as Q ): Promise<Shipment> {
-
         return new Promise( ( resolve, reject ) => apolloClient.query<GetShipmentQuery, GetShipmentQueryVariables>( {
             query: query,
             variables: {
@@ -100,7 +100,7 @@ export class Shipment implements ShipmentDataProps {
      * @param results Output from `GetShipment` GraphQL query (`data` property)
      */
     static ItemsFactory ( results: ShipmentsGql ): Array<Shipment> {
-        return results.map( shipmentGql => new Shipment( shipmentGql ));
+        return results.map( shipmentGql => new Shipment( shipmentGql ) );
     }
     static useQuery = useGetShipmentQuery;
 
@@ -164,7 +164,6 @@ export class Shipment implements ShipmentDataProps {
      * Optionally defined on subclasses
      */
     static get Columns (): ColumnProps<Shipment>[] {
-
         return makeColumn(
             [
                 {

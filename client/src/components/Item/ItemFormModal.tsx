@@ -55,7 +55,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
         history.goBack();
     };
 
-    console.log( { "item": props.item, "initialValues=": props.item ? props.item.simpleObject : {} } );
+    console.log( { item: props.item, "initialValues=": props.item ? props.item.simpleObject : {} } );
 
     return <Modal
         visible={true}
