@@ -10,7 +10,8 @@ const { defaults } = require('jest-config');
 
 // https://jestjs.io/docs/en/expect
 const config = {
-    // testEnvironment: 'jsdom',
+    // testEnvironment: 'node',
+    testEnvironment: 'jsdom',
     // [...]
     globals: {
         'ts-jest': {
@@ -25,6 +26,7 @@ const config = {
         "^~lib/(.*)$": "<rootDir>/src/lib/$1",
         "^~item/(.*)$": "<rootDir>/src/item/$1",
         "^~components/(.*)$": "<rootDir>/src/components/$1",
+        "^~/(.*)$": "<rootDir>/src/$1",
         // https://jestjs.io/docs/en/webpack
 
         "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/fileMock.js",
@@ -47,8 +49,7 @@ const config = {
         // "<rootDir>/client/test/*.ts",
         // "<rootDir>/server/test/*.ts",
     ],
-    tes
-    preset: 'ts-jest/presets/js-with-ts',
+    preset: 'ts-jest/presets/js-with-ts'
 };
 module.exports = config;
 

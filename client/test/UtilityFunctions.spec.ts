@@ -1,11 +1,34 @@
 // import { flatArrayObjectProperty } from "~lib/UtilityFunctions";
 
 // https://www.npmjs.com/package/jest-fetch-mock
-require('jest-fetch-mock').enableMocks();
+// api.test.ts
+
+// import fetch from 'node-fetch';
+import { mocked } from 'ts-jest/utils';
 
 
-import { QtyInput } from "~lib/Item/Common/QtyInput";
-import { enumerable } from "~lib/UtilityFunctions";
+
+global.fetch = jest.fn( () =>
+    Promise.resolve( {
+        json: () => Promise.resolve( { } ),
+    } ) as any
+);
+
+
+beforeEach( () => {
+    mocked( fetch ).mockClear();
+} );
+
+// import { QtyInput } from "~lib/Item/Common/QtyInput";
+// import { enumerable } from "~lib/UtilityFunctions";
+
+
+
+function enumerable ( value: boolean ) {
+    return function ( target: any, propertyKey: string, descriptor: PropertyDescriptor ) {
+        descriptor.enumerable = value;
+    };
+}
 
 
 
@@ -42,7 +65,11 @@ class TestClass {
 
 test( ' ', () => {
     expect( true ).toBe( true );
-})
+} );
+
+test( ' ', () => {
+    expect( new TestClass().prop1 ).toBe( "hello" );
+} )
 
 
 

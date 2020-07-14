@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { LabelImage } from "~lib/LabelConstituent";
-// import '@ant-design/compatible/assets/index.css';
 import { Spin, Select, Input, message, Modal, Form } from "antd";
 import { GetIconDocument, EnumItemClassEnum, useInsertIconMutation } from "~lib/types/graphql";
 import { Item } from "~lib/Item";

@@ -1,15 +1,15 @@
 
-import React, { useState, useContext, useEffect } from '~components/Label/node_modules/react';
+import React, { useState, useContext, useEffect } from 'react';
 // import { Resizable, ResizableBox } from 'react-resizable';
-import { Rnd, ResizableDelta, Position as RndPosition } from '~components/Label/node_modules/react-rnd';
-import { ResizeDirection } from '~components/Label/node_modules/re-resizable';
-import { useQuery } from '~components/Label/node_modules/@apollo/react-hooks';
-import { Stage, Layer } from '~components/Label/node_modules/react-konva';
-import { Spin, InputNumber, Input } from "~components/Label/node_modules/antd";
+import { Rnd, ResizableDelta, Position as RndPosition } from 'react-rnd';
+import { ResizeDirection } from 're-resizable';
+import { useQuery } from '@apollo/react-hooks';
+import { Stage, Layer } from 'react-konva';
+import { Spin, InputNumber, Input } from "antd";
 
 import { GetPrinterStatusQuery, GetPrinterStatusDocument } from "~lib/types/graphql";
 import { DrawContext } from "~components/Draw/LabelDraw";
-import type { KonvaEventObject } from '~components/Label/node_modules/konva/types/Node';
+import type { KonvaEventObject } from 'konva/types/Node';
 import { TapeColorMap } from '~lib/types/labelCanvasColors';
 import { LabelQR, LabelText, LabelImage } from '~lib/LabelConstituent';
 

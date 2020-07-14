@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1594670590287" clover="3.2.0">
-  <project timestamp="1594670590288" name="All files">
+<coverage generated="1594689632475" clover="3.2.0">
+  <project timestamp="1594689632476" name="All files">
     <metrics statements="1572" coveredstatements="1410" conditionals="444" coveredconditionals="444" methods="384" coveredmethods="222" elements="2400" coveredelements="2076" complexity="0" loc="1572" ncloc="1572" packages="1" files="2" classes="2"/>
-    <file name="UtilityTypes.ts" path="C:\Users\eric\dev\src\github.com\erichiller\inventory\client\src\lib\types\UtilityTypes.ts">
+    <file name="UtilityTypes.ts" path="C:\Users\ehiller\dev\src\github.com\erichiller\inventory-manager-server\client\src\lib\types\UtilityTypes.ts">
       <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <line num="1" count="1" type="stmt"/>
       <line num="2" count="1" type="stmt"/>
     </file>
-    <file name="graphql.tsx" path="C:\Users\eric\dev\src\github.com\erichiller\inventory\client\src\lib\types\graphql.tsx">
+    <file name="graphql.tsx" path="C:\Users\ehiller\dev\src\github.com\erichiller\inventory-manager-server\client\src\lib\types\graphql.tsx">
       <metrics statements="1570" coveredstatements="1408" conditionals="444" coveredconditionals="444" methods="384" coveredmethods="222"/>
       <line num="1" count="1" type="stmt"/>
       <line num="2" count="1" type="stmt"/>

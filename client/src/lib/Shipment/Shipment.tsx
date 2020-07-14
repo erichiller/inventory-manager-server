@@ -11,7 +11,8 @@ import {
 
 import { Integer } from '../types/uint8';
 
-import { apolloClient } from '../../index';
+
+import { apolloClient } from '~/App';
 import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
