@@ -9,7 +9,7 @@ import {
 } from "../types/graphql";
 
 
-import { apolloClient } from '../../index';
+import { apolloClient } from '~/App';
 import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
