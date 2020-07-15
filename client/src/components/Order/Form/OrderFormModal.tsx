@@ -15,7 +15,7 @@ import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpda
 import { QueryResultTypePlus, Intersection, filterObject, transparentLog, Unpacked, propValuesEqual } from '~lib/UtilityFunctions';
 import { VendorSelect } from '../../Vendor/VendorSelect';
 import moment from 'moment';
-import { OrderItemInput } from './OrderItemComposite';
+import { OrderItemComposite } from './OrderItemComposite';
 import { PageSpin } from '~components/Shared/PageSpin';
 import { Order } from '~lib/Order/Order';
 import { CurlyBracesIcon } from '../../../styles/icon';
@@ -226,7 +226,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         console.error({ class: 'OrderEditModal', method: 'onFinishFailed', errorInfo });
     };
 
-    const onFieldsChange = ( changedFields, values ) => {
+    const onFieldsChange: Callbacks[ 'onFieldsChange' ] = ( changedFields, values ) => {
         console.log({ class: 'OrderEditModal', method: 'onFieldsChange', changedFields, values });
     };
 
@@ -409,7 +409,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                                     //     return { data: value };
                                     // }}
                                     >
-                                        <OrderItemInput placeholder="Search for Item"
+                                        <OrderItemComposite placeholder="Search for Item"
                                             vendorId={form.getFieldValue( "vendor_id" )}
                                             additionalShipmentOptions={shipments}
                                             suffix={
