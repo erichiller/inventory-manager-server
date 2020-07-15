@@ -17,7 +17,7 @@ interface AsyncIconProps<
      > {
     vars: TVariables;
     cls: TClass;
-    cb: IconComponentT<{obj: InstanceType<TClass>}>;
+    cb: IconComponentT<{obj: InstanceType<TClass>;}>;
 }
 
 // CREATETEST
@@ -44,7 +44,7 @@ interface AsyncIconProps<
 
 /**
  * Retrieve icon from query
- * @param props xxxx//TODO
+ * @param props xxxx // TODO properly type `props`
  */
 export function AsyncIcon<
     TQuery, 
@@ -54,31 +54,31 @@ export function AsyncIcon<
 > ( props: AsyncIconProps<TQuery, TVariables, TClass> ) {
     // console.log({c: 'AsyncIcon', e: 'init', cls: props.cls, id: props.vars['id'], vars: props.vars})
     if ( ! props.vars['id'] ) {
-        console.warn("AsyncIcon missing required id in ", props.vars)
+        console.warn( "AsyncIcon missing required id in ", props.vars );
         return null;
     }
     const { data, error, loading } = props.cls.useQuery( {
         variables: props.vars
-    })
+    } );
     const [ cls, setClass ] = useState<InstanceType<TClass>>();
     
     useEffect( () => {
         if ( data && !loading && !error && !cls ) {
             // console.log( "AsyncIcon creating new", props.cls, " with data", data )
-            setClass(new props.cls( data ));
+            setClass( new props.cls( data ) );
         }
-    }, [ data, loading, error]);
+    }, [ data, loading, error] );
 
     useEffect( () => {
         if ( error ) {
-            message.error(error.message)
+            message.error( error.message );
         }
-    })
+    } );
 
     if ( ! cls ){
-        return <Spin />
+        return <Spin />;
     }
-    return <props.cb obj={cls} />
+    return <props.cb obj={cls} />;
 };
 
 

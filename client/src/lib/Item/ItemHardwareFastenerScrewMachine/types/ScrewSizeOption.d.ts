@@ -8,7 +8,7 @@
 //     coarse: number;
 // }
 
-import { EnumItemHardwareFastenerThreadLabelEnum, EnumItemHardwareFastenerDriveEnum, EnumItemHardwareFastenerHeadEnum, EnumItemHardwareFastenerThreadStandardEnum } from "../../../types/graphql";
+import { EnumItemHardwareFastenerThreadLabelEnum, EnumItemHardwareFastenerDriveEnum, EnumItemHardwareFastenerScrewHeadEnum, EnumItemHardwareFastenerThreadStandardEnum } from "../../../types/graphql";
 
 // export type ThreadOptionT = Record<keyof typeof EnumItemHardwareFastenerThreadTypeEnum, number | null>;
 
@@ -25,7 +25,7 @@ type USCustomarySystemUnit = string;
 export type DriveType<U> = Record<keyof typeof EnumItemHardwareFastenerDriveEnum, U>;
 
 
-type HeadDefinition<U> = Record<keyof typeof EnumItemHardwareFastenerHeadEnum, {
+type HeadDefinition<U> = Record<keyof typeof EnumItemHardwareFastenerScrewHeadEnum, {
     drive: Partial<DriveType<U>>;
 }>;
 
@@ -34,14 +34,14 @@ type HeadDefinition<U> = Record<keyof typeof EnumItemHardwareFastenerHeadEnum, {
  **/
 type PitchDefinitions = { [ pitch: string ]: {
     label?: EnumItemHardwareFastenerThreadLabelEnum;
-    tolerance?: any; // TODO
+    tolerance?: any; // TODO: add `tolerance`
 };};
 
 interface DiameterDefinitionBase<U> {
     /** whether this diameter appears on the standardized/first choice list */
     common: boolean;
     pitch: PitchDefinitions;
-    hardness?: any; // TODO
+    hardness?: any; // TODO: add `hardness`
     head: Partial<HeadDefinition<U>>;
     standard: EnumItemHardwareFastenerThreadStandardEnum;
 }

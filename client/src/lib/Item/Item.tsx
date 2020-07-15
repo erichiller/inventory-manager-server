@@ -72,7 +72,7 @@ export class Item<T extends GenericItem> {
         this._name = props.name;
         this._class = props.class;
         this._object = props.object;
-        console.log( "Item class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
+        // console.log( "Item class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
     }
 
     static [ Symbol.hasInstance ] ( instance: object ) {

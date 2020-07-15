@@ -18,14 +18,14 @@ type VT = SelectValue;
 interface ManufacturerSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
     forwardRef?: React.MutableRefObject<Input>;
     value?: VT;
-    onChange?: ( id: number ) => void;
+    onChange?: ( id: number | null ) => void;
 }
 /**
  * Form Select Input for Manufacturers
  */
 export const ManufacturerSelect: React.FC<ManufacturerSelectProps> = ( props ) => {
     const { onChange, value, ...remainingProps } = props;
-    const [ searchText, setSearchText ] = useState<string>("");
+    const [ searchText, setSearchText ] = useState<string>( "" );
     const [ options, setOptions ] = useState<OptionT[]>( [] );
     // const { data, loading, error } = useManufacturerSearchQuery( {
     //     variables: {
@@ -40,10 +40,10 @@ export const ManufacturerSelect: React.FC<ManufacturerSelectProps> = ( props ) =
             search_string: `${ searchText }%`
         }
         // skip: state.loading
-    });
+    } );
     useEffect( () => {
-        if ( !loading && !error ) {
-            console.log( { class: "ManufacturerSelect", "action": "useEffect", event: "loading and error ok", data } );
+        if ( !loading && !error && data ) {
+            console.log( { class: "ManufacturerSelect", action: "useEffect", event: "loading and error ok", data } );
             setOptions( data.manufacturer.map( v => {
                 console.log( "outputting option", v );
                 return {
@@ -55,7 +55,6 @@ export const ManufacturerSelect: React.FC<ManufacturerSelectProps> = ( props ) =
                         {/* <span>{v.url}</span> */}
                         {/* <span>#{v.manufacturer_order_id}</span> */}
                     </span>
-                    // TODO: Set value to the applicable string, feed value up that is the `order_id`
                 };
             } ) );
         }
@@ -84,7 +83,7 @@ export const ManufacturerSelect: React.FC<ManufacturerSelectProps> = ( props ) =
                 }}
                 onChange={( value, opt ) => {
                     console.log( "onChange", { value, opt } );
-                    let manufacturer_id: number = null;
+                    let manufacturer_id: number | null = null;
                     if ( typeof value === "number" ) {
                         manufacturer_id = value;
                     } else if ( typeof value === "string" ) {
@@ -94,7 +93,9 @@ export const ManufacturerSelect: React.FC<ManufacturerSelectProps> = ( props ) =
                     // } else if ( Array.isArray( value ) && value.length > 0 ) {
                         // value.forEach( e => typeof e === "number" ? arrayOfNumbers.push( e ) : arrayOfNumbers.push( parseInt( e ) ) );
                     }
-                    onChange( manufacturer_id );
+                    if ( onChange ){
+                        onChange( manufacturer_id );
+                    }
                 }}
                 options={options}
                 {...( value ? { defaultValue: props.value } : {} )}

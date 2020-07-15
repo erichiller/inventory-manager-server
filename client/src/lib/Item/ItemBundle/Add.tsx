@@ -7,7 +7,7 @@ import { applyDefaults } from "~item/Common/FormLib";
 import { ItemHardwareFastenerScrewMachine } from "..";
 
 
-export const ItemHardwareFastenerScrewMachineAddMutationHandler: React.FC<FormMutationHandler> = ( props ) => {
+export const ItemBundleAddMutationHandler: React.FC<FormMutationHandler> = ( props ) => {
     const { form, submitted, completeCallback } = props;
     const [ insertItemHardwareFastenerScrewMachineMutation, { data, loading, error } ] = useInsertItemHardwareFastenerScrewMachineMutation();
 

@@ -13,28 +13,28 @@ export const ItemHardwareFastenerScrewMachineEditMutationHandler: React.FC<FormM
 
     // TODO: edit must REMOVE defaults if they are explicitly set.
     
-    useEffect(() => {
+    useEffect( () => {
         if ( submitted === true ) {
             console.log( { c: "ItemHardwareFastenerScrewMachineEditMutationHandler", f: 'useEffect', cond: 'submitted === true' }, form.getFieldsValue() );
             updateItemHardwareFastenerScrewMachineMutation( {
-                variables: applyDefaults<ItemHardwareFastenerScrewMachine>(form.getFieldsValue( true, ( meta ) => {
+                variables: applyDefaults<ItemHardwareFastenerScrewMachine>( form.getFieldsValue( true, ( meta ) => {
                     // console.log( { c: "ItemHardwareFastenerScrewMachineEditMutationHandler", f: 'meta'}, meta.name );
-                    return ! meta.name.includes('screw_size');
-                }),
+                    return ! meta.name.includes( 'screw_size' );
+                } ),
                 // TODO: put defaults in the class
                 {
                     thread_direction: EnumItemHandednessEnum.right,
                     use_material: EnumItemHardwareUseMaterialEnum.machine,
                     point_type: EnumItemHardwareFastenerScrewMachinePointEnum.flat
-                })
+                } )
             } );
         }
-    }, [submitted]);
+    }, [submitted] );
 
-    useEffect(() => {
-        if (error){
-            completeCallback(false);
-            message.error(`${error.name}: ${error.message}`);
+    useEffect( () => {
+        if ( error ){
+            completeCallback( false );
+            message.error( `${error.name}: ${error.message}` );
         } else if ( data ) {
             message.success( `successfully edited ${data.__typename} with id ${data.update_item_hardware_fastener_screw_machine_by_pk.id}` );
             return () => {
@@ -42,7 +42,7 @@ export const ItemHardwareFastenerScrewMachineEditMutationHandler: React.FC<FormM
                 completeCallback( true );
             };
         }
-    }, [data, loading, error]);
+    }, [data, loading, error] );
 
 
     // useEffect( () => {

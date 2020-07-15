@@ -67,10 +67,10 @@
         //             "unnamedComponents": "arrow-function"
         //         }
         //     ],
-            "quote-props": [
-                "error",
-                "as-needed"
-            ],
+        "quote-props": [
+            "error",
+            "as-needed"
+        ],
         //     "max-statements": [
         //         "warn",
         //         10,
@@ -97,7 +97,7 @@
         //     ],
         // https://eslint.org/docs/rules/space-in-parens#top
         "space-in-parens": [
-            "error",
+            "warn",
             "always"
             // {
             //     "exceptions": [
@@ -114,23 +114,26 @@
         //         "off"
         //     ],
         //     "id-length": [ "off" ],
-            "padded-blocks": [
-                "warn", 
-                {
-                    "blocks": "never",
-                    "classes": "always",
-                    "switches": "never"
-                },
-                {
-                    "allowSingleLineBlocks": true
-                }
-            ],
-            // https://eslint.org/docs/rules/no-mixed-spaces-and-tabs
-            "no-mixed-spaces-and-tabs": "warn",
-            // https://eslint.org/docs/rules/no-mixed-operators
-            "no-mixed-operators": ["error", {
-                    "allowSamePrecedence": true
-                }]
+        "padded-blocks": [
+            "warn",
+            {
+                "blocks": "never",
+                "classes": "always",
+                "switches": "never"
+            },
+            {
+                "allowSingleLineBlocks": true
+            }
+        ],
+        // https://eslint.org/docs/rules/no-mixed-spaces-and-tabs
+        "no-mixed-spaces-and-tabs": "warn",
+        // https://eslint.org/docs/rules/no-mixed-operators
+        "no-mixed-operators": [
+            "error",
+            {
+                "allowSamePrecedence": true
+            }
+        ]
         // }
     } // end rules
 } // end

@@ -1,4 +1,4 @@
-import { Item, CategoryHierarchyT, ItemGqlTypename, GenericItem } from '~lib/Item/Item';
+import { Item, CategoryHierarchyT, ItemGqlTypename, GenericItem, FormMutationHandler } from '~lib/Item/Item';
 import { IconComponentT } from "~lib/types/common";
 import { 
     Item as ItemGql, 
@@ -7,8 +7,10 @@ import {
 import React from 'react';
 import { ColumnProps } from 'antd/lib/table';
 import { toTitleCase } from "~lib/UtilityFunctions";
-import { ItemBundleEditForm } from './Edit';
+import { ItemBundleForm } from './Form';
 import { GroupOutlined } from '@ant-design/icons';
+import { ItemBundleAddMutationHandler } from './Add';
+import { ItemBundleEditMutationHandler } from './Edit';
 
 
 type ItemPlusClassT<T extends GenericItem, C extends ItemGqlTypename> = Exclude<ItemBundleGql, 'class'>;
@@ -29,10 +31,10 @@ export class ItemBundle extends Item<ItemPlusClassT<ItemBundleGql, 'item_bundle'
 
     constructor ( props: ItemBundleGql | ItemGql ) {
         super( props as ItemBundleGql );
-        if ( Object.keys(props).includes('object') && (props as ItemGql).object ){
+        if ( Object.keys( props ).includes( 'object' ) && ( props as ItemGql ).object ){
             Object.keys( ( props as ItemGql ).object ).forEach( key => {
-                this[key] = (props as ItemGql).object[key];
-            });
+                this[key] = ( props as ItemGql ).object[key];
+            } );
         }
     }
     // specific props here;
@@ -78,10 +80,9 @@ export class ItemBundle extends Item<ItemPlusClassT<ItemBundleGql, 'item_bundle'
                     dataIndex: ItemBundleSelectColumn[ key ] ?? key,
                 };
             }
-            if ( typeof key === 'object'){
+            if ( typeof key === 'object' ){
                 return key;
             }
-
         }
         );
     }
@@ -89,9 +90,21 @@ export class ItemBundle extends Item<ItemPlusClassT<ItemBundleGql, 'item_bundle'
         return ItemBundle.Columns as ColumnProps<ItemBundleGql>[];
     }
 
-    get editComponent (): React.FC {
-        return ItemBundleEditForm;
+
+    static get addComponent (): React.FC {
+        return ItemBundleForm;
     }
+    static get addHandler (): React.FC<FormMutationHandler> {
+        return ItemBundleAddMutationHandler;
+    }
+
+    get editComponent (): React.FC {
+        return ItemBundleForm;
+    }
+    get editHandler (): React.FC<FormMutationHandler> {
+        return ItemBundleEditMutationHandler;
+    }
+
 }
 
 Item.RegisterClassType( "item_bundle", ItemBundle );
