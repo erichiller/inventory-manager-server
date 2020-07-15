@@ -17068,7 +17068,7 @@ type order_item {
   # An object relationship
   order: order!
   order_id: Int!
-  quantity: numeric
+  quantity: numeric!
 
   # individual items unique id (as provided by manufacturer)
   serial_no: String

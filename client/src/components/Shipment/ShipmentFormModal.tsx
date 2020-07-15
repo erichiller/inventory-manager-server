@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Modal, message, Input, DatePicker } from 'antd';
+import { Callbacks } from 'rc-field-form/lib/interface';
+import { useHistory } from 'react-router-dom';
+import { useForm } from 'antd/lib/form/Form';
 /**
  * // TODO: consider removing momentjs for a (SMALLER) alternative
  * antd - remove momentjs
@@ -9,8 +12,7 @@ import { Form, Modal, message, Input, DatePicker } from 'antd';
 import { useGetShipmentQuery, useInsertShipmentMutation, InsertShipmentMutationVariables, useGetShipmentLazyQuery, useUpdateShipmentMutation, UpdateShipmentMutationVariables, GetShipmentDocument, ShipmentInsertInput } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, PartialPartial } from '~lib/UtilityFunctions';
-import { useHistory } from 'react-router-dom';
-import { useForm } from 'antd/lib/form/Form';
+
 import { PageSpin } from '~components/Shared/PageSpin';
 import { VendorSelect } from '~components/Vendor/VendorSelect';
 import { OrderSelect } from '~components/Order/Form/OrderSelect';
@@ -127,7 +129,7 @@ export const ShipmentFormModal: React.FC<ShipmentFormModalProps> = ( props ) => 
         console.log( { class: 'ShipmentEditModal', method: 'onFinish', values, shipment, formFieldValues: form.getFieldsValue() } );
         if ( props.onFinish ){
             console.log( { class: 'ShipmentEditModal', method: 'onFinish', event: 'calling props supplied onFinish()' } );
-            return props.onFinish(values);
+            return props.onFinish( values );
         }
         if ( shipmentId ) {
             let formFieldValues = form.getFieldsValue() as Exclude<UpdateShipmentMutationVariables, 'id'>;
@@ -150,11 +152,11 @@ export const ShipmentFormModal: React.FC<ShipmentFormModalProps> = ( props ) => 
     };
 
 
-    const onFinishFailed = ( errorInfo ) => {
+    const onFinishFailed: Callbacks[ 'onFinishFailed' ] = ( errorInfo ) => {
         console.error( { class: 'ShipmentEditModal', method: 'onFinishFailed', errorInfo } );
     };
 
-    const onFieldsChange = ( changedFields, values ) => {
+    const onFieldsChange: Callbacks[ 'onFieldsChange' ] = ( changedFields, values ) => {
         console.log( { class: 'ShipmentEditModal', method: 'onFieldsChange', changedFields, values } );
     };
 
@@ -189,7 +191,7 @@ export const ShipmentFormModal: React.FC<ShipmentFormModalProps> = ( props ) => 
             }}
             initialValues={initialValues}
             onFieldsChange={onFieldsChange}
-            onFinish={onFinish}
+            onFinish={( fields ) => onFinish( fields as PartialPartial<UpdateShipmentMutationVariables, 'id'> )}
             onFinishFailed={onFinishFailed}
         >
             <div className="col">
@@ -200,7 +202,7 @@ export const ShipmentFormModal: React.FC<ShipmentFormModalProps> = ( props ) => 
                 <Form.Item name="carrier_vendor_id" label="Carrier" rules={[ { required: true } ]}> 
                     <VendorSelect />
                 </Form.Item>
-                <Form.Item name="received_date" label="Date Received" required>
+                <Form.Item name="received_date" label="Date Received">
                     <DatePicker
                     // id="datepicker_monthpicker"
                     // defaultValue={moment()}

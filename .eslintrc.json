@@ -98,13 +98,13 @@
         // https://eslint.org/docs/rules/space-in-parens#top
         "space-in-parens": [
             "error",
-            "always",
-            {
-                "exceptions": [
-                    "{}",
-                    "[]"
-                ]
-            }
+            "always"
+            // {
+            //     "exceptions": [
+            //         "{}",
+            //         "[]"
+            //     ]
+            // }
         ],
         //     "no-console": [ "off" ],
         //     // note you must disable the base rule as it can report incorrect errors

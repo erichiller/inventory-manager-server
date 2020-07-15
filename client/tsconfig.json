@@ -1,25 +1,29 @@
 // https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 {
     "compilerOptions": {
-        "allowJs": true, // new
+        "allowJs": true,
         "allowSyntheticDefaultImports": true,
         "alwaysStrict": true,
         "emitDecoratorMetadata": true,
         "esModuleInterop": true,
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
-        "importsNotUsedAsValues": "preserve", // this breaks type-only imports
+        "importsNotUsedAsValues": "preserve", // this breaks type-only imports unless using `import type`
         "jsx": "react",
         // "jsx": "preserve", // this must be react unless using whatever create-react-app uses
         "module": "esnext",
         "moduleResolution": "node",
-        // "noErrorTruncation": true,
+        // "noErrorTruncation": true, // this prints out the ENTIRE error, which in some cases is thousands of lines
+        "noImplicitThis": true, // new 200715
         // "strictNullChecks": true,
         "outDir": "../dist/client/",
         "removeComments": false,
         "resolveJsonModule": true,
         // "skipLibCheck": true, // turning off is new
         "sourceMap": true,
+        "strictBindCallApply": true, // new 200715
+        // "strictFunctionTypes": true, // new 200715
+        // "strictPropertyInitialization": true, // requires `strictNullChecks`
         "target": "es2019",
         /**
          * https://dev.to/cooperdev/restructure-with-ease-thanks-to-typescript-path-mappings-4b0e
@@ -29,6 +33,9 @@
         "paths": {
             "~lib/*": [
                 "lib/*"
+            ],
+            "~types/*": [
+                "lib/types/*"
             ],
             "~item/*": [
                 "lib/Item/*"

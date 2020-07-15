@@ -60,21 +60,21 @@ type ShipmentSelectProps = Intersection<
 export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
     const { onChange, additionalShipmentOptions } = props;
     const [ searchText, setSearchText ] = useState<string>( "" );
-    const [ options, setOptions ] = useState<OptionT[]>([]);
+    const [ options, setOptions ] = useState<OptionT[]>( [] );
 
     const defaultIds: Array<number | string> = [
         ...(
             typeof props.value === "number" ?
                 [ props.value ] : (
-                    props.value ? [ props.value.id ] : [])
+                    props.value ? [ props.value.id ] : [] )
         ),
         ...(
             typeof props.defaultValue === "number" ?
                 [ props.defaultValue ] : (
-                    props.defaultValue && !( 'id' in props.defaultValue ) && 'carrier_vendor_id' in props.defaultValue && 'tracking_id' in props.defaultValue ? [ props.defaultValue.tracking_id ] : [])
+                    props.defaultValue && !( 'id' in props.defaultValue ) && 'carrier_vendor_id' in props.defaultValue && 'tracking_id' in props.defaultValue ? [ props.defaultValue.tracking_id ] : [] )
         )
     ];
-    console.log( "ShipmentSelect: init, received props", { props_defaultValue: props.defaultValue, defaultIds, props });
+    console.log( "ShipmentSelect: init, received props", { props_defaultValue: props.defaultValue, defaultIds, props } );
 
     const [ modal, setModal ] = useState<React.ReactElement>( null );
     const history = useHistory();
@@ -86,14 +86,14 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
         setModal( modal );
     };
 
-    const { data, error, loading } = useSearchShipmentsQuery({
+    const { data, error, loading } = useSearchShipmentsQuery( {
         partialRefetch: true,
         returnPartialData: true,
         variables: {
             search_string: `${ searchText }%`
         }
         // skip: state.loading
-    });
+    } );
 
     // track shipment IDs added to options to prevent duplicates
     let shipmentOptionIds: Array< string | number > = [];
@@ -117,7 +117,7 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
     ) {
         if ( !Array.isArray( arr ) ) { return null; }
         setOptions(
-            transparentLog({
+            transparentLog( {
                 c: 'ShipmentSelect',
                 e: 'optionsGenerated'
             },
@@ -130,7 +130,7 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                     let found = shipmentOptionIds.includes( id );
                     shipmentOptionIds.push( id );
                     return ! found;
-                }).map( ( v ) => {
+                } ).map( ( v ) => {
                     let CarrierIcon: IconComponentT;
                     let carrier: Vendor;
                     let id = 'id' in v ? v.id : v.tracking_id;
@@ -138,7 +138,7 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                         carrier = new Vendor( v.carrier );
                         CarrierIcon = carrier.icon;
                     } else if ( v && 'carrier_vendor_id' in v && typeof v.carrier_vendor_id === 'number' ) {
-                        carrier = new Vendor({ id: v.carrier_vendor_id });
+                        carrier = new Vendor( { id: v.carrier_vendor_id } );
                         CarrierIcon = carrier.icon;
                     } else {
                         console.warn( "ShipmentSelect: not rendering AsyncIcon with this of", v );
@@ -154,24 +154,24 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                             <span>#{v.tracking_id}</span>
                         </span>
                     };
-                })
+                } )
             )
         );
     }
     useEffect( () => {
-        updateOptionsFromShipment([
+        updateOptionsFromShipment( [
             ...( props.defaultValue && typeof props.defaultValue !== "number" && !props.defaultValue.id
                 ? [ { ...props.defaultValue, id: props.defaultValue.tracking_id } ]
-                : []),
-            ...( data && data.shipment ? data.shipment : [])
-        ]);
-        console.log({ c: "ShipmentSelect", m: "useEffect", ev: "loaded vendorItems from Gql", data });
-    }, [ loading, data, props.defaultValue ]);
+                : [] ),
+            ...( data && data.shipment ? data.shipment : [] )
+        ] );
+        console.log( { c: "ShipmentSelect", m: "useEffect", ev: "loaded vendorItems from Gql", data } );
+    }, [ loading, data, props.defaultValue ] );
     useEffect( () => {
         if ( error ){
             message.error( error );
         }
-    }, [ error ]);
+    }, [ error ] );
 
     return (
         <React.Fragment>
@@ -187,7 +187,7 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                 defaultValue={defaultIds}
                 value={defaultIds}
                 onSearch={value => {
-                    console.log({ event: "onSearch", setSearchText: value });
+                    console.log( { event: "onSearch", setSearchText: value } );
                     setSearchText( value );
                 }}
                 onKeyDown={( e ) => {
@@ -217,27 +217,27 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                     </div>
                 )}
                 onChange={( value, opt ) => {
-                    console.log({ event: "onChange", value, opt });
+                    console.log( { event: "onChange", value, opt } );
                     let shipment_id: number = null;
                     if ( typeof value === "number" ) {
                         shipment_id = value;
-                        console.log({ c: "ShipmentSelect", ev: "selected native number Option", value, shipment_id });
+                        console.log( { c: "ShipmentSelect", ev: "selected native number Option", value, shipment_id } );
                     } else if ( typeof value === "string" ) {
                         let foundInAdditionalShipmentOptions = additionalShipmentOptions.find( opt => opt.tracking_id === value );
                         if ( foundInAdditionalShipmentOptions ){
                             onChange( 
-                                transparentLog({ c: "ShipmentSelect", ev: "selected NaN parsed Option", value, shipment_id },
+                                transparentLog( { c: "ShipmentSelect", ev: "selected NaN parsed Option", value, shipment_id },
                                     foundInAdditionalShipmentOptions
                                 )
                             );
                             return;
                         }
                         shipment_id = parseInt( value );
-                        console.log({ c: "ShipmentSelect", ev: "selected parseInt parsed number Option", value, shipment_id });
+                        console.log( { c: "ShipmentSelect", ev: "selected parseInt parsed number Option", value, shipment_id } );
                     }
-                    onChange({
+                    onChange( {
                         id: shipment_id,
-                    });
+                    } );
                 }}
                 options={options}
             />
