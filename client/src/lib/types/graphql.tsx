@@ -17684,7 +17684,7 @@ export type OrderItem = {
   /** An object relationship */
   order: Order;
   order_id: Scalars['Int'];
-  quantity?: Maybe<Scalars['numeric']>;
+  quantity: Scalars['numeric'];
   /** individual items unique id (as provided by manufacturer) */
   serial_no?: Maybe<Scalars['String']>;
   /** An object relationship */
@@ -30989,4 +30989,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-07-12T09:41:52-06:00
+// graphql typescript defs generated on 2020-07-15T05:37:02-06:00

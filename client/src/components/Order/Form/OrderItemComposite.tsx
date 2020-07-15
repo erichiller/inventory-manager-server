@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from 'antd';
+import { Input, message } from 'antd';
 import { OrderItem as OrderItemGql, Shipment, Maybe, Scalars } from '~lib/types/graphql';
 
 import { SubType, toMinimumFixed, PartialNullable, transparentLog } from '~lib/UtilityFunctions';
@@ -48,7 +48,7 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
     console.log( "OrderItemComposite received props", props );
 
     const setItemId = ( value: OrderItemSelectSingleValue ) => {
-        console.log({ c: 'OrderItemComposite', f: "setItem", value });
+        console.log( { c: 'OrderItemComposite', f: "setItem", value } );
         // if ( value == null ){
         //     onChange( {
         //         ...props.value,
@@ -56,7 +56,7 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
                 
         //     })
         // }
-        onChange({
+        onChange( {
             ...props.value,
             ...( value == null ?
                     {} :
@@ -72,71 +72,71 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
                             } 
                             : {}
                 )
-        });
+        } );
     };
 
     const setQuantity = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log({ c: 'OrderItemComposite', f: "setQuantity", event_value: event.target.value });
-        onChange({
+        console.log( { c: 'OrderItemComposite', f: "setQuantity", event_value: event.target.value } );
+        onChange( {
             ...props.value,
             quantity: parseInt( event.target.value )
-        });
+        } );
     };
     const setSerialNo = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log({ c: 'OrderItemComposite', f: "setSerialNo", event_value: event.target.value });
-        onChange({
+        console.log( { c: 'OrderItemComposite', f: "setSerialNo", event_value: event.target.value } );
+        onChange( {
             ...props.value,
             serial_no: event.target.value
-        });
+        } );
     };
     const setCostItem = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log({ c: 'OrderItemComposite', f: "setCostItem", event_value: event.target.value });
-        onChange({
+        console.log( { c: 'OrderItemComposite', f: "setCostItem", event_value: event.target.value } );
+        onChange( {
             ...props.value,
             cost_item: parseFloat( event.target.value )
-        });
+        } );
     };
     const setCostTax = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log({ c: 'OrderItemComposite', f: "setCostTax", event_value: event.target.value });
-        onChange({
+        console.log( { c: 'OrderItemComposite', f: "setCostTax", event_value: event.target.value } );
+        onChange( {
             ...props.value,
             cost_tax: parseFloat( event.target.value )
-        });
+        } );
     };
     const setCostTotal = ( event: React.ChangeEvent<HTMLInputElement> ) => {
-        console.log({ c: 'OrderItemComposite', f: "setCostTotal", event_value: event.target.value });
-        onChange({
+        console.log( { c: 'OrderItemComposite', f: "setCostTotal", event_value: event.target.value } );
+        onChange( {
             ...props.value,
             cost_total: parseFloat( event.target.value )
-        });
+        } );
     };
     const setVendorItem = ( vendor_item: Partial<VendorItemSelectValue> ) => {
-        console.log({ c: 'OrderItemComposite', f: "setVendorItem", vendor_item });
-        onChange({
+        console.log( { c: 'OrderItemComposite', f: "setVendorItem", vendor_item } );
+        onChange( {
             ...props.value,
             ...( vendor_item.id
                 ? { vendor_item_id: vendor_item.id, vendor_item: undefined }
-                : { vendor_item: vendor_item, vendor_item_id: undefined })
-        });
+                : { vendor_item: vendor_item, vendor_item_id: undefined } )
+        } );
     };
     const setManufacturerItem = ( manufacturer_item: Partial<ManufacturerItemSelectValue> ) => {
-        console.log({ c: 'OrderItemComposite', f: "setManufacturerItem", manufacturer_item });
-        onChange({
+        console.log( { c: 'OrderItemComposite', f: "setManufacturerItem", manufacturer_item } );
+        onChange( {
             ...props.value,
             ...( manufacturer_item.id
                 ? { manufacturer_item_id: manufacturer_item.id, manufacturer_item: undefined }
-                : { manufacturer_item: manufacturer_item, manufacturer_item_id: undefined })
-        });
+                : { manufacturer_item: manufacturer_item, manufacturer_item_id: undefined } )
+        } );
     };
     const setShipment = ( shipment: ShipmentSelectValue ) => {
-        onChange({
+        onChange( {
             ...props.value,
-            ...transparentLog({ c: 'OrderItemComposite', f: "setShipment", shipment },
+            ...transparentLog( { c: 'OrderItemComposite', f: "setShipment", shipment },
             ( shipment.id
                 ? { shipment_id: shipment.id, shipment: undefined }
-                : { shipment: shipment, shipment_id: undefined })
+                : { shipment: shipment, shipment_id: undefined } )
             )
-        });
+        } );
     };
 
     return (
@@ -178,7 +178,8 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
                 defaultValue={props.value?.quantity}
                 aria-valuemin={1}
                 onChange={setQuantity}
-                placeholder="Qty" />
+                placeholder="Qty"
+                required />
             <span id="cost_item">
                 <Input name="cost_item"
                     defaultValue={toMinimumFixed( props.value?.cost_item, 2 )}
@@ -214,7 +215,6 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
                     placeholder="total" />
             </span >
 
-            {/* URGENT: Shipments created in one `order_item` for the form should be available to select within all order_items of the form */}
             <ShipmentSelect
                 excludeOrderInput
                 additionalShipmentOptions={props.additionalShipmentOptions}
@@ -223,4 +223,4 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
 
         </div>
     );
-});
+} );
