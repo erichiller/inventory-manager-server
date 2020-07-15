@@ -97,7 +97,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                 }
                 break;
             default:
-                setModal(null);
+                setModal( null );
                 break;
         }
     }, [ params.item_id, params.action ] );
@@ -109,7 +109,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
         if ( !variables.categories || variables.categories.length === 0 ) {
             variables.categories = null;
         }
-        console.log({cls: 'ItemTable', action: "!props.data", result},'\ndata:', result?.data);
+        console.log( {cls: 'ItemTable', action: "!props.data", result},'\ndata:', result?.data );
         result = props.query( {
             variables: props.variables
         } );
@@ -132,7 +132,6 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                 }
             }
         }, [ result.data, result.error ] );
-
     } else {
         console.debug( `data received in props ${ props.data } not running GraphQL` );
     }
@@ -164,7 +163,10 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                 key: 'icon',
                 title: '',
                 responsive: ['xl'],
-                render: ( text, record: T ) => { console.log( { q: 'render icon ?', record, icon: record.icon } ); return ( record.icon === null ? null : < record.icon />); }
+                render: ( _, record: T ) => { 
+                    // console.log( { q: 'render icon ?', record, icon: record.icon } ); 
+                    return ( record.icon === null ? null : < record.icon /> ); 
+                }
             },
             ...Object.values( columns ?? Item.Columns ),
             ...[
@@ -175,7 +177,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                     // TODO: see `responsive` which lets define breakpoints at which to display column
                     className: 'action_no_mouseover',
 
-                    render: ( text, record: T ) => (
+                    render: ( _: string, record: T ) => (
                         <span onMouseOver={event => event.preventDefault()}>
                             <Link to={`/item/${record.id}/edit`} 
                             // onClick={( obj ) => {
@@ -190,7 +192,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                             <a onClick={( obj ) => {
                                 obj.preventDefault();
                                 // currentRecord = { current: record };
-                                setCurrentRecord(record);
+                                setCurrentRecord( record );
                                 setModal( getLabelDrawModal( record ) );
                             }
                             }><TagOutlined className="IconButton" /></a>
@@ -223,7 +225,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     // };
 
     const onChange = ( pagination: TablePaginationConfig, filters: Record<string, React.ReactText[]>, sorter: SorterResult<T> | SorterResult<T>[], extra: TableCurrentDataSource<T> ) => {
-        console.log( {action: 'onChange params', pagination, filters, sorter, extra });
+        console.log( {action: 'onChange params', pagination, filters, sorter, extra } );
     };
     // const setMouseOverRef: React.LegacyRef<HTMLDivElement> = ( ref ) => {
     //     console.log({method: 'setMouseOverRef'})
@@ -239,7 +241,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                 setMouseOverVisible( false );
 
                 // currentRecord = { current: null };
-                setCurrentRecord(null);
+                setCurrentRecord( null );
             }} >
             {/* Modal */}
             {modal}
@@ -271,7 +273,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                     //     currentTarget: event.currentTarget, 
                     //     target: event.target });
                     if ( ( event.target as HTMLTableDataCellElement ).className.toString() !== "ant-table-cell" ) {
-                        setMouseOverVisible(false);
+                        setMouseOverVisible( false );
                         return;
                     }
                     if ( currentRecord && currentRecord && !mouseOverVisible ) {
@@ -336,8 +338,8 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
 
                                 console.log( currentRecordRef.current );
                                 if ( currentRecordRef.current != record ){
-                                    setCurrentRecord( record);
-                                    console.log("setting currentRecordRef");
+                                    setCurrentRecord( record );
+                                    console.log( "setting currentRecordRef" );
                                     // currentRecordRef = {current: record};
                                 }
                             }

@@ -46,6 +46,12 @@
 - [ ] figure out how to store and display USC values (UNx), store as absolute diameter (in inches?) store as string? Both?
 - [x] trailing 0 is removed when creating name in `ItemHardwareFastenerBolt` Form
 
+## Orders, Inventory Management
+
+- [ ] payment method
+  - [ ] create management interface, much like `Manufacturer` and `Vendor` underneath the `Order` top level menu entry.
+  - [ ] add to `OrderFormModal`
+- [ ] Shipment Vendor Auto-Select based on tracking number format entered.
 
 ## Drawing
 

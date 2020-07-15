@@ -21,7 +21,7 @@ export const QtyInput: React.FC<QtyInputProps> = ( props ) => {
         <React.Fragment>
             <Switch onChange={( val ) => { 
                 setDisplayNumberInput( val );
-                if ( !val ){ setValue(null); }
+                if ( !val ){ setValue( null ); }
             }} />
             {/* {displayNumberInput ? */}
                 <Input
@@ -39,5 +39,3 @@ export const QtyInput: React.FC<QtyInputProps> = ( props ) => {
     );
 };
 
-
-{/* <InputNumber placeholder="If known" min={1} step={1} precision={1} /> */}

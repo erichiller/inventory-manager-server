@@ -65,7 +65,6 @@ query ItemSearch($search_text: String!) {
         args: { 
             query_text: $search_text
         }, 
-        # TODO: I need to come up with a way to specify _"Any `item_` class
         where: { 
             class: {}
         }

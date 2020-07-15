@@ -1,13 +1,10 @@
-import { SelectProps, SelectValue, LabeledValue } from "antd/lib/select";
+import { SelectProps, SelectValue } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
-import { AutoComplete, Input, DatePicker, Select } from "antd";
+import { Input, Select } from "antd";
 
 
-
-import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
-import { toTitleCase, getDaysInMonth, Intersection, is, parseIntSafe } from "~lib/UtilityFunctions";
-import { InputProps } from "antd/lib/input";
-import { useGetOrdersByDateRangeQuery, useGetItemsQuery, useItemSearchQuery } from "~lib/types/graphql";
+import { Intersection, is, parseIntSafe } from "~lib/UtilityFunctions";
+import { useItemSearchQuery } from "~lib/types/graphql";
 
 
 interface OptionT {
@@ -79,7 +76,7 @@ export const ItemSelect: React.FC<ItemSelectProps> = ( props ) => {
     console.log( "ItemSelect with mode", mode );
     useEffect( () => {
         if ( !loading && !error ) {
-            console.log( { class: "ItemSelect", "action": "useEffect", event: "loading and error ok", data } );
+            console.log( { class: "ItemSelect", action: "useEffect", event: "loading and error ok", data } );
             setOptions( data.search.map( v => {
                 console.log( "outputting option", v );
                 return {
@@ -107,7 +104,7 @@ export const ItemSelect: React.FC<ItemSelectProps> = ( props ) => {
                 onChange={( value, opt ) => {
                     console.log( "onChange", { value, opt } );
                     if ( is < ( input: number ) => void >( onChange, props.mode === null || props.mode === "single" ) ) {
-                        onChange( parseIntSafe(value)); 
+                        onChange( parseIntSafe( value ) ); 
                     } else {
                         let arrayOfItemProps: { item_id: number; }[] = [];
                         if ( typeof value === "number" ) {

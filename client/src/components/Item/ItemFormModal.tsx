@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { useForm, FormProps } from 'antd/lib/form/Form';
-import { Form, Modal, Input, Button } from 'antd';
-import { visibleHandler } from './ItemTable';
+import { useForm } from 'antd/lib/form/Form';
+import { Form, Modal, Input } from 'antd';
 import { Item } from '~lib/Item';
 import { ItemFormProps, FormMutationHandler } from '~lib/Item/Item';
 import TextArea from 'antd/lib/input/TextArea';
 import { QtyInput } from '~lib/Item/Common/QtyInput';
-import { OrderSelect } from '../Order/Form/OrderSelect';
 import { useHistory } from 'react-router-dom';
+import { Callbacks } from 'rc-field-form/lib/interface';
+
 
 type ItemFormModalProps = {
     mutationHandler: React.FC<FormMutationHandler>;
@@ -23,23 +23,23 @@ type ItemFormModalProps = {
 
 export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
     const [ form ] = useForm();
-    console.log( { class: 'ItemEditModal', msg: 'load FC', props } );
+    console.log( { class: 'ItemFormModal', msg: 'init', props } );
     const [ formSubmitted, setFormSubmitted ] = useState<boolean>( false );
     const history = useHistory();
 
-    const onFinish = ( values: {
+    const onFinish: Callbacks['onFinish'] = ( values: {
         [ name: string ]: any;
     } ) => {
-        console.log( { class: 'ItemEditModal', method: 'onFinish', values } );
+        console.log( { class: 'ItemFormModal', method: 'onFinish', values } );
         setFormSubmitted( true );
     };
 
-    const onFinishFailed = ( errorInfo ) => {
-        console.error( { class: 'ItemEditModal', method: 'onFinishFailed', errorInfo } );
+    const onFinishFailed: Callbacks['onFinishFailed'] = ( errorInfo ) => {
+        console.error( { class: 'ItemFormModal', method: 'onFinishFailed', errorInfo } );
     };
 
-    const onFieldsChange = ( changedFields, values ) => {
-        console.log( { class: 'ItemEditModal', method: 'onFieldsChange', changedFields, values } );
+    const onFieldsChange: Callbacks['onFieldsChange'] = ( changedFields, values ) => {
+        console.log( { class: 'ItemFormModal', method: 'onFieldsChange', changedFields, values } );
     };
 
     const mutationCompleteCallback: ( success: boolean ) => void = ( success: boolean ) => {
@@ -67,10 +67,10 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
         // }}
         className="ItemEditFormModal"
         onOk={e => {
-            console.log( { class: 'ItemEditModal', method: 'onOk', e, values: form.getFieldsValue() } );
+            console.log( { class: 'ItemFormModal', method: 'onOk', e, values: form.getFieldsValue() } );
             form.submit();
         }}
-        onCancel={event => exitModal()}
+        onCancel={() => exitModal()}
     >
         <Form
             name="ItemForm"
@@ -100,7 +100,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
                 <Form.Item name="description" label="Description">
                     <TextArea placeholder="Brief (optional) description of this item" autoSize={{ minRows: 2 }} />
                 </Form.Item>
-                {/* TODO: stock needs fixing ; new stock-table */}
+                {/* URGENT: stock needs fixing ; new stock-table */}
                 <Form.Item name="stock" label="Qty">
                     <QtyInput />
                 </Form.Item>

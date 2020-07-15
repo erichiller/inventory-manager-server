@@ -270,6 +270,7 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
             this.simpleObject
         );
     }
+
 }
 
 Item.RegisterClassType( "item_hardware_fastener_screw_machine", ItemHardwareFastenerScrewMachine );

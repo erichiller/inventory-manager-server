@@ -1,107 +1,59 @@
-import React, { useState, ReactText, ChangeEvent, useRef, useEffect } from 'react';
-import { Form, Input, Divider, Tooltip, InputNumber, Switch, Row, Col, Button } from 'antd';
-// import { OptionsType } from 'rc-select/lib/Option';
-import { ItemFormProps } from '../Item';
-
-import { toMinimumFixed, Intersection } from '~lib/UtilityFunctions';
-import { FormInstance } from 'antd/lib/form';
-import { ItemBundle } from './Index';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { ItemSelect } from '~components/Item/ItemSelect';
+import { ItemFormProps, FormMutationHandler } from "../Item";
+import { useUpdateItemHardwareFastenerScrewMachineMutation, EnumItemHandednessEnum, EnumItemHardwareUseMaterialEnum, ItemHardwareFastenerScrewMachineInsertInput, EnumItemHardwareFastenerScrewMachinePointEnum } from "../../types/graphql";
+import { useEffect } from "react";
+import { message } from "antd";
+import { Store, StoreValue } from "antd/lib/form/interface";
+import { ItemHardwareFastenerScrewMachine } from "..";
+import { applyDefaults } from "~item/Common/FormLib";
 
 
-interface ItemBundleEditFormProps extends Intersection<ItemFormProps, ItemBundle> {
+export const ItemBundleEditMutationHandler: React.FC<FormMutationHandler> = ( props ) => {
+    const { form, submitted, completeCallback } = props;
+    const [ updateItemHardwareFastenerScrewMachineMutation, { data, loading, error } ] = useUpdateItemHardwareFastenerScrewMachineMutation();
 
-}
+    // TODO: edit must REMOVE defaults if they are explicitly set.
+    
+    useEffect( () => {
+        if ( submitted === true ) {
+            console.log( { c: "ItemHardwareFastenerScrewMachineEditMutationHandler", f: 'useEffect', cond: 'submitted === true' }, form.getFieldsValue() );
+            updateItemHardwareFastenerScrewMachineMutation( {
+                variables: applyDefaults<ItemHardwareFastenerScrewMachine>( form.getFieldsValue( true, ( meta ) => {
+                    // console.log( { c: "ItemHardwareFastenerScrewMachineEditMutationHandler", f: 'meta'}, meta.name );
+                    return ! meta.name.includes( 'screw_size' );
+                } ),
+                // TODO: put defaults in the class
+                {
+                    thread_direction: EnumItemHandednessEnum.right,
+                    use_material: EnumItemHardwareUseMaterialEnum.machine,
+                    point_type: EnumItemHardwareFastenerScrewMachinePointEnum.flat
+                } )
+            } );
+        }
+    }, [submitted] );
 
+    useEffect( () => {
+        if ( error ){
+            completeCallback( false );
+            message.error( `${error.name}: ${error.message}` );
+        } else if ( data ) {
+            message.success( `successfully edited ${data.__typename} with id ${data.update_item_hardware_fastener_screw_machine_by_pk.id}` );
+            return () => {
+                form.resetFields();
+                completeCallback( true );
+            };
+        }
+    }, [data, loading, error] );
 
-export const ItemBundleEditForm: React.FC<ItemBundleEditFormProps> = ( props ) => {
-    const { form } = props;
-
-    /**
-     * console regex search: 
-     * /(onFinish|ItemSelect|onChange)/
-     */
 
     // useEffect( () => {
-    //     screwSizeInputRef.current.focus();
-    // }, [ screwSizeInputRef ] );
-
-    // useEffect( () => {
-    //     let initProps: Partial<ItemBundle> = {};
-    //     if ( !props.thread_direction ) {
-    //         initProps.thread_direction = EnumItemHandednessEnum.right;
-    //     }
+    //     let initProps = {
+    //         screw_size: form.getFieldsValue()
+    //     };
+    //     // if ( !props.thread_direction ) {
+    //     //     initProps.thread_direction = EnumItemHandednessEnum.right;
+    //     // }
     //     form.setFieldsValue( initProps );
     // } );
 
-    
-
-    return (
-        <React.Fragment>
-            <div className="col">
-                <Divider key="items" orientation="left">Items</Divider>
-
-                <Form.Item
-                    label="Bundled Items"
-                    name="items"
-                    getValueFromEvent={( args ) => {
-                        console.log( 'form getValueFromEvent (items)', args );
-                        return args;
-                    }}
-                >
-                    <ItemSelect placeholder="Search for Item" />
-                </Form.Item>
-
-
-                {/* <Form.List name="items">
-                    {( fields, { add, remove } ) => {
-                        return (
-                            <React.Fragment>
-                                {fields.map( ( field, index ) => (
-                                    <Form.Item
-                                        {...field}
-                                        label="Bundled Item"
-                                        getValueFromEvent={( args ) => {
-                                            console.log( 'form getValueFromEvent (Bundled Item)', { field, index, args} );
-                                            return args;
-                                        }}
-                                        >
-                                        <ItemSelect placeholder="Search for Item"
-                                            // suffix={
-                                            //     <MinusCircleOutlined
-                                            //         className="dynamic-delete-button"
-                                            //         onClick={() => {
-                                            //             remove( field.name );
-                                            //         }}
-                                            //     />
-                                            // }
-                                        />
-                                        </Form.Item>
-                                ) )}
-                                <Form.Item
-                                    label=" "
-                                    colon={false}
-                                >
-                                    <Button
-                                        type="dashed"
-                                        onClick={() => {
-                                            add();
-                                        }}
-                                        style={{ width: "100%", textAlign: 'center' }}
-                                    >
-                                        <PlusOutlined /> Add Item
-                                    </Button>
-                                </Form.Item>
-                            </React.Fragment>
-                        );
-                    }}
-                </Form.List> */}
-            </div>
-
-        </React.Fragment>
-    );
+    return null;
 };
-
-
-

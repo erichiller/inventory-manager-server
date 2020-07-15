@@ -365,18 +365,15 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                     />
                 </Form.Item>
 
+
+
+
                 {/* TODO: select payment_method_id */}
 
 
 
 
-
                 <Divider key="Items" orientation="left">Items</Divider>
-                {/* <Form.Item name='items' label="Items"> */}
-                {/* <Form.Item name={[ 'items', 'item_id' ]} label="Items"> */}
-                {/* <ItemSelect /> */}
-                {/* <OrderItemInput />
-                </Form.Item> */}
                 <Form.List name="order_items">
                     {( fields, { add, remove } ) => {
                         return (

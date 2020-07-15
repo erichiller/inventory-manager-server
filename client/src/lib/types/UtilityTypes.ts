@@ -17,7 +17,7 @@ export type ClassType<
     T extends new ( ...args: any ) => any,
 > = Intersection<
     T, 
-    new (...args: ConstructorParameters<T>) => T
+    new ( ...args: ConstructorParameters<T> ) => T
 >;
 
 
