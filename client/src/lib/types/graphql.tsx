@@ -6559,9 +6559,9 @@ export enum IconUpdateColumn {
 export type Item = {
   __typename?: 'item';
   /** An array relationship */
-  bundle: Array<ItemBundleMap>;
+  bundle: Array<ItemBundleMember>;
   /** An aggregated array relationship */
-  bundle_aggregate: ItemBundleMapAggregate;
+  bundle_aggregate: ItemBundleMemberAggregate;
   class: EnumItemClassEnum;
   id: Scalars['Int'];
   /** An array relationship */
@@ -6594,21 +6594,21 @@ export type Item = {
 
 /** columns and relationships of "item" */
 export type ItemBundleArgs = {
-  distinct_on?: Maybe<Array<ItemBundleMapSelectColumn>>;
+  distinct_on?: Maybe<Array<ItemBundleMemberSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<ItemBundleMapOrderBy>>;
-  where?: Maybe<ItemBundleMapBoolExp>;
+  order_by?: Maybe<Array<ItemBundleMemberOrderBy>>;
+  where?: Maybe<ItemBundleMemberBoolExp>;
 };
 
 
 /** columns and relationships of "item" */
 export type ItemBundleAggregateArgs = {
-  distinct_on?: Maybe<Array<ItemBundleMapSelectColumn>>;
+  distinct_on?: Maybe<Array<ItemBundleMemberSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<ItemBundleMapOrderBy>>;
-  where?: Maybe<ItemBundleMapBoolExp>;
+  order_by?: Maybe<Array<ItemBundleMemberOrderBy>>;
+  where?: Maybe<ItemBundleMemberBoolExp>;
 };
 
 
@@ -6809,7 +6809,7 @@ export type ItemBoolExp = {
   _and?: Maybe<Array<Maybe<ItemBoolExp>>>;
   _not?: Maybe<ItemBoolExp>;
   _or?: Maybe<Array<Maybe<ItemBoolExp>>>;
-  bundle?: Maybe<ItemBundleMapBoolExp>;
+  bundle?: Maybe<ItemBundleMemberBoolExp>;
   class?: Maybe<EnumItemClassEnumComparisonExp>;
   id?: Maybe<IntComparisonExp>;
   itemVariants?: Maybe<ItemVariantBoolExp>;
@@ -6835,9 +6835,9 @@ export type ItemBundle = {
   /** An object relationship */
   item: Item;
   /** An array relationship */
-  items: Array<ItemBundleMap>;
+  items: Array<ItemBundleMember>;
   /** An aggregated array relationship */
-  items_aggregate: ItemBundleMapAggregate;
+  items_aggregate: ItemBundleMemberAggregate;
   name: Scalars['String'];
   updated_at: Scalars['timestamptz'];
 };
@@ -6850,11 +6850,11 @@ export type ItemBundle = {
  * columns and relationships of "item.bundle"
  */
 export type ItemBundleItemsArgs = {
-  distinct_on?: Maybe<Array<ItemBundleMapSelectColumn>>;
+  distinct_on?: Maybe<Array<ItemBundleMemberSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<ItemBundleMapOrderBy>>;
-  where?: Maybe<ItemBundleMapBoolExp>;
+  order_by?: Maybe<Array<ItemBundleMemberOrderBy>>;
+  where?: Maybe<ItemBundleMemberBoolExp>;
 };
 
 
@@ -6865,11 +6865,11 @@ export type ItemBundleItemsArgs = {
  * columns and relationships of "item.bundle"
  */
 export type ItemBundleItemsAggregateArgs = {
-  distinct_on?: Maybe<Array<ItemBundleMapSelectColumn>>;
+  distinct_on?: Maybe<Array<ItemBundleMemberSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<ItemBundleMapOrderBy>>;
-  where?: Maybe<ItemBundleMapBoolExp>;
+  order_by?: Maybe<Array<ItemBundleMemberOrderBy>>;
+  where?: Maybe<ItemBundleMemberBoolExp>;
 };
 
 /** aggregated selection of "item.bundle" */
@@ -6943,7 +6943,7 @@ export type ItemBundleBoolExp = {
   description?: Maybe<StringComparisonExp>;
   id?: Maybe<IntComparisonExp>;
   item?: Maybe<ItemBoolExp>;
-  items?: Maybe<ItemBundleMapBoolExp>;
+  items?: Maybe<ItemBundleMemberBoolExp>;
   name?: Maybe<StringComparisonExp>;
   updated_at?: Maybe<TimestamptzComparisonExp>;
 };
@@ -6967,320 +6967,9 @@ export type ItemBundleInsertInput = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   item?: Maybe<ItemObjRelInsertInput>;
-  items?: Maybe<ItemBundleMapArrRelInsertInput>;
+  items?: Maybe<ItemBundleMemberArrRelInsertInput>;
   name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-/** columns and relationships of "item.bundle_map" */
-export type ItemBundleMap = {
-  __typename?: 'item_bundle_map';
-  /** An object relationship */
-  bundle: ItemBundle;
-  /** An object relationship */
-  item: Item;
-  item_bundle_id: Scalars['Int'];
-  item_member_id: Scalars['Int'];
-  quantity?: Maybe<Scalars['numeric']>;
-};
-
-/** aggregated selection of "item.bundle_map" */
-export type ItemBundleMapAggregate = {
-  __typename?: 'item_bundle_map_aggregate';
-  aggregate?: Maybe<ItemBundleMapAggregateFields>;
-  nodes: Array<ItemBundleMap>;
-};
-
-/** aggregate fields of "item.bundle_map" */
-export type ItemBundleMapAggregateFields = {
-  __typename?: 'item_bundle_map_aggregate_fields';
-  avg?: Maybe<ItemBundleMapAvgFields>;
-  count?: Maybe<Scalars['Int']>;
-  max?: Maybe<ItemBundleMapMaxFields>;
-  min?: Maybe<ItemBundleMapMinFields>;
-  stddev?: Maybe<ItemBundleMapStddevFields>;
-  stddev_pop?: Maybe<ItemBundleMapStddevPopFields>;
-  stddev_samp?: Maybe<ItemBundleMapStddevSampFields>;
-  sum?: Maybe<ItemBundleMapSumFields>;
-  var_pop?: Maybe<ItemBundleMapVarPopFields>;
-  var_samp?: Maybe<ItemBundleMapVarSampFields>;
-  variance?: Maybe<ItemBundleMapVarianceFields>;
-};
-
-
-/** aggregate fields of "item.bundle_map" */
-export type ItemBundleMapAggregateFieldsCountArgs = {
-  columns?: Maybe<Array<ItemBundleMapSelectColumn>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "item.bundle_map" */
-export type ItemBundleMapAggregateOrderBy = {
-  avg?: Maybe<ItemBundleMapAvgOrderBy>;
-  count?: Maybe<OrderBy>;
-  max?: Maybe<ItemBundleMapMaxOrderBy>;
-  min?: Maybe<ItemBundleMapMinOrderBy>;
-  stddev?: Maybe<ItemBundleMapStddevOrderBy>;
-  stddev_pop?: Maybe<ItemBundleMapStddevPopOrderBy>;
-  stddev_samp?: Maybe<ItemBundleMapStddevSampOrderBy>;
-  sum?: Maybe<ItemBundleMapSumOrderBy>;
-  var_pop?: Maybe<ItemBundleMapVarPopOrderBy>;
-  var_samp?: Maybe<ItemBundleMapVarSampOrderBy>;
-  variance?: Maybe<ItemBundleMapVarianceOrderBy>;
-};
-
-/** input type for inserting array relation for remote table "item.bundle_map" */
-export type ItemBundleMapArrRelInsertInput = {
-  data: Array<ItemBundleMapInsertInput>;
-  on_conflict?: Maybe<ItemBundleMapOnConflict>;
-};
-
-/** aggregate avg on columns */
-export type ItemBundleMapAvgFields = {
-  __typename?: 'item_bundle_map_avg_fields';
-  item_bundle_id?: Maybe<Scalars['Float']>;
-  item_member_id?: Maybe<Scalars['Float']>;
-  quantity?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "item.bundle_map" */
-export type ItemBundleMapAvgOrderBy = {
-  item_bundle_id?: Maybe<OrderBy>;
-  item_member_id?: Maybe<OrderBy>;
-  quantity?: Maybe<OrderBy>;
-};
-
-/** Boolean expression to filter rows from the table "item.bundle_map". All fields are combined with a logical 'AND'. */
-export type ItemBundleMapBoolExp = {
-  _and?: Maybe<Array<Maybe<ItemBundleMapBoolExp>>>;
-  _not?: Maybe<ItemBundleMapBoolExp>;
-  _or?: Maybe<Array<Maybe<ItemBundleMapBoolExp>>>;
-  bundle?: Maybe<ItemBundleBoolExp>;
-  item?: Maybe<ItemBoolExp>;
-  item_bundle_id?: Maybe<IntComparisonExp>;
-  item_member_id?: Maybe<IntComparisonExp>;
-  quantity?: Maybe<NumericComparisonExp>;
-};
-
-/** unique or primary key constraints on table "item.bundle_map" */
-export enum ItemBundleMapConstraint {
-  /** unique or primary key constraint */
-  item_bundle_map_pkey = 'item_bundle_map_pkey'
-}
-
-/** input type for incrementing integer column in table "item.bundle_map" */
-export type ItemBundleMapIncInput = {
-  item_bundle_id?: Maybe<Scalars['Int']>;
-  item_member_id?: Maybe<Scalars['Int']>;
-  quantity?: Maybe<Scalars['numeric']>;
-};
-
-/** input type for inserting data into table "item.bundle_map" */
-export type ItemBundleMapInsertInput = {
-  bundle?: Maybe<ItemBundleObjRelInsertInput>;
-  item?: Maybe<ItemObjRelInsertInput>;
-  item_bundle_id?: Maybe<Scalars['Int']>;
-  item_member_id?: Maybe<Scalars['Int']>;
-  quantity?: Maybe<Scalars['numeric']>;
-};
-
-/** aggregate max on columns */
-export type ItemBundleMapMaxFields = {
-  __typename?: 'item_bundle_map_max_fields';
-  item_bundle_id?: Maybe<Scalars['Int']>;
-  item_member_id?: Maybe<Scalars['Int']>;
-  quantity?: Maybe<Scalars['numeric']>;
-};
-
-/** order by max() on columns of table "item.bundle_map" */
-export type ItemBundleMapMaxOrderBy = {
-  item_bundle_id?: Maybe<OrderBy>;
-  item_member_id?: Maybe<OrderBy>;
-  quantity?: Maybe<OrderBy>;
-};
-
-/** aggregate min on columns */
-export type ItemBundleMapMinFields = {
-  __typename?: 'item_bundle_map_min_fields';
-  item_bundle_id?: Maybe<Scalars['Int']>;
-  item_member_id?: Maybe<Scalars['Int']>;
-  quantity?: Maybe<Scalars['numeric']>;
-};
-
-/** order by min() on columns of table "item.bundle_map" */
-export type ItemBundleMapMinOrderBy = {
-  item_bundle_id?: Maybe<OrderBy>;
-  item_member_id?: Maybe<OrderBy>;
-  quantity?: Maybe<OrderBy>;
-};
-
-/** response of any mutation on the table "item.bundle_map" */
-export type ItemBundleMapMutationResponse = {
-  __typename?: 'item_bundle_map_mutation_response';
-  /** number of affected rows by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
-  returning: Array<ItemBundleMap>;
-};
-
-/** input type for inserting object relation for remote table "item.bundle_map" */
-export type ItemBundleMapObjRelInsertInput = {
-  data: ItemBundleMapInsertInput;
-  on_conflict?: Maybe<ItemBundleMapOnConflict>;
-};
-
-/** on conflict condition type for table "item.bundle_map" */
-export type ItemBundleMapOnConflict = {
-  constraint: ItemBundleMapConstraint;
-  update_columns: Array<ItemBundleMapUpdateColumn>;
-  where?: Maybe<ItemBundleMapBoolExp>;
-};
-
-/** ordering options when selecting data from "item.bundle_map" */
-export type ItemBundleMapOrderBy = {
-  bundle?: Maybe<ItemBundleOrderBy>;
-  item?: Maybe<ItemOrderBy>;
-  item_bundle_id?: Maybe<OrderBy>;
-  item_member_id?: Maybe<OrderBy>;
-  quantity?: Maybe<OrderBy>;
-};
-
-/** primary key columns input for table: "item.bundle_map" */
-export type ItemBundleMapPkColumnsInput = {
-  item_bundle_id: Scalars['Int'];
-  item_member_id: Scalars['Int'];
-};
-
-/** select columns of table "item.bundle_map" */
-export enum ItemBundleMapSelectColumn {
-  /** column name */
-  item_bundle_id = 'item_bundle_id',
-  /** column name */
-  item_member_id = 'item_member_id',
-  /** column name */
-  quantity = 'quantity'
-}
-
-/** input type for updating data in table "item.bundle_map" */
-export type ItemBundleMapSetInput = {
-  item_bundle_id?: Maybe<Scalars['Int']>;
-  item_member_id?: Maybe<Scalars['Int']>;
-  quantity?: Maybe<Scalars['numeric']>;
-};
-
-/** aggregate stddev on columns */
-export type ItemBundleMapStddevFields = {
-  __typename?: 'item_bundle_map_stddev_fields';
-  item_bundle_id?: Maybe<Scalars['Float']>;
-  item_member_id?: Maybe<Scalars['Float']>;
-  quantity?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "item.bundle_map" */
-export type ItemBundleMapStddevOrderBy = {
-  item_bundle_id?: Maybe<OrderBy>;
-  item_member_id?: Maybe<OrderBy>;
-  quantity?: Maybe<OrderBy>;
-};
-
-/** aggregate stddev_pop on columns */
-export type ItemBundleMapStddevPopFields = {
-  __typename?: 'item_bundle_map_stddev_pop_fields';
-  item_bundle_id?: Maybe<Scalars['Float']>;
-  item_member_id?: Maybe<Scalars['Float']>;
-  quantity?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "item.bundle_map" */
-export type ItemBundleMapStddevPopOrderBy = {
-  item_bundle_id?: Maybe<OrderBy>;
-  item_member_id?: Maybe<OrderBy>;
-  quantity?: Maybe<OrderBy>;
-};
-
-/** aggregate stddev_samp on columns */
-export type ItemBundleMapStddevSampFields = {
-  __typename?: 'item_bundle_map_stddev_samp_fields';
-  item_bundle_id?: Maybe<Scalars['Float']>;
-  item_member_id?: Maybe<Scalars['Float']>;
-  quantity?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "item.bundle_map" */
-export type ItemBundleMapStddevSampOrderBy = {
-  item_bundle_id?: Maybe<OrderBy>;
-  item_member_id?: Maybe<OrderBy>;
-  quantity?: Maybe<OrderBy>;
-};
-
-/** aggregate sum on columns */
-export type ItemBundleMapSumFields = {
-  __typename?: 'item_bundle_map_sum_fields';
-  item_bundle_id?: Maybe<Scalars['Int']>;
-  item_member_id?: Maybe<Scalars['Int']>;
-  quantity?: Maybe<Scalars['numeric']>;
-};
-
-/** order by sum() on columns of table "item.bundle_map" */
-export type ItemBundleMapSumOrderBy = {
-  item_bundle_id?: Maybe<OrderBy>;
-  item_member_id?: Maybe<OrderBy>;
-  quantity?: Maybe<OrderBy>;
-};
-
-/** update columns of table "item.bundle_map" */
-export enum ItemBundleMapUpdateColumn {
-  /** column name */
-  item_bundle_id = 'item_bundle_id',
-  /** column name */
-  item_member_id = 'item_member_id',
-  /** column name */
-  quantity = 'quantity'
-}
-
-/** aggregate var_pop on columns */
-export type ItemBundleMapVarPopFields = {
-  __typename?: 'item_bundle_map_var_pop_fields';
-  item_bundle_id?: Maybe<Scalars['Float']>;
-  item_member_id?: Maybe<Scalars['Float']>;
-  quantity?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "item.bundle_map" */
-export type ItemBundleMapVarPopOrderBy = {
-  item_bundle_id?: Maybe<OrderBy>;
-  item_member_id?: Maybe<OrderBy>;
-  quantity?: Maybe<OrderBy>;
-};
-
-/** aggregate var_samp on columns */
-export type ItemBundleMapVarSampFields = {
-  __typename?: 'item_bundle_map_var_samp_fields';
-  item_bundle_id?: Maybe<Scalars['Float']>;
-  item_member_id?: Maybe<Scalars['Float']>;
-  quantity?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "item.bundle_map" */
-export type ItemBundleMapVarSampOrderBy = {
-  item_bundle_id?: Maybe<OrderBy>;
-  item_member_id?: Maybe<OrderBy>;
-  quantity?: Maybe<OrderBy>;
-};
-
-/** aggregate variance on columns */
-export type ItemBundleMapVarianceFields = {
-  __typename?: 'item_bundle_map_variance_fields';
-  item_bundle_id?: Maybe<Scalars['Float']>;
-  item_member_id?: Maybe<Scalars['Float']>;
-  quantity?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "item.bundle_map" */
-export type ItemBundleMapVarianceOrderBy = {
-  item_bundle_id?: Maybe<OrderBy>;
-  item_member_id?: Maybe<OrderBy>;
-  quantity?: Maybe<OrderBy>;
 };
 
 /** aggregate max on columns */
@@ -7300,6 +6989,317 @@ export type ItemBundleMaxOrderBy = {
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   updated_at?: Maybe<OrderBy>;
+};
+
+/** columns and relationships of "item.bundle_member" */
+export type ItemBundleMember = {
+  __typename?: 'item_bundle_member';
+  /** An object relationship */
+  bundle: ItemBundle;
+  /** An object relationship */
+  item: Item;
+  item_bundle_id: Scalars['Int'];
+  item_member_id: Scalars['Int'];
+  quantity?: Maybe<Scalars['numeric']>;
+};
+
+/** aggregated selection of "item.bundle_member" */
+export type ItemBundleMemberAggregate = {
+  __typename?: 'item_bundle_member_aggregate';
+  aggregate?: Maybe<ItemBundleMemberAggregateFields>;
+  nodes: Array<ItemBundleMember>;
+};
+
+/** aggregate fields of "item.bundle_member" */
+export type ItemBundleMemberAggregateFields = {
+  __typename?: 'item_bundle_member_aggregate_fields';
+  avg?: Maybe<ItemBundleMemberAvgFields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<ItemBundleMemberMaxFields>;
+  min?: Maybe<ItemBundleMemberMinFields>;
+  stddev?: Maybe<ItemBundleMemberStddevFields>;
+  stddev_pop?: Maybe<ItemBundleMemberStddevPopFields>;
+  stddev_samp?: Maybe<ItemBundleMemberStddevSampFields>;
+  sum?: Maybe<ItemBundleMemberSumFields>;
+  var_pop?: Maybe<ItemBundleMemberVarPopFields>;
+  var_samp?: Maybe<ItemBundleMemberVarSampFields>;
+  variance?: Maybe<ItemBundleMemberVarianceFields>;
+};
+
+
+/** aggregate fields of "item.bundle_member" */
+export type ItemBundleMemberAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<ItemBundleMemberSelectColumn>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "item.bundle_member" */
+export type ItemBundleMemberAggregateOrderBy = {
+  avg?: Maybe<ItemBundleMemberAvgOrderBy>;
+  count?: Maybe<OrderBy>;
+  max?: Maybe<ItemBundleMemberMaxOrderBy>;
+  min?: Maybe<ItemBundleMemberMinOrderBy>;
+  stddev?: Maybe<ItemBundleMemberStddevOrderBy>;
+  stddev_pop?: Maybe<ItemBundleMemberStddevPopOrderBy>;
+  stddev_samp?: Maybe<ItemBundleMemberStddevSampOrderBy>;
+  sum?: Maybe<ItemBundleMemberSumOrderBy>;
+  var_pop?: Maybe<ItemBundleMemberVarPopOrderBy>;
+  var_samp?: Maybe<ItemBundleMemberVarSampOrderBy>;
+  variance?: Maybe<ItemBundleMemberVarianceOrderBy>;
+};
+
+/** input type for inserting array relation for remote table "item.bundle_member" */
+export type ItemBundleMemberArrRelInsertInput = {
+  data: Array<ItemBundleMemberInsertInput>;
+  on_conflict?: Maybe<ItemBundleMemberOnConflict>;
+};
+
+/** aggregate avg on columns */
+export type ItemBundleMemberAvgFields = {
+  __typename?: 'item_bundle_member_avg_fields';
+  item_bundle_id?: Maybe<Scalars['Float']>;
+  item_member_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "item.bundle_member" */
+export type ItemBundleMemberAvgOrderBy = {
+  item_bundle_id?: Maybe<OrderBy>;
+  item_member_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "item.bundle_member". All fields are combined with a logical 'AND'. */
+export type ItemBundleMemberBoolExp = {
+  _and?: Maybe<Array<Maybe<ItemBundleMemberBoolExp>>>;
+  _not?: Maybe<ItemBundleMemberBoolExp>;
+  _or?: Maybe<Array<Maybe<ItemBundleMemberBoolExp>>>;
+  bundle?: Maybe<ItemBundleBoolExp>;
+  item?: Maybe<ItemBoolExp>;
+  item_bundle_id?: Maybe<IntComparisonExp>;
+  item_member_id?: Maybe<IntComparisonExp>;
+  quantity?: Maybe<NumericComparisonExp>;
+};
+
+/** unique or primary key constraints on table "item.bundle_member" */
+export enum ItemBundleMemberConstraint {
+  /** unique or primary key constraint */
+  item_bundle_map_pkey = 'item_bundle_map_pkey'
+}
+
+/** input type for incrementing integer column in table "item.bundle_member" */
+export type ItemBundleMemberIncInput = {
+  item_bundle_id?: Maybe<Scalars['Int']>;
+  item_member_id?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['numeric']>;
+};
+
+/** input type for inserting data into table "item.bundle_member" */
+export type ItemBundleMemberInsertInput = {
+  bundle?: Maybe<ItemBundleObjRelInsertInput>;
+  item?: Maybe<ItemObjRelInsertInput>;
+  item_bundle_id?: Maybe<Scalars['Int']>;
+  item_member_id?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate max on columns */
+export type ItemBundleMemberMaxFields = {
+  __typename?: 'item_bundle_member_max_fields';
+  item_bundle_id?: Maybe<Scalars['Int']>;
+  item_member_id?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['numeric']>;
+};
+
+/** order by max() on columns of table "item.bundle_member" */
+export type ItemBundleMemberMaxOrderBy = {
+  item_bundle_id?: Maybe<OrderBy>;
+  item_member_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+};
+
+/** aggregate min on columns */
+export type ItemBundleMemberMinFields = {
+  __typename?: 'item_bundle_member_min_fields';
+  item_bundle_id?: Maybe<Scalars['Int']>;
+  item_member_id?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['numeric']>;
+};
+
+/** order by min() on columns of table "item.bundle_member" */
+export type ItemBundleMemberMinOrderBy = {
+  item_bundle_id?: Maybe<OrderBy>;
+  item_member_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+};
+
+/** response of any mutation on the table "item.bundle_member" */
+export type ItemBundleMemberMutationResponse = {
+  __typename?: 'item_bundle_member_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<ItemBundleMember>;
+};
+
+/** input type for inserting object relation for remote table "item.bundle_member" */
+export type ItemBundleMemberObjRelInsertInput = {
+  data: ItemBundleMemberInsertInput;
+  on_conflict?: Maybe<ItemBundleMemberOnConflict>;
+};
+
+/** on conflict condition type for table "item.bundle_member" */
+export type ItemBundleMemberOnConflict = {
+  constraint: ItemBundleMemberConstraint;
+  update_columns: Array<ItemBundleMemberUpdateColumn>;
+  where?: Maybe<ItemBundleMemberBoolExp>;
+};
+
+/** ordering options when selecting data from "item.bundle_member" */
+export type ItemBundleMemberOrderBy = {
+  bundle?: Maybe<ItemBundleOrderBy>;
+  item?: Maybe<ItemOrderBy>;
+  item_bundle_id?: Maybe<OrderBy>;
+  item_member_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+};
+
+/** primary key columns input for table: "item.bundle_member" */
+export type ItemBundleMemberPkColumnsInput = {
+  item_bundle_id: Scalars['Int'];
+  item_member_id: Scalars['Int'];
+};
+
+/** select columns of table "item.bundle_member" */
+export enum ItemBundleMemberSelectColumn {
+  /** column name */
+  item_bundle_id = 'item_bundle_id',
+  /** column name */
+  item_member_id = 'item_member_id',
+  /** column name */
+  quantity = 'quantity'
+}
+
+/** input type for updating data in table "item.bundle_member" */
+export type ItemBundleMemberSetInput = {
+  item_bundle_id?: Maybe<Scalars['Int']>;
+  item_member_id?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate stddev on columns */
+export type ItemBundleMemberStddevFields = {
+  __typename?: 'item_bundle_member_stddev_fields';
+  item_bundle_id?: Maybe<Scalars['Float']>;
+  item_member_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "item.bundle_member" */
+export type ItemBundleMemberStddevOrderBy = {
+  item_bundle_id?: Maybe<OrderBy>;
+  item_member_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_pop on columns */
+export type ItemBundleMemberStddevPopFields = {
+  __typename?: 'item_bundle_member_stddev_pop_fields';
+  item_bundle_id?: Maybe<Scalars['Float']>;
+  item_member_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "item.bundle_member" */
+export type ItemBundleMemberStddevPopOrderBy = {
+  item_bundle_id?: Maybe<OrderBy>;
+  item_member_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_samp on columns */
+export type ItemBundleMemberStddevSampFields = {
+  __typename?: 'item_bundle_member_stddev_samp_fields';
+  item_bundle_id?: Maybe<Scalars['Float']>;
+  item_member_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "item.bundle_member" */
+export type ItemBundleMemberStddevSampOrderBy = {
+  item_bundle_id?: Maybe<OrderBy>;
+  item_member_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+};
+
+/** aggregate sum on columns */
+export type ItemBundleMemberSumFields = {
+  __typename?: 'item_bundle_member_sum_fields';
+  item_bundle_id?: Maybe<Scalars['Int']>;
+  item_member_id?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['numeric']>;
+};
+
+/** order by sum() on columns of table "item.bundle_member" */
+export type ItemBundleMemberSumOrderBy = {
+  item_bundle_id?: Maybe<OrderBy>;
+  item_member_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+};
+
+/** update columns of table "item.bundle_member" */
+export enum ItemBundleMemberUpdateColumn {
+  /** column name */
+  item_bundle_id = 'item_bundle_id',
+  /** column name */
+  item_member_id = 'item_member_id',
+  /** column name */
+  quantity = 'quantity'
+}
+
+/** aggregate var_pop on columns */
+export type ItemBundleMemberVarPopFields = {
+  __typename?: 'item_bundle_member_var_pop_fields';
+  item_bundle_id?: Maybe<Scalars['Float']>;
+  item_member_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "item.bundle_member" */
+export type ItemBundleMemberVarPopOrderBy = {
+  item_bundle_id?: Maybe<OrderBy>;
+  item_member_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+};
+
+/** aggregate var_samp on columns */
+export type ItemBundleMemberVarSampFields = {
+  __typename?: 'item_bundle_member_var_samp_fields';
+  item_bundle_id?: Maybe<Scalars['Float']>;
+  item_member_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "item.bundle_member" */
+export type ItemBundleMemberVarSampOrderBy = {
+  item_bundle_id?: Maybe<OrderBy>;
+  item_member_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type ItemBundleMemberVarianceFields = {
+  __typename?: 'item_bundle_member_variance_fields';
+  item_bundle_id?: Maybe<Scalars['Float']>;
+  item_member_id?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "item.bundle_member" */
+export type ItemBundleMemberVarianceOrderBy = {
+  item_bundle_id?: Maybe<OrderBy>;
+  item_member_id?: Maybe<OrderBy>;
+  quantity?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
@@ -7349,7 +7349,7 @@ export type ItemBundleOrderBy = {
   description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   item?: Maybe<ItemOrderBy>;
-  items_aggregate?: Maybe<ItemBundleMapAggregateOrderBy>;
+  items_aggregate?: Maybe<ItemBundleMemberAggregateOrderBy>;
   name?: Maybe<OrderBy>;
   updated_at?: Maybe<OrderBy>;
 };
@@ -11442,7 +11442,7 @@ export type ItemIncInput = {
 
 /** input type for inserting data into table "item" */
 export type ItemInsertInput = {
-  bundle?: Maybe<ItemBundleMapArrRelInsertInput>;
+  bundle?: Maybe<ItemBundleMemberArrRelInsertInput>;
   class?: Maybe<EnumItemClassEnum>;
   id?: Maybe<Scalars['Int']>;
   labelTemplates?: Maybe<LabelTemplateMapArrRelInsertInput>;
@@ -11499,7 +11499,7 @@ export type ItemOnConflict = {
 
 /** ordering options when selecting data from "item" */
 export type ItemOrderBy = {
-  bundle_aggregate?: Maybe<ItemBundleMapAggregateOrderBy>;
+  bundle_aggregate?: Maybe<ItemBundleMemberAggregateOrderBy>;
   class?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   itemVariants_aggregate?: Maybe<ItemVariantAggregateOrderBy>;
@@ -14085,10 +14085,10 @@ export type MutationRoot = {
   delete_item_bundle?: Maybe<ItemBundleMutationResponse>;
   /** delete single row from the table: "item.bundle" */
   delete_item_bundle_by_pk?: Maybe<ItemBundle>;
-  /** delete data from the table: "item.bundle_map" */
-  delete_item_bundle_map?: Maybe<ItemBundleMapMutationResponse>;
-  /** delete single row from the table: "item.bundle_map" */
-  delete_item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
+  /** delete data from the table: "item.bundle_member" */
+  delete_item_bundle_member?: Maybe<ItemBundleMemberMutationResponse>;
+  /** delete single row from the table: "item.bundle_member" */
+  delete_item_bundle_member_by_pk?: Maybe<ItemBundleMember>;
   /** delete single row from the table: "item" */
   delete_item_by_pk?: Maybe<Item>;
   /** delete data from the table: "item.cable_conductive" */
@@ -14339,10 +14339,10 @@ export type MutationRoot = {
   insert_item?: Maybe<ItemMutationResponse>;
   /** insert data into the table: "item.bundle" */
   insert_item_bundle?: Maybe<ItemBundleMutationResponse>;
-  /** insert data into the table: "item.bundle_map" */
-  insert_item_bundle_map?: Maybe<ItemBundleMapMutationResponse>;
-  /** insert a single row into the table: "item.bundle_map" */
-  insert_item_bundle_map_one?: Maybe<ItemBundleMap>;
+  /** insert data into the table: "item.bundle_member" */
+  insert_item_bundle_member?: Maybe<ItemBundleMemberMutationResponse>;
+  /** insert a single row into the table: "item.bundle_member" */
+  insert_item_bundle_member_one?: Maybe<ItemBundleMember>;
   /** insert a single row into the table: "item.bundle" */
   insert_item_bundle_one?: Maybe<ItemBundle>;
   /** insert data into the table: "item.cable_conductive" */
@@ -14602,10 +14602,10 @@ export type MutationRoot = {
   update_item_bundle?: Maybe<ItemBundleMutationResponse>;
   /** update single row of the table: "item.bundle" */
   update_item_bundle_by_pk?: Maybe<ItemBundle>;
-  /** update data of the table: "item.bundle_map" */
-  update_item_bundle_map?: Maybe<ItemBundleMapMutationResponse>;
-  /** update single row of the table: "item.bundle_map" */
-  update_item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
+  /** update data of the table: "item.bundle_member" */
+  update_item_bundle_member?: Maybe<ItemBundleMemberMutationResponse>;
+  /** update single row of the table: "item.bundle_member" */
+  update_item_bundle_member_by_pk?: Maybe<ItemBundleMember>;
   /** update single row of the table: "item" */
   update_item_by_pk?: Maybe<Item>;
   /** update data of the table: "item.cable_conductive" */
@@ -15167,13 +15167,13 @@ export type MutationRootDeleteItemBundleByPkArgs = {
 
 
 /** mutation root */
-export type MutationRootDeleteItemBundleMapArgs = {
-  where: ItemBundleMapBoolExp;
+export type MutationRootDeleteItemBundleMemberArgs = {
+  where: ItemBundleMemberBoolExp;
 };
 
 
 /** mutation root */
-export type MutationRootDeleteItemBundleMapByPkArgs = {
+export type MutationRootDeleteItemBundleMemberByPkArgs = {
   item_bundle_id: Scalars['Int'];
   item_member_id: Scalars['Int'];
 };
@@ -16011,16 +16011,16 @@ export type MutationRootInsertItemBundleArgs = {
 
 
 /** mutation root */
-export type MutationRootInsertItemBundleMapArgs = {
-  objects: Array<ItemBundleMapInsertInput>;
-  on_conflict?: Maybe<ItemBundleMapOnConflict>;
+export type MutationRootInsertItemBundleMemberArgs = {
+  objects: Array<ItemBundleMemberInsertInput>;
+  on_conflict?: Maybe<ItemBundleMemberOnConflict>;
 };
 
 
 /** mutation root */
-export type MutationRootInsertItemBundleMapOneArgs = {
-  object: ItemBundleMapInsertInput;
-  on_conflict?: Maybe<ItemBundleMapOnConflict>;
+export type MutationRootInsertItemBundleMemberOneArgs = {
+  object: ItemBundleMemberInsertInput;
+  on_conflict?: Maybe<ItemBundleMemberOnConflict>;
 };
 
 
@@ -16942,18 +16942,18 @@ export type MutationRootUpdateItemBundleByPkArgs = {
 
 
 /** mutation root */
-export type MutationRootUpdateItemBundleMapArgs = {
-  _inc?: Maybe<ItemBundleMapIncInput>;
-  _set?: Maybe<ItemBundleMapSetInput>;
-  where: ItemBundleMapBoolExp;
+export type MutationRootUpdateItemBundleMemberArgs = {
+  _inc?: Maybe<ItemBundleMemberIncInput>;
+  _set?: Maybe<ItemBundleMemberSetInput>;
+  where: ItemBundleMemberBoolExp;
 };
 
 
 /** mutation root */
-export type MutationRootUpdateItemBundleMapByPkArgs = {
-  _inc?: Maybe<ItemBundleMapIncInput>;
-  _set?: Maybe<ItemBundleMapSetInput>;
-  pk_columns: ItemBundleMapPkColumnsInput;
+export type MutationRootUpdateItemBundleMemberByPkArgs = {
+  _inc?: Maybe<ItemBundleMemberIncInput>;
+  _set?: Maybe<ItemBundleMemberSetInput>;
+  pk_columns: ItemBundleMemberPkColumnsInput;
 };
 
 
@@ -19787,12 +19787,12 @@ export type QueryRoot = {
   item_bundle_aggregate: ItemBundleAggregate;
   /** fetch data from the table: "item.bundle" using primary key columns */
   item_bundle_by_pk?: Maybe<ItemBundle>;
-  /** fetch data from the table: "item.bundle_map" */
-  item_bundle_map: Array<ItemBundleMap>;
-  /** fetch aggregated fields from the table: "item.bundle_map" */
-  item_bundle_map_aggregate: ItemBundleMapAggregate;
-  /** fetch data from the table: "item.bundle_map" using primary key columns */
-  item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
+  /** fetch data from the table: "item.bundle_member" */
+  item_bundle_member: Array<ItemBundleMember>;
+  /** fetch aggregated fields from the table: "item.bundle_member" */
+  item_bundle_member_aggregate: ItemBundleMemberAggregate;
+  /** fetch data from the table: "item.bundle_member" using primary key columns */
+  item_bundle_member_by_pk?: Maybe<ItemBundleMember>;
   /** fetch data from the table: "item" using primary key columns */
   item_by_pk?: Maybe<Item>;
   /** fetch data from the table: "item.cable_conductive" */
@@ -20951,27 +20951,27 @@ export type QueryRootItemBundleByPkArgs = {
 
 
 /** query root */
-export type QueryRootItemBundleMapArgs = {
-  distinct_on?: Maybe<Array<ItemBundleMapSelectColumn>>;
+export type QueryRootItemBundleMemberArgs = {
+  distinct_on?: Maybe<Array<ItemBundleMemberSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<ItemBundleMapOrderBy>>;
-  where?: Maybe<ItemBundleMapBoolExp>;
+  order_by?: Maybe<Array<ItemBundleMemberOrderBy>>;
+  where?: Maybe<ItemBundleMemberBoolExp>;
 };
 
 
 /** query root */
-export type QueryRootItemBundleMapAggregateArgs = {
-  distinct_on?: Maybe<Array<ItemBundleMapSelectColumn>>;
+export type QueryRootItemBundleMemberAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemBundleMemberSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<ItemBundleMapOrderBy>>;
-  where?: Maybe<ItemBundleMapBoolExp>;
+  order_by?: Maybe<Array<ItemBundleMemberOrderBy>>;
+  where?: Maybe<ItemBundleMemberBoolExp>;
 };
 
 
 /** query root */
-export type QueryRootItemBundleMapByPkArgs = {
+export type QueryRootItemBundleMemberByPkArgs = {
   item_bundle_id: Scalars['Int'];
   item_member_id: Scalars['Int'];
 };
@@ -23468,12 +23468,12 @@ export type SubscriptionRoot = {
   item_bundle_aggregate: ItemBundleAggregate;
   /** fetch data from the table: "item.bundle" using primary key columns */
   item_bundle_by_pk?: Maybe<ItemBundle>;
-  /** fetch data from the table: "item.bundle_map" */
-  item_bundle_map: Array<ItemBundleMap>;
-  /** fetch aggregated fields from the table: "item.bundle_map" */
-  item_bundle_map_aggregate: ItemBundleMapAggregate;
-  /** fetch data from the table: "item.bundle_map" using primary key columns */
-  item_bundle_map_by_pk?: Maybe<ItemBundleMap>;
+  /** fetch data from the table: "item.bundle_member" */
+  item_bundle_member: Array<ItemBundleMember>;
+  /** fetch aggregated fields from the table: "item.bundle_member" */
+  item_bundle_member_aggregate: ItemBundleMemberAggregate;
+  /** fetch data from the table: "item.bundle_member" using primary key columns */
+  item_bundle_member_by_pk?: Maybe<ItemBundleMember>;
   /** fetch data from the table: "item" using primary key columns */
   item_by_pk?: Maybe<Item>;
   /** fetch data from the table: "item.cable_conductive" */
@@ -24632,27 +24632,27 @@ export type SubscriptionRootItemBundleByPkArgs = {
 
 
 /** subscription root */
-export type SubscriptionRootItemBundleMapArgs = {
-  distinct_on?: Maybe<Array<ItemBundleMapSelectColumn>>;
+export type SubscriptionRootItemBundleMemberArgs = {
+  distinct_on?: Maybe<Array<ItemBundleMemberSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<ItemBundleMapOrderBy>>;
-  where?: Maybe<ItemBundleMapBoolExp>;
+  order_by?: Maybe<Array<ItemBundleMemberOrderBy>>;
+  where?: Maybe<ItemBundleMemberBoolExp>;
 };
 
 
 /** subscription root */
-export type SubscriptionRootItemBundleMapAggregateArgs = {
-  distinct_on?: Maybe<Array<ItemBundleMapSelectColumn>>;
+export type SubscriptionRootItemBundleMemberAggregateArgs = {
+  distinct_on?: Maybe<Array<ItemBundleMemberSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<ItemBundleMapOrderBy>>;
-  where?: Maybe<ItemBundleMapBoolExp>;
+  order_by?: Maybe<Array<ItemBundleMemberOrderBy>>;
+  where?: Maybe<ItemBundleMemberBoolExp>;
 };
 
 
 /** subscription root */
-export type SubscriptionRootItemBundleMapByPkArgs = {
+export type SubscriptionRootItemBundleMemberByPkArgs = {
   item_bundle_id: Scalars['Int'];
   item_member_id: Scalars['Int'];
 };
@@ -27479,21 +27479,128 @@ export type ItemSearchQuery = (
   )> }
 );
 
-export type ItemBundleQueryVariables = Exact<{ [key: string]: never; }>;
+export type BasicItemBundleFieldsFragment = (
+  { __typename?: 'item_bundle' }
+  & Pick<ItemBundle, 'id' | 'name' | 'description'>
+);
+
+export type ObjectItemBundleFieldsFragment = (
+  { __typename?: 'item_bundle' }
+  & { items: Array<(
+    { __typename?: 'item_bundle_member' }
+    & { item: (
+      { __typename?: 'item' }
+      & Pick<Item, 'id'>
+    ) }
+  )> }
+);
+
+export type BasicItemBundleMemberFieldsFragment = (
+  { __typename?: 'item_bundle_member' }
+  & Pick<ItemBundleMember, 'item_bundle_id' | 'item_member_id' | 'quantity'>
+);
+
+export type GetItemBundlesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ItemBundleQuery = (
+export type GetItemBundlesQuery = (
   { __typename?: 'query_root' }
   & { item_bundle: Array<(
     { __typename?: 'item_bundle' }
-    & Pick<ItemBundle, 'id' | 'name' | 'description'>
+    & BasicItemBundleFieldsFragment
+    & ObjectItemBundleFieldsFragment
+  )> }
+);
+
+export type GetItemBundleQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetItemBundleQuery = (
+  { __typename?: 'query_root' }
+  & { item_bundle?: Maybe<(
+    { __typename?: 'item_bundle' }
+    & BasicItemBundleFieldsFragment
+    & ObjectItemBundleFieldsFragment
+  )> }
+);
+
+export type InsertItemBundleMutationVariables = Exact<{
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  items?: Maybe<ItemBundleMemberArrRelInsertInput>;
+}>;
+
+
+export type InsertItemBundleMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_item_bundle_one?: Maybe<(
+    { __typename?: 'item_bundle' }
+    & Pick<ItemBundle, 'id' | 'description' | 'created_at' | 'name' | 'updated_at'>
     & { items: Array<(
-      { __typename?: 'item_bundle_map' }
-      & { item: (
-        { __typename?: 'item' }
-        & Pick<Item, 'id'>
-      ) }
+      { __typename?: 'item_bundle_member' }
+      & Pick<ItemBundleMember, 'item_member_id' | 'item_bundle_id'>
     )> }
+  )> }
+);
+
+export type UpdateItemBundleMutationVariables = Exact<{
+  id: Scalars['Int'];
+  name?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateItemBundleMutation = (
+  { __typename?: 'mutation_root' }
+  & { item_bundle?: Maybe<(
+    { __typename?: 'item_bundle' }
+    & BasicItemBundleFieldsFragment
+    & ObjectItemBundleFieldsFragment
+  )> }
+);
+
+export type DeleteItemBundleMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteItemBundleMutation = (
+  { __typename?: 'mutation_root' }
+  & { item_bundle?: Maybe<(
+    { __typename?: 'item_bundle' }
+    & BasicItemBundleFieldsFragment
+    & ObjectItemBundleFieldsFragment
+  )> }
+);
+
+export type UpdateItemBundleMemberMutationVariables = Exact<{
+  item_bundle_id: Scalars['Int'];
+  item_member_id: Scalars['Int'];
+  quantity?: Maybe<Scalars['numeric']>;
+}>;
+
+
+export type UpdateItemBundleMemberMutation = (
+  { __typename?: 'mutation_root' }
+  & { item_bundle_member?: Maybe<(
+    { __typename?: 'item_bundle_member' }
+    & BasicItemBundleMemberFieldsFragment
+  )> }
+);
+
+export type DeleteItemBundleMemberMutationVariables = Exact<{
+  item_bundle_id: Scalars['Int'];
+  item_member_id: Scalars['Int'];
+}>;
+
+
+export type DeleteItemBundleMemberMutation = (
+  { __typename?: 'mutation_root' }
+  & { item_bundle_member?: Maybe<(
+    { __typename?: 'item_bundle_member' }
+    & BasicItemBundleMemberFieldsFragment
   )> }
 );
 
@@ -27526,7 +27633,6 @@ export type InsertItemHardwareFastenerScrewMachineMutationVariables = Exact<{
   head_diameter?: Maybe<Scalars['numeric']>;
   head_height?: Maybe<Scalars['numeric']>;
   head_type?: Maybe<EnumItemHardwareFastenerScrewHeadEnum>;
-  id?: Maybe<Scalars['Int']>;
   material?: Maybe<EnumItemHardwareFastenerMaterialEnum>;
   name?: Maybe<Scalars['String']>;
   point_type?: Maybe<EnumItemHardwareFastenerScrewMachinePointEnum>;
@@ -27577,7 +27683,7 @@ export type UpdateItemHardwareFastenerScrewMachineMutationVariables = Exact<{
   head_diameter?: Maybe<Scalars['numeric']>;
   head_height?: Maybe<Scalars['numeric']>;
   head_type?: Maybe<EnumItemHardwareFastenerScrewHeadEnum>;
-  id?: Maybe<Scalars['Int']>;
+  id: Scalars['Int'];
   material?: Maybe<EnumItemHardwareFastenerMaterialEnum>;
   name?: Maybe<Scalars['String']>;
   point_type?: Maybe<EnumItemHardwareFastenerScrewMachinePointEnum>;
@@ -27786,6 +27892,29 @@ export const ItemFieldsFragmentDoc = gql`
   class
   name: object(path: "name")
   object
+}
+    `;
+export const BasicItemBundleFieldsFragmentDoc = gql`
+    fragment basicItemBundleFields on item_bundle {
+  id
+  name
+  description
+}
+    `;
+export const ObjectItemBundleFieldsFragmentDoc = gql`
+    fragment objectItemBundleFields on item_bundle {
+  items {
+    item {
+      id
+    }
+  }
+}
+    `;
+export const BasicItemBundleMemberFieldsFragmentDoc = gql`
+    fragment basicItemBundleMemberFields on item_bundle_member {
+  item_bundle_id
+  item_member_id
+  quantity
 }
     `;
 export const ItemHardwareFastenerScrewMachineFieldsFragmentDoc = gql`
@@ -30702,58 +30831,345 @@ export function useItemSearchLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type ItemSearchQueryHookResult = ReturnType<typeof useItemSearchQuery>;
 export type ItemSearchLazyQueryHookResult = ReturnType<typeof useItemSearchLazyQuery>;
 export type ItemSearchQueryResult = ApolloReactCommon.QueryResult<ItemSearchQuery, ItemSearchQueryVariables>;
-export const ItemBundleDocument = gql`
-    query item_bundle {
+export const GetItemBundlesDocument = gql`
+    query GetItemBundles {
   item_bundle {
-    id
-    name
-    description
-    items {
-      item {
-        id
-      }
-    }
+    ...basicItemBundleFields
+    ...objectItemBundleFields
   }
 }
-    `;
-export type ItemBundleProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<ItemBundleQuery, ItemBundleQueryVariables>
+    ${BasicItemBundleFieldsFragmentDoc}
+${ObjectItemBundleFieldsFragmentDoc}`;
+export type GetItemBundlesProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetItemBundlesQuery, GetItemBundlesQueryVariables>
     } & TChildProps;
-export function withItemBundle<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+export function withGetItemBundles<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
-  ItemBundleQuery,
-  ItemBundleQueryVariables,
-  ItemBundleProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, ItemBundleQuery, ItemBundleQueryVariables, ItemBundleProps<TChildProps, TDataName>>(ItemBundleDocument, {
-      alias: 'itemBundle',
+  GetItemBundlesQuery,
+  GetItemBundlesQueryVariables,
+  GetItemBundlesProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetItemBundlesQuery, GetItemBundlesQueryVariables, GetItemBundlesProps<TChildProps, TDataName>>(GetItemBundlesDocument, {
+      alias: 'getItemBundles',
       ...operationOptions
     });
 };
 
 /**
- * __useItemBundleQuery__
+ * __useGetItemBundlesQuery__
  *
- * To run a query within a React component, call `useItemBundleQuery` and pass it any options that fit your needs.
- * When your component renders, `useItemBundleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetItemBundlesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetItemBundlesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useItemBundleQuery({
+ * const { data, loading, error } = useGetItemBundlesQuery({
  *   variables: {
  *   },
  * });
  */
-export function useItemBundleQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ItemBundleQuery, ItemBundleQueryVariables>) {
-        return ApolloReactHooks.useQuery<ItemBundleQuery, ItemBundleQueryVariables>(ItemBundleDocument, baseOptions);
+export function useGetItemBundlesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemBundlesQuery, GetItemBundlesQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetItemBundlesQuery, GetItemBundlesQueryVariables>(GetItemBundlesDocument, baseOptions);
       }
-export function useItemBundleLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ItemBundleQuery, ItemBundleQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<ItemBundleQuery, ItemBundleQueryVariables>(ItemBundleDocument, baseOptions);
+export function useGetItemBundlesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemBundlesQuery, GetItemBundlesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetItemBundlesQuery, GetItemBundlesQueryVariables>(GetItemBundlesDocument, baseOptions);
         }
-export type ItemBundleQueryHookResult = ReturnType<typeof useItemBundleQuery>;
-export type ItemBundleLazyQueryHookResult = ReturnType<typeof useItemBundleLazyQuery>;
-export type ItemBundleQueryResult = ApolloReactCommon.QueryResult<ItemBundleQuery, ItemBundleQueryVariables>;
+export type GetItemBundlesQueryHookResult = ReturnType<typeof useGetItemBundlesQuery>;
+export type GetItemBundlesLazyQueryHookResult = ReturnType<typeof useGetItemBundlesLazyQuery>;
+export type GetItemBundlesQueryResult = ApolloReactCommon.QueryResult<GetItemBundlesQuery, GetItemBundlesQueryVariables>;
+export const GetItemBundleDocument = gql`
+    query GetItemBundle($id: Int!) {
+  item_bundle: item_bundle_by_pk(id: $id) {
+    ...basicItemBundleFields
+    ...objectItemBundleFields
+  }
+}
+    ${BasicItemBundleFieldsFragmentDoc}
+${ObjectItemBundleFieldsFragmentDoc}`;
+export type GetItemBundleProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<GetItemBundleQuery, GetItemBundleQueryVariables>
+    } & TChildProps;
+export function withGetItemBundle<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  GetItemBundleQuery,
+  GetItemBundleQueryVariables,
+  GetItemBundleProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, GetItemBundleQuery, GetItemBundleQueryVariables, GetItemBundleProps<TChildProps, TDataName>>(GetItemBundleDocument, {
+      alias: 'getItemBundle',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useGetItemBundleQuery__
+ *
+ * To run a query within a React component, call `useGetItemBundleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetItemBundleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetItemBundleQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetItemBundleQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemBundleQuery, GetItemBundleQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetItemBundleQuery, GetItemBundleQueryVariables>(GetItemBundleDocument, baseOptions);
+      }
+export function useGetItemBundleLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemBundleQuery, GetItemBundleQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetItemBundleQuery, GetItemBundleQueryVariables>(GetItemBundleDocument, baseOptions);
+        }
+export type GetItemBundleQueryHookResult = ReturnType<typeof useGetItemBundleQuery>;
+export type GetItemBundleLazyQueryHookResult = ReturnType<typeof useGetItemBundleLazyQuery>;
+export type GetItemBundleQueryResult = ApolloReactCommon.QueryResult<GetItemBundleQuery, GetItemBundleQueryVariables>;
+export const InsertItemBundleDocument = gql`
+    mutation InsertItemBundle($name: String!, $description: String, $items: item_bundle_member_arr_rel_insert_input) {
+  insert_item_bundle_one(object: {name: $name, description: $description, items: $items}) {
+    id
+    description
+    created_at
+    name
+    updated_at
+    items {
+      item_member_id
+      item_bundle_id
+    }
+  }
+}
+    `;
+export type InsertItemBundleMutationFn = ApolloReactCommon.MutationFunction<InsertItemBundleMutation, InsertItemBundleMutationVariables>;
+export type InsertItemBundleProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertItemBundleMutation, InsertItemBundleMutationVariables>
+    } & TChildProps;
+export function withInsertItemBundle<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  InsertItemBundleMutation,
+  InsertItemBundleMutationVariables,
+  InsertItemBundleProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, InsertItemBundleMutation, InsertItemBundleMutationVariables, InsertItemBundleProps<TChildProps, TDataName>>(InsertItemBundleDocument, {
+      alias: 'insertItemBundle',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useInsertItemBundleMutation__
+ *
+ * To run a mutation, you first call `useInsertItemBundleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertItemBundleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertItemBundleMutation, { data, loading, error }] = useInsertItemBundleMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *      items: // value for 'items'
+ *   },
+ * });
+ */
+export function useInsertItemBundleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertItemBundleMutation, InsertItemBundleMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertItemBundleMutation, InsertItemBundleMutationVariables>(InsertItemBundleDocument, baseOptions);
+      }
+export type InsertItemBundleMutationHookResult = ReturnType<typeof useInsertItemBundleMutation>;
+export type InsertItemBundleMutationResult = ApolloReactCommon.MutationResult<InsertItemBundleMutation>;
+export type InsertItemBundleMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertItemBundleMutation, InsertItemBundleMutationVariables>;
+export const UpdateItemBundleDocument = gql`
+    mutation UpdateItemBundle($id: Int!, $name: String, $description: String) {
+  item_bundle: update_item_bundle_by_pk(pk_columns: {id: $id}, _set: {name: $name, description: $description}) {
+    ...basicItemBundleFields
+    ...objectItemBundleFields
+  }
+}
+    ${BasicItemBundleFieldsFragmentDoc}
+${ObjectItemBundleFieldsFragmentDoc}`;
+export type UpdateItemBundleMutationFn = ApolloReactCommon.MutationFunction<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>;
+export type UpdateItemBundleProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>
+    } & TChildProps;
+export function withUpdateItemBundle<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  UpdateItemBundleMutation,
+  UpdateItemBundleMutationVariables,
+  UpdateItemBundleProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, UpdateItemBundleMutation, UpdateItemBundleMutationVariables, UpdateItemBundleProps<TChildProps, TDataName>>(UpdateItemBundleDocument, {
+      alias: 'updateItemBundle',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useUpdateItemBundleMutation__
+ *
+ * To run a mutation, you first call `useUpdateItemBundleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateItemBundleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateItemBundleMutation, { data, loading, error }] = useUpdateItemBundleMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useUpdateItemBundleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>(UpdateItemBundleDocument, baseOptions);
+      }
+export type UpdateItemBundleMutationHookResult = ReturnType<typeof useUpdateItemBundleMutation>;
+export type UpdateItemBundleMutationResult = ApolloReactCommon.MutationResult<UpdateItemBundleMutation>;
+export type UpdateItemBundleMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>;
+export const DeleteItemBundleDocument = gql`
+    mutation DeleteItemBundle($id: Int!) {
+  item_bundle: delete_item_bundle_by_pk(id: $id) {
+    ...basicItemBundleFields
+    ...objectItemBundleFields
+  }
+}
+    ${BasicItemBundleFieldsFragmentDoc}
+${ObjectItemBundleFieldsFragmentDoc}`;
+export type DeleteItemBundleMutationFn = ApolloReactCommon.MutationFunction<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>;
+export type DeleteItemBundleProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>
+    } & TChildProps;
+export function withDeleteItemBundle<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  DeleteItemBundleMutation,
+  DeleteItemBundleMutationVariables,
+  DeleteItemBundleProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, DeleteItemBundleMutation, DeleteItemBundleMutationVariables, DeleteItemBundleProps<TChildProps, TDataName>>(DeleteItemBundleDocument, {
+      alias: 'deleteItemBundle',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useDeleteItemBundleMutation__
+ *
+ * To run a mutation, you first call `useDeleteItemBundleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteItemBundleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteItemBundleMutation, { data, loading, error }] = useDeleteItemBundleMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteItemBundleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>(DeleteItemBundleDocument, baseOptions);
+      }
+export type DeleteItemBundleMutationHookResult = ReturnType<typeof useDeleteItemBundleMutation>;
+export type DeleteItemBundleMutationResult = ApolloReactCommon.MutationResult<DeleteItemBundleMutation>;
+export type DeleteItemBundleMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>;
+export const UpdateItemBundleMemberDocument = gql`
+    mutation UpdateItemBundleMember($item_bundle_id: Int!, $item_member_id: Int!, $quantity: numeric) {
+  item_bundle_member: update_item_bundle_member_by_pk(pk_columns: {item_bundle_id: $item_bundle_id, item_member_id: $item_member_id}, _set: {quantity: $quantity}) {
+    ...basicItemBundleMemberFields
+  }
+}
+    ${BasicItemBundleMemberFieldsFragmentDoc}`;
+export type UpdateItemBundleMemberMutationFn = ApolloReactCommon.MutationFunction<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>;
+export type UpdateItemBundleMemberProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>
+    } & TChildProps;
+export function withUpdateItemBundleMember<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  UpdateItemBundleMemberMutation,
+  UpdateItemBundleMemberMutationVariables,
+  UpdateItemBundleMemberProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables, UpdateItemBundleMemberProps<TChildProps, TDataName>>(UpdateItemBundleMemberDocument, {
+      alias: 'updateItemBundleMember',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useUpdateItemBundleMemberMutation__
+ *
+ * To run a mutation, you first call `useUpdateItemBundleMemberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateItemBundleMemberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateItemBundleMemberMutation, { data, loading, error }] = useUpdateItemBundleMemberMutation({
+ *   variables: {
+ *      item_bundle_id: // value for 'item_bundle_id'
+ *      item_member_id: // value for 'item_member_id'
+ *      quantity: // value for 'quantity'
+ *   },
+ * });
+ */
+export function useUpdateItemBundleMemberMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>(UpdateItemBundleMemberDocument, baseOptions);
+      }
+export type UpdateItemBundleMemberMutationHookResult = ReturnType<typeof useUpdateItemBundleMemberMutation>;
+export type UpdateItemBundleMemberMutationResult = ApolloReactCommon.MutationResult<UpdateItemBundleMemberMutation>;
+export type UpdateItemBundleMemberMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>;
+export const DeleteItemBundleMemberDocument = gql`
+    mutation DeleteItemBundleMember($item_bundle_id: Int!, $item_member_id: Int!) {
+  item_bundle_member: delete_item_bundle_member_by_pk(item_bundle_id: $item_bundle_id, item_member_id: $item_member_id) {
+    ...basicItemBundleMemberFields
+  }
+}
+    ${BasicItemBundleMemberFieldsFragmentDoc}`;
+export type DeleteItemBundleMemberMutationFn = ApolloReactCommon.MutationFunction<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>;
+export type DeleteItemBundleMemberProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
+      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>
+    } & TChildProps;
+export function withDeleteItemBundleMember<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  DeleteItemBundleMemberMutation,
+  DeleteItemBundleMemberMutationVariables,
+  DeleteItemBundleMemberProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withMutation<TProps, DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables, DeleteItemBundleMemberProps<TChildProps, TDataName>>(DeleteItemBundleMemberDocument, {
+      alias: 'deleteItemBundleMember',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useDeleteItemBundleMemberMutation__
+ *
+ * To run a mutation, you first call `useDeleteItemBundleMemberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteItemBundleMemberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteItemBundleMemberMutation, { data, loading, error }] = useDeleteItemBundleMemberMutation({
+ *   variables: {
+ *      item_bundle_id: // value for 'item_bundle_id'
+ *      item_member_id: // value for 'item_member_id'
+ *   },
+ * });
+ */
+export function useDeleteItemBundleMemberMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>(DeleteItemBundleMemberDocument, baseOptions);
+      }
+export type DeleteItemBundleMemberMutationHookResult = ReturnType<typeof useDeleteItemBundleMemberMutation>;
+export type DeleteItemBundleMemberMutationResult = ApolloReactCommon.MutationResult<DeleteItemBundleMemberMutation>;
+export type DeleteItemBundleMemberMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>;
 export const ItemHardwareFastenerScrewMachineDocument = gql`
     query item_hardware_fastener_screw_machine {
   items: item_hardware_fastener_screw_machine(order_by: {id: asc}) {
@@ -30800,7 +31216,7 @@ export type ItemHardwareFastenerScrewMachineQueryHookResult = ReturnType<typeof 
 export type ItemHardwareFastenerScrewMachineLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerScrewMachineLazyQuery>;
 export type ItemHardwareFastenerScrewMachineQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables>;
 export const InsertItemHardwareFastenerScrewMachineDocument = gql`
-    mutation InsertItemHardwareFastenerScrewMachine($countersunk_angle: numeric, $countersunk_height: numeric, $description: String, $drive_size: String, $default_fields: jsonb, $drive_type: enum_item_hardware_fastener_drive_enum, $embedded_length: numeric, $finish: enum_item_hardware_finish_enum, $hardness: enum_item_hardware_fastener_screw_hardness_enum, $head_diameter: numeric, $head_height: numeric, $head_type: enum_item_hardware_fastener_screw_head_enum, $id: Int, $material: enum_item_hardware_fastener_material_enum, $name: String, $point_type: enum_item_hardware_fastener_screw_machine_point_enum, $specifications_met: jsonb, $strength_class: enum_item_hardware_fastener_screw_machine_strength_enum, $tensile_strength: numeric, $thread_diameter: numeric, $thread_direction: enum_item_handedness_enum, $thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum, $thread_length: numeric, $thread_label: enum_item_hardware_fastener_thread_label_enum, $thread_pitch: numeric, $thread_standard: enum_item_hardware_fastener_thread_standard_enum, $unit: enum_unit_enum, $use_material: enum_item_hardware_use_material_enum) {
+    mutation InsertItemHardwareFastenerScrewMachine($countersunk_angle: numeric, $countersunk_height: numeric, $description: String, $drive_size: String, $default_fields: jsonb, $drive_type: enum_item_hardware_fastener_drive_enum, $embedded_length: numeric, $finish: enum_item_hardware_finish_enum, $hardness: enum_item_hardware_fastener_screw_hardness_enum, $head_diameter: numeric, $head_height: numeric, $head_type: enum_item_hardware_fastener_screw_head_enum, $material: enum_item_hardware_fastener_material_enum, $name: String, $point_type: enum_item_hardware_fastener_screw_machine_point_enum, $specifications_met: jsonb, $strength_class: enum_item_hardware_fastener_screw_machine_strength_enum, $tensile_strength: numeric, $thread_diameter: numeric, $thread_direction: enum_item_handedness_enum, $thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum, $thread_length: numeric, $thread_label: enum_item_hardware_fastener_thread_label_enum, $thread_pitch: numeric, $thread_standard: enum_item_hardware_fastener_thread_standard_enum, $unit: enum_unit_enum, $use_material: enum_item_hardware_use_material_enum) {
   insert_item_hardware_fastener_screw_machine_one(object: {countersunk_angle: $countersunk_angle, countersunk_height: $countersunk_height, description: $description, drive_size: $drive_size, default_fields: $default_fields, drive_type: $drive_type, embedded_length: $embedded_length, finish: $finish, hardness: $hardness, head_diameter: $head_diameter, head_height: $head_height, head_type: $head_type, material: $material, name: $name, point_type: $point_type, specifications_met: $specifications_met, strength_class: $strength_class, tensile_strength: $tensile_strength, thread_diameter: $thread_diameter, thread_direction: $thread_direction, thread_fit: $thread_fit, thread_label: $thread_label, thread_length: $thread_length, thread_pitch: $thread_pitch, thread_standard: $thread_standard, unit: $unit, use_material: $use_material}) {
     ...ItemHardwareFastenerScrewMachineFields
   }
@@ -30846,7 +31262,6 @@ export function withInsertItemHardwareFastenerScrewMachine<TProps, TChildProps =
  *      head_diameter: // value for 'head_diameter'
  *      head_height: // value for 'head_height'
  *      head_type: // value for 'head_type'
- *      id: // value for 'id'
  *      material: // value for 'material'
  *      name: // value for 'name'
  *      point_type: // value for 'point_type'
@@ -30918,8 +31333,8 @@ export type GetEnumItemHardwareFastenerThreadStandardQueryHookResult = ReturnTyp
 export type GetEnumItemHardwareFastenerThreadStandardLazyQueryHookResult = ReturnType<typeof useGetEnumItemHardwareFastenerThreadStandardLazyQuery>;
 export type GetEnumItemHardwareFastenerThreadStandardQueryResult = ApolloReactCommon.QueryResult<GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables>;
 export const UpdateItemHardwareFastenerScrewMachineDocument = gql`
-    mutation UpdateItemHardwareFastenerScrewMachine($countersunk_angle: numeric, $countersunk_height: numeric, $description: String, $drive_size: String, $default_fields: jsonb, $drive_type: enum_item_hardware_fastener_drive_enum, $embedded_length: numeric, $finish: enum_item_hardware_finish_enum, $hardness: enum_item_hardware_fastener_screw_hardness_enum, $head_diameter: numeric, $head_height: numeric, $head_type: enum_item_hardware_fastener_screw_head_enum, $id: Int, $material: enum_item_hardware_fastener_material_enum, $name: String, $point_type: enum_item_hardware_fastener_screw_machine_point_enum, $specifications_met: jsonb, $strength_class: enum_item_hardware_fastener_screw_machine_strength_enum, $tensile_strength: numeric, $thread_diameter: numeric, $thread_direction: enum_item_handedness_enum, $thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum, $thread_length: numeric, $thread_label: enum_item_hardware_fastener_thread_label_enum, $thread_pitch: numeric, $thread_standard: enum_item_hardware_fastener_thread_standard_enum, $unit: enum_unit_enum, $use_material: enum_item_hardware_use_material_enum) {
-  update_item_hardware_fastener_screw_machine_by_pk(pk_columns: {id: 10}, _set: {use_material: $use_material, unit: $unit, thread_standard: $thread_standard, thread_pitch: $thread_pitch, thread_length: $thread_length, thread_label: $thread_label, thread_fit: $thread_fit, thread_direction: $thread_direction, thread_diameter: $thread_diameter, tensile_strength: $tensile_strength, strength_class: $strength_class, specifications_met: $specifications_met, point_type: $point_type, name: $name, material: $material, head_type: $head_type, head_height: $head_height, head_diameter: $head_diameter, hardness: $hardness, finish: $finish, embedded_length: $embedded_length, drive_type: $drive_type, description: $description, drive_size: $drive_size, default_fields: $default_fields, countersunk_height: $countersunk_height, countersunk_angle: $countersunk_angle}) {
+    mutation UpdateItemHardwareFastenerScrewMachine($countersunk_angle: numeric, $countersunk_height: numeric, $description: String, $drive_size: String, $default_fields: jsonb, $drive_type: enum_item_hardware_fastener_drive_enum, $embedded_length: numeric, $finish: enum_item_hardware_finish_enum, $hardness: enum_item_hardware_fastener_screw_hardness_enum, $head_diameter: numeric, $head_height: numeric, $head_type: enum_item_hardware_fastener_screw_head_enum, $id: Int!, $material: enum_item_hardware_fastener_material_enum, $name: String, $point_type: enum_item_hardware_fastener_screw_machine_point_enum, $specifications_met: jsonb, $strength_class: enum_item_hardware_fastener_screw_machine_strength_enum, $tensile_strength: numeric, $thread_diameter: numeric, $thread_direction: enum_item_handedness_enum, $thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum, $thread_length: numeric, $thread_label: enum_item_hardware_fastener_thread_label_enum, $thread_pitch: numeric, $thread_standard: enum_item_hardware_fastener_thread_standard_enum, $unit: enum_unit_enum, $use_material: enum_item_hardware_use_material_enum) {
+  update_item_hardware_fastener_screw_machine_by_pk(pk_columns: {id: $id}, _set: {use_material: $use_material, unit: $unit, thread_standard: $thread_standard, thread_pitch: $thread_pitch, thread_length: $thread_length, thread_label: $thread_label, thread_fit: $thread_fit, thread_direction: $thread_direction, thread_diameter: $thread_diameter, tensile_strength: $tensile_strength, strength_class: $strength_class, specifications_met: $specifications_met, point_type: $point_type, name: $name, material: $material, head_type: $head_type, head_height: $head_height, head_diameter: $head_diameter, hardness: $hardness, finish: $finish, embedded_length: $embedded_length, drive_type: $drive_type, description: $description, drive_size: $drive_size, default_fields: $default_fields, countersunk_height: $countersunk_height, countersunk_angle: $countersunk_angle}) {
     ...ItemHardwareFastenerScrewMachineFields
   }
 }
@@ -30989,4 +31404,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-07-15T05:37:02-06:00
+// graphql typescript defs generated on 2020-07-16T05:48:14-06:00

@@ -204,6 +204,7 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
             </span>
 
             {/* TODO: auto-calculate `cost_total` from `cost_tax` and `cost_item` */}
+            {/* TODO: OR calculate when the user hits a _Calculator_ button */}
             <span id="cost_total">
                 <Input name="cost_total"
                     defaultValue={toMinimumFixed( props.value?.cost_total, 2 )}

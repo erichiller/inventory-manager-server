@@ -159,6 +159,11 @@ export type TRecursiveDataWrap<Base> =
  */
 export type StringKeys<T> = Extract<keyof T, string>;
 
+// export type StringKeys<T> = KeysOfType<T, string>;
+// URGENT: WHY DOES THIS WORK KeysOfType https://github.com/microsoft/TypeScript/issues/31663
+export type KeysOfType<T, U> = { [ k in keyof T ]: T[ k ] extends U ? k : never }[ keyof T ];
+
+
 
 /**
  * Just like `Partial` but also could be `null`
