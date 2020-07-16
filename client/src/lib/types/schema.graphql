@@ -6216,7 +6216,7 @@ type item {
   # An array relationship
   bundle(
     # distinct select on columns
-    distinct_on: [item_bundle_map_select_column!]
+    distinct_on: [item_bundle_member_select_column!]
 
     # limit the number of rows returned
     limit: Int
@@ -6225,16 +6225,16 @@ type item {
     offset: Int
 
     # sort the rows by one or more columns
-    order_by: [item_bundle_map_order_by!]
+    order_by: [item_bundle_member_order_by!]
 
     # filter the rows returned
-    where: item_bundle_map_bool_exp
-  ): [item_bundle_map!]!
+    where: item_bundle_member_bool_exp
+  ): [item_bundle_member!]!
 
   # An aggregated array relationship
   bundle_aggregate(
     # distinct select on columns
-    distinct_on: [item_bundle_map_select_column!]
+    distinct_on: [item_bundle_member_select_column!]
 
     # limit the number of rows returned
     limit: Int
@@ -6243,11 +6243,11 @@ type item {
     offset: Int
 
     # sort the rows by one or more columns
-    order_by: [item_bundle_map_order_by!]
+    order_by: [item_bundle_member_order_by!]
 
     # filter the rows returned
-    where: item_bundle_map_bool_exp
-  ): item_bundle_map_aggregate!
+    where: item_bundle_member_bool_exp
+  ): item_bundle_member_aggregate!
   class: enum_item_class_enum!
   id: Int!
 
@@ -6534,7 +6534,7 @@ input item_bool_exp {
   _and: [item_bool_exp]
   _not: item_bool_exp
   _or: [item_bool_exp]
-  bundle: item_bundle_map_bool_exp
+  bundle: item_bundle_member_bool_exp
   class: enum_item_class_enum_comparison_exp
   id: Int_comparison_exp
   itemVariants: item_variant_bool_exp
@@ -6561,7 +6561,7 @@ type item_bundle {
   # An array relationship
   items(
     # distinct select on columns
-    distinct_on: [item_bundle_map_select_column!]
+    distinct_on: [item_bundle_member_select_column!]
 
     # limit the number of rows returned
     limit: Int
@@ -6570,16 +6570,16 @@ type item_bundle {
     offset: Int
 
     # sort the rows by one or more columns
-    order_by: [item_bundle_map_order_by!]
+    order_by: [item_bundle_member_order_by!]
 
     # filter the rows returned
-    where: item_bundle_map_bool_exp
-  ): [item_bundle_map!]!
+    where: item_bundle_member_bool_exp
+  ): [item_bundle_member!]!
 
   # An aggregated array relationship
   items_aggregate(
     # distinct select on columns
-    distinct_on: [item_bundle_map_select_column!]
+    distinct_on: [item_bundle_member_select_column!]
 
     # limit the number of rows returned
     limit: Int
@@ -6588,11 +6588,11 @@ type item_bundle {
     offset: Int
 
     # sort the rows by one or more columns
-    order_by: [item_bundle_map_order_by!]
+    order_by: [item_bundle_member_order_by!]
 
     # filter the rows returned
-    where: item_bundle_map_bool_exp
-  ): item_bundle_map_aggregate!
+    where: item_bundle_member_bool_exp
+  ): item_bundle_member_aggregate!
   name: String!
   updated_at: timestamptz!
 }
@@ -6658,7 +6658,7 @@ input item_bundle_bool_exp {
   description: String_comparison_exp
   id: Int_comparison_exp
   item: item_bool_exp
-  items: item_bundle_map_bool_exp
+  items: item_bundle_member_bool_exp
   name: String_comparison_exp
   updated_at: timestamptz_comparison_exp
 }
@@ -6683,305 +6683,9 @@ input item_bundle_insert_input {
   description: String
   id: Int
   item: item_obj_rel_insert_input
-  items: item_bundle_map_arr_rel_insert_input
+  items: item_bundle_member_arr_rel_insert_input
   name: String
   updated_at: timestamptz
-}
-
-# columns and relationships of "item.bundle_map"
-type item_bundle_map {
-  # An object relationship
-  bundle: item_bundle!
-
-  # An object relationship
-  item: item!
-  item_bundle_id: Int!
-  item_member_id: Int!
-  quantity: numeric
-}
-
-# aggregated selection of "item.bundle_map"
-type item_bundle_map_aggregate {
-  aggregate: item_bundle_map_aggregate_fields
-  nodes: [item_bundle_map!]!
-}
-
-# aggregate fields of "item.bundle_map"
-type item_bundle_map_aggregate_fields {
-  avg: item_bundle_map_avg_fields
-  count(columns: [item_bundle_map_select_column!], distinct: Boolean): Int
-  max: item_bundle_map_max_fields
-  min: item_bundle_map_min_fields
-  stddev: item_bundle_map_stddev_fields
-  stddev_pop: item_bundle_map_stddev_pop_fields
-  stddev_samp: item_bundle_map_stddev_samp_fields
-  sum: item_bundle_map_sum_fields
-  var_pop: item_bundle_map_var_pop_fields
-  var_samp: item_bundle_map_var_samp_fields
-  variance: item_bundle_map_variance_fields
-}
-
-# order by aggregate values of table "item.bundle_map"
-input item_bundle_map_aggregate_order_by {
-  avg: item_bundle_map_avg_order_by
-  count: order_by
-  max: item_bundle_map_max_order_by
-  min: item_bundle_map_min_order_by
-  stddev: item_bundle_map_stddev_order_by
-  stddev_pop: item_bundle_map_stddev_pop_order_by
-  stddev_samp: item_bundle_map_stddev_samp_order_by
-  sum: item_bundle_map_sum_order_by
-  var_pop: item_bundle_map_var_pop_order_by
-  var_samp: item_bundle_map_var_samp_order_by
-  variance: item_bundle_map_variance_order_by
-}
-
-# input type for inserting array relation for remote table "item.bundle_map"
-input item_bundle_map_arr_rel_insert_input {
-  data: [item_bundle_map_insert_input!]!
-  on_conflict: item_bundle_map_on_conflict
-}
-
-# aggregate avg on columns
-type item_bundle_map_avg_fields {
-  item_bundle_id: Float
-  item_member_id: Float
-  quantity: Float
-}
-
-# order by avg() on columns of table "item.bundle_map"
-input item_bundle_map_avg_order_by {
-  item_bundle_id: order_by
-  item_member_id: order_by
-  quantity: order_by
-}
-
-# Boolean expression to filter rows from the table "item.bundle_map". All fields are combined with a logical 'AND'.
-input item_bundle_map_bool_exp {
-  _and: [item_bundle_map_bool_exp]
-  _not: item_bundle_map_bool_exp
-  _or: [item_bundle_map_bool_exp]
-  bundle: item_bundle_bool_exp
-  item: item_bool_exp
-  item_bundle_id: Int_comparison_exp
-  item_member_id: Int_comparison_exp
-  quantity: numeric_comparison_exp
-}
-
-# unique or primary key constraints on table "item.bundle_map"
-enum item_bundle_map_constraint {
-  # unique or primary key constraint
-  item_bundle_map_pkey
-}
-
-# input type for incrementing integer column in table "item.bundle_map"
-input item_bundle_map_inc_input {
-  item_bundle_id: Int
-  item_member_id: Int
-  quantity: numeric
-}
-
-# input type for inserting data into table "item.bundle_map"
-input item_bundle_map_insert_input {
-  bundle: item_bundle_obj_rel_insert_input
-  item: item_obj_rel_insert_input
-  item_bundle_id: Int
-  item_member_id: Int
-  quantity: numeric
-}
-
-# aggregate max on columns
-type item_bundle_map_max_fields {
-  item_bundle_id: Int
-  item_member_id: Int
-  quantity: numeric
-}
-
-# order by max() on columns of table "item.bundle_map"
-input item_bundle_map_max_order_by {
-  item_bundle_id: order_by
-  item_member_id: order_by
-  quantity: order_by
-}
-
-# aggregate min on columns
-type item_bundle_map_min_fields {
-  item_bundle_id: Int
-  item_member_id: Int
-  quantity: numeric
-}
-
-# order by min() on columns of table "item.bundle_map"
-input item_bundle_map_min_order_by {
-  item_bundle_id: order_by
-  item_member_id: order_by
-  quantity: order_by
-}
-
-# response of any mutation on the table "item.bundle_map"
-type item_bundle_map_mutation_response {
-  # number of affected rows by the mutation
-  affected_rows: Int!
-
-  # data of the affected rows by the mutation
-  returning: [item_bundle_map!]!
-}
-
-# input type for inserting object relation for remote table "item.bundle_map"
-input item_bundle_map_obj_rel_insert_input {
-  data: item_bundle_map_insert_input!
-  on_conflict: item_bundle_map_on_conflict
-}
-
-# on conflict condition type for table "item.bundle_map"
-input item_bundle_map_on_conflict {
-  constraint: item_bundle_map_constraint!
-  update_columns: [item_bundle_map_update_column!]!
-  where: item_bundle_map_bool_exp
-}
-
-# ordering options when selecting data from "item.bundle_map"
-input item_bundle_map_order_by {
-  bundle: item_bundle_order_by
-  item: item_order_by
-  item_bundle_id: order_by
-  item_member_id: order_by
-  quantity: order_by
-}
-
-# primary key columns input for table: "item.bundle_map"
-input item_bundle_map_pk_columns_input {
-  item_bundle_id: Int!
-  item_member_id: Int!
-}
-
-# select columns of table "item.bundle_map"
-enum item_bundle_map_select_column {
-  # column name
-  item_bundle_id
-
-  # column name
-  item_member_id
-
-  # column name
-  quantity
-}
-
-# input type for updating data in table "item.bundle_map"
-input item_bundle_map_set_input {
-  item_bundle_id: Int
-  item_member_id: Int
-  quantity: numeric
-}
-
-# aggregate stddev on columns
-type item_bundle_map_stddev_fields {
-  item_bundle_id: Float
-  item_member_id: Float
-  quantity: Float
-}
-
-# order by stddev() on columns of table "item.bundle_map"
-input item_bundle_map_stddev_order_by {
-  item_bundle_id: order_by
-  item_member_id: order_by
-  quantity: order_by
-}
-
-# aggregate stddev_pop on columns
-type item_bundle_map_stddev_pop_fields {
-  item_bundle_id: Float
-  item_member_id: Float
-  quantity: Float
-}
-
-# order by stddev_pop() on columns of table "item.bundle_map"
-input item_bundle_map_stddev_pop_order_by {
-  item_bundle_id: order_by
-  item_member_id: order_by
-  quantity: order_by
-}
-
-# aggregate stddev_samp on columns
-type item_bundle_map_stddev_samp_fields {
-  item_bundle_id: Float
-  item_member_id: Float
-  quantity: Float
-}
-
-# order by stddev_samp() on columns of table "item.bundle_map"
-input item_bundle_map_stddev_samp_order_by {
-  item_bundle_id: order_by
-  item_member_id: order_by
-  quantity: order_by
-}
-
-# aggregate sum on columns
-type item_bundle_map_sum_fields {
-  item_bundle_id: Int
-  item_member_id: Int
-  quantity: numeric
-}
-
-# order by sum() on columns of table "item.bundle_map"
-input item_bundle_map_sum_order_by {
-  item_bundle_id: order_by
-  item_member_id: order_by
-  quantity: order_by
-}
-
-# update columns of table "item.bundle_map"
-enum item_bundle_map_update_column {
-  # column name
-  item_bundle_id
-
-  # column name
-  item_member_id
-
-  # column name
-  quantity
-}
-
-# aggregate var_pop on columns
-type item_bundle_map_var_pop_fields {
-  item_bundle_id: Float
-  item_member_id: Float
-  quantity: Float
-}
-
-# order by var_pop() on columns of table "item.bundle_map"
-input item_bundle_map_var_pop_order_by {
-  item_bundle_id: order_by
-  item_member_id: order_by
-  quantity: order_by
-}
-
-# aggregate var_samp on columns
-type item_bundle_map_var_samp_fields {
-  item_bundle_id: Float
-  item_member_id: Float
-  quantity: Float
-}
-
-# order by var_samp() on columns of table "item.bundle_map"
-input item_bundle_map_var_samp_order_by {
-  item_bundle_id: order_by
-  item_member_id: order_by
-  quantity: order_by
-}
-
-# aggregate variance on columns
-type item_bundle_map_variance_fields {
-  item_bundle_id: Float
-  item_member_id: Float
-  quantity: Float
-}
-
-# order by variance() on columns of table "item.bundle_map"
-input item_bundle_map_variance_order_by {
-  item_bundle_id: order_by
-  item_member_id: order_by
-  quantity: order_by
 }
 
 # aggregate max on columns
@@ -7000,6 +6704,302 @@ input item_bundle_max_order_by {
   id: order_by
   name: order_by
   updated_at: order_by
+}
+
+# columns and relationships of "item.bundle_member"
+type item_bundle_member {
+  # An object relationship
+  bundle: item_bundle!
+
+  # An object relationship
+  item: item!
+  item_bundle_id: Int!
+  item_member_id: Int!
+  quantity: numeric
+}
+
+# aggregated selection of "item.bundle_member"
+type item_bundle_member_aggregate {
+  aggregate: item_bundle_member_aggregate_fields
+  nodes: [item_bundle_member!]!
+}
+
+# aggregate fields of "item.bundle_member"
+type item_bundle_member_aggregate_fields {
+  avg: item_bundle_member_avg_fields
+  count(columns: [item_bundle_member_select_column!], distinct: Boolean): Int
+  max: item_bundle_member_max_fields
+  min: item_bundle_member_min_fields
+  stddev: item_bundle_member_stddev_fields
+  stddev_pop: item_bundle_member_stddev_pop_fields
+  stddev_samp: item_bundle_member_stddev_samp_fields
+  sum: item_bundle_member_sum_fields
+  var_pop: item_bundle_member_var_pop_fields
+  var_samp: item_bundle_member_var_samp_fields
+  variance: item_bundle_member_variance_fields
+}
+
+# order by aggregate values of table "item.bundle_member"
+input item_bundle_member_aggregate_order_by {
+  avg: item_bundle_member_avg_order_by
+  count: order_by
+  max: item_bundle_member_max_order_by
+  min: item_bundle_member_min_order_by
+  stddev: item_bundle_member_stddev_order_by
+  stddev_pop: item_bundle_member_stddev_pop_order_by
+  stddev_samp: item_bundle_member_stddev_samp_order_by
+  sum: item_bundle_member_sum_order_by
+  var_pop: item_bundle_member_var_pop_order_by
+  var_samp: item_bundle_member_var_samp_order_by
+  variance: item_bundle_member_variance_order_by
+}
+
+# input type for inserting array relation for remote table "item.bundle_member"
+input item_bundle_member_arr_rel_insert_input {
+  data: [item_bundle_member_insert_input!]!
+  on_conflict: item_bundle_member_on_conflict
+}
+
+# aggregate avg on columns
+type item_bundle_member_avg_fields {
+  item_bundle_id: Float
+  item_member_id: Float
+  quantity: Float
+}
+
+# order by avg() on columns of table "item.bundle_member"
+input item_bundle_member_avg_order_by {
+  item_bundle_id: order_by
+  item_member_id: order_by
+  quantity: order_by
+}
+
+# Boolean expression to filter rows from the table "item.bundle_member". All fields are combined with a logical 'AND'.
+input item_bundle_member_bool_exp {
+  _and: [item_bundle_member_bool_exp]
+  _not: item_bundle_member_bool_exp
+  _or: [item_bundle_member_bool_exp]
+  bundle: item_bundle_bool_exp
+  item: item_bool_exp
+  item_bundle_id: Int_comparison_exp
+  item_member_id: Int_comparison_exp
+  quantity: numeric_comparison_exp
+}
+
+# unique or primary key constraints on table "item.bundle_member"
+enum item_bundle_member_constraint {
+  # unique or primary key constraint
+  item_bundle_map_pkey
+}
+
+# input type for incrementing integer column in table "item.bundle_member"
+input item_bundle_member_inc_input {
+  item_bundle_id: Int
+  item_member_id: Int
+  quantity: numeric
+}
+
+# input type for inserting data into table "item.bundle_member"
+input item_bundle_member_insert_input {
+  bundle: item_bundle_obj_rel_insert_input
+  item: item_obj_rel_insert_input
+  item_bundle_id: Int
+  item_member_id: Int
+  quantity: numeric
+}
+
+# aggregate max on columns
+type item_bundle_member_max_fields {
+  item_bundle_id: Int
+  item_member_id: Int
+  quantity: numeric
+}
+
+# order by max() on columns of table "item.bundle_member"
+input item_bundle_member_max_order_by {
+  item_bundle_id: order_by
+  item_member_id: order_by
+  quantity: order_by
+}
+
+# aggregate min on columns
+type item_bundle_member_min_fields {
+  item_bundle_id: Int
+  item_member_id: Int
+  quantity: numeric
+}
+
+# order by min() on columns of table "item.bundle_member"
+input item_bundle_member_min_order_by {
+  item_bundle_id: order_by
+  item_member_id: order_by
+  quantity: order_by
+}
+
+# response of any mutation on the table "item.bundle_member"
+type item_bundle_member_mutation_response {
+  # number of affected rows by the mutation
+  affected_rows: Int!
+
+  # data of the affected rows by the mutation
+  returning: [item_bundle_member!]!
+}
+
+# input type for inserting object relation for remote table "item.bundle_member"
+input item_bundle_member_obj_rel_insert_input {
+  data: item_bundle_member_insert_input!
+  on_conflict: item_bundle_member_on_conflict
+}
+
+# on conflict condition type for table "item.bundle_member"
+input item_bundle_member_on_conflict {
+  constraint: item_bundle_member_constraint!
+  update_columns: [item_bundle_member_update_column!]!
+  where: item_bundle_member_bool_exp
+}
+
+# ordering options when selecting data from "item.bundle_member"
+input item_bundle_member_order_by {
+  bundle: item_bundle_order_by
+  item: item_order_by
+  item_bundle_id: order_by
+  item_member_id: order_by
+  quantity: order_by
+}
+
+# primary key columns input for table: "item.bundle_member"
+input item_bundle_member_pk_columns_input {
+  item_bundle_id: Int!
+  item_member_id: Int!
+}
+
+# select columns of table "item.bundle_member"
+enum item_bundle_member_select_column {
+  # column name
+  item_bundle_id
+
+  # column name
+  item_member_id
+
+  # column name
+  quantity
+}
+
+# input type for updating data in table "item.bundle_member"
+input item_bundle_member_set_input {
+  item_bundle_id: Int
+  item_member_id: Int
+  quantity: numeric
+}
+
+# aggregate stddev on columns
+type item_bundle_member_stddev_fields {
+  item_bundle_id: Float
+  item_member_id: Float
+  quantity: Float
+}
+
+# order by stddev() on columns of table "item.bundle_member"
+input item_bundle_member_stddev_order_by {
+  item_bundle_id: order_by
+  item_member_id: order_by
+  quantity: order_by
+}
+
+# aggregate stddev_pop on columns
+type item_bundle_member_stddev_pop_fields {
+  item_bundle_id: Float
+  item_member_id: Float
+  quantity: Float
+}
+
+# order by stddev_pop() on columns of table "item.bundle_member"
+input item_bundle_member_stddev_pop_order_by {
+  item_bundle_id: order_by
+  item_member_id: order_by
+  quantity: order_by
+}
+
+# aggregate stddev_samp on columns
+type item_bundle_member_stddev_samp_fields {
+  item_bundle_id: Float
+  item_member_id: Float
+  quantity: Float
+}
+
+# order by stddev_samp() on columns of table "item.bundle_member"
+input item_bundle_member_stddev_samp_order_by {
+  item_bundle_id: order_by
+  item_member_id: order_by
+  quantity: order_by
+}
+
+# aggregate sum on columns
+type item_bundle_member_sum_fields {
+  item_bundle_id: Int
+  item_member_id: Int
+  quantity: numeric
+}
+
+# order by sum() on columns of table "item.bundle_member"
+input item_bundle_member_sum_order_by {
+  item_bundle_id: order_by
+  item_member_id: order_by
+  quantity: order_by
+}
+
+# update columns of table "item.bundle_member"
+enum item_bundle_member_update_column {
+  # column name
+  item_bundle_id
+
+  # column name
+  item_member_id
+
+  # column name
+  quantity
+}
+
+# aggregate var_pop on columns
+type item_bundle_member_var_pop_fields {
+  item_bundle_id: Float
+  item_member_id: Float
+  quantity: Float
+}
+
+# order by var_pop() on columns of table "item.bundle_member"
+input item_bundle_member_var_pop_order_by {
+  item_bundle_id: order_by
+  item_member_id: order_by
+  quantity: order_by
+}
+
+# aggregate var_samp on columns
+type item_bundle_member_var_samp_fields {
+  item_bundle_id: Float
+  item_member_id: Float
+  quantity: Float
+}
+
+# order by var_samp() on columns of table "item.bundle_member"
+input item_bundle_member_var_samp_order_by {
+  item_bundle_id: order_by
+  item_member_id: order_by
+  quantity: order_by
+}
+
+# aggregate variance on columns
+type item_bundle_member_variance_fields {
+  item_bundle_id: Float
+  item_member_id: Float
+  quantity: Float
+}
+
+# order by variance() on columns of table "item.bundle_member"
+input item_bundle_member_variance_order_by {
+  item_bundle_id: order_by
+  item_member_id: order_by
+  quantity: order_by
 }
 
 # aggregate min on columns
@@ -7048,7 +7048,7 @@ input item_bundle_order_by {
   description: order_by
   id: order_by
   item: item_order_by
-  items_aggregate: item_bundle_map_aggregate_order_by
+  items_aggregate: item_bundle_member_aggregate_order_by
   name: order_by
   updated_at: order_by
 }
@@ -11178,7 +11178,7 @@ input item_inc_input {
 
 # input type for inserting data into table "item"
 input item_insert_input {
-  bundle: item_bundle_map_arr_rel_insert_input
+  bundle: item_bundle_member_arr_rel_insert_input
   class: enum_item_class_enum
   id: Int
   labelTemplates: label_template_map_arr_rel_insert_input
@@ -11233,7 +11233,7 @@ input item_on_conflict {
 
 # ordering options when selecting data from "item"
 input item_order_by {
-  bundle_aggregate: item_bundle_map_aggregate_order_by
+  bundle_aggregate: item_bundle_member_aggregate_order_by
   class: order_by
   id: order_by
   itemVariants_aggregate: item_variant_aggregate_order_by
@@ -13958,14 +13958,14 @@ type mutation_root {
   # delete single row from the table: "item.bundle"
   delete_item_bundle_by_pk(id: Int!): item_bundle
 
-  # delete data from the table: "item.bundle_map"
-  delete_item_bundle_map(
+  # delete data from the table: "item.bundle_member"
+  delete_item_bundle_member(
     # filter the rows which have to be deleted
-    where: item_bundle_map_bool_exp!
-  ): item_bundle_map_mutation_response
+    where: item_bundle_member_bool_exp!
+  ): item_bundle_member_mutation_response
 
-  # delete single row from the table: "item.bundle_map"
-  delete_item_bundle_map_by_pk(item_bundle_id: Int!, item_member_id: Int!): item_bundle_map
+  # delete single row from the table: "item.bundle_member"
+  delete_item_bundle_member_by_pk(item_bundle_id: Int!, item_member_id: Int!): item_bundle_member
 
   # delete single row from the table: "item"
   delete_item_by_pk(id: Int!): item
@@ -14861,23 +14861,23 @@ type mutation_root {
     on_conflict: item_bundle_on_conflict
   ): item_bundle_mutation_response
 
-  # insert data into the table: "item.bundle_map"
-  insert_item_bundle_map(
+  # insert data into the table: "item.bundle_member"
+  insert_item_bundle_member(
     # the rows to be inserted
-    objects: [item_bundle_map_insert_input!]!
+    objects: [item_bundle_member_insert_input!]!
 
     # on conflict condition
-    on_conflict: item_bundle_map_on_conflict
-  ): item_bundle_map_mutation_response
+    on_conflict: item_bundle_member_on_conflict
+  ): item_bundle_member_mutation_response
 
-  # insert a single row into the table: "item.bundle_map"
-  insert_item_bundle_map_one(
+  # insert a single row into the table: "item.bundle_member"
+  insert_item_bundle_member_one(
     # the row to be inserted
-    object: item_bundle_map_insert_input!
+    object: item_bundle_member_insert_input!
 
     # on conflict condition
-    on_conflict: item_bundle_map_on_conflict
-  ): item_bundle_map
+    on_conflict: item_bundle_member_on_conflict
+  ): item_bundle_member
 
   # insert a single row into the table: "item.bundle"
   insert_item_bundle_one(
@@ -16018,27 +16018,27 @@ type mutation_root {
     pk_columns: item_bundle_pk_columns_input!
   ): item_bundle
 
-  # update data of the table: "item.bundle_map"
-  update_item_bundle_map(
+  # update data of the table: "item.bundle_member"
+  update_item_bundle_member(
     # increments the integer columns with given value of the filtered values
-    _inc: item_bundle_map_inc_input
+    _inc: item_bundle_member_inc_input
 
     # sets the columns of the filtered rows to the given values
-    _set: item_bundle_map_set_input
+    _set: item_bundle_member_set_input
 
     # filter the rows which have to be updated
-    where: item_bundle_map_bool_exp!
-  ): item_bundle_map_mutation_response
+    where: item_bundle_member_bool_exp!
+  ): item_bundle_member_mutation_response
 
-  # update single row of the table: "item.bundle_map"
-  update_item_bundle_map_by_pk(
+  # update single row of the table: "item.bundle_member"
+  update_item_bundle_member_by_pk(
     # increments the integer columns with given value of the filtered values
-    _inc: item_bundle_map_inc_input
+    _inc: item_bundle_member_inc_input
 
     # sets the columns of the filtered rows to the given values
-    _set: item_bundle_map_set_input
-    pk_columns: item_bundle_map_pk_columns_input!
-  ): item_bundle_map
+    _set: item_bundle_member_set_input
+    pk_columns: item_bundle_member_pk_columns_input!
+  ): item_bundle_member
 
   # update single row of the table: "item"
   update_item_by_pk(
@@ -20412,10 +20412,10 @@ type query_root {
   # fetch data from the table: "item.bundle" using primary key columns
   item_bundle_by_pk(id: Int!): item_bundle
 
-  # fetch data from the table: "item.bundle_map"
-  item_bundle_map(
+  # fetch data from the table: "item.bundle_member"
+  item_bundle_member(
     # distinct select on columns
-    distinct_on: [item_bundle_map_select_column!]
+    distinct_on: [item_bundle_member_select_column!]
 
     # limit the number of rows returned
     limit: Int
@@ -20424,16 +20424,16 @@ type query_root {
     offset: Int
 
     # sort the rows by one or more columns
-    order_by: [item_bundle_map_order_by!]
+    order_by: [item_bundle_member_order_by!]
 
     # filter the rows returned
-    where: item_bundle_map_bool_exp
-  ): [item_bundle_map!]!
+    where: item_bundle_member_bool_exp
+  ): [item_bundle_member!]!
 
-  # fetch aggregated fields from the table: "item.bundle_map"
-  item_bundle_map_aggregate(
+  # fetch aggregated fields from the table: "item.bundle_member"
+  item_bundle_member_aggregate(
     # distinct select on columns
-    distinct_on: [item_bundle_map_select_column!]
+    distinct_on: [item_bundle_member_select_column!]
 
     # limit the number of rows returned
     limit: Int
@@ -20442,14 +20442,14 @@ type query_root {
     offset: Int
 
     # sort the rows by one or more columns
-    order_by: [item_bundle_map_order_by!]
+    order_by: [item_bundle_member_order_by!]
 
     # filter the rows returned
-    where: item_bundle_map_bool_exp
-  ): item_bundle_map_aggregate!
+    where: item_bundle_member_bool_exp
+  ): item_bundle_member_aggregate!
 
-  # fetch data from the table: "item.bundle_map" using primary key columns
-  item_bundle_map_by_pk(item_bundle_id: Int!, item_member_id: Int!): item_bundle_map
+  # fetch data from the table: "item.bundle_member" using primary key columns
+  item_bundle_member_by_pk(item_bundle_id: Int!, item_member_id: Int!): item_bundle_member
 
   # fetch data from the table: "item" using primary key columns
   item_by_pk(id: Int!): item
@@ -24553,10 +24553,10 @@ type subscription_root {
   # fetch data from the table: "item.bundle" using primary key columns
   item_bundle_by_pk(id: Int!): item_bundle
 
-  # fetch data from the table: "item.bundle_map"
-  item_bundle_map(
+  # fetch data from the table: "item.bundle_member"
+  item_bundle_member(
     # distinct select on columns
-    distinct_on: [item_bundle_map_select_column!]
+    distinct_on: [item_bundle_member_select_column!]
 
     # limit the number of rows returned
     limit: Int
@@ -24565,16 +24565,16 @@ type subscription_root {
     offset: Int
 
     # sort the rows by one or more columns
-    order_by: [item_bundle_map_order_by!]
+    order_by: [item_bundle_member_order_by!]
 
     # filter the rows returned
-    where: item_bundle_map_bool_exp
-  ): [item_bundle_map!]!
+    where: item_bundle_member_bool_exp
+  ): [item_bundle_member!]!
 
-  # fetch aggregated fields from the table: "item.bundle_map"
-  item_bundle_map_aggregate(
+  # fetch aggregated fields from the table: "item.bundle_member"
+  item_bundle_member_aggregate(
     # distinct select on columns
-    distinct_on: [item_bundle_map_select_column!]
+    distinct_on: [item_bundle_member_select_column!]
 
     # limit the number of rows returned
     limit: Int
@@ -24583,14 +24583,14 @@ type subscription_root {
     offset: Int
 
     # sort the rows by one or more columns
-    order_by: [item_bundle_map_order_by!]
+    order_by: [item_bundle_member_order_by!]
 
     # filter the rows returned
-    where: item_bundle_map_bool_exp
-  ): item_bundle_map_aggregate!
+    where: item_bundle_member_bool_exp
+  ): item_bundle_member_aggregate!
 
-  # fetch data from the table: "item.bundle_map" using primary key columns
-  item_bundle_map_by_pk(item_bundle_id: Int!, item_member_id: Int!): item_bundle_map
+  # fetch data from the table: "item.bundle_member" using primary key columns
+  item_bundle_member_by_pk(item_bundle_id: Int!, item_member_id: Int!): item_bundle_member
 
   # fetch data from the table: "item" using primary key columns
   item_by_pk(id: Int!): item

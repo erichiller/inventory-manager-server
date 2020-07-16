@@ -1,12 +1,120 @@
-query item_bundle {
-  item_bundle {
+fragment basicItemBundleFields on item_bundle {
     id
     name
     description
+}
+fragment objectItemBundleFields on item_bundle {
     items {
-      item {
-        id
-      }
+        item {
+            id
+        }
     }
-  }
+}
+
+fragment basicItemBundleMemberFields on item_bundle_member {
+    item_bundle_id # integer, primary key
+    item_member_id # integer, primary key
+    quantity # numeric, nullable
+}
+
+
+query GetItemBundles {
+    item_bundle {
+        ...basicItemBundleFields
+        ...objectItemBundleFields
+    }
+}
+query GetItemBundle( $id: Int! ){
+    item_bundle: item_bundle_by_pk(id: $id){
+        ...basicItemBundleFields
+        ...objectItemBundleFields
+    }
+}
+
+
+mutation InsertItemBundle(
+    $name: String!
+    $description: String,
+    $items: item_bundle_member_arr_rel_insert_input
+) {
+    insert_item_bundle_one(
+        object: {
+            name: $name
+            description: $description
+            items: $items
+        }
+    ) {
+        id
+        description
+        created_at
+        name
+        updated_at
+        items {
+            item_member_id
+            item_bundle_id
+        }
+    }
+}
+mutation UpdateItemBundle (
+    $id: Int!
+    $name: String
+    $description: String
+) {
+    item_bundle: update_item_bundle_by_pk(
+        pk_columns: {
+            id: $id
+        }
+        _set: {
+            name: $name
+            description: $description
+        }
+    ){
+        ...basicItemBundleFields
+        ...objectItemBundleFields
+    }
+}
+
+mutation DeleteItemBundle (
+    $id: Int!
+) {
+    item_bundle: delete_item_bundle_by_pk (
+        id: $id
+    ) {
+        ...basicItemBundleFields
+        ...objectItemBundleFields
+    }
+}
+
+################################################################################
+#### Item Bundle Members ####
+################################################################################
+
+mutation UpdateItemBundleMember (
+    $item_bundle_id: Int!
+    $item_member_id: Int!
+    $quantity: numeric
+) {
+    item_bundle_member: update_item_bundle_member_by_pk(
+        pk_columns: {
+            item_bundle_id: $item_bundle_id, 
+            item_member_id: $item_member_id
+        }
+        _set: {
+            quantity: $quantity
+        }
+    ) {
+        ...basicItemBundleMemberFields
+    }
+}
+
+mutation DeleteItemBundleMember (
+    $item_bundle_id: Int!
+    $item_member_id: Int!
+) {
+    item_bundle_member: delete_item_bundle_member_by_pk (
+            item_bundle_id: $item_bundle_id, 
+            item_member_id: $item_member_id
+    ){
+        ...basicItemBundleMemberFields
+    }
 }
