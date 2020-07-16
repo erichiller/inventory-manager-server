@@ -42,7 +42,7 @@ mutation InsertItemHardwareFastenerScrewMachine(
     $head_diameter: numeric
     $head_height: numeric
     $head_type: enum_item_hardware_fastener_screw_head_enum
-    $id: Int
+    # $id: Int
     $material: enum_item_hardware_fastener_material_enum
     $name: String
     $point_type: enum_item_hardware_fastener_screw_machine_point_enum
@@ -113,7 +113,7 @@ mutation UpdateItemHardwareFastenerScrewMachine(
     $head_diameter: numeric
     $head_height: numeric
     $head_type: enum_item_hardware_fastener_screw_head_enum
-    $id: Int
+    $id: Int!
     $material: enum_item_hardware_fastener_material_enum
     $name: String
     $point_type: enum_item_hardware_fastener_screw_machine_point_enum
@@ -131,7 +131,7 @@ mutation UpdateItemHardwareFastenerScrewMachine(
     $use_material: enum_item_hardware_use_material_enum
 ) {
     update_item_hardware_fastener_screw_machine_by_pk(
-        pk_columns: { id: 10 }
+        pk_columns: { id: $id }
         _set: {
             use_material: $use_material
             unit: $unit

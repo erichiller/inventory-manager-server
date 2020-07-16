@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Divider, Button } from 'antd';
+import { Form, Divider, Button, Input, Space, InputNumber } from 'antd';
 import { ItemFormProps } from '../Item';
 
 import { Intersection } from '~lib/UtilityFunctions';
@@ -8,7 +8,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ItemSelect } from '~components/Item/ItemSelect';
 
 
-interface ItemBundleFormProps extends Intersection<ItemFormProps, ItemBundle> { 
+interface ItemBundleFormProps extends Intersection<ItemFormProps, ItemBundle> {
     //
 }
 
@@ -31,12 +31,12 @@ export const ItemBundleForm: React.FC<ItemBundleFormProps> = ( props ) => {
     //     form.setFieldsValue( initProps );
     // } );
 
-    
+
 
     return (
         <React.Fragment>
             <div className="col">
-                <Divider key="items" orientation="left">Items</Divider>
+                {/* <Divider key="items" orientation="left">Items</Divider> */}
 
                 {/* <Form.Item
                     label="Bundled Items"
@@ -49,48 +49,51 @@ export const ItemBundleForm: React.FC<ItemBundleFormProps> = ( props ) => {
                     <ItemSelect placeholder="Search for Item" />
                 </Form.Item> */}
 
-                
+
                 <Divider key="Items" orientation="left">Items</Divider>
-                <Form.List name="order_items">
+                <Form.List name="items">
                     {( fields, { add, remove } ) => {
                         return (
                             <React.Fragment>
-
                                 {fields.map( ( field ) => (
-                                    // TODO: need to add **Quantity**
-                                    <Form.Item
-                                        {...field}
-                                        // getValueFromEvent={( args: { shipment?: ShipmentSelectValue; } ) => {
-                                        //     console.log( 'OrderFormModal getValueFromEvent (OrderFormModal.items)', { field, index, args } );
-                                        //     let shipment = args.shipment;
-                                        //     if ( shipment ) {
-                                        //         if ( !( 'id' in shipment ) ) {
-                                        //             if ( 'carrier_vendor_id' in shipment ) {
-                                        //                 console.log( "OrderFormModal, new shipment detected", shipment );
-                                        //                 let shipmentFiltered = filterObject( shipment, null, [ 'id' ] );
-                                        //                 // shipmentFiltered.carrier_vendor_id
-                                        //                 setShipments( [ shipmentFiltered ] );
-                                        //             }
-                                        //         }
-                                        //     }
-                                        //     return args;
-                                        // }}
-                                        className="full-width-form-item"
-                                    // normalize={ ( value: any, prevValue: any, allValues: Store) => {
-                                    //     return { data: value };
-                                    // }}
-                                    >
-                                        <ItemSelect
-                                            suffixIcon={
-                                                <MinusCircleOutlined
-                                                    className="dynamic-delete-button"
-                                                    onClick={() => {
-                                                        remove( field.name );
-                                                    }}
-                                                />
-                                            }
-                                        />
-                                    </Form.Item>
+                                    <div key={field.key} className="ItemBundleItemEntry">
+                                        <Form.Item
+                                            {...field}
+                                            name={[ field.name, 'item_member_id' ]}
+                                            fieldKey={[ field.fieldKey, 'item_member_id' ]}
+                                            rules={[ { required: true, message: 'Select Item' } ]}
+                                        >
+                                            <ItemSelect
+                                                placeholder="Item"
+                                                mode="single"
+                                                suffixIcon={
+                                                    <MinusCircleOutlined
+                                                        className="dynamic-delete-button"
+                                                        onClick={() => {
+                                                            remove( field.name );
+                                                        }}
+                                                    />
+                                                }
+                                            />
+                                        </Form.Item>
+                                        <Form.Item
+                                            {...field}
+                                            name={[ field.name, 'quantity' ]}
+                                            fieldKey={[ field.fieldKey, 'quantity' ]}
+                                            rules={[ 
+                                                { 
+                                                    required: true, 
+                                                    message: 'Enter quantity of item in this bundle'
+                                                }
+                                            ]}
+                                        >
+                                            <InputNumber name="quantity"
+                                                type='number'
+                                                aria-valuemin={1}
+                                                placeholder="Qty"
+                                                required />
+                                        </Form.Item>
+                                    </div>
                                 ) )}
                                 <Form.Item
                                     label={null}
