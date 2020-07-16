@@ -159,9 +159,15 @@ export type TRecursiveDataWrap<Base> =
  */
 export type StringKeys<T> = Extract<keyof T, string>;
 
-// export type StringKeys<T> = KeysOfType<T, string>;
-// URGENT: WHY DOES THIS WORK KeysOfType https://github.com/microsoft/TypeScript/issues/31663
-export type KeysOfType<T, U> = { [ k in keyof T ]: T[ k ] extends U ? k : never }[ keyof T ];
+/**
+ * Force `T` to have properties assignable to `U`
+ * @typeParam T The type which should have properties assignable to `U`
+ * @typeParam U The destination for `T`'s properties
+ * @see {@link https://github.com/microsoft/TypeScript/issues/31663#issuecomment-521383494}
+ */
+type KeysOfType<T, U> = { [k in keyof T]-?: T[k] extends U ? k : never }[keyof T];
+
+// export type KeysOfType<T, U> = { [ k in keyof T ]: T[ k ] extends U ? k : never }[ keyof T ];
 
 
 
