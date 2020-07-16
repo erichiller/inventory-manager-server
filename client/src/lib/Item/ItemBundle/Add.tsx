@@ -1,29 +1,29 @@
 import { ItemFormProps, FormMutationHandler } from "../Item";
-import { useInsertItemHardwareFastenerScrewMachineMutation, EnumItemHandednessEnum, EnumItemHardwareFastenerScrewMachinePointEnum, EnumItemHardwareUseMaterialEnum } from "../../types/graphql";
+import { useInsertItemBundleMutation, EnumItemHandednessEnum, EnumItemBundlePointEnum, EnumItemHardwareUseMaterialEnum } from "../../types/graphql";
 import { useEffect } from "react";
 import { message } from "antd";
 import { Store } from "antd/lib/form/interface";
 import { applyDefaults } from "~item/Common/FormLib";
-import { ItemHardwareFastenerScrewMachine } from "..";
+import { ItemBundle } from "..";
 
 
 export const ItemBundleAddMutationHandler: React.FC<FormMutationHandler> = ( props ) => {
     const { form, submitted, completeCallback } = props;
-    const [ insertItemHardwareFastenerScrewMachineMutation, { data, loading, error } ] = useInsertItemHardwareFastenerScrewMachineMutation();
+    const [ insertItemBundleMutation, { data, loading, error } ] = useInsertItemBundleMutation();
 
     useEffect( () => {
         if ( submitted === true ) {
-            console.log( { c: "ItemHardwareFastenerScrewMachineEditMutationHandler", f: 'useEffect', cond: 'submitted === true' }, form.getFieldsValue() );
-            insertItemHardwareFastenerScrewMachineMutation( {
-                variables: applyDefaults<ItemHardwareFastenerScrewMachine>( form.getFieldsValue( true, ( meta ) => {
-                    // console.log( { c: "ItemHardwareFastenerScrewMachineEditMutationHandler", f: 'meta'}, meta.name );
+            console.log( { c: "ItemBundleEditMutationHandler", f: 'useEffect', cond: 'submitted === true' }, form.getFieldsValue() );
+            insertItemBundleMutation( {
+                variables: applyDefaults<ItemBundle>( form.getFieldsValue( true, ( meta ) => {
+                    // console.log( { c: "ItemBundleEditMutationHandler", f: 'meta'}, meta.name );
                     return !meta.name.includes( 'screw_size' );
                 } ),
                 // TODO: put defaults in the class
                     {
                         thread_direction: EnumItemHandednessEnum.right,
                         use_material: EnumItemHardwareUseMaterialEnum.machine,
-                        point_type: EnumItemHardwareFastenerScrewMachinePointEnum.flat
+                        point_type: EnumItemBundlePointEnum.flat
                     } )
             } );
         }

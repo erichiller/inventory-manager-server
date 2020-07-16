@@ -43,3 +43,20 @@
     }
     @extend .no-arrow-number-input;
 }
+
+.ItemBundleItemEntry {
+    display: flex;
+    justify-content: center;
+    .ItemSelect {
+        flex-grow: 2;
+    }
+    .ant-form-item {
+        &:nth-child(1){
+            flex-basis: 25em;
+        }
+        &:nth-child(2){
+            flex-basis: 5em;
+        }
+        padding: 5px;
+    }
+}
