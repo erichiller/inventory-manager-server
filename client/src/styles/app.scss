@@ -9,7 +9,6 @@
 @import "DrawContextMenu.scss";
 @import "ItemCategoryTree.scss";
 
-
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
@@ -23,7 +22,7 @@ code {
 }
 
 * {
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
 
 .MainMenuInItem {
@@ -41,7 +40,7 @@ code {
         span {
             margin-right: 0;
             img {
-                width:20px;
+                width: 20px;
             }
         }
     }
@@ -354,3 +353,43 @@ See
   ant-page-header-heading-sub-title
   ant-page-header-heading-title
 */
+
+// https://css-tricks.com/almanac/properties/s/scrollbar/
+$thumbBackground: #cee8ff;
+// $scrollbarBackground: rgba(0, 0, 0, 0.3);
+$scrollbarBackground: #CFD8DC;
+body {
+  scrollbar-width: thin;
+  scrollbar-color: $thumbBackground $scrollbarBackground;
+    &::-webkit-scrollbar {
+        // width: 0.7em;
+  width: 11px;
+    }
+
+    &::-webkit-scrollbar-track {
+        // box-shadow: inset 0 0 6px $scrollbarBackground;
+  background: $scrollbarBackground;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        // background-color: $thumbBG;
+        // border-color: slategray;
+        // border-radius: 6px;
+  background-color: $thumbBackground ;
+  border-radius: 6px;
+  border: 3px solid $scrollbarBackground;
+        // outline: 1px solid slategrey;
+    }
+    
+}
+
+/**
+ * The -webkit-scrollbar family of properties consists of seven different pseudo-elements that, together, comprise a full scrollbar UI element:
+ * ::-webkit-scrollbar addresses the background of the bar itself. It is usually covered by the other elements
+ * ::-webkit-scrollbar-button addresses the directional buttons on the scrollbar
+ * ::-webkit-scrollbar-track addresses the empty space “below” the progress bar
+ * ::-webkit-scrollbar-track-piece is the top-most layer of the the progress bar not covered by the draggable scrolling element (thumb)
+ * ::-webkit-scrollbar-thumb addresses the draggable scrolling element that resizes depending on the size of the scrollable element
+ * ::-webkit-scrollbar-corner addresses the (usually) bottom corner of the scrollable element, where two scrollbars might meet
+ * ::-webkit-resizer addresses the draggable resizing handle that appears above the scrollbar-corner at the bottom corner of some elements
+**/

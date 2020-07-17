@@ -165,7 +165,7 @@ export type StringKeys<T> = Extract<keyof T, string>;
  * @typeParam U The destination for `T`'s properties
  * @see {@link https://github.com/microsoft/TypeScript/issues/31663#issuecomment-521383494}
  */
-type KeysOfType<T, U> = { [k in keyof T]-?: T[k] extends U ? k : never }[keyof T];
+export type KeysOfType<T, U> = { [k in keyof T]-?: T[k] extends U ? k : never }[keyof T];
 
 // export type KeysOfType<T, U> = { [ k in keyof T ]: T[ k ] extends U ? k : never }[ keyof T ];
 

@@ -13,7 +13,7 @@ import { apolloClient } from '~/Apollo';
 import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Intersection, enumerable } from "~lib/UtilityFunctions";
+import { toTitleCase, Intersection, enumerable, StringKeys } from "~lib/UtilityFunctions";
 import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { IconComponentT } from "~lib/types/common";
@@ -60,9 +60,9 @@ export class Item<T extends GenericItem> {
     private _name?: string;
     private _object: Object;
     private _class: ItemGqlTypename;
+    private _default_values: Array<StringKeys<T>>;
 
     item: ItemGql;
-
 
     constructor ( props: T ) {
         // constructor( props: Partial<T>){
@@ -171,6 +171,28 @@ export class Item<T extends GenericItem> {
     }
     set name ( nameVal: string ) {
         this._name = nameVal;
+    }
+
+
+    /**
+     * Default fields and their values that should be applied to `this`'s data if no user data has been input for these fields.
+     */
+    static get defaultValues (): Array<StringKeys<Item<any>>> {
+        // TODO: this needs to calculate on the fly from `class`
+        return [ ];
+    }
+    /**
+     * These are the fields, if any, that have been determined by the class's {@link `Item.defaultValues`} rather than by user input..
+     */
+    @enumerable( true )
+    get defaultValues (): Array<StringKeys<T>> {
+        if ( this._default_values ){
+            return this._default_values;
+        } else if ( this._object && this._object.hasOwnProperty( "default_values" ) ){
+            return this._object['default_values'];
+        } else {
+            return [];
+        }
     }
 
     @enumerable( true )
@@ -402,7 +424,7 @@ export class Item<T extends GenericItem> {
     /**
      * Form to edit Item
      */
-    get editComponent (): React.FC {
+    get editComponent (): React.FC<ItemFormProps & T> {
         return null;
     }
     /**

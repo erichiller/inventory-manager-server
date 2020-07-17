@@ -1,32 +1,27 @@
 import { ItemFormProps, FormMutationHandler } from "../Item";
-import { useUpdateItemHardwareFastenerScrewMachineMutation, EnumItemHandednessEnum, EnumItemHardwareUseMaterialEnum, ItemHardwareFastenerScrewMachineInsertInput, EnumItemHardwareFastenerScrewMachinePointEnum } from "../../types/graphql";
+import { useUpdateItemBundleMutation, ItemBundleInsertInput, UpdateItemBundleMemberMutationVariables, UpdateItemBundleMutationVariables } from "../../types/graphql";
 import { useEffect } from "react";
 import { message } from "antd";
 import { Store, StoreValue } from "antd/lib/form/interface";
-import { ItemHardwareFastenerScrewMachine } from "..";
+import { ItemBundle } from "..";
 import { applyDefaults } from "~item/Common/FormLib";
+import { encapsulateChildObjectsIntoDataProp } from "~lib/FormHelpers";
+import { deepCopy } from "~lib/UtilityFunctions";
 
 
 export const ItemBundleEditMutationHandler: React.FC<FormMutationHandler> = ( props ) => {
     const { form, submitted, completeCallback } = props;
-    const [ updateItemHardwareFastenerScrewMachineMutation, { data, loading, error } ] = useUpdateItemHardwareFastenerScrewMachineMutation();
+    const [ updateItemBundleMutation, { data, loading, error } ] = useUpdateItemBundleMutation();
 
     // TODO: edit must REMOVE defaults if they are explicitly set.
     
     useEffect( () => {
         if ( submitted === true ) {
-            console.log( { c: "ItemHardwareFastenerScrewMachineEditMutationHandler", f: 'useEffect', cond: 'submitted === true' }, form.getFieldsValue() );
-            updateItemHardwareFastenerScrewMachineMutation( {
-                variables: applyDefaults<ItemHardwareFastenerScrewMachine>( form.getFieldsValue( true, ( meta ) => {
-                    // console.log( { c: "ItemHardwareFastenerScrewMachineEditMutationHandler", f: 'meta'}, meta.name );
-                    return ! meta.name.includes( 'screw_size' );
-                } ),
-                // TODO: put defaults in the class
-                {
-                    thread_direction: EnumItemHandednessEnum.right,
-                    use_material: EnumItemHardwareUseMaterialEnum.machine,
-                    point_type: EnumItemHardwareFastenerScrewMachinePointEnum.flat
-                } )
+            console.log( { c: "ItemBundleEditMutationHandler", f: 'useEffect', cond: 'submitted === true' }, form.getFieldsValue() );
+            updateItemBundleMutation( {
+                variables: encapsulateChildObjectsIntoDataProp (
+                    deepCopy( form.getFieldsValue() )
+                ) as UpdateItemBundleMutationVariables
             } );
         }
     }, [submitted] );
@@ -36,7 +31,7 @@ export const ItemBundleEditMutationHandler: React.FC<FormMutationHandler> = ( pr
             completeCallback( false );
             message.error( `${error.name}: ${error.message}` );
         } else if ( data ) {
-            message.success( `successfully edited ${data.__typename} with id ${data.update_item_hardware_fastener_screw_machine_by_pk.id}` );
+            message.success( `successfully edited ${data.__typename} with id ${data.item_bundle.id}` );
             return () => {
                 form.resetFields();
                 completeCallback( true );

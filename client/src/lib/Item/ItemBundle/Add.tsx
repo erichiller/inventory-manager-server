@@ -1,9 +1,11 @@
 import { ItemFormProps, FormMutationHandler } from "../Item";
-import { useInsertItemBundleMutation } from "../../types/graphql";
+import { useInsertItemBundleMutation, GetOrderDocument, ItemBundleInsertInput, InsertItemBundleMutationVariables } from "../../types/graphql";
 import { useEffect } from "react";
 import { message } from "antd";
 import { applyDefaults } from "~item/Common/FormLib";
 import { ItemBundle } from "~item/ItemBundle/ItemBundle";
+import { encapsulateChildObjectsIntoDataProp } from "~lib/FormHelpers";
+import { deepCopy } from "~lib/UtilityFunctions";
 
 
 export const ItemBundleAddMutationHandler: React.FC<FormMutationHandler> = ( props ) => {
@@ -14,16 +16,9 @@ export const ItemBundleAddMutationHandler: React.FC<FormMutationHandler> = ( pro
         if ( submitted === true ) {
             console.log( { c: "ItemBundleEditMutationHandler", f: 'useEffect', cond: 'submitted === true' }, form.getFieldsValue() );
             insertItemBundleMutation( {
-                variables: applyDefaults<ItemBundle>( form.getFieldsValue( true, ( meta ) => {
-                    // console.log( { c: "ItemBundleEditMutationHandler", f: 'meta'}, meta.name );
-                    return !meta.name.includes( 'screw_size' );
-                } ),
-                // TODO: put defaults in the class
-                    {
-                        thread_direction: EnumItemHandednessEnum.right,
-                        use_material: EnumItemHardwareUseMaterialEnum.machine,
-                        point_type: EnumItemBundlePointEnum.flat
-                    } )
+                variables: encapsulateChildObjectsIntoDataProp(
+                    deepCopy( form.getFieldsValue() )
+                ) as InsertItemBundleMutationVariables
             } );
         }
     }, [ submitted ] );
@@ -33,7 +28,7 @@ export const ItemBundleAddMutationHandler: React.FC<FormMutationHandler> = ( pro
             completeCallback( false );
             message.error( `${error.name}: ${error.message}` );
         } else if ( data ) {
-            message.success( `successfully created ${data.__typename} with id ${data.insert_item_hardware_fastener_screw_machine_one.id}` );
+            message.success( `successfully created ${data.__typename} with id ${data.item_bundle.id}` );
             return () => {
                 form.resetFields();
             };
