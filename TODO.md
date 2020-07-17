@@ -13,6 +13,9 @@
 - [x] _Order_ in `Menu` always shows highlighted.
 - [ ] Move the search bar in Item/Index to be in the top menu bar
 - [ ] bug with `ItemTableMouseOver` sometimes displays down when it shouldn't
+- [ ] `JsonModal`
+  - [ ] make draggable
+  - [ ] make `editable` a prop; `false` when viewing data for debug.
 
 ## Table
 
@@ -32,6 +35,8 @@
   - [ ] update code, especially item add common form <client\src\components\item\ItemFormModal.tsx>
   - [ ] way to display this? → expandable rows ?
 
+- [ ] `ItemBundle` should show children items as expandable table beneath itself #URGENT
+
 ### For Consideration
 
 - [ ] Use Virtual List / Scrolling ; [see _"big data select"_ virtual scrolling && custom tag renderer](https://ant.design/components/select/#components-select-demo-big-data)
@@ -45,6 +50,8 @@
 - [ ] run form _verify_ on submit
 - [ ] figure out how to store and display USC values (UNx), store as absolute diameter (in inches?) store as string? Both?
 - [x] trailing 0 is removed when creating name in `ItemHardwareFastenerBolt` Form
+- [ ] Finish `ItemHardwareFastenerBolt` autocomplete (see Spreadsheet)
+- [ ] Remove default fields of Items if the user returns and edits the item (and one or more of the default fields) #URGENT
 
 ## Orders, Inventory Management
 
