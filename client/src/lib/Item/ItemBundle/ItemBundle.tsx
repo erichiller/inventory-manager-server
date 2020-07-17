@@ -8,8 +8,8 @@ import {
 } from "../../types/graphql";
 import React from 'react';
 import { ColumnProps } from 'antd/lib/table';
-import { toTitleCase, is, SubType, StringKeys, KeysOfType } from "~lib/UtilityFunctions";
-import { ItemBundleForm } from './Form';
+import { toTitleCase, is, SubType, StringKeys, KeysOfType, makeColumn } from "~lib/UtilityFunctions";
+import { ItemBundleForm, ItemBundleFormProps } from './Form';
 import { GroupOutlined } from '@ant-design/icons';
 import { ItemBundleAddMutationHandler } from './Add';
 import { ItemBundleEditMutationHandler } from './Edit';
@@ -18,18 +18,6 @@ import { ItemBundleEditMutationHandler } from './Edit';
 type ItemPlusClassT<T extends GenericItem, C extends ItemGqlTypename> = Exclude<ItemBundleGql, 'class'> & ItemBundleItemObjectI;
 
 interface ItemBundleItemObjectI extends Omit<SubType<ItemBundleGql, string | number>, 'url' | 'class'> { }
-
-// type KeysOfType<T, U> = { [ k in keyof T ]: T[ k ] extends U ? k : never }[ keyof T ];
-
-
-// interface fooI {
-//     prop1: string;
-//     prop2: string;
-
-// }
-
-// let foo: KeysOfType<fooI, string>;
-
 
 export class ItemBundle extends Item<ItemPlusClassT<ItemBundleGql, 'item_bundle'>> {
 
@@ -98,34 +86,11 @@ export class ItemBundle extends Item<ItemPlusClassT<ItemBundleGql, 'item_bundle'
     static get Columns (): ColumnProps<ItemBundleGql>[] {
         // TODO: group columns sensibly
         // TODO: name columns sensibly
-
-        let foo: ColumnProps<ItemBundleSelectColumn>;
-        let cols: Partial<keyof ItemBundleGql | ColumnProps<ItemBundleSelectColumn>>[] = [ 
-            'id', 'name', 
-            // 'head_type', 'unit', 'point_type', 'thread_type', 'drive_size', 'drive_type', 'countersunk_height',
-            // 'head_height',
-            // 'description',
-            // 'product_url',
-            // 'shaft_length',
-            // 'head_diameter',
-            // 'thread_length',
-            // 'embedded_length' 
-        ];
-        // URGENT: convert this to `makeColumn`
-        return cols.map( key => {
-            // if ( typeof key === 'string' && key != null ) {
-            if ( is<KeysOfType<ColumnProps<ItemBundleSelectColumn>, string> >( key, typeof key === 'string' ) && key != null ) {
-                return {
-                    key: key,
-                    title: toTitleCase( key ),
-                    dataIndex: ItemBundleSelectColumn[ key ] ?? key,
-                };
-            }
-            // return {};
-            if ( key != null && is < ColumnProps < ItemBundleSelectColumn > >( key, key != null && typeof key === 'object' ) ){
-                return key;
-            }
-        }
+        return makeColumn(
+            [
+                'id',
+                'name'
+            ]
         );
     }
     get Columns (): ColumnProps<ItemBundleGql>[] {
@@ -133,7 +98,7 @@ export class ItemBundle extends Item<ItemPlusClassT<ItemBundleGql, 'item_bundle'
     }
 
 
-    static get addComponent (): React.FC {
+    static get addComponent (): React.FC<ItemBundleFormProps> {
         return ItemBundleForm;
     }
     static get addHandler (): React.FC<FormMutationHandler> {

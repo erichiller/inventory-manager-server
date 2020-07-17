@@ -92,10 +92,10 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
 
     // TODO: then here have a type selector when in the generic add form
 
-    const updateName = (newValue?: {[field: string]: string}) => {
+    const updateName = ( newValue?: {[field: string]: string;} ) => {
         const f = ( f: string, prefix?: string ) => {
             let s = newValue && Object.keys( newValue ).includes( f ) ? newValue[ f ] : form.getFieldValue( f );
-            console.log({action: 'updateName', f, newValue, s})
+            console.log( {action: 'updateName', f, newValue, s} );
             let v = toTitleCase( s );
             return v ? `${ prefix ? prefix : '' }${ v.replace( /\.[0]*$/, '' ) }` : '';
         };
@@ -211,7 +211,7 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                     shouldUpdate={( prev: FormFields, next: FormFields ) => {
                         let currentValue = form.getFieldValue( 'thread_label' );
                         if ( ( next.screw_size && next.screw_size.thread_label && currentValue !== next.screw_size.thread_label ) ) {
-                            form.setFieldsValue( { 'thread_label': next.screw_size.thread_label } );
+                            form.setFieldsValue( { thread_label: next.screw_size.thread_label } );
                             return true;
                         }
                         return false;
@@ -248,7 +248,7 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                     <EnumSelect enumKeys={Object.keys( EnumItemHardwareFastenerScrewHeadEnum )} />
                 </Form.Item>
 
-                <Form.Item name="drive_type" label="Drive" getValueFromEvent={( args ) => { console.log('drive_type getValueFromEvent', args); updateName({drive_type: args}); return args; }} required>
+                <Form.Item name="drive_type" label="Drive" getValueFromEvent={( args ) => { console.log( 'drive_type getValueFromEvent', args ); updateName( {drive_type: args} ); return args; }} required>
                     <EnumSelect enumKeys={Object.keys( EnumItemHardwareFastenerDriveEnum )} iconMap={ItemHardwareFastenerScrewMachineDriveTypeIconMap} />
                 </Form.Item>
 

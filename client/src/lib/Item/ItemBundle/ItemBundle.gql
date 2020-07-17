@@ -37,7 +37,7 @@ mutation InsertItemBundle(
     $description: String,
     $items: item_bundle_member_arr_rel_insert_input
 ) {
-    insert_item_bundle_one(
+    item_bundle: insert_item_bundle_one(
         object: {
             name: $name
             description: $description

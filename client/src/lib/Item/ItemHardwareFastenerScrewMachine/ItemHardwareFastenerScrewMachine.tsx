@@ -133,7 +133,7 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
     static get Columns (): ColumnProps<ItemHardwareFastenerScrewMachineGql>[] {
         // TODO: group columns sensibly
         // TODO: name columns sensibly
-        const renderWithUnitSuffix = ( value, record: ItemHardwareFastenerScrewMachineGql ) => value ? `${ value } ${ getUnitFromUnitSystem( record.unit ) }` : '';
+        const renderWithUnitSuffix = ( value: string | number, record: ItemHardwareFastenerScrewMachineGql ) => value ? `${ value } ${ getUnitFromUnitSystem( record.unit ) }` : '';
 
         return makeColumn(
             [

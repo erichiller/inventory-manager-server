@@ -27535,7 +27535,7 @@ export type InsertItemBundleMutationVariables = Exact<{
 
 export type InsertItemBundleMutation = (
   { __typename?: 'mutation_root' }
-  & { insert_item_bundle_one?: Maybe<(
+  & { item_bundle?: Maybe<(
     { __typename?: 'item_bundle' }
     & Pick<ItemBundle, 'id' | 'description' | 'created_at' | 'name' | 'updated_at'>
     & { items: Array<(
@@ -30928,7 +30928,7 @@ export type GetItemBundleLazyQueryHookResult = ReturnType<typeof useGetItemBundl
 export type GetItemBundleQueryResult = ApolloReactCommon.QueryResult<GetItemBundleQuery, GetItemBundleQueryVariables>;
 export const InsertItemBundleDocument = gql`
     mutation InsertItemBundle($name: String!, $description: String, $items: item_bundle_member_arr_rel_insert_input) {
-  insert_item_bundle_one(object: {name: $name, description: $description, items: $items}) {
+  item_bundle: insert_item_bundle_one(object: {name: $name, description: $description, items: $items}) {
     id
     description
     created_at
@@ -31404,4 +31404,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-07-16T05:48:14-06:00
+// graphql typescript defs generated on 2020-07-17T06:38:09-06:00

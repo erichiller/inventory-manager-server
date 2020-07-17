@@ -20,7 +20,7 @@ export const ItemHardwareFastenerScrewMachineEditMutationHandler: React.FC<FormM
                 variables: applyDefaults<ItemHardwareFastenerScrewMachine>( form.getFieldsValue( true, ( meta ) => {
                     // console.log( { c: "ItemHardwareFastenerScrewMachineEditMutationHandler", f: 'meta'}, meta.name );
                     return ! meta.name.includes( 'screw_size' );
-                } ),
+                } ) as ItemHardwareFastenerScrewMachine,
                 // TODO: put defaults in the class
                 {
                     thread_direction: EnumItemHandednessEnum.right,
