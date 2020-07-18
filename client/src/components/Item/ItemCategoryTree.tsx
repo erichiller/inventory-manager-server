@@ -7,6 +7,7 @@ import { EnumItemClassEnum } from "~lib/types/graphql";
 import { TreeProps } from "antd/lib/tree";
 import { toTitleCase } from "~lib/UtilityFunctions";
 import { ItemFormModal } from "./ItemFormModal";
+import { PopOverMenu } from "~components/Shared/PopOverMenu";
 
 const { TreeNode } = Tree;
 
@@ -53,19 +54,24 @@ export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: Re
                     console.log( { cls } );
                     let newNode = {
                         key: pathString,
-                        title: <Popover
+                        title: <PopOverMenu
                             placement="bottomRight"
                             trigger="contextMenu"
                             overlayClassName="ItemCategoryContextMenu"
-                            content={
-                                <Menu>
-                                    <Menu.Item icon={<PlusOutlined />} onClick={() => setModal( getAddModal( cls ) )}>Add {toTitleCase( cat )}</Menu.Item>
-                                </Menu>}
-                        >
-                            <span>
-                                {cls ? < cls.icon /> : null}{toTitleCase( cat )}
-                            </span>
-                        </Popover>,
+                            menuItems={[
+                                {
+                                    // icon: PlusOutlined,
+                                    icon: <PlusOutlined />,
+                                    // icon: null, 
+                                    onClick: () => setModal( getAddModal( cls ) ),
+                                    text: `Add ${toTitleCase ( cat )}`
+                                }
+                            ]}
+                            wrappedContent={{
+                                icon: cls ? <cls.icon /> : null,
+                                text: toTitleCase( cat )
+                            }}
+                        />,
                         // icon: 
                         children: []
                     } as DataNode;
