@@ -126,7 +126,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
                 <props.addComponent form={form} />
                 : null}
             {props && props.mutationHandler ?
-                <props.mutationHandler form={form} submitted={formSubmitted} completeCallback={mutationCompleteCallback} />
+                <props.mutationHandler form={form} originalObject={props.item} submitted={formSubmitted} completeCallback={mutationCompleteCallback} />
                 : null}
             {/* <Button type="primary" htmlType="submit">
                 Submit

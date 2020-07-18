@@ -583,18 +583,18 @@ export function propValuesEqual ( a: object | Array<any>, b: object | Array<any>
 
 
 
-interface LogMessageParameters {
-    /** class */
-    c: string;
-    /** event */
-    e: string;
-    /** message */
-    m: string;
-}
+// interface LogMessageParameters {
+//     /** class */
+//     c: string;
+//     /** event */
+//     e: string;
+//     /** message */
+//     m: string;
+// }
 
-// type LogT = ( message: LogMessageParameters, data: object ) => void;
-interface LocalLogT {
-    ( message: string, data: object ): void;
-}
-// TODO: make a global version, have it return a pre-prefixed (with `cls`) function ; have it remove duplicates
-const log: LocalLogT = ( msg, data ) => console.log( {cls: 'PopOverMenu', msg}, data );
+// // type LogT = ( message: LogMessageParameters, data: object ) => void;
+// interface LocalLogT {
+//     ( message: string, data: object ): void;
+// }
+// // TODO: make a global version, have it return a pre-prefixed (with `cls`) function ; have it remove duplicates
+// const log: LocalLogT = ( msg, data ) => console.log( {cls: 'PopOverMenu', msg}, data );

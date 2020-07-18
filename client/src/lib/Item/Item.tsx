@@ -35,8 +35,9 @@ export interface ItemFormProps {
 /**
  * Upon receiving submitted, it will send mutation to graphql.
  */
-export interface FormMutationHandler extends ItemFormProps {
+export interface FormMutationHandler<T = {}> extends ItemFormProps {
     submitted: boolean;
+    originalObject?: T;
     completeCallback: ( submitted: boolean ) => void;
 }
 
