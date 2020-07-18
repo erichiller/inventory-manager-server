@@ -14,25 +14,6 @@ export interface ItemBundleFormProps extends Intersection<ItemFormProps, ItemBun
 
 
 export const ItemBundleForm: React.FC<ItemBundleFormProps> = ( props ) => {
-    /**
-     * console regex search: 
-     * /(onFinish|ItemSelect|onChange)/
-     */
-
-    // useEffect( () => {
-    //     screwSizeInputRef.current.focus();
-    // }, [ screwSizeInputRef ] );
-
-    // useEffect( () => {
-    //     let initProps: Partial<ItemBundle> = {};
-    //     if ( !props.thread_direction ) {
-    //         initProps.thread_direction = EnumItemHandednessEnum.right;
-    //     }
-    //     form.setFieldsValue( initProps );
-    // } );
-
-
-
     return (
         <React.Fragment>
             <div className="col">
