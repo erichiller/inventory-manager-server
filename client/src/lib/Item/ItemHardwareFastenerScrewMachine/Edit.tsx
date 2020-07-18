@@ -36,10 +36,10 @@ export const ItemHardwareFastenerScrewMachineEditMutationHandler: React.FC<FormM
             completeCallback( false );
             message.error( `${error.name}: ${error.message}` );
         } else if ( data ) {
-            message.success( `successfully edited ${data.__typename} with id ${data.update_item_hardware_fastener_screw_machine_by_pk.id}` );
+            message.success( `successfully edited ${ data.__typename } with id ${ data.update_item_hardware_fastener_screw_machine_by_pk.id }` );
+            completeCallback( true );
             return () => {
                 form.resetFields();
-                completeCallback( true );
             };
         }
     }, [data, loading, error] );

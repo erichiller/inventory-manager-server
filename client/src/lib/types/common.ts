@@ -23,3 +23,12 @@ export type IconComponentT<P = {}> =
  * @see IconComponentT
  */
 export type IconElementT = React.ReactElement<React.SVGProps<SVGSVGElement>>;
+
+/**
+ * Typical handler passed down to children to control their visibility.  
+ * Most often used to close a child modal.
+ * @example
+ * // close with
+ * <MyChildComponentExitButton onClick={props.visibilityHandler(null)}
+ */
+export type VisibilityHandlerCallback = ( display?: React.ReactElement | null ) => void;

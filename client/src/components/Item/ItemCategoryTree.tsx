@@ -13,13 +13,12 @@ interface ItemCategoryTreeProps extends Pick<TreeProps, 'onSelect'> {
     data?: Array<keyof Record<EnumItemClassEnum, string>>;
 }
 
-export type visibleHandler = ( c?: React.ReactElement ) => void;
-
 export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: React.ReactNode; } ) => {
     const [ modal, setModal ] = useState<React.ReactElement>();
 
     function getAddModal<T extends typeof Item> ( cls: T ): React.ReactElement {
         return <ItemFormModal
+            visibleHandler={ () => setModal( null ) }
             addComponent={cls.addComponent}
             mutationHandler={cls.addHandler}
         />;

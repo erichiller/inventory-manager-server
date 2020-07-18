@@ -140,7 +140,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
         return <ItemFormModal
             item={record}
             // item={currentRecord.current}
-            // visibleHandler={() => setModal( null )}
+            visibleHandler={() => setModal( null )}
             recordEditComponent={record.editComponent}
             mutationHandler={record.editHandler}
         />;

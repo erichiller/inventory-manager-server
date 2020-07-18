@@ -7,10 +7,12 @@ import TextArea from 'antd/lib/input/TextArea';
 import { QtyInput } from '~lib/Item/Common/QtyInput';
 import { useHistory } from 'react-router-dom';
 import { Callbacks } from 'rc-field-form/lib/interface';
+import { VisibilityHandlerCallback } from '~lib/types/common';
 
 
 type ItemFormModalProps = {
     mutationHandler: React.FC<FormMutationHandler>;
+    visibleHandler: VisibilityHandlerCallback;
 } & ( {
     recordEditComponent: React.FC<ItemFormProps>;
     item: Item<any>;
@@ -43,6 +45,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
     };
 
     const mutationCompleteCallback: ( success: boolean ) => void = ( success: boolean ) => {
+        console.log( `mutationCompleteCallback=${success}` );
         if ( ! success ){
             setFormSubmitted( false );
         } else {
@@ -52,7 +55,8 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
 
     const exitModal = () => {
         console.log( "cancelling modal, history.goBack, history is currently", { history } );
-        history.goBack();
+        // history.goBack();
+        props.visibleHandler( null );
     };
 
     console.log( { item: props.item, "initialValues=": props.item ? props.item.simpleObject : {} } );
