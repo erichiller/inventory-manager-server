@@ -13,26 +13,10 @@ import { QueryResult } from '@apollo/react-common';
 import { EditOutlined, PrinterOutlined, DeleteOutlined, TagOutlined } from '@ant-design/icons';
 import { ItemTableMouseOver } from './ItemTableMouseOver';
 import { ItemFormModal } from './ItemFormModal';
-import { useParams, Link } from 'react-router-dom';
-import { PaginationConfig } from 'antd/lib/pagination';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { SorterResult, TableCurrentDataSource } from 'antd/lib/table/interface';
 import { computeDefaultPagination } from '~lib/UtilityFunctions';
-// import DocumentNode from 'graphql-tag';
 
-
-interface ItemTableState {
-    data?: Item<any>[];
-    pagination: pagination;
-    loading: boolean;
-    clickedItem: Item<any>;
-    modal?: React.ReactElement;
-}
-
-interface pagination {
-    total: number;
-    pageSize: number;
-    current: number;
-}
 
 type ItemTableProps<T, Q extends typeof useGetItemsQuery> = {
     data?: T[];
@@ -74,6 +58,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     // const [ clickedItem, setClickedItem ] = useState<T>();
     const [ currentRecord, setCurrentRecord ] = useState<T>();
     let currentRecordRef = React.useRef<T>();
+    const history = useHistory();
     
 
     const [ mouseOverVisible, setMouseOverVisible ] = useState<boolean>( false );
@@ -90,7 +75,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                             setModal( getRecordEditModal( item as T ) );
                             setCurrentRecord( item as T );
                         } )
-                        .catch( error => console.log( "error" ) );
+                        .catch( () => console.log( "error" ) );
                 } else if ( currentRecord ) {
                     console.log( { _cls: "ItemTable", method: 'useEffect for currentRecord & params.action', currentRecord, msg: "run", params_action: params.action } );
                     setModal( getRecordEditModal( currentRecord ) );
@@ -101,8 +86,6 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                 break;
         }
     }, [ params.item_id, params.action ] );
-
-
 
     if ( !props.data ) {
         let variables = props.variables;
@@ -140,7 +123,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
         return <ItemFormModal
             item={record}
             // item={currentRecord.current}
-            visibleHandler={() => setModal( null )}
+            visibleHandler={() => history.goBack()}
             recordEditComponent={record.editComponent}
             mutationHandler={record.editHandler}
         />;
@@ -236,7 +219,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
 
     return (
         <div
-            onMouseLeave={event => {
+            onMouseLeave={() => {
                 // console.log( { 'class of target_TOP_DIV': ( event.target as HTMLTableDataCellElement ).className.toString(), eventType: 'onMouseOut', event, currentTarget: event.currentTarget, target: event.target } );
                 setMouseOverVisible( false );
 
@@ -298,9 +281,9 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                     columns={getColumns()}
                     dataSource={data}
                     rowKey={item => item.id.toString()}
-                    onRow={( record, rowIndex ) => {
+                    onRow={( record ) => {
                         return {
-                            onMouseOver: event => {
+                            onMouseOver: () => {
                                 // let {
                                 //     target,
                                 //     // relatedtarget,

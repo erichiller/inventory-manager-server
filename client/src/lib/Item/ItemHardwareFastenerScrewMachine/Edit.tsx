@@ -1,32 +1,40 @@
-import { ItemFormProps, FormMutationHandler } from "../Item";
-import { useUpdateItemHardwareFastenerScrewMachineMutation, EnumItemHandednessEnum, EnumItemHardwareUseMaterialEnum, ItemHardwareFastenerScrewMachineInsertInput, EnumItemHardwareFastenerScrewMachinePointEnum } from "../../types/graphql";
+import { FormMutationHandler } from "../Item";
+import { useUpdateItemHardwareFastenerScrewMachineMutation, EnumItemHandednessEnum, EnumItemHardwareUseMaterialEnum, EnumItemHardwareFastenerScrewMachinePointEnum, GetItemDocument } from "../../types/graphql";
 import { useEffect } from "react";
 import { message } from "antd";
-import { Store, StoreValue } from "antd/lib/form/interface";
 import { ItemHardwareFastenerScrewMachine } from "..";
 import { applyDefaults } from "~item/Common/FormLib";
 
 
-export const ItemHardwareFastenerScrewMachineEditMutationHandler: React.FC<FormMutationHandler> = ( props ) => {
-    const { form, submitted, completeCallback } = props;
+export const ItemHardwareFastenerScrewMachineEditMutationHandler: React.FC<FormMutationHandler<ItemHardwareFastenerScrewMachine>> = ( props ) => {
+    const { form, submitted, completeCallback, originalObject } = props;
     const [ updateItemHardwareFastenerScrewMachineMutation, { data, loading, error } ] = useUpdateItemHardwareFastenerScrewMachineMutation();
 
-    // TODO: edit must REMOVE defaults if they are explicitly set.
+    // URGENT: edit must REMOVE defaults if they are explicitly set.
     
     useEffect( () => {
         if ( submitted === true ) {
             console.log( { c: "ItemHardwareFastenerScrewMachineEditMutationHandler", f: 'useEffect', cond: 'submitted === true' }, form.getFieldsValue() );
             updateItemHardwareFastenerScrewMachineMutation( {
-                variables: applyDefaults<ItemHardwareFastenerScrewMachine>( form.getFieldsValue( true, ( meta ) => {
-                    // console.log( { c: "ItemHardwareFastenerScrewMachineEditMutationHandler", f: 'meta'}, meta.name );
+                variables: {...applyDefaults<ItemHardwareFastenerScrewMachine>( form.getFieldsValue( true, ( meta ) => {
                     return ! meta.name.includes( 'screw_size' );
                 } ) as ItemHardwareFastenerScrewMachine,
-                // TODO: put defaults in the class
+                // TODO: put defaults in the class ( as a static property )
                 {
                     thread_direction: EnumItemHandednessEnum.right,
                     use_material: EnumItemHardwareUseMaterialEnum.machine,
                     point_type: EnumItemHardwareFastenerScrewMachinePointEnum.flat
-                } )
+                } ),
+                    id: originalObject?.id
+                },
+                refetchQueries: [
+                    { 
+                        query: GetItemDocument, 
+                        variables: {
+                            id: originalObject.id
+                        }
+                    }
+                ]
             } );
         }
     }, [submitted] );
@@ -43,17 +51,6 @@ export const ItemHardwareFastenerScrewMachineEditMutationHandler: React.FC<FormM
             };
         }
     }, [data, loading, error] );
-
-
-    // useEffect( () => {
-    //     let initProps = {
-    //         screw_size: form.getFieldsValue()
-    //     };
-    //     // if ( !props.thread_direction ) {
-    //     //     initProps.thread_direction = EnumItemHandednessEnum.right;
-    //     // }
-    //     form.setFieldsValue( initProps );
-    // } );
 
     return null;
 };
