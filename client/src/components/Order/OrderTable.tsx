@@ -17,12 +17,6 @@ interface OrderTableProps {
     class?: string;
 }
 
-interface OrderTableState {
-    data?: Item<any>[];
-    pagination: false | TablePaginationConfig;
-    loading: boolean;
-    clickedRecord: Order;
-}
 
 interface IOrderTableParams {
     order_id: string;
@@ -30,13 +24,7 @@ interface IOrderTableParams {
 }
 
 export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
-    const [ state, setState ] = React.useState<OrderTableState>( {
-        data: undefined,
-        // pagination: { total: 0, pageSize: 100, current: 0 },
-        pagination: { hideOnSinglePage: true, defaultPageSize: computeDefaultPagination() },
-        loading: false,
-        clickedRecord: undefined
-    } );
+    const [pagination, setPagination] = useState < false | TablePaginationConfig>({ hideOnSinglePage: true, defaultPageSize: computeDefaultPagination() });
     let params = useParams<IOrderTableParams>();
     const [ modal, setModal ] = useState<React.ReactElement>( null );
     const history = useHistory();
@@ -124,14 +112,11 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
 
 
     const handleTableChange = ( pagination: TablePaginationConfig, filters, sorter ) => {
-        const pager = state.pagination;
+        const pager = pagination;
         if ( pager ) {
             pager.current = pagination.current;
         }
-        setState( {
-            ...state,
-            pagination: pager ? pager : pagination,
-        } );
+        setPagination(pager ? pager : pagination );
     };
 
     function onChange ( pagination, filters, sorter ) {
@@ -147,7 +132,7 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
                 columns={columns}
                 dataSource={result.data ? result.data.order : []}
                 rowKey={order => order.id.toString()}
-                pagination={state.pagination}
+                pagination={pagination}
                 loading={result.loading}
                 onChange={onChange}
             />
