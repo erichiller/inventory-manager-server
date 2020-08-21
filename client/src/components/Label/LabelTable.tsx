@@ -3,8 +3,9 @@ import * as React from 'react';
 import { useGetLabelsQuery, LabelSelectColumn, Label, GetLabelsQuery } from '~lib/types/graphql';
 import { LabelDrawModal } from '~components/Draw/LabelDrawModal';
 import { Item } from '~lib/Item';
-import { toTitleCase } from '~lib/UtilityFunctions';
-import { ColumnProps } from 'antd/lib/table';
+import { toTitleCase, computeDefaultPagination } from '~lib/UtilityFunctions';
+import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
+import { useState } from 'react';
 
 
 
@@ -13,34 +14,20 @@ interface LabelTableProps {
     class?: string;
 }
 
-interface LableTableState {
-    data?: Item<any>[];
-    pagination: pagination;
-    loading: boolean;
-    clickedLabel: Label;
-    modal: React.ReactElement;
-}
 
-interface pagination {
-    total: number;
-    pageSize: number;
-    current: number;
-}
 
 export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
-    const [ state, setState ] = React.useState<LableTableState>( {
-        data: undefined,
-        pagination: { total: 0, pageSize: 100, current: 0 },
-        loading: false,
-        clickedLabel: undefined,
-        modal: null
-    } );
+    const [ pagination, setPagination ] = React.useState < false | TablePaginationConfig>( {
+
+        hideOnSinglePage: true, defaultPageSize: computeDefaultPagination() } );
+
+
+    const [ modal, setModal ] = useState<React.ReactElement>();
 
     const { data, loading, error } = useGetLabelsQuery();
+    // const result = useGetLabelsQuery();
 
 
-
-    // get Columns (): ColumnProps<Omit<GetLabelsQuery, '__typename'>>[] {
     const columns: ColumnProps<Extract<GetLabelsQuery, 'label'>>[] = [
         ...( Object.keys( LabelSelectColumn ).filter(
             key => [ "ID" ].includes( key ) ? false : key ).map(
@@ -56,7 +43,7 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
                 title: 'Action',
                 key: 'action',
                 // dataIndex: '',
-                render: ( text, record ) => (
+                render: ( text, record: Label ) => (
                     <span>
                         <a onClick={( obj ) => {
                             obj.preventDefault();
@@ -65,9 +52,9 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
                             //   // printModal: display.VISIBLE
                             // })
                             setModal( <LabelDrawModal
-                                label={state.clickedLabel}
+                                label={record}
                                 visibleHandler={setModal} />
-                                , record );
+                                );
                         }
                         }> Print</a>
                         <Divider type="vertical" />
@@ -95,34 +82,34 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
     // }
 
 
-    const setModal = ( modal: React.ReactElement, clickedLabel?: Label ) => {
-        console.log( "viewPrintModal () ? received", modal, clickedLabel );
-        if ( !modal ) {
-            setState( {
-                ...state,
-                clickedLabel: clickedLabel,
-                modal: null
-            } );
-            console.log( "viewPrintModal(null) removing modal" );
-            return;
-        }
-        setState( {
-            ...state,
-            modal: modal,
-            clickedLabel: clickedLabel
-        } );
-        console.log( "viewPrintModal () ? provided new modal" );
-        return;
-    };
+    // const setModal = ( modal: React.ReactElement, clickedLabel?: Label ) => {
+    //     console.log( "viewPrintModal () ? received", modal, clickedLabel );
+    //     if ( !modal ) {
+    //         setState( {
+    //             ...state,
+    //             clickedLabel: clickedLabel,
+    //             modal: null
+    //         } );
+    //         console.log( "viewPrintModal(null) removing modal" );
+    //         return;
+    //     }
+    //     setState( {
+    //         ...state,
+    //         modal: modal,
+    //         clickedLabel: clickedLabel
+    //     } );
+    //     console.log( "viewPrintModal () ? provided new modal" );
+    //     return;
+    // };
 
 
     const handleTableChange = ( pagination, filters, sorter ) => {
-        const pager = { ...state.pagination };
+        const pager = { ...pagination };
         pager.current = pagination.current;
-        setState( {
-            ...state,
-            pagination: pager,
-        } );
+        // setState( {
+        //     ...state,
+        //     pagination: pager,
+        // } );
     };
 
     function onChange ( pagination, filters, sorter ) {
@@ -130,19 +117,19 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
     };
 
     if ( error ) return <span>Error</span>;
-    console.log( "data is", data );
+    console.log( "data is", data, data ? data.label : [] );
     return (
         <div>
-            {state.modal}
+            xxxx
+            {modal}
             <Table
                 columns={columns}
-                dataSource={data.label}
+                dataSource={data ? data.label : []}
                 rowKey={label => label.id.toString()}
-                pagination={state.pagination}
+                pagination={pagination}
                 loading={loading}
                 onChange={onChange}
-            >
-            </Table>
+            />
         </div>
     );
 };
