@@ -120,7 +120,6 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
     console.log( "data is", data, data ? data.label : [] );
     return (
         <div>
-            xxxx
             {modal}
             <Table
                 columns={columns}
