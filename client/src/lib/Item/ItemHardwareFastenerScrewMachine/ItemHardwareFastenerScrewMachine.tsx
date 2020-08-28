@@ -56,10 +56,11 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
     /** psi */
     tensile_strength?: Maybe<Scalars[ 'numeric' ]>;
     /** ie. M3 or #6. Measure of the outer diameter. For US items, diameters smaller than ¼" get #<numbers> */
-    thread_diameter: Scalars[ 'numeric' ];
+    // thread_diameter: Scalars[ 'numeric' ];
+    thread_diameter_label: Scalars[ 'String' ];
     thread_direction?: Maybe<EnumItemHandednessEnum>;
     thread_fit?: Maybe<EnumItemHardwareFastenerScrewMachineThreadFitEnum>;
-    thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
+    // thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
     /** if fully threaded, this should be === `shaft_length` */
     thread_length?: number;
     /** TPI for usc, Pitch for metric ; ie. the 0.5 in M3 x 0.5 */
@@ -146,9 +147,10 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
                     sorter: sortByCaseInsensitiveText( 'name' ),
                 },
                 {
-                    key: 'thread_diameter',
+                    key: 'thread_diameter_label',
                     title: 'Diameter',
-                    sorter: sortByNumber( 'thread_diameter' ),
+                    // sorter: sortByNumber( 'thread_diameter_label' ),
+                    // TODO, need to strip out text and sort the remainder as a number
                     responsive: [ 'lg' ],
                 },
                 {
@@ -183,11 +185,11 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
                     title: 'Point',
                     responsive: [ 'xl' ],
                 },
-                {
-                    key: 'thread_label',
-                    title: 'Thread',
-                    responsive: [ 'xxl' ],
-                },
+                // {
+                //     key: 'thread_label',
+                //     title: 'Thread',
+                //     responsive: [ 'xxl' ],
+                // },
                 {
                     key: 'drive_type',
                     title: 'Drive',

@@ -1,4 +1,4 @@
-import { QueryHookOptions, QueryResult, BaseQueryOptions } from 'react-apollo';
+import { QueryHookOptions, QueryResult, BaseQueryOptions } from '@apollo/client/react';
 import { EnumUnitEnum, Exact } from './graphql';
 
 //TODO: ideally there is some sort of 'variadic' type declaration where it wouldn't require & {} & {} ...

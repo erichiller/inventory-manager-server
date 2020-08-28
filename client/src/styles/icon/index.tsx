@@ -1,4 +1,4 @@
-import React, { SVGProps, FunctionComponent, ImgHTMLAttributes, FunctionComponentElement } from 'react';
+import React, { SVGProps, FunctionComponent, ImgHTMLAttributes, FunctionComponentElement, ReactHTML, ReactSVG, DetailedHTMLFactory } from 'react';
 
 import Icon from '@ant-design/icons';
 import { IconComponentProps as IconProps } from '@ant-design/icons/lib/components/Icon';
@@ -13,6 +13,7 @@ export type PNGReactFC = React.FunctionComponent<React.DetailedHTMLProps<React.I
 export type SVGReactFC = React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 
 export const HexBoltIcon: PNGReactFC = ( props ) => <img src={HexBolt} {...props} />;
+
 export {
     CodeIcon,
     CurlyBracesIcon,

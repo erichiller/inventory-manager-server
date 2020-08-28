@@ -9115,6 +9115,9 @@ type item_hardware_fastener_screw_machine {
     path: String
   ): jsonb
   description: String
+
+  # An object relationship
+  diameter: property_item_hardware_fastener_screw_machine_diameter
   drive_size: String
   drive_type: enum_item_hardware_fastener_drive_enum!
 
@@ -9152,12 +9155,9 @@ type item_hardware_fastener_screw_machine {
 
   # psi
   tensile_strength: numeric
-
-  # ie. M3 or #6. Measure of the outer diameter. For US items, diameters smaller than ¼" get #<numbers>
-  thread_diameter: numeric!
+  thread_diameter_label: String!
   thread_direction: enum_item_handedness_enum
   thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum
-  thread_label: enum_item_hardware_fastener_thread_label_enum
 
   # if fully threaded, this should be === `shaft_length`
   thread_length: numeric
@@ -9230,7 +9230,6 @@ type item_hardware_fastener_screw_machine_avg_fields {
   head_height: Float
   id: Float
   tensile_strength: Float
-  thread_diameter: Float
   thread_length: Float
   thread_pitch: Float
 }
@@ -9244,7 +9243,6 @@ input item_hardware_fastener_screw_machine_avg_order_by {
   head_height: order_by
   id: order_by
   tensile_strength: order_by
-  thread_diameter: order_by
   thread_length: order_by
   thread_pitch: order_by
 }
@@ -9258,6 +9256,7 @@ input item_hardware_fastener_screw_machine_bool_exp {
   countersunk_height: numeric_comparison_exp
   default_fields: jsonb_comparison_exp
   description: String_comparison_exp
+  diameter: property_item_hardware_fastener_screw_machine_diameter_bool_exp
   drive_size: String_comparison_exp
   drive_type: enum_item_hardware_fastener_drive_enum_comparison_exp
   embedded_length: numeric_comparison_exp
@@ -9273,10 +9272,9 @@ input item_hardware_fastener_screw_machine_bool_exp {
   specifications_met: jsonb_comparison_exp
   strength_class: enum_item_hardware_fastener_screw_machine_strength_enum_comparison_exp
   tensile_strength: numeric_comparison_exp
-  thread_diameter: numeric_comparison_exp
+  thread_diameter_label: String_comparison_exp
   thread_direction: enum_item_handedness_enum_comparison_exp
   thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum_comparison_exp
-  thread_label: enum_item_hardware_fastener_thread_label_enum_comparison_exp
   thread_length: numeric_comparison_exp
   thread_pitch: numeric_comparison_exp
   thread_standard: enum_item_hardware_fastener_thread_standard_enum_comparison_exp
@@ -9317,7 +9315,6 @@ input item_hardware_fastener_screw_machine_inc_input {
   head_height: numeric
   id: Int
   tensile_strength: numeric
-  thread_diameter: numeric
   thread_length: numeric
   thread_pitch: numeric
 }
@@ -9328,6 +9325,7 @@ input item_hardware_fastener_screw_machine_insert_input {
   countersunk_height: numeric
   default_fields: jsonb
   description: String
+  diameter: property_item_hardware_fastener_screw_machine_diameter_obj_rel_insert_input
   drive_size: String
   drive_type: enum_item_hardware_fastener_drive_enum
   embedded_length: numeric
@@ -9343,10 +9341,9 @@ input item_hardware_fastener_screw_machine_insert_input {
   specifications_met: jsonb
   strength_class: enum_item_hardware_fastener_screw_machine_strength_enum
   tensile_strength: numeric
-  thread_diameter: numeric
+  thread_diameter_label: String
   thread_direction: enum_item_handedness_enum
   thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum
-  thread_label: enum_item_hardware_fastener_thread_label_enum
   thread_length: numeric
   thread_pitch: numeric
   thread_standard: enum_item_hardware_fastener_thread_standard_enum
@@ -9366,7 +9363,7 @@ type item_hardware_fastener_screw_machine_max_fields {
   id: Int
   name: String
   tensile_strength: numeric
-  thread_diameter: numeric
+  thread_diameter_label: String
   thread_length: numeric
   thread_pitch: numeric
 }
@@ -9383,7 +9380,7 @@ input item_hardware_fastener_screw_machine_max_order_by {
   id: order_by
   name: order_by
   tensile_strength: order_by
-  thread_diameter: order_by
+  thread_diameter_label: order_by
   thread_length: order_by
   thread_pitch: order_by
 }
@@ -9400,7 +9397,7 @@ type item_hardware_fastener_screw_machine_min_fields {
   id: Int
   name: String
   tensile_strength: numeric
-  thread_diameter: numeric
+  thread_diameter_label: String
   thread_length: numeric
   thread_pitch: numeric
 }
@@ -9417,7 +9414,7 @@ input item_hardware_fastener_screw_machine_min_order_by {
   id: order_by
   name: order_by
   tensile_strength: order_by
-  thread_diameter: order_by
+  thread_diameter_label: order_by
   thread_length: order_by
   thread_pitch: order_by
 }
@@ -9450,6 +9447,7 @@ input item_hardware_fastener_screw_machine_order_by {
   countersunk_height: order_by
   default_fields: order_by
   description: order_by
+  diameter: property_item_hardware_fastener_screw_machine_diameter_order_by
   drive_size: order_by
   drive_type: order_by
   embedded_length: order_by
@@ -9465,10 +9463,9 @@ input item_hardware_fastener_screw_machine_order_by {
   specifications_met: order_by
   strength_class: order_by
   tensile_strength: order_by
-  thread_diameter: order_by
+  thread_diameter_label: order_by
   thread_direction: order_by
   thread_fit: order_by
-  thread_label: order_by
   thread_length: order_by
   thread_pitch: order_by
   thread_standard: order_by
@@ -9547,16 +9544,13 @@ enum item_hardware_fastener_screw_machine_select_column {
   tensile_strength
 
   # column name
-  thread_diameter
+  thread_diameter_label
 
   # column name
   thread_direction
 
   # column name
   thread_fit
-
-  # column name
-  thread_label
 
   # column name
   thread_length
@@ -9595,10 +9589,9 @@ input item_hardware_fastener_screw_machine_set_input {
   specifications_met: jsonb
   strength_class: enum_item_hardware_fastener_screw_machine_strength_enum
   tensile_strength: numeric
-  thread_diameter: numeric
+  thread_diameter_label: String
   thread_direction: enum_item_handedness_enum
   thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum
-  thread_label: enum_item_hardware_fastener_thread_label_enum
   thread_length: numeric
   thread_pitch: numeric
   thread_standard: enum_item_hardware_fastener_thread_standard_enum
@@ -9615,7 +9608,6 @@ type item_hardware_fastener_screw_machine_stddev_fields {
   head_height: Float
   id: Float
   tensile_strength: Float
-  thread_diameter: Float
   thread_length: Float
   thread_pitch: Float
 }
@@ -9629,7 +9621,6 @@ input item_hardware_fastener_screw_machine_stddev_order_by {
   head_height: order_by
   id: order_by
   tensile_strength: order_by
-  thread_diameter: order_by
   thread_length: order_by
   thread_pitch: order_by
 }
@@ -9643,7 +9634,6 @@ type item_hardware_fastener_screw_machine_stddev_pop_fields {
   head_height: Float
   id: Float
   tensile_strength: Float
-  thread_diameter: Float
   thread_length: Float
   thread_pitch: Float
 }
@@ -9657,7 +9647,6 @@ input item_hardware_fastener_screw_machine_stddev_pop_order_by {
   head_height: order_by
   id: order_by
   tensile_strength: order_by
-  thread_diameter: order_by
   thread_length: order_by
   thread_pitch: order_by
 }
@@ -9671,7 +9660,6 @@ type item_hardware_fastener_screw_machine_stddev_samp_fields {
   head_height: Float
   id: Float
   tensile_strength: Float
-  thread_diameter: Float
   thread_length: Float
   thread_pitch: Float
 }
@@ -9685,7 +9673,6 @@ input item_hardware_fastener_screw_machine_stddev_samp_order_by {
   head_height: order_by
   id: order_by
   tensile_strength: order_by
-  thread_diameter: order_by
   thread_length: order_by
   thread_pitch: order_by
 }
@@ -9699,7 +9686,6 @@ type item_hardware_fastener_screw_machine_sum_fields {
   head_height: numeric
   id: Int
   tensile_strength: numeric
-  thread_diameter: numeric
   thread_length: numeric
   thread_pitch: numeric
 }
@@ -9713,7 +9699,6 @@ input item_hardware_fastener_screw_machine_sum_order_by {
   head_height: order_by
   id: order_by
   tensile_strength: order_by
-  thread_diameter: order_by
   thread_length: order_by
   thread_pitch: order_by
 }
@@ -9778,16 +9763,13 @@ enum item_hardware_fastener_screw_machine_update_column {
   tensile_strength
 
   # column name
-  thread_diameter
+  thread_diameter_label
 
   # column name
   thread_direction
 
   # column name
   thread_fit
-
-  # column name
-  thread_label
 
   # column name
   thread_length
@@ -9814,7 +9796,6 @@ type item_hardware_fastener_screw_machine_var_pop_fields {
   head_height: Float
   id: Float
   tensile_strength: Float
-  thread_diameter: Float
   thread_length: Float
   thread_pitch: Float
 }
@@ -9828,7 +9809,6 @@ input item_hardware_fastener_screw_machine_var_pop_order_by {
   head_height: order_by
   id: order_by
   tensile_strength: order_by
-  thread_diameter: order_by
   thread_length: order_by
   thread_pitch: order_by
 }
@@ -9842,7 +9822,6 @@ type item_hardware_fastener_screw_machine_var_samp_fields {
   head_height: Float
   id: Float
   tensile_strength: Float
-  thread_diameter: Float
   thread_length: Float
   thread_pitch: Float
 }
@@ -9856,7 +9835,6 @@ input item_hardware_fastener_screw_machine_var_samp_order_by {
   head_height: order_by
   id: order_by
   tensile_strength: order_by
-  thread_diameter: order_by
   thread_length: order_by
   thread_pitch: order_by
 }
@@ -9870,7 +9848,6 @@ type item_hardware_fastener_screw_machine_variance_fields {
   head_height: Float
   id: Float
   tensile_strength: Float
-  thread_diameter: Float
   thread_length: Float
   thread_pitch: Float
 }
@@ -9884,7 +9861,6 @@ input item_hardware_fastener_screw_machine_variance_order_by {
   head_height: order_by
   id: order_by
   tensile_strength: order_by
-  thread_diameter: order_by
   thread_length: order_by
   thread_pitch: order_by
 }
@@ -14130,7 +14106,14 @@ type mutation_root {
   ): property_item_hardware_fastener_screw_machine_diameter_mutation_response
 
   # delete single row from the table: "property_item_hardware_fastener_screw_machine.diameter"
-  delete_property_item_hardware_fastener_screw_machine_diameter_by_pk(diameter_major: numeric!, fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum!, pitch: numeric!): property_item_hardware_fastener_screw_machine_diameter
+  delete_property_item_hardware_fastener_screw_machine_diameter_by_pk(
+    # String description of diameter in the format native to the given unit.
+    diameter_label: String!
+    fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum!
+
+    # The pitch in the given unit's native format. TPI for inch, mm for metric
+    pitch_label: numeric!
+  ): property_item_hardware_fastener_screw_machine_diameter
 
   # delete data from the table: "search_data"
   delete_search_data(
@@ -18532,19 +18515,29 @@ input property_item_hardware_fastener_bolt_strength_variance_order_by {
   thread_pitch: order_by
 }
 
-# Lookup table for items with the same diameter, pitch, and fit
+# Lookup table for items with the same diameter, pitch, and fit (+unit) ; to display their common properties, such as tapping drill size, major diameter, etc
 #
 #
 # columns and relationships of "property_item_hardware_fastener_screw_machine.diameter"
 type property_item_hardware_fastener_screw_machine_diameter {
+  # String description of diameter in the format native to the given unit.
   diameter_label: String!
+
+  # major diameter normalized to mm
   diameter_major: numeric!
-  diameter_pitch_label: String!
   fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum!
+
+  # The pitch normalized to mm
   pitch: numeric!
-  pitch_mm: numeric!
+
+  # The pitch in the given unit's native format. TPI for inch, mm for metric
+  pitch_label: numeric!
+
+  # governing standard, eg. ISO
   standard: enum_item_hardware_fastener_thread_standard_enum!
-  tap_drill_size: numeric
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: numeric
+
+  # thread description, eg. coarse, fine, etc
   thread_label: enum_item_hardware_fastener_thread_label_enum
   unit: enum_unit_enum!
 }
@@ -18595,16 +18588,16 @@ input property_item_hardware_fastener_screw_machine_diameter_arr_rel_insert_inpu
 type property_item_hardware_fastener_screw_machine_diameter_avg_fields {
   diameter_major: Float
   pitch: Float
-  pitch_mm: Float
-  tap_drill_size: Float
+  pitch_label: Float
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: Float
 }
 
 # order by avg() on columns of table "property_item_hardware_fastener_screw_machine.diameter"
 input property_item_hardware_fastener_screw_machine_diameter_avg_order_by {
   diameter_major: order_by
   pitch: order_by
-  pitch_mm: order_by
-  tap_drill_size: order_by
+  pitch_label: order_by
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: order_by
 }
 
 # Boolean expression to filter rows from the table "property_item_hardware_fastener_screw_machine.diameter". All fields are combined with a logical 'AND'.
@@ -18614,12 +18607,11 @@ input property_item_hardware_fastener_screw_machine_diameter_bool_exp {
   _or: [property_item_hardware_fastener_screw_machine_diameter_bool_exp]
   diameter_label: String_comparison_exp
   diameter_major: numeric_comparison_exp
-  diameter_pitch_label: String_comparison_exp
   fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum_comparison_exp
   pitch: numeric_comparison_exp
-  pitch_mm: numeric_comparison_exp
+  pitch_label: numeric_comparison_exp
   standard: enum_item_hardware_fastener_thread_standard_enum_comparison_exp
-  tap_drill_size: numeric_comparison_exp
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: numeric_comparison_exp
   thread_label: enum_item_hardware_fastener_thread_label_enum_comparison_exp
   unit: enum_unit_enum_comparison_exp
 }
@@ -18634,20 +18626,19 @@ enum property_item_hardware_fastener_screw_machine_diameter_constraint {
 input property_item_hardware_fastener_screw_machine_diameter_inc_input {
   diameter_major: numeric
   pitch: numeric
-  pitch_mm: numeric
-  tap_drill_size: numeric
+  pitch_label: numeric
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: numeric
 }
 
 # input type for inserting data into table "property_item_hardware_fastener_screw_machine.diameter"
 input property_item_hardware_fastener_screw_machine_diameter_insert_input {
   diameter_label: String
   diameter_major: numeric
-  diameter_pitch_label: String
   fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum
   pitch: numeric
-  pitch_mm: numeric
+  pitch_label: numeric
   standard: enum_item_hardware_fastener_thread_standard_enum
-  tap_drill_size: numeric
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: numeric
   thread_label: enum_item_hardware_fastener_thread_label_enum
   unit: enum_unit_enum
 }
@@ -18656,40 +18647,36 @@ input property_item_hardware_fastener_screw_machine_diameter_insert_input {
 type property_item_hardware_fastener_screw_machine_diameter_max_fields {
   diameter_label: String
   diameter_major: numeric
-  diameter_pitch_label: String
   pitch: numeric
-  pitch_mm: numeric
-  tap_drill_size: numeric
+  pitch_label: numeric
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: numeric
 }
 
 # order by max() on columns of table "property_item_hardware_fastener_screw_machine.diameter"
 input property_item_hardware_fastener_screw_machine_diameter_max_order_by {
   diameter_label: order_by
   diameter_major: order_by
-  diameter_pitch_label: order_by
   pitch: order_by
-  pitch_mm: order_by
-  tap_drill_size: order_by
+  pitch_label: order_by
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: order_by
 }
 
 # aggregate min on columns
 type property_item_hardware_fastener_screw_machine_diameter_min_fields {
   diameter_label: String
   diameter_major: numeric
-  diameter_pitch_label: String
   pitch: numeric
-  pitch_mm: numeric
-  tap_drill_size: numeric
+  pitch_label: numeric
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: numeric
 }
 
 # order by min() on columns of table "property_item_hardware_fastener_screw_machine.diameter"
 input property_item_hardware_fastener_screw_machine_diameter_min_order_by {
   diameter_label: order_by
   diameter_major: order_by
-  diameter_pitch_label: order_by
   pitch: order_by
-  pitch_mm: order_by
-  tap_drill_size: order_by
+  pitch_label: order_by
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: order_by
 }
 
 # response of any mutation on the table "property_item_hardware_fastener_screw_machine.diameter"
@@ -18718,21 +18705,23 @@ input property_item_hardware_fastener_screw_machine_diameter_on_conflict {
 input property_item_hardware_fastener_screw_machine_diameter_order_by {
   diameter_label: order_by
   diameter_major: order_by
-  diameter_pitch_label: order_by
   fit: order_by
   pitch: order_by
-  pitch_mm: order_by
+  pitch_label: order_by
   standard: order_by
-  tap_drill_size: order_by
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: order_by
   thread_label: order_by
   unit: order_by
 }
 
 # primary key columns input for table: "property_item_hardware_fastener_screw_machine.diameter"
 input property_item_hardware_fastener_screw_machine_diameter_pk_columns_input {
-  diameter_major: numeric!
+  # String description of diameter in the format native to the given unit.
+  diameter_label: String!
   fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum!
-  pitch: numeric!
+
+  # The pitch in the given unit's native format. TPI for inch, mm for metric
+  pitch_label: numeric!
 }
 
 # select columns of table "property_item_hardware_fastener_screw_machine.diameter"
@@ -18744,22 +18733,19 @@ enum property_item_hardware_fastener_screw_machine_diameter_select_column {
   diameter_major
 
   # column name
-  diameter_pitch_label
-
-  # column name
   fit
 
   # column name
   pitch
 
   # column name
-  pitch_mm
+  pitch_label
 
   # column name
   standard
 
   # column name
-  tap_drill_size
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter
 
   # column name
   thread_label
@@ -18772,12 +18758,11 @@ enum property_item_hardware_fastener_screw_machine_diameter_select_column {
 input property_item_hardware_fastener_screw_machine_diameter_set_input {
   diameter_label: String
   diameter_major: numeric
-  diameter_pitch_label: String
   fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum
   pitch: numeric
-  pitch_mm: numeric
+  pitch_label: numeric
   standard: enum_item_hardware_fastener_thread_standard_enum
-  tap_drill_size: numeric
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: numeric
   thread_label: enum_item_hardware_fastener_thread_label_enum
   unit: enum_unit_enum
 }
@@ -18786,64 +18771,64 @@ input property_item_hardware_fastener_screw_machine_diameter_set_input {
 type property_item_hardware_fastener_screw_machine_diameter_stddev_fields {
   diameter_major: Float
   pitch: Float
-  pitch_mm: Float
-  tap_drill_size: Float
+  pitch_label: Float
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: Float
 }
 
 # order by stddev() on columns of table "property_item_hardware_fastener_screw_machine.diameter"
 input property_item_hardware_fastener_screw_machine_diameter_stddev_order_by {
   diameter_major: order_by
   pitch: order_by
-  pitch_mm: order_by
-  tap_drill_size: order_by
+  pitch_label: order_by
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: order_by
 }
 
 # aggregate stddev_pop on columns
 type property_item_hardware_fastener_screw_machine_diameter_stddev_pop_fields {
   diameter_major: Float
   pitch: Float
-  pitch_mm: Float
-  tap_drill_size: Float
+  pitch_label: Float
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: Float
 }
 
 # order by stddev_pop() on columns of table "property_item_hardware_fastener_screw_machine.diameter"
 input property_item_hardware_fastener_screw_machine_diameter_stddev_pop_order_by {
   diameter_major: order_by
   pitch: order_by
-  pitch_mm: order_by
-  tap_drill_size: order_by
+  pitch_label: order_by
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: order_by
 }
 
 # aggregate stddev_samp on columns
 type property_item_hardware_fastener_screw_machine_diameter_stddev_samp_fields {
   diameter_major: Float
   pitch: Float
-  pitch_mm: Float
-  tap_drill_size: Float
+  pitch_label: Float
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: Float
 }
 
 # order by stddev_samp() on columns of table "property_item_hardware_fastener_screw_machine.diameter"
 input property_item_hardware_fastener_screw_machine_diameter_stddev_samp_order_by {
   diameter_major: order_by
   pitch: order_by
-  pitch_mm: order_by
-  tap_drill_size: order_by
+  pitch_label: order_by
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: order_by
 }
 
 # aggregate sum on columns
 type property_item_hardware_fastener_screw_machine_diameter_sum_fields {
   diameter_major: numeric
   pitch: numeric
-  pitch_mm: numeric
-  tap_drill_size: numeric
+  pitch_label: numeric
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: numeric
 }
 
 # order by sum() on columns of table "property_item_hardware_fastener_screw_machine.diameter"
 input property_item_hardware_fastener_screw_machine_diameter_sum_order_by {
   diameter_major: order_by
   pitch: order_by
-  pitch_mm: order_by
-  tap_drill_size: order_by
+  pitch_label: order_by
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: order_by
 }
 
 # update columns of table "property_item_hardware_fastener_screw_machine.diameter"
@@ -18855,22 +18840,19 @@ enum property_item_hardware_fastener_screw_machine_diameter_update_column {
   diameter_major
 
   # column name
-  diameter_pitch_label
-
-  # column name
   fit
 
   # column name
   pitch
 
   # column name
-  pitch_mm
+  pitch_label
 
   # column name
   standard
 
   # column name
-  tap_drill_size
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter
 
   # column name
   thread_label
@@ -18883,48 +18865,48 @@ enum property_item_hardware_fastener_screw_machine_diameter_update_column {
 type property_item_hardware_fastener_screw_machine_diameter_var_pop_fields {
   diameter_major: Float
   pitch: Float
-  pitch_mm: Float
-  tap_drill_size: Float
+  pitch_label: Float
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: Float
 }
 
 # order by var_pop() on columns of table "property_item_hardware_fastener_screw_machine.diameter"
 input property_item_hardware_fastener_screw_machine_diameter_var_pop_order_by {
   diameter_major: order_by
   pitch: order_by
-  pitch_mm: order_by
-  tap_drill_size: order_by
+  pitch_label: order_by
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: order_by
 }
 
 # aggregate var_samp on columns
 type property_item_hardware_fastener_screw_machine_diameter_var_samp_fields {
   diameter_major: Float
   pitch: Float
-  pitch_mm: Float
-  tap_drill_size: Float
+  pitch_label: Float
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: Float
 }
 
 # order by var_samp() on columns of table "property_item_hardware_fastener_screw_machine.diameter"
 input property_item_hardware_fastener_screw_machine_diameter_var_samp_order_by {
   diameter_major: order_by
   pitch: order_by
-  pitch_mm: order_by
-  tap_drill_size: order_by
+  pitch_label: order_by
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: order_by
 }
 
 # aggregate variance on columns
 type property_item_hardware_fastener_screw_machine_diameter_variance_fields {
   diameter_major: Float
   pitch: Float
-  pitch_mm: Float
-  tap_drill_size: Float
+  pitch_label: Float
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: Float
 }
 
 # order by variance() on columns of table "property_item_hardware_fastener_screw_machine.diameter"
 input property_item_hardware_fastener_screw_machine_diameter_variance_order_by {
   diameter_major: order_by
   pitch: order_by
-  pitch_mm: order_by
-  tap_drill_size: order_by
+  pitch_label: order_by
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter: order_by
 }
 
 # query root
@@ -21190,7 +21172,14 @@ type query_root {
   ): property_item_hardware_fastener_screw_machine_diameter_aggregate!
 
   # fetch data from the table: "property_item_hardware_fastener_screw_machine.diameter" using primary key columns
-  property_item_hardware_fastener_screw_machine_diameter_by_pk(diameter_major: numeric!, fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum!, pitch: numeric!): property_item_hardware_fastener_screw_machine_diameter
+  property_item_hardware_fastener_screw_machine_diameter_by_pk(
+    # String description of diameter in the format native to the given unit.
+    diameter_label: String!
+    fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum!
+
+    # The pitch in the given unit's native format. TPI for inch, mm for metric
+    pitch_label: numeric!
+  ): property_item_hardware_fastener_screw_machine_diameter
 
   # execute function "search" which returns "search_data"
   search(
@@ -25331,7 +25320,14 @@ type subscription_root {
   ): property_item_hardware_fastener_screw_machine_diameter_aggregate!
 
   # fetch data from the table: "property_item_hardware_fastener_screw_machine.diameter" using primary key columns
-  property_item_hardware_fastener_screw_machine_diameter_by_pk(diameter_major: numeric!, fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum!, pitch: numeric!): property_item_hardware_fastener_screw_machine_diameter
+  property_item_hardware_fastener_screw_machine_diameter_by_pk(
+    # String description of diameter in the format native to the given unit.
+    diameter_label: String!
+    fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum!
+
+    # The pitch in the given unit's native format. TPI for inch, mm for metric
+    pitch_label: numeric!
+  ): property_item_hardware_fastener_screw_machine_diameter
 
   # execute function "search" which returns "search_data"
   search(

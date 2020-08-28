@@ -1,7 +1,5 @@
 
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
+import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
 
 import { createBrowserHistory } from 'history';
 

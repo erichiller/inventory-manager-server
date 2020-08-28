@@ -1,9 +1,7 @@
-import gql from 'graphql-tag';
-import * as ApolloReactCommon from '@apollo/react-common';
-import * as ApolloReactHoc from '@apollo/react-hoc';
-import * as ApolloReactHooks from '@apollo/react-hooks';
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null | undefined;
-export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -9434,6 +9432,8 @@ export type ItemHardwareFastenerScrewMachine = {
   countersunk_height?: Maybe<Scalars['numeric']>;
   default_fields?: Maybe<Scalars['jsonb']>;
   description?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  diameter?: Maybe<PropertyItemHardwareFastenerScrewMachineDiameter>;
   drive_size?: Maybe<Scalars['String']>;
   drive_type: EnumItemHardwareFastenerDriveEnum;
   /** This is what is typically stated as a fastener's length. Length of bolt that is within the material it is screwed into */
@@ -9465,11 +9465,9 @@ export type ItemHardwareFastenerScrewMachine = {
   strength_class?: Maybe<EnumItemHardwareFastenerScrewMachineStrengthEnum>;
   /** psi */
   tensile_strength?: Maybe<Scalars['numeric']>;
-  /** ie. M3 or #6. Measure of the outer diameter. For US items, diameters smaller than ¼" get #<numbers> */
-  thread_diameter: Scalars['numeric'];
+  thread_diameter_label: Scalars['String'];
   thread_direction?: Maybe<EnumItemHandednessEnum>;
   thread_fit?: Maybe<EnumItemHardwareFastenerScrewMachineThreadFitEnum>;
-  thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
   /** if fully threaded, this should be === `shaft_length` */
   thread_length?: Maybe<Scalars['numeric']>;
   /** TPI for usc, Pitch for metric ; ie. the 0.5 in M3 x 0.5 */
@@ -9560,7 +9558,6 @@ export type ItemHardwareFastenerScrewMachineAvgFields = {
   head_height?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
 };
@@ -9574,7 +9571,6 @@ export type ItemHardwareFastenerScrewMachineAvgOrderBy = {
   head_height?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
 };
@@ -9588,6 +9584,7 @@ export type ItemHardwareFastenerScrewMachineBoolExp = {
   countersunk_height?: Maybe<NumericComparisonExp>;
   default_fields?: Maybe<JsonbComparisonExp>;
   description?: Maybe<StringComparisonExp>;
+  diameter?: Maybe<PropertyItemHardwareFastenerScrewMachineDiameterBoolExp>;
   drive_size?: Maybe<StringComparisonExp>;
   drive_type?: Maybe<EnumItemHardwareFastenerDriveEnumComparisonExp>;
   embedded_length?: Maybe<NumericComparisonExp>;
@@ -9603,10 +9600,9 @@ export type ItemHardwareFastenerScrewMachineBoolExp = {
   specifications_met?: Maybe<JsonbComparisonExp>;
   strength_class?: Maybe<EnumItemHardwareFastenerScrewMachineStrengthEnumComparisonExp>;
   tensile_strength?: Maybe<NumericComparisonExp>;
-  thread_diameter?: Maybe<NumericComparisonExp>;
+  thread_diameter_label?: Maybe<StringComparisonExp>;
   thread_direction?: Maybe<EnumItemHandednessEnumComparisonExp>;
   thread_fit?: Maybe<EnumItemHardwareFastenerScrewMachineThreadFitEnumComparisonExp>;
-  thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnumComparisonExp>;
   thread_length?: Maybe<NumericComparisonExp>;
   thread_pitch?: Maybe<NumericComparisonExp>;
   thread_standard?: Maybe<EnumItemHardwareFastenerThreadStandardEnumComparisonExp>;
@@ -9647,7 +9643,6 @@ export type ItemHardwareFastenerScrewMachineIncInput = {
   head_height?: Maybe<Scalars['numeric']>;
   id?: Maybe<Scalars['Int']>;
   tensile_strength?: Maybe<Scalars['numeric']>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
   thread_length?: Maybe<Scalars['numeric']>;
   thread_pitch?: Maybe<Scalars['numeric']>;
 };
@@ -9658,6 +9653,7 @@ export type ItemHardwareFastenerScrewMachineInsertInput = {
   countersunk_height?: Maybe<Scalars['numeric']>;
   default_fields?: Maybe<Scalars['jsonb']>;
   description?: Maybe<Scalars['String']>;
+  diameter?: Maybe<PropertyItemHardwareFastenerScrewMachineDiameterObjRelInsertInput>;
   drive_size?: Maybe<Scalars['String']>;
   drive_type?: Maybe<EnumItemHardwareFastenerDriveEnum>;
   embedded_length?: Maybe<Scalars['numeric']>;
@@ -9673,10 +9669,9 @@ export type ItemHardwareFastenerScrewMachineInsertInput = {
   specifications_met?: Maybe<Scalars['jsonb']>;
   strength_class?: Maybe<EnumItemHardwareFastenerScrewMachineStrengthEnum>;
   tensile_strength?: Maybe<Scalars['numeric']>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
+  thread_diameter_label?: Maybe<Scalars['String']>;
   thread_direction?: Maybe<EnumItemHandednessEnum>;
   thread_fit?: Maybe<EnumItemHardwareFastenerScrewMachineThreadFitEnum>;
-  thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
   thread_length?: Maybe<Scalars['numeric']>;
   thread_pitch?: Maybe<Scalars['numeric']>;
   thread_standard?: Maybe<EnumItemHardwareFastenerThreadStandardEnum>;
@@ -9697,7 +9692,7 @@ export type ItemHardwareFastenerScrewMachineMaxFields = {
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   tensile_strength?: Maybe<Scalars['numeric']>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
+  thread_diameter_label?: Maybe<Scalars['String']>;
   thread_length?: Maybe<Scalars['numeric']>;
   thread_pitch?: Maybe<Scalars['numeric']>;
 };
@@ -9714,7 +9709,7 @@ export type ItemHardwareFastenerScrewMachineMaxOrderBy = {
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
+  thread_diameter_label?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
 };
@@ -9732,7 +9727,7 @@ export type ItemHardwareFastenerScrewMachineMinFields = {
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   tensile_strength?: Maybe<Scalars['numeric']>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
+  thread_diameter_label?: Maybe<Scalars['String']>;
   thread_length?: Maybe<Scalars['numeric']>;
   thread_pitch?: Maybe<Scalars['numeric']>;
 };
@@ -9749,7 +9744,7 @@ export type ItemHardwareFastenerScrewMachineMinOrderBy = {
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
+  thread_diameter_label?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
 };
@@ -9782,6 +9777,7 @@ export type ItemHardwareFastenerScrewMachineOrderBy = {
   countersunk_height?: Maybe<OrderBy>;
   default_fields?: Maybe<OrderBy>;
   description?: Maybe<OrderBy>;
+  diameter?: Maybe<PropertyItemHardwareFastenerScrewMachineDiameterOrderBy>;
   drive_size?: Maybe<OrderBy>;
   drive_type?: Maybe<OrderBy>;
   embedded_length?: Maybe<OrderBy>;
@@ -9797,10 +9793,9 @@ export type ItemHardwareFastenerScrewMachineOrderBy = {
   specifications_met?: Maybe<OrderBy>;
   strength_class?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
+  thread_diameter_label?: Maybe<OrderBy>;
   thread_direction?: Maybe<OrderBy>;
   thread_fit?: Maybe<OrderBy>;
-  thread_label?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
   thread_standard?: Maybe<OrderBy>;
@@ -9860,13 +9855,11 @@ export enum ItemHardwareFastenerScrewMachineSelectColumn {
   /** column name */
   tensile_strength = 'tensile_strength',
   /** column name */
-  thread_diameter = 'thread_diameter',
+  thread_diameter_label = 'thread_diameter_label',
   /** column name */
   thread_direction = 'thread_direction',
   /** column name */
   thread_fit = 'thread_fit',
-  /** column name */
-  thread_label = 'thread_label',
   /** column name */
   thread_length = 'thread_length',
   /** column name */
@@ -9900,10 +9893,9 @@ export type ItemHardwareFastenerScrewMachineSetInput = {
   specifications_met?: Maybe<Scalars['jsonb']>;
   strength_class?: Maybe<EnumItemHardwareFastenerScrewMachineStrengthEnum>;
   tensile_strength?: Maybe<Scalars['numeric']>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
+  thread_diameter_label?: Maybe<Scalars['String']>;
   thread_direction?: Maybe<EnumItemHandednessEnum>;
   thread_fit?: Maybe<EnumItemHardwareFastenerScrewMachineThreadFitEnum>;
-  thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
   thread_length?: Maybe<Scalars['numeric']>;
   thread_pitch?: Maybe<Scalars['numeric']>;
   thread_standard?: Maybe<EnumItemHardwareFastenerThreadStandardEnum>;
@@ -9921,7 +9913,6 @@ export type ItemHardwareFastenerScrewMachineStddevFields = {
   head_height?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
 };
@@ -9935,7 +9926,6 @@ export type ItemHardwareFastenerScrewMachineStddevOrderBy = {
   head_height?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
 };
@@ -9950,7 +9940,6 @@ export type ItemHardwareFastenerScrewMachineStddevPopFields = {
   head_height?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
 };
@@ -9964,7 +9953,6 @@ export type ItemHardwareFastenerScrewMachineStddevPopOrderBy = {
   head_height?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
 };
@@ -9979,7 +9967,6 @@ export type ItemHardwareFastenerScrewMachineStddevSampFields = {
   head_height?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
 };
@@ -9993,7 +9980,6 @@ export type ItemHardwareFastenerScrewMachineStddevSampOrderBy = {
   head_height?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
 };
@@ -10008,7 +9994,6 @@ export type ItemHardwareFastenerScrewMachineSumFields = {
   head_height?: Maybe<Scalars['numeric']>;
   id?: Maybe<Scalars['Int']>;
   tensile_strength?: Maybe<Scalars['numeric']>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
   thread_length?: Maybe<Scalars['numeric']>;
   thread_pitch?: Maybe<Scalars['numeric']>;
 };
@@ -10022,7 +10007,6 @@ export type ItemHardwareFastenerScrewMachineSumOrderBy = {
   head_height?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
 };
@@ -10068,13 +10052,11 @@ export enum ItemHardwareFastenerScrewMachineUpdateColumn {
   /** column name */
   tensile_strength = 'tensile_strength',
   /** column name */
-  thread_diameter = 'thread_diameter',
+  thread_diameter_label = 'thread_diameter_label',
   /** column name */
   thread_direction = 'thread_direction',
   /** column name */
   thread_fit = 'thread_fit',
-  /** column name */
-  thread_label = 'thread_label',
   /** column name */
   thread_length = 'thread_length',
   /** column name */
@@ -10097,7 +10079,6 @@ export type ItemHardwareFastenerScrewMachineVarPopFields = {
   head_height?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
 };
@@ -10111,7 +10092,6 @@ export type ItemHardwareFastenerScrewMachineVarPopOrderBy = {
   head_height?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
 };
@@ -10126,7 +10106,6 @@ export type ItemHardwareFastenerScrewMachineVarSampFields = {
   head_height?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
 };
@@ -10140,7 +10119,6 @@ export type ItemHardwareFastenerScrewMachineVarSampOrderBy = {
   head_height?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
 };
@@ -10155,7 +10133,6 @@ export type ItemHardwareFastenerScrewMachineVarianceFields = {
   head_height?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   tensile_strength?: Maybe<Scalars['Float']>;
-  thread_diameter?: Maybe<Scalars['Float']>;
   thread_length?: Maybe<Scalars['Float']>;
   thread_pitch?: Maybe<Scalars['Float']>;
 };
@@ -10169,7 +10146,6 @@ export type ItemHardwareFastenerScrewMachineVarianceOrderBy = {
   head_height?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   tensile_strength?: Maybe<OrderBy>;
-  thread_diameter?: Maybe<OrderBy>;
   thread_length?: Maybe<OrderBy>;
   thread_pitch?: Maybe<OrderBy>;
 };
@@ -15402,9 +15378,9 @@ export type MutationRootDeletePropertyItemHardwareFastenerScrewMachineDiameterAr
 
 /** mutation root */
 export type MutationRootDeletePropertyItemHardwareFastenerScrewMachineDiameterByPkArgs = {
-  diameter_major: Scalars['numeric'];
+  diameter_label: Scalars['String'];
   fit: EnumItemHardwareFastenerScrewMachineThreadFitEnum;
-  pitch: Scalars['numeric'];
+  pitch_label: Scalars['numeric'];
 };
 
 
@@ -19157,21 +19133,26 @@ export type PropertyItemHardwareFastenerBoltStrengthVarianceOrderBy = {
 };
 
 /**
- * Lookup table for items with the same diameter, pitch, and fit
+ * Lookup table for items with the same diameter, pitch, and fit (+unit) ; to display their common properties, such as tapping drill size, major diameter, etc
  * 
  * 
  * columns and relationships of "property_item_hardware_fastener_screw_machine.diameter"
  */
 export type PropertyItemHardwareFastenerScrewMachineDiameter = {
   __typename?: 'property_item_hardware_fastener_screw_machine_diameter';
+  /** String description of diameter in the format native to the given unit. */
   diameter_label: Scalars['String'];
+  /** major diameter normalized to mm */
   diameter_major: Scalars['numeric'];
-  diameter_pitch_label: Scalars['String'];
   fit: EnumItemHardwareFastenerScrewMachineThreadFitEnum;
+  /** The pitch normalized to mm */
   pitch: Scalars['numeric'];
-  pitch_mm: Scalars['numeric'];
+  /** The pitch in the given unit's native format. TPI for inch, mm for metric */
+  pitch_label: Scalars['numeric'];
+  /** governing standard, eg. ISO */
   standard: EnumItemHardwareFastenerThreadStandardEnum;
-  tap_drill_size?: Maybe<Scalars['numeric']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['numeric']>;
+  /** thread description, eg. coarse, fine, etc */
   thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
   unit: EnumUnitEnum;
 };
@@ -19232,16 +19213,16 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterAvgFields = {
   __typename?: 'property_item_hardware_fastener_screw_machine_diameter_avg_fields';
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
-  pitch_mm?: Maybe<Scalars['Float']>;
-  tap_drill_size?: Maybe<Scalars['Float']>;
+  pitch_label?: Maybe<Scalars['Float']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
 export type PropertyItemHardwareFastenerScrewMachineDiameterAvgOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
-  pitch_mm?: Maybe<OrderBy>;
-  tap_drill_size?: Maybe<OrderBy>;
+  pitch_label?: Maybe<OrderBy>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<OrderBy>;
 };
 
 /** Boolean expression to filter rows from the table "property_item_hardware_fastener_screw_machine.diameter". All fields are combined with a logical 'AND'. */
@@ -19251,12 +19232,11 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterBoolExp = {
   _or?: Maybe<Array<Maybe<PropertyItemHardwareFastenerScrewMachineDiameterBoolExp>>>;
   diameter_label?: Maybe<StringComparisonExp>;
   diameter_major?: Maybe<NumericComparisonExp>;
-  diameter_pitch_label?: Maybe<StringComparisonExp>;
   fit?: Maybe<EnumItemHardwareFastenerScrewMachineThreadFitEnumComparisonExp>;
   pitch?: Maybe<NumericComparisonExp>;
-  pitch_mm?: Maybe<NumericComparisonExp>;
+  pitch_label?: Maybe<NumericComparisonExp>;
   standard?: Maybe<EnumItemHardwareFastenerThreadStandardEnumComparisonExp>;
-  tap_drill_size?: Maybe<NumericComparisonExp>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<NumericComparisonExp>;
   thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnumComparisonExp>;
   unit?: Maybe<EnumUnitEnumComparisonExp>;
 };
@@ -19271,20 +19251,19 @@ export enum PropertyItemHardwareFastenerScrewMachineDiameterConstraint {
 export type PropertyItemHardwareFastenerScrewMachineDiameterIncInput = {
   diameter_major?: Maybe<Scalars['numeric']>;
   pitch?: Maybe<Scalars['numeric']>;
-  pitch_mm?: Maybe<Scalars['numeric']>;
-  tap_drill_size?: Maybe<Scalars['numeric']>;
+  pitch_label?: Maybe<Scalars['numeric']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['numeric']>;
 };
 
 /** input type for inserting data into table "property_item_hardware_fastener_screw_machine.diameter" */
 export type PropertyItemHardwareFastenerScrewMachineDiameterInsertInput = {
   diameter_label?: Maybe<Scalars['String']>;
   diameter_major?: Maybe<Scalars['numeric']>;
-  diameter_pitch_label?: Maybe<Scalars['String']>;
   fit?: Maybe<EnumItemHardwareFastenerScrewMachineThreadFitEnum>;
   pitch?: Maybe<Scalars['numeric']>;
-  pitch_mm?: Maybe<Scalars['numeric']>;
+  pitch_label?: Maybe<Scalars['numeric']>;
   standard?: Maybe<EnumItemHardwareFastenerThreadStandardEnum>;
-  tap_drill_size?: Maybe<Scalars['numeric']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['numeric']>;
   thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
   unit?: Maybe<EnumUnitEnum>;
 };
@@ -19294,20 +19273,18 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterMaxFields = {
   __typename?: 'property_item_hardware_fastener_screw_machine_diameter_max_fields';
   diameter_label?: Maybe<Scalars['String']>;
   diameter_major?: Maybe<Scalars['numeric']>;
-  diameter_pitch_label?: Maybe<Scalars['String']>;
   pitch?: Maybe<Scalars['numeric']>;
-  pitch_mm?: Maybe<Scalars['numeric']>;
-  tap_drill_size?: Maybe<Scalars['numeric']>;
+  pitch_label?: Maybe<Scalars['numeric']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['numeric']>;
 };
 
 /** order by max() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
 export type PropertyItemHardwareFastenerScrewMachineDiameterMaxOrderBy = {
   diameter_label?: Maybe<OrderBy>;
   diameter_major?: Maybe<OrderBy>;
-  diameter_pitch_label?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
-  pitch_mm?: Maybe<OrderBy>;
-  tap_drill_size?: Maybe<OrderBy>;
+  pitch_label?: Maybe<OrderBy>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
@@ -19315,20 +19292,18 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterMinFields = {
   __typename?: 'property_item_hardware_fastener_screw_machine_diameter_min_fields';
   diameter_label?: Maybe<Scalars['String']>;
   diameter_major?: Maybe<Scalars['numeric']>;
-  diameter_pitch_label?: Maybe<Scalars['String']>;
   pitch?: Maybe<Scalars['numeric']>;
-  pitch_mm?: Maybe<Scalars['numeric']>;
-  tap_drill_size?: Maybe<Scalars['numeric']>;
+  pitch_label?: Maybe<Scalars['numeric']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['numeric']>;
 };
 
 /** order by min() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
 export type PropertyItemHardwareFastenerScrewMachineDiameterMinOrderBy = {
   diameter_label?: Maybe<OrderBy>;
   diameter_major?: Maybe<OrderBy>;
-  diameter_pitch_label?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
-  pitch_mm?: Maybe<OrderBy>;
-  tap_drill_size?: Maybe<OrderBy>;
+  pitch_label?: Maybe<OrderBy>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<OrderBy>;
 };
 
 /** response of any mutation on the table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -19357,21 +19332,22 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterOnConflict = {
 export type PropertyItemHardwareFastenerScrewMachineDiameterOrderBy = {
   diameter_label?: Maybe<OrderBy>;
   diameter_major?: Maybe<OrderBy>;
-  diameter_pitch_label?: Maybe<OrderBy>;
   fit?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
-  pitch_mm?: Maybe<OrderBy>;
+  pitch_label?: Maybe<OrderBy>;
   standard?: Maybe<OrderBy>;
-  tap_drill_size?: Maybe<OrderBy>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<OrderBy>;
   thread_label?: Maybe<OrderBy>;
   unit?: Maybe<OrderBy>;
 };
 
 /** primary key columns input for table: "property_item_hardware_fastener_screw_machine.diameter" */
 export type PropertyItemHardwareFastenerScrewMachineDiameterPkColumnsInput = {
-  diameter_major: Scalars['numeric'];
+  /** String description of diameter in the format native to the given unit. */
+  diameter_label: Scalars['String'];
   fit: EnumItemHardwareFastenerScrewMachineThreadFitEnum;
-  pitch: Scalars['numeric'];
+  /** The pitch in the given unit's native format. TPI for inch, mm for metric */
+  pitch_label: Scalars['numeric'];
 };
 
 /** select columns of table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -19381,17 +19357,15 @@ export enum PropertyItemHardwareFastenerScrewMachineDiameterSelectColumn {
   /** column name */
   diameter_major = 'diameter_major',
   /** column name */
-  diameter_pitch_label = 'diameter_pitch_label',
-  /** column name */
   fit = 'fit',
   /** column name */
   pitch = 'pitch',
   /** column name */
-  pitch_mm = 'pitch_mm',
+  pitch_label = 'pitch_label',
   /** column name */
   standard = 'standard',
   /** column name */
-  tap_drill_size = 'tap_drill_size',
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter = 'tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter',
   /** column name */
   thread_label = 'thread_label',
   /** column name */
@@ -19402,12 +19376,11 @@ export enum PropertyItemHardwareFastenerScrewMachineDiameterSelectColumn {
 export type PropertyItemHardwareFastenerScrewMachineDiameterSetInput = {
   diameter_label?: Maybe<Scalars['String']>;
   diameter_major?: Maybe<Scalars['numeric']>;
-  diameter_pitch_label?: Maybe<Scalars['String']>;
   fit?: Maybe<EnumItemHardwareFastenerScrewMachineThreadFitEnum>;
   pitch?: Maybe<Scalars['numeric']>;
-  pitch_mm?: Maybe<Scalars['numeric']>;
+  pitch_label?: Maybe<Scalars['numeric']>;
   standard?: Maybe<EnumItemHardwareFastenerThreadStandardEnum>;
-  tap_drill_size?: Maybe<Scalars['numeric']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['numeric']>;
   thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
   unit?: Maybe<EnumUnitEnum>;
 };
@@ -19417,16 +19390,16 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterStddevFields = {
   __typename?: 'property_item_hardware_fastener_screw_machine_diameter_stddev_fields';
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
-  pitch_mm?: Maybe<Scalars['Float']>;
-  tap_drill_size?: Maybe<Scalars['Float']>;
+  pitch_label?: Maybe<Scalars['Float']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
 export type PropertyItemHardwareFastenerScrewMachineDiameterStddevOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
-  pitch_mm?: Maybe<OrderBy>;
-  tap_drill_size?: Maybe<OrderBy>;
+  pitch_label?: Maybe<OrderBy>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -19434,16 +19407,16 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterStddevPopFields = {
   __typename?: 'property_item_hardware_fastener_screw_machine_diameter_stddev_pop_fields';
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
-  pitch_mm?: Maybe<Scalars['Float']>;
-  tap_drill_size?: Maybe<Scalars['Float']>;
+  pitch_label?: Maybe<Scalars['Float']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
 export type PropertyItemHardwareFastenerScrewMachineDiameterStddevPopOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
-  pitch_mm?: Maybe<OrderBy>;
-  tap_drill_size?: Maybe<OrderBy>;
+  pitch_label?: Maybe<OrderBy>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -19451,16 +19424,16 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterStddevSampFields = {
   __typename?: 'property_item_hardware_fastener_screw_machine_diameter_stddev_samp_fields';
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
-  pitch_mm?: Maybe<Scalars['Float']>;
-  tap_drill_size?: Maybe<Scalars['Float']>;
+  pitch_label?: Maybe<Scalars['Float']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
 export type PropertyItemHardwareFastenerScrewMachineDiameterStddevSampOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
-  pitch_mm?: Maybe<OrderBy>;
-  tap_drill_size?: Maybe<OrderBy>;
+  pitch_label?: Maybe<OrderBy>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<OrderBy>;
 };
 
 /** aggregate sum on columns */
@@ -19468,16 +19441,16 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterSumFields = {
   __typename?: 'property_item_hardware_fastener_screw_machine_diameter_sum_fields';
   diameter_major?: Maybe<Scalars['numeric']>;
   pitch?: Maybe<Scalars['numeric']>;
-  pitch_mm?: Maybe<Scalars['numeric']>;
-  tap_drill_size?: Maybe<Scalars['numeric']>;
+  pitch_label?: Maybe<Scalars['numeric']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['numeric']>;
 };
 
 /** order by sum() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
 export type PropertyItemHardwareFastenerScrewMachineDiameterSumOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
-  pitch_mm?: Maybe<OrderBy>;
-  tap_drill_size?: Maybe<OrderBy>;
+  pitch_label?: Maybe<OrderBy>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<OrderBy>;
 };
 
 /** update columns of table "property_item_hardware_fastener_screw_machine.diameter" */
@@ -19487,17 +19460,15 @@ export enum PropertyItemHardwareFastenerScrewMachineDiameterUpdateColumn {
   /** column name */
   diameter_major = 'diameter_major',
   /** column name */
-  diameter_pitch_label = 'diameter_pitch_label',
-  /** column name */
   fit = 'fit',
   /** column name */
   pitch = 'pitch',
   /** column name */
-  pitch_mm = 'pitch_mm',
+  pitch_label = 'pitch_label',
   /** column name */
   standard = 'standard',
   /** column name */
-  tap_drill_size = 'tap_drill_size',
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter = 'tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter',
   /** column name */
   thread_label = 'thread_label',
   /** column name */
@@ -19509,16 +19480,16 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterVarPopFields = {
   __typename?: 'property_item_hardware_fastener_screw_machine_diameter_var_pop_fields';
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
-  pitch_mm?: Maybe<Scalars['Float']>;
-  tap_drill_size?: Maybe<Scalars['Float']>;
+  pitch_label?: Maybe<Scalars['Float']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
 export type PropertyItemHardwareFastenerScrewMachineDiameterVarPopOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
-  pitch_mm?: Maybe<OrderBy>;
-  tap_drill_size?: Maybe<OrderBy>;
+  pitch_label?: Maybe<OrderBy>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<OrderBy>;
 };
 
 /** aggregate var_samp on columns */
@@ -19526,16 +19497,16 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterVarSampFields = {
   __typename?: 'property_item_hardware_fastener_screw_machine_diameter_var_samp_fields';
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
-  pitch_mm?: Maybe<Scalars['Float']>;
-  tap_drill_size?: Maybe<Scalars['Float']>;
+  pitch_label?: Maybe<Scalars['Float']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
 export type PropertyItemHardwareFastenerScrewMachineDiameterVarSampOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
-  pitch_mm?: Maybe<OrderBy>;
-  tap_drill_size?: Maybe<OrderBy>;
+  pitch_label?: Maybe<OrderBy>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<OrderBy>;
 };
 
 /** aggregate variance on columns */
@@ -19543,16 +19514,16 @@ export type PropertyItemHardwareFastenerScrewMachineDiameterVarianceFields = {
   __typename?: 'property_item_hardware_fastener_screw_machine_diameter_variance_fields';
   diameter_major?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
-  pitch_mm?: Maybe<Scalars['Float']>;
-  tap_drill_size?: Maybe<Scalars['Float']>;
+  pitch_label?: Maybe<Scalars['Float']>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "property_item_hardware_fastener_screw_machine.diameter" */
 export type PropertyItemHardwareFastenerScrewMachineDiameterVarianceOrderBy = {
   diameter_major?: Maybe<OrderBy>;
   pitch?: Maybe<OrderBy>;
-  pitch_mm?: Maybe<OrderBy>;
-  tap_drill_size?: Maybe<OrderBy>;
+  pitch_label?: Maybe<OrderBy>;
+  tap_drill_sizeXXTODOXX_link_to_another_table_unit_and_diameter?: Maybe<OrderBy>;
 };
 
 /** query root */
@@ -21472,9 +21443,9 @@ export type QueryRootPropertyItemHardwareFastenerScrewMachineDiameterAggregateAr
 
 /** query root */
 export type QueryRootPropertyItemHardwareFastenerScrewMachineDiameterByPkArgs = {
-  diameter_major: Scalars['numeric'];
+  diameter_label: Scalars['String'];
   fit: EnumItemHardwareFastenerScrewMachineThreadFitEnum;
-  pitch: Scalars['numeric'];
+  pitch_label: Scalars['numeric'];
 };
 
 
@@ -25153,9 +25124,9 @@ export type SubscriptionRootPropertyItemHardwareFastenerScrewMachineDiameterAggr
 
 /** subscription root */
 export type SubscriptionRootPropertyItemHardwareFastenerScrewMachineDiameterByPkArgs = {
-  diameter_major: Scalars['numeric'];
+  diameter_label: Scalars['String'];
   fit: EnumItemHardwareFastenerScrewMachineThreadFitEnum;
-  pitch: Scalars['numeric'];
+  pitch_label: Scalars['numeric'];
 };
 
 
@@ -27606,7 +27577,7 @@ export type DeleteItemBundleMemberMutation = (
 
 export type ItemHardwareFastenerScrewMachineFieldsFragment = (
   { __typename?: 'item_hardware_fastener_screw_machine' }
-  & Pick<ItemHardwareFastenerScrewMachine, 'id' | 'name' | 'description' | 'unit' | 'thread_length' | 'head_type' | 'drive_type' | 'drive_size' | 'head_diameter' | 'head_height' | 'thread_diameter' | 'finish' | 'material' | 'thread_direction' | 'countersunk_angle' | 'tensile_strength' | 'specifications_met' | 'thread_fit' | 'point_type' | 'hardness' | 'strength_class' | 'use_material'>
+  & Pick<ItemHardwareFastenerScrewMachine, 'id' | 'name' | 'description' | 'unit' | 'thread_length' | 'head_type' | 'drive_type' | 'drive_size' | 'head_diameter' | 'head_height' | 'thread_diameter_label' | 'finish' | 'material' | 'thread_direction' | 'countersunk_angle' | 'tensile_strength' | 'specifications_met' | 'thread_fit' | 'point_type' | 'hardness' | 'strength_class' | 'use_material'>
 );
 
 export type ItemHardwareFastenerScrewMachineQueryVariables = Exact<{ [key: string]: never; }>;
@@ -27639,11 +27610,10 @@ export type InsertItemHardwareFastenerScrewMachineMutationVariables = Exact<{
   specifications_met?: Maybe<Scalars['jsonb']>;
   strength_class?: Maybe<EnumItemHardwareFastenerScrewMachineStrengthEnum>;
   tensile_strength?: Maybe<Scalars['numeric']>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
+  thread_diameter_label?: Maybe<Scalars['String']>;
   thread_direction?: Maybe<EnumItemHandednessEnum>;
   thread_fit?: Maybe<EnumItemHardwareFastenerScrewMachineThreadFitEnum>;
   thread_length?: Maybe<Scalars['numeric']>;
-  thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
   thread_pitch?: Maybe<Scalars['numeric']>;
   thread_standard?: Maybe<EnumItemHardwareFastenerThreadStandardEnum>;
   unit?: Maybe<EnumUnitEnum>;
@@ -27690,11 +27660,10 @@ export type UpdateItemHardwareFastenerScrewMachineMutationVariables = Exact<{
   specifications_met?: Maybe<Scalars['jsonb']>;
   strength_class?: Maybe<EnumItemHardwareFastenerScrewMachineStrengthEnum>;
   tensile_strength?: Maybe<Scalars['numeric']>;
-  thread_diameter?: Maybe<Scalars['numeric']>;
+  thread_diameter_label?: Maybe<Scalars['String']>;
   thread_direction?: Maybe<EnumItemHandednessEnum>;
   thread_fit?: Maybe<EnumItemHardwareFastenerScrewMachineThreadFitEnum>;
   thread_length?: Maybe<Scalars['numeric']>;
-  thread_label?: Maybe<EnumItemHardwareFastenerThreadLabelEnum>;
   thread_pitch?: Maybe<Scalars['numeric']>;
   thread_standard?: Maybe<EnumItemHardwareFastenerThreadStandardEnum>;
   unit?: Maybe<EnumUnitEnum>;
@@ -27929,7 +27898,7 @@ export const ItemHardwareFastenerScrewMachineFieldsFragmentDoc = gql`
   drive_size
   head_diameter
   head_height
-  thread_diameter
+  thread_diameter_label
   finish
   material
   thread_direction
@@ -27950,20 +27919,7 @@ export const InsertIconDocument = gql`
   }
 }
     `;
-export type InsertIconMutationFn = ApolloReactCommon.MutationFunction<InsertIconMutation, InsertIconMutationVariables>;
-export type InsertIconProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertIconMutation, InsertIconMutationVariables>
-    } & TChildProps;
-export function withInsertIcon<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  InsertIconMutation,
-  InsertIconMutationVariables,
-  InsertIconProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, InsertIconMutation, InsertIconMutationVariables, InsertIconProps<TChildProps, TDataName>>(InsertIconDocument, {
-      alias: 'insertIcon',
-      ...operationOptions
-    });
-};
+export type InsertIconMutationFn = Apollo.MutationFunction<InsertIconMutation, InsertIconMutationVariables>;
 
 /**
  * __useInsertIconMutation__
@@ -27987,12 +27943,12 @@ export function withInsertIcon<TProps, TChildProps = {}, TDataName extends strin
  *   },
  * });
  */
-export function useInsertIconMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertIconMutation, InsertIconMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertIconMutation, InsertIconMutationVariables>(InsertIconDocument, baseOptions);
+export function useInsertIconMutation(baseOptions?: Apollo.MutationHookOptions<InsertIconMutation, InsertIconMutationVariables>) {
+        return Apollo.useMutation<InsertIconMutation, InsertIconMutationVariables>(InsertIconDocument, baseOptions);
       }
 export type InsertIconMutationHookResult = ReturnType<typeof useInsertIconMutation>;
-export type InsertIconMutationResult = ApolloReactCommon.MutationResult<InsertIconMutation>;
-export type InsertIconMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertIconMutation, InsertIconMutationVariables>;
+export type InsertIconMutationResult = Apollo.MutationResult<InsertIconMutation>;
+export type InsertIconMutationOptions = Apollo.BaseMutationOptions<InsertIconMutation, InsertIconMutationVariables>;
 export const GetIconDocument = gql`
     query GetIcon($id: uuid!) {
   icon: icon_by_pk(id: $id) {
@@ -28011,19 +27967,6 @@ export const GetIconDocument = gql`
   }
 }
     `;
-export type GetIconProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetIconQuery, GetIconQueryVariables>
-    } & TChildProps;
-export function withGetIcon<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetIconQuery,
-  GetIconQueryVariables,
-  GetIconProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetIconQuery, GetIconQueryVariables, GetIconProps<TChildProps, TDataName>>(GetIconDocument, {
-      alias: 'getIcon',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetIconQuery__
@@ -28041,15 +27984,15 @@ export function withGetIcon<TProps, TChildProps = {}, TDataName extends string =
  *   },
  * });
  */
-export function useGetIconQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
+export function useGetIconQuery(baseOptions?: Apollo.QueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
+        return Apollo.useQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
       }
-export function useGetIconLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
+export function useGetIconLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
+          return Apollo.useLazyQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
         }
 export type GetIconQueryHookResult = ReturnType<typeof useGetIconQuery>;
 export type GetIconLazyQueryHookResult = ReturnType<typeof useGetIconLazyQuery>;
-export type GetIconQueryResult = ApolloReactCommon.QueryResult<GetIconQuery, GetIconQueryVariables>;
+export type GetIconQueryResult = Apollo.QueryResult<GetIconQuery, GetIconQueryVariables>;
 export const GetIconsDocument = gql`
     query GetIcons {
   icon {
@@ -28068,19 +28011,6 @@ export const GetIconsDocument = gql`
   }
 }
     `;
-export type GetIconsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetIconsQuery, GetIconsQueryVariables>
-    } & TChildProps;
-export function withGetIcons<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetIconsQuery,
-  GetIconsQueryVariables,
-  GetIconsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetIconsQuery, GetIconsQueryVariables, GetIconsProps<TChildProps, TDataName>>(GetIconsDocument, {
-      alias: 'getIcons',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetIconsQuery__
@@ -28097,15 +28027,15 @@ export function withGetIcons<TProps, TChildProps = {}, TDataName extends string 
  *   },
  * });
  */
-export function useGetIconsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
+export function useGetIconsQuery(baseOptions?: Apollo.QueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
+        return Apollo.useQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
       }
-export function useGetIconsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
+export function useGetIconsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetIconsQuery, GetIconsQueryVariables>) {
+          return Apollo.useLazyQuery<GetIconsQuery, GetIconsQueryVariables>(GetIconsDocument, baseOptions);
         }
 export type GetIconsQueryHookResult = ReturnType<typeof useGetIconsQuery>;
 export type GetIconsLazyQueryHookResult = ReturnType<typeof useGetIconsLazyQuery>;
-export type GetIconsQueryResult = ApolloReactCommon.QueryResult<GetIconsQuery, GetIconsQueryVariables>;
+export type GetIconsQueryResult = Apollo.QueryResult<GetIconsQuery, GetIconsQueryVariables>;
 export const SearchItemsDocument = gql`
     query SearchItems($containsFilter: jsonb, $hasAnyKeysFilter: [String!]) {
   item(order_by: {class: asc}, where: {object: {_has_keys_any: $hasAnyKeysFilter, _contains: $containsFilter}}) {
@@ -28116,19 +28046,6 @@ export const SearchItemsDocument = gql`
   }
 }
     `;
-export type SearchItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<SearchItemsQuery, SearchItemsQueryVariables>
-    } & TChildProps;
-export function withSearchItems<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  SearchItemsQuery,
-  SearchItemsQueryVariables,
-  SearchItemsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, SearchItemsQuery, SearchItemsQueryVariables, SearchItemsProps<TChildProps, TDataName>>(SearchItemsDocument, {
-      alias: 'searchItems',
-      ...operationOptions
-    });
-};
 
 /**
  * __useSearchItemsQuery__
@@ -28147,15 +28064,15 @@ export function withSearchItems<TProps, TChildProps = {}, TDataName extends stri
  *   },
  * });
  */
-export function useSearchItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchItemsQuery, SearchItemsQueryVariables>) {
-        return ApolloReactHooks.useQuery<SearchItemsQuery, SearchItemsQueryVariables>(SearchItemsDocument, baseOptions);
+export function useSearchItemsQuery(baseOptions?: Apollo.QueryHookOptions<SearchItemsQuery, SearchItemsQueryVariables>) {
+        return Apollo.useQuery<SearchItemsQuery, SearchItemsQueryVariables>(SearchItemsDocument, baseOptions);
       }
-export function useSearchItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchItemsQuery, SearchItemsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SearchItemsQuery, SearchItemsQueryVariables>(SearchItemsDocument, baseOptions);
+export function useSearchItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchItemsQuery, SearchItemsQueryVariables>) {
+          return Apollo.useLazyQuery<SearchItemsQuery, SearchItemsQueryVariables>(SearchItemsDocument, baseOptions);
         }
 export type SearchItemsQueryHookResult = ReturnType<typeof useSearchItemsQuery>;
 export type SearchItemsLazyQueryHookResult = ReturnType<typeof useSearchItemsLazyQuery>;
-export type SearchItemsQueryResult = ApolloReactCommon.QueryResult<SearchItemsQuery, SearchItemsQueryVariables>;
+export type SearchItemsQueryResult = Apollo.QueryResult<SearchItemsQuery, SearchItemsQueryVariables>;
 export const GetLabelsDocument = gql`
     query GetLabels {
   label(order_by: {created_at: asc}) {
@@ -28163,19 +28080,6 @@ export const GetLabelsDocument = gql`
   }
 }
     ${LabelFieldsFragmentDoc}`;
-export type GetLabelsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetLabelsQuery, GetLabelsQueryVariables>
-    } & TChildProps;
-export function withGetLabels<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetLabelsQuery,
-  GetLabelsQueryVariables,
-  GetLabelsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetLabelsQuery, GetLabelsQueryVariables, GetLabelsProps<TChildProps, TDataName>>(GetLabelsDocument, {
-      alias: 'getLabels',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetLabelsQuery__
@@ -28192,15 +28096,15 @@ export function withGetLabels<TProps, TChildProps = {}, TDataName extends string
  *   },
  * });
  */
-export function useGetLabelsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLabelsQuery, GetLabelsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetLabelsQuery, GetLabelsQueryVariables>(GetLabelsDocument, baseOptions);
+export function useGetLabelsQuery(baseOptions?: Apollo.QueryHookOptions<GetLabelsQuery, GetLabelsQueryVariables>) {
+        return Apollo.useQuery<GetLabelsQuery, GetLabelsQueryVariables>(GetLabelsDocument, baseOptions);
       }
-export function useGetLabelsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLabelsQuery, GetLabelsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetLabelsQuery, GetLabelsQueryVariables>(GetLabelsDocument, baseOptions);
+export function useGetLabelsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLabelsQuery, GetLabelsQueryVariables>) {
+          return Apollo.useLazyQuery<GetLabelsQuery, GetLabelsQueryVariables>(GetLabelsDocument, baseOptions);
         }
 export type GetLabelsQueryHookResult = ReturnType<typeof useGetLabelsQuery>;
 export type GetLabelsLazyQueryHookResult = ReturnType<typeof useGetLabelsLazyQuery>;
-export type GetLabelsQueryResult = ApolloReactCommon.QueryResult<GetLabelsQuery, GetLabelsQueryVariables>;
+export type GetLabelsQueryResult = Apollo.QueryResult<GetLabelsQuery, GetLabelsQueryVariables>;
 export const GetLabelDocument = gql`
     query GetLabel($label_id: uuid!) {
   label: label_by_pk(id: $label_id) {
@@ -28208,19 +28112,6 @@ export const GetLabelDocument = gql`
   }
 }
     ${LabelFieldsFragmentDoc}`;
-export type GetLabelProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetLabelQuery, GetLabelQueryVariables>
-    } & TChildProps;
-export function withGetLabel<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetLabelQuery,
-  GetLabelQueryVariables,
-  GetLabelProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetLabelQuery, GetLabelQueryVariables, GetLabelProps<TChildProps, TDataName>>(GetLabelDocument, {
-      alias: 'getLabel',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetLabelQuery__
@@ -28238,15 +28129,15 @@ export function withGetLabel<TProps, TChildProps = {}, TDataName extends string 
  *   },
  * });
  */
-export function useGetLabelQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLabelQuery, GetLabelQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetLabelQuery, GetLabelQueryVariables>(GetLabelDocument, baseOptions);
+export function useGetLabelQuery(baseOptions?: Apollo.QueryHookOptions<GetLabelQuery, GetLabelQueryVariables>) {
+        return Apollo.useQuery<GetLabelQuery, GetLabelQueryVariables>(GetLabelDocument, baseOptions);
       }
-export function useGetLabelLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLabelQuery, GetLabelQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetLabelQuery, GetLabelQueryVariables>(GetLabelDocument, baseOptions);
+export function useGetLabelLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLabelQuery, GetLabelQueryVariables>) {
+          return Apollo.useLazyQuery<GetLabelQuery, GetLabelQueryVariables>(GetLabelDocument, baseOptions);
         }
 export type GetLabelQueryHookResult = ReturnType<typeof useGetLabelQuery>;
 export type GetLabelLazyQueryHookResult = ReturnType<typeof useGetLabelLazyQuery>;
-export type GetLabelQueryResult = ApolloReactCommon.QueryResult<GetLabelQuery, GetLabelQueryVariables>;
+export type GetLabelQueryResult = Apollo.QueryResult<GetLabelQuery, GetLabelQueryVariables>;
 export const GetLabelByItemIdDocument = gql`
     query GetLabelByItemId($item_id: Int) {
   label(order_by: {created_at: asc}, where: {item_id: {_eq: $item_id}}) {
@@ -28254,19 +28145,6 @@ export const GetLabelByItemIdDocument = gql`
   }
 }
     ${LabelFieldsFragmentDoc}`;
-export type GetLabelByItemIdProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>
-    } & TChildProps;
-export function withGetLabelByItemId<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetLabelByItemIdQuery,
-  GetLabelByItemIdQueryVariables,
-  GetLabelByItemIdProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables, GetLabelByItemIdProps<TChildProps, TDataName>>(GetLabelByItemIdDocument, {
-      alias: 'getLabelByItemId',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetLabelByItemIdQuery__
@@ -28284,15 +28162,15 @@ export function withGetLabelByItemId<TProps, TChildProps = {}, TDataName extends
  *   },
  * });
  */
-export function useGetLabelByItemIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>(GetLabelByItemIdDocument, baseOptions);
+export function useGetLabelByItemIdQuery(baseOptions?: Apollo.QueryHookOptions<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>) {
+        return Apollo.useQuery<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>(GetLabelByItemIdDocument, baseOptions);
       }
-export function useGetLabelByItemIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>(GetLabelByItemIdDocument, baseOptions);
+export function useGetLabelByItemIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>) {
+          return Apollo.useLazyQuery<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>(GetLabelByItemIdDocument, baseOptions);
         }
 export type GetLabelByItemIdQueryHookResult = ReturnType<typeof useGetLabelByItemIdQuery>;
 export type GetLabelByItemIdLazyQueryHookResult = ReturnType<typeof useGetLabelByItemIdLazyQuery>;
-export type GetLabelByItemIdQueryResult = ApolloReactCommon.QueryResult<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>;
+export type GetLabelByItemIdQueryResult = Apollo.QueryResult<GetLabelByItemIdQuery, GetLabelByItemIdQueryVariables>;
 export const GetTemplatesDocument = gql`
     query GetTemplates {
   label(order_by: {created_at: asc}, where: {template_items: {}}) {
@@ -28300,19 +28178,6 @@ export const GetTemplatesDocument = gql`
   }
 }
     ${LabelFieldsFragmentDoc}`;
-export type GetTemplatesProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetTemplatesQuery, GetTemplatesQueryVariables>
-    } & TChildProps;
-export function withGetTemplates<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetTemplatesQuery,
-  GetTemplatesQueryVariables,
-  GetTemplatesProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetTemplatesQuery, GetTemplatesQueryVariables, GetTemplatesProps<TChildProps, TDataName>>(GetTemplatesDocument, {
-      alias: 'getTemplates',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetTemplatesQuery__
@@ -28329,15 +28194,15 @@ export function withGetTemplates<TProps, TChildProps = {}, TDataName extends str
  *   },
  * });
  */
-export function useGetTemplatesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetTemplatesQuery, GetTemplatesQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetTemplatesQuery, GetTemplatesQueryVariables>(GetTemplatesDocument, baseOptions);
+export function useGetTemplatesQuery(baseOptions?: Apollo.QueryHookOptions<GetTemplatesQuery, GetTemplatesQueryVariables>) {
+        return Apollo.useQuery<GetTemplatesQuery, GetTemplatesQueryVariables>(GetTemplatesDocument, baseOptions);
       }
-export function useGetTemplatesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetTemplatesQuery, GetTemplatesQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetTemplatesQuery, GetTemplatesQueryVariables>(GetTemplatesDocument, baseOptions);
+export function useGetTemplatesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTemplatesQuery, GetTemplatesQueryVariables>) {
+          return Apollo.useLazyQuery<GetTemplatesQuery, GetTemplatesQueryVariables>(GetTemplatesDocument, baseOptions);
         }
 export type GetTemplatesQueryHookResult = ReturnType<typeof useGetTemplatesQuery>;
 export type GetTemplatesLazyQueryHookResult = ReturnType<typeof useGetTemplatesLazyQuery>;
-export type GetTemplatesQueryResult = ApolloReactCommon.QueryResult<GetTemplatesQuery, GetTemplatesQueryVariables>;
+export type GetTemplatesQueryResult = Apollo.QueryResult<GetTemplatesQuery, GetTemplatesQueryVariables>;
 export const GetSingleLabelsDocument = gql`
     query GetSingleLabels {
   label(order_by: {created_at: asc}, where: {_not: {template_items: {}}}) {
@@ -28345,19 +28210,6 @@ export const GetSingleLabelsDocument = gql`
   }
 }
     `;
-export type GetSingleLabelsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>
-    } & TChildProps;
-export function withGetSingleLabels<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetSingleLabelsQuery,
-  GetSingleLabelsQueryVariables,
-  GetSingleLabelsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetSingleLabelsQuery, GetSingleLabelsQueryVariables, GetSingleLabelsProps<TChildProps, TDataName>>(GetSingleLabelsDocument, {
-      alias: 'getSingleLabels',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetSingleLabelsQuery__
@@ -28374,15 +28226,15 @@ export function withGetSingleLabels<TProps, TChildProps = {}, TDataName extends 
  *   },
  * });
  */
-export function useGetSingleLabelsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>(GetSingleLabelsDocument, baseOptions);
+export function useGetSingleLabelsQuery(baseOptions?: Apollo.QueryHookOptions<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>) {
+        return Apollo.useQuery<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>(GetSingleLabelsDocument, baseOptions);
       }
-export function useGetSingleLabelsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>(GetSingleLabelsDocument, baseOptions);
+export function useGetSingleLabelsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>) {
+          return Apollo.useLazyQuery<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>(GetSingleLabelsDocument, baseOptions);
         }
 export type GetSingleLabelsQueryHookResult = ReturnType<typeof useGetSingleLabelsQuery>;
 export type GetSingleLabelsLazyQueryHookResult = ReturnType<typeof useGetSingleLabelsLazyQuery>;
-export type GetSingleLabelsQueryResult = ApolloReactCommon.QueryResult<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>;
+export type GetSingleLabelsQueryResult = Apollo.QueryResult<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>;
 export const SaveLabelDocument = gql`
     mutation SaveLabel($content: jsonb, $height: Int, $id: uuid, $item_id: Int, $title: String, $width: Int) {
   insert_label(objects: {content: $content, height: $height, id: $id, item_id: $item_id, title: $title, width: $width}) {
@@ -28393,20 +28245,7 @@ export const SaveLabelDocument = gql`
   }
 }
     `;
-export type SaveLabelMutationFn = ApolloReactCommon.MutationFunction<SaveLabelMutation, SaveLabelMutationVariables>;
-export type SaveLabelProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<SaveLabelMutation, SaveLabelMutationVariables>
-    } & TChildProps;
-export function withSaveLabel<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  SaveLabelMutation,
-  SaveLabelMutationVariables,
-  SaveLabelProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, SaveLabelMutation, SaveLabelMutationVariables, SaveLabelProps<TChildProps, TDataName>>(SaveLabelDocument, {
-      alias: 'saveLabel',
-      ...operationOptions
-    });
-};
+export type SaveLabelMutationFn = Apollo.MutationFunction<SaveLabelMutation, SaveLabelMutationVariables>;
 
 /**
  * __useSaveLabelMutation__
@@ -28430,12 +28269,12 @@ export function withSaveLabel<TProps, TChildProps = {}, TDataName extends string
  *   },
  * });
  */
-export function useSaveLabelMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SaveLabelMutation, SaveLabelMutationVariables>) {
-        return ApolloReactHooks.useMutation<SaveLabelMutation, SaveLabelMutationVariables>(SaveLabelDocument, baseOptions);
+export function useSaveLabelMutation(baseOptions?: Apollo.MutationHookOptions<SaveLabelMutation, SaveLabelMutationVariables>) {
+        return Apollo.useMutation<SaveLabelMutation, SaveLabelMutationVariables>(SaveLabelDocument, baseOptions);
       }
 export type SaveLabelMutationHookResult = ReturnType<typeof useSaveLabelMutation>;
-export type SaveLabelMutationResult = ApolloReactCommon.MutationResult<SaveLabelMutation>;
-export type SaveLabelMutationOptions = ApolloReactCommon.BaseMutationOptions<SaveLabelMutation, SaveLabelMutationVariables>;
+export type SaveLabelMutationResult = Apollo.MutationResult<SaveLabelMutation>;
+export type SaveLabelMutationOptions = Apollo.BaseMutationOptions<SaveLabelMutation, SaveLabelMutationVariables>;
 export const EditLabelDocument = gql`
     mutation EditLabel($content: jsonb, $height: Int, $id: uuid, $item_id: Int, $title: String, $width: Int) {
   __typename
@@ -28447,20 +28286,7 @@ export const EditLabelDocument = gql`
   }
 }
     `;
-export type EditLabelMutationFn = ApolloReactCommon.MutationFunction<EditLabelMutation, EditLabelMutationVariables>;
-export type EditLabelProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<EditLabelMutation, EditLabelMutationVariables>
-    } & TChildProps;
-export function withEditLabel<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  EditLabelMutation,
-  EditLabelMutationVariables,
-  EditLabelProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, EditLabelMutation, EditLabelMutationVariables, EditLabelProps<TChildProps, TDataName>>(EditLabelDocument, {
-      alias: 'editLabel',
-      ...operationOptions
-    });
-};
+export type EditLabelMutationFn = Apollo.MutationFunction<EditLabelMutation, EditLabelMutationVariables>;
 
 /**
  * __useEditLabelMutation__
@@ -28484,12 +28310,12 @@ export function withEditLabel<TProps, TChildProps = {}, TDataName extends string
  *   },
  * });
  */
-export function useEditLabelMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditLabelMutation, EditLabelMutationVariables>) {
-        return ApolloReactHooks.useMutation<EditLabelMutation, EditLabelMutationVariables>(EditLabelDocument, baseOptions);
+export function useEditLabelMutation(baseOptions?: Apollo.MutationHookOptions<EditLabelMutation, EditLabelMutationVariables>) {
+        return Apollo.useMutation<EditLabelMutation, EditLabelMutationVariables>(EditLabelDocument, baseOptions);
       }
 export type EditLabelMutationHookResult = ReturnType<typeof useEditLabelMutation>;
-export type EditLabelMutationResult = ApolloReactCommon.MutationResult<EditLabelMutation>;
-export type EditLabelMutationOptions = ApolloReactCommon.BaseMutationOptions<EditLabelMutation, EditLabelMutationVariables>;
+export type EditLabelMutationResult = Apollo.MutationResult<EditLabelMutation>;
+export type EditLabelMutationOptions = Apollo.BaseMutationOptions<EditLabelMutation, EditLabelMutationVariables>;
 export const GetManufacturersDocument = gql`
     query GetManufacturers {
   manufacturer(order_by: {id: asc}) {
@@ -28497,19 +28323,6 @@ export const GetManufacturersDocument = gql`
   }
 }
     ${BasicManufacturerFieldsFragmentDoc}`;
-export type GetManufacturersProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetManufacturersQuery, GetManufacturersQueryVariables>
-    } & TChildProps;
-export function withGetManufacturers<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetManufacturersQuery,
-  GetManufacturersQueryVariables,
-  GetManufacturersProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetManufacturersQuery, GetManufacturersQueryVariables, GetManufacturersProps<TChildProps, TDataName>>(GetManufacturersDocument, {
-      alias: 'getManufacturers',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetManufacturersQuery__
@@ -28526,15 +28339,15 @@ export function withGetManufacturers<TProps, TChildProps = {}, TDataName extends
  *   },
  * });
  */
-export function useGetManufacturersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetManufacturersQuery, GetManufacturersQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetManufacturersQuery, GetManufacturersQueryVariables>(GetManufacturersDocument, baseOptions);
+export function useGetManufacturersQuery(baseOptions?: Apollo.QueryHookOptions<GetManufacturersQuery, GetManufacturersQueryVariables>) {
+        return Apollo.useQuery<GetManufacturersQuery, GetManufacturersQueryVariables>(GetManufacturersDocument, baseOptions);
       }
-export function useGetManufacturersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetManufacturersQuery, GetManufacturersQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetManufacturersQuery, GetManufacturersQueryVariables>(GetManufacturersDocument, baseOptions);
+export function useGetManufacturersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetManufacturersQuery, GetManufacturersQueryVariables>) {
+          return Apollo.useLazyQuery<GetManufacturersQuery, GetManufacturersQueryVariables>(GetManufacturersDocument, baseOptions);
         }
 export type GetManufacturersQueryHookResult = ReturnType<typeof useGetManufacturersQuery>;
 export type GetManufacturersLazyQueryHookResult = ReturnType<typeof useGetManufacturersLazyQuery>;
-export type GetManufacturersQueryResult = ApolloReactCommon.QueryResult<GetManufacturersQuery, GetManufacturersQueryVariables>;
+export type GetManufacturersQueryResult = Apollo.QueryResult<GetManufacturersQuery, GetManufacturersQueryVariables>;
 export const GetManufacturerDocument = gql`
     query GetManufacturer($id: Int!) {
   manufacturer: manufacturer_by_pk(id: $id) {
@@ -28544,19 +28357,6 @@ export const GetManufacturerDocument = gql`
 }
     ${BasicManufacturerFieldsFragmentDoc}
 ${ObjectManufacturerFieldsFragmentDoc}`;
-export type GetManufacturerProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetManufacturerQuery, GetManufacturerQueryVariables>
-    } & TChildProps;
-export function withGetManufacturer<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetManufacturerQuery,
-  GetManufacturerQueryVariables,
-  GetManufacturerProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetManufacturerQuery, GetManufacturerQueryVariables, GetManufacturerProps<TChildProps, TDataName>>(GetManufacturerDocument, {
-      alias: 'getManufacturer',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetManufacturerQuery__
@@ -28574,15 +28374,15 @@ export function withGetManufacturer<TProps, TChildProps = {}, TDataName extends 
  *   },
  * });
  */
-export function useGetManufacturerQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetManufacturerQuery, GetManufacturerQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetManufacturerQuery, GetManufacturerQueryVariables>(GetManufacturerDocument, baseOptions);
+export function useGetManufacturerQuery(baseOptions?: Apollo.QueryHookOptions<GetManufacturerQuery, GetManufacturerQueryVariables>) {
+        return Apollo.useQuery<GetManufacturerQuery, GetManufacturerQueryVariables>(GetManufacturerDocument, baseOptions);
       }
-export function useGetManufacturerLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetManufacturerQuery, GetManufacturerQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetManufacturerQuery, GetManufacturerQueryVariables>(GetManufacturerDocument, baseOptions);
+export function useGetManufacturerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetManufacturerQuery, GetManufacturerQueryVariables>) {
+          return Apollo.useLazyQuery<GetManufacturerQuery, GetManufacturerQueryVariables>(GetManufacturerDocument, baseOptions);
         }
 export type GetManufacturerQueryHookResult = ReturnType<typeof useGetManufacturerQuery>;
 export type GetManufacturerLazyQueryHookResult = ReturnType<typeof useGetManufacturerLazyQuery>;
-export type GetManufacturerQueryResult = ApolloReactCommon.QueryResult<GetManufacturerQuery, GetManufacturerQueryVariables>;
+export type GetManufacturerQueryResult = Apollo.QueryResult<GetManufacturerQuery, GetManufacturerQueryVariables>;
 export const SearchManufacturersDocument = gql`
     query SearchManufacturers($search_string: String) {
   manufacturer(order_by: {id: asc}, where: {name: {_ilike: $search_string}}) {
@@ -28590,19 +28390,6 @@ export const SearchManufacturersDocument = gql`
   }
 }
     ${BasicManufacturerFieldsFragmentDoc}`;
-export type SearchManufacturersProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<SearchManufacturersQuery, SearchManufacturersQueryVariables>
-    } & TChildProps;
-export function withSearchManufacturers<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  SearchManufacturersQuery,
-  SearchManufacturersQueryVariables,
-  SearchManufacturersProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, SearchManufacturersQuery, SearchManufacturersQueryVariables, SearchManufacturersProps<TChildProps, TDataName>>(SearchManufacturersDocument, {
-      alias: 'searchManufacturers',
-      ...operationOptions
-    });
-};
 
 /**
  * __useSearchManufacturersQuery__
@@ -28620,15 +28407,15 @@ export function withSearchManufacturers<TProps, TChildProps = {}, TDataName exte
  *   },
  * });
  */
-export function useSearchManufacturersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchManufacturersQuery, SearchManufacturersQueryVariables>) {
-        return ApolloReactHooks.useQuery<SearchManufacturersQuery, SearchManufacturersQueryVariables>(SearchManufacturersDocument, baseOptions);
+export function useSearchManufacturersQuery(baseOptions?: Apollo.QueryHookOptions<SearchManufacturersQuery, SearchManufacturersQueryVariables>) {
+        return Apollo.useQuery<SearchManufacturersQuery, SearchManufacturersQueryVariables>(SearchManufacturersDocument, baseOptions);
       }
-export function useSearchManufacturersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchManufacturersQuery, SearchManufacturersQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SearchManufacturersQuery, SearchManufacturersQueryVariables>(SearchManufacturersDocument, baseOptions);
+export function useSearchManufacturersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchManufacturersQuery, SearchManufacturersQueryVariables>) {
+          return Apollo.useLazyQuery<SearchManufacturersQuery, SearchManufacturersQueryVariables>(SearchManufacturersDocument, baseOptions);
         }
 export type SearchManufacturersQueryHookResult = ReturnType<typeof useSearchManufacturersQuery>;
 export type SearchManufacturersLazyQueryHookResult = ReturnType<typeof useSearchManufacturersLazyQuery>;
-export type SearchManufacturersQueryResult = ApolloReactCommon.QueryResult<SearchManufacturersQuery, SearchManufacturersQueryVariables>;
+export type SearchManufacturersQueryResult = Apollo.QueryResult<SearchManufacturersQuery, SearchManufacturersQueryVariables>;
 export const InsertManufacturerDocument = gql`
     mutation InsertManufacturer($name: String!, $url: String, $vendor_id: Int) {
   manufacturer: insert_manufacturer_one(object: {name: $name, url: $url, vendor_id: $vendor_id}) {
@@ -28636,20 +28423,7 @@ export const InsertManufacturerDocument = gql`
   }
 }
     ${BasicManufacturerFieldsFragmentDoc}`;
-export type InsertManufacturerMutationFn = ApolloReactCommon.MutationFunction<InsertManufacturerMutation, InsertManufacturerMutationVariables>;
-export type InsertManufacturerProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertManufacturerMutation, InsertManufacturerMutationVariables>
-    } & TChildProps;
-export function withInsertManufacturer<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  InsertManufacturerMutation,
-  InsertManufacturerMutationVariables,
-  InsertManufacturerProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, InsertManufacturerMutation, InsertManufacturerMutationVariables, InsertManufacturerProps<TChildProps, TDataName>>(InsertManufacturerDocument, {
-      alias: 'insertManufacturer',
-      ...operationOptions
-    });
-};
+export type InsertManufacturerMutationFn = Apollo.MutationFunction<InsertManufacturerMutation, InsertManufacturerMutationVariables>;
 
 /**
  * __useInsertManufacturerMutation__
@@ -28670,12 +28444,12 @@ export function withInsertManufacturer<TProps, TChildProps = {}, TDataName exten
  *   },
  * });
  */
-export function useInsertManufacturerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertManufacturerMutation, InsertManufacturerMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertManufacturerMutation, InsertManufacturerMutationVariables>(InsertManufacturerDocument, baseOptions);
+export function useInsertManufacturerMutation(baseOptions?: Apollo.MutationHookOptions<InsertManufacturerMutation, InsertManufacturerMutationVariables>) {
+        return Apollo.useMutation<InsertManufacturerMutation, InsertManufacturerMutationVariables>(InsertManufacturerDocument, baseOptions);
       }
 export type InsertManufacturerMutationHookResult = ReturnType<typeof useInsertManufacturerMutation>;
-export type InsertManufacturerMutationResult = ApolloReactCommon.MutationResult<InsertManufacturerMutation>;
-export type InsertManufacturerMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertManufacturerMutation, InsertManufacturerMutationVariables>;
+export type InsertManufacturerMutationResult = Apollo.MutationResult<InsertManufacturerMutation>;
+export type InsertManufacturerMutationOptions = Apollo.BaseMutationOptions<InsertManufacturerMutation, InsertManufacturerMutationVariables>;
 export const InsertManufacturerWithVendorDocument = gql`
     mutation InsertManufacturerWithVendor($name: String!, $url: String, $vendor: vendor_obj_rel_insert_input) {
   manufacturer: insert_manufacturer_one(object: {name: $name, url: $url, vendor: $vendor}) {
@@ -28683,20 +28457,7 @@ export const InsertManufacturerWithVendorDocument = gql`
   }
 }
     ${BasicManufacturerFieldsFragmentDoc}`;
-export type InsertManufacturerWithVendorMutationFn = ApolloReactCommon.MutationFunction<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>;
-export type InsertManufacturerWithVendorProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>
-    } & TChildProps;
-export function withInsertManufacturerWithVendor<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  InsertManufacturerWithVendorMutation,
-  InsertManufacturerWithVendorMutationVariables,
-  InsertManufacturerWithVendorProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables, InsertManufacturerWithVendorProps<TChildProps, TDataName>>(InsertManufacturerWithVendorDocument, {
-      alias: 'insertManufacturerWithVendor',
-      ...operationOptions
-    });
-};
+export type InsertManufacturerWithVendorMutationFn = Apollo.MutationFunction<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>;
 
 /**
  * __useInsertManufacturerWithVendorMutation__
@@ -28717,12 +28478,12 @@ export function withInsertManufacturerWithVendor<TProps, TChildProps = {}, TData
  *   },
  * });
  */
-export function useInsertManufacturerWithVendorMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>(InsertManufacturerWithVendorDocument, baseOptions);
+export function useInsertManufacturerWithVendorMutation(baseOptions?: Apollo.MutationHookOptions<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>) {
+        return Apollo.useMutation<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>(InsertManufacturerWithVendorDocument, baseOptions);
       }
 export type InsertManufacturerWithVendorMutationHookResult = ReturnType<typeof useInsertManufacturerWithVendorMutation>;
-export type InsertManufacturerWithVendorMutationResult = ApolloReactCommon.MutationResult<InsertManufacturerWithVendorMutation>;
-export type InsertManufacturerWithVendorMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>;
+export type InsertManufacturerWithVendorMutationResult = Apollo.MutationResult<InsertManufacturerWithVendorMutation>;
+export type InsertManufacturerWithVendorMutationOptions = Apollo.BaseMutationOptions<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>;
 export const UpdateManufacturerUnchangedVendorDocument = gql`
     mutation UpdateManufacturerUnchangedVendor($id: Int!, $name: String!, $url: String) {
   manufacturer: update_manufacturer_by_pk(pk_columns: {id: $id}, _set: {name: $name, url: $url}) {
@@ -28732,20 +28493,7 @@ export const UpdateManufacturerUnchangedVendorDocument = gql`
 }
     ${BasicManufacturerFieldsFragmentDoc}
 ${ObjectManufacturerFieldsFragmentDoc}`;
-export type UpdateManufacturerUnchangedVendorMutationFn = ApolloReactCommon.MutationFunction<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>;
-export type UpdateManufacturerUnchangedVendorProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>
-    } & TChildProps;
-export function withUpdateManufacturerUnchangedVendor<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  UpdateManufacturerUnchangedVendorMutation,
-  UpdateManufacturerUnchangedVendorMutationVariables,
-  UpdateManufacturerUnchangedVendorProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables, UpdateManufacturerUnchangedVendorProps<TChildProps, TDataName>>(UpdateManufacturerUnchangedVendorDocument, {
-      alias: 'updateManufacturerUnchangedVendor',
-      ...operationOptions
-    });
-};
+export type UpdateManufacturerUnchangedVendorMutationFn = Apollo.MutationFunction<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>;
 
 /**
  * __useUpdateManufacturerUnchangedVendorMutation__
@@ -28766,12 +28514,12 @@ export function withUpdateManufacturerUnchangedVendor<TProps, TChildProps = {}, 
  *   },
  * });
  */
-export function useUpdateManufacturerUnchangedVendorMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>(UpdateManufacturerUnchangedVendorDocument, baseOptions);
+export function useUpdateManufacturerUnchangedVendorMutation(baseOptions?: Apollo.MutationHookOptions<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>) {
+        return Apollo.useMutation<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>(UpdateManufacturerUnchangedVendorDocument, baseOptions);
       }
 export type UpdateManufacturerUnchangedVendorMutationHookResult = ReturnType<typeof useUpdateManufacturerUnchangedVendorMutation>;
-export type UpdateManufacturerUnchangedVendorMutationResult = ApolloReactCommon.MutationResult<UpdateManufacturerUnchangedVendorMutation>;
-export type UpdateManufacturerUnchangedVendorMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>;
+export type UpdateManufacturerUnchangedVendorMutationResult = Apollo.MutationResult<UpdateManufacturerUnchangedVendorMutation>;
+export type UpdateManufacturerUnchangedVendorMutationOptions = Apollo.BaseMutationOptions<UpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables>;
 export const DeleteManufacturerDocument = gql`
     mutation DeleteManufacturer($id: Int!) {
   delete_manufacturer_by_pk(id: $id) {
@@ -28779,20 +28527,7 @@ export const DeleteManufacturerDocument = gql`
   }
 }
     ${BasicManufacturerFieldsFragmentDoc}`;
-export type DeleteManufacturerMutationFn = ApolloReactCommon.MutationFunction<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>;
-export type DeleteManufacturerProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>
-    } & TChildProps;
-export function withDeleteManufacturer<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  DeleteManufacturerMutation,
-  DeleteManufacturerMutationVariables,
-  DeleteManufacturerProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, DeleteManufacturerMutation, DeleteManufacturerMutationVariables, DeleteManufacturerProps<TChildProps, TDataName>>(DeleteManufacturerDocument, {
-      alias: 'deleteManufacturer',
-      ...operationOptions
-    });
-};
+export type DeleteManufacturerMutationFn = Apollo.MutationFunction<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>;
 
 /**
  * __useDeleteManufacturerMutation__
@@ -28811,12 +28546,12 @@ export function withDeleteManufacturer<TProps, TChildProps = {}, TDataName exten
  *   },
  * });
  */
-export function useDeleteManufacturerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>) {
-        return ApolloReactHooks.useMutation<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>(DeleteManufacturerDocument, baseOptions);
+export function useDeleteManufacturerMutation(baseOptions?: Apollo.MutationHookOptions<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>) {
+        return Apollo.useMutation<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>(DeleteManufacturerDocument, baseOptions);
       }
 export type DeleteManufacturerMutationHookResult = ReturnType<typeof useDeleteManufacturerMutation>;
-export type DeleteManufacturerMutationResult = ApolloReactCommon.MutationResult<DeleteManufacturerMutation>;
-export type DeleteManufacturerMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>;
+export type DeleteManufacturerMutationResult = Apollo.MutationResult<DeleteManufacturerMutation>;
+export type DeleteManufacturerMutationOptions = Apollo.BaseMutationOptions<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>;
 export const InsertVendorWithExistingManufacturerDocument = gql`
     mutation InsertVendorWithExistingManufacturer($account_id: String, $name: String!, $url: String!, $manufacturer_id: Int!) {
   insert_vendor_one(object: {account_id: $account_id, name: $name, url: $url, manufacturer: {data: {name: $name, url: $url, id: $manufacturer_id}, on_conflict: {constraint: manufacturer_pkey, update_columns: vendor_id}}}) {
@@ -28831,20 +28566,7 @@ export const InsertVendorWithExistingManufacturerDocument = gql`
   }
 }
     `;
-export type InsertVendorWithExistingManufacturerMutationFn = ApolloReactCommon.MutationFunction<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>;
-export type InsertVendorWithExistingManufacturerProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>
-    } & TChildProps;
-export function withInsertVendorWithExistingManufacturer<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  InsertVendorWithExistingManufacturerMutation,
-  InsertVendorWithExistingManufacturerMutationVariables,
-  InsertVendorWithExistingManufacturerProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables, InsertVendorWithExistingManufacturerProps<TChildProps, TDataName>>(InsertVendorWithExistingManufacturerDocument, {
-      alias: 'insertVendorWithExistingManufacturer',
-      ...operationOptions
-    });
-};
+export type InsertVendorWithExistingManufacturerMutationFn = Apollo.MutationFunction<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>;
 
 /**
  * __useInsertVendorWithExistingManufacturerMutation__
@@ -28866,12 +28588,12 @@ export function withInsertVendorWithExistingManufacturer<TProps, TChildProps = {
  *   },
  * });
  */
-export function useInsertVendorWithExistingManufacturerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>(InsertVendorWithExistingManufacturerDocument, baseOptions);
+export function useInsertVendorWithExistingManufacturerMutation(baseOptions?: Apollo.MutationHookOptions<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>) {
+        return Apollo.useMutation<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>(InsertVendorWithExistingManufacturerDocument, baseOptions);
       }
 export type InsertVendorWithExistingManufacturerMutationHookResult = ReturnType<typeof useInsertVendorWithExistingManufacturerMutation>;
-export type InsertVendorWithExistingManufacturerMutationResult = ApolloReactCommon.MutationResult<InsertVendorWithExistingManufacturerMutation>;
-export type InsertVendorWithExistingManufacturerMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>;
+export type InsertVendorWithExistingManufacturerMutationResult = Apollo.MutationResult<InsertVendorWithExistingManufacturerMutation>;
+export type InsertVendorWithExistingManufacturerMutationOptions = Apollo.BaseMutationOptions<InsertVendorWithExistingManufacturerMutation, InsertVendorWithExistingManufacturerMutationVariables>;
 export const GetManufacturerItemsDocument = gql`
     query GetManufacturerItems {
   manufacturer_item {
@@ -28879,19 +28601,6 @@ export const GetManufacturerItemsDocument = gql`
   }
 }
     ${BasicManufacturerItemFieldsFragmentDoc}`;
-export type GetManufacturerItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>
-    } & TChildProps;
-export function withGetManufacturerItems<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetManufacturerItemsQuery,
-  GetManufacturerItemsQueryVariables,
-  GetManufacturerItemsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables, GetManufacturerItemsProps<TChildProps, TDataName>>(GetManufacturerItemsDocument, {
-      alias: 'getManufacturerItems',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetManufacturerItemsQuery__
@@ -28908,15 +28617,15 @@ export function withGetManufacturerItems<TProps, TChildProps = {}, TDataName ext
  *   },
  * });
  */
-export function useGetManufacturerItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>(GetManufacturerItemsDocument, baseOptions);
+export function useGetManufacturerItemsQuery(baseOptions?: Apollo.QueryHookOptions<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>) {
+        return Apollo.useQuery<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>(GetManufacturerItemsDocument, baseOptions);
       }
-export function useGetManufacturerItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>(GetManufacturerItemsDocument, baseOptions);
+export function useGetManufacturerItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>) {
+          return Apollo.useLazyQuery<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>(GetManufacturerItemsDocument, baseOptions);
         }
 export type GetManufacturerItemsQueryHookResult = ReturnType<typeof useGetManufacturerItemsQuery>;
 export type GetManufacturerItemsLazyQueryHookResult = ReturnType<typeof useGetManufacturerItemsLazyQuery>;
-export type GetManufacturerItemsQueryResult = ApolloReactCommon.QueryResult<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>;
+export type GetManufacturerItemsQueryResult = Apollo.QueryResult<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>;
 export const SearchManufacturerItemsDocument = gql`
     query SearchManufacturerItems($query_text: String!, $item_id: Int) {
   item: search_item(args: {query_text: $query_text}, where: {manufacturerItems: {}, id: {_eq: $item_id}}) {
@@ -28934,19 +28643,6 @@ export const SearchManufacturerItemsDocument = gql`
   }
 }
     ${BasicManufacturerItemFieldsFragmentDoc}`;
-export type SearchManufacturerItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>
-    } & TChildProps;
-export function withSearchManufacturerItems<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  SearchManufacturerItemsQuery,
-  SearchManufacturerItemsQueryVariables,
-  SearchManufacturerItemsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables, SearchManufacturerItemsProps<TChildProps, TDataName>>(SearchManufacturerItemsDocument, {
-      alias: 'searchManufacturerItems',
-      ...operationOptions
-    });
-};
 
 /**
  * __useSearchManufacturerItemsQuery__
@@ -28965,15 +28661,15 @@ export function withSearchManufacturerItems<TProps, TChildProps = {}, TDataName 
  *   },
  * });
  */
-export function useSearchManufacturerItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>) {
-        return ApolloReactHooks.useQuery<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>(SearchManufacturerItemsDocument, baseOptions);
+export function useSearchManufacturerItemsQuery(baseOptions?: Apollo.QueryHookOptions<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>) {
+        return Apollo.useQuery<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>(SearchManufacturerItemsDocument, baseOptions);
       }
-export function useSearchManufacturerItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>(SearchManufacturerItemsDocument, baseOptions);
+export function useSearchManufacturerItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>) {
+          return Apollo.useLazyQuery<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>(SearchManufacturerItemsDocument, baseOptions);
         }
 export type SearchManufacturerItemsQueryHookResult = ReturnType<typeof useSearchManufacturerItemsQuery>;
 export type SearchManufacturerItemsLazyQueryHookResult = ReturnType<typeof useSearchManufacturerItemsLazyQuery>;
-export type SearchManufacturerItemsQueryResult = ApolloReactCommon.QueryResult<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>;
+export type SearchManufacturerItemsQueryResult = Apollo.QueryResult<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>;
 export const GetManufacturerItemDocument = gql`
     query GetManufacturerItem($id: Int!) {
   manufacturer_item: manufacturer_item_by_pk(id: $id) {
@@ -28981,19 +28677,6 @@ export const GetManufacturerItemDocument = gql`
   }
 }
     ${BasicManufacturerItemFieldsFragmentDoc}`;
-export type GetManufacturerItemProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>
-    } & TChildProps;
-export function withGetManufacturerItem<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetManufacturerItemQuery,
-  GetManufacturerItemQueryVariables,
-  GetManufacturerItemProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetManufacturerItemQuery, GetManufacturerItemQueryVariables, GetManufacturerItemProps<TChildProps, TDataName>>(GetManufacturerItemDocument, {
-      alias: 'getManufacturerItem',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetManufacturerItemQuery__
@@ -29011,15 +28694,15 @@ export function withGetManufacturerItem<TProps, TChildProps = {}, TDataName exte
  *   },
  * });
  */
-export function useGetManufacturerItemQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>(GetManufacturerItemDocument, baseOptions);
+export function useGetManufacturerItemQuery(baseOptions?: Apollo.QueryHookOptions<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>) {
+        return Apollo.useQuery<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>(GetManufacturerItemDocument, baseOptions);
       }
-export function useGetManufacturerItemLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>(GetManufacturerItemDocument, baseOptions);
+export function useGetManufacturerItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>) {
+          return Apollo.useLazyQuery<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>(GetManufacturerItemDocument, baseOptions);
         }
 export type GetManufacturerItemQueryHookResult = ReturnType<typeof useGetManufacturerItemQuery>;
 export type GetManufacturerItemLazyQueryHookResult = ReturnType<typeof useGetManufacturerItemLazyQuery>;
-export type GetManufacturerItemQueryResult = ApolloReactCommon.QueryResult<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>;
+export type GetManufacturerItemQueryResult = Apollo.QueryResult<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>;
 export const UpdateManufacturerItemDocument = gql`
     mutation UpdateManufacturerItem($id: Int!, $item_id: Int!, $manufacturer_id: Int!, $manufacturer_product_id: String!, $manufacturer_product_name: String, $manufacturer_product_series: String, $product_url: String, $description: String) {
   manufacturer_item: update_manufacturer_item_by_pk(pk_columns: {id: $id}, _set: {item_id: $item_id, manufacturer_id: $manufacturer_id, manufacturer_product_id: $manufacturer_product_id, manufacturer_product_name: $manufacturer_product_name, manufacturer_product_series: $manufacturer_product_series, product_url: $product_url, description: $description}) {
@@ -29027,20 +28710,7 @@ export const UpdateManufacturerItemDocument = gql`
   }
 }
     ${BasicManufacturerItemFieldsFragmentDoc}`;
-export type UpdateManufacturerItemMutationFn = ApolloReactCommon.MutationFunction<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>;
-export type UpdateManufacturerItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>
-    } & TChildProps;
-export function withUpdateManufacturerItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  UpdateManufacturerItemMutation,
-  UpdateManufacturerItemMutationVariables,
-  UpdateManufacturerItemProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables, UpdateManufacturerItemProps<TChildProps, TDataName>>(UpdateManufacturerItemDocument, {
-      alias: 'updateManufacturerItem',
-      ...operationOptions
-    });
-};
+export type UpdateManufacturerItemMutationFn = Apollo.MutationFunction<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>;
 
 /**
  * __useUpdateManufacturerItemMutation__
@@ -29066,12 +28736,12 @@ export function withUpdateManufacturerItem<TProps, TChildProps = {}, TDataName e
  *   },
  * });
  */
-export function useUpdateManufacturerItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>(UpdateManufacturerItemDocument, baseOptions);
+export function useUpdateManufacturerItemMutation(baseOptions?: Apollo.MutationHookOptions<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>) {
+        return Apollo.useMutation<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>(UpdateManufacturerItemDocument, baseOptions);
       }
 export type UpdateManufacturerItemMutationHookResult = ReturnType<typeof useUpdateManufacturerItemMutation>;
-export type UpdateManufacturerItemMutationResult = ApolloReactCommon.MutationResult<UpdateManufacturerItemMutation>;
-export type UpdateManufacturerItemMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>;
+export type UpdateManufacturerItemMutationResult = Apollo.MutationResult<UpdateManufacturerItemMutation>;
+export type UpdateManufacturerItemMutationOptions = Apollo.BaseMutationOptions<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>;
 export const InsertManufacturerItemDocument = gql`
     mutation InsertManufacturerItem($item_id: Int!, $manufacturer_id: Int!, $manufacturer_product_id: String!, $manufacturer_product_name: String, $manufacturer_product_series: String, $product_url: String, $description: String) {
   manufacturer_item: insert_manufacturer_item_one(object: {item_id: $item_id, manufacturer_id: $manufacturer_id, manufacturer_product_id: $manufacturer_product_id, manufacturer_product_name: $manufacturer_product_name, manufacturer_product_series: $manufacturer_product_series, product_url: $product_url, description: $description}) {
@@ -29079,20 +28749,7 @@ export const InsertManufacturerItemDocument = gql`
   }
 }
     ${BasicManufacturerItemFieldsFragmentDoc}`;
-export type InsertManufacturerItemMutationFn = ApolloReactCommon.MutationFunction<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>;
-export type InsertManufacturerItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>
-    } & TChildProps;
-export function withInsertManufacturerItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  InsertManufacturerItemMutation,
-  InsertManufacturerItemMutationVariables,
-  InsertManufacturerItemProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables, InsertManufacturerItemProps<TChildProps, TDataName>>(InsertManufacturerItemDocument, {
-      alias: 'insertManufacturerItem',
-      ...operationOptions
-    });
-};
+export type InsertManufacturerItemMutationFn = Apollo.MutationFunction<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>;
 
 /**
  * __useInsertManufacturerItemMutation__
@@ -29117,12 +28774,12 @@ export function withInsertManufacturerItem<TProps, TChildProps = {}, TDataName e
  *   },
  * });
  */
-export function useInsertManufacturerItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>(InsertManufacturerItemDocument, baseOptions);
+export function useInsertManufacturerItemMutation(baseOptions?: Apollo.MutationHookOptions<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>) {
+        return Apollo.useMutation<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>(InsertManufacturerItemDocument, baseOptions);
       }
 export type InsertManufacturerItemMutationHookResult = ReturnType<typeof useInsertManufacturerItemMutation>;
-export type InsertManufacturerItemMutationResult = ApolloReactCommon.MutationResult<InsertManufacturerItemMutation>;
-export type InsertManufacturerItemMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>;
+export type InsertManufacturerItemMutationResult = Apollo.MutationResult<InsertManufacturerItemMutation>;
+export type InsertManufacturerItemMutationOptions = Apollo.BaseMutationOptions<InsertManufacturerItemMutation, InsertManufacturerItemMutationVariables>;
 export const DeleteManufacturerItemDocument = gql`
     mutation DeleteManufacturerItem($id: Int!) {
   manufacturer_item: delete_manufacturer_item_by_pk(id: $id) {
@@ -29130,20 +28787,7 @@ export const DeleteManufacturerItemDocument = gql`
   }
 }
     ${BasicManufacturerItemFieldsFragmentDoc}`;
-export type DeleteManufacturerItemMutationFn = ApolloReactCommon.MutationFunction<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>;
-export type DeleteManufacturerItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>
-    } & TChildProps;
-export function withDeleteManufacturerItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  DeleteManufacturerItemMutation,
-  DeleteManufacturerItemMutationVariables,
-  DeleteManufacturerItemProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables, DeleteManufacturerItemProps<TChildProps, TDataName>>(DeleteManufacturerItemDocument, {
-      alias: 'deleteManufacturerItem',
-      ...operationOptions
-    });
-};
+export type DeleteManufacturerItemMutationFn = Apollo.MutationFunction<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>;
 
 /**
  * __useDeleteManufacturerItemMutation__
@@ -29162,12 +28806,12 @@ export function withDeleteManufacturerItem<TProps, TChildProps = {}, TDataName e
  *   },
  * });
  */
-export function useDeleteManufacturerItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>) {
-        return ApolloReactHooks.useMutation<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>(DeleteManufacturerItemDocument, baseOptions);
+export function useDeleteManufacturerItemMutation(baseOptions?: Apollo.MutationHookOptions<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>) {
+        return Apollo.useMutation<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>(DeleteManufacturerItemDocument, baseOptions);
       }
 export type DeleteManufacturerItemMutationHookResult = ReturnType<typeof useDeleteManufacturerItemMutation>;
-export type DeleteManufacturerItemMutationResult = ApolloReactCommon.MutationResult<DeleteManufacturerItemMutation>;
-export type DeleteManufacturerItemMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>;
+export type DeleteManufacturerItemMutationResult = Apollo.MutationResult<DeleteManufacturerItemMutation>;
+export type DeleteManufacturerItemMutationOptions = Apollo.BaseMutationOptions<DeleteManufacturerItemMutation, DeleteManufacturerItemMutationVariables>;
 export const GetOrdersByDateRangeDocument = gql`
     query GetOrdersByDateRange($date_start_gte: date, $date_end_lte: date) {
   order(where: {placed_date: {_gte: $date_start_gte, _lte: $date_end_lte}}) {
@@ -29177,19 +28821,6 @@ export const GetOrdersByDateRangeDocument = gql`
 }
     ${BasicOrderFieldsFragmentDoc}
 ${ObjectOrderFieldsFragmentDoc}`;
-export type GetOrdersByDateRangeProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>
-    } & TChildProps;
-export function withGetOrdersByDateRange<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetOrdersByDateRangeQuery,
-  GetOrdersByDateRangeQueryVariables,
-  GetOrdersByDateRangeProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables, GetOrdersByDateRangeProps<TChildProps, TDataName>>(GetOrdersByDateRangeDocument, {
-      alias: 'getOrdersByDateRange',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetOrdersByDateRangeQuery__
@@ -29208,15 +28839,15 @@ export function withGetOrdersByDateRange<TProps, TChildProps = {}, TDataName ext
  *   },
  * });
  */
-export function useGetOrdersByDateRangeQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>(GetOrdersByDateRangeDocument, baseOptions);
+export function useGetOrdersByDateRangeQuery(baseOptions?: Apollo.QueryHookOptions<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>) {
+        return Apollo.useQuery<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>(GetOrdersByDateRangeDocument, baseOptions);
       }
-export function useGetOrdersByDateRangeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>(GetOrdersByDateRangeDocument, baseOptions);
+export function useGetOrdersByDateRangeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>) {
+          return Apollo.useLazyQuery<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>(GetOrdersByDateRangeDocument, baseOptions);
         }
 export type GetOrdersByDateRangeQueryHookResult = ReturnType<typeof useGetOrdersByDateRangeQuery>;
 export type GetOrdersByDateRangeLazyQueryHookResult = ReturnType<typeof useGetOrdersByDateRangeLazyQuery>;
-export type GetOrdersByDateRangeQueryResult = ApolloReactCommon.QueryResult<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>;
+export type GetOrdersByDateRangeQueryResult = Apollo.QueryResult<GetOrdersByDateRangeQuery, GetOrdersByDateRangeQueryVariables>;
 export const GetOrdersDocument = gql`
     query GetOrders {
   order(order_by: {placed_date: desc}) {
@@ -29226,19 +28857,6 @@ export const GetOrdersDocument = gql`
 }
     ${BasicOrderFieldsFragmentDoc}
 ${ObjectOrderFieldsFragmentDoc}`;
-export type GetOrdersProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetOrdersQuery, GetOrdersQueryVariables>
-    } & TChildProps;
-export function withGetOrders<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetOrdersQuery,
-  GetOrdersQueryVariables,
-  GetOrdersProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetOrdersQuery, GetOrdersQueryVariables, GetOrdersProps<TChildProps, TDataName>>(GetOrdersDocument, {
-      alias: 'getOrders',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetOrdersQuery__
@@ -29255,15 +28873,15 @@ export function withGetOrders<TProps, TChildProps = {}, TDataName extends string
  *   },
  * });
  */
-export function useGetOrdersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetOrdersQuery, GetOrdersQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetOrdersQuery, GetOrdersQueryVariables>(GetOrdersDocument, baseOptions);
+export function useGetOrdersQuery(baseOptions?: Apollo.QueryHookOptions<GetOrdersQuery, GetOrdersQueryVariables>) {
+        return Apollo.useQuery<GetOrdersQuery, GetOrdersQueryVariables>(GetOrdersDocument, baseOptions);
       }
-export function useGetOrdersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetOrdersQuery, GetOrdersQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetOrdersQuery, GetOrdersQueryVariables>(GetOrdersDocument, baseOptions);
+export function useGetOrdersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrdersQuery, GetOrdersQueryVariables>) {
+          return Apollo.useLazyQuery<GetOrdersQuery, GetOrdersQueryVariables>(GetOrdersDocument, baseOptions);
         }
 export type GetOrdersQueryHookResult = ReturnType<typeof useGetOrdersQuery>;
 export type GetOrdersLazyQueryHookResult = ReturnType<typeof useGetOrdersLazyQuery>;
-export type GetOrdersQueryResult = ApolloReactCommon.QueryResult<GetOrdersQuery, GetOrdersQueryVariables>;
+export type GetOrdersQueryResult = Apollo.QueryResult<GetOrdersQuery, GetOrdersQueryVariables>;
 export const GetOrderDocument = gql`
     query GetOrder($id: Int!) {
   order: order_by_pk(id: $id) {
@@ -29324,19 +28942,6 @@ export const GetOrderDocument = gql`
   }
 }
     `;
-export type GetOrderProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetOrderQuery, GetOrderQueryVariables>
-    } & TChildProps;
-export function withGetOrder<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetOrderQuery,
-  GetOrderQueryVariables,
-  GetOrderProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetOrderQuery, GetOrderQueryVariables, GetOrderProps<TChildProps, TDataName>>(GetOrderDocument, {
-      alias: 'getOrder',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetOrderQuery__
@@ -29354,15 +28959,15 @@ export function withGetOrder<TProps, TChildProps = {}, TDataName extends string 
  *   },
  * });
  */
-export function useGetOrderQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetOrderQuery, GetOrderQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetOrderQuery, GetOrderQueryVariables>(GetOrderDocument, baseOptions);
+export function useGetOrderQuery(baseOptions?: Apollo.QueryHookOptions<GetOrderQuery, GetOrderQueryVariables>) {
+        return Apollo.useQuery<GetOrderQuery, GetOrderQueryVariables>(GetOrderDocument, baseOptions);
       }
-export function useGetOrderLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetOrderQuery, GetOrderQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetOrderQuery, GetOrderQueryVariables>(GetOrderDocument, baseOptions);
+export function useGetOrderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrderQuery, GetOrderQueryVariables>) {
+          return Apollo.useLazyQuery<GetOrderQuery, GetOrderQueryVariables>(GetOrderDocument, baseOptions);
         }
 export type GetOrderQueryHookResult = ReturnType<typeof useGetOrderQuery>;
 export type GetOrderLazyQueryHookResult = ReturnType<typeof useGetOrderLazyQuery>;
-export type GetOrderQueryResult = ApolloReactCommon.QueryResult<GetOrderQuery, GetOrderQueryVariables>;
+export type GetOrderQueryResult = Apollo.QueryResult<GetOrderQuery, GetOrderQueryVariables>;
 export const InsertOrderDocument = gql`
     mutation InsertOrder($fulfilled_date: date, $order_items: order_item_arr_rel_insert_input, $items_cost: numeric, $payment_method: payment_method_obj_rel_insert_input, $payment_method_id: Int, $placed_date: date, $pon: String, $shipments: shipment_arr_rel_insert_input, $tax_cost: numeric, $total_cost: numeric, $url: String, $vendor: vendor_obj_rel_insert_input, $vendor_id: Int, $vendor_order_id: String) {
   order: insert_order_one(object: {order_items: $order_items, payment_method: $payment_method, shipments: $shipments, vendor: $vendor, fulfilled_date: $fulfilled_date, items_cost: $items_cost, payment_method_id: $payment_method_id, placed_date: $placed_date, pon: $pon, tax_cost: $tax_cost, total_cost: $total_cost, url: $url, vendor_id: $vendor_id, vendor_order_id: $vendor_order_id}) {
@@ -29372,20 +28977,7 @@ export const InsertOrderDocument = gql`
 }
     ${BasicOrderFieldsFragmentDoc}
 ${ObjectOrderFieldsFragmentDoc}`;
-export type InsertOrderMutationFn = ApolloReactCommon.MutationFunction<InsertOrderMutation, InsertOrderMutationVariables>;
-export type InsertOrderProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertOrderMutation, InsertOrderMutationVariables>
-    } & TChildProps;
-export function withInsertOrder<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  InsertOrderMutation,
-  InsertOrderMutationVariables,
-  InsertOrderProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, InsertOrderMutation, InsertOrderMutationVariables, InsertOrderProps<TChildProps, TDataName>>(InsertOrderDocument, {
-      alias: 'insertOrder',
-      ...operationOptions
-    });
-};
+export type InsertOrderMutationFn = Apollo.MutationFunction<InsertOrderMutation, InsertOrderMutationVariables>;
 
 /**
  * __useInsertOrderMutation__
@@ -29417,12 +29009,12 @@ export function withInsertOrder<TProps, TChildProps = {}, TDataName extends stri
  *   },
  * });
  */
-export function useInsertOrderMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertOrderMutation, InsertOrderMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertOrderMutation, InsertOrderMutationVariables>(InsertOrderDocument, baseOptions);
+export function useInsertOrderMutation(baseOptions?: Apollo.MutationHookOptions<InsertOrderMutation, InsertOrderMutationVariables>) {
+        return Apollo.useMutation<InsertOrderMutation, InsertOrderMutationVariables>(InsertOrderDocument, baseOptions);
       }
 export type InsertOrderMutationHookResult = ReturnType<typeof useInsertOrderMutation>;
-export type InsertOrderMutationResult = ApolloReactCommon.MutationResult<InsertOrderMutation>;
-export type InsertOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertOrderMutation, InsertOrderMutationVariables>;
+export type InsertOrderMutationResult = Apollo.MutationResult<InsertOrderMutation>;
+export type InsertOrderMutationOptions = Apollo.BaseMutationOptions<InsertOrderMutation, InsertOrderMutationVariables>;
 export const UpdateOrderDocument = gql`
     mutation UpdateOrder($id: Int!, $fulfilled_date: date, $items_cost: numeric, $payment_method_id: Int, $placed_date: date, $pon: String, $tax_cost: numeric, $total_cost: numeric, $url: String, $vendor_id: Int, $vendor_order_id: String) {
   order: update_order_by_pk(pk_columns: {id: $id}, _set: {fulfilled_date: $fulfilled_date, items_cost: $items_cost, payment_method_id: $payment_method_id, placed_date: $placed_date, pon: $pon, tax_cost: $tax_cost, total_cost: $total_cost, url: $url, vendor_id: $vendor_id, vendor_order_id: $vendor_order_id}) {
@@ -29432,20 +29024,7 @@ export const UpdateOrderDocument = gql`
 }
     ${BasicOrderFieldsFragmentDoc}
 ${ObjectOrderFieldsFragmentDoc}`;
-export type UpdateOrderMutationFn = ApolloReactCommon.MutationFunction<UpdateOrderMutation, UpdateOrderMutationVariables>;
-export type UpdateOrderProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateOrderMutation, UpdateOrderMutationVariables>
-    } & TChildProps;
-export function withUpdateOrder<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  UpdateOrderMutation,
-  UpdateOrderMutationVariables,
-  UpdateOrderProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, UpdateOrderMutation, UpdateOrderMutationVariables, UpdateOrderProps<TChildProps, TDataName>>(UpdateOrderDocument, {
-      alias: 'updateOrder',
-      ...operationOptions
-    });
-};
+export type UpdateOrderMutationFn = Apollo.MutationFunction<UpdateOrderMutation, UpdateOrderMutationVariables>;
 
 /**
  * __useUpdateOrderMutation__
@@ -29474,12 +29053,12 @@ export function withUpdateOrder<TProps, TChildProps = {}, TDataName extends stri
  *   },
  * });
  */
-export function useUpdateOrderMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateOrderMutation, UpdateOrderMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateOrderMutation, UpdateOrderMutationVariables>(UpdateOrderDocument, baseOptions);
+export function useUpdateOrderMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOrderMutation, UpdateOrderMutationVariables>) {
+        return Apollo.useMutation<UpdateOrderMutation, UpdateOrderMutationVariables>(UpdateOrderDocument, baseOptions);
       }
 export type UpdateOrderMutationHookResult = ReturnType<typeof useUpdateOrderMutation>;
-export type UpdateOrderMutationResult = ApolloReactCommon.MutationResult<UpdateOrderMutation>;
-export type UpdateOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateOrderMutation, UpdateOrderMutationVariables>;
+export type UpdateOrderMutationResult = Apollo.MutationResult<UpdateOrderMutation>;
+export type UpdateOrderMutationOptions = Apollo.BaseMutationOptions<UpdateOrderMutation, UpdateOrderMutationVariables>;
 export const DeleteOrderDocument = gql`
     mutation DeleteOrder($id: Int!) {
   delete_order_by_pk(id: $id) {
@@ -29487,20 +29066,7 @@ export const DeleteOrderDocument = gql`
   }
 }
     ${BasicOrderFieldsFragmentDoc}`;
-export type DeleteOrderMutationFn = ApolloReactCommon.MutationFunction<DeleteOrderMutation, DeleteOrderMutationVariables>;
-export type DeleteOrderProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteOrderMutation, DeleteOrderMutationVariables>
-    } & TChildProps;
-export function withDeleteOrder<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  DeleteOrderMutation,
-  DeleteOrderMutationVariables,
-  DeleteOrderProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, DeleteOrderMutation, DeleteOrderMutationVariables, DeleteOrderProps<TChildProps, TDataName>>(DeleteOrderDocument, {
-      alias: 'deleteOrder',
-      ...operationOptions
-    });
-};
+export type DeleteOrderMutationFn = Apollo.MutationFunction<DeleteOrderMutation, DeleteOrderMutationVariables>;
 
 /**
  * __useDeleteOrderMutation__
@@ -29519,12 +29085,12 @@ export function withDeleteOrder<TProps, TChildProps = {}, TDataName extends stri
  *   },
  * });
  */
-export function useDeleteOrderMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteOrderMutation, DeleteOrderMutationVariables>) {
-        return ApolloReactHooks.useMutation<DeleteOrderMutation, DeleteOrderMutationVariables>(DeleteOrderDocument, baseOptions);
+export function useDeleteOrderMutation(baseOptions?: Apollo.MutationHookOptions<DeleteOrderMutation, DeleteOrderMutationVariables>) {
+        return Apollo.useMutation<DeleteOrderMutation, DeleteOrderMutationVariables>(DeleteOrderDocument, baseOptions);
       }
 export type DeleteOrderMutationHookResult = ReturnType<typeof useDeleteOrderMutation>;
-export type DeleteOrderMutationResult = ApolloReactCommon.MutationResult<DeleteOrderMutation>;
-export type DeleteOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteOrderMutation, DeleteOrderMutationVariables>;
+export type DeleteOrderMutationResult = Apollo.MutationResult<DeleteOrderMutation>;
+export type DeleteOrderMutationOptions = Apollo.BaseMutationOptions<DeleteOrderMutation, DeleteOrderMutationVariables>;
 export const GetItemVariantsDocument = gql`
     query GetItemVariants($query_text: String!, $prefer_vendor_id: Int) {
   item_variant: search_item_variant(args: {query_text: $query_text}, where: {_or: [{vendor_id: {_eq: $prefer_vendor_id}}, {vendor_id: {_is_null: true}}]}, order_by: {vendor_id: asc, manufacturer_id: asc, id: asc}) {
@@ -29532,19 +29098,6 @@ export const GetItemVariantsDocument = gql`
   }
 }
     ${ObjectItemVariantFieldsFragmentDoc}`;
-export type GetItemVariantsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetItemVariantsQuery, GetItemVariantsQueryVariables>
-    } & TChildProps;
-export function withGetItemVariants<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetItemVariantsQuery,
-  GetItemVariantsQueryVariables,
-  GetItemVariantsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetItemVariantsQuery, GetItemVariantsQueryVariables, GetItemVariantsProps<TChildProps, TDataName>>(GetItemVariantsDocument, {
-      alias: 'getItemVariants',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetItemVariantsQuery__
@@ -29563,15 +29116,15 @@ export function withGetItemVariants<TProps, TChildProps = {}, TDataName extends 
  *   },
  * });
  */
-export function useGetItemVariantsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemVariantsQuery, GetItemVariantsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetItemVariantsQuery, GetItemVariantsQueryVariables>(GetItemVariantsDocument, baseOptions);
+export function useGetItemVariantsQuery(baseOptions?: Apollo.QueryHookOptions<GetItemVariantsQuery, GetItemVariantsQueryVariables>) {
+        return Apollo.useQuery<GetItemVariantsQuery, GetItemVariantsQueryVariables>(GetItemVariantsDocument, baseOptions);
       }
-export function useGetItemVariantsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemVariantsQuery, GetItemVariantsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetItemVariantsQuery, GetItemVariantsQueryVariables>(GetItemVariantsDocument, baseOptions);
+export function useGetItemVariantsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetItemVariantsQuery, GetItemVariantsQueryVariables>) {
+          return Apollo.useLazyQuery<GetItemVariantsQuery, GetItemVariantsQueryVariables>(GetItemVariantsDocument, baseOptions);
         }
 export type GetItemVariantsQueryHookResult = ReturnType<typeof useGetItemVariantsQuery>;
 export type GetItemVariantsLazyQueryHookResult = ReturnType<typeof useGetItemVariantsLazyQuery>;
-export type GetItemVariantsQueryResult = ApolloReactCommon.QueryResult<GetItemVariantsQuery, GetItemVariantsQueryVariables>;
+export type GetItemVariantsQueryResult = Apollo.QueryResult<GetItemVariantsQuery, GetItemVariantsQueryVariables>;
 export const GetItemVariantByAttachedDocument = gql`
     query GetItemVariantByAttached($item_id: [Int!], $manufacturer_item_id: [Int!], $vendor_item_id: [Int!], $vendor_id: [Int!], $limit: Int) {
   item_variant(where: {manufacturer_item_id: {_in: $manufacturer_item_id}, vendor_item_id: {_in: $vendor_item_id}, vendor_id: {_in: $vendor_id}, item_id: {_in: $item_id}}, order_by: {vendor_id: asc, manufacturer_id: asc, id: asc}, limit: $limit) {
@@ -29579,19 +29132,6 @@ export const GetItemVariantByAttachedDocument = gql`
   }
 }
     ${ObjectItemVariantFieldsFragmentDoc}`;
-export type GetItemVariantByAttachedProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>
-    } & TChildProps;
-export function withGetItemVariantByAttached<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetItemVariantByAttachedQuery,
-  GetItemVariantByAttachedQueryVariables,
-  GetItemVariantByAttachedProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables, GetItemVariantByAttachedProps<TChildProps, TDataName>>(GetItemVariantByAttachedDocument, {
-      alias: 'getItemVariantByAttached',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetItemVariantByAttachedQuery__
@@ -29613,15 +29153,15 @@ export function withGetItemVariantByAttached<TProps, TChildProps = {}, TDataName
  *   },
  * });
  */
-export function useGetItemVariantByAttachedQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>(GetItemVariantByAttachedDocument, baseOptions);
+export function useGetItemVariantByAttachedQuery(baseOptions?: Apollo.QueryHookOptions<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>) {
+        return Apollo.useQuery<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>(GetItemVariantByAttachedDocument, baseOptions);
       }
-export function useGetItemVariantByAttachedLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>(GetItemVariantByAttachedDocument, baseOptions);
+export function useGetItemVariantByAttachedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>) {
+          return Apollo.useLazyQuery<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>(GetItemVariantByAttachedDocument, baseOptions);
         }
 export type GetItemVariantByAttachedQueryHookResult = ReturnType<typeof useGetItemVariantByAttachedQuery>;
 export type GetItemVariantByAttachedLazyQueryHookResult = ReturnType<typeof useGetItemVariantByAttachedLazyQuery>;
-export type GetItemVariantByAttachedQueryResult = ApolloReactCommon.QueryResult<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>;
+export type GetItemVariantByAttachedQueryResult = Apollo.QueryResult<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>;
 export const UpdateOrderItemDocument = gql`
     mutation UpdateOrderItem($id: Int!, $cost_item: numeric, $cost_tax: numeric, $cost_total: numeric, $item_id: Int, $manufacturer_item_id: Int, $order_id: Int, $quantity: numeric, $serial_no: String, $shipment_id: Int, $vendor_item_id: Int) {
   order_item: update_order_item_by_pk(_set: {cost_item: $cost_item, cost_tax: $cost_tax, cost_total: $cost_total, item_id: $item_id, manufacturer_item_id: $manufacturer_item_id, order_id: $order_id, quantity: $quantity, serial_no: $serial_no, shipment_id: $shipment_id, vendor_item_id: $vendor_item_id}, pk_columns: {id: $id}) {
@@ -29629,20 +29169,7 @@ export const UpdateOrderItemDocument = gql`
   }
 }
     ${BasicOrderItemFieldsFragmentDoc}`;
-export type UpdateOrderItemMutationFn = ApolloReactCommon.MutationFunction<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>;
-export type UpdateOrderItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>
-    } & TChildProps;
-export function withUpdateOrderItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  UpdateOrderItemMutation,
-  UpdateOrderItemMutationVariables,
-  UpdateOrderItemProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, UpdateOrderItemMutation, UpdateOrderItemMutationVariables, UpdateOrderItemProps<TChildProps, TDataName>>(UpdateOrderItemDocument, {
-      alias: 'updateOrderItem',
-      ...operationOptions
-    });
-};
+export type UpdateOrderItemMutationFn = Apollo.MutationFunction<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>;
 
 /**
  * __useUpdateOrderItemMutation__
@@ -29671,12 +29198,12 @@ export function withUpdateOrderItem<TProps, TChildProps = {}, TDataName extends 
  *   },
  * });
  */
-export function useUpdateOrderItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>(UpdateOrderItemDocument, baseOptions);
+export function useUpdateOrderItemMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>) {
+        return Apollo.useMutation<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>(UpdateOrderItemDocument, baseOptions);
       }
 export type UpdateOrderItemMutationHookResult = ReturnType<typeof useUpdateOrderItemMutation>;
-export type UpdateOrderItemMutationResult = ApolloReactCommon.MutationResult<UpdateOrderItemMutation>;
-export type UpdateOrderItemMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>;
+export type UpdateOrderItemMutationResult = Apollo.MutationResult<UpdateOrderItemMutation>;
+export type UpdateOrderItemMutationOptions = Apollo.BaseMutationOptions<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
   PrinterStatus {
@@ -29696,19 +29223,6 @@ export const GetPrinterStatusDocument = gql`
   }
 }
     `;
-export type GetPrinterStatusProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>
-    } & TChildProps;
-export function withGetPrinterStatus<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetPrinterStatusQuery,
-  GetPrinterStatusQueryVariables,
-  GetPrinterStatusProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetPrinterStatusQuery, GetPrinterStatusQueryVariables, GetPrinterStatusProps<TChildProps, TDataName>>(GetPrinterStatusDocument, {
-      alias: 'getPrinterStatus',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetPrinterStatusQuery__
@@ -29725,15 +29239,15 @@ export function withGetPrinterStatus<TProps, TChildProps = {}, TDataName extends
  *   },
  * });
  */
-export function useGetPrinterStatusQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>(GetPrinterStatusDocument, baseOptions);
+export function useGetPrinterStatusQuery(baseOptions?: Apollo.QueryHookOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>) {
+        return Apollo.useQuery<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>(GetPrinterStatusDocument, baseOptions);
       }
-export function useGetPrinterStatusLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>(GetPrinterStatusDocument, baseOptions);
+export function useGetPrinterStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>) {
+          return Apollo.useLazyQuery<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>(GetPrinterStatusDocument, baseOptions);
         }
 export type GetPrinterStatusQueryHookResult = ReturnType<typeof useGetPrinterStatusQuery>;
 export type GetPrinterStatusLazyQueryHookResult = ReturnType<typeof useGetPrinterStatusLazyQuery>;
-export type GetPrinterStatusQueryResult = ApolloReactCommon.QueryResult<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>;
+export type GetPrinterStatusQueryResult = Apollo.QueryResult<GetPrinterStatusQuery, GetPrinterStatusQueryVariables>;
 export const SendBufferDocument = gql`
     mutation SendBuffer($buffer: [[[uint8]]]!) {
   putLabelMonochromeBuffer(imageBuffer: $buffer) {
@@ -29741,20 +29255,7 @@ export const SendBufferDocument = gql`
   }
 }
     `;
-export type SendBufferMutationFn = ApolloReactCommon.MutationFunction<SendBufferMutation, SendBufferMutationVariables>;
-export type SendBufferProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<SendBufferMutation, SendBufferMutationVariables>
-    } & TChildProps;
-export function withSendBuffer<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  SendBufferMutation,
-  SendBufferMutationVariables,
-  SendBufferProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, SendBufferMutation, SendBufferMutationVariables, SendBufferProps<TChildProps, TDataName>>(SendBufferDocument, {
-      alias: 'sendBuffer',
-      ...operationOptions
-    });
-};
+export type SendBufferMutationFn = Apollo.MutationFunction<SendBufferMutation, SendBufferMutationVariables>;
 
 /**
  * __useSendBufferMutation__
@@ -29773,12 +29274,12 @@ export function withSendBuffer<TProps, TChildProps = {}, TDataName extends strin
  *   },
  * });
  */
-export function useSendBufferMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SendBufferMutation, SendBufferMutationVariables>) {
-        return ApolloReactHooks.useMutation<SendBufferMutation, SendBufferMutationVariables>(SendBufferDocument, baseOptions);
+export function useSendBufferMutation(baseOptions?: Apollo.MutationHookOptions<SendBufferMutation, SendBufferMutationVariables>) {
+        return Apollo.useMutation<SendBufferMutation, SendBufferMutationVariables>(SendBufferDocument, baseOptions);
       }
 export type SendBufferMutationHookResult = ReturnType<typeof useSendBufferMutation>;
-export type SendBufferMutationResult = ApolloReactCommon.MutationResult<SendBufferMutation>;
-export type SendBufferMutationOptions = ApolloReactCommon.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
+export type SendBufferMutationResult = Apollo.MutationResult<SendBufferMutation>;
+export type SendBufferMutationOptions = Apollo.BaseMutationOptions<SendBufferMutation, SendBufferMutationVariables>;
 export const GetShipmentsDocument = gql`
     query GetShipments {
   shipment(order_by: {id: asc}) {
@@ -29788,19 +29289,6 @@ export const GetShipmentsDocument = gql`
 }
     ${BasicShipmentFieldsFragmentDoc}
 ${ObjectShipmentFieldsFragmentDoc}`;
-export type GetShipmentsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetShipmentsQuery, GetShipmentsQueryVariables>
-    } & TChildProps;
-export function withGetShipments<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetShipmentsQuery,
-  GetShipmentsQueryVariables,
-  GetShipmentsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetShipmentsQuery, GetShipmentsQueryVariables, GetShipmentsProps<TChildProps, TDataName>>(GetShipmentsDocument, {
-      alias: 'getShipments',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetShipmentsQuery__
@@ -29817,15 +29305,15 @@ export function withGetShipments<TProps, TChildProps = {}, TDataName extends str
  *   },
  * });
  */
-export function useGetShipmentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetShipmentsQuery, GetShipmentsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetShipmentsQuery, GetShipmentsQueryVariables>(GetShipmentsDocument, baseOptions);
+export function useGetShipmentsQuery(baseOptions?: Apollo.QueryHookOptions<GetShipmentsQuery, GetShipmentsQueryVariables>) {
+        return Apollo.useQuery<GetShipmentsQuery, GetShipmentsQueryVariables>(GetShipmentsDocument, baseOptions);
       }
-export function useGetShipmentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetShipmentsQuery, GetShipmentsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetShipmentsQuery, GetShipmentsQueryVariables>(GetShipmentsDocument, baseOptions);
+export function useGetShipmentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetShipmentsQuery, GetShipmentsQueryVariables>) {
+          return Apollo.useLazyQuery<GetShipmentsQuery, GetShipmentsQueryVariables>(GetShipmentsDocument, baseOptions);
         }
 export type GetShipmentsQueryHookResult = ReturnType<typeof useGetShipmentsQuery>;
 export type GetShipmentsLazyQueryHookResult = ReturnType<typeof useGetShipmentsLazyQuery>;
-export type GetShipmentsQueryResult = ApolloReactCommon.QueryResult<GetShipmentsQuery, GetShipmentsQueryVariables>;
+export type GetShipmentsQueryResult = Apollo.QueryResult<GetShipmentsQuery, GetShipmentsQueryVariables>;
 export const GetShipmentDocument = gql`
     query GetShipment($id: Int!) {
   shipment: shipment_by_pk(id: $id) {
@@ -29835,19 +29323,6 @@ export const GetShipmentDocument = gql`
 }
     ${BasicShipmentFieldsFragmentDoc}
 ${ObjectShipmentFieldsFragmentDoc}`;
-export type GetShipmentProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetShipmentQuery, GetShipmentQueryVariables>
-    } & TChildProps;
-export function withGetShipment<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetShipmentQuery,
-  GetShipmentQueryVariables,
-  GetShipmentProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetShipmentQuery, GetShipmentQueryVariables, GetShipmentProps<TChildProps, TDataName>>(GetShipmentDocument, {
-      alias: 'getShipment',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetShipmentQuery__
@@ -29865,15 +29340,15 @@ export function withGetShipment<TProps, TChildProps = {}, TDataName extends stri
  *   },
  * });
  */
-export function useGetShipmentQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetShipmentQuery, GetShipmentQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetShipmentQuery, GetShipmentQueryVariables>(GetShipmentDocument, baseOptions);
+export function useGetShipmentQuery(baseOptions?: Apollo.QueryHookOptions<GetShipmentQuery, GetShipmentQueryVariables>) {
+        return Apollo.useQuery<GetShipmentQuery, GetShipmentQueryVariables>(GetShipmentDocument, baseOptions);
       }
-export function useGetShipmentLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetShipmentQuery, GetShipmentQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetShipmentQuery, GetShipmentQueryVariables>(GetShipmentDocument, baseOptions);
+export function useGetShipmentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetShipmentQuery, GetShipmentQueryVariables>) {
+          return Apollo.useLazyQuery<GetShipmentQuery, GetShipmentQueryVariables>(GetShipmentDocument, baseOptions);
         }
 export type GetShipmentQueryHookResult = ReturnType<typeof useGetShipmentQuery>;
 export type GetShipmentLazyQueryHookResult = ReturnType<typeof useGetShipmentLazyQuery>;
-export type GetShipmentQueryResult = ApolloReactCommon.QueryResult<GetShipmentQuery, GetShipmentQueryVariables>;
+export type GetShipmentQueryResult = Apollo.QueryResult<GetShipmentQuery, GetShipmentQueryVariables>;
 export const SearchShipmentsDocument = gql`
     query SearchShipments($search_string: String) {
   shipment(order_by: {id: asc}, where: {tracking_id: {_ilike: $search_string}}) {
@@ -29883,19 +29358,6 @@ export const SearchShipmentsDocument = gql`
 }
     ${BasicShipmentFieldsFragmentDoc}
 ${ObjectShipmentFieldsFragmentDoc}`;
-export type SearchShipmentsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<SearchShipmentsQuery, SearchShipmentsQueryVariables>
-    } & TChildProps;
-export function withSearchShipments<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  SearchShipmentsQuery,
-  SearchShipmentsQueryVariables,
-  SearchShipmentsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, SearchShipmentsQuery, SearchShipmentsQueryVariables, SearchShipmentsProps<TChildProps, TDataName>>(SearchShipmentsDocument, {
-      alias: 'searchShipments',
-      ...operationOptions
-    });
-};
 
 /**
  * __useSearchShipmentsQuery__
@@ -29913,15 +29375,15 @@ export function withSearchShipments<TProps, TChildProps = {}, TDataName extends 
  *   },
  * });
  */
-export function useSearchShipmentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchShipmentsQuery, SearchShipmentsQueryVariables>) {
-        return ApolloReactHooks.useQuery<SearchShipmentsQuery, SearchShipmentsQueryVariables>(SearchShipmentsDocument, baseOptions);
+export function useSearchShipmentsQuery(baseOptions?: Apollo.QueryHookOptions<SearchShipmentsQuery, SearchShipmentsQueryVariables>) {
+        return Apollo.useQuery<SearchShipmentsQuery, SearchShipmentsQueryVariables>(SearchShipmentsDocument, baseOptions);
       }
-export function useSearchShipmentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchShipmentsQuery, SearchShipmentsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SearchShipmentsQuery, SearchShipmentsQueryVariables>(SearchShipmentsDocument, baseOptions);
+export function useSearchShipmentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchShipmentsQuery, SearchShipmentsQueryVariables>) {
+          return Apollo.useLazyQuery<SearchShipmentsQuery, SearchShipmentsQueryVariables>(SearchShipmentsDocument, baseOptions);
         }
 export type SearchShipmentsQueryHookResult = ReturnType<typeof useSearchShipmentsQuery>;
 export type SearchShipmentsLazyQueryHookResult = ReturnType<typeof useSearchShipmentsLazyQuery>;
-export type SearchShipmentsQueryResult = ApolloReactCommon.QueryResult<SearchShipmentsQuery, SearchShipmentsQueryVariables>;
+export type SearchShipmentsQueryResult = Apollo.QueryResult<SearchShipmentsQuery, SearchShipmentsQueryVariables>;
 export const InsertShipmentDocument = gql`
     mutation InsertShipment($vendor_invoice_id: String, $tracking_id: String!, $carrier_vendor_id: Int!, $shipped_date: date, $received_date: date, $order_id: Int) {
   shipment: insert_shipment_one(object: {vendor_invoice_id: $vendor_invoice_id, tracking_id: $tracking_id, carrier_vendor_id: $carrier_vendor_id, shipped_date: $shipped_date, received_date: $received_date, order_id: $order_id}) {
@@ -29929,20 +29391,7 @@ export const InsertShipmentDocument = gql`
   }
 }
     ${BasicShipmentFieldsFragmentDoc}`;
-export type InsertShipmentMutationFn = ApolloReactCommon.MutationFunction<InsertShipmentMutation, InsertShipmentMutationVariables>;
-export type InsertShipmentProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertShipmentMutation, InsertShipmentMutationVariables>
-    } & TChildProps;
-export function withInsertShipment<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  InsertShipmentMutation,
-  InsertShipmentMutationVariables,
-  InsertShipmentProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, InsertShipmentMutation, InsertShipmentMutationVariables, InsertShipmentProps<TChildProps, TDataName>>(InsertShipmentDocument, {
-      alias: 'insertShipment',
-      ...operationOptions
-    });
-};
+export type InsertShipmentMutationFn = Apollo.MutationFunction<InsertShipmentMutation, InsertShipmentMutationVariables>;
 
 /**
  * __useInsertShipmentMutation__
@@ -29966,12 +29415,12 @@ export function withInsertShipment<TProps, TChildProps = {}, TDataName extends s
  *   },
  * });
  */
-export function useInsertShipmentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertShipmentMutation, InsertShipmentMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertShipmentMutation, InsertShipmentMutationVariables>(InsertShipmentDocument, baseOptions);
+export function useInsertShipmentMutation(baseOptions?: Apollo.MutationHookOptions<InsertShipmentMutation, InsertShipmentMutationVariables>) {
+        return Apollo.useMutation<InsertShipmentMutation, InsertShipmentMutationVariables>(InsertShipmentDocument, baseOptions);
       }
 export type InsertShipmentMutationHookResult = ReturnType<typeof useInsertShipmentMutation>;
-export type InsertShipmentMutationResult = ApolloReactCommon.MutationResult<InsertShipmentMutation>;
-export type InsertShipmentMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertShipmentMutation, InsertShipmentMutationVariables>;
+export type InsertShipmentMutationResult = Apollo.MutationResult<InsertShipmentMutation>;
+export type InsertShipmentMutationOptions = Apollo.BaseMutationOptions<InsertShipmentMutation, InsertShipmentMutationVariables>;
 export const UpdateShipmentDocument = gql`
     mutation UpdateShipment($id: Int!, $tracking_id: String!, $carrier_vendor_id: Int!, $received_date: date, $shipped_date: date, $vendor_invoice_id: String, $order_id: Int) {
   shipment: update_shipment_by_pk(pk_columns: {id: $id}, _set: {vendor_invoice_id: $vendor_invoice_id, tracking_id: $tracking_id, carrier_vendor_id: $carrier_vendor_id, shipped_date: $shipped_date, received_date: $received_date, order_id: $order_id}) {
@@ -29979,20 +29428,7 @@ export const UpdateShipmentDocument = gql`
   }
 }
     ${BasicShipmentFieldsFragmentDoc}`;
-export type UpdateShipmentMutationFn = ApolloReactCommon.MutationFunction<UpdateShipmentMutation, UpdateShipmentMutationVariables>;
-export type UpdateShipmentProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateShipmentMutation, UpdateShipmentMutationVariables>
-    } & TChildProps;
-export function withUpdateShipment<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  UpdateShipmentMutation,
-  UpdateShipmentMutationVariables,
-  UpdateShipmentProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, UpdateShipmentMutation, UpdateShipmentMutationVariables, UpdateShipmentProps<TChildProps, TDataName>>(UpdateShipmentDocument, {
-      alias: 'updateShipment',
-      ...operationOptions
-    });
-};
+export type UpdateShipmentMutationFn = Apollo.MutationFunction<UpdateShipmentMutation, UpdateShipmentMutationVariables>;
 
 /**
  * __useUpdateShipmentMutation__
@@ -30017,12 +29453,12 @@ export function withUpdateShipment<TProps, TChildProps = {}, TDataName extends s
  *   },
  * });
  */
-export function useUpdateShipmentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateShipmentMutation, UpdateShipmentMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateShipmentMutation, UpdateShipmentMutationVariables>(UpdateShipmentDocument, baseOptions);
+export function useUpdateShipmentMutation(baseOptions?: Apollo.MutationHookOptions<UpdateShipmentMutation, UpdateShipmentMutationVariables>) {
+        return Apollo.useMutation<UpdateShipmentMutation, UpdateShipmentMutationVariables>(UpdateShipmentDocument, baseOptions);
       }
 export type UpdateShipmentMutationHookResult = ReturnType<typeof useUpdateShipmentMutation>;
-export type UpdateShipmentMutationResult = ApolloReactCommon.MutationResult<UpdateShipmentMutation>;
-export type UpdateShipmentMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateShipmentMutation, UpdateShipmentMutationVariables>;
+export type UpdateShipmentMutationResult = Apollo.MutationResult<UpdateShipmentMutation>;
+export type UpdateShipmentMutationOptions = Apollo.BaseMutationOptions<UpdateShipmentMutation, UpdateShipmentMutationVariables>;
 export const DeleteShipmentDocument = gql`
     mutation DeleteShipment($id: Int!) {
   delete_shipment_by_pk(id: $id) {
@@ -30030,20 +29466,7 @@ export const DeleteShipmentDocument = gql`
   }
 }
     ${BasicShipmentFieldsFragmentDoc}`;
-export type DeleteShipmentMutationFn = ApolloReactCommon.MutationFunction<DeleteShipmentMutation, DeleteShipmentMutationVariables>;
-export type DeleteShipmentProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteShipmentMutation, DeleteShipmentMutationVariables>
-    } & TChildProps;
-export function withDeleteShipment<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  DeleteShipmentMutation,
-  DeleteShipmentMutationVariables,
-  DeleteShipmentProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, DeleteShipmentMutation, DeleteShipmentMutationVariables, DeleteShipmentProps<TChildProps, TDataName>>(DeleteShipmentDocument, {
-      alias: 'deleteShipment',
-      ...operationOptions
-    });
-};
+export type DeleteShipmentMutationFn = Apollo.MutationFunction<DeleteShipmentMutation, DeleteShipmentMutationVariables>;
 
 /**
  * __useDeleteShipmentMutation__
@@ -30062,12 +29485,12 @@ export function withDeleteShipment<TProps, TChildProps = {}, TDataName extends s
  *   },
  * });
  */
-export function useDeleteShipmentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteShipmentMutation, DeleteShipmentMutationVariables>) {
-        return ApolloReactHooks.useMutation<DeleteShipmentMutation, DeleteShipmentMutationVariables>(DeleteShipmentDocument, baseOptions);
+export function useDeleteShipmentMutation(baseOptions?: Apollo.MutationHookOptions<DeleteShipmentMutation, DeleteShipmentMutationVariables>) {
+        return Apollo.useMutation<DeleteShipmentMutation, DeleteShipmentMutationVariables>(DeleteShipmentDocument, baseOptions);
       }
 export type DeleteShipmentMutationHookResult = ReturnType<typeof useDeleteShipmentMutation>;
-export type DeleteShipmentMutationResult = ApolloReactCommon.MutationResult<DeleteShipmentMutation>;
-export type DeleteShipmentMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteShipmentMutation, DeleteShipmentMutationVariables>;
+export type DeleteShipmentMutationResult = Apollo.MutationResult<DeleteShipmentMutation>;
+export type DeleteShipmentMutationOptions = Apollo.BaseMutationOptions<DeleteShipmentMutation, DeleteShipmentMutationVariables>;
 export const GetVendorsDocument = gql`
     query GetVendors {
   vendor(order_by: {id: asc}) {
@@ -30078,19 +29501,6 @@ export const GetVendorsDocument = gql`
   }
 }
     ${BasicVendorFieldsFragmentDoc}`;
-export type GetVendorsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetVendorsQuery, GetVendorsQueryVariables>
-    } & TChildProps;
-export function withGetVendors<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetVendorsQuery,
-  GetVendorsQueryVariables,
-  GetVendorsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetVendorsQuery, GetVendorsQueryVariables, GetVendorsProps<TChildProps, TDataName>>(GetVendorsDocument, {
-      alias: 'getVendors',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetVendorsQuery__
@@ -30107,15 +29517,15 @@ export function withGetVendors<TProps, TChildProps = {}, TDataName extends strin
  *   },
  * });
  */
-export function useGetVendorsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetVendorsQuery, GetVendorsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetVendorsQuery, GetVendorsQueryVariables>(GetVendorsDocument, baseOptions);
+export function useGetVendorsQuery(baseOptions?: Apollo.QueryHookOptions<GetVendorsQuery, GetVendorsQueryVariables>) {
+        return Apollo.useQuery<GetVendorsQuery, GetVendorsQueryVariables>(GetVendorsDocument, baseOptions);
       }
-export function useGetVendorsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetVendorsQuery, GetVendorsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetVendorsQuery, GetVendorsQueryVariables>(GetVendorsDocument, baseOptions);
+export function useGetVendorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVendorsQuery, GetVendorsQueryVariables>) {
+          return Apollo.useLazyQuery<GetVendorsQuery, GetVendorsQueryVariables>(GetVendorsDocument, baseOptions);
         }
 export type GetVendorsQueryHookResult = ReturnType<typeof useGetVendorsQuery>;
 export type GetVendorsLazyQueryHookResult = ReturnType<typeof useGetVendorsLazyQuery>;
-export type GetVendorsQueryResult = ApolloReactCommon.QueryResult<GetVendorsQuery, GetVendorsQueryVariables>;
+export type GetVendorsQueryResult = Apollo.QueryResult<GetVendorsQuery, GetVendorsQueryVariables>;
 export const GetVendorDocument = gql`
     query GetVendor($id: Int!) {
   vendor: vendor_by_pk(id: $id) {
@@ -30125,19 +29535,6 @@ export const GetVendorDocument = gql`
 }
     ${BasicVendorFieldsFragmentDoc}
 ${ObjectVendorFieldsFragmentDoc}`;
-export type GetVendorProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetVendorQuery, GetVendorQueryVariables>
-    } & TChildProps;
-export function withGetVendor<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetVendorQuery,
-  GetVendorQueryVariables,
-  GetVendorProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetVendorQuery, GetVendorQueryVariables, GetVendorProps<TChildProps, TDataName>>(GetVendorDocument, {
-      alias: 'getVendor',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetVendorQuery__
@@ -30155,15 +29552,15 @@ export function withGetVendor<TProps, TChildProps = {}, TDataName extends string
  *   },
  * });
  */
-export function useGetVendorQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetVendorQuery, GetVendorQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetVendorQuery, GetVendorQueryVariables>(GetVendorDocument, baseOptions);
+export function useGetVendorQuery(baseOptions?: Apollo.QueryHookOptions<GetVendorQuery, GetVendorQueryVariables>) {
+        return Apollo.useQuery<GetVendorQuery, GetVendorQueryVariables>(GetVendorDocument, baseOptions);
       }
-export function useGetVendorLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetVendorQuery, GetVendorQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetVendorQuery, GetVendorQueryVariables>(GetVendorDocument, baseOptions);
+export function useGetVendorLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVendorQuery, GetVendorQueryVariables>) {
+          return Apollo.useLazyQuery<GetVendorQuery, GetVendorQueryVariables>(GetVendorDocument, baseOptions);
         }
 export type GetVendorQueryHookResult = ReturnType<typeof useGetVendorQuery>;
 export type GetVendorLazyQueryHookResult = ReturnType<typeof useGetVendorLazyQuery>;
-export type GetVendorQueryResult = ApolloReactCommon.QueryResult<GetVendorQuery, GetVendorQueryVariables>;
+export type GetVendorQueryResult = Apollo.QueryResult<GetVendorQuery, GetVendorQueryVariables>;
 export const SearchVendorsDocument = gql`
     query SearchVendors($search_string: String) {
   vendor(order_by: {id: asc}, where: {name: {_ilike: $search_string}}) {
@@ -30171,19 +29568,6 @@ export const SearchVendorsDocument = gql`
   }
 }
     ${BasicVendorFieldsFragmentDoc}`;
-export type SearchVendorsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<SearchVendorsQuery, SearchVendorsQueryVariables>
-    } & TChildProps;
-export function withSearchVendors<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  SearchVendorsQuery,
-  SearchVendorsQueryVariables,
-  SearchVendorsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, SearchVendorsQuery, SearchVendorsQueryVariables, SearchVendorsProps<TChildProps, TDataName>>(SearchVendorsDocument, {
-      alias: 'searchVendors',
-      ...operationOptions
-    });
-};
 
 /**
  * __useSearchVendorsQuery__
@@ -30201,15 +29585,15 @@ export function withSearchVendors<TProps, TChildProps = {}, TDataName extends st
  *   },
  * });
  */
-export function useSearchVendorsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchVendorsQuery, SearchVendorsQueryVariables>) {
-        return ApolloReactHooks.useQuery<SearchVendorsQuery, SearchVendorsQueryVariables>(SearchVendorsDocument, baseOptions);
+export function useSearchVendorsQuery(baseOptions?: Apollo.QueryHookOptions<SearchVendorsQuery, SearchVendorsQueryVariables>) {
+        return Apollo.useQuery<SearchVendorsQuery, SearchVendorsQueryVariables>(SearchVendorsDocument, baseOptions);
       }
-export function useSearchVendorsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchVendorsQuery, SearchVendorsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SearchVendorsQuery, SearchVendorsQueryVariables>(SearchVendorsDocument, baseOptions);
+export function useSearchVendorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchVendorsQuery, SearchVendorsQueryVariables>) {
+          return Apollo.useLazyQuery<SearchVendorsQuery, SearchVendorsQueryVariables>(SearchVendorsDocument, baseOptions);
         }
 export type SearchVendorsQueryHookResult = ReturnType<typeof useSearchVendorsQuery>;
 export type SearchVendorsLazyQueryHookResult = ReturnType<typeof useSearchVendorsLazyQuery>;
-export type SearchVendorsQueryResult = ApolloReactCommon.QueryResult<SearchVendorsQuery, SearchVendorsQueryVariables>;
+export type SearchVendorsQueryResult = Apollo.QueryResult<SearchVendorsQuery, SearchVendorsQueryVariables>;
 export const InsertVendorDocument = gql`
     mutation InsertVendor($account_id: String, $name: String!, $manufacturer: manufacturer_arr_rel_insert_input, $url: String!) {
   vendor: insert_vendor_one(object: {account_id: $account_id, name: $name, manufacturer: $manufacturer, url: $url}) {
@@ -30217,20 +29601,7 @@ export const InsertVendorDocument = gql`
   }
 }
     ${BasicVendorFieldsFragmentDoc}`;
-export type InsertVendorMutationFn = ApolloReactCommon.MutationFunction<InsertVendorMutation, InsertVendorMutationVariables>;
-export type InsertVendorProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertVendorMutation, InsertVendorMutationVariables>
-    } & TChildProps;
-export function withInsertVendor<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  InsertVendorMutation,
-  InsertVendorMutationVariables,
-  InsertVendorProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, InsertVendorMutation, InsertVendorMutationVariables, InsertVendorProps<TChildProps, TDataName>>(InsertVendorDocument, {
-      alias: 'insertVendor',
-      ...operationOptions
-    });
-};
+export type InsertVendorMutationFn = Apollo.MutationFunction<InsertVendorMutation, InsertVendorMutationVariables>;
 
 /**
  * __useInsertVendorMutation__
@@ -30252,12 +29623,12 @@ export function withInsertVendor<TProps, TChildProps = {}, TDataName extends str
  *   },
  * });
  */
-export function useInsertVendorMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertVendorMutation, InsertVendorMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertVendorMutation, InsertVendorMutationVariables>(InsertVendorDocument, baseOptions);
+export function useInsertVendorMutation(baseOptions?: Apollo.MutationHookOptions<InsertVendorMutation, InsertVendorMutationVariables>) {
+        return Apollo.useMutation<InsertVendorMutation, InsertVendorMutationVariables>(InsertVendorDocument, baseOptions);
       }
 export type InsertVendorMutationHookResult = ReturnType<typeof useInsertVendorMutation>;
-export type InsertVendorMutationResult = ApolloReactCommon.MutationResult<InsertVendorMutation>;
-export type InsertVendorMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertVendorMutation, InsertVendorMutationVariables>;
+export type InsertVendorMutationResult = Apollo.MutationResult<InsertVendorMutation>;
+export type InsertVendorMutationOptions = Apollo.BaseMutationOptions<InsertVendorMutation, InsertVendorMutationVariables>;
 export const UpdateVendorDocument = gql`
     mutation UpdateVendor($id: Int!, $account_id: String, $name: String!, $url: String!) {
   vendor: update_vendor_by_pk(pk_columns: {id: $id}, _set: {account_id: $account_id, name: $name, url: $url}) {
@@ -30267,20 +29638,7 @@ export const UpdateVendorDocument = gql`
 }
     ${BasicVendorFieldsFragmentDoc}
 ${ObjectVendorFieldsFragmentDoc}`;
-export type UpdateVendorMutationFn = ApolloReactCommon.MutationFunction<UpdateVendorMutation, UpdateVendorMutationVariables>;
-export type UpdateVendorProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateVendorMutation, UpdateVendorMutationVariables>
-    } & TChildProps;
-export function withUpdateVendor<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  UpdateVendorMutation,
-  UpdateVendorMutationVariables,
-  UpdateVendorProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, UpdateVendorMutation, UpdateVendorMutationVariables, UpdateVendorProps<TChildProps, TDataName>>(UpdateVendorDocument, {
-      alias: 'updateVendor',
-      ...operationOptions
-    });
-};
+export type UpdateVendorMutationFn = Apollo.MutationFunction<UpdateVendorMutation, UpdateVendorMutationVariables>;
 
 /**
  * __useUpdateVendorMutation__
@@ -30302,12 +29660,12 @@ export function withUpdateVendor<TProps, TChildProps = {}, TDataName extends str
  *   },
  * });
  */
-export function useUpdateVendorMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateVendorMutation, UpdateVendorMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateVendorMutation, UpdateVendorMutationVariables>(UpdateVendorDocument, baseOptions);
+export function useUpdateVendorMutation(baseOptions?: Apollo.MutationHookOptions<UpdateVendorMutation, UpdateVendorMutationVariables>) {
+        return Apollo.useMutation<UpdateVendorMutation, UpdateVendorMutationVariables>(UpdateVendorDocument, baseOptions);
       }
 export type UpdateVendorMutationHookResult = ReturnType<typeof useUpdateVendorMutation>;
-export type UpdateVendorMutationResult = ApolloReactCommon.MutationResult<UpdateVendorMutation>;
-export type UpdateVendorMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateVendorMutation, UpdateVendorMutationVariables>;
+export type UpdateVendorMutationResult = Apollo.MutationResult<UpdateVendorMutation>;
+export type UpdateVendorMutationOptions = Apollo.BaseMutationOptions<UpdateVendorMutation, UpdateVendorMutationVariables>;
 export const DeleteVendorDocument = gql`
     mutation DeleteVendor($id: Int!) {
   delete_vendor_by_pk(id: $id) {
@@ -30315,20 +29673,7 @@ export const DeleteVendorDocument = gql`
   }
 }
     ${BasicVendorFieldsFragmentDoc}`;
-export type DeleteVendorMutationFn = ApolloReactCommon.MutationFunction<DeleteVendorMutation, DeleteVendorMutationVariables>;
-export type DeleteVendorProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteVendorMutation, DeleteVendorMutationVariables>
-    } & TChildProps;
-export function withDeleteVendor<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  DeleteVendorMutation,
-  DeleteVendorMutationVariables,
-  DeleteVendorProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, DeleteVendorMutation, DeleteVendorMutationVariables, DeleteVendorProps<TChildProps, TDataName>>(DeleteVendorDocument, {
-      alias: 'deleteVendor',
-      ...operationOptions
-    });
-};
+export type DeleteVendorMutationFn = Apollo.MutationFunction<DeleteVendorMutation, DeleteVendorMutationVariables>;
 
 /**
  * __useDeleteVendorMutation__
@@ -30347,12 +29692,12 @@ export function withDeleteVendor<TProps, TChildProps = {}, TDataName extends str
  *   },
  * });
  */
-export function useDeleteVendorMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteVendorMutation, DeleteVendorMutationVariables>) {
-        return ApolloReactHooks.useMutation<DeleteVendorMutation, DeleteVendorMutationVariables>(DeleteVendorDocument, baseOptions);
+export function useDeleteVendorMutation(baseOptions?: Apollo.MutationHookOptions<DeleteVendorMutation, DeleteVendorMutationVariables>) {
+        return Apollo.useMutation<DeleteVendorMutation, DeleteVendorMutationVariables>(DeleteVendorDocument, baseOptions);
       }
 export type DeleteVendorMutationHookResult = ReturnType<typeof useDeleteVendorMutation>;
-export type DeleteVendorMutationResult = ApolloReactCommon.MutationResult<DeleteVendorMutation>;
-export type DeleteVendorMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteVendorMutation, DeleteVendorMutationVariables>;
+export type DeleteVendorMutationResult = Apollo.MutationResult<DeleteVendorMutation>;
+export type DeleteVendorMutationOptions = Apollo.BaseMutationOptions<DeleteVendorMutation, DeleteVendorMutationVariables>;
 export const GetVendorItemsDocument = gql`
     query GetVendorItems {
   vendor_item {
@@ -30360,19 +29705,6 @@ export const GetVendorItemsDocument = gql`
   }
 }
     ${BasicVendorItemFieldsFragmentDoc}`;
-export type GetVendorItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetVendorItemsQuery, GetVendorItemsQueryVariables>
-    } & TChildProps;
-export function withGetVendorItems<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetVendorItemsQuery,
-  GetVendorItemsQueryVariables,
-  GetVendorItemsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetVendorItemsQuery, GetVendorItemsQueryVariables, GetVendorItemsProps<TChildProps, TDataName>>(GetVendorItemsDocument, {
-      alias: 'getVendorItems',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetVendorItemsQuery__
@@ -30389,15 +29721,15 @@ export function withGetVendorItems<TProps, TChildProps = {}, TDataName extends s
  *   },
  * });
  */
-export function useGetVendorItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetVendorItemsQuery, GetVendorItemsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetVendorItemsQuery, GetVendorItemsQueryVariables>(GetVendorItemsDocument, baseOptions);
+export function useGetVendorItemsQuery(baseOptions?: Apollo.QueryHookOptions<GetVendorItemsQuery, GetVendorItemsQueryVariables>) {
+        return Apollo.useQuery<GetVendorItemsQuery, GetVendorItemsQueryVariables>(GetVendorItemsDocument, baseOptions);
       }
-export function useGetVendorItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetVendorItemsQuery, GetVendorItemsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetVendorItemsQuery, GetVendorItemsQueryVariables>(GetVendorItemsDocument, baseOptions);
+export function useGetVendorItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVendorItemsQuery, GetVendorItemsQueryVariables>) {
+          return Apollo.useLazyQuery<GetVendorItemsQuery, GetVendorItemsQueryVariables>(GetVendorItemsDocument, baseOptions);
         }
 export type GetVendorItemsQueryHookResult = ReturnType<typeof useGetVendorItemsQuery>;
 export type GetVendorItemsLazyQueryHookResult = ReturnType<typeof useGetVendorItemsLazyQuery>;
-export type GetVendorItemsQueryResult = ApolloReactCommon.QueryResult<GetVendorItemsQuery, GetVendorItemsQueryVariables>;
+export type GetVendorItemsQueryResult = Apollo.QueryResult<GetVendorItemsQuery, GetVendorItemsQueryVariables>;
 export const SearchVendorItemsDocument = gql`
     query SearchVendorItems($query_text: String!, $item_id: Int) {
   item: search_item(args: {query_text: $query_text}, where: {vendorItems: {}, id: {_eq: $item_id}}) {
@@ -30416,19 +29748,6 @@ export const SearchVendorItemsDocument = gql`
   }
 }
     `;
-export type SearchVendorItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>
-    } & TChildProps;
-export function withSearchVendorItems<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  SearchVendorItemsQuery,
-  SearchVendorItemsQueryVariables,
-  SearchVendorItemsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, SearchVendorItemsQuery, SearchVendorItemsQueryVariables, SearchVendorItemsProps<TChildProps, TDataName>>(SearchVendorItemsDocument, {
-      alias: 'searchVendorItems',
-      ...operationOptions
-    });
-};
 
 /**
  * __useSearchVendorItemsQuery__
@@ -30447,15 +29766,15 @@ export function withSearchVendorItems<TProps, TChildProps = {}, TDataName extend
  *   },
  * });
  */
-export function useSearchVendorItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>) {
-        return ApolloReactHooks.useQuery<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>(SearchVendorItemsDocument, baseOptions);
+export function useSearchVendorItemsQuery(baseOptions?: Apollo.QueryHookOptions<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>) {
+        return Apollo.useQuery<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>(SearchVendorItemsDocument, baseOptions);
       }
-export function useSearchVendorItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>(SearchVendorItemsDocument, baseOptions);
+export function useSearchVendorItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>) {
+          return Apollo.useLazyQuery<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>(SearchVendorItemsDocument, baseOptions);
         }
 export type SearchVendorItemsQueryHookResult = ReturnType<typeof useSearchVendorItemsQuery>;
 export type SearchVendorItemsLazyQueryHookResult = ReturnType<typeof useSearchVendorItemsLazyQuery>;
-export type SearchVendorItemsQueryResult = ApolloReactCommon.QueryResult<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>;
+export type SearchVendorItemsQueryResult = Apollo.QueryResult<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>;
 export const GetVendorItemDocument = gql`
     query GetVendorItem($id: Int!) {
   vendor_item: vendor_item_by_pk(id: $id) {
@@ -30463,19 +29782,6 @@ export const GetVendorItemDocument = gql`
   }
 }
     ${BasicVendorItemFieldsFragmentDoc}`;
-export type GetVendorItemProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetVendorItemQuery, GetVendorItemQueryVariables>
-    } & TChildProps;
-export function withGetVendorItem<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetVendorItemQuery,
-  GetVendorItemQueryVariables,
-  GetVendorItemProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetVendorItemQuery, GetVendorItemQueryVariables, GetVendorItemProps<TChildProps, TDataName>>(GetVendorItemDocument, {
-      alias: 'getVendorItem',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetVendorItemQuery__
@@ -30493,15 +29799,15 @@ export function withGetVendorItem<TProps, TChildProps = {}, TDataName extends st
  *   },
  * });
  */
-export function useGetVendorItemQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetVendorItemQuery, GetVendorItemQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetVendorItemQuery, GetVendorItemQueryVariables>(GetVendorItemDocument, baseOptions);
+export function useGetVendorItemQuery(baseOptions?: Apollo.QueryHookOptions<GetVendorItemQuery, GetVendorItemQueryVariables>) {
+        return Apollo.useQuery<GetVendorItemQuery, GetVendorItemQueryVariables>(GetVendorItemDocument, baseOptions);
       }
-export function useGetVendorItemLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetVendorItemQuery, GetVendorItemQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetVendorItemQuery, GetVendorItemQueryVariables>(GetVendorItemDocument, baseOptions);
+export function useGetVendorItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVendorItemQuery, GetVendorItemQueryVariables>) {
+          return Apollo.useLazyQuery<GetVendorItemQuery, GetVendorItemQueryVariables>(GetVendorItemDocument, baseOptions);
         }
 export type GetVendorItemQueryHookResult = ReturnType<typeof useGetVendorItemQuery>;
 export type GetVendorItemLazyQueryHookResult = ReturnType<typeof useGetVendorItemLazyQuery>;
-export type GetVendorItemQueryResult = ApolloReactCommon.QueryResult<GetVendorItemQuery, GetVendorItemQueryVariables>;
+export type GetVendorItemQueryResult = Apollo.QueryResult<GetVendorItemQuery, GetVendorItemQueryVariables>;
 export const UpdateVendorItemDocument = gql`
     mutation UpdateVendorItem($id: Int!, $description: String, $item_id: Int!, $vendor_id: Int!, $vendor_sku: String) {
   vendor_item: update_vendor_item_by_pk(pk_columns: {id: $id}, _set: {description: $description, item_id: $item_id, vendor_id: $vendor_id, vendor_sku: $vendor_sku}) {
@@ -30509,20 +29815,7 @@ export const UpdateVendorItemDocument = gql`
   }
 }
     ${BasicVendorItemFieldsFragmentDoc}`;
-export type UpdateVendorItemMutationFn = ApolloReactCommon.MutationFunction<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>;
-export type UpdateVendorItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>
-    } & TChildProps;
-export function withUpdateVendorItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  UpdateVendorItemMutation,
-  UpdateVendorItemMutationVariables,
-  UpdateVendorItemProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, UpdateVendorItemMutation, UpdateVendorItemMutationVariables, UpdateVendorItemProps<TChildProps, TDataName>>(UpdateVendorItemDocument, {
-      alias: 'updateVendorItem',
-      ...operationOptions
-    });
-};
+export type UpdateVendorItemMutationFn = Apollo.MutationFunction<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>;
 
 /**
  * __useUpdateVendorItemMutation__
@@ -30545,12 +29838,12 @@ export function withUpdateVendorItem<TProps, TChildProps = {}, TDataName extends
  *   },
  * });
  */
-export function useUpdateVendorItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>(UpdateVendorItemDocument, baseOptions);
+export function useUpdateVendorItemMutation(baseOptions?: Apollo.MutationHookOptions<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>) {
+        return Apollo.useMutation<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>(UpdateVendorItemDocument, baseOptions);
       }
 export type UpdateVendorItemMutationHookResult = ReturnType<typeof useUpdateVendorItemMutation>;
-export type UpdateVendorItemMutationResult = ApolloReactCommon.MutationResult<UpdateVendorItemMutation>;
-export type UpdateVendorItemMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>;
+export type UpdateVendorItemMutationResult = Apollo.MutationResult<UpdateVendorItemMutation>;
+export type UpdateVendorItemMutationOptions = Apollo.BaseMutationOptions<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>;
 export const InsertVendorItemDocument = gql`
     mutation InsertVendorItem($description: String, $item_id: Int!, $vendor_id: Int!, $vendor_sku: String) {
   vendor_item: insert_vendor_item_one(object: {description: $description, item_id: $item_id, vendor_id: $vendor_id, vendor_sku: $vendor_sku}) {
@@ -30558,20 +29851,7 @@ export const InsertVendorItemDocument = gql`
   }
 }
     ${BasicVendorItemFieldsFragmentDoc}`;
-export type InsertVendorItemMutationFn = ApolloReactCommon.MutationFunction<InsertVendorItemMutation, InsertVendorItemMutationVariables>;
-export type InsertVendorItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertVendorItemMutation, InsertVendorItemMutationVariables>
-    } & TChildProps;
-export function withInsertVendorItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  InsertVendorItemMutation,
-  InsertVendorItemMutationVariables,
-  InsertVendorItemProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, InsertVendorItemMutation, InsertVendorItemMutationVariables, InsertVendorItemProps<TChildProps, TDataName>>(InsertVendorItemDocument, {
-      alias: 'insertVendorItem',
-      ...operationOptions
-    });
-};
+export type InsertVendorItemMutationFn = Apollo.MutationFunction<InsertVendorItemMutation, InsertVendorItemMutationVariables>;
 
 /**
  * __useInsertVendorItemMutation__
@@ -30593,12 +29873,12 @@ export function withInsertVendorItem<TProps, TChildProps = {}, TDataName extends
  *   },
  * });
  */
-export function useInsertVendorItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertVendorItemMutation, InsertVendorItemMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertVendorItemMutation, InsertVendorItemMutationVariables>(InsertVendorItemDocument, baseOptions);
+export function useInsertVendorItemMutation(baseOptions?: Apollo.MutationHookOptions<InsertVendorItemMutation, InsertVendorItemMutationVariables>) {
+        return Apollo.useMutation<InsertVendorItemMutation, InsertVendorItemMutationVariables>(InsertVendorItemDocument, baseOptions);
       }
 export type InsertVendorItemMutationHookResult = ReturnType<typeof useInsertVendorItemMutation>;
-export type InsertVendorItemMutationResult = ApolloReactCommon.MutationResult<InsertVendorItemMutation>;
-export type InsertVendorItemMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertVendorItemMutation, InsertVendorItemMutationVariables>;
+export type InsertVendorItemMutationResult = Apollo.MutationResult<InsertVendorItemMutation>;
+export type InsertVendorItemMutationOptions = Apollo.BaseMutationOptions<InsertVendorItemMutation, InsertVendorItemMutationVariables>;
 export const DeleteVendorItemDocument = gql`
     mutation DeleteVendorItem($id: Int!) {
   vendor_item: delete_vendor_item_by_pk(id: $id) {
@@ -30606,20 +29886,7 @@ export const DeleteVendorItemDocument = gql`
   }
 }
     ${BasicVendorItemFieldsFragmentDoc}`;
-export type DeleteVendorItemMutationFn = ApolloReactCommon.MutationFunction<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>;
-export type DeleteVendorItemProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>
-    } & TChildProps;
-export function withDeleteVendorItem<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  DeleteVendorItemMutation,
-  DeleteVendorItemMutationVariables,
-  DeleteVendorItemProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, DeleteVendorItemMutation, DeleteVendorItemMutationVariables, DeleteVendorItemProps<TChildProps, TDataName>>(DeleteVendorItemDocument, {
-      alias: 'deleteVendorItem',
-      ...operationOptions
-    });
-};
+export type DeleteVendorItemMutationFn = Apollo.MutationFunction<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>;
 
 /**
  * __useDeleteVendorItemMutation__
@@ -30638,12 +29905,12 @@ export function withDeleteVendorItem<TProps, TChildProps = {}, TDataName extends
  *   },
  * });
  */
-export function useDeleteVendorItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>) {
-        return ApolloReactHooks.useMutation<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>(DeleteVendorItemDocument, baseOptions);
+export function useDeleteVendorItemMutation(baseOptions?: Apollo.MutationHookOptions<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>) {
+        return Apollo.useMutation<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>(DeleteVendorItemDocument, baseOptions);
       }
 export type DeleteVendorItemMutationHookResult = ReturnType<typeof useDeleteVendorItemMutation>;
-export type DeleteVendorItemMutationResult = ApolloReactCommon.MutationResult<DeleteVendorItemMutation>;
-export type DeleteVendorItemMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>;
+export type DeleteVendorItemMutationResult = Apollo.MutationResult<DeleteVendorItemMutation>;
+export type DeleteVendorItemMutationOptions = Apollo.BaseMutationOptions<DeleteVendorItemMutation, DeleteVendorItemMutationVariables>;
 export const GetItemsDocument = gql`
     query GetItems($categories: [enum_item_class_enum!]) {
   items: item(where: {class: {_in: $categories}}, order_by: {id: asc}) {
@@ -30651,19 +29918,6 @@ export const GetItemsDocument = gql`
   }
 }
     ${ItemFieldsFragmentDoc}`;
-export type GetItemsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetItemsQuery, GetItemsQueryVariables>
-    } & TChildProps;
-export function withGetItems<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetItemsQuery,
-  GetItemsQueryVariables,
-  GetItemsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetItemsQuery, GetItemsQueryVariables, GetItemsProps<TChildProps, TDataName>>(GetItemsDocument, {
-      alias: 'getItems',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetItemsQuery__
@@ -30681,15 +29935,15 @@ export function withGetItems<TProps, TChildProps = {}, TDataName extends string 
  *   },
  * });
  */
-export function useGetItemsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemsQuery, GetItemsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetItemsQuery, GetItemsQueryVariables>(GetItemsDocument, baseOptions);
+export function useGetItemsQuery(baseOptions?: Apollo.QueryHookOptions<GetItemsQuery, GetItemsQueryVariables>) {
+        return Apollo.useQuery<GetItemsQuery, GetItemsQueryVariables>(GetItemsDocument, baseOptions);
       }
-export function useGetItemsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemsQuery, GetItemsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetItemsQuery, GetItemsQueryVariables>(GetItemsDocument, baseOptions);
+export function useGetItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetItemsQuery, GetItemsQueryVariables>) {
+          return Apollo.useLazyQuery<GetItemsQuery, GetItemsQueryVariables>(GetItemsDocument, baseOptions);
         }
 export type GetItemsQueryHookResult = ReturnType<typeof useGetItemsQuery>;
 export type GetItemsLazyQueryHookResult = ReturnType<typeof useGetItemsLazyQuery>;
-export type GetItemsQueryResult = ApolloReactCommon.QueryResult<GetItemsQuery, GetItemsQueryVariables>;
+export type GetItemsQueryResult = Apollo.QueryResult<GetItemsQuery, GetItemsQueryVariables>;
 export const GetItemsByIdDocument = gql`
     query GetItemsById($ids: [Int!]) {
   items: item(where: {id: {_in: $ids}}, order_by: {id: asc}) {
@@ -30697,19 +29951,6 @@ export const GetItemsByIdDocument = gql`
   }
 }
     ${ItemFieldsFragmentDoc}`;
-export type GetItemsByIdProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetItemsByIdQuery, GetItemsByIdQueryVariables>
-    } & TChildProps;
-export function withGetItemsById<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetItemsByIdQuery,
-  GetItemsByIdQueryVariables,
-  GetItemsByIdProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetItemsByIdQuery, GetItemsByIdQueryVariables, GetItemsByIdProps<TChildProps, TDataName>>(GetItemsByIdDocument, {
-      alias: 'getItemsById',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetItemsByIdQuery__
@@ -30727,15 +29968,15 @@ export function withGetItemsById<TProps, TChildProps = {}, TDataName extends str
  *   },
  * });
  */
-export function useGetItemsByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemsByIdQuery, GetItemsByIdQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetItemsByIdQuery, GetItemsByIdQueryVariables>(GetItemsByIdDocument, baseOptions);
+export function useGetItemsByIdQuery(baseOptions?: Apollo.QueryHookOptions<GetItemsByIdQuery, GetItemsByIdQueryVariables>) {
+        return Apollo.useQuery<GetItemsByIdQuery, GetItemsByIdQueryVariables>(GetItemsByIdDocument, baseOptions);
       }
-export function useGetItemsByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemsByIdQuery, GetItemsByIdQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetItemsByIdQuery, GetItemsByIdQueryVariables>(GetItemsByIdDocument, baseOptions);
+export function useGetItemsByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetItemsByIdQuery, GetItemsByIdQueryVariables>) {
+          return Apollo.useLazyQuery<GetItemsByIdQuery, GetItemsByIdQueryVariables>(GetItemsByIdDocument, baseOptions);
         }
 export type GetItemsByIdQueryHookResult = ReturnType<typeof useGetItemsByIdQuery>;
 export type GetItemsByIdLazyQueryHookResult = ReturnType<typeof useGetItemsByIdLazyQuery>;
-export type GetItemsByIdQueryResult = ApolloReactCommon.QueryResult<GetItemsByIdQuery, GetItemsByIdQueryVariables>;
+export type GetItemsByIdQueryResult = Apollo.QueryResult<GetItemsByIdQuery, GetItemsByIdQueryVariables>;
 export const GetItemDocument = gql`
     query GetItem($id: Int!) {
   item: item_by_pk(id: $id) {
@@ -30743,19 +29984,6 @@ export const GetItemDocument = gql`
   }
 }
     ${ItemFieldsFragmentDoc}`;
-export type GetItemProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetItemQuery, GetItemQueryVariables>
-    } & TChildProps;
-export function withGetItem<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetItemQuery,
-  GetItemQueryVariables,
-  GetItemProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetItemQuery, GetItemQueryVariables, GetItemProps<TChildProps, TDataName>>(GetItemDocument, {
-      alias: 'getItem',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetItemQuery__
@@ -30773,15 +30001,15 @@ export function withGetItem<TProps, TChildProps = {}, TDataName extends string =
  *   },
  * });
  */
-export function useGetItemQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemQuery, GetItemQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetItemQuery, GetItemQueryVariables>(GetItemDocument, baseOptions);
+export function useGetItemQuery(baseOptions?: Apollo.QueryHookOptions<GetItemQuery, GetItemQueryVariables>) {
+        return Apollo.useQuery<GetItemQuery, GetItemQueryVariables>(GetItemDocument, baseOptions);
       }
-export function useGetItemLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemQuery, GetItemQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetItemQuery, GetItemQueryVariables>(GetItemDocument, baseOptions);
+export function useGetItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetItemQuery, GetItemQueryVariables>) {
+          return Apollo.useLazyQuery<GetItemQuery, GetItemQueryVariables>(GetItemDocument, baseOptions);
         }
 export type GetItemQueryHookResult = ReturnType<typeof useGetItemQuery>;
 export type GetItemLazyQueryHookResult = ReturnType<typeof useGetItemLazyQuery>;
-export type GetItemQueryResult = ApolloReactCommon.QueryResult<GetItemQuery, GetItemQueryVariables>;
+export type GetItemQueryResult = Apollo.QueryResult<GetItemQuery, GetItemQueryVariables>;
 export const ItemSearchDocument = gql`
     query ItemSearch($search_text: String!) {
   search(args: {query_text: $search_text}, where: {class: {}}) {
@@ -30792,19 +30020,6 @@ export const ItemSearchDocument = gql`
   }
 }
     `;
-export type ItemSearchProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<ItemSearchQuery, ItemSearchQueryVariables>
-    } & TChildProps;
-export function withItemSearch<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  ItemSearchQuery,
-  ItemSearchQueryVariables,
-  ItemSearchProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, ItemSearchQuery, ItemSearchQueryVariables, ItemSearchProps<TChildProps, TDataName>>(ItemSearchDocument, {
-      alias: 'itemSearch',
-      ...operationOptions
-    });
-};
 
 /**
  * __useItemSearchQuery__
@@ -30822,15 +30037,15 @@ export function withItemSearch<TProps, TChildProps = {}, TDataName extends strin
  *   },
  * });
  */
-export function useItemSearchQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ItemSearchQuery, ItemSearchQueryVariables>) {
-        return ApolloReactHooks.useQuery<ItemSearchQuery, ItemSearchQueryVariables>(ItemSearchDocument, baseOptions);
+export function useItemSearchQuery(baseOptions?: Apollo.QueryHookOptions<ItemSearchQuery, ItemSearchQueryVariables>) {
+        return Apollo.useQuery<ItemSearchQuery, ItemSearchQueryVariables>(ItemSearchDocument, baseOptions);
       }
-export function useItemSearchLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ItemSearchQuery, ItemSearchQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<ItemSearchQuery, ItemSearchQueryVariables>(ItemSearchDocument, baseOptions);
+export function useItemSearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ItemSearchQuery, ItemSearchQueryVariables>) {
+          return Apollo.useLazyQuery<ItemSearchQuery, ItemSearchQueryVariables>(ItemSearchDocument, baseOptions);
         }
 export type ItemSearchQueryHookResult = ReturnType<typeof useItemSearchQuery>;
 export type ItemSearchLazyQueryHookResult = ReturnType<typeof useItemSearchLazyQuery>;
-export type ItemSearchQueryResult = ApolloReactCommon.QueryResult<ItemSearchQuery, ItemSearchQueryVariables>;
+export type ItemSearchQueryResult = Apollo.QueryResult<ItemSearchQuery, ItemSearchQueryVariables>;
 export const GetItemBundlesDocument = gql`
     query GetItemBundles {
   item_bundle {
@@ -30840,19 +30055,6 @@ export const GetItemBundlesDocument = gql`
 }
     ${BasicItemBundleFieldsFragmentDoc}
 ${ObjectItemBundleFieldsFragmentDoc}`;
-export type GetItemBundlesProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetItemBundlesQuery, GetItemBundlesQueryVariables>
-    } & TChildProps;
-export function withGetItemBundles<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetItemBundlesQuery,
-  GetItemBundlesQueryVariables,
-  GetItemBundlesProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetItemBundlesQuery, GetItemBundlesQueryVariables, GetItemBundlesProps<TChildProps, TDataName>>(GetItemBundlesDocument, {
-      alias: 'getItemBundles',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetItemBundlesQuery__
@@ -30869,15 +30071,15 @@ export function withGetItemBundles<TProps, TChildProps = {}, TDataName extends s
  *   },
  * });
  */
-export function useGetItemBundlesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemBundlesQuery, GetItemBundlesQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetItemBundlesQuery, GetItemBundlesQueryVariables>(GetItemBundlesDocument, baseOptions);
+export function useGetItemBundlesQuery(baseOptions?: Apollo.QueryHookOptions<GetItemBundlesQuery, GetItemBundlesQueryVariables>) {
+        return Apollo.useQuery<GetItemBundlesQuery, GetItemBundlesQueryVariables>(GetItemBundlesDocument, baseOptions);
       }
-export function useGetItemBundlesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemBundlesQuery, GetItemBundlesQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetItemBundlesQuery, GetItemBundlesQueryVariables>(GetItemBundlesDocument, baseOptions);
+export function useGetItemBundlesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetItemBundlesQuery, GetItemBundlesQueryVariables>) {
+          return Apollo.useLazyQuery<GetItemBundlesQuery, GetItemBundlesQueryVariables>(GetItemBundlesDocument, baseOptions);
         }
 export type GetItemBundlesQueryHookResult = ReturnType<typeof useGetItemBundlesQuery>;
 export type GetItemBundlesLazyQueryHookResult = ReturnType<typeof useGetItemBundlesLazyQuery>;
-export type GetItemBundlesQueryResult = ApolloReactCommon.QueryResult<GetItemBundlesQuery, GetItemBundlesQueryVariables>;
+export type GetItemBundlesQueryResult = Apollo.QueryResult<GetItemBundlesQuery, GetItemBundlesQueryVariables>;
 export const GetItemBundleDocument = gql`
     query GetItemBundle($id: Int!) {
   item_bundle: item_bundle_by_pk(id: $id) {
@@ -30887,19 +30089,6 @@ export const GetItemBundleDocument = gql`
 }
     ${BasicItemBundleFieldsFragmentDoc}
 ${ObjectItemBundleFieldsFragmentDoc}`;
-export type GetItemBundleProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetItemBundleQuery, GetItemBundleQueryVariables>
-    } & TChildProps;
-export function withGetItemBundle<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetItemBundleQuery,
-  GetItemBundleQueryVariables,
-  GetItemBundleProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetItemBundleQuery, GetItemBundleQueryVariables, GetItemBundleProps<TChildProps, TDataName>>(GetItemBundleDocument, {
-      alias: 'getItemBundle',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetItemBundleQuery__
@@ -30917,15 +30106,15 @@ export function withGetItemBundle<TProps, TChildProps = {}, TDataName extends st
  *   },
  * });
  */
-export function useGetItemBundleQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetItemBundleQuery, GetItemBundleQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetItemBundleQuery, GetItemBundleQueryVariables>(GetItemBundleDocument, baseOptions);
+export function useGetItemBundleQuery(baseOptions?: Apollo.QueryHookOptions<GetItemBundleQuery, GetItemBundleQueryVariables>) {
+        return Apollo.useQuery<GetItemBundleQuery, GetItemBundleQueryVariables>(GetItemBundleDocument, baseOptions);
       }
-export function useGetItemBundleLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetItemBundleQuery, GetItemBundleQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetItemBundleQuery, GetItemBundleQueryVariables>(GetItemBundleDocument, baseOptions);
+export function useGetItemBundleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetItemBundleQuery, GetItemBundleQueryVariables>) {
+          return Apollo.useLazyQuery<GetItemBundleQuery, GetItemBundleQueryVariables>(GetItemBundleDocument, baseOptions);
         }
 export type GetItemBundleQueryHookResult = ReturnType<typeof useGetItemBundleQuery>;
 export type GetItemBundleLazyQueryHookResult = ReturnType<typeof useGetItemBundleLazyQuery>;
-export type GetItemBundleQueryResult = ApolloReactCommon.QueryResult<GetItemBundleQuery, GetItemBundleQueryVariables>;
+export type GetItemBundleQueryResult = Apollo.QueryResult<GetItemBundleQuery, GetItemBundleQueryVariables>;
 export const InsertItemBundleDocument = gql`
     mutation InsertItemBundle($name: String!, $description: String, $items: item_bundle_member_arr_rel_insert_input) {
   item_bundle: insert_item_bundle_one(object: {name: $name, description: $description, items: $items}) {
@@ -30941,20 +30130,7 @@ export const InsertItemBundleDocument = gql`
   }
 }
     `;
-export type InsertItemBundleMutationFn = ApolloReactCommon.MutationFunction<InsertItemBundleMutation, InsertItemBundleMutationVariables>;
-export type InsertItemBundleProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertItemBundleMutation, InsertItemBundleMutationVariables>
-    } & TChildProps;
-export function withInsertItemBundle<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  InsertItemBundleMutation,
-  InsertItemBundleMutationVariables,
-  InsertItemBundleProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, InsertItemBundleMutation, InsertItemBundleMutationVariables, InsertItemBundleProps<TChildProps, TDataName>>(InsertItemBundleDocument, {
-      alias: 'insertItemBundle',
-      ...operationOptions
-    });
-};
+export type InsertItemBundleMutationFn = Apollo.MutationFunction<InsertItemBundleMutation, InsertItemBundleMutationVariables>;
 
 /**
  * __useInsertItemBundleMutation__
@@ -30975,12 +30151,12 @@ export function withInsertItemBundle<TProps, TChildProps = {}, TDataName extends
  *   },
  * });
  */
-export function useInsertItemBundleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertItemBundleMutation, InsertItemBundleMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertItemBundleMutation, InsertItemBundleMutationVariables>(InsertItemBundleDocument, baseOptions);
+export function useInsertItemBundleMutation(baseOptions?: Apollo.MutationHookOptions<InsertItemBundleMutation, InsertItemBundleMutationVariables>) {
+        return Apollo.useMutation<InsertItemBundleMutation, InsertItemBundleMutationVariables>(InsertItemBundleDocument, baseOptions);
       }
 export type InsertItemBundleMutationHookResult = ReturnType<typeof useInsertItemBundleMutation>;
-export type InsertItemBundleMutationResult = ApolloReactCommon.MutationResult<InsertItemBundleMutation>;
-export type InsertItemBundleMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertItemBundleMutation, InsertItemBundleMutationVariables>;
+export type InsertItemBundleMutationResult = Apollo.MutationResult<InsertItemBundleMutation>;
+export type InsertItemBundleMutationOptions = Apollo.BaseMutationOptions<InsertItemBundleMutation, InsertItemBundleMutationVariables>;
 export const UpdateItemBundleDocument = gql`
     mutation UpdateItemBundle($id: Int!, $name: String, $description: String) {
   item_bundle: update_item_bundle_by_pk(pk_columns: {id: $id}, _set: {name: $name, description: $description}) {
@@ -30990,20 +30166,7 @@ export const UpdateItemBundleDocument = gql`
 }
     ${BasicItemBundleFieldsFragmentDoc}
 ${ObjectItemBundleFieldsFragmentDoc}`;
-export type UpdateItemBundleMutationFn = ApolloReactCommon.MutationFunction<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>;
-export type UpdateItemBundleProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>
-    } & TChildProps;
-export function withUpdateItemBundle<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  UpdateItemBundleMutation,
-  UpdateItemBundleMutationVariables,
-  UpdateItemBundleProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, UpdateItemBundleMutation, UpdateItemBundleMutationVariables, UpdateItemBundleProps<TChildProps, TDataName>>(UpdateItemBundleDocument, {
-      alias: 'updateItemBundle',
-      ...operationOptions
-    });
-};
+export type UpdateItemBundleMutationFn = Apollo.MutationFunction<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>;
 
 /**
  * __useUpdateItemBundleMutation__
@@ -31024,12 +30187,12 @@ export function withUpdateItemBundle<TProps, TChildProps = {}, TDataName extends
  *   },
  * });
  */
-export function useUpdateItemBundleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>(UpdateItemBundleDocument, baseOptions);
+export function useUpdateItemBundleMutation(baseOptions?: Apollo.MutationHookOptions<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>) {
+        return Apollo.useMutation<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>(UpdateItemBundleDocument, baseOptions);
       }
 export type UpdateItemBundleMutationHookResult = ReturnType<typeof useUpdateItemBundleMutation>;
-export type UpdateItemBundleMutationResult = ApolloReactCommon.MutationResult<UpdateItemBundleMutation>;
-export type UpdateItemBundleMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>;
+export type UpdateItemBundleMutationResult = Apollo.MutationResult<UpdateItemBundleMutation>;
+export type UpdateItemBundleMutationOptions = Apollo.BaseMutationOptions<UpdateItemBundleMutation, UpdateItemBundleMutationVariables>;
 export const DeleteItemBundleDocument = gql`
     mutation DeleteItemBundle($id: Int!) {
   item_bundle: delete_item_bundle_by_pk(id: $id) {
@@ -31039,20 +30202,7 @@ export const DeleteItemBundleDocument = gql`
 }
     ${BasicItemBundleFieldsFragmentDoc}
 ${ObjectItemBundleFieldsFragmentDoc}`;
-export type DeleteItemBundleMutationFn = ApolloReactCommon.MutationFunction<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>;
-export type DeleteItemBundleProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>
-    } & TChildProps;
-export function withDeleteItemBundle<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  DeleteItemBundleMutation,
-  DeleteItemBundleMutationVariables,
-  DeleteItemBundleProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, DeleteItemBundleMutation, DeleteItemBundleMutationVariables, DeleteItemBundleProps<TChildProps, TDataName>>(DeleteItemBundleDocument, {
-      alias: 'deleteItemBundle',
-      ...operationOptions
-    });
-};
+export type DeleteItemBundleMutationFn = Apollo.MutationFunction<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>;
 
 /**
  * __useDeleteItemBundleMutation__
@@ -31071,12 +30221,12 @@ export function withDeleteItemBundle<TProps, TChildProps = {}, TDataName extends
  *   },
  * });
  */
-export function useDeleteItemBundleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>) {
-        return ApolloReactHooks.useMutation<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>(DeleteItemBundleDocument, baseOptions);
+export function useDeleteItemBundleMutation(baseOptions?: Apollo.MutationHookOptions<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>) {
+        return Apollo.useMutation<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>(DeleteItemBundleDocument, baseOptions);
       }
 export type DeleteItemBundleMutationHookResult = ReturnType<typeof useDeleteItemBundleMutation>;
-export type DeleteItemBundleMutationResult = ApolloReactCommon.MutationResult<DeleteItemBundleMutation>;
-export type DeleteItemBundleMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>;
+export type DeleteItemBundleMutationResult = Apollo.MutationResult<DeleteItemBundleMutation>;
+export type DeleteItemBundleMutationOptions = Apollo.BaseMutationOptions<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>;
 export const UpdateItemBundleMemberDocument = gql`
     mutation UpdateItemBundleMember($item_bundle_id: Int!, $item_member_id: Int!, $quantity: numeric) {
   item_bundle_member: update_item_bundle_member_by_pk(pk_columns: {item_bundle_id: $item_bundle_id, item_member_id: $item_member_id}, _set: {quantity: $quantity}) {
@@ -31084,20 +30234,7 @@ export const UpdateItemBundleMemberDocument = gql`
   }
 }
     ${BasicItemBundleMemberFieldsFragmentDoc}`;
-export type UpdateItemBundleMemberMutationFn = ApolloReactCommon.MutationFunction<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>;
-export type UpdateItemBundleMemberProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>
-    } & TChildProps;
-export function withUpdateItemBundleMember<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  UpdateItemBundleMemberMutation,
-  UpdateItemBundleMemberMutationVariables,
-  UpdateItemBundleMemberProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables, UpdateItemBundleMemberProps<TChildProps, TDataName>>(UpdateItemBundleMemberDocument, {
-      alias: 'updateItemBundleMember',
-      ...operationOptions
-    });
-};
+export type UpdateItemBundleMemberMutationFn = Apollo.MutationFunction<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>;
 
 /**
  * __useUpdateItemBundleMemberMutation__
@@ -31118,12 +30255,12 @@ export function withUpdateItemBundleMember<TProps, TChildProps = {}, TDataName e
  *   },
  * });
  */
-export function useUpdateItemBundleMemberMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>(UpdateItemBundleMemberDocument, baseOptions);
+export function useUpdateItemBundleMemberMutation(baseOptions?: Apollo.MutationHookOptions<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>) {
+        return Apollo.useMutation<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>(UpdateItemBundleMemberDocument, baseOptions);
       }
 export type UpdateItemBundleMemberMutationHookResult = ReturnType<typeof useUpdateItemBundleMemberMutation>;
-export type UpdateItemBundleMemberMutationResult = ApolloReactCommon.MutationResult<UpdateItemBundleMemberMutation>;
-export type UpdateItemBundleMemberMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>;
+export type UpdateItemBundleMemberMutationResult = Apollo.MutationResult<UpdateItemBundleMemberMutation>;
+export type UpdateItemBundleMemberMutationOptions = Apollo.BaseMutationOptions<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>;
 export const DeleteItemBundleMemberDocument = gql`
     mutation DeleteItemBundleMember($item_bundle_id: Int!, $item_member_id: Int!) {
   item_bundle_member: delete_item_bundle_member_by_pk(item_bundle_id: $item_bundle_id, item_member_id: $item_member_id) {
@@ -31131,20 +30268,7 @@ export const DeleteItemBundleMemberDocument = gql`
   }
 }
     ${BasicItemBundleMemberFieldsFragmentDoc}`;
-export type DeleteItemBundleMemberMutationFn = ApolloReactCommon.MutationFunction<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>;
-export type DeleteItemBundleMemberProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>
-    } & TChildProps;
-export function withDeleteItemBundleMember<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  DeleteItemBundleMemberMutation,
-  DeleteItemBundleMemberMutationVariables,
-  DeleteItemBundleMemberProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables, DeleteItemBundleMemberProps<TChildProps, TDataName>>(DeleteItemBundleMemberDocument, {
-      alias: 'deleteItemBundleMember',
-      ...operationOptions
-    });
-};
+export type DeleteItemBundleMemberMutationFn = Apollo.MutationFunction<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>;
 
 /**
  * __useDeleteItemBundleMemberMutation__
@@ -31164,12 +30288,12 @@ export function withDeleteItemBundleMember<TProps, TChildProps = {}, TDataName e
  *   },
  * });
  */
-export function useDeleteItemBundleMemberMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>) {
-        return ApolloReactHooks.useMutation<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>(DeleteItemBundleMemberDocument, baseOptions);
+export function useDeleteItemBundleMemberMutation(baseOptions?: Apollo.MutationHookOptions<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>) {
+        return Apollo.useMutation<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>(DeleteItemBundleMemberDocument, baseOptions);
       }
 export type DeleteItemBundleMemberMutationHookResult = ReturnType<typeof useDeleteItemBundleMemberMutation>;
-export type DeleteItemBundleMemberMutationResult = ApolloReactCommon.MutationResult<DeleteItemBundleMemberMutation>;
-export type DeleteItemBundleMemberMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>;
+export type DeleteItemBundleMemberMutationResult = Apollo.MutationResult<DeleteItemBundleMemberMutation>;
+export type DeleteItemBundleMemberMutationOptions = Apollo.BaseMutationOptions<DeleteItemBundleMemberMutation, DeleteItemBundleMemberMutationVariables>;
 export const ItemHardwareFastenerScrewMachineDocument = gql`
     query item_hardware_fastener_screw_machine {
   items: item_hardware_fastener_screw_machine(order_by: {id: asc}) {
@@ -31177,19 +30301,6 @@ export const ItemHardwareFastenerScrewMachineDocument = gql`
   }
 }
     ${ItemHardwareFastenerScrewMachineFieldsFragmentDoc}`;
-export type ItemHardwareFastenerScrewMachineProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables>
-    } & TChildProps;
-export function withItemHardwareFastenerScrewMachine<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  ItemHardwareFastenerScrewMachineQuery,
-  ItemHardwareFastenerScrewMachineQueryVariables,
-  ItemHardwareFastenerScrewMachineProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables, ItemHardwareFastenerScrewMachineProps<TChildProps, TDataName>>(ItemHardwareFastenerScrewMachineDocument, {
-      alias: 'itemHardwareFastenerScrewMachine',
-      ...operationOptions
-    });
-};
 
 /**
  * __useItemHardwareFastenerScrewMachineQuery__
@@ -31206,36 +30317,23 @@ export function withItemHardwareFastenerScrewMachine<TProps, TChildProps = {}, T
  *   },
  * });
  */
-export function useItemHardwareFastenerScrewMachineQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables>) {
-        return ApolloReactHooks.useQuery<ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables>(ItemHardwareFastenerScrewMachineDocument, baseOptions);
+export function useItemHardwareFastenerScrewMachineQuery(baseOptions?: Apollo.QueryHookOptions<ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables>) {
+        return Apollo.useQuery<ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables>(ItemHardwareFastenerScrewMachineDocument, baseOptions);
       }
-export function useItemHardwareFastenerScrewMachineLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables>(ItemHardwareFastenerScrewMachineDocument, baseOptions);
+export function useItemHardwareFastenerScrewMachineLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables>) {
+          return Apollo.useLazyQuery<ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables>(ItemHardwareFastenerScrewMachineDocument, baseOptions);
         }
 export type ItemHardwareFastenerScrewMachineQueryHookResult = ReturnType<typeof useItemHardwareFastenerScrewMachineQuery>;
 export type ItemHardwareFastenerScrewMachineLazyQueryHookResult = ReturnType<typeof useItemHardwareFastenerScrewMachineLazyQuery>;
-export type ItemHardwareFastenerScrewMachineQueryResult = ApolloReactCommon.QueryResult<ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables>;
+export type ItemHardwareFastenerScrewMachineQueryResult = Apollo.QueryResult<ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables>;
 export const InsertItemHardwareFastenerScrewMachineDocument = gql`
-    mutation InsertItemHardwareFastenerScrewMachine($countersunk_angle: numeric, $countersunk_height: numeric, $description: String, $drive_size: String, $default_fields: jsonb, $drive_type: enum_item_hardware_fastener_drive_enum, $embedded_length: numeric, $finish: enum_item_hardware_finish_enum, $hardness: enum_item_hardware_fastener_screw_hardness_enum, $head_diameter: numeric, $head_height: numeric, $head_type: enum_item_hardware_fastener_screw_head_enum, $material: enum_item_hardware_fastener_material_enum, $name: String, $point_type: enum_item_hardware_fastener_screw_machine_point_enum, $specifications_met: jsonb, $strength_class: enum_item_hardware_fastener_screw_machine_strength_enum, $tensile_strength: numeric, $thread_diameter: numeric, $thread_direction: enum_item_handedness_enum, $thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum, $thread_length: numeric, $thread_label: enum_item_hardware_fastener_thread_label_enum, $thread_pitch: numeric, $thread_standard: enum_item_hardware_fastener_thread_standard_enum, $unit: enum_unit_enum, $use_material: enum_item_hardware_use_material_enum) {
-  insert_item_hardware_fastener_screw_machine_one(object: {countersunk_angle: $countersunk_angle, countersunk_height: $countersunk_height, description: $description, drive_size: $drive_size, default_fields: $default_fields, drive_type: $drive_type, embedded_length: $embedded_length, finish: $finish, hardness: $hardness, head_diameter: $head_diameter, head_height: $head_height, head_type: $head_type, material: $material, name: $name, point_type: $point_type, specifications_met: $specifications_met, strength_class: $strength_class, tensile_strength: $tensile_strength, thread_diameter: $thread_diameter, thread_direction: $thread_direction, thread_fit: $thread_fit, thread_label: $thread_label, thread_length: $thread_length, thread_pitch: $thread_pitch, thread_standard: $thread_standard, unit: $unit, use_material: $use_material}) {
+    mutation InsertItemHardwareFastenerScrewMachine($countersunk_angle: numeric, $countersunk_height: numeric, $description: String, $drive_size: String, $default_fields: jsonb, $drive_type: enum_item_hardware_fastener_drive_enum, $embedded_length: numeric, $finish: enum_item_hardware_finish_enum, $hardness: enum_item_hardware_fastener_screw_hardness_enum, $head_diameter: numeric, $head_height: numeric, $head_type: enum_item_hardware_fastener_screw_head_enum, $material: enum_item_hardware_fastener_material_enum, $name: String, $point_type: enum_item_hardware_fastener_screw_machine_point_enum, $specifications_met: jsonb, $strength_class: enum_item_hardware_fastener_screw_machine_strength_enum, $tensile_strength: numeric, $thread_diameter_label: String, $thread_direction: enum_item_handedness_enum, $thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum, $thread_length: numeric, $thread_pitch: numeric, $thread_standard: enum_item_hardware_fastener_thread_standard_enum, $unit: enum_unit_enum, $use_material: enum_item_hardware_use_material_enum) {
+  insert_item_hardware_fastener_screw_machine_one(object: {countersunk_angle: $countersunk_angle, countersunk_height: $countersunk_height, description: $description, drive_size: $drive_size, default_fields: $default_fields, drive_type: $drive_type, embedded_length: $embedded_length, finish: $finish, hardness: $hardness, head_diameter: $head_diameter, head_height: $head_height, head_type: $head_type, material: $material, name: $name, point_type: $point_type, specifications_met: $specifications_met, strength_class: $strength_class, tensile_strength: $tensile_strength, thread_diameter_label: $thread_diameter_label, thread_direction: $thread_direction, thread_fit: $thread_fit, thread_length: $thread_length, thread_pitch: $thread_pitch, thread_standard: $thread_standard, unit: $unit, use_material: $use_material}) {
     ...ItemHardwareFastenerScrewMachineFields
   }
 }
     ${ItemHardwareFastenerScrewMachineFieldsFragmentDoc}`;
-export type InsertItemHardwareFastenerScrewMachineMutationFn = ApolloReactCommon.MutationFunction<InsertItemHardwareFastenerScrewMachineMutation, InsertItemHardwareFastenerScrewMachineMutationVariables>;
-export type InsertItemHardwareFastenerScrewMachineProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<InsertItemHardwareFastenerScrewMachineMutation, InsertItemHardwareFastenerScrewMachineMutationVariables>
-    } & TChildProps;
-export function withInsertItemHardwareFastenerScrewMachine<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  InsertItemHardwareFastenerScrewMachineMutation,
-  InsertItemHardwareFastenerScrewMachineMutationVariables,
-  InsertItemHardwareFastenerScrewMachineProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, InsertItemHardwareFastenerScrewMachineMutation, InsertItemHardwareFastenerScrewMachineMutationVariables, InsertItemHardwareFastenerScrewMachineProps<TChildProps, TDataName>>(InsertItemHardwareFastenerScrewMachineDocument, {
-      alias: 'insertItemHardwareFastenerScrewMachine',
-      ...operationOptions
-    });
-};
+export type InsertItemHardwareFastenerScrewMachineMutationFn = Apollo.MutationFunction<InsertItemHardwareFastenerScrewMachineMutation, InsertItemHardwareFastenerScrewMachineMutationVariables>;
 
 /**
  * __useInsertItemHardwareFastenerScrewMachineMutation__
@@ -31268,11 +30366,10 @@ export function withInsertItemHardwareFastenerScrewMachine<TProps, TChildProps =
  *      specifications_met: // value for 'specifications_met'
  *      strength_class: // value for 'strength_class'
  *      tensile_strength: // value for 'tensile_strength'
- *      thread_diameter: // value for 'thread_diameter'
+ *      thread_diameter_label: // value for 'thread_diameter_label'
  *      thread_direction: // value for 'thread_direction'
  *      thread_fit: // value for 'thread_fit'
  *      thread_length: // value for 'thread_length'
- *      thread_label: // value for 'thread_label'
  *      thread_pitch: // value for 'thread_pitch'
  *      thread_standard: // value for 'thread_standard'
  *      unit: // value for 'unit'
@@ -31280,12 +30377,12 @@ export function withInsertItemHardwareFastenerScrewMachine<TProps, TChildProps =
  *   },
  * });
  */
-export function useInsertItemHardwareFastenerScrewMachineMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertItemHardwareFastenerScrewMachineMutation, InsertItemHardwareFastenerScrewMachineMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertItemHardwareFastenerScrewMachineMutation, InsertItemHardwareFastenerScrewMachineMutationVariables>(InsertItemHardwareFastenerScrewMachineDocument, baseOptions);
+export function useInsertItemHardwareFastenerScrewMachineMutation(baseOptions?: Apollo.MutationHookOptions<InsertItemHardwareFastenerScrewMachineMutation, InsertItemHardwareFastenerScrewMachineMutationVariables>) {
+        return Apollo.useMutation<InsertItemHardwareFastenerScrewMachineMutation, InsertItemHardwareFastenerScrewMachineMutationVariables>(InsertItemHardwareFastenerScrewMachineDocument, baseOptions);
       }
 export type InsertItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useInsertItemHardwareFastenerScrewMachineMutation>;
-export type InsertItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<InsertItemHardwareFastenerScrewMachineMutation>;
-export type InsertItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertItemHardwareFastenerScrewMachineMutation, InsertItemHardwareFastenerScrewMachineMutationVariables>;
+export type InsertItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<InsertItemHardwareFastenerScrewMachineMutation>;
+export type InsertItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<InsertItemHardwareFastenerScrewMachineMutation, InsertItemHardwareFastenerScrewMachineMutationVariables>;
 export const GetEnumItemHardwareFastenerThreadStandardDocument = gql`
     query GetEnumItemHardwareFastenerThreadStandard {
   enum_item_hardware_fastener_thread_standard {
@@ -31294,19 +30391,6 @@ export const GetEnumItemHardwareFastenerThreadStandardDocument = gql`
   }
 }
     `;
-export type GetEnumItemHardwareFastenerThreadStandardProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables>
-    } & TChildProps;
-export function withGetEnumItemHardwareFastenerThreadStandard<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  GetEnumItemHardwareFastenerThreadStandardQuery,
-  GetEnumItemHardwareFastenerThreadStandardQueryVariables,
-  GetEnumItemHardwareFastenerThreadStandardProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables, GetEnumItemHardwareFastenerThreadStandardProps<TChildProps, TDataName>>(GetEnumItemHardwareFastenerThreadStandardDocument, {
-      alias: 'getEnumItemHardwareFastenerThreadStandard',
-      ...operationOptions
-    });
-};
 
 /**
  * __useGetEnumItemHardwareFastenerThreadStandardQuery__
@@ -31323,36 +30407,23 @@ export function withGetEnumItemHardwareFastenerThreadStandard<TProps, TChildProp
  *   },
  * });
  */
-export function useGetEnumItemHardwareFastenerThreadStandardQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables>(GetEnumItemHardwareFastenerThreadStandardDocument, baseOptions);
+export function useGetEnumItemHardwareFastenerThreadStandardQuery(baseOptions?: Apollo.QueryHookOptions<GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables>) {
+        return Apollo.useQuery<GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables>(GetEnumItemHardwareFastenerThreadStandardDocument, baseOptions);
       }
-export function useGetEnumItemHardwareFastenerThreadStandardLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables>(GetEnumItemHardwareFastenerThreadStandardDocument, baseOptions);
+export function useGetEnumItemHardwareFastenerThreadStandardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables>) {
+          return Apollo.useLazyQuery<GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables>(GetEnumItemHardwareFastenerThreadStandardDocument, baseOptions);
         }
 export type GetEnumItemHardwareFastenerThreadStandardQueryHookResult = ReturnType<typeof useGetEnumItemHardwareFastenerThreadStandardQuery>;
 export type GetEnumItemHardwareFastenerThreadStandardLazyQueryHookResult = ReturnType<typeof useGetEnumItemHardwareFastenerThreadStandardLazyQuery>;
-export type GetEnumItemHardwareFastenerThreadStandardQueryResult = ApolloReactCommon.QueryResult<GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables>;
+export type GetEnumItemHardwareFastenerThreadStandardQueryResult = Apollo.QueryResult<GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables>;
 export const UpdateItemHardwareFastenerScrewMachineDocument = gql`
-    mutation UpdateItemHardwareFastenerScrewMachine($countersunk_angle: numeric, $countersunk_height: numeric, $description: String, $drive_size: String, $default_fields: jsonb, $drive_type: enum_item_hardware_fastener_drive_enum, $embedded_length: numeric, $finish: enum_item_hardware_finish_enum, $hardness: enum_item_hardware_fastener_screw_hardness_enum, $head_diameter: numeric, $head_height: numeric, $head_type: enum_item_hardware_fastener_screw_head_enum, $id: Int!, $material: enum_item_hardware_fastener_material_enum, $name: String, $point_type: enum_item_hardware_fastener_screw_machine_point_enum, $specifications_met: jsonb, $strength_class: enum_item_hardware_fastener_screw_machine_strength_enum, $tensile_strength: numeric, $thread_diameter: numeric, $thread_direction: enum_item_handedness_enum, $thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum, $thread_length: numeric, $thread_label: enum_item_hardware_fastener_thread_label_enum, $thread_pitch: numeric, $thread_standard: enum_item_hardware_fastener_thread_standard_enum, $unit: enum_unit_enum, $use_material: enum_item_hardware_use_material_enum) {
-  update_item_hardware_fastener_screw_machine_by_pk(pk_columns: {id: $id}, _set: {use_material: $use_material, unit: $unit, thread_standard: $thread_standard, thread_pitch: $thread_pitch, thread_length: $thread_length, thread_label: $thread_label, thread_fit: $thread_fit, thread_direction: $thread_direction, thread_diameter: $thread_diameter, tensile_strength: $tensile_strength, strength_class: $strength_class, specifications_met: $specifications_met, point_type: $point_type, name: $name, material: $material, head_type: $head_type, head_height: $head_height, head_diameter: $head_diameter, hardness: $hardness, finish: $finish, embedded_length: $embedded_length, drive_type: $drive_type, description: $description, drive_size: $drive_size, default_fields: $default_fields, countersunk_height: $countersunk_height, countersunk_angle: $countersunk_angle}) {
+    mutation UpdateItemHardwareFastenerScrewMachine($countersunk_angle: numeric, $countersunk_height: numeric, $description: String, $drive_size: String, $default_fields: jsonb, $drive_type: enum_item_hardware_fastener_drive_enum, $embedded_length: numeric, $finish: enum_item_hardware_finish_enum, $hardness: enum_item_hardware_fastener_screw_hardness_enum, $head_diameter: numeric, $head_height: numeric, $head_type: enum_item_hardware_fastener_screw_head_enum, $id: Int!, $material: enum_item_hardware_fastener_material_enum, $name: String, $point_type: enum_item_hardware_fastener_screw_machine_point_enum, $specifications_met: jsonb, $strength_class: enum_item_hardware_fastener_screw_machine_strength_enum, $tensile_strength: numeric, $thread_diameter_label: String, $thread_direction: enum_item_handedness_enum, $thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum, $thread_length: numeric, $thread_pitch: numeric, $thread_standard: enum_item_hardware_fastener_thread_standard_enum, $unit: enum_unit_enum, $use_material: enum_item_hardware_use_material_enum) {
+  update_item_hardware_fastener_screw_machine_by_pk(pk_columns: {id: $id}, _set: {use_material: $use_material, unit: $unit, thread_standard: $thread_standard, thread_pitch: $thread_pitch, thread_length: $thread_length, thread_fit: $thread_fit, thread_direction: $thread_direction, thread_diameter_label: $thread_diameter_label, tensile_strength: $tensile_strength, strength_class: $strength_class, specifications_met: $specifications_met, point_type: $point_type, name: $name, material: $material, head_type: $head_type, head_height: $head_height, head_diameter: $head_diameter, hardness: $hardness, finish: $finish, embedded_length: $embedded_length, drive_type: $drive_type, description: $description, drive_size: $drive_size, default_fields: $default_fields, countersunk_height: $countersunk_height, countersunk_angle: $countersunk_angle}) {
     ...ItemHardwareFastenerScrewMachineFields
   }
 }
     ${ItemHardwareFastenerScrewMachineFieldsFragmentDoc}`;
-export type UpdateItemHardwareFastenerScrewMachineMutationFn = ApolloReactCommon.MutationFunction<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-export type UpdateItemHardwareFastenerScrewMachineProps<TChildProps = {}, TDataName extends string = 'mutate'> = {
-      [key in TDataName]: ApolloReactCommon.MutationFunction<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>
-    } & TChildProps;
-export function withUpdateItemHardwareFastenerScrewMachine<TProps, TChildProps = {}, TDataName extends string = 'mutate'>(operationOptions?: ApolloReactHoc.OperationOption<
-  TProps,
-  UpdateItemHardwareFastenerScrewMachineMutation,
-  UpdateItemHardwareFastenerScrewMachineMutationVariables,
-  UpdateItemHardwareFastenerScrewMachineProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withMutation<TProps, UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables, UpdateItemHardwareFastenerScrewMachineProps<TChildProps, TDataName>>(UpdateItemHardwareFastenerScrewMachineDocument, {
-      alias: 'updateItemHardwareFastenerScrewMachine',
-      ...operationOptions
-    });
-};
+export type UpdateItemHardwareFastenerScrewMachineMutationFn = Apollo.MutationFunction<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
 
 /**
  * __useUpdateItemHardwareFastenerScrewMachineMutation__
@@ -31386,11 +30457,10 @@ export function withUpdateItemHardwareFastenerScrewMachine<TProps, TChildProps =
  *      specifications_met: // value for 'specifications_met'
  *      strength_class: // value for 'strength_class'
  *      tensile_strength: // value for 'tensile_strength'
- *      thread_diameter: // value for 'thread_diameter'
+ *      thread_diameter_label: // value for 'thread_diameter_label'
  *      thread_direction: // value for 'thread_direction'
  *      thread_fit: // value for 'thread_fit'
  *      thread_length: // value for 'thread_length'
- *      thread_label: // value for 'thread_label'
  *      thread_pitch: // value for 'thread_pitch'
  *      thread_standard: // value for 'thread_standard'
  *      unit: // value for 'unit'
@@ -31398,10 +30468,10 @@ export function withUpdateItemHardwareFastenerScrewMachine<TProps, TChildProps =
  *   },
  * });
  */
-export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>) {
-        return ApolloReactHooks.useMutation<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>(UpdateItemHardwareFastenerScrewMachineDocument, baseOptions);
+export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: Apollo.MutationHookOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>) {
+        return Apollo.useMutation<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>(UpdateItemHardwareFastenerScrewMachineDocument, baseOptions);
       }
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
-export type UpdateItemHardwareFastenerScrewMachineMutationResult = ApolloReactCommon.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
-export type UpdateItemHardwareFastenerScrewMachineMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-07-17T06:38:09-06:00
+export type UpdateItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
+export type UpdateItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
+// graphql typescript defs generated on 2020-08-25T13:07:51-06:00

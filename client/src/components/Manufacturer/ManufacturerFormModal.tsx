@@ -9,11 +9,8 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
 import { GetManufacturerQuery, GetManufacturerQueryVariables, useGetManufacturerQuery, useInsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables, useGetManufacturerLazyQuery, useUpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables, useDeleteManufacturerMutation, GetManufacturerDocument, GetManufacturersDocument, useDeleteVendorMutation, useInsertVendorMutation, useInsertVendorWithExistingManufacturerMutation } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
-import { QueryResult } from 'react-apollo';
-import moment from 'moment';
 import { Store } from 'antd/lib/form/interface';
 import { PageSpin } from '~components/Shared/PageSpin';
 import { Manufacturer } from '~lib/Manufacturer/Manufacturer';
