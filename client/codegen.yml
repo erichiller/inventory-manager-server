@@ -13,10 +13,10 @@ config:
     # apolloReactComponentsImportFrom: "@apollo/react-components"
     # apolloReactHocImportFrom: "@apollo/react-hoc"
     # apolloReactHooksImportFrom: "@apollo/client"
-    apolloReactCommonImportFrom: "@apollo/react-common"
-    apolloReactComponentsImportFrom: "@apollo/react-components"
-    apolloReactHocImportFrom: "@apollo/react-hoc"
-    apolloReactHooksImportFrom: "@apollo/react-hooks"
+    # apolloReactCommonImportFrom: "@apollo/react-common"
+    # apolloReactComponentsImportFrom: "@apollo/react-components"
+    # apolloReactHocImportFrom: "@apollo/react-hoc"
+    # apolloReactHooksImportFrom: "@apollo/react-hooks"
     AvoidOptionalsConfig: false
     transformUnderscore: true
     # https://graphql-code-generator.com/docs/plugins/typescript

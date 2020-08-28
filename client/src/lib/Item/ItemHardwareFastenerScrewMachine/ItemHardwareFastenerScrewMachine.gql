@@ -9,7 +9,7 @@ fragment ItemHardwareFastenerScrewMachineFields on item_hardware_fastener_screw_
     drive_size
     head_diameter
     head_height
-    thread_diameter
+    thread_diameter_label
     finish
     material
     thread_direction
@@ -49,11 +49,11 @@ mutation InsertItemHardwareFastenerScrewMachine(
     $specifications_met: jsonb
     $strength_class: enum_item_hardware_fastener_screw_machine_strength_enum
     $tensile_strength: numeric
-    $thread_diameter: numeric
+    $thread_diameter_label: String
     $thread_direction: enum_item_handedness_enum
     $thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum
     $thread_length: numeric
-    $thread_label: enum_item_hardware_fastener_thread_label_enum
+    # $thread_label: enum_item_hardware_fastener_thread_label_enum
     $thread_pitch: numeric
     $thread_standard: enum_item_hardware_fastener_thread_standard_enum
     $unit: enum_unit_enum
@@ -79,10 +79,20 @@ mutation InsertItemHardwareFastenerScrewMachine(
             specifications_met: $specifications_met
             strength_class: $strength_class
             tensile_strength: $tensile_strength
-            thread_diameter: $thread_diameter
+            thread_diameter_label: $thread_diameter_label
             thread_direction: $thread_direction
             thread_fit: $thread_fit
-            thread_label: $thread_label
+            # thread_label: $thread_label
+            # diameter {
+            #     # diameter_label
+            #     # diameter_major
+            #         # fit
+            #     # pitch
+            #     # pitch_label
+            #     # standard
+            #     thread_label: $thread_label
+            #     # unit
+            # }
             thread_length: $thread_length
             thread_pitch: $thread_pitch
             thread_standard: $thread_standard
@@ -120,11 +130,11 @@ mutation UpdateItemHardwareFastenerScrewMachine(
     $specifications_met: jsonb
     $strength_class: enum_item_hardware_fastener_screw_machine_strength_enum
     $tensile_strength: numeric
-    $thread_diameter: numeric
+    $thread_diameter_label: String
     $thread_direction: enum_item_handedness_enum
     $thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum
     $thread_length: numeric
-    $thread_label: enum_item_hardware_fastener_thread_label_enum
+    # $thread_label: enum_item_hardware_fastener_thread_label_enum
     $thread_pitch: numeric
     $thread_standard: enum_item_hardware_fastener_thread_standard_enum
     $unit: enum_unit_enum
@@ -138,10 +148,10 @@ mutation UpdateItemHardwareFastenerScrewMachine(
             thread_standard: $thread_standard
             thread_pitch: $thread_pitch
             thread_length: $thread_length
-            thread_label: $thread_label
+            # thread_label: $thread_label
             thread_fit: $thread_fit
             thread_direction: $thread_direction
-            thread_diameter: $thread_diameter
+            thread_diameter_label: $thread_diameter_label
             tensile_strength: $tensile_strength
             strength_class: $strength_class
             specifications_met: $specifications_met

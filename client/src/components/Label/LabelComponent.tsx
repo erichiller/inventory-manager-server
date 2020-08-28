@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from 'react';
 // import { Resizable, ResizableBox } from 'react-resizable';
 import { Rnd, ResizableDelta, Position as RndPosition } from 'react-rnd';
 import { ResizeDirection } from 're-resizable';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client/react';
 import { Stage, Layer } from 'react-konva';
 import { Spin, InputNumber, Input } from "antd";
 

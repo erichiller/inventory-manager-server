@@ -9,7 +9,7 @@ import {
 import { LabelDrawModal } from '../Draw/LabelDrawModal';
 import { Item } from '~lib/Item';
 
-import { QueryResult } from '@apollo/react-common';
+import { QueryResult } from '@apollo/client/react';
 import { EditOutlined, PrinterOutlined, DeleteOutlined, TagOutlined } from '@ant-design/icons';
 import { ItemTableMouseOver } from './ItemTableMouseOver';
 import { ItemFormModal } from './ItemFormModal';
