@@ -4,7 +4,7 @@ import { Select, Tooltip, Button } from 'antd';
 import { DISPLAY } from '~lib/types/enums';
 import React from 'react';
 import { Modal } from 'antd';
-import { useGetIconsQuery, GetIconsProps } from '~lib/types/graphql';
+import { useGetIconsQuery } from '~lib/types/graphql';
 import { Item } from '~lib/Item';
 import { LabelImage } from '~lib/LabelConstituent';
 import { DrawContext } from '~components/Draw/LabelDraw';
