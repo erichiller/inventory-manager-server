@@ -18,6 +18,7 @@ export class ScrewSizeInputOptionData {
     unit: EnumUnitEnum;
     prefix: UnitPrefixT;
     thread_diameter: number;
+    thread_diameter_label: string;
     embedded_length: number;
     thread_pitch: number;
     numerator?: number;

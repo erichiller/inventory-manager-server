@@ -30,7 +30,11 @@ export const ItemHardwareFastenerScrewMachineAddMutationHandler: React.FC<FormMu
                         thread_direction: EnumItemHandednessEnum.right,
                         use_material: EnumItemHardwareUseMaterialEnum.machine,
                         point_type: EnumItemHardwareFastenerScrewMachinePointEnum.flat
-                    } ),
+                    },
+                    {
+                        thread_diameter_label:
+                    }
+                ),
                     // TODO: make this more exact, rather than refetch EVERY Item.
                 refetchQueries: [
                     { query: GetItemsDocument }

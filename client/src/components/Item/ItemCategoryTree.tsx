@@ -39,9 +39,6 @@ export const ItemCategoryTree = ( props: ItemCategoryTreeProps & { children?: Re
                     let newNode = {
                         key: pathString,
                         title: <PopOverMenu
-                            placement="bottomRight"
-                            trigger="contextMenu"
-                            overlayClassName="ItemCategoryContextMenu"
                             menuItems={[
                                 {
                                     icon: <PlusOutlined />,
