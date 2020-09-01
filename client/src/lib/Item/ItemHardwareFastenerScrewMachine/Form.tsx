@@ -142,7 +142,7 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                 </Form.Item>
 
                 {/* DIAMETER */}
-                <Form.Item name="thread_diameter" dependencies={[ 'unit' ]} required
+                <Form.Item name="thread_diameter_label" dependencies={[ 'unit' ]} required
                     label={<FormIconTooltip text={
                         <span className="tooltip-with-example">
                             <header>Thread dimensions. </header>
@@ -153,7 +153,7 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                             <pre><span className="highlight">M3</span>-0.5x5</pre>
                         </span>
                     } label="Diameter" />}
-                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_diameter", form, updateName )}
+                    shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_diameter_label", form, updateName )}
                 >
                     <MeasurementInput
                         unit={unit}
@@ -417,7 +417,7 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                     <Input
                         type="number"
                         maxLength={8}
-                        style={{ width: 100 }}
+                        style={{ width: 120 }}
                         addonAfter="psi"
                     />
                 </Form.Item>
