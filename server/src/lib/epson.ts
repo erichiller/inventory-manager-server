@@ -563,7 +563,7 @@ export class BrotherLabeler {
                             }
                         }
                     }
-                    if ( retObj ) {
+                    if ( retObj.labelType ) {
                         retObj[ "heightInch" ] = parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( retObj[ "labelType" ] )[ 0 ] );
                         retObj[ "heightMillimeter" ] = parseFloat( /[0-9]{1,2}mm/.exec( retObj[ "labelType" ] )[ 0 ] );
                         resolve( retObj );
