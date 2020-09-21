@@ -18,7 +18,7 @@ import { DescriptionTableTooltip } from './FormComponents/DescriptionTableToolti
 import { FormIconTooltip } from '../../FormHelpers';
 
 
-interface ItemHardwareFastenerScrewMachineFormProps extends Intersection<ItemFormProps, ItemHardwareFastenerScrewMachine> {
+interface ItemHardwareFastenerScrewMachineFormProps extends Intersection<ItemFormProps<FormFields>, ItemHardwareFastenerScrewMachine> {
 
 }
 
@@ -26,6 +26,8 @@ interface ItemHardwareFastenerScrewMachineFormProps extends Intersection<ItemFor
 interface FormFields {
     screw_size: ScrewSizeInputOptionData;
     in_stock: boolean;
+    thread_diameter_label: string;
+
 }
 
 /**
@@ -207,7 +209,7 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                 </Form.Item>
 
                 {/* TODO: this should ultimately have a lookup table of applicable threads. */}
-                <Form.Item name="thread_label" label="Thread Label"
+                {/* <Form.Item name="thread_label" label="Thread Label"
                     shouldUpdate={( prev: FormFields, next: FormFields ) => {
                         let currentValue = form.getFieldValue( 'thread_label' );
                         if ( ( next.screw_size && next.screw_size.thread_label && currentValue !== next.screw_size.thread_label ) ) {
@@ -219,7 +221,7 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                 >
                     <EnumSelect enumKeys={Object.keys( EnumItemHardwareFastenerThreadLabelEnum )}
                     />
-                </Form.Item>
+                </Form.Item> */}
             </div>
 
 

@@ -29,13 +29,13 @@ export type GenericItem = Pick<ItemGql, 'id'>
 export type ItemGqlTypename = keyof typeof EnumItemClassEnum | 'item';
 
 
-export interface ItemFormProps {
-    form: FormInstance;
+export interface ItemFormProps<T> {
+    form: FormInstance<T>;
 }
 /**
  * Upon receiving submitted, it will send mutation to graphql.
  */
-export interface FormMutationHandler<T = {}> extends ItemFormProps {
+export interface FormMutationHandler<T = {}> extends ItemFormProps<T> {
     submitted: boolean;
     originalObject?: T;
     completeCallback: ( submitted: boolean ) => void;
@@ -425,7 +425,7 @@ export class Item<T extends GenericItem> {
     /**
      * Form to edit Item
      */
-    get editComponent (): React.FC<ItemFormProps & T> {
+    get editComponent (): React.FC<ItemFormProps<GenericItem> & T> {
         return null;
     }
     /**

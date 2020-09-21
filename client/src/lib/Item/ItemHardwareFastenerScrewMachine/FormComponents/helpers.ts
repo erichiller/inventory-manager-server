@@ -36,12 +36,13 @@ export function getUnitPrefixFromUnitSystem ( unit: EnumUnitEnum ): UnitPrefixT 
  * Accept an option string and return the unit prefix and diameter
  * @param optionString string which would normally be fed into ScrewSizeInput Option. Of the form `<unitPrefix><diameter>-<pitch>-<length>`
  */
-export function getUnitPrefixAndDiameterFromOptionString ( optionString: string ): Pick< ScrewSizeInputOptionData, 'prefix' | 'thread_diameter_label' | 'unit'> {
+export function getUnitPrefixAndDiameterFromOptionString ( optionString: string ): Pick< ScrewSizeInputOptionData, 'prefix' | 'thread_diameter' | 'thread_diameter_label' | 'unit'> {
     let r = screwSizeRegex.exec( optionString );
     let prefix = r.groups.unitPrefix.toUpperCase() as UnitPrefixT;
     if ( r && Object.keys( r ).includes( 'groups' ) ) {
         return { 
             prefix: prefix,
+            thread_diameter: parseFloat(r.groups.diameter),
             thread_diameter_label: `${prefix}${r.groups.diameter}`,
             unit: getUnitSystemFromUnitPrefix(prefix)
         };

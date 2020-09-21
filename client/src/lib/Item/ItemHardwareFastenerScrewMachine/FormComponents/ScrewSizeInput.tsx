@@ -116,11 +116,14 @@ const parseScrewSizeInputOptionData: ( s: string ) => ScrewSizeInputOptionData =
         let pitch = parseFloatSafeWithDefault( r.groups.pitch , getDefaultPitch( prefix, unit, diameter ) );
         let thread_standard = getThreadStandard( s, unit, diameter, pitch ); // TODO: add pitch label
         console.log( { method: 'parseScrewSizeInputOptionData', diameter, unit, length, pitch, s, r } );
+        let parseData = getUnitPrefixAndDiameterFromOptionString( s );
+
         return {
             prefix,
             unit,
             thread_standard,
             thread_diameter: diameter,
+            thread_diameter_label: parseData.thread_diameter_label,
             embedded_length: length,
             thread_pitch: pitch,
             thread_type: getThreadLabel( prefix, unit, diameter, pitch)
@@ -147,16 +150,19 @@ function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOpti
             } );
                 // [ `${ v.prefix }${ v.thread_diameter }` ] )})
 
+
             let matchingDiameters = Object.keys( ScrewSizeConfig[ v.unit ] ).filter( el => el.startsWith( `${ v.prefix }${ v.thread_diameter }` ) );
             console.log( { msg: 'return1-0', matchingDiameters});
             return transparentLog( { msg: 'return1' }, 
                 matchingDiameters
                     .flatMap( thread_diameter_with_prefix => Object.keys(ScrewSizeConfig[ v.unit ][thread_diameter_with_prefix].pitch as PitchDefinitions)
                         .flatMap( thread_pitch => {
+                            let parseData = getUnitPrefixAndDiameterFromOptionString( thread_diameter_with_prefix );
                             console.log( { v, thread_diameter_with_prefix, thread_pitch, pitches: ScrewSizeConfig[ v.unit ][ thread_diameter_with_prefix ].pitch } );
                             return {
                                 ...v, 
-                                thread_diameter: getUnitPrefixAndDiameterFromOptionString( thread_diameter_with_prefix ).thread_diameter,
+                                thread_diameter_label: parseData.thread_diameter_label,
+                                thread_diameter: parseData.thread_diameter,
                                 thread_pitch: parseFloatSafeWithDefault( thread_pitch, undefined ),
                                 thread_type: ScrewSizeConfig[ v.unit ][ thread_diameter_with_prefix ][ "pitch" ][ thread_pitch ].label ?? undefined,
                                 embedded_length: null
