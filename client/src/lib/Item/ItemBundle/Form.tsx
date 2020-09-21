@@ -8,7 +8,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ItemSelect } from '~components/Item/ItemSelect';
 
 
-export interface ItemBundleFormProps extends Intersection<ItemFormProps, ItemBundle> {
+export interface ItemBundleFormProps extends Intersection<ItemFormProps<ItemBundle>, ItemBundle> {
     //
 }
 

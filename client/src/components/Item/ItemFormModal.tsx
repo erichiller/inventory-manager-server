@@ -14,11 +14,11 @@ type ItemFormModalProps = {
     mutationHandler: React.FC<FormMutationHandler>;
     visibleHandler: VisibilityHandlerCallback;
 } & ( {
-    recordEditComponent: React.FC<ItemFormProps>;
+    recordEditComponent: React.FC<ItemFormProps<object>>;
     item: Item<any>;
     addComponent?: null;
 } | {
-    addComponent: React.FC<ItemFormProps>;
+    addComponent: React.FC<ItemFormProps<object>>;
     item?: null;
     recordEditComponent?: null;
 } );

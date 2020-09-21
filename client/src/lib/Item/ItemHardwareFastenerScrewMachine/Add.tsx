@@ -32,7 +32,7 @@ export const ItemHardwareFastenerScrewMachineAddMutationHandler: React.FC<FormMu
                         point_type: EnumItemHardwareFastenerScrewMachinePointEnum.flat
                     },
                     {
-                        thread_diameter_label:
+                        thread_diameter_label: props.form.getFieldValue("")
                     }
                 ),
                     // TODO: make this more exact, rather than refetch EVERY Item.

@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import type { Stage } from 'konva/types/Stage';
 import type { KonvaEventObject } from 'konva/types/Node';
 import { Button, Tooltip, message } from 'antd';
@@ -22,6 +22,7 @@ import { CodeIcon } from '../../styles/icon';
 import { EditableText } from './KonvaElements/EditableText';
 import { TransformableImage } from './KonvaElements/TransformableImage';
 import { TransformableQR } from './KonvaElements/TransformableQR';
+import { JsonModal } from '~components/Shared/JsonModal';
 
 
 
@@ -82,6 +83,7 @@ interface LabelDrawState {
     displayImageUploadModalStatus: DISPLAY;
     displayQREditModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
     displayQREditModalStatus: DISPLAY;
+    modal: React.ReactElement;
     contextMenuLabelConstituent: LabelText | LabelImage | LabelQR;
     item: Item<any>;
     texts: LabelText[];
@@ -126,6 +128,7 @@ const DrawContextStateDefault: DrawContext = {
     displayImageSelectModalStatus: null,
     displayImageUploadModal: () => DISPLAY.HIDDEN,
     displayImageUploadModalStatus: null,
+    modal: null,
     // displayEditTextModalStatus: display.HIDDEN,
     // displayEditTextModalStatus: display.HIDDEN,
     item: undefined,
@@ -599,6 +602,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         displayImageUploadModalStatus: DISPLAY.HIDDEN,
         displayQREditModal: this.displayQREditModal,
         displayQREditModalStatus: DISPLAY.HIDDEN,
+        modal: null,
         contextMenuLabelConstituent: null,
         item: null,
         texts: [], // NOTE: for pre-existing deserialize here.
@@ -644,6 +648,10 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
      */
     get imgData (): ImageData | null {
         return this.canvas && this.width && this.height ? this.canvas.getContext( '2d' ).getImageData( 0, 0, this.width, this.height ) : null;
+    }
+
+    setModal = ( modal: React.ReactElement ): void => {
+        this.setState({modal: modal});
     }
 
     exportLabel = (): LabelExport => {
@@ -717,6 +725,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                     {this.state.displayImageUploadModalStatus ?
                         <NewImageUploadModal visibleHandler={this.displayImageUploadModal} changeHandler={this.updateLabelImages} item={item} labelImage={this.state.uncommittedImage} />
                         : null}
+                    {this.state.modal}
 
                     {/* DEBUG & DIAGNOSTICS */}
                     <div style={{ float: 'right', position: "relative", top: -40 }}>
@@ -741,9 +750,13 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                                 position: "relative",
                                 top: "2px"
                             }} onClick={() => {
-                                console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
-                                console.log( this.context.currentLabelToBuffer() );
-                                message.info( "Debug output sent to console" );
+                                console.log(this.exportLabel());
+                                return;
+                                this.setModal( 
+                                    <JsonModal 
+                                        json={'{"this": "that"}'} 
+                                        visibilityHandler={this.setModal} 
+                                        /> )
                             }} id="DEBUG" />
                         </Tooltip>
                         <Tooltip key="EXPAND_CANVAS_TOOLTIP" placement="top" title="Enlarge print canvas">
