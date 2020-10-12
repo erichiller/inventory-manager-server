@@ -38,7 +38,7 @@ export const EnumSelect = ( props: EnumSelectProps<string> ) => {
                     let Icon = iconMap ? iconMap[ k ] : null;
                     // let Icon: PNGReactFC;
                     // let Icon: SVGReactFC;
-                    console.log( { cls: 'EnumSelect', enumKeys, iconMap, k } );
+                    // console.log( { cls: 'EnumSelect', enumKeys, iconMap, k } );
                     return {
                         value: k,
                         label: <span className={iconMap ? "enumIconSelectOption" : ""}><div>{Icon ? <Icon /> : null}</div><span>{toTitleCase( k )}</span></span>,

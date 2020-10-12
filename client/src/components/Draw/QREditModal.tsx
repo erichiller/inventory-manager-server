@@ -6,7 +6,7 @@ import { Modal, message, Checkbox, Button } from 'antd';
 import { Item } from '~lib/Item';
 import bwipjs from 'bwip-js';
 import { LabelQR } from '~lib/LabelConstituent';
-import { DrawContext } from './LabelDraw';
+import { DrawContextT } from './LabelDraw';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { AntTreeNode } from 'antd/lib/tree';
 import DraggableModal from '../Shared/DraggableModal';

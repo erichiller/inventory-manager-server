@@ -24,7 +24,6 @@
 - [ ] increase width slightly of the tensile strength field
 - [ ] remove thread_diameter ? -- replace with thread_diameter_label
 - [ ] remove thread_label
-- [ ] 
 
 ## Table
 

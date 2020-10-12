@@ -37,7 +37,11 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
     id: Scalars[ 'Int' ];
     /** Material, such as Zinc coated steel or Stainless Steel */
     material?: Maybe<EnumItemHardwareFastenerMaterialEnum>;
-    name: Scalars[ 'String' ];
+    // _name: Scalars[ 'String' ];
+    // @enumerable(true)
+    // get name(): string {
+    //     return this._name;
+    // }
     point_type?: Maybe<EnumItemHardwareFastenerScrewMachinePointEnum>;
     /**
      * Specifications Met ; array of Organizations that certified this

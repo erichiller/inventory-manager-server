@@ -7,28 +7,53 @@ import { Modal } from 'antd';
 import { useGetIconsQuery } from '~lib/types/graphql';
 import { Item } from '~lib/Item';
 import { LabelImage } from '~lib/LabelConstituent';
-import { DrawContext } from '~components/Draw/LabelDraw';
 import { StopOutlined, UploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { QueryResultTypePlus } from '~lib/UtilityFunctions';
+import { NewImageUploadModal } from './NewImageUploadModal';
 
 
 interface LabelAddImageProps {
     event?: KonvaEventObject<MouseEvent>;
     item?: Item<any>;
     labelImage: LabelImage;
-    visibleHandler: ( display?: DISPLAY ) => void;
+    visibleHandler: ( display?: boolean ) => void;
     changeHandler: ( newValue: any, labelImage: LabelImage ) => void;
+    commitLabelImage: (labelImage: LabelImage) => void;
 }
 
-interface LabelAddImageState {
 
-}
+
+// d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
+//     console.log( "displayImageUploadModalStatus()", d );
+//     if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
+//         this.setState( {
+//             displayImageUploadModalStatus: DISPLAY.HIDDEN
+//         } );
+//         // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
+//         return DISPLAY.HIDDEN;
+//     }
+//     if ( ( d as DISPLAY ) === DISPLAY.VISIBLE ) { this.setState( { displayImageUploadModalStatus: DISPLAY.VISIBLE } ); return DISPLAY.VISIBLE; }
+//     if ( !d ) {
+//         return this.state.displayImageUploadModalStatus ? DISPLAY.VISIBLE : DISPLAY.HIDDEN;
+//     }
+//     ( d as React.MouseEvent<HTMLElement, MouseEvent> ).preventDefault();
+//     if ( d ) {
+//         this.setState( {
+//             item: this.props.item,
+//             displayImageUploadModalStatus: DISPLAY.VISIBLE
+//         } );
+//     } else {
+//         this.setState( { displayImageUploadModalStatus: DISPLAY.HIDDEN } );
+//     }
+// };
+
 
 
 // export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
 export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
 
     const [ icons, setIcons ] = useState < QueryResultTypePlus<typeof useGetIconsQuery>[]>([]);
+    
 
     const handleCancel = () => {
         /// REMOVE ELEMENT /// REVERT ///
@@ -36,8 +61,10 @@ export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
     };
 
     const onClose = () => {
-        props.visibleHandler( DISPLAY.HIDDEN );
+        props.visibleHandler( false );
     };
+
+    const [ displayImageUploadModal, setDisplayImageUploadModal ] = useState<boolean>(false);
 
     let { data, loading, error} = useGetIconsQuery( { } );
 
@@ -101,19 +128,20 @@ export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
 
 
 
-    console.log( 'props.visible', visibleHandler() );
     // console.log('state.visible', visibleHandler(), state.visible == display.VISIBLE ? true : false)
     console.log( 'props.item', item );
     let drawWidth = 725;
     return (
-        <DrawContext.Consumer>
-            {( { commitLabelImage, displayImageUploadModal } ) => {
-                return (
+        <>
+
+            {displayImageUploadModal ?
+                <NewImageUploadModal commitLabelImage={props.commitLabelImage} visibleHandler={setDisplayImageUploadModal} changeHandler={changeHandler} item={item} labelImage={labelImage} />
+                : null}
                     <Modal
                         visible
                         title={"Image"}
                         onCancel={handleCancel}
-                        onOk={() => { commitLabelImage( labelImage ); onClose(); }}
+                        onOk={() => { props.commitLabelImage( labelImage ); onClose(); }}
                         footer={[
                             <Tooltip placement="top" title="Return to Items">
                                 <Button key="cancel" danger={true} onClick={handleCancel}>
@@ -123,8 +151,8 @@ export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
                             </Tooltip >,
                             <Tooltip placement="top" title="Add to list for bulk printing later">
                                 <Button key="Upload Image" type="primary" onClick={() => {
-                                    displayImageUploadModal( DISPLAY.VISIBLE );
-                                    visibleHandler( DISPLAY.HIDDEN );
+                                    setDisplayImageUploadModal( true );
+                                    visibleHandler( false );
                                 }} >
                                     {/* <Icon type="plus-circle" /> */}
                                     <UploadOutlined />
@@ -132,7 +160,7 @@ export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
                                         </Button>
                             </Tooltip>,
                             <Tooltip placement="top" title="Add image to label">
-                                <Button key="add" type="primary" onClick={() => { commitLabelImage( labelImage ); onClose(); }}>
+                                <Button key="add" type="primary" onClick={() => { props.commitLabelImage( labelImage ); onClose(); }}>
                                     <PlusCircleOutlined />
                                             Add
                                         </Button>
@@ -186,8 +214,6 @@ export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
                                     labelImage={labelImage}
                                 /> */}
                     </Modal>
+                    </>
                 );
-            }}
-        </DrawContext.Consumer>
-    );
 };

@@ -24,7 +24,7 @@ export class ItemBundle extends Item<ItemPlusClassT<ItemBundleGql, 'item_bundle'
 
     __typename: 'item_bundle';
     id: Scalars[ 'Int' ];
-    name: Scalars[ 'String' ];
+    // name: Scalars[ 'String' ];
     description?: Maybe<Scalars[ 'String' ]>;
 
     created_at: Scalars[ 'timestamptz' ];

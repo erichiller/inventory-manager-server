@@ -4,11 +4,11 @@ import ReactKonva, { KonvaNodeComponent, Transformer } from 'react-konva';
 import type { KonvaEventObject } from "konva/types/Node";
 import { LabelText } from '~lib/LabelConstituent';
 import { Item } from '~lib/Item';
-import { DrawContext } from '~components/Draw/LabelDraw';
+import { DrawContextT } from '~components/Draw/LabelDraw';
 import { stringTemplateRender } from '~lib/stringTemplates';
 
 
-interface EditableTextProps extends Pick<DrawContext, 'displayContextMenu' | 'selectedShapeName' | 'updateHistory' | 'setSelectedShapeName'> {
+interface EditableTextProps extends Pick<DrawContextT, 'displayContextMenu' | 'selectedShapeName' | 'updateHistory' | 'setSelectedShapeName'> {
     labelText: LabelText;
     item: Item<any>;
     // stage: Konva.Stage;
@@ -54,6 +54,7 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
     }, [ isSelected, trRef, trRef.current, props.selectedShapeName ] );
 
     React.useEffect( () => {
+        console.log( { cls: 'EditableText', method: 'useEffect', op: 'setRenderedString', labelText } );
         setRenderedString(stringTemplateRender( labelText.text, item ));
     }, [labelText.text] );
 
