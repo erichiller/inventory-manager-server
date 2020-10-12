@@ -35,8 +35,8 @@ export const EnumSelect = ( props: EnumSelectProps<string> ) => {
                 }}
                 onChange={triggerChange}
                 options={enumKeys.map( k => {
-                    // let Icon = iconMap ? iconMap[ k ] : null;
-                    let Icon: PNGReactFC;
+                    let Icon = iconMap ? iconMap[ k ] : null;
+                    // let Icon: PNGReactFC;
                     // let Icon: SVGReactFC;
                     console.log( { cls: 'EnumSelect', enumKeys, iconMap, k } );
                     return {
