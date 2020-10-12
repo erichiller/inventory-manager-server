@@ -17,6 +17,15 @@
   - [ ] make draggable
   - [ ] make `editable` a prop; `false` when viewing data for debug.
 
+- [ ] #FIXME - JSON editor modal - be able to show label debug
+- [ ] #FIXME - initial exportLabel() is not running
+- [ ] #FIXME - refresh item table after adding a bolt
+- [x] ! All the icons are broken in the itemhardwrefastenermachine form
+- [ ] increase width slightly of the tensile strength field
+- [ ] remove thread_diameter ? -- replace with thread_diameter_label
+- [ ] remove thread_label
+- [ ] 
+
 ## Table
 
 - [ ] Filter / search on table
