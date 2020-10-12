@@ -8,7 +8,7 @@ import { MedicineBoxOutlined, FontSizeOutlined, QrcodeOutlined, PictureOutlined,
 import { Item } from '~lib/Item';
 import { DISPLAY } from '~lib/types/enums';
 import { DrawContextMenu } from './DrawContextMenu';
-import { DrawEditText } from './DrawEditText';
+import { EditTextModal } from './EditTextModal';
 import { LabelAddImageModal } from './Image/LabelAddImageModal';
 
 import { QREditModal } from './QREditModal';
@@ -63,7 +63,7 @@ interface LabelDrawProps {
 }
 
 
-type IKonvaEventHandler = ( d: boolean | KonvaEventObject<PointerEvent | MouseEvent> ) => void;
+export type IKonvaEventHandler = ( d: boolean | KonvaEventObject<PointerEvent | MouseEvent> ) => void;
 type IHtmlEventHandler = ( d: boolean | DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => void;
 type LabelConstituentT = LabelText | LabelImage | LabelQR;
 interface LabelDrawConstituents {
@@ -77,10 +77,8 @@ interface LabelDrawState {
     displayContextMenuPosition?: [ number, number ];
     displayEditTextModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
     displayEditTextModalStatus: DISPLAY;
-    displayImageSelectModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
+    displayImageSelectModal: ( d: boolean | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
     displayImageSelectModalStatus: DISPLAY;
-    displayImageUploadModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
-    displayImageUploadModalStatus: DISPLAY;
     displayQREditModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
     displayQREditModalStatus: DISPLAY;
     modal: React.ReactElement;
@@ -109,13 +107,13 @@ export interface DrawContextAdditions {
     displayContextMenu: IKonvaEventHandler;
 }
 
-export type DrawContext = DrawContextAdditions & Omit<LabelDrawState, "item">;
+export type DrawContextT = DrawContextAdditions & Omit<LabelDrawState, "item">;
 
 const NoOp = (opName?:  string) => { 
     return () => console.warn(`NOOP: ${opName ?? 'this'} operation is not configured.`);
 };
 
-const DrawContextStateDefault: DrawContext = {
+const DrawContextStateDefault: DrawContextT = {
     displayContextMenu: () => { },
     displayContextMenuStatus: false,
     displayContextMenuPosition: undefined,
@@ -126,8 +124,6 @@ const DrawContextStateDefault: DrawContext = {
     displayQREditModalStatus: null,
     displayImageSelectModal: () => DISPLAY.HIDDEN,
     displayImageSelectModalStatus: null,
-    displayImageUploadModal: () => DISPLAY.HIDDEN,
-    displayImageUploadModalStatus: null,
     modal: null,
     // displayEditTextModalStatus: display.HIDDEN,
     // displayEditTextModalStatus: display.HIDDEN,
@@ -151,7 +147,7 @@ const DrawContextStateDefault: DrawContext = {
     setSelectedShapeName: NoOp('setSelectedShapeName'),
 };
 
-export const DrawContext = React.createContext<DrawContext>( DrawContextStateDefault );
+export const DrawContext = React.createContext<DrawContextT>( DrawContextStateDefault );
 
 
 
@@ -219,9 +215,9 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         }
     };
 
-    displayImageSelectModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
+    displayImageSelectModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | boolean ): DISPLAY => {
         console.log( "displayImageSelectModal()", d );
-        if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
+        if ( d === false ) {
             this.setState( {
                 displayImageSelectModalStatus: DISPLAY.HIDDEN
             } );
@@ -232,36 +228,13 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             return this.state.displayImageSelectModalStatus ? DISPLAY.VISIBLE : DISPLAY.HIDDEN;
         }
         ( d as React.MouseEvent<HTMLElement, MouseEvent> ).preventDefault();
-        if ( d ) {
+        if ( d === true ) {
             this.setState( {
                 item: this.props.item,
                 displayImageSelectModalStatus: DISPLAY.VISIBLE
             } );
         } else {
             this.setState( { displayImageSelectModalStatus: DISPLAY.HIDDEN } );
-        }
-    };
-    displayImageUploadModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
-        console.log( "displayImageUploadModalStatus()", d );
-        if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
-            this.setState( {
-                displayImageUploadModalStatus: DISPLAY.HIDDEN
-            } );
-            // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
-            return DISPLAY.HIDDEN;
-        }
-        if ( ( d as DISPLAY ) === DISPLAY.VISIBLE ) { this.setState( { displayImageUploadModalStatus: DISPLAY.VISIBLE } ); return DISPLAY.VISIBLE; }
-        if ( !d ) {
-            return this.state.displayImageUploadModalStatus ? DISPLAY.VISIBLE : DISPLAY.HIDDEN;
-        }
-        ( d as React.MouseEvent<HTMLElement, MouseEvent> ).preventDefault();
-        if ( d ) {
-            this.setState( {
-                item: this.props.item,
-                displayImageUploadModalStatus: DISPLAY.VISIBLE
-            } );
-        } else {
-            this.setState( { displayImageUploadModalStatus: DISPLAY.HIDDEN } );
         }
     };
     displayQREditModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
@@ -310,20 +283,24 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             console.warn( "no match found for field", changedValue );
         }
 
-        this.state.texts.forEach( ( text => {
+        let texts = this.state.texts;
+        texts.forEach( ( text => {
             if ( text.id == labelText.id ) {
                 console.log( "updating existing labelText with id", text.id );
-                text = labelText;
+                // text = labelText;
+                text.text = labelText.text;
                 updatedText = true;
                 return;
             }
         } ) );
         if ( !updatedText ) {
+            console.log( "adding labelText ; this.state.texts is now", this.state.texts, "pending", [ ...this.state.texts, labelText ] );
             this.setState( {
                 texts: [ ...this.state.texts, labelText ]
             } );
+        } else {
+            this.setState( { texts: texts } );
         }
-        console.log( "this.state.texts is now", this.state.texts, "pending", [ ...this.state.texts, labelText ] );
         // this.updateContext();
     };
 
@@ -470,7 +447,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
 
 
     /**
-     * IMPORTANT: ! -> THE LOGIC IN THESE UPDATE X FUNCTIONS DO NOT ALLOW FOR MULTIPLE IMAGES OF THE SAME ID
+     * **IMPORTANT**: ! -> THE LOGIC IN THESE UPDATE X FUNCTIONS DO NOT ALLOW FOR MULTIPLE IMAGES OF THE SAME ID
      */
 
     updateLabelImages = ( changedValue: Partial<LabelImage>, labelImage: LabelImage ) => {
@@ -519,8 +496,8 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
 
 
     /**
-     * changedValue - values changes on...
-     * labelQR - LabelQR object whose values have changed
+     * changedValue - values changes on...  
+     * labelQR - LabelQR object whose values have changed  
      * NOTE: pass in FALSE to delete the object
      **/
     updateLabelQR = ( changedValue: Partial<LabelQR> | false, labelQR: LabelQR ) => {
@@ -598,8 +575,6 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         displayEditTextModalStatus: DISPLAY.HIDDEN,
         displayImageSelectModal: this.displayImageSelectModal,
         displayImageSelectModalStatus: DISPLAY.HIDDEN,
-        displayImageUploadModal: this.displayImageUploadModal,
-        displayImageUploadModalStatus: DISPLAY.HIDDEN,
         displayQREditModal: this.displayQREditModal,
         displayQREditModalStatus: DISPLAY.HIDDEN,
         modal: null,
@@ -699,13 +674,19 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                 value={{ ...( this.state ), ...( this.ContextConstants ) }}>
                 <div>
                     {this.state.displayContextMenuStatus ?
-                        <DrawContextMenu />
+                        <DrawContextMenu 
+                            displayContextMenuPosition={this.state.displayContextMenuPosition} 
+                            deleteLabelConstituent={this.deleteLabelConstituent} 
+                            contextMenuLabelConstituent={this.state.contextMenuLabelConstituent}
+                            displayContextMenu={this.displayContextMenu}
+                            />
                         : null}
                     {this.state.displayEditTextModalStatus ?
-                        <DrawEditText
+                        <EditTextModal
                             visibleHandler={this.displayEditTextModal}
                             changeHandler={this.updateLabelTexts}
                             item={item}
+                            commitLabelText={this.commitLabelText}
                             labelText={this.state.uncommittedText} />
                         : null}
                     {this.state.displayImageSelectModalStatus ?
@@ -713,6 +694,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                             visibleHandler={this.displayImageSelectModal}
                             changeHandler={this.updateLabelImages}
                             item={item}
+                            commitLabelImage={this.commitLabelImage}
                             labelImage={this.state.uncommittedImage} />
                         : null}
                     {this.state.displayQREditModalStatus ?
@@ -721,9 +703,6 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
                             changeHandler={this.updateLabelQR}
                             item={item}
                             labelQR={this.state.uncommittedQR} />
-                        : null}
-                    {this.state.displayImageUploadModalStatus ?
-                        <NewImageUploadModal visibleHandler={this.displayImageUploadModal} changeHandler={this.updateLabelImages} item={item} labelImage={this.state.uncommittedImage} />
                         : null}
                     {this.state.modal}
 

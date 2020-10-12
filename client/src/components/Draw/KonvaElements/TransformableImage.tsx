@@ -3,11 +3,11 @@ import Konva from "konva";
 import ReactKonva, { KonvaNodeComponent, Transformer } from 'react-konva';
 import type { KonvaEventObject } from "konva/types/Node";
 import { Item } from '~lib/Item';
-import { DrawContext } from '~components/Draw/LabelDraw';
+import { DrawContextT } from '~components/Draw/LabelDraw';
 import { LabelImage } from '~lib/LabelConstituent';
 
 
-interface ImageProps extends Pick<DrawContext,
+interface ImageProps extends Pick<DrawContextT,
     'displayContextMenu' | 'selectedShapeName' | 'updateHistory' | 'setSelectedShapeName'> {
     labelImage: LabelImage;
     item: Item<any>;

@@ -5,15 +5,15 @@ import React from 'react';
 import { Modal, AutoComplete, Form, Checkbox, Mentions } from 'antd';
 // import CheckboxGroup from 'antd/lib/checkbox/Group';
 import { LabelText, FormatOptionsT } from '~lib/LabelConstituent';
-import { DrawContext } from './LabelDraw';
 import { Item } from '~lib/Item';
 
-interface DrawEditTextProps {
+interface EditTextModalProps {
     event?: KonvaEventObject<MouseEvent>;
     item?: Item<any>;
     labelText: LabelText;
     visibleHandler: ( display?: DISPLAY ) => void;
     changeHandler: ( newValue: any, labelText: LabelText ) => void;
+    commitLabelText: ( labelText: LabelText ) => void;
 }
 
 type CheckedFormatOptionsT = FormatOptionsT[];
@@ -51,14 +51,11 @@ const formatOptions = [
     "underline"
 ];
 
-export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
+export const EditTextModal: React.FC<EditTextModalProps> = ( props ) => {
     // const { event, visibleHandler, item, changeHandler, labelText } = props;
 
     console.log( 'DrawEditText props:\n', props );
 
-    const drawContext = useContext( DrawContext );
-
-    const [ currentFormatOptions, setCurrentFormatOptions ] = useState<CheckedFormatOptionsT>();
 
     const [ labelText, setLabelText ] = useState<LabelText>( props.labelText.simpleObject as LabelText);
     const [ currentMentionPrefix, setCurrentMentionPrefix ] = useState<string>('');
@@ -66,7 +63,6 @@ export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
     const onCancel = () => {
         props.visibleHandler( DISPLAY.HIDDEN );
     };
-
 
     const onChange = ( currentValue ) => {
         if ( currentValue.length > 1 && currentValue.substr(-2) == '{{'){
@@ -88,13 +84,16 @@ export const DrawEditText: React.FC<DrawEditTextProps> = ( props ) => {
         title={"Text"}
         okText="Ok"
         onCancel={onCancel}
-        onOk={() => { drawContext.commitLabelText( labelText ); onCancel(); }}
+        onOk={() => { props.commitLabelText( labelText ); onCancel(); }}
         width={drawWidth + 25}
     >
         <Form
             name="basic"
             initialValues={labelText}
-            onValuesChange={(changedValues) => props.changeHandler(changedValues, props.labelText)}
+            onValuesChange={(changedValues) => {
+                console.log("onValuesChange", {changedValues});
+                props.changeHandler(changedValues, props.labelText)
+            }}
             layout="horizontal"
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 15 }}

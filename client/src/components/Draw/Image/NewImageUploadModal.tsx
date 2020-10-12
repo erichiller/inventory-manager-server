@@ -1,10 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { LabelImage } from "~lib/LabelConstituent";
 import { Spin, Select, Input, message, Modal, Form } from "antd";
 import { GetIconDocument, EnumItemClassEnum, useInsertIconMutation } from "~lib/types/graphql";
 import { Item } from "~lib/Item";
 import { DISPLAY } from '~lib/types/enums';
-import { DrawContext } from "~components/Draw/LabelDraw";
 import { UploadOutlined } from '@ant-design/icons';
 import { useForm } from 'antd/lib/form/Form';
 
@@ -16,8 +15,9 @@ interface NewImageUploadModalProps {
     labelImage: LabelImage;
     width?: number;
     item?: Pick<NonNullable<Item<any>>, 'id' | 'name'>;
-    visibleHandler: ( display?: DISPLAY ) => void;
+    visibleHandler: ( display?: boolean ) => void;
     changeHandler: ( newValue: any, labelText: LabelImage ) => void;
+    commitLabelImage: ( labelImage: LabelImage ) => void;
 }
 
 
@@ -46,13 +46,12 @@ interface NewImageUploadModalState {
                     </Dropzone>
                 )} */}
 
-export const NewImageUploadModal: React.FC<NewImageUploadModalProps> = ( { labelImage, width, ...props } ) => {
+export const NewImageUploadModal: React.FC<NewImageUploadModalProps> = ( { labelImage, width, commitLabelImage, ...props } ) => {
 
     const [ state, setState ] = useState<NewImageUploadModalState>( {
         imageUrl: undefined
     } );
     const [ form ] = useForm();
-    const context = useContext( DrawContext );
 
     const [ sendData, { loading, called, data, error } ] = useInsertIconMutation();
 
@@ -82,7 +81,7 @@ export const NewImageUploadModal: React.FC<NewImageUploadModalProps> = ( { label
     const autoCompleteFieldValues: string[] = Object.values( EnumItemClassEnum );
 
     const onCancel = () => {
-        props.visibleHandler( DISPLAY.HIDDEN );
+        props.visibleHandler( false );
     };
 
     const onFieldsChange = ( props, changedFields ) => {
@@ -130,7 +129,7 @@ export const NewImageUploadModal: React.FC<NewImageUploadModalProps> = ( { label
         title="Upload New Image"
         okText="Upload"
         onCancel={onCancel}
-        onOk={() => { form.submit(); context.commitLabelImage( labelImage ); onCancel(); }}
+        onOk={() => { form.submit(); commitLabelImage( labelImage ); onCancel(); }}
         width={width ? width : 350}
     >
         <Form
