@@ -1,5 +1,5 @@
 
-import React, { Component } from "react";
+import React, { Component, constructor, useContext, useEffect, useState } from "react";
 import type { Stage } from 'konva/types/Stage';
 import type { KonvaEventObject } from 'konva/types/Node';
 import { Button, Tooltip, message } from 'antd';
@@ -23,6 +23,9 @@ import { EditableText } from './KonvaElements/EditableText';
 import { TransformableImage } from './KonvaElements/TransformableImage';
 import { TransformableQR } from './KonvaElements/TransformableQR';
 import { JsonModal } from '~components/Shared/JsonModal';
+import { render } from "bwip-js";
+import { get } from "http";
+import { useRef } from "react";
 
 
 
@@ -54,7 +57,7 @@ type ChangedValueI = string;
 //     value: any;
 // }
 
-interface LabelDrawProps {
+export interface LabelDrawProps {
     width: number;
     // item: ItemHardwareFastenerScrewMachine;
     item?: Item<any>;
@@ -72,202 +75,196 @@ interface LabelDrawConstituents {
     qrs: LabelQR[];
 }
 
-interface LabelDrawState {
-    displayContextMenuStatus: boolean;
-    displayContextMenuPosition?: [ number, number ];
-    displayEditTextModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
-    displayEditTextModalStatus: DISPLAY;
-    displayImageSelectModal: ( d: boolean | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
-    displayImageSelectModalStatus: DISPLAY;
-    displayQREditModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
-    displayQREditModalStatus: DISPLAY;
-    modal: React.ReactElement;
-    contextMenuLabelConstituent: LabelText | LabelImage | LabelQR;
-    item: Item<any>;
-    texts: LabelText[];
-    images: LabelImage[];
-    qrs: LabelQR[];
-    uncommittedText: LabelText;
-    uncommittedImage: LabelImage;
-    uncommittedQR: LabelQR;
-    stageRef: Stage;
-    historyPosition: Integer;
-    history: LabelDrawConstituents[];
-    selectedShapeName: string;
-}
-export interface DrawContextAdditions {
-    item?: Item<any>;
-    updateHistory: () => void;
-    setSelectedShapeName: ( name: string ) => void;
-    setRef: ( stageRef: Stage ) => void;
-    commitLabelText: ( labelText: LabelText ) => void;
-    deleteLabelConstituent: ( constituent: LabelConstituentT ) => void;
-    commitLabelImage: ( labelImage: LabelImage ) => void;
-    commitLabelQR: ( LabelQR: LabelQR ) => void;
-    displayContextMenu: IKonvaEventHandler;
-}
+// interface LabelDrawState {
+//     displayContextMenuStatus: boolean;
+//     displayContextMenuPosition?: [ number, number ];
+//     displayEditTextModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
+//     displayEditTextModalStatus: DISPLAY;
+//     displayImageSelectModal: ( d: boolean | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
+//     displayImageSelectModalStatus: DISPLAY;
+//     displayQREditModal: ( d: DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => DISPLAY;
+//     displayQREditModalStatus: DISPLAY;
+//     modal: React.ReactElement;
+//     contextMenuLabelConstituent: LabelText | LabelImage | LabelQR;
+//     item: Item<any>;
+//     texts: LabelText[];
+//     images: LabelImage[];
+//     qrs: LabelQR[];
+//     uncommittedText: LabelText;
+//     uncommittedImage: LabelImage;
+//     uncommittedQR: LabelQR;
+//     stageRef: Stage;
+//     historyPosition: Integer;
+//     history: LabelDrawConstituents[];
+//     selectedShapeName: string;
+// }
+// export interface DrawContextAdditions {
+//     item?: Item<any>;
+//     updateHistory: () => void;
+//     setSelectedShapeName: ( name: string ) => void;
+//     setRef: ( stageRef: Stage ) => void;
+//     commitLabelText: ( labelText: LabelText ) => void;
+//     deleteLabelConstituent: ( constituent: LabelConstituentT ) => void;
+//     commitLabelImage: ( labelImage: LabelImage ) => void;
+//     commitLabelQR: ( LabelQR: LabelQR ) => void;
+//     displayContextMenu: IKonvaEventHandler;
+// }
 
-export type DrawContextT = DrawContextAdditions & Omit<LabelDrawState, "item">;
+// export type DrawContextT = DrawContextAdditions & Omit<LabelDrawState, "item">;
 
-const NoOp = (opName?:  string) => { 
-    return () => console.warn(`NOOP: ${opName ?? 'this'} operation is not configured.`);
-};
+// const NoOp = (opName?:  string) => { 
+//     return () => console.warn(`NOOP: ${opName ?? 'this'} operation is not configured.`);
+// };
 
-const DrawContextStateDefault: DrawContextT = {
-    displayContextMenu: () => { },
-    displayContextMenuStatus: false,
-    displayContextMenuPosition: undefined,
-    displayEditTextModal: () => DISPLAY.HIDDEN,
-    displayEditTextModalStatus: null,
-    contextMenuLabelConstituent: null,
-    displayQREditModal: () => DISPLAY.HIDDEN,
-    displayQREditModalStatus: null,
-    displayImageSelectModal: () => DISPLAY.HIDDEN,
-    displayImageSelectModalStatus: null,
-    modal: null,
-    // displayEditTextModalStatus: display.HIDDEN,
-    // displayEditTextModalStatus: display.HIDDEN,
-    item: undefined,
-    texts: [],
-    images: [],
-    qrs: [],
-    uncommittedText: null,
-    uncommittedImage: null,
-    uncommittedQR: null,
-    commitLabelImage: NoOp(),
-    commitLabelText: NoOp(),
-    deleteLabelConstituent: NoOp(),
-    commitLabelQR: NoOp(),
-    stageRef: null,
-    setRef: null,
-    historyPosition: 0,
-    history: [],
-    updateHistory: NoOp(),
-    selectedShapeName: '',
-    setSelectedShapeName: NoOp('setSelectedShapeName'),
-};
+// const DrawContextStateDefault: DrawContextT = {
+//     displayContextMenu: () => { },
+//     displayContextMenuStatus: false,
+//     displayContextMenuPosition: undefined,
+//     displayEditTextModal: () => DISPLAY.HIDDEN,
+//     displayEditTextModalStatus: null,
+//     contextMenuLabelConstituent: null,
+//     displayQREditModal: () => DISPLAY.HIDDEN,
+//     displayQREditModalStatus: null,
+//     displayImageSelectModal: () => DISPLAY.HIDDEN,
+//     displayImageSelectModalStatus: null,
+//     modal: null,
+//     // displayEditTextModalStatus: display.HIDDEN,
+//     // displayEditTextModalStatus: display.HIDDEN,
+//     item: undefined,
+//     texts: [],
+//     images: [],
+//     qrs: [],
+//     uncommittedText: null,
+//     uncommittedImage: null,
+//     uncommittedQR: null,
+//     commitLabelImage: NoOp(),
+//     commitLabelText: NoOp(),
+//     deleteLabelConstituent: NoOp(),
+//     commitLabelQR: NoOp(),
+//     stageRef: null,
+//     setRef: null,
+//     historyPosition: 0,
+//     history: [],
+//     updateHistory: NoOp(),
+//     selectedShapeName: '',
+//     setSelectedShapeName: NoOp('setSelectedShapeName'),
+// };
 
-export const DrawContext = React.createContext<DrawContextT>( DrawContextStateDefault );
-
-
-
-export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
-
-    static contextType = PrintContext;
-    declare context: React.ContextType<typeof PrintContext>;
+// export const DrawContext = React.createContext<DrawContextT>( DrawContextStateDefault );
 
 
-    constructor ( props: LabelDrawProps ) {
-        super( props );
+export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
+    const { item } = props;
 
-        this.state.texts = this.props.label.content.texts ?? [];
-        this.state.qrs = this.props.label.content.qrs ?? [];
-        this.state.images = this.props.label.content.images ?? [];
-        // this.state.item = this.props.label.
-    }
+    const printContext = useContext( PrintContext );
+
+    const [ texts, setTexts ] = useState<LabelText[]>( props.label.content.texts ?? [] );
+    const [ qrs, setQrs ] = useState<LabelQR[]>( props.label.content.qrs ?? [] );
+    const [ images, setImages ] = useState<LabelImage[]>( props.label.content.images ?? [] );
+
+    const [ selectedShapeName, setSelectedShapeName ] = useState<string>();
+
+    const [ uncommittedText, setUncommittedText ] = useState<LabelText>( new LabelText() );
+    const [ uncommittedQR, setUncommittedQR ] = useState<LabelQR>( new LabelQR({item}) );
+    const [ uncommittedImage, setUncommittedImage ] = useState<LabelImage>( new LabelImage() );
+
+
+
+    const [ historyPosition, setHistoryPosition ] = useState<Integer>( 0 );
+    const [ history, setHistory ] = useState<LabelDrawConstituents[]>( [] );
+
+    const stageRef = useRef<Stage>();
+
+
+    useEffect( () => {
+        let currentLabel = printContext.getCurrentLabel();
+        let canvas = getCanvas();
+        if ( ! canvas ){
+            console.log("no refreshing exportLabel: no canvas yet!");
+            return;
+        }
+        let newValues = {
+            item_id: props.item ? props.item.id : currentLabel.item ? currentLabel.item.id : null,
+            texts: texts,
+            images: images,
+            qrs: qrs,
+            // imgData: imgData,
+            // canvas: canvas,
+            stageRef: stageRef,
+            // dataURL: dataURL,
+            width: canvas.width,
+            height: canvas.height
+        }
+        console.log("refreshing exportLabel", {newValues});
+        currentLabel.setValues( {
+            ...( currentLabel ? { id: currentLabel.id } : {} ),
+            ...newValues
+        } );
+        // exportLabel();
+        // currentLabel.texts
+    }, [texts, qrs, images])
 
     /**
      * Right click menu on Konva canvas
      */
-    displayContextMenu = ( display: KonvaEventObject<PointerEvent | MouseEvent> ) => {
+    const displayContextMenu = ( display: KonvaEventObject<PointerEvent | MouseEvent> ) => {
         console.log( "displayContextMenu()", display );
         if ( display ) {
             if ( display.evt ) { display.evt.preventDefault(); }
-            this.setState( {
-                item: this.props.item,
-                displayContextMenuStatus: true,
-                contextMenuLabelConstituent: display.currentTarget.attrs.textObject || display.currentTarget.attrs.imageObject || display.currentTarget.attrs.qrObject,
-                displayContextMenuPosition: [
-                    display.evt.clientX,
-                    display.evt.clientY
-                ]
-            } );
-        } else {
-            this.setState( { displayContextMenuStatus: false } );
+            let contextMenuLabelConstituent = display.currentTarget.attrs.textObject || display.currentTarget.attrs.imageObject || display.currentTarget.attrs.qrObject;
+
+            let displayContextMenuPosition: [ x: number, y: number ] = [
+                display.evt.clientX,
+                display.evt.clientY
+            ];
+            setModal(
+                <DrawContextMenu
+                    displayContextMenuPosition={displayContextMenuPosition}
+                    deleteLabelConstituent={deleteLabelConstituent}
+                    contextMenuLabelConstituent={contextMenuLabelConstituent}
+                    displayContextMenu={displayContextMenu}
+                /> );
+        }
+        else {
+            setModal( null );
         }
     };
 
-    displayEditTextModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
-        console.log( "displayEditTextModal() d=", d );
-        if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
-            console.debug( "d = HIDDEN" );
-            this.setState( {
-                displayEditTextModalStatus: DISPLAY.HIDDEN
-            } );
-            // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
-            return DISPLAY.HIDDEN;
-        }
-        if ( !d ) {
-            console.debug( "!d" );
-            return this.state.displayEditTextModalStatus ? DISPLAY.VISIBLE : DISPLAY.HIDDEN;
-        }
-        ( d as React.MouseEvent<HTMLElement, MouseEvent> ).preventDefault();
-        if ( d ) {
-            console.debug( "d = VISIBLE" );
-            this.setState( {
-                item: this.props.item,
-                displayEditTextModalStatus: DISPLAY.VISIBLE
-            } );
-        } else {
-
-            console.debug( "d = (default) HIDDEN" );
-            this.setState( { displayEditTextModalStatus: DISPLAY.HIDDEN } );
-        }
+    const displayEditTextModal = ( display: boolean ) => {
+        setModal(
+            <EditTextModal
+                visibleHandler={setModal}
+                changeHandler={updateLabelTexts}
+                item={props.item}
+                commitLabelText={commitLabelText}
+                labelText={uncommittedText} />
+        );
     };
 
-    displayImageSelectModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | boolean ): DISPLAY => {
-        console.log( "displayImageSelectModal()", d );
-        if ( d === false ) {
-            this.setState( {
-                displayImageSelectModalStatus: DISPLAY.HIDDEN
-            } );
-            // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
-            return DISPLAY.HIDDEN;
-        }
-        if ( !d ) {
-            return this.state.displayImageSelectModalStatus ? DISPLAY.VISIBLE : DISPLAY.HIDDEN;
-        }
-        ( d as React.MouseEvent<HTMLElement, MouseEvent> ).preventDefault();
-        if ( d === true ) {
-            this.setState( {
-                item: this.props.item,
-                displayImageSelectModalStatus: DISPLAY.VISIBLE
-            } );
-        } else {
-            this.setState( { displayImageSelectModalStatus: DISPLAY.HIDDEN } );
-        }
+    const displayImageSelectModal = ( display: boolean ) => {
+        setModal(
+            <LabelAddImageModal
+                visibleHandler={setModal}
+                changeHandler={updateLabelImages}
+                item={item}
+                commitLabelImage={commitLabelImage}
+                labelImage={uncommittedImage} />
+        );
     };
-    displayQREditModal = ( d: React.MouseEvent<HTMLElement, MouseEvent> | DISPLAY ): DISPLAY => {
-        if ( ( d as DISPLAY ) === DISPLAY.HIDDEN ) {
-            this.setState( {
-                displayQREditModalStatus: DISPLAY.HIDDEN
-            } );
-            // if ( !(d as dReact.MouseEvent<HTMLElement, MouseEvent>) && d === display.HIDDEN ){
-            return DISPLAY.HIDDEN;
-        }
-        if ( !d ) {
-            return this.state.displayQREditModalStatus ? DISPLAY.VISIBLE : DISPLAY.HIDDEN;
-        }
-        console.log( "displayQREditModal()", DISPLAY );
-        ( d as React.MouseEvent<HTMLElement, MouseEvent> ).preventDefault();
-        if ( d ) {
-            this.setState( {
-                item: this.props.item,
-                displayQREditModalStatus: DISPLAY.VISIBLE
-            } );
-        } else {
-            this.setState( { displayQREditModalStatus: DISPLAY.HIDDEN } );
-        }
+    const displayQREditModal = ( display: boolean ) => {
+        setModal(
+            <QREditModal
+                visibleHandler={setModal}
+                changeHandler={updateLabelQR}
+                item={item}
+                labelQR={uncommittedQR} /> );
+
     };
 
     /** Run when `DrawEditText`'s form changes values */
-    updateLabelTexts = ( changedValue: ChangedValueTextI, labelText: LabelText ) => {
+    const updateLabelTexts = ( changedValue: ChangedValueTextI, labelText: LabelText ) => {
         console.log( "input for updateLabelTexts", { changedValue, labelText } );
-        // let texts = this.state.texts;
         let updatedText = false;
-        // if ( ! labelText ){
-        //     labelText = new LabelText();
-        // // }
         if ( changedValue.text ) {
             console.log( "setting text to", changedValue.text );
             labelText.text = changedValue.text;
@@ -283,7 +280,6 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             console.warn( "no match found for field", changedValue );
         }
 
-        let texts = this.state.texts;
         texts.forEach( ( text => {
             if ( text.id == labelText.id ) {
                 console.log( "updating existing labelText with id", text.id );
@@ -294,60 +290,35 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             }
         } ) );
         if ( !updatedText ) {
-            console.log( "adding labelText ; this.state.texts is now", this.state.texts, "pending", [ ...this.state.texts, labelText ] );
-            this.setState( {
-                texts: [ ...this.state.texts, labelText ]
-            } );
+            console.log( "adding labelText ; texts is now", texts, "pending", [ ...texts, labelText ] );
+            setTexts( [ ...texts, labelText ] );
         } else {
-            this.setState( { texts: texts } );
+            setTexts( texts );
         }
-        // this.updateContext();
     };
 
-
-
-    shouldComponentUpdate = ( nextProps: LabelDrawProps, nextState: LabelDrawState ): boolean => {
-        if ( !this.context.getCurrentLabel() ) {
-            this.context.setCurrentLabel( this.exportLabel() );
-        }
-
-        let updateContextResult = this.updateContext();
-        let shouldUpdate = updateContextResult || nextState != this.state || nextProps != this.props;
-        if ( updateContextResult ) {
-            this.updateHistory();
-        }
-        console.log( `shouldComponentUpdate ? ${ shouldUpdate }\n`, {
-            'history_length': this.state.history.length,
-            shouldUpdate,
-            updateContextResult,
-            "nextProps!=this.props": nextProps != this.props,
-            "nextState!=this.state": nextState != this.state,
-            nextState,
-            "state": this.state
-        } );
-        return shouldUpdate;
-    };
-
-    handleUndo = () => {
-        if ( this.state.historyPosition === 0 ) {
+    const handleUndo = () => {
+        if ( historyPosition === 0 ) {
             message.warn( "history is already at state #0" );
             return;
         }
-        this.setState( {
-            "historyPosition": this.state.historyPosition - 1,
-            ...this.state.history[ this.state.historyPosition ]
-        } );
+        let newPosition: Integer = historyPosition - 1;
+        setHistoryPosition( newPosition );
+        setTexts( history[ newPosition ]?.texts );
+        setImages( history[ newPosition ]?.images );
+        setQrs( history[ newPosition ]?.qrs );
     };
 
-    handleRedo = () => {
-        if ( this.state.historyPosition === this.state.history.length - 1 ) {
+    const handleRedo = () => {
+        if ( historyPosition === ( history.length - 1 ) ) {
             message.warn( "history is already at the most recent state" );
             return;
         }
-        this.setState( {
-            "historyPosition": this.state.historyPosition + 1,
-            ...this.state.history[ this.state.historyPosition ]
-        } );
+        let newPosition: Integer = historyPosition + 1;
+        setHistoryPosition( newPosition );
+        setTexts( history[ newPosition ]?.texts );
+        setImages( history[ newPosition ]?.images );
+        setQrs( history[ newPosition ]?.qrs );
     };
 
     /**
@@ -355,94 +326,83 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
     * 
     * Records history state and increments history position
     */
-    updateHistory = () => {
-        this.setState( {
-            historyPosition: this.state.historyPosition + 1,
-            history: [ ...this.state.history,
-            {
-                texts: this.state.texts,
-                images: this.state.images,
-                qrs: this.state.qrs,
-            }
-            ]
-        } );
+    const updateHistory = () => {
+        setHistoryPosition( historyPosition + 1 );
+        setHistory( [ ...history,
+        {
+            texts: texts,
+            images: images,
+            qrs: qrs,
+        }
+        ] );
     };
 
     /**
      * return value of `false` if the label was not exported.
      */
-    updateContext = (): boolean => {
-        console.log( "should updateContext ?", {
-            'this.exportLabel()': this.exportLabel(),
-            'this.context.getCurrentLabel': this.context.getCurrentLabel,
-            'this.exportLabel() !== this.context.getCurrentLabel()': this.exportLabel() !== this.context.getCurrentLabel(),
-        } );
-        if ( !this.context.getCurrentLabel() || this.exportLabel() !== this.context.getCurrentLabel() ) {
-            console.log( "will updateContext" );
-            this.context.setCurrentLabel( this.exportLabel() );
-            return true;
-        }
-        console.log( 'do NOT updateContext' );
-        return false;
-    };
+    // const updateContext = (): boolean => {
+    //     console.log( "should updateContext ?", {
+    //         'exportLabel()': exportLabel(),
+    //         'context.getCurrentLabel': context.getCurrentLabel,
+    //         'exportLabel() !== context.getCurrentLabel()': exportLabel() !== context.getCurrentLabel(),
+    //     } );
+    //     if ( !context.getCurrentLabel() || exportLabel() !== context.getCurrentLabel() ) {
+    //         console.log( "will updateContext" );
+    //         context.setCurrentLabel( exportLabel() );
+    //         return true;
+    //     }
+    //     console.log( 'do NOT updateContext' );
+    //     return false;
+    // };
 
     /**
      * Removes the `LabelConstituent` object from the label as well as deletes/`remove()`s its `Node` from `Konva`
      */
-    deleteLabelConstituent = ( constituent: LabelText | LabelImage | LabelQR ): void => {
+    const deleteLabelConstituent = ( constituent: LabelText | LabelImage | LabelQR ): void => {
         console.log( "deleteLabelConstituent : constituent <?>", constituent );
         if ( LabelText.is( constituent ) ) {
             console.log( "deleteLabelConstituent : constituent <LabelText>", constituent );
-            this.setState( {
-                "texts":
-                    this.state.texts.filter( ( text ) => {
-                        if ( text.id === constituent.id ) {
-                            console.log( `deleteLabelConstituent <texts> : deleting id ${ constituent.id }` );
-                            this.state.stageRef.getStage().findOne( "." + constituent.id ).remove();
-                            return;
-                        }
-                        return text;
-                    } )
-            },
-                () => console.log( `deleteLabelConstituent <texts> : is now`, this.state.texts )
+            setTexts(
+                texts.filter( ( text ) => {
+                    if ( text.id === constituent.id ) {
+                        console.log( `deleteLabelConstituent <texts> : deleting id ${ constituent.id }` );
+                        stageRef.current.getStage().findOne( "." + constituent.id ).remove();
+                        return;
+                    }
+                    return text;
+                } )
             );
         }
         if ( constituent instanceof LabelImage ) {
             console.log( "deleteLabelConstituent : constituent <LabelImage>", constituent );
-            this.setState( {
-                "images":
-                    this.state.images.filter( ( image ) => {
-                        if ( image.id == constituent.id ) {
-                            console.log( `deleteLabelConstituent <images> : deleting id ${ constituent.id }` );
-                            this.state.stageRef.getStage().findOne( "." + constituent.id ).remove();
-                            return;
-                        }
-                        return image;
-                    } )
-            },
-                () => console.log( `deleteLabelConstituent <images> : is now`, this.state.images )
+            setImages(
+                images.filter( ( image ) => {
+                    if ( image.id == constituent.id ) {
+                        console.log( `deleteLabelConstituent <images> : deleting id ${ constituent.id }` );
+                        stageRef.current.getStage().findOne( "." + constituent.id ).remove();
+                        return;
+                    }
+                    return image;
+                } )
             );
         }
         if ( constituent instanceof LabelQR ) {
             console.log( "deleteLabelConstituent : constituent <LabelQR>", constituent );
-            this.setState( {
-                "qrs":
-                    this.state.qrs.filter( ( qr ) => {
-                        if ( qr.id == constituent.id ) {
-                            console.log( `deleteLabelConstituent <qrs> : deleting id ${ constituent.id }` );
-                            this.state.stageRef.getStage().findOne( "." + constituent.id ).remove();
-                            return;
-                        }
-                        return qr;
-                    } )
-            },
-                () => console.log( `deleteLabelConstituent <qrs> : is now`, this.state.qrs )
+            setQrs(
+                qrs.filter( ( qr ) => {
+                    if ( qr.id == constituent.id ) {
+                        console.log( `deleteLabelConstituent <qrs> : deleting id ${ constituent.id }` );
+                        stageRef.current.getStage().findOne( "." + constituent.id ).remove();
+                        return;
+                    }
+                    return qr;
+                } )
             );
         }
     };
 
-    commitLabelText = ( labelText: LabelText ) => {
-        this.setState( { uncommittedText: new LabelText() } );
+    const commitLabelText = ( labelText: LabelText ) => {
+        setUncommittedText( new LabelText() );
     };
 
 
@@ -450,7 +410,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
      * **IMPORTANT**: ! -> THE LOGIC IN THESE UPDATE X FUNCTIONS DO NOT ALLOW FOR MULTIPLE IMAGES OF THE SAME ID
      */
 
-    updateLabelImages = ( changedValue: Partial<LabelImage>, labelImage: LabelImage ) => {
+    const updateLabelImages = ( changedValue: Partial<LabelImage>, labelImage: LabelImage ) => {
         let updatedImage = false;
         console.log( "updateLabelImages", changedValue, labelImage );
 
@@ -472,7 +432,7 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         Object.keys( changedValue ).forEach( key => {
             labelImage[ key ] = changedValue[ key ];
         } );
-        this.state.images.forEach( ( image => {
+        images.forEach( ( image => {
             if ( image.id == labelImage.id ) {
                 console.log( "updating existing labelImage with id", labelImage.id );
                 image = labelImage;
@@ -482,16 +442,14 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
             }
         } ) );
         if ( !updatedImage ) {
-            console.log( "adding new image to this.state.images", labelImage );
-            this.setState( {
-                images: [ ...this.state.images, labelImage ]
-            } );
+            console.log( "adding new image to images", labelImage );
+            setImages( [ ...images, labelImage ] );
         }
-        console.log( "this.state.images is now", this.state.images, "pending", [ ...this.state.images, labelImage ] );
+        console.log( "images is now", images, "pending", [ ...images, labelImage ] );
     };
 
-    commitLabelImage = ( labelImage: LabelImage ) => {
-        this.setState( { uncommittedImage: new LabelImage() } );
+    const commitLabelImage = ( labelImage: LabelImage ) => {
+        setUncommittedImage( new LabelImage() );
     };
 
 
@@ -500,13 +458,11 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
      * labelQR - LabelQR object whose values have changed  
      * NOTE: pass in FALSE to delete the object
      **/
-    updateLabelQR = ( changedValue: Partial<LabelQR> | false, labelQR: LabelQR ) => {
-        console.log({method: 'updateLabelQR', changedValue, labelQR});
+    const updateLabelQR = ( changedValue: Partial<LabelQR> | false, labelQR: LabelQR ) => {
+        console.log( { method: 'updateLabelQR', changedValue, labelQR } );
         let updatedQR = false;
-        if ( changedValue === false ){
-            this.setState( {
-                qrs: this.state.qrs.filter( qr => qr.id !== labelQR.id)
-            });
+        if ( changedValue === false ) {
+            setQrs( qrs.filter( qr => qr.id !== labelQR.id ) );
             return;
         }
         if ( changedValue.dataURL ) {
@@ -525,9 +481,9 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         if ( changedValue.properties && labelQR.properties !== changedValue.properties ) {
             console.log( "setting properties on labelQR to", changedValue.properties );
             labelQR.properties = changedValue.properties;
-            this.setState( { uncommittedQR: labelQR } );
+            setUncommittedQR( labelQR );
         }
-        this.state.qrs.forEach( ( qr => {
+        qrs.forEach( ( qr => {
             if ( qr.id == labelQR.id ) {
                 console.log( "updating existing labelQR with id", labelQR.id );
                 qr = labelQR as LabelQR;
@@ -537,270 +493,193 @@ export class LabelDraw extends Component<LabelDrawProps, LabelDrawState> {
         } ) );
         if ( !updatedQR ) {
             console.log( "adding uncommitted labelQR with id", labelQR.id );
-            this.setState( {
-                qrs: [ ...this.state.qrs, labelQR as LabelQR ]
-            } );
+            setQrs( [ ...qrs, labelQR as LabelQR ] );
         }
-        console.log( { "this.state.qrs is now": this.state.qrs, "pending": [ ...this.state.qrs, labelQR ] });
+        console.log( { "qrs is now": qrs, "pending": [ ...qrs, labelQR ] } );
     };
 
 
-    commitLableQR = <T extends {}> ( labelQR: LabelQR ) => {
-        this.setState( { uncommittedQR: new LabelQR() } );
+    const commitLableQR = <T extends {}> ( labelQR: LabelQR ) => {
+        setUncommittedQR( new LabelQR({item}) );
     };
 
-    /*
-     * type React.Ref = ((instance: T) => void) | React.RefObject
-    **/
-    setRef = ( ref: Stage ): void => {
-        console.log( "SETTING REF FOR canvas", ref );
-        if ( !this.state.stageRef ) {
-            console.log( "SETTING REF FOR CANVAS -- SAVED TO STATE" );
-            console.log( `LabelComponent Stage Canvas size:`, ref.getStage().toCanvas( {} ).height, ref.getStage().toCanvas( {} ).width );
-            this.setState( { stageRef: ref }, this.updateContext );
-        }
-    };
-
-    setSelectedShapeName = ( name: string ) => {
-        console.log("LabelDraw.setSelectedShapeName:", name);
-        this.setState( {
-            selectedShapeName: name
-        } );
-    };
-
-    state: LabelDrawState = {
-        displayContextMenuStatus: DrawContextStateDefault.displayContextMenuStatus,
-        displayContextMenuPosition: undefined,
-        displayEditTextModal: this.displayEditTextModal,
-        displayEditTextModalStatus: DISPLAY.HIDDEN,
-        displayImageSelectModal: this.displayImageSelectModal,
-        displayImageSelectModalStatus: DISPLAY.HIDDEN,
-        displayQREditModal: this.displayQREditModal,
-        displayQREditModalStatus: DISPLAY.HIDDEN,
-        modal: null,
-        contextMenuLabelConstituent: null,
-        item: null,
-        texts: [], // NOTE: for pre-existing deserialize here.
-        images: [],
-        qrs: [],
-        uncommittedText: new LabelText(),
-        uncommittedImage: new LabelImage(),
-        uncommittedQR: new LabelQR( { item: this.props.item } ),
-        stageRef: null,
-        historyPosition: 0,
-        history: [],
-        selectedShapeName: ''
-    };
-    ContextConstants: DrawContextAdditions = {
-        setSelectedShapeName: this.setSelectedShapeName,
-        displayContextMenu: this.displayContextMenu,
-        commitLabelText: this.commitLabelText,
-        commitLabelImage: this.commitLabelImage,
-        commitLabelQR: this.commitLableQR,
-        deleteLabelConstituent: this.deleteLabelConstituent,
-        setRef: this.setRef,
-        updateHistory: this.updateHistory,
-    };
-
-    get width (): Integer | null {
-        return this.canvas ? this.canvas.width : null;
-    }
-    get height (): Integer | null {
-        return this.canvas ? this.canvas.height : null;
-    }
-    get canvas (): HTMLCanvasElement | null {
-        if ( this.state.stageRef ) {
-            return this.state.stageRef.getStage().toCanvas( {} );
+    // function getCanvasWidth (): Integer | null {
+    //     let canvas = getCanvas();
+    //     return canvas ? canvas.width : null;
+    // }
+    // function getCanvasHeight (): Integer | null {
+    //     let canvas = getCanvas();
+    //     return canvas ? canvas.height : null;
+    // }
+    function getCanvas (): HTMLCanvasElement | null {
+        if ( stageRef.current ) {
+            return stageRef.current.getStage().toCanvas( {} );
         }
         return null;
     }
-    get dataURL (): string | null {
-        return this.canvas ? this.canvas.toDataURL() : null;
+    function getDataURL (): string | null {
+        let canvas = getCanvas();
+        return canvas ? canvas.toDataURL() : null;
     }
     /**
      * return imgdata for the entire canvas.  
      * THIS IS A _**VERY** EXPENSIVE CALL_
      */
-    get imgData (): ImageData | null {
-        return this.canvas && this.width && this.height ? this.canvas.getContext( '2d' ).getImageData( 0, 0, this.width, this.height ) : null;
+    function getImgData (): ImageData | null {
+        let canvas = getCanvas();
+        return canvas && canvas.width && canvas.height ? canvas.getContext( '2d' ).getImageData( 0, 0, canvas.width, canvas.height ) : null;
     }
 
-    setModal = ( modal: React.ReactElement ): void => {
-        this.setState({modal: modal});
-    }
+    const [ modal, setModal ] = useState<React.ReactElement>();
 
-    exportLabel = (): LabelExport => {
+    const exportLabel = (): LabelExport => {
         console.group( "LabelDraw.exportLabel()" );
+        // let imgData = getImgData();
+        let canvas = getCanvas();
         // console.trace();
         // console.log( "LabelDraw, exporting Label verification values", {
-        //     // "canvas": this.canvas,
-        //     "width": this.width,
-        //     "height": this.height,
-        //     "imgData": this.imgData,
-        //     "this.props.label": this.props.label
+        //     // "canvas": canvas,
+        //     "width": width,
+        //     "height": height,
+        //     "imgData": imgData,
+        //     "props.label": props.label
         // } );
         // console.trace();
-        if ( this.canvas && this.width && this.height && this.imgData ) {
-            JSON.stringify( this.state.texts );
+        // if ( canvas && canvas.width && canvas.height && imgData ) {
+        if ( canvas && canvas.width && canvas.height ) {
+            JSON.stringify( texts );
             console.log( "exportLabel() setValues" );
-            this.props.label.setValues( {
-                ...( this.props.label ? { id: this.props.label.id } : {} ),
+            props.label.setValues( {
+                ...( props.label ? { id: props.label.id } : {} ),
                 ...{
-                    item_id: this.state.item ? this.state.item.id : this.props.label.item ? this.props.label.item.id : null,
-                    texts: this.state.texts,
-                    images: this.state.images,
-                    qrs: this.state.qrs,
-                    imgData: this.imgData,
-                    // dataURL: this.dataURL,
-                    width: this.width,
-                    height: this.height
+                    item_id: props.item ? props.item.id : props.label.item ? props.label.item.id : null,
+                    texts: texts,
+                    images: images,
+                    qrs: qrs,
+                    // imgData: imgData,
+                    stageRef: stageRef,
+                    // canvas: canvas,
+                    // dataURL: dataURL,
+                    width: canvas.width,
+                    height: canvas.height
                 }
             } );
         } else {
             console.warn( "exportLabel could not update values, failed value existance check." );
         }
         console.groupEnd();
-        return this.props.label;
+        return props.label;
     };
 
-    render () {
-        const { item } = this.props;
-        console.log( `LabelDraw.render() with props:\n`, this.props );
-        return (
-            <DrawContext.Provider
-                // value={{ ...( this.state ),
-                //     setSelectedShapeName: this.setSelectedShapeName
-                // }}>
-                value={{ ...( this.state ), ...( this.ContextConstants ) }}>
-                <div>
-                    {this.state.displayContextMenuStatus ?
-                        <DrawContextMenu 
-                            displayContextMenuPosition={this.state.displayContextMenuPosition} 
-                            deleteLabelConstituent={this.deleteLabelConstituent} 
-                            contextMenuLabelConstituent={this.state.contextMenuLabelConstituent}
-                            displayContextMenu={this.displayContextMenu}
-                            />
-                        : null}
-                    {this.state.displayEditTextModalStatus ?
-                        <EditTextModal
-                            visibleHandler={this.displayEditTextModal}
-                            changeHandler={this.updateLabelTexts}
-                            item={item}
-                            commitLabelText={this.commitLabelText}
-                            labelText={this.state.uncommittedText} />
-                        : null}
-                    {this.state.displayImageSelectModalStatus ?
-                        <LabelAddImageModal
-                            visibleHandler={this.displayImageSelectModal}
-                            changeHandler={this.updateLabelImages}
-                            item={item}
-                            commitLabelImage={this.commitLabelImage}
-                            labelImage={this.state.uncommittedImage} />
-                        : null}
-                    {this.state.displayQREditModalStatus ?
-                        <QREditModal
-                            visibleHandler={this.displayQREditModal}
-                            changeHandler={this.updateLabelQR}
-                            item={item}
-                            labelQR={this.state.uncommittedQR} />
-                        : null}
-                    {this.state.modal}
+    console.log( `LabelDraw.render() with props:\n`, props );
+    return (
+        <div>
+            {modal}
+            {/* DEBUG & DIAGNOSTICS */}
+            <div style={{ float: 'right', position: "relative", top: -40 }}>
+                <Tooltip key="debug" placement="top" title="Send debug information to the console">
+                    <Button icon={<MedicineBoxOutlined />} style={{
+                        padding: 0,
+                        width: '24px',
+                        height: '24px',
+                        border: 0
+                    }} onClick={() => {
+                        console.log( JSON.stringify( exportLabel(), null, 2 ) );
+                        console.log( printContext.currentLabelToBuffer() );
+                        message.info( "Debug output sent to console" );
+                    }} id="DEBUG" />
+                </Tooltip>
+                <Tooltip key="codeView" placement="top" title="View current label json">
+                    <Button icon={<CodeIcon />} style={{
+                        padding: 0,
+                        width: '24px',
+                        height: '24px',
+                        border: 0,
+                        position: "relative",
+                        top: "2px"
+                    }} onClick={() => {
+                        console.log( exportLabel() );
+                        return;
+                        setModal(
+                            <JsonModal
+                                json={'{"this": "that"}'}
+                                visibilityHandler={setModal}
+                            /> );
+                    }} id="DEBUG" />
+                </Tooltip>
+                <Tooltip key="EXPAND_CANVAS_TOOLTIP" placement="top" title="Enlarge print canvas">
+                    <Button icon={<PlusCircleOutlined />} style={{
+                        padding: 0,
+                        width: '24px',
+                        height: '24px',
+                        border: 0,
+                        position: "relative",
+                        // top: "2px"
+                    }} onClick={() => {
+                        console.log( "expanding canvas\n", { was: stageRef.current.getStage().width() } );
+                        // console.log( JSON.stringify( exportLabel(), null, 2 ) );
+                        // console.log( context.currentLabelToBuffer() );
+                        props.updateWidth( stageRef.current.getStage().width() + 50 );
+                        // stageRef.current.getStage().width( stageRef.current.getStage().width() + 50 );
+                        // stageRef.current.getStage().height( stageRef.current.getStage().width() + 50 );
+                    }} id="EXPAND_CANVAS" />
+                </Tooltip>
+            </div>
 
-                    {/* DEBUG & DIAGNOSTICS */}
-                    <div style={{ float: 'right', position: "relative", top: -40 }}>
-                        <Tooltip key="debug" placement="top" title="Send debug information to the console">
-                            <Button icon={<MedicineBoxOutlined />} style={{
-                                padding: 0,
-                                width: '24px',
-                                height: '24px',
-                                border: 0
-                            }} onClick={() => {
-                                console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
-                                console.log( this.context.currentLabelToBuffer() );
-                                message.info( "Debug output sent to console" );
-                            }} id="DEBUG" />
-                        </Tooltip>
-                        <Tooltip key="codeView" placement="top" title="View current label json">
-                            <Button icon={<CodeIcon />} style={{
-                                padding: 0,
-                                width: '24px',
-                                height: '24px',
-                                border: 0,
-                                position: "relative",
-                                top: "2px"
-                            }} onClick={() => {
-                                console.log(this.exportLabel());
-                                return;
-                                this.setModal( 
-                                    <JsonModal 
-                                        json={'{"this": "that"}'} 
-                                        visibilityHandler={this.setModal} 
-                                        /> )
-                            }} id="DEBUG" />
-                        </Tooltip>
-                        <Tooltip key="EXPAND_CANVAS_TOOLTIP" placement="top" title="Enlarge print canvas">
-                            <Button icon={<PlusCircleOutlined />} style={{
-                                padding: 0,
-                                width: '24px',
-                                height: '24px',
-                                border: 0,
-                                position: "relative",
-                                // top: "2px"
-                            }} onClick={() => {
-                                console.log( "expanding canvas\n", { was: this.state.stageRef.getStage().width()})
-                                // console.log( JSON.stringify( this.exportLabel(), null, 2 ) );
-                                // console.log( this.context.currentLabelToBuffer() );
-                                this.props.updateWidth( this.state.stageRef.getStage().width() + 50);
-                                // this.state.stageRef.getStage().width( this.state.stageRef.getStage().width() + 50 );
-                                // this.state.stageRef.getStage().height( this.state.stageRef.getStage().width() + 50 );
-                                }} id="EXPAND_CANVAS" />
-                        </Tooltip>
-                    </div>
-
-                    <LabelComponent {...this.props} selectedShapeName={this.state.selectedShapeName}>
-                        {/* < DebugRectangles /> */}
-                        {/* TEXT */}
-                        {this.state.texts.map( labelText => {
-                            console.log("Drawing EditableText");
-                            return <EditableText
-                                    {...this.ContextConstants}
-                                    selectedShapeName={this.state.selectedShapeName} 
-                                    key={`editable_text_${labelText.id}`} 
-                                    labelText={labelText} item={item} />;
-                        })}
-                        {/* IMAGE */}
-                        {this.state.images.map( labelImage => {
-                            console.log( "drawing image", labelImage );
-                            return <TransformableImage
-                                    {...this.ContextConstants}
-                                    selectedShapeName={this.state.selectedShapeName}
-                                    key={`transformable_image_${ labelImage.id }`} 
-                                    labelImage={labelImage} 
-                                    item={item} />;
-                        } )}
-                        {/* QR */}
-                        {this.state.qrs.map( labelQR => {
-                            console.log( "drawing LabelQR", labelQR );
-                            return <TransformableQR 
-                                {...this.ContextConstants}
-                                selectedShapeName={this.state.selectedShapeName}
-                                key={`transformable_qr_${ labelQR.id }`} labelQR={labelQR} item={item} />;
-                        } )}
-                    </LabelComponent>
-                    <br />
-                    <div style={{
-                        paddingTop: 10,
-                        textAlign: 'center',
-                    }}>
-                        <Button style={{ margin: 5 }} icon={<FontSizeOutlined />} onClick={this.displayEditTextModal} id="ADD_TEXT">Add Text</Button>
-                        <Button style={{ margin: 5 }} icon={<QrcodeOutlined />} onClick={this.displayQREditModal} id="ADD_QR">Add QR</Button>
-                        <Button style={{ margin: 5 }} icon={<PictureOutlined />} onClick={this.displayImageSelectModal} id="ADD_IMAGE">Add Image</Button>
-                    </div>
-                </div>
-            </DrawContext.Provider>
-        );
-    }
-}
+            <LabelComponent
+                deleteLabelConstituent={deleteLabelConstituent}
+                setSelectedShapeName={setSelectedShapeName}
+                stageRef={stageRef}
+                updateWidth={props.updateWidth}
+                width={props.width}
+                selectedShapeName={selectedShapeName}>
+                {/* < DebugRectangles /> */}
+                {/* TEXT */}
+                {texts.map( labelText => {
+                    console.log( "Drawing EditableText" );
+                    return <EditableText
+                        displayContextMenu={displayContextMenu}
+                        setSelectedShapeName={setSelectedShapeName}
+                        updateHistory={updateHistory}
+                        selectedShapeName={selectedShapeName}
+                        key={`editable_text_${ labelText.id }`}
+                        labelText={labelText} item={item} />;
+                } )}
+                {/* IMAGE */}
+                {images.map( labelImage => {
+                    console.log( "drawing image", labelImage );
+                    return <TransformableImage
+                        displayContextMenu={displayContextMenu}
+                        setSelectedShapeName={setSelectedShapeName}
+                        updateHistory={updateHistory}
+                        selectedShapeName={selectedShapeName}
+                        key={`transformable_image_${ labelImage.id }`}
+                        labelImage={labelImage}
+                        item={item} />;
+                } )}
+                {/* QR */}
+                {qrs.map( labelQR => {
+                    console.log( "drawing LabelQR", labelQR );
+                    return <TransformableQR
+                        displayContextMenu={displayContextMenu}
+                        setSelectedShapeName={setSelectedShapeName}
+                        updateHistory={updateHistory}
+                        selectedShapeName={selectedShapeName}
+                        key={`transformable_qr_${ labelQR.id }`} labelQR={labelQR} item={item} />;
+                } )}
+            </LabelComponent>
+            <br />
+            <div style={{
+                paddingTop: 10,
+                textAlign: 'center',
+            }}>
+                <Button style={{ margin: 5 }} icon={<FontSizeOutlined />} onClick={() => displayEditTextModal( true )} id="ADD_TEXT">Add Text</Button>
+                <Button style={{ margin: 5 }} icon={<QrcodeOutlined />} onClick={() => displayQREditModal( true )} id="ADD_QR">Add QR</Button>
+                <Button style={{ margin: 5 }} icon={<PictureOutlined />} onClick={() => displayImageSelectModal( true )} id="ADD_IMAGE">Add Image</Button>
+            </div>
+        </div>
+    );
+};
 
 /** EDITORS                                         Stars       Last Update             Live Preview        Drag & Drop Text ?
  *

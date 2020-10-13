@@ -4,7 +4,7 @@ import { Menu, message } from 'antd';
 // import { CSSTransition } from 'react-transition-group';
 import Animate from 'rc-animate';
 
-import { DrawContextT, IKonvaEventHandler } from "./LabelDraw";
+import { IKonvaEventHandler } from "./LabelDraw";
 import { LabelText, LabelImage, LabelQR } from "~lib/LabelConstituent";
 
 

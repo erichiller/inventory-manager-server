@@ -4,13 +4,16 @@ import ReactKonva, { KonvaNodeComponent, Transformer } from 'react-konva';
 import type { KonvaEventObject } from "konva/types/Node";
 import { LabelText } from '~lib/LabelConstituent';
 import { Item } from '~lib/Item';
-import { DrawContextT } from '~components/Draw/LabelDraw';
 import { stringTemplateRender } from '~lib/stringTemplates';
 
 
-interface EditableTextProps extends Pick<DrawContextT, 'displayContextMenu' | 'selectedShapeName' | 'updateHistory' | 'setSelectedShapeName'> {
+interface EditableTextProps {
     labelText: LabelText;
     item: Item<any>;
+    selectedShapeName: string;
+    setSelectedShapeName: (shapeName: string) => void;
+    displayContextMenu: ( display: KonvaEventObject<PointerEvent | MouseEvent> ) => void;
+    updateHistory: () => void;
     // stage: Konva.Stage;
     // layer: Konva.Layer;
     // getPublicInstance: () => Node;

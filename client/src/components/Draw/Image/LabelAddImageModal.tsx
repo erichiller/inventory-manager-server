@@ -16,7 +16,7 @@ interface LabelAddImageProps {
     event?: KonvaEventObject<MouseEvent>;
     item?: Item<any>;
     labelImage: LabelImage;
-    visibleHandler: ( display?: boolean ) => void;
+    visibleHandler: ( display: null ) => void;
     changeHandler: ( newValue: any, labelImage: LabelImage ) => void;
     commitLabelImage: (labelImage: LabelImage) => void;
 }
@@ -61,7 +61,7 @@ export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
     };
 
     const onClose = () => {
-        props.visibleHandler( false );
+        props.visibleHandler( null );
     };
 
     const [ displayImageUploadModal, setDisplayImageUploadModal ] = useState<boolean>(false);
@@ -152,7 +152,7 @@ export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
                             <Tooltip placement="top" title="Add to list for bulk printing later">
                                 <Button key="Upload Image" type="primary" onClick={() => {
                                     setDisplayImageUploadModal( true );
-                                    visibleHandler( false );
+                                    visibleHandler( null );
                                 }} >
                                     {/* <Icon type="plus-circle" /> */}
                                     <UploadOutlined />

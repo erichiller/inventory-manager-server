@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DISPLAY } from '~lib/types/enums';
 import { Label, useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument } from "~lib/types/graphql";
 import { Modal, Descriptions, Button, Tooltip, message, Input } from "antd";
@@ -35,7 +35,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
             label: props.label ? new LabelExport( props.label ) : new LabelExport()
         }
     );
-    const context = useContext( PrintContext );
+    const printContext = useContext( PrintContext );
     const [ saveLabelMutation, { 
         data: saveData, 
         loading: saveLoading, 
@@ -47,6 +47,12 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
         error: editEerror 
     } ] = useEditLabelMutation();
 
+    useEffect( () => {
+        if(printContext.getCurrentLabel() === null ){
+            printContext.setCurrentLabel(state.label);
+        }
+    }, [])
+
     // determine if label is new (already in DB) so that it can be edited or inserted
     const _labelIsNew: boolean = props.label ? false : true;
 
@@ -54,7 +60,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
         props.visibleHandler( null );
     };
     const handleSave = () => {
-        let label = context.getCurrentLabel();
+        let label = printContext.getCurrentLabel();
 
         if ( _labelIsNew ) {
             saveLabelMutation( {
@@ -168,17 +174,17 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                         key="SendBufferButton_Print"
                         type="primary" 
                         value="Print" 
-                        startSendBuffer={context.startSendBuffer}
-                        buffer={context.shouldSendBuffer ? [ context.currentLabelToBuffer() ] : null} 
+                        startSendBuffer={printContext.startSendBuffer}
+                        buffer={printContext.shouldSendBuffer ? [ printContext.currentLabelToBuffer() ] : null} 
                         />
                 </Tooltip>,
 
                 <Tooltip key="addToPrintList" placement="top" title="Add to list for bulk printing later">
-                    <Button key="addToPrintList" type="primary" onClick={context.handleAddToPrintList}>
+                    <Button key="addToPrintList" type="primary" onClick={printContext.handleAddToPrintList}>
                         <DatabaseOutlined />
-                        {console.log( "label comparison", label, context.getCurrentLabel() )}
+                        {console.log( "label comparison", label, printContext.getCurrentLabel() )}
                         {/* TODO: fix */}
-                        {context.getPrintLabels().some( el => {
+                        {printContext.getPrintLabels().some( el => {
                             console.log("some() checking", `
                             el.id    = ${el.id}
                             el       = ${console.dir(el)}
