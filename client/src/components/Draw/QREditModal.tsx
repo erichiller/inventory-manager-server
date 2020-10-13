@@ -6,7 +6,6 @@ import { Modal, message, Checkbox, Button } from 'antd';
 import { Item } from '~lib/Item';
 import bwipjs from 'bwip-js';
 import { LabelQR } from '~lib/LabelConstituent';
-import { DrawContextT } from './LabelDraw';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { AntTreeNode } from 'antd/lib/tree';
 import DraggableModal from '../Shared/DraggableModal';
@@ -15,7 +14,8 @@ interface QREditModalProps {
     event?: KonvaEventObject<MouseEvent>;
     item?: Item<any>;
     labelQR: LabelQR;
-    visibleHandler: ( display?: DISPLAY ) => void;
+    visibleHandler: ( display: null ) => void;
+    // visibleHandler: ( display?: boolean ) => void;
     changeHandler: ( newValue: any, labelQR: LabelQR ) => void;
 }
 
@@ -33,7 +33,7 @@ export const QREditModal: React.FC<QREditModalProps> = ( props ) => {
     };
 
     const onClose = () => {
-        props.visibleHandler( DISPLAY.HIDDEN );
+        props.visibleHandler( null );
     };
 
     const updateText = ( newValue: CheckboxValueType[] ) => {
@@ -64,7 +64,7 @@ export const QREditModal: React.FC<QREditModalProps> = ( props ) => {
 
     // const { event, visibleHandler, item, changeHandler, labelQR } = props;
 
-    console.log( 'props.visible', props.visibleHandler() );
+    // console.log( 'props.visible', props.visibleHandler() );
     // console.log('state.visible', visibleHandler(), state.visible == display.VISIBLE ? true : false)
     console.log( 'props.item', props.item );
     let pxWidth = 375;

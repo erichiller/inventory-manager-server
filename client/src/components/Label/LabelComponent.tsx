@@ -6,9 +6,9 @@ import { ResizeDirection } from 're-resizable';
 import { useQuery } from '@apollo/client/react';
 import { Stage, Layer } from 'react-konva';
 import { Spin, InputNumber, Input } from "antd";
+import type { Stage as StageT } from 'konva/types/Stage';
 
 import { GetPrinterStatusQuery, GetPrinterStatusDocument } from "~lib/types/graphql";
-import { DrawContext } from "~components/Draw/LabelDraw";
 import type { KonvaEventObject } from 'konva/types/Node';
 import { TapeColorMap } from '~lib/types/labelCanvasColors';
 import { LabelQR, LabelText, LabelImage } from '~lib/LabelConstituent';
@@ -21,26 +21,37 @@ interface LabelComponentProps {
     width: number;
     updateWidth: ( newWidthPixels: number ) => void;
     selectedShapeName: string;
+    setSelectedShapeName: ( shapeName: string ) => void;
+    deleteLabelConstituent: ( constituent: LabelText | LabelImage | LabelQR ) => void;
+    stageRef: React.MutableRefObject<StageT>;
 }
 
-export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( { width, updateWidth, children } ) => {
+export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( props ) => {
+    const { 
+        width, 
+        updateWidth, 
+        children,
+        selectedShapeName,
+        stageRef,
+        deleteLabelConstituent,
+        setSelectedShapeName
+    } = props
     const { data } = useQuery<GetPrinterStatusQuery>( GetPrinterStatusDocument );
     const [ startWidth, setStartWidth ] = useState<number>( width );
     const [ widthInputValue, setWidthInputValue ] = useState<number>( width );
-    const { displayContextMenu, deleteLabelConstituent, stageRef, setRef, setSelectedShapeName, selectedShapeName } = useContext( DrawContext );
     const dpi = 360;
 
     React.useEffect( () => {
-        if ( !stageRef ) { console.log( "LabelComponent useEffect ; return nothing" ); return; }
+        if ( !stageRef.current ) { console.log( "LabelComponent useEffect ; return nothing" ); return; }
         console.log( "LabelComponent useEffect ; SETTING keydown handler \n" );
-        let container = stageRef.getStage().container();
+        let container = stageRef.current.getStage().container();
         // make it focusable
         container.tabIndex = 1;
         // focus it
         // also stage will be in focus on its click
         container.focus();
         container.addEventListener( 'keydown', ( e ) => {
-            let activeDrawNode = stageRef.getStage().findOne( "." + selectedShapeName );
+            let activeDrawNode = stageRef.current.getStage().findOne( "." + selectedShapeName );
             console.log( "keydown ;; ", { activeDrawNode, e, selectedShapeName } )
             if (!selectedShapeName){ return; }
             let activeConstituent: LabelQR | LabelImage | LabelText = activeDrawNode.attrs.textObject || activeDrawNode.attrs.imageObject || activeDrawNode.attrs.qrObject || null;
@@ -71,7 +82,7 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( { 
             activeDrawNode.getLayer().batchDraw();
             e.preventDefault();
         } );
-    }, [ stageRef, selectedShapeName ] );
+    }, [ stageRef.current, selectedShapeName ] );
 
     if ( data ) {
         console.log( "Width:", width );
@@ -191,7 +202,7 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( { 
                             ...backgroundStyles
                         }}
                         context
-                        ref={setRef}
+                        ref={stageRef}
                         height={height}>
                         <Layer>
                             {children}

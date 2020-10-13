@@ -3,13 +3,14 @@ import * as React from 'react';
 import { v4 as UUIDv4 } from 'uuid';
 
 import { EnumItemClassEnum, Scalars, LabelAggregate } from './types/graphql';
-import { Integer } from './types/uint8';
+import type { Integer } from './types/uint8';
 import { Label } from "./types/graphql";
 import { Item } from "./Item";
 import bwipjs from 'bwip-js';
 import { DrawingSVG } from './BwipJsSvg';
 import { message, Alert } from 'antd';
 import { enumerable } from '~lib/UtilityFunctions';
+import type { Stage as StageT } from 'konva/types/Stage';
 
 
 
@@ -27,7 +28,9 @@ class LabelExportConstituents {
 }
 
 interface LabelExportConstructorProps extends LabelExportConstituents {
-    imgData: ImageData;
+    // imgData: ImageData;
+    // canvas: HTMLCanvasElement;
+    stageRef: React.MutableRefObject<StageT>;
     width: Integer;
     height: Integer;
     item_id?: Integer;
@@ -46,8 +49,10 @@ export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate' | 
     // qrs: LabelQR[];
 
     // buffer: PixelMap;
-    imgData: ImageData;
+    // imgData: ImageData;
+    // canvas: HTMLCanvasElement;
     // dataURL: string;
+    stageRef: React.MutableRefObject<StageT>;
     width: Integer = LabelExport.DEFAULT_WIDTH;
     height: Integer;
 
@@ -116,9 +121,17 @@ export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate' | 
                         qrs: props.qrs
                     };
                 }
-                if ( 'imgData' in props ) {
-                    console.log( "LabelExport - 'imgData' in props" );
-                    this.imgData = props.imgData;
+                // if ( 'imgData' in props ) {
+                //     console.log( "LabelExport - 'imgData' in props" );
+                //     this.imgData = props.imgData;
+                // }
+                // if ( 'canvas' in props ) {
+                //     console.log( "LabelExport - 'canvas' in props" );
+                //     this.canvas = props.canvas;
+                // }
+                if ( 'stageRef' in props ) {
+                    console.log( "LabelExport - 'stageRef' in props" );
+                    this.stageRef = props.stageRef;
                 }
             }
         }
@@ -132,13 +145,16 @@ export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate' | 
      * @returns self
      */
     setValues ( values: LabelExportConstructorProps ): LabelExport {
-        console.log( "LabelConstituent.setValues ( #LabelComponent )\n********************\n", { ...values, ...{ imgData_width: values.imgData.width, imgData_height: values.imgData.height } }, "\n********************\n" );
+        // console.log( "LabelConstituent.setValues ( #LabelComponent )\n********************\n", { ...values, ...{ imgData_width: values.imgData.width, imgData_height: values.imgData.height } }, "\n********************\n" );
+        console.log( "LabelConstituent.setValues ( #LabelComponent )\n********************\n", { ...values }, "\n********************\n" );
         this.content = {
             texts: values.texts,
             images: values.images,
             qrs: values.qrs
         };
-        this.imgData = values.imgData;
+        // this.imgData = values.imgData;
+        // this.canvas = values.canvas;
+        this.stageRef = values.stageRef;
         this.width = values.width;
         this.height = values.height;
         this.item_id = values.item_id;
@@ -149,28 +165,38 @@ export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate' | 
      * see HTMLCanvasElement
      *  https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas
      */
-    get canvas (): HTMLCanvasElement {
-        let canvas = document.createElement( 'canvas' );
-        console.log( `LabelConstituent.canvas (getter) initial canvas create ( #LabelComponent )\n********************\n`,
-            `\t imgData_width:     ${ this.imgData.width }\n`,
-            `\t imgData_height:    ${ this.imgData.height }\n`,
-            `\t canvas_width:      ${ canvas.width }\n`,
-            `\t canvas_height:     ${ canvas.height }\n`,
-            `********************\n` );
+    // get canvas (): HTMLCanvasElement {
+    //     let canvas = document.createElement( 'canvas' );
+    //     console.log( `LabelConstituent.canvas (getter) initial canvas create ( #LabelComponent )\n********************\n`,
+    //         `\t imgData_width:     ${ this.imgData.width }\n`,
+    //         `\t imgData_height:    ${ this.imgData.height }\n`,
+    //         `\t canvas_width:      ${ canvas.width }\n`,
+    //         `\t canvas_height:     ${ canvas.height }\n`,
+    //         `********************\n` );
 
-        let ctx = canvas.getContext( '2d' );
-        if ( this.imgData instanceof ImageData ) {
-            canvas.width = this.imgData.width;
-            canvas.height = this.imgData.height;
-            ctx.putImageData( this.imgData, 0, 0 );
-        } else { console.warn( "can not create canvas without image data" ); console.trace(); }
-        console.log( `LabelConstituent.canvas (getter) after fill canvas create ( #LabelComponent )\n********************\n`,
-            `\t imgData_width:     ${ this.imgData.width }\n`,
-            `\t imgData_height:    ${ this.imgData.height }\n`,
-            `\t canvas_width:      ${ canvas.width }\n`,
-            `\t canvas_height:     ${ canvas.height }\n`,
-            `********************\n` );
-        return canvas;
+    //     let ctx = canvas.getContext( '2d' );
+    //     if ( this.imgData instanceof ImageData ) {
+    //         canvas.width = this.imgData.width;
+    //         canvas.height = this.imgData.height;
+    //         ctx.putImageData( this.imgData, 0, 0 );
+    //     } else { console.warn( "can not create canvas without image data" ); console.trace(); }
+    //     console.log( `LabelConstituent.canvas (getter) after fill canvas create ( #LabelComponent )\n********************\n`,
+    //         `\t imgData_width:     ${ this.imgData.width }\n`,
+    //         `\t imgData_height:    ${ this.imgData.height }\n`,
+    //         `\t canvas_width:      ${ canvas.width }\n`,
+    //         `\t canvas_height:     ${ canvas.height }\n`,
+    //         `********************\n` );
+    //     return canvas;
+    // }
+    get canvas (): HTMLCanvasElement | null {
+        if ( this.stageRef.current ) {
+            return this.stageRef.current.getStage().toCanvas( {} );
+        }
+        return null;
+    }
+
+    get imgData (): ImageData {
+        return this.canvas && this.canvas.width && this.canvas.height ? this.canvas.getContext( '2d' ).getImageData( 0, 0, this.canvas.width, this.canvas.height ) : null;
     }
 
     get thumbnail (): React.ReactElement {
@@ -367,7 +393,7 @@ export class LabelQR extends LabelConstituent {
     dataURL: string;
     item: Item<any>;
 
-    constructor ( options?: Partial<LabelConstituent> & { item: Item<any>; } ) {
+    constructor ( options: Partial<LabelConstituent> & { item: Item<any>; } ) {
         super();
         const { item } = options;
         this.item = item;

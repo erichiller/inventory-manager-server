@@ -3,13 +3,17 @@ import Konva from "konva";
 import ReactKonva, { KonvaNodeComponent, Transformer } from 'react-konva';
 import type { KonvaEventObject } from "konva/types/Node";
 import { Item } from '~lib/Item';
-import { DrawContextT } from '~components/Draw/LabelDraw';
 import { LabelQR } from '~lib/LabelConstituent';
 
 
-interface QrImageProps extends Pick<DrawContextT, 'displayContextMenu' | 'selectedShapeName' | 'updateHistory' | 'setSelectedShapeName'> {
+interface QrImageProps {
     labelQR: LabelQR;
     item: Item<any>;
+    selectedShapeName: string;
+    setSelectedShapeName: ( shapeName: string ) => void;
+    displayContextMenu: ( display: KonvaEventObject<PointerEvent | MouseEvent> ) => void;
+    updateHistory: () => void;
+
     // stage: Konva.Stage;
     // layer: Konva.Layer;
     // getPublicInstance: () => Node;

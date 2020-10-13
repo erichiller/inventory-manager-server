@@ -11,7 +11,7 @@ interface EditTextModalProps {
     event?: KonvaEventObject<MouseEvent>;
     item?: Item<any>;
     labelText: LabelText;
-    visibleHandler: ( display?: DISPLAY ) => void;
+    visibleHandler: ( display: null ) => void;
     changeHandler: ( newValue: any, labelText: LabelText ) => void;
     commitLabelText: ( labelText: LabelText ) => void;
 }
@@ -61,7 +61,7 @@ export const EditTextModal: React.FC<EditTextModalProps> = ( props ) => {
     const [ currentMentionPrefix, setCurrentMentionPrefix ] = useState<string>('');
 
     const onCancel = () => {
-        props.visibleHandler( DISPLAY.HIDDEN );
+        props.visibleHandler( null );
     };
 
     const onChange = ( currentValue ) => {
