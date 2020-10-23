@@ -25,7 +25,7 @@ code {
     box-sizing: border-box;
 }
 
-.MainMenuInItem {
+.ant-menu-submenu .ant-menu-sub .ant-menu-item .ant-menu.MainMenuInItem {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -44,7 +44,10 @@ code {
             }
         }
     }
-    .ant-menu-item {
+    /**
+    .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item, .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu
+    **/
+    .ant-menu-item, .ant-menu-item > .ant-menu-submenu {
         border: 0;
         margin: 0;
         padding: 0;
