@@ -16,20 +16,20 @@ const JSONEditor = JSONEditorModule.JSONEditor;
 
 
 
-const testSchema = JSON.parse( `
-{
+// const testSchema = JSON.parse( `
+// {
     
-  "title": "Person",
-  "type": "object",
-  "properties": {
-    "name": {
-        "type": "string"
-    }
-}
-}
-`);
+//   "title": "Person",
+//   "type": "object",
+//   "properties": {
+//     "name": {
+//         "type": "string"
+//     }
+// }
+// }
+// `);
 
-schema.definitions.EnumItemHardwareFastenerThreadLabelEnum.type;
+// schema.definitions.EnumItemHardwareFastenerThreadLabelEnum.type;
 
 export const JsonEditorForm = () => {
     useEffect( () => {

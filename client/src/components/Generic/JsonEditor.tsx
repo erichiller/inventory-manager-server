@@ -1,46 +1,39 @@
+// import React, { useEffect } from 'react';
+// import { JsonEditor } from '~components/Shared/JsonModal';
+// import schema from "~lib/Item/ItemHardwareFastenerScrewMachine/config/ScrewSizeOptions.schema.json";
+
+// // import { EditorState } from "@codemirror/next/state";
+
+
+
+
+
+
+
+
+// // const testSchema = JSON.parse( `
+// // {
+
+// //   "title": "Person",
+// //   "type": "object",
+// //   "properties": {
+// //     "name": {
+// //         "type": "string"
+// //     }
+// // }
+// // }
+// // `);
+
+// // schema.definitions.EnumItemHardwareFastenerThreadLabelEnum.type;
+
+// export const GenericObjectJsonEditor = () => {
+//     return < JsonEditor text="" />
+// }; 
+
 import React, { useEffect, useRef } from "react";
 import JSONEditor, { JSONEditorMode, JSONEditorOptions } from 'jsoneditor';
 import { Intersection, deepCopy, deepEqual } from "~lib/UtilityFunctions";
 import { Button, Modal } from "antd";
-
-interface JsonModalProps {
-    json: Object | string;
-    onChange?: (json: Object) => void;
-    onCommit?: (json: Object) => void;
-    visibilityHandler: ( modal: React.ReactElement ) => void;
-}
-
-export const JsonModal: React.FC<JsonModalProps> = ( props ) => {
-    const { visibilityHandler, onCommit } = props;
-    const json = typeof props.json === "string" ? JSON.stringify( props.json ) : props.json;
-
-    const onChange = (json: Object) => {
-        // run something that prepares for `onCommit`
-        if ( props.onChange ){
-            props.onChange(json);
-        }
-    }
-
-    console.log({cls: "JsonModal", evt: "ModalInit", json});
-    return <Modal
-        title="JSON"
-        visible={true}
-        className="JsonModal"
-        // onOk={() => visibilityHandler(false)}
-        onCancel={() => visibilityHandler( null )}
-        footer={[
-            <Button key="close" type="primary" onClick={() => visibilityHandler( null )}>
-                Close
-            </Button>,
-        ]}
-    >
-        <JsonEditor json={json}
-            {...onChange ?? {}}
-         />
-    </Modal>;
-};
-
-
 
 
 type JsonEditorProps = Intersection<{
@@ -50,13 +43,14 @@ type JsonEditorProps = Intersection<{
     json?: object;
     text: string;
 }, {
-    className?: string
+    className?: string;
 },
-JSONEditorOptions >;
+    JSONEditorOptions>;
+// type JsonEditorProps = JSONEditorOptions;
 
 
 // TODO: JsonEditorModal Templates ; create templates for common data entry. Array of templates that will appear in the context menu, Each template is a json object precreated that can be added as a object value to any node in your document
-export const JsonEditor: React.FC<JsonEditorProps> = ( props ) => {
+export const GenericObjectJsonEditor: React.FC<JsonEditorProps> = ( props ) => {
     const { json, text, mode, schema, schemaRefs, className } = props;
 
     /**
@@ -78,6 +72,7 @@ export const JsonEditor: React.FC<JsonEditorProps> = ( props ) => {
         delete t_options.json;
         delete t_options.text;
         options = t_options;
+        options.modes = [ 'tree', 'view', 'form', 'code', 'text', 'preview'];
 
         JsonEditorInstance = new JSONEditor( containerRef.current, options );
 
@@ -119,6 +114,6 @@ export const JsonEditor: React.FC<JsonEditorProps> = ( props ) => {
     }, [ json, text, mode, schema, schemaRefs ] );
 
     return (
-        <div className={`jsoneditor-react-container ${className??''}`} ref={containerRef} />
+        <div className={`jsoneditor-react-container ${ className ?? '' }`} ref={containerRef} />
     );
 };
