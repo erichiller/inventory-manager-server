@@ -4,6 +4,8 @@ Manage orders, inventory, and make labels.
 
 ## Apollo Client Setup
 
+**no longer used**
+
 For code completion and other features of the [Apollo VSCode Extension]() an `apollo.config.js` must be created. Contents should be like:
 
 ```js
