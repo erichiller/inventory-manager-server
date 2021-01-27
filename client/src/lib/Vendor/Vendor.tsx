@@ -33,7 +33,7 @@ import { rejects } from "assert";
 import { CategoryHierarchyT, FormMutationHandler } from "../Item/Item";
 import { IconComponentT } from "~lib/types/common";
 import { ShoppingCartOutlined, ShopOutlined, CheckOutlined, WarningOutlined } from "@ant-design/icons";
-import { ApolloQueryResult } from "apollo-client";
+import { ApolloQueryResult } from "@apollo/client";
 import { AsyncIcon } from "~components/Shared/AsyncIcon";
 
 interface VendorDataProps extends Pick<ApolloQueryResult<GetVendorQuery>['data']['vendor'],

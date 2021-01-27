@@ -1,5 +1,5 @@
 import { Item, CategoryHierarchyT, ItemGqlTypename, GenericItem, FormMutationHandler } from '~lib/Item/Item';
-import { Item as ItemGql, ItemHardwareFastenerScrewMachine as ItemHardwareFastenerScrewMachineGql, ItemHardwareFastenerScrewMachineSelectColumn, Maybe, Scalars, EnumUnitEnum, EnumItemHardwareFastenerDriveEnum, EnumItemHardwareFinishEnum, EnumItemHardwareFastenerScrewHardnessEnum, EnumItemHardwareFastenerScrewHeadEnum, EnumItemHardwareFastenerMaterialEnum, EnumItemHardwareFastenerScrewMachinePointEnum, EnumItemHardwareFastenerScrewMachineStrengthEnum, EnumItemHandednessEnum, EnumItemHardwareFastenerScrewMachineThreadFitEnum, EnumItemHardwareFastenerThreadStandardEnum, EnumItemHardwareFastenerThreadLabelEnum, EnumItemHardwareUseMaterialEnum } from "../../types/graphql";
+import { Item as ItemGql, ItemHardwareFastenerScrewMachine as ItemHardwareFastenerScrewMachineGql, ItemHardwareFastenerScrewMachineSelectColumn, Maybe, Scalars, EnumUnitEnum, EnumItemHardwareFastenerDriveEnum, EnumItemHardwareFinishEnum, EnumItemHardwareFastenerScrewHardnessEnum, EnumItemHardwareFastenerScrewHeadEnum, EnumItemHardwareFastenerMaterialEnum, EnumItemHardwareFastenerScrewMachinePointEnum, EnumItemHardwareFastenerScrewMachineStrengthEnum, EnumItemHandednessEnum, EnumItemHardwareFastenerScrewMachineThreadFitEnum, EnumItemHardwareFastenerThreadStandardEnum, EnumItemHardwareFastenerThreadLabelEnum, EnumItemHardwareUseMaterialEnum, Label, LabelTemplateMap } from "../../types/graphql";
 import React from 'react';
 import { Integer } from '../../types/uint8';
 import { HexBoltIcon } from '../../../styles/icon';
@@ -75,6 +75,9 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
     /** Material this fastener is meant to thread into. */
     use_material?: Maybe<EnumItemHardwareUseMaterialEnum>;
 
+
+    // private _labelTemplates?: LabelTemplateMap[];
+
     constructor ( props: ItemHardwareFastenerScrewMachineGql | ItemGql ) {
         super( props as ItemHardwareFastenerScrewMachineGql );
         // console.log({class: 'ItemHardwareFastenerScrewMachine', method: 'constructor', props});
@@ -118,6 +121,18 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
             // 'thread_fit'
         ];
     }
+
+
+    // get labelTemplate (): Label | null {
+    //     console.log( "labelTemplate()" );
+    //     if ( this.labelTemplateMatches != null && this.labelTemplateMatches.length > 0 ) {
+    //         return this.labelTemplateMatches[0];
+    //     }
+    //     // else if ( this._object && this._object.hasOwnProperty( "labelTemplate" ) ) {
+    //     //     return this._object[ 'labelTemplate' ];
+    //     // }
+    //     return null;
+    // }
 
     get labelProps (): Array<Partial<keyof typeof ItemHardwareFastenerScrewMachineSelectColumn> | keyof Item<ItemHardwareFastenerScrewMachineGql>> {
         const exclude: Array<Partial<keyof typeof ItemHardwareFastenerScrewMachineSelectColumn> | keyof Item<ItemHardwareFastenerScrewMachineGql>> = [

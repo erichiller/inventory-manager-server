@@ -250,21 +250,21 @@ table manufacturer_item (
 
 /**
  * individual items from all classes tracked here
+ * links / relationships here are not in sql,
+ * are relationships defined in GraphQL
 **/
 table item (
     id: Integer
-    class: item_class → item_class (enum)
-    metadata : string  -- object metadata is kept up to date with triggers
-    -- links / relationships here are not in sql,
-    -- are relationships defined in GraphQL
-    labelTemplates : → label_template[ ]
-    vendorItems : → vendor_item[ ]
-    manufacturerItems → manufacturer_item[ ]
-    bundles → item_bundle[ ]
+    class: item_class  -- item_class (enum)
+    metadata : text  -- object metadata is kept up to date with triggers
+    labelTemplates : label_template[ ]
+    vendorItems :  vendor_item[ ]
+    manufacturerItems : manufacturer_item[ ]
+    bundles : item_bundle[ ]
 ) -- ✔
 
 table item_bundle (
-    item_id → item
+    item_id: item
 ) -- ✔
 
 table image_icon_map (

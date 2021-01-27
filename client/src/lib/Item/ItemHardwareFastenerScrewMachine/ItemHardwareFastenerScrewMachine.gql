@@ -21,6 +21,8 @@ fragment ItemHardwareFastenerScrewMachineFields on item_hardware_fastener_screw_
     hardness
     strength_class
     use_material
+
+    
 }
 
 query item_hardware_fastener_screw_machine {
@@ -29,7 +31,7 @@ query item_hardware_fastener_screw_machine {
     }
 }
 
-mutation InsertItemHardwareFastenerScrewMachine(
+mutation InsertItemHardwareFastenerScrewMachine (
     $countersunk_angle: numeric
     $countersunk_height: numeric
     $description: String

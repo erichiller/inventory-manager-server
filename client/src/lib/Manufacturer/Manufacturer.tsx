@@ -18,7 +18,7 @@ import { sortByCaseInsensitiveText, makeColumn } from "~lib/UtilityFunctions";
 import { FormMutationHandler } from "~lib/Item/Item";
 import { IconComponentT } from "~lib/types/common";
 import { ShopOutlined, CheckOutlined, WarningOutlined } from "@ant-design/icons";
-import { ApolloQueryResult } from "apollo-client";
+import { ApolloQueryResult } from "@apollo/client";
 import { AsyncIcon } from "~components/Shared/AsyncIcon";
 
 import { FilterFlags } from "~lib/UtilityFunctions";

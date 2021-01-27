@@ -9132,6 +9132,24 @@ type item_hardware_fastener_screw_machine {
   head_type: enum_item_hardware_fastener_screw_head_enum!
   id: Int!
 
+  # A computed field, executes function "item.hardware_fastener_screw_machine_label_templates_gen"
+  labelTemplates(
+    # distinct select on columns
+    distinct_on: [label_template_map_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [label_template_map_order_by!]
+
+    # filter the rows returned
+    where: label_template_map_bool_exp
+  ): [label_template_map!]
+
   # Material, such as Zinc coated steel or Stainless Steel
   material: enum_item_hardware_fastener_material_enum
   name: String!
@@ -12446,8 +12464,7 @@ type label_template_map {
     # JSON select path
     path: String
   ): jsonb
-  item_class: String!
-  item_id: Int!
+  item_class: enum_item_class_enum!
 
   # An object relationship
   label: label!
@@ -12504,13 +12521,11 @@ input label_template_map_arr_rel_insert_input {
 
 # aggregate avg on columns
 type label_template_map_avg_fields {
-  item_id: Float
   sequence: Float
 }
 
 # order by avg() on columns of table "label_template_map"
 input label_template_map_avg_order_by {
-  item_id: order_by
   sequence: order_by
 }
 
@@ -12520,8 +12535,7 @@ input label_template_map_bool_exp {
   _not: label_template_map_bool_exp
   _or: [label_template_map_bool_exp]
   criteria: jsonb_comparison_exp
-  item_class: String_comparison_exp
-  item_id: Int_comparison_exp
+  item_class: enum_item_class_enum_comparison_exp
   label: label_bool_exp
   label_id: uuid_comparison_exp
   sequence: smallint_comparison_exp
@@ -12529,9 +12543,6 @@ input label_template_map_bool_exp {
 
 # unique or primary key constraints on table "label_template_map"
 enum label_template_map_constraint {
-  # unique or primary key constraint
-  label_template_map_item_id_label_id_key
-
   # unique or primary key constraint
   label_template_map_pkey
 }
@@ -12553,15 +12564,13 @@ input label_template_map_delete_key_input {
 
 # input type for incrementing integer column in table "label_template_map"
 input label_template_map_inc_input {
-  item_id: Int
   sequence: smallint
 }
 
 # input type for inserting data into table "label_template_map"
 input label_template_map_insert_input {
   criteria: jsonb
-  item_class: String
-  item_id: Int
+  item_class: enum_item_class_enum
   label: label_obj_rel_insert_input
   label_id: uuid
   sequence: smallint
@@ -12569,32 +12578,24 @@ input label_template_map_insert_input {
 
 # aggregate max on columns
 type label_template_map_max_fields {
-  item_class: String
-  item_id: Int
   label_id: uuid
   sequence: smallint
 }
 
 # order by max() on columns of table "label_template_map"
 input label_template_map_max_order_by {
-  item_class: order_by
-  item_id: order_by
   label_id: order_by
   sequence: order_by
 }
 
 # aggregate min on columns
 type label_template_map_min_fields {
-  item_class: String
-  item_id: Int
   label_id: uuid
   sequence: smallint
 }
 
 # order by min() on columns of table "label_template_map"
 input label_template_map_min_order_by {
-  item_class: order_by
-  item_id: order_by
   label_id: order_by
   sequence: order_by
 }
@@ -12625,7 +12626,6 @@ input label_template_map_on_conflict {
 input label_template_map_order_by {
   criteria: order_by
   item_class: order_by
-  item_id: order_by
   label: label_order_by
   label_id: order_by
   sequence: order_by
@@ -12633,7 +12633,7 @@ input label_template_map_order_by {
 
 # primary key columns input for table: "label_template_map"
 input label_template_map_pk_columns_input {
-  item_class: String!
+  item_class: enum_item_class_enum!
   label_id: uuid!
   sequence: smallint!
 }
@@ -12652,9 +12652,6 @@ enum label_template_map_select_column {
   item_class
 
   # column name
-  item_id
-
-  # column name
   label_id
 
   # column name
@@ -12664,57 +12661,48 @@ enum label_template_map_select_column {
 # input type for updating data in table "label_template_map"
 input label_template_map_set_input {
   criteria: jsonb
-  item_class: String
-  item_id: Int
+  item_class: enum_item_class_enum
   label_id: uuid
   sequence: smallint
 }
 
 # aggregate stddev on columns
 type label_template_map_stddev_fields {
-  item_id: Float
   sequence: Float
 }
 
 # order by stddev() on columns of table "label_template_map"
 input label_template_map_stddev_order_by {
-  item_id: order_by
   sequence: order_by
 }
 
 # aggregate stddev_pop on columns
 type label_template_map_stddev_pop_fields {
-  item_id: Float
   sequence: Float
 }
 
 # order by stddev_pop() on columns of table "label_template_map"
 input label_template_map_stddev_pop_order_by {
-  item_id: order_by
   sequence: order_by
 }
 
 # aggregate stddev_samp on columns
 type label_template_map_stddev_samp_fields {
-  item_id: Float
   sequence: Float
 }
 
 # order by stddev_samp() on columns of table "label_template_map"
 input label_template_map_stddev_samp_order_by {
-  item_id: order_by
   sequence: order_by
 }
 
 # aggregate sum on columns
 type label_template_map_sum_fields {
-  item_id: Int
   sequence: smallint
 }
 
 # order by sum() on columns of table "label_template_map"
 input label_template_map_sum_order_by {
-  item_id: order_by
   sequence: order_by
 }
 
@@ -12727,9 +12715,6 @@ enum label_template_map_update_column {
   item_class
 
   # column name
-  item_id
-
-  # column name
   label_id
 
   # column name
@@ -12738,37 +12723,31 @@ enum label_template_map_update_column {
 
 # aggregate var_pop on columns
 type label_template_map_var_pop_fields {
-  item_id: Float
   sequence: Float
 }
 
 # order by var_pop() on columns of table "label_template_map"
 input label_template_map_var_pop_order_by {
-  item_id: order_by
   sequence: order_by
 }
 
 # aggregate var_samp on columns
 type label_template_map_var_samp_fields {
-  item_id: Float
   sequence: Float
 }
 
 # order by var_samp() on columns of table "label_template_map"
 input label_template_map_var_samp_order_by {
-  item_id: order_by
   sequence: order_by
 }
 
 # aggregate variance on columns
 type label_template_map_variance_fields {
-  item_id: Float
   sequence: Float
 }
 
 # order by variance() on columns of table "label_template_map"
 input label_template_map_variance_order_by {
-  item_id: order_by
   sequence: order_by
 }
 
@@ -14043,7 +14022,7 @@ type mutation_root {
   ): label_template_map_mutation_response
 
   # delete single row from the table: "label_template_map"
-  delete_label_template_map_by_pk(item_class: String!, label_id: uuid!, sequence: smallint!): label_template_map
+  delete_label_template_map_by_pk(item_class: enum_item_class_enum!, label_id: uuid!, sequence: smallint!): label_template_map
 
   # delete data from the table: "manufacturer"
   delete_manufacturer(
@@ -20899,7 +20878,7 @@ type query_root {
   ): label_template_map_aggregate!
 
   # fetch data from the table: "label_template_map" using primary key columns
-  label_template_map_by_pk(item_class: String!, label_id: uuid!, sequence: smallint!): label_template_map
+  label_template_map_by_pk(item_class: enum_item_class_enum!, label_id: uuid!, sequence: smallint!): label_template_map
 
   # fetch data from the table: "manufacturer"
   manufacturer(
@@ -25047,7 +25026,7 @@ type subscription_root {
   ): label_template_map_aggregate!
 
   # fetch data from the table: "label_template_map" using primary key columns
-  label_template_map_by_pk(item_class: String!, label_id: uuid!, sequence: smallint!): label_template_map
+  label_template_map_by_pk(item_class: enum_item_class_enum!, label_id: uuid!, sequence: smallint!): label_template_map
 
   # fetch data from the table: "manufacturer"
   manufacturer(

@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { DISPLAY } from '~lib/types/enums';
-import { Label, useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument } from "~lib/types/graphql";
+import { useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument } from "~lib/types/graphql";
 import { Modal, Descriptions, Button, Tooltip, message, Input } from "antd";
 import React from "react";
 import { LabelDraw } from "./LabelDraw";
@@ -11,12 +10,13 @@ import { visibleHandler } from "../Item/ItemTable";
 import { Item } from "~lib/Item";
 import { StopOutlined, DatabaseOutlined, SaveOutlined } from "@ant-design/icons";
 import { toTitleCase } from "~lib/UtilityFunctions";
+import { Label } from "~lib/Item/Item";
 
 type LabelDrawModalProps = {
     visibleHandler: visibleHandler;
 } & ( {
     item: Item<any>;
-    label?: undefined;
+    label?: undefined | null | Label;
 } | {
     item?: undefined;
     label: Label;
