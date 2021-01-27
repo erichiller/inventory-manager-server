@@ -1,11 +1,14 @@
 
 import {
-    Item as ItemGql, Icon, Label, EnumItemClassEnum,
+    Item as ItemGql, Icon, EnumItemClassEnum,
     ItemSelectColumn,
     GetItemQueryVariables,
     GetItemDocument,
     GetItemQuery,
-    Scalars
+    Scalars,
+    Label as LabelGql,
+    LabelTemplateMap,
+    LabelTemplateFieldsFragment
 } from "../types/graphql";
 
 
@@ -17,16 +20,31 @@ import { toTitleCase, Intersection, enumerable, StringKeys } from "~lib/UtilityF
 import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { IconComponentT } from "~lib/types/common";
+import { LabelExportConstituents } from "~lib/LabelConstituent";
 
 export type GenericItem = Pick<ItemGql, 'id'>
-    & Partial<Pick<ItemGql, | 'object'>
+    & Partial<Pick<ItemGql, 'object'>
         & {
             name?: string;
             __typename: ItemGqlTypename;
             class: ItemGqlTypename;
-        }>;
+            labelTemplates: LabelTemplate[];
+        }
+    >;
 
 export type ItemGqlTypename = keyof typeof EnumItemClassEnum | 'item';
+
+export interface Label extends Omit<LabelGql, 'parent_of' | 'parent_of_aggregate' | 'item' | 'content' | 'template_items' | 'template_items_aggregate' > {
+    content: LabelExportConstituents;
+}
+
+export type LabelTemplate = Pick<LabelTemplateFieldsFragment, "sequence" | "criteria"> & {
+    label: Label;
+    // label: ( {
+    //     __typename?: 'label';
+    // } & Pick<Label, 'width' | 'content' | 'created_at' | 'edit_of_id' | 'height' | 'id' | 'item_id' | 'updated_at' | 'title'> )
+};
+// export type LabelTemplate = LabelTemplateFieldsFragment;
 
 
 export interface ItemFormProps<T> {
@@ -62,10 +80,12 @@ export class Item<T extends GenericItem> {
     private _object: Object;
     private _class: ItemGqlTypename;
     private _default_values: Array<StringKeys<T>>;
+    private _labelTemplates?: LabelTemplate[];
 
     item: ItemGql;
 
     constructor ( props: T ) {
+        console.log( "Item constructed with props", props );
         // constructor( props: Partial<T>){
         // if (!props) return;
         // this.item = props;
@@ -73,13 +93,14 @@ export class Item<T extends GenericItem> {
         this._name = props.name;
         this._class = props.class;
         this._object = props.object;
+        this._labelTemplates = props.labelTemplates;
         // console.log( "Item class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
     }
 
     static [ Symbol.hasInstance ] ( instance: object ) {
         // TODO: apply to other Item subclasses
         // TODO: use `constructor.name` ??
-        if ( '__typename' in instance && instance['__typename'] === 'item' ) {
+        if ( '__typename' in instance && instance[ '__typename' ] === 'item' ) {
             return true;
         }
         return false;
@@ -106,7 +127,7 @@ export class Item<T extends GenericItem> {
             console.error( msg );
             message.error( msg );
             reject( error );
-        // } ).finally( () => {
+            // } ).finally( () => {
             // props.visibleHandler( null );
         } ) );
     }
@@ -127,15 +148,15 @@ export class Item<T extends GenericItem> {
         let items: Item<any>[] = [];
         ( Array.isArray( gqlResultData ) ? gqlResultData : [ gqlResultData ] ).forEach( i => {
             let cls = this.getClassForType( i.class || i.__typename );
-            if ( ! cls ) {
-                throw `class '${ i.class }' (__typename: '${ i.__typename }') is not registered in 'getClassForType', received '${ cls}' `;
+            if ( !cls ) {
+                throw `class '${ i.class }' (__typename: '${ i.__typename }') is not registered in 'getClassForType', received '${ cls }' `;
                 return null;
             }
             // console.log( { _cls: "Item", method: 'ItemsFactory', msg: "loading class of type", item_class: cls, item_class_name: cls.name } );
             items.push( new cls( i ) );
         } );
-        if ( ! Array.isArray( gqlResultData ) ){
-            return items[0];
+        if ( !Array.isArray( gqlResultData ) ) {
+            return items[ 0 ];
         }
         return items;
     }
@@ -150,9 +171,9 @@ export class Item<T extends GenericItem> {
      * Returns self as a simple object. `get prop(): string` converted to `{ prop: string }`
      */
     get simpleObject (): T {
-        let simpleObject: {[key: string]: any; } = {};
-        for( let propertyKey in this ){
-            simpleObject[propertyKey] = this[propertyKey];
+        let simpleObject: { [ key: string ]: any; } = {};
+        for ( let propertyKey in this ) {
+            simpleObject[ propertyKey ] = this[ propertyKey ];
         }
         return simpleObject as T;
     }
@@ -180,17 +201,17 @@ export class Item<T extends GenericItem> {
      */
     static get defaultValues (): Array<StringKeys<Item<any>>> {
         // TODO: this needs to calculate on the fly from `class`
-        return [ ];
+        return [];
     }
     /**
      * These are the fields, if any, that have been determined by the class's {@link `Item.defaultValues`} rather than by user input..
      */
     @enumerable( true )
     get defaultValues (): Array<StringKeys<T>> {
-        if ( this._default_values ){
+        if ( this._default_values ) {
             return this._default_values;
-        } else if ( this._object && this._object.hasOwnProperty( "default_values" ) ){
-            return this._object['default_values'];
+        } else if ( this._object && this._object.hasOwnProperty( "default_values" ) ) {
+            return this._object[ 'default_values' ];
         } else {
             return [];
         }
@@ -198,7 +219,7 @@ export class Item<T extends GenericItem> {
 
     @enumerable( true )
     get url (): string {
-        return `http://inventory/${this.id}`;
+        return `http://inventory/${ this.id }`;
     }
 
 
@@ -246,7 +267,7 @@ export class Item<T extends GenericItem> {
 
     static get icon (): IconComponentT {
         // return new Promise<IconComponentT>( ( resolve, reject ) => {
-            // resolve( CodeIcon );
+        // resolve( CodeIcon );
         // });
         // return new Promise( ( resolve, reject ) => resolve(CodeIcon) );
         return CodeIcon;
@@ -375,14 +396,37 @@ export class Item<T extends GenericItem> {
     get sortProps (): ( keyof T )[] {
         return null;
     }
-    get labelTemplate (): Label {
+    /**
+     * The final template to use, highest sequence and matched via `labelTemplateMatches`
+     */
+    get labelTemplate (): LabelTemplateFieldsFragment | null {
+        console.log( "labelTemplate()" );
+        if ( this._object && this._object.hasOwnProperty( "labelTemplate" ) ) {
+            console.log( "labelTemplate hasOwnProperty" );
+            return this._object[ 'labelTemplate' ];
+        } else if ( this.labelTemplateMatches != null && this.labelTemplateMatches.length > 0 ) {
+            console.log( "labelTemplate => labelTemplateMatches" );
+            return this.labelTemplateMatches[ 0 ];
+        }
+        console.warn( "labelTemplate ; returning null" );
         return null;
     }
-    get labelTemplateMatches (): Label[] {
-        return null;
+    get labelTemplateMatches (): LabelTemplateFieldsFragment[] {
+        console.log( "labelTemplateMatches()" );
+        return this.labelTemplates;
     }
-    get labelTemplates (): Label[] {
-        return null;
+    get labelTemplates (): LabelTemplateFieldsFragment[] {
+        console.log( "labelTemplates()" );
+        if ( this._labelTemplates != null ) {
+            console.log( "this._labelTemplates != null" );
+            return this._labelTemplates;
+        }
+        else if ( this._object && this._object.hasOwnProperty( "labelTemplates" ) ) {
+            console.log( "labelTemplates hasOwnProperty" );
+            return this._object[ 'labelTemplates' ];
+        }
+        console.log( "labelTemplates ; returning empty array" );
+        return [];
     }
     /**
      * Props which should be included in label (default) 
@@ -406,7 +450,7 @@ export class Item<T extends GenericItem> {
      * Ordered
      * Optionally defined on subclasses
      */
-    get defaultQrProps (): Array<Extract<keyof Intersection<Item<T>,T>, string>> {
+    get defaultQrProps (): Array<Extract<keyof Intersection<Item<T>, T>, string>> {
         return [];
     }
 
@@ -453,7 +497,7 @@ export class Item<T extends GenericItem> {
      */
     get mouseOverRowComponent (): React.FC {
         // TODO: use for ... in so that enumerable properties are shown
-        return ( ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key ] ) => key !== '_object' ) ), Object.keys( this ).sort(), 2 )}</pre>;
+        return () => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key ] ) => key !== '_object' ) ), Object.keys( this ).sort(), 2 )}</pre>;
     }
 
     // get bundle (): Item {

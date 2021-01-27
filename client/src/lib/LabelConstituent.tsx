@@ -2,15 +2,15 @@ import * as React from 'react';
 
 import { v4 as UUIDv4 } from 'uuid';
 
-import { EnumItemClassEnum, Scalars, LabelAggregate } from './types/graphql';
+import { EnumItemClassEnum, Scalars } from './types/graphql';
 import type { Integer } from './types/uint8';
-import { Label } from "./types/graphql";
 import { Item } from "./Item";
 import bwipjs from 'bwip-js';
 import { DrawingSVG } from './BwipJsSvg';
 import { message, Alert } from 'antd';
 import { enumerable } from '~lib/UtilityFunctions';
 import type { Stage as StageT } from 'konva/types/Stage';
+import { Label } from './Item/Item';
 
 
 
@@ -18,8 +18,7 @@ export type UUIDStringT = Scalars[ 'uuid' ];
 export type FormatOptionsT = "bold" | "italic" | "underline";
 
 
-
-class LabelExportConstituents {
+export class LabelExportConstituents {
 
     texts: LabelText[];
     images: LabelImage[];
@@ -39,7 +38,7 @@ interface LabelExportConstructorProps extends LabelExportConstituents {
 // QueryResult
 
 
-export class LabelExport implements Partial<Omit<Label, 'parent_of_aggregate' | 'item'>> {
+export class LabelExport implements Label {
 
     static DEFAULT_WIDTH = 300;
     id: UUIDStringT;

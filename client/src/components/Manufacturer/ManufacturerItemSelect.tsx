@@ -24,7 +24,7 @@ type VT = number | Partial<UpdateManufacturerItemMutationVariables>;
 export interface ManufacturerItemSelectValue extends Partial<Pick<ManufacturerItemGql, 'id' | 'description' | 'item_id' | 'manufacturer_id' | 'manufacturer_product_id'>> { }
 
 interface ManufacturerItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
-    forwardRef?: React.MutableRefObject<Select>;
+    forwardRef?: React.MutableRefObject<typeof Select>;
     value?: VT;
     item_id?: Integer;
     onChange: ( manufacturer_item: ManufacturerItemSelectValue ) => void;

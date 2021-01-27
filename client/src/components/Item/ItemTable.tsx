@@ -130,7 +130,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     };
 
     const getLabelDrawModal = ( record: T ): React.ReactElement => {
-        return <LabelDrawModal item={record} visibleHandler={setModal} />;
+        return <LabelDrawModal item={record} visibleHandler={setModal} label={record.labelTemplate.label} />;
     };
 
     const getColumns = (): ColumnProps<T>[] => {

@@ -1,3 +1,18 @@
+fragment LabelTemplateFields on label_template_map {
+    sequence
+    criteria
+    label {
+        width
+        content
+        created_at
+        edit_of_id
+        height
+        id
+        item_id
+        updated_at
+        title
+    }    
+}
 fragment ItemFields on item {
     id
     class
@@ -18,9 +33,14 @@ fragment ItemFields on item {
     # vendorItems {
     #     #
     # }
-    # labelTemplates {
-    #     #
-    # }
+    labelTemplates(
+        order_by: {
+            sequence: asc
+        }, 
+        where: {}
+    ) {
+        ...LabelTemplateFields
+    }
 }
 # query SearchItems( $categories: [enum_item_class_enum!] ) {
 #     items: item(

@@ -8,9 +8,34 @@ import {
 } from "@codemirror/next/view";
 import { defaultKeymap } from "@codemirror/next/commands";
 import { EditorState, EditorView, basicSetup } from "@codemirror/next/basic-setup"
-import { javascript } from "@codemirror/next/lang-javascript"
+import { javascript as LangJavascript } from "@codemirror/next/lang-javascript"
 
+// import * as tsj from "ts-json-schema-generator/factory/generator";
+// import { createGenerator } from "ts-json-schema-generator/factory/generator";
+// import { createGenerator, Config as JsonSchemaGeneratorConfig } from "ts-json-schema-generator";
+// import { Config as JsonSchemaGeneratorConfig } from "ts-json-schema-generator/src/Config";
+// const tsj = require( "ts-json-schema-generator" );
+// const fs = require( "fs" );
 
+// const config = {
+//     path: "path/to/source/file",
+//     tsconfig: "path/to/tsconfig.json",
+//     type: "*", // Or <type-name> if you want to generate schema for that one type only
+// };
+
+// const config: tsj.Config = {
+//     tsconfig: 
+
+// }
+// const config: JsonSchemaGeneratorConfig = {};
+
+// const output_path = "path/to/output/file";
+
+// const generatedSchema = createGenerator( config ).createSchema( config.type );
+// const schemaString = JSON.stringify( schema, null, 2 );
+// fs.writeFile( output_path, schemaString, ( err ) => {
+//     if ( err ) throw err;
+// } );
 
 
 
@@ -32,13 +57,14 @@ import { javascript } from "@codemirror/next/lang-javascript"
 // schema.definitions.EnumItemHardwareFastenerThreadLabelEnum.type;
 
 export const CodeEditor = () => {
+
     useEffect( () => {
         const element = document.getElementById( 'code_editor_container' );
         let startState = EditorState.create( {
             // doc: "Hello World",
             // state: EditorState.create( {
                  extensions: [ 
-                     basicSetup, javascript({ typescript: true })
+                basicSetup, LangJavascript({ typescript: true })
                 // } )
                 ,
 

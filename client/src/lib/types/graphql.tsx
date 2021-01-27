@@ -9445,6 +9445,8 @@ export type ItemHardwareFastenerScrewMachine = {
   head_height?: Maybe<Scalars['numeric']>;
   head_type: EnumItemHardwareFastenerScrewHeadEnum;
   id: Scalars['Int'];
+  /** A computed field, executes function "item.hardware_fastener_screw_machine_label_templates_gen" */
+  labelTemplates?: Maybe<Array<LabelTemplateMap>>;
   /** Material, such as Zinc coated steel or Stainless Steel */
   material?: Maybe<EnumItemHardwareFastenerMaterialEnum>;
   name: Scalars['String'];
@@ -9483,6 +9485,16 @@ export type ItemHardwareFastenerScrewMachine = {
 /** columns and relationships of "item.hardware_fastener_screw_machine" */
 export type ItemHardwareFastenerScrewMachineDefaultFieldsArgs = {
   path?: Maybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "item.hardware_fastener_screw_machine" */
+export type ItemHardwareFastenerScrewMachineLabelTemplatesArgs = {
+  distinct_on?: Maybe<Array<LabelTemplateMapSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<LabelTemplateMapOrderBy>>;
+  where?: Maybe<LabelTemplateMapBoolExp>;
 };
 
 
@@ -12758,8 +12770,7 @@ export type LabelTemplateMap = {
    * evaluation is done in the sequence order
    */
   criteria?: Maybe<Scalars['jsonb']>;
-  item_class: Scalars['String'];
-  item_id: Scalars['Int'];
+  item_class: EnumItemClassEnum;
   /** An object relationship */
   label: Label;
   label_id: Scalars['uuid'];
@@ -12836,13 +12847,11 @@ export type LabelTemplateMapArrRelInsertInput = {
 /** aggregate avg on columns */
 export type LabelTemplateMapAvgFields = {
   __typename?: 'label_template_map_avg_fields';
-  item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "label_template_map" */
 export type LabelTemplateMapAvgOrderBy = {
-  item_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
@@ -12852,8 +12861,7 @@ export type LabelTemplateMapBoolExp = {
   _not?: Maybe<LabelTemplateMapBoolExp>;
   _or?: Maybe<Array<Maybe<LabelTemplateMapBoolExp>>>;
   criteria?: Maybe<JsonbComparisonExp>;
-  item_class?: Maybe<StringComparisonExp>;
-  item_id?: Maybe<IntComparisonExp>;
+  item_class?: Maybe<EnumItemClassEnumComparisonExp>;
   label?: Maybe<LabelBoolExp>;
   label_id?: Maybe<UuidComparisonExp>;
   sequence?: Maybe<SmallintComparisonExp>;
@@ -12861,8 +12869,6 @@ export type LabelTemplateMapBoolExp = {
 
 /** unique or primary key constraints on table "label_template_map" */
 export enum LabelTemplateMapConstraint {
-  /** unique or primary key constraint */
-  label_template_map_item_id_label_id_key = 'label_template_map_item_id_label_id_key',
   /** unique or primary key constraint */
   label_template_map_pkey = 'label_template_map_pkey'
 }
@@ -12884,15 +12890,13 @@ export type LabelTemplateMapDeleteKeyInput = {
 
 /** input type for incrementing integer column in table "label_template_map" */
 export type LabelTemplateMapIncInput = {
-  item_id?: Maybe<Scalars['Int']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
 
 /** input type for inserting data into table "label_template_map" */
 export type LabelTemplateMapInsertInput = {
   criteria?: Maybe<Scalars['jsonb']>;
-  item_class?: Maybe<Scalars['String']>;
-  item_id?: Maybe<Scalars['Int']>;
+  item_class?: Maybe<EnumItemClassEnum>;
   label?: Maybe<LabelObjRelInsertInput>;
   label_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
@@ -12901,16 +12905,12 @@ export type LabelTemplateMapInsertInput = {
 /** aggregate max on columns */
 export type LabelTemplateMapMaxFields = {
   __typename?: 'label_template_map_max_fields';
-  item_class?: Maybe<Scalars['String']>;
-  item_id?: Maybe<Scalars['Int']>;
   label_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
 
 /** order by max() on columns of table "label_template_map" */
 export type LabelTemplateMapMaxOrderBy = {
-  item_class?: Maybe<OrderBy>;
-  item_id?: Maybe<OrderBy>;
   label_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
@@ -12918,16 +12918,12 @@ export type LabelTemplateMapMaxOrderBy = {
 /** aggregate min on columns */
 export type LabelTemplateMapMinFields = {
   __typename?: 'label_template_map_min_fields';
-  item_class?: Maybe<Scalars['String']>;
-  item_id?: Maybe<Scalars['Int']>;
   label_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
 
 /** order by min() on columns of table "label_template_map" */
 export type LabelTemplateMapMinOrderBy = {
-  item_class?: Maybe<OrderBy>;
-  item_id?: Maybe<OrderBy>;
   label_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
@@ -12958,7 +12954,6 @@ export type LabelTemplateMapOnConflict = {
 export type LabelTemplateMapOrderBy = {
   criteria?: Maybe<OrderBy>;
   item_class?: Maybe<OrderBy>;
-  item_id?: Maybe<OrderBy>;
   label?: Maybe<LabelOrderBy>;
   label_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
@@ -12966,7 +12961,7 @@ export type LabelTemplateMapOrderBy = {
 
 /** primary key columns input for table: "label_template_map" */
 export type LabelTemplateMapPkColumnsInput = {
-  item_class: Scalars['String'];
+  item_class: EnumItemClassEnum;
   label_id: Scalars['uuid'];
   sequence: Scalars['smallint'];
 };
@@ -12983,8 +12978,6 @@ export enum LabelTemplateMapSelectColumn {
   /** column name */
   item_class = 'item_class',
   /** column name */
-  item_id = 'item_id',
-  /** column name */
   label_id = 'label_id',
   /** column name */
   sequence = 'sequence'
@@ -12993,8 +12986,7 @@ export enum LabelTemplateMapSelectColumn {
 /** input type for updating data in table "label_template_map" */
 export type LabelTemplateMapSetInput = {
   criteria?: Maybe<Scalars['jsonb']>;
-  item_class?: Maybe<Scalars['String']>;
-  item_id?: Maybe<Scalars['Int']>;
+  item_class?: Maybe<EnumItemClassEnum>;
   label_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
@@ -13002,52 +12994,44 @@ export type LabelTemplateMapSetInput = {
 /** aggregate stddev on columns */
 export type LabelTemplateMapStddevFields = {
   __typename?: 'label_template_map_stddev_fields';
-  item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "label_template_map" */
 export type LabelTemplateMapStddevOrderBy = {
-  item_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_pop on columns */
 export type LabelTemplateMapStddevPopFields = {
   __typename?: 'label_template_map_stddev_pop_fields';
-  item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "label_template_map" */
 export type LabelTemplateMapStddevPopOrderBy = {
-  item_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_samp on columns */
 export type LabelTemplateMapStddevSampFields = {
   __typename?: 'label_template_map_stddev_samp_fields';
-  item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "label_template_map" */
 export type LabelTemplateMapStddevSampOrderBy = {
-  item_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
 /** aggregate sum on columns */
 export type LabelTemplateMapSumFields = {
   __typename?: 'label_template_map_sum_fields';
-  item_id?: Maybe<Scalars['Int']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
 
 /** order by sum() on columns of table "label_template_map" */
 export type LabelTemplateMapSumOrderBy = {
-  item_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
@@ -13058,8 +13042,6 @@ export enum LabelTemplateMapUpdateColumn {
   /** column name */
   item_class = 'item_class',
   /** column name */
-  item_id = 'item_id',
-  /** column name */
   label_id = 'label_id',
   /** column name */
   sequence = 'sequence'
@@ -13068,39 +13050,33 @@ export enum LabelTemplateMapUpdateColumn {
 /** aggregate var_pop on columns */
 export type LabelTemplateMapVarPopFields = {
   __typename?: 'label_template_map_var_pop_fields';
-  item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "label_template_map" */
 export type LabelTemplateMapVarPopOrderBy = {
-  item_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
 /** aggregate var_samp on columns */
 export type LabelTemplateMapVarSampFields = {
   __typename?: 'label_template_map_var_samp_fields';
-  item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "label_template_map" */
 export type LabelTemplateMapVarSampOrderBy = {
-  item_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
 /** aggregate variance on columns */
 export type LabelTemplateMapVarianceFields = {
   __typename?: 'label_template_map_variance_fields';
-  item_id?: Maybe<Scalars['Float']>;
   sequence?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "label_template_map" */
 export type LabelTemplateMapVarianceOrderBy = {
-  item_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
@@ -15290,7 +15266,7 @@ export type MutationRootDeleteLabelTemplateMapArgs = {
 
 /** mutation root */
 export type MutationRootDeleteLabelTemplateMapByPkArgs = {
-  item_class: Scalars['String'];
+  item_class: EnumItemClassEnum;
   label_id: Scalars['uuid'];
   sequence: Scalars['smallint'];
 };
@@ -21257,7 +21233,7 @@ export type QueryRootLabelTemplateMapAggregateArgs = {
 
 /** query root */
 export type QueryRootLabelTemplateMapByPkArgs = {
-  item_class: Scalars['String'];
+  item_class: EnumItemClassEnum;
   label_id: Scalars['uuid'];
   sequence: Scalars['smallint'];
 };
@@ -24938,7 +24914,7 @@ export type SubscriptionRootLabelTemplateMapAggregateArgs = {
 
 /** subscription root */
 export type SubscriptionRootLabelTemplateMapByPkArgs = {
-  item_class: Scalars['String'];
+  item_class: EnumItemClassEnum;
   label_id: Scalars['uuid'];
   sequence: Scalars['smallint'];
 };
@@ -27391,10 +27367,23 @@ export type DeleteVendorItemMutation = (
   )> }
 );
 
+export type LabelTemplateFieldsFragment = (
+  { __typename?: 'label_template_map' }
+  & Pick<LabelTemplateMap, 'sequence' | 'criteria'>
+  & { label: (
+    { __typename?: 'label' }
+    & Pick<Label, 'width' | 'content' | 'created_at' | 'edit_of_id' | 'height' | 'id' | 'item_id' | 'updated_at' | 'title'>
+  ) }
+);
+
 export type ItemFieldsFragment = (
   { __typename?: 'item' }
   & Pick<Item, 'id' | 'class' | 'object'>
   & { name: Item['object'] }
+  & { labelTemplates: Array<(
+    { __typename?: 'label_template_map' }
+    & LabelTemplateFieldsFragment
+  )> }
 );
 
 export type GetItemsQueryVariables = Exact<{
@@ -27855,14 +27844,34 @@ export const BasicVendorItemFieldsFragmentDoc = gql`
   vendor_sku
 }
     `;
+export const LabelTemplateFieldsFragmentDoc = gql`
+    fragment LabelTemplateFields on label_template_map {
+  sequence
+  criteria
+  label {
+    width
+    content
+    created_at
+    edit_of_id
+    height
+    id
+    item_id
+    updated_at
+    title
+  }
+}
+    `;
 export const ItemFieldsFragmentDoc = gql`
     fragment ItemFields on item {
   id
   class
   name: object(path: "name")
   object
+  labelTemplates(order_by: {sequence: asc}, where: {}) {
+    ...LabelTemplateFields
+  }
 }
-    `;
+    ${LabelTemplateFieldsFragmentDoc}`;
 export const BasicItemBundleFieldsFragmentDoc = gql`
     fragment basicItemBundleFields on item_bundle {
   id
@@ -27914,7 +27923,9 @@ export const ItemHardwareFastenerScrewMachineFieldsFragmentDoc = gql`
     `;
 export const InsertIconDocument = gql`
     mutation InsertIcon($mimeData: String, $description: String, $id: uuid, $title: String, $categories: icon_item_category_map_arr_rel_insert_input, $labels: icon_label_map_arr_rel_insert_input) {
-  insert_icon(objects: {data: $mimeData, description: $description, id: $id, title: $title, categories: $categories, labels: $labels}) {
+  insert_icon(
+    objects: {data: $mimeData, description: $description, id: $id, title: $title, categories: $categories, labels: $labels}
+  ) {
     affected_rows
   }
 }
@@ -28038,7 +28049,10 @@ export type GetIconsLazyQueryHookResult = ReturnType<typeof useGetIconsLazyQuery
 export type GetIconsQueryResult = Apollo.QueryResult<GetIconsQuery, GetIconsQueryVariables>;
 export const SearchItemsDocument = gql`
     query SearchItems($containsFilter: jsonb, $hasAnyKeysFilter: [String!]) {
-  item(order_by: {class: asc}, where: {object: {_has_keys_any: $hasAnyKeysFilter, _contains: $containsFilter}}) {
+  item(
+    order_by: {class: asc}
+    where: {object: {_has_keys_any: $hasAnyKeysFilter, _contains: $containsFilter}}
+  ) {
     id
     name: object(path: "name")
     object
@@ -28237,7 +28251,9 @@ export type GetSingleLabelsLazyQueryHookResult = ReturnType<typeof useGetSingleL
 export type GetSingleLabelsQueryResult = Apollo.QueryResult<GetSingleLabelsQuery, GetSingleLabelsQueryVariables>;
 export const SaveLabelDocument = gql`
     mutation SaveLabel($content: jsonb, $height: Int, $id: uuid, $item_id: Int, $title: String, $width: Int) {
-  insert_label(objects: {content: $content, height: $height, id: $id, item_id: $item_id, title: $title, width: $width}) {
+  insert_label(
+    objects: {content: $content, height: $height, id: $id, item_id: $item_id, title: $title, width: $width}
+  ) {
     affected_rows
     returning {
       id
@@ -28278,7 +28294,10 @@ export type SaveLabelMutationOptions = Apollo.BaseMutationOptions<SaveLabelMutat
 export const EditLabelDocument = gql`
     mutation EditLabel($content: jsonb, $height: Int, $id: uuid, $item_id: Int, $title: String, $width: Int) {
   __typename
-  update_label(where: {id: {_eq: $id}}, _set: {content: $content, height: $height, item_id: $item_id, title: $title, width: $width}) {
+  update_label(
+    where: {id: {_eq: $id}}
+    _set: {content: $content, height: $height, item_id: $item_id, title: $title, width: $width}
+  ) {
     returning {
       id
     }
@@ -28418,7 +28437,9 @@ export type SearchManufacturersLazyQueryHookResult = ReturnType<typeof useSearch
 export type SearchManufacturersQueryResult = Apollo.QueryResult<SearchManufacturersQuery, SearchManufacturersQueryVariables>;
 export const InsertManufacturerDocument = gql`
     mutation InsertManufacturer($name: String!, $url: String, $vendor_id: Int) {
-  manufacturer: insert_manufacturer_one(object: {name: $name, url: $url, vendor_id: $vendor_id}) {
+  manufacturer: insert_manufacturer_one(
+    object: {name: $name, url: $url, vendor_id: $vendor_id}
+  ) {
     ...basicManufacturerFields
   }
 }
@@ -28452,7 +28473,9 @@ export type InsertManufacturerMutationResult = Apollo.MutationResult<InsertManuf
 export type InsertManufacturerMutationOptions = Apollo.BaseMutationOptions<InsertManufacturerMutation, InsertManufacturerMutationVariables>;
 export const InsertManufacturerWithVendorDocument = gql`
     mutation InsertManufacturerWithVendor($name: String!, $url: String, $vendor: vendor_obj_rel_insert_input) {
-  manufacturer: insert_manufacturer_one(object: {name: $name, url: $url, vendor: $vendor}) {
+  manufacturer: insert_manufacturer_one(
+    object: {name: $name, url: $url, vendor: $vendor}
+  ) {
     ...basicManufacturerFields
   }
 }
@@ -28486,7 +28509,10 @@ export type InsertManufacturerWithVendorMutationResult = Apollo.MutationResult<I
 export type InsertManufacturerWithVendorMutationOptions = Apollo.BaseMutationOptions<InsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables>;
 export const UpdateManufacturerUnchangedVendorDocument = gql`
     mutation UpdateManufacturerUnchangedVendor($id: Int!, $name: String!, $url: String) {
-  manufacturer: update_manufacturer_by_pk(pk_columns: {id: $id}, _set: {name: $name, url: $url}) {
+  manufacturer: update_manufacturer_by_pk(
+    pk_columns: {id: $id}
+    _set: {name: $name, url: $url}
+  ) {
     ...basicManufacturerFields
     ...objectManufacturerFields
   }
@@ -28554,7 +28580,9 @@ export type DeleteManufacturerMutationResult = Apollo.MutationResult<DeleteManuf
 export type DeleteManufacturerMutationOptions = Apollo.BaseMutationOptions<DeleteManufacturerMutation, DeleteManufacturerMutationVariables>;
 export const InsertVendorWithExistingManufacturerDocument = gql`
     mutation InsertVendorWithExistingManufacturer($account_id: String, $name: String!, $url: String!, $manufacturer_id: Int!) {
-  insert_vendor_one(object: {account_id: $account_id, name: $name, url: $url, manufacturer: {data: {name: $name, url: $url, id: $manufacturer_id}, on_conflict: {constraint: manufacturer_pkey, update_columns: vendor_id}}}) {
+  insert_vendor_one(
+    object: {account_id: $account_id, name: $name, url: $url, manufacturer: {data: {name: $name, url: $url, id: $manufacturer_id}, on_conflict: {constraint: manufacturer_pkey, update_columns: vendor_id}}}
+  ) {
     id
     name
     url
@@ -28628,7 +28656,10 @@ export type GetManufacturerItemsLazyQueryHookResult = ReturnType<typeof useGetMa
 export type GetManufacturerItemsQueryResult = Apollo.QueryResult<GetManufacturerItemsQuery, GetManufacturerItemsQueryVariables>;
 export const SearchManufacturerItemsDocument = gql`
     query SearchManufacturerItems($query_text: String!, $item_id: Int) {
-  item: search_item(args: {query_text: $query_text}, where: {manufacturerItems: {}, id: {_eq: $item_id}}) {
+  item: search_item(
+    args: {query_text: $query_text}
+    where: {manufacturerItems: {}, id: {_eq: $item_id}}
+  ) {
     id
     name: object(path: "name")
     object
@@ -28705,7 +28736,10 @@ export type GetManufacturerItemLazyQueryHookResult = ReturnType<typeof useGetMan
 export type GetManufacturerItemQueryResult = Apollo.QueryResult<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>;
 export const UpdateManufacturerItemDocument = gql`
     mutation UpdateManufacturerItem($id: Int!, $item_id: Int!, $manufacturer_id: Int!, $manufacturer_product_id: String!, $manufacturer_product_name: String, $manufacturer_product_series: String, $product_url: String, $description: String) {
-  manufacturer_item: update_manufacturer_item_by_pk(pk_columns: {id: $id}, _set: {item_id: $item_id, manufacturer_id: $manufacturer_id, manufacturer_product_id: $manufacturer_product_id, manufacturer_product_name: $manufacturer_product_name, manufacturer_product_series: $manufacturer_product_series, product_url: $product_url, description: $description}) {
+  manufacturer_item: update_manufacturer_item_by_pk(
+    pk_columns: {id: $id}
+    _set: {item_id: $item_id, manufacturer_id: $manufacturer_id, manufacturer_product_id: $manufacturer_product_id, manufacturer_product_name: $manufacturer_product_name, manufacturer_product_series: $manufacturer_product_series, product_url: $product_url, description: $description}
+  ) {
     ...basicManufacturerItemFields
   }
 }
@@ -28744,7 +28778,9 @@ export type UpdateManufacturerItemMutationResult = Apollo.MutationResult<UpdateM
 export type UpdateManufacturerItemMutationOptions = Apollo.BaseMutationOptions<UpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables>;
 export const InsertManufacturerItemDocument = gql`
     mutation InsertManufacturerItem($item_id: Int!, $manufacturer_id: Int!, $manufacturer_product_id: String!, $manufacturer_product_name: String, $manufacturer_product_series: String, $product_url: String, $description: String) {
-  manufacturer_item: insert_manufacturer_item_one(object: {item_id: $item_id, manufacturer_id: $manufacturer_id, manufacturer_product_id: $manufacturer_product_id, manufacturer_product_name: $manufacturer_product_name, manufacturer_product_series: $manufacturer_product_series, product_url: $product_url, description: $description}) {
+  manufacturer_item: insert_manufacturer_item_one(
+    object: {item_id: $item_id, manufacturer_id: $manufacturer_id, manufacturer_product_id: $manufacturer_product_id, manufacturer_product_name: $manufacturer_product_name, manufacturer_product_series: $manufacturer_product_series, product_url: $product_url, description: $description}
+  ) {
     ...basicManufacturerItemFields
   }
 }
@@ -28970,7 +29006,9 @@ export type GetOrderLazyQueryHookResult = ReturnType<typeof useGetOrderLazyQuery
 export type GetOrderQueryResult = Apollo.QueryResult<GetOrderQuery, GetOrderQueryVariables>;
 export const InsertOrderDocument = gql`
     mutation InsertOrder($fulfilled_date: date, $order_items: order_item_arr_rel_insert_input, $items_cost: numeric, $payment_method: payment_method_obj_rel_insert_input, $payment_method_id: Int, $placed_date: date, $pon: String, $shipments: shipment_arr_rel_insert_input, $tax_cost: numeric, $total_cost: numeric, $url: String, $vendor: vendor_obj_rel_insert_input, $vendor_id: Int, $vendor_order_id: String) {
-  order: insert_order_one(object: {order_items: $order_items, payment_method: $payment_method, shipments: $shipments, vendor: $vendor, fulfilled_date: $fulfilled_date, items_cost: $items_cost, payment_method_id: $payment_method_id, placed_date: $placed_date, pon: $pon, tax_cost: $tax_cost, total_cost: $total_cost, url: $url, vendor_id: $vendor_id, vendor_order_id: $vendor_order_id}) {
+  order: insert_order_one(
+    object: {order_items: $order_items, payment_method: $payment_method, shipments: $shipments, vendor: $vendor, fulfilled_date: $fulfilled_date, items_cost: $items_cost, payment_method_id: $payment_method_id, placed_date: $placed_date, pon: $pon, tax_cost: $tax_cost, total_cost: $total_cost, url: $url, vendor_id: $vendor_id, vendor_order_id: $vendor_order_id}
+  ) {
     ...basicOrderFields
     ...objectOrderFields
   }
@@ -29017,7 +29055,10 @@ export type InsertOrderMutationResult = Apollo.MutationResult<InsertOrderMutatio
 export type InsertOrderMutationOptions = Apollo.BaseMutationOptions<InsertOrderMutation, InsertOrderMutationVariables>;
 export const UpdateOrderDocument = gql`
     mutation UpdateOrder($id: Int!, $fulfilled_date: date, $items_cost: numeric, $payment_method_id: Int, $placed_date: date, $pon: String, $tax_cost: numeric, $total_cost: numeric, $url: String, $vendor_id: Int, $vendor_order_id: String) {
-  order: update_order_by_pk(pk_columns: {id: $id}, _set: {fulfilled_date: $fulfilled_date, items_cost: $items_cost, payment_method_id: $payment_method_id, placed_date: $placed_date, pon: $pon, tax_cost: $tax_cost, total_cost: $total_cost, url: $url, vendor_id: $vendor_id, vendor_order_id: $vendor_order_id}) {
+  order: update_order_by_pk(
+    pk_columns: {id: $id}
+    _set: {fulfilled_date: $fulfilled_date, items_cost: $items_cost, payment_method_id: $payment_method_id, placed_date: $placed_date, pon: $pon, tax_cost: $tax_cost, total_cost: $total_cost, url: $url, vendor_id: $vendor_id, vendor_order_id: $vendor_order_id}
+  ) {
     ...basicOrderFields
     ...objectOrderFields
   }
@@ -29093,7 +29134,11 @@ export type DeleteOrderMutationResult = Apollo.MutationResult<DeleteOrderMutatio
 export type DeleteOrderMutationOptions = Apollo.BaseMutationOptions<DeleteOrderMutation, DeleteOrderMutationVariables>;
 export const GetItemVariantsDocument = gql`
     query GetItemVariants($query_text: String!, $prefer_vendor_id: Int) {
-  item_variant: search_item_variant(args: {query_text: $query_text}, where: {_or: [{vendor_id: {_eq: $prefer_vendor_id}}, {vendor_id: {_is_null: true}}]}, order_by: {vendor_id: asc, manufacturer_id: asc, id: asc}) {
+  item_variant: search_item_variant(
+    args: {query_text: $query_text}
+    where: {_or: [{vendor_id: {_eq: $prefer_vendor_id}}, {vendor_id: {_is_null: true}}]}
+    order_by: {vendor_id: asc, manufacturer_id: asc, id: asc}
+  ) {
     ...objectItemVariantFields
   }
 }
@@ -29127,7 +29172,11 @@ export type GetItemVariantsLazyQueryHookResult = ReturnType<typeof useGetItemVar
 export type GetItemVariantsQueryResult = Apollo.QueryResult<GetItemVariantsQuery, GetItemVariantsQueryVariables>;
 export const GetItemVariantByAttachedDocument = gql`
     query GetItemVariantByAttached($item_id: [Int!], $manufacturer_item_id: [Int!], $vendor_item_id: [Int!], $vendor_id: [Int!], $limit: Int) {
-  item_variant(where: {manufacturer_item_id: {_in: $manufacturer_item_id}, vendor_item_id: {_in: $vendor_item_id}, vendor_id: {_in: $vendor_id}, item_id: {_in: $item_id}}, order_by: {vendor_id: asc, manufacturer_id: asc, id: asc}, limit: $limit) {
+  item_variant(
+    where: {manufacturer_item_id: {_in: $manufacturer_item_id}, vendor_item_id: {_in: $vendor_item_id}, vendor_id: {_in: $vendor_id}, item_id: {_in: $item_id}}
+    order_by: {vendor_id: asc, manufacturer_id: asc, id: asc}
+    limit: $limit
+  ) {
     ...objectItemVariantFields
   }
 }
@@ -29164,7 +29213,10 @@ export type GetItemVariantByAttachedLazyQueryHookResult = ReturnType<typeof useG
 export type GetItemVariantByAttachedQueryResult = Apollo.QueryResult<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>;
 export const UpdateOrderItemDocument = gql`
     mutation UpdateOrderItem($id: Int!, $cost_item: numeric, $cost_tax: numeric, $cost_total: numeric, $item_id: Int, $manufacturer_item_id: Int, $order_id: Int, $quantity: numeric, $serial_no: String, $shipment_id: Int, $vendor_item_id: Int) {
-  order_item: update_order_item_by_pk(_set: {cost_item: $cost_item, cost_tax: $cost_tax, cost_total: $cost_total, item_id: $item_id, manufacturer_item_id: $manufacturer_item_id, order_id: $order_id, quantity: $quantity, serial_no: $serial_no, shipment_id: $shipment_id, vendor_item_id: $vendor_item_id}, pk_columns: {id: $id}) {
+  order_item: update_order_item_by_pk(
+    _set: {cost_item: $cost_item, cost_tax: $cost_tax, cost_total: $cost_total, item_id: $item_id, manufacturer_item_id: $manufacturer_item_id, order_id: $order_id, quantity: $quantity, serial_no: $serial_no, shipment_id: $shipment_id, vendor_item_id: $vendor_item_id}
+    pk_columns: {id: $id}
+  ) {
     ...basicOrderItemFields
   }
 }
@@ -29386,7 +29438,9 @@ export type SearchShipmentsLazyQueryHookResult = ReturnType<typeof useSearchShip
 export type SearchShipmentsQueryResult = Apollo.QueryResult<SearchShipmentsQuery, SearchShipmentsQueryVariables>;
 export const InsertShipmentDocument = gql`
     mutation InsertShipment($vendor_invoice_id: String, $tracking_id: String!, $carrier_vendor_id: Int!, $shipped_date: date, $received_date: date, $order_id: Int) {
-  shipment: insert_shipment_one(object: {vendor_invoice_id: $vendor_invoice_id, tracking_id: $tracking_id, carrier_vendor_id: $carrier_vendor_id, shipped_date: $shipped_date, received_date: $received_date, order_id: $order_id}) {
+  shipment: insert_shipment_one(
+    object: {vendor_invoice_id: $vendor_invoice_id, tracking_id: $tracking_id, carrier_vendor_id: $carrier_vendor_id, shipped_date: $shipped_date, received_date: $received_date, order_id: $order_id}
+  ) {
     ...basicShipmentFields
   }
 }
@@ -29423,7 +29477,10 @@ export type InsertShipmentMutationResult = Apollo.MutationResult<InsertShipmentM
 export type InsertShipmentMutationOptions = Apollo.BaseMutationOptions<InsertShipmentMutation, InsertShipmentMutationVariables>;
 export const UpdateShipmentDocument = gql`
     mutation UpdateShipment($id: Int!, $tracking_id: String!, $carrier_vendor_id: Int!, $received_date: date, $shipped_date: date, $vendor_invoice_id: String, $order_id: Int) {
-  shipment: update_shipment_by_pk(pk_columns: {id: $id}, _set: {vendor_invoice_id: $vendor_invoice_id, tracking_id: $tracking_id, carrier_vendor_id: $carrier_vendor_id, shipped_date: $shipped_date, received_date: $received_date, order_id: $order_id}) {
+  shipment: update_shipment_by_pk(
+    pk_columns: {id: $id}
+    _set: {vendor_invoice_id: $vendor_invoice_id, tracking_id: $tracking_id, carrier_vendor_id: $carrier_vendor_id, shipped_date: $shipped_date, received_date: $received_date, order_id: $order_id}
+  ) {
     ...basicShipmentFields
   }
 }
@@ -29596,7 +29653,9 @@ export type SearchVendorsLazyQueryHookResult = ReturnType<typeof useSearchVendor
 export type SearchVendorsQueryResult = Apollo.QueryResult<SearchVendorsQuery, SearchVendorsQueryVariables>;
 export const InsertVendorDocument = gql`
     mutation InsertVendor($account_id: String, $name: String!, $manufacturer: manufacturer_arr_rel_insert_input, $url: String!) {
-  vendor: insert_vendor_one(object: {account_id: $account_id, name: $name, manufacturer: $manufacturer, url: $url}) {
+  vendor: insert_vendor_one(
+    object: {account_id: $account_id, name: $name, manufacturer: $manufacturer, url: $url}
+  ) {
     ...basicVendorFields
   }
 }
@@ -29631,7 +29690,10 @@ export type InsertVendorMutationResult = Apollo.MutationResult<InsertVendorMutat
 export type InsertVendorMutationOptions = Apollo.BaseMutationOptions<InsertVendorMutation, InsertVendorMutationVariables>;
 export const UpdateVendorDocument = gql`
     mutation UpdateVendor($id: Int!, $account_id: String, $name: String!, $url: String!) {
-  vendor: update_vendor_by_pk(pk_columns: {id: $id}, _set: {account_id: $account_id, name: $name, url: $url}) {
+  vendor: update_vendor_by_pk(
+    pk_columns: {id: $id}
+    _set: {account_id: $account_id, name: $name, url: $url}
+  ) {
     ...basicVendorFields
     ...objectVendorFields
   }
@@ -29732,7 +29794,10 @@ export type GetVendorItemsLazyQueryHookResult = ReturnType<typeof useGetVendorIt
 export type GetVendorItemsQueryResult = Apollo.QueryResult<GetVendorItemsQuery, GetVendorItemsQueryVariables>;
 export const SearchVendorItemsDocument = gql`
     query SearchVendorItems($query_text: String!, $item_id: Int) {
-  item: search_item(args: {query_text: $query_text}, where: {vendorItems: {}, id: {_eq: $item_id}}) {
+  item: search_item(
+    args: {query_text: $query_text}
+    where: {vendorItems: {}, id: {_eq: $item_id}}
+  ) {
     id
     name: object(path: "name")
     object
@@ -29810,7 +29875,10 @@ export type GetVendorItemLazyQueryHookResult = ReturnType<typeof useGetVendorIte
 export type GetVendorItemQueryResult = Apollo.QueryResult<GetVendorItemQuery, GetVendorItemQueryVariables>;
 export const UpdateVendorItemDocument = gql`
     mutation UpdateVendorItem($id: Int!, $description: String, $item_id: Int!, $vendor_id: Int!, $vendor_sku: String) {
-  vendor_item: update_vendor_item_by_pk(pk_columns: {id: $id}, _set: {description: $description, item_id: $item_id, vendor_id: $vendor_id, vendor_sku: $vendor_sku}) {
+  vendor_item: update_vendor_item_by_pk(
+    pk_columns: {id: $id}
+    _set: {description: $description, item_id: $item_id, vendor_id: $vendor_id, vendor_sku: $vendor_sku}
+  ) {
     ...basicVendorItemFields
   }
 }
@@ -29846,7 +29914,9 @@ export type UpdateVendorItemMutationResult = Apollo.MutationResult<UpdateVendorI
 export type UpdateVendorItemMutationOptions = Apollo.BaseMutationOptions<UpdateVendorItemMutation, UpdateVendorItemMutationVariables>;
 export const InsertVendorItemDocument = gql`
     mutation InsertVendorItem($description: String, $item_id: Int!, $vendor_id: Int!, $vendor_sku: String) {
-  vendor_item: insert_vendor_item_one(object: {description: $description, item_id: $item_id, vendor_id: $vendor_id, vendor_sku: $vendor_sku}) {
+  vendor_item: insert_vendor_item_one(
+    object: {description: $description, item_id: $item_id, vendor_id: $vendor_id, vendor_sku: $vendor_sku}
+  ) {
     ...basicVendorItemFields
   }
 }
@@ -30117,7 +30187,9 @@ export type GetItemBundleLazyQueryHookResult = ReturnType<typeof useGetItemBundl
 export type GetItemBundleQueryResult = Apollo.QueryResult<GetItemBundleQuery, GetItemBundleQueryVariables>;
 export const InsertItemBundleDocument = gql`
     mutation InsertItemBundle($name: String!, $description: String, $items: item_bundle_member_arr_rel_insert_input) {
-  item_bundle: insert_item_bundle_one(object: {name: $name, description: $description, items: $items}) {
+  item_bundle: insert_item_bundle_one(
+    object: {name: $name, description: $description, items: $items}
+  ) {
     id
     description
     created_at
@@ -30159,7 +30231,10 @@ export type InsertItemBundleMutationResult = Apollo.MutationResult<InsertItemBun
 export type InsertItemBundleMutationOptions = Apollo.BaseMutationOptions<InsertItemBundleMutation, InsertItemBundleMutationVariables>;
 export const UpdateItemBundleDocument = gql`
     mutation UpdateItemBundle($id: Int!, $name: String, $description: String) {
-  item_bundle: update_item_bundle_by_pk(pk_columns: {id: $id}, _set: {name: $name, description: $description}) {
+  item_bundle: update_item_bundle_by_pk(
+    pk_columns: {id: $id}
+    _set: {name: $name, description: $description}
+  ) {
     ...basicItemBundleFields
     ...objectItemBundleFields
   }
@@ -30229,7 +30304,10 @@ export type DeleteItemBundleMutationResult = Apollo.MutationResult<DeleteItemBun
 export type DeleteItemBundleMutationOptions = Apollo.BaseMutationOptions<DeleteItemBundleMutation, DeleteItemBundleMutationVariables>;
 export const UpdateItemBundleMemberDocument = gql`
     mutation UpdateItemBundleMember($item_bundle_id: Int!, $item_member_id: Int!, $quantity: numeric) {
-  item_bundle_member: update_item_bundle_member_by_pk(pk_columns: {item_bundle_id: $item_bundle_id, item_member_id: $item_member_id}, _set: {quantity: $quantity}) {
+  item_bundle_member: update_item_bundle_member_by_pk(
+    pk_columns: {item_bundle_id: $item_bundle_id, item_member_id: $item_member_id}
+    _set: {quantity: $quantity}
+  ) {
     ...basicItemBundleMemberFields
   }
 }
@@ -30263,7 +30341,10 @@ export type UpdateItemBundleMemberMutationResult = Apollo.MutationResult<UpdateI
 export type UpdateItemBundleMemberMutationOptions = Apollo.BaseMutationOptions<UpdateItemBundleMemberMutation, UpdateItemBundleMemberMutationVariables>;
 export const DeleteItemBundleMemberDocument = gql`
     mutation DeleteItemBundleMember($item_bundle_id: Int!, $item_member_id: Int!) {
-  item_bundle_member: delete_item_bundle_member_by_pk(item_bundle_id: $item_bundle_id, item_member_id: $item_member_id) {
+  item_bundle_member: delete_item_bundle_member_by_pk(
+    item_bundle_id: $item_bundle_id
+    item_member_id: $item_member_id
+  ) {
     ...basicItemBundleMemberFields
   }
 }
@@ -30328,7 +30409,9 @@ export type ItemHardwareFastenerScrewMachineLazyQueryHookResult = ReturnType<typ
 export type ItemHardwareFastenerScrewMachineQueryResult = Apollo.QueryResult<ItemHardwareFastenerScrewMachineQuery, ItemHardwareFastenerScrewMachineQueryVariables>;
 export const InsertItemHardwareFastenerScrewMachineDocument = gql`
     mutation InsertItemHardwareFastenerScrewMachine($countersunk_angle: numeric, $countersunk_height: numeric, $description: String, $drive_size: String, $default_fields: jsonb, $drive_type: enum_item_hardware_fastener_drive_enum, $embedded_length: numeric, $finish: enum_item_hardware_finish_enum, $hardness: enum_item_hardware_fastener_screw_hardness_enum, $head_diameter: numeric, $head_height: numeric, $head_type: enum_item_hardware_fastener_screw_head_enum, $material: enum_item_hardware_fastener_material_enum, $name: String, $point_type: enum_item_hardware_fastener_screw_machine_point_enum, $specifications_met: jsonb, $strength_class: enum_item_hardware_fastener_screw_machine_strength_enum, $tensile_strength: numeric, $thread_diameter_label: String, $thread_direction: enum_item_handedness_enum, $thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum, $thread_length: numeric, $thread_pitch: numeric, $thread_standard: enum_item_hardware_fastener_thread_standard_enum, $unit: enum_unit_enum, $use_material: enum_item_hardware_use_material_enum) {
-  insert_item_hardware_fastener_screw_machine_one(object: {countersunk_angle: $countersunk_angle, countersunk_height: $countersunk_height, description: $description, drive_size: $drive_size, default_fields: $default_fields, drive_type: $drive_type, embedded_length: $embedded_length, finish: $finish, hardness: $hardness, head_diameter: $head_diameter, head_height: $head_height, head_type: $head_type, material: $material, name: $name, point_type: $point_type, specifications_met: $specifications_met, strength_class: $strength_class, tensile_strength: $tensile_strength, thread_diameter_label: $thread_diameter_label, thread_direction: $thread_direction, thread_fit: $thread_fit, thread_length: $thread_length, thread_pitch: $thread_pitch, thread_standard: $thread_standard, unit: $unit, use_material: $use_material}) {
+  insert_item_hardware_fastener_screw_machine_one(
+    object: {countersunk_angle: $countersunk_angle, countersunk_height: $countersunk_height, description: $description, drive_size: $drive_size, default_fields: $default_fields, drive_type: $drive_type, embedded_length: $embedded_length, finish: $finish, hardness: $hardness, head_diameter: $head_diameter, head_height: $head_height, head_type: $head_type, material: $material, name: $name, point_type: $point_type, specifications_met: $specifications_met, strength_class: $strength_class, tensile_strength: $tensile_strength, thread_diameter_label: $thread_diameter_label, thread_direction: $thread_direction, thread_fit: $thread_fit, thread_length: $thread_length, thread_pitch: $thread_pitch, thread_standard: $thread_standard, unit: $unit, use_material: $use_material}
+  ) {
     ...ItemHardwareFastenerScrewMachineFields
   }
 }
@@ -30418,7 +30501,10 @@ export type GetEnumItemHardwareFastenerThreadStandardLazyQueryHookResult = Retur
 export type GetEnumItemHardwareFastenerThreadStandardQueryResult = Apollo.QueryResult<GetEnumItemHardwareFastenerThreadStandardQuery, GetEnumItemHardwareFastenerThreadStandardQueryVariables>;
 export const UpdateItemHardwareFastenerScrewMachineDocument = gql`
     mutation UpdateItemHardwareFastenerScrewMachine($countersunk_angle: numeric, $countersunk_height: numeric, $description: String, $drive_size: String, $default_fields: jsonb, $drive_type: enum_item_hardware_fastener_drive_enum, $embedded_length: numeric, $finish: enum_item_hardware_finish_enum, $hardness: enum_item_hardware_fastener_screw_hardness_enum, $head_diameter: numeric, $head_height: numeric, $head_type: enum_item_hardware_fastener_screw_head_enum, $id: Int!, $material: enum_item_hardware_fastener_material_enum, $name: String, $point_type: enum_item_hardware_fastener_screw_machine_point_enum, $specifications_met: jsonb, $strength_class: enum_item_hardware_fastener_screw_machine_strength_enum, $tensile_strength: numeric, $thread_diameter_label: String, $thread_direction: enum_item_handedness_enum, $thread_fit: enum_item_hardware_fastener_screw_machine_thread_fit_enum, $thread_length: numeric, $thread_pitch: numeric, $thread_standard: enum_item_hardware_fastener_thread_standard_enum, $unit: enum_unit_enum, $use_material: enum_item_hardware_use_material_enum) {
-  update_item_hardware_fastener_screw_machine_by_pk(pk_columns: {id: $id}, _set: {use_material: $use_material, unit: $unit, thread_standard: $thread_standard, thread_pitch: $thread_pitch, thread_length: $thread_length, thread_fit: $thread_fit, thread_direction: $thread_direction, thread_diameter_label: $thread_diameter_label, tensile_strength: $tensile_strength, strength_class: $strength_class, specifications_met: $specifications_met, point_type: $point_type, name: $name, material: $material, head_type: $head_type, head_height: $head_height, head_diameter: $head_diameter, hardness: $hardness, finish: $finish, embedded_length: $embedded_length, drive_type: $drive_type, description: $description, drive_size: $drive_size, default_fields: $default_fields, countersunk_height: $countersunk_height, countersunk_angle: $countersunk_angle}) {
+  update_item_hardware_fastener_screw_machine_by_pk(
+    pk_columns: {id: $id}
+    _set: {use_material: $use_material, unit: $unit, thread_standard: $thread_standard, thread_pitch: $thread_pitch, thread_length: $thread_length, thread_fit: $thread_fit, thread_direction: $thread_direction, thread_diameter_label: $thread_diameter_label, tensile_strength: $tensile_strength, strength_class: $strength_class, specifications_met: $specifications_met, point_type: $point_type, name: $name, material: $material, head_type: $head_type, head_height: $head_height, head_diameter: $head_diameter, hardness: $hardness, finish: $finish, embedded_length: $embedded_length, drive_type: $drive_type, description: $description, drive_size: $drive_size, default_fields: $default_fields, countersunk_height: $countersunk_height, countersunk_angle: $countersunk_angle}
+  ) {
     ...ItemHardwareFastenerScrewMachineFields
   }
 }
@@ -30474,4 +30560,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2020-08-25T13:07:51-06:00
+// graphql typescript defs generated on 2021-01-26T17:36:13-07:00
