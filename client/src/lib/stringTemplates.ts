@@ -21,7 +21,7 @@ export function stringTemplateRender ( str: string, obj: object ): { renderedStr
                 wasModified = true;
             }
             // console.log( {cls: 'stringTemplateRender', key, part });
-            str += part;
+            str += part ?? "";
         }
     } );
     // console.log( { cls: 'stringTemplateRender', str } );
