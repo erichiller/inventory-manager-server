@@ -95,7 +95,7 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
         </div> */}
 
         <div style={{ display: 'flex' }}>
-            <div style={{ width: '250px' }}>
+            <div style={{ width: '300px' }}>
                 <ItemCategoryTree onSelect={setCategoryFilters} />
             </div>
             <div className="fillFlex">

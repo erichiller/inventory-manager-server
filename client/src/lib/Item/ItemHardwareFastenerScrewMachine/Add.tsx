@@ -49,7 +49,7 @@ export const ItemHardwareFastenerScrewMachineAddMutationHandler: React.FC<FormMu
             message.error( `${ error.name }: ${ error.message }` );
         } else if ( data ) {
             log( 'success useEffect' );
-            message.success( `Successfully created ${ data.__typename } with id ${ data.insert_item_hardware_fastener_screw_machine_one.id }` );
+            message.success( `Successfully created ${ data.insert_item_hardware_fastener_screw_machine_one.__typename } with id ${ data.insert_item_hardware_fastener_screw_machine_one.id }` );
             completeCallback( true );
             return () => {
                 log( 'final useEffect returned' );

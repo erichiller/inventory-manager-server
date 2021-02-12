@@ -11,7 +11,6 @@ import {
 
 import { Integer } from '../types/uint8';
 
-
 import { apolloClient } from '~/Apollo';
 import { message } from "antd";
 import React from "react";
@@ -20,7 +19,7 @@ import { makeColumn } from "~lib/UtilityFunctions";
 import { FormMutationHandler } from "../Item/Item";
 import { IconComponentT } from "~lib/types/common";
 import { ShopOutlined, WarningOutlined } from "@ant-design/icons";
-import { ApolloQueryResult } from "apollo-client";
+import { ApolloQueryResult } from '@apollo/client/core';
 import { AsyncIcon } from "~components/Shared/AsyncIcon";
 
 interface ShipmentDataProps extends Pick<ApolloQueryResult<GetShipmentQuery>['data']['shipment'],

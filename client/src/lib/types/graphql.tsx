@@ -27567,6 +27567,15 @@ export type DeleteItemBundleMemberMutation = (
 export type ItemHardwareFastenerScrewMachineFieldsFragment = (
   { __typename?: 'item_hardware_fastener_screw_machine' }
   & Pick<ItemHardwareFastenerScrewMachine, 'id' | 'name' | 'description' | 'unit' | 'thread_length' | 'head_type' | 'drive_type' | 'drive_size' | 'head_diameter' | 'head_height' | 'thread_diameter_label' | 'finish' | 'material' | 'thread_direction' | 'countersunk_angle' | 'tensile_strength' | 'specifications_met' | 'thread_fit' | 'point_type' | 'hardness' | 'strength_class' | 'use_material'>
+  & { diameter?: Maybe<(
+    { __typename?: 'property_item_hardware_fastener_screw_machine_diameter' }
+    & ItemHardwareFastenerScrewMachineDiameterFieldsFragment
+  )> }
+);
+
+export type ItemHardwareFastenerScrewMachineDiameterFieldsFragment = (
+  { __typename?: 'property_item_hardware_fastener_screw_machine_diameter' }
+  & Pick<PropertyItemHardwareFastenerScrewMachineDiameter, 'diameter_label' | 'diameter_major' | 'fit' | 'pitch' | 'pitch_label' | 'standard' | 'thread_label' | 'unit'>
 );
 
 export type ItemHardwareFastenerScrewMachineQueryVariables = Exact<{ [key: string]: never; }>;
@@ -27895,6 +27904,18 @@ export const BasicItemBundleMemberFieldsFragmentDoc = gql`
   quantity
 }
     `;
+export const ItemHardwareFastenerScrewMachineDiameterFieldsFragmentDoc = gql`
+    fragment ItemHardwareFastenerScrewMachineDiameterFields on property_item_hardware_fastener_screw_machine_diameter {
+  diameter_label
+  diameter_major
+  fit
+  pitch
+  pitch_label
+  standard
+  thread_label
+  unit
+}
+    `;
 export const ItemHardwareFastenerScrewMachineFieldsFragmentDoc = gql`
     fragment ItemHardwareFastenerScrewMachineFields on item_hardware_fastener_screw_machine {
   id
@@ -27919,8 +27940,11 @@ export const ItemHardwareFastenerScrewMachineFieldsFragmentDoc = gql`
   hardness
   strength_class
   use_material
+  diameter {
+    ...ItemHardwareFastenerScrewMachineDiameterFields
+  }
 }
-    `;
+    ${ItemHardwareFastenerScrewMachineDiameterFieldsFragmentDoc}`;
 export const InsertIconDocument = gql`
     mutation InsertIcon($mimeData: String, $description: String, $id: uuid, $title: String, $categories: icon_item_category_map_arr_rel_insert_input, $labels: icon_label_map_arr_rel_insert_input) {
   insert_icon(
@@ -30560,4 +30584,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2021-01-26T17:36:13-07:00
+// graphql typescript defs generated on 2021-01-28T11:44:17-07:00

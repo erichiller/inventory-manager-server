@@ -1,6 +1,6 @@
 import React from 'react';
 import Konva from "konva";
-import ReactKonva, { KonvaNodeComponent, Transformer } from 'react-konva';
+import { Image, KonvaNodeComponent, Transformer } from 'react-konva';
 import type { KonvaEventObject } from "konva/types/Node";
 import { Item } from '~lib/Item';
 import { LabelImage } from '~lib/LabelConstituent';
@@ -75,7 +75,7 @@ export function TransformableImage ( props: ImageProps ): React.ReactElement<Kon
         //     return newBox;
         // }} 
         />
-        <ReactKonva.Image
+        <Image
             ref={nodeRef}
             imageObject={labelImage}
             key={labelImage.id}

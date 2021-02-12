@@ -21,8 +21,20 @@ fragment ItemHardwareFastenerScrewMachineFields on item_hardware_fastener_screw_
     hardness
     strength_class
     use_material
+    diameter {
+        ...ItemHardwareFastenerScrewMachineDiameterFields
+    }
+}
 
-    
+fragment ItemHardwareFastenerScrewMachineDiameterFields on property_item_hardware_fastener_screw_machine_diameter {
+    diameter_label
+    diameter_major
+    fit
+    pitch
+    pitch_label
+    standard
+    thread_label
+    unit
 }
 
 query item_hardware_fastener_screw_machine {

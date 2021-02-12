@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import schema from "~lib/Item/ItemHardwareFastenerScrewMachine/config/ScrewSizeOptions.schema.json";
 
-// import { EditorState } from "@codemirror/next/state";
-import { 
-    // EditorView, 
-    keymap 
-} from "@codemirror/next/view";
-import { defaultKeymap } from "@codemirror/next/commands";
-import { EditorState, EditorView, basicSetup } from "@codemirror/next/basic-setup"
-import { javascript as LangJavascript } from "@codemirror/next/lang-javascript"
+import {
+    EditorView,
+    keymap
+} from "@codemirror/view";
+import { defaultKeymap } from "@codemirror/commands";
+import { EditorState } from "@codemirror/state";
+import { basicSetup } from "@codemirror/basic-setup";
+import { javascript as LangJavascript } from "@codemirror/lang-javascript";
 
 // import * as tsj from "ts-json-schema-generator/factory/generator";
 // import { createGenerator } from "ts-json-schema-generator/factory/generator";
@@ -63,13 +63,13 @@ export const CodeEditor = () => {
         let startState = EditorState.create( {
             // doc: "Hello World",
             // state: EditorState.create( {
-                 extensions: [ 
-                basicSetup, LangJavascript({ typescript: true })
+            extensions: [
+                basicSetup, LangJavascript( { typescript: true } )
                 // } )
                 ,
 
-            // extensions: [ 
-                keymap( defaultKeymap ) ]
+                // extensions: [ 
+                keymap.of( defaultKeymap ) ]
         } );
 
         let view = new EditorView( {

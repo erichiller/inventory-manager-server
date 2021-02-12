@@ -107,7 +107,13 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
          * <Fastener type> <Drive Types> <Head Styles> <Material> <Diameter><Thread Count,pitch><Length>
          */
         let descriptorPrefix = `${ f( 'use_material' ) }${ f( 'drive_type', ' ' ) }${ f( 'head_type', ', ' ) }${ f( 'material_type', ', ' ) }`;
-        let valueString = `${ descriptorPrefix ? descriptorPrefix + ' ' : '' }${ getUnitPrefixFromUnitSystem( form.getFieldValue( 'unit' ) ) }${ f( 'thread_diameter' ) }${ f( 'thread_pitch', '-' ) }${ f( 'embedded_length', 'x' ) } `;
+        let valueString : string = "";
+        if ( getUnitPrefixFromUnitSystem( form.getFieldValue( 'unit' ) ) && f( 'diameter.diameter_major' ) ){
+            valueString = `${ descriptorPrefix ? descriptorPrefix + ' ' : '' }${ getUnitPrefixFromUnitSystem( form.getFieldValue( 'unit' ) ) }${ f( 'diameter.diameter_major' ) }`;
+        } else {
+            valueString = `${ f( 'thread_diameter_label' )}`;
+        }
+        valueString += `${ f( 'thread_pitch', '-' ) }${ f( 'embedded_length', 'x' ) } `;
         form.setFieldsValue( Object.fromEntries( [ [ 'name', valueString ] ] ) );
     };
 
@@ -144,7 +150,7 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                 </Form.Item>
 
                 {/* DIAMETER */}
-                <Form.Item name="thread_diameter_label" dependencies={[ 'unit' ]} required
+                <Form.Item name="thread_diameter_label" required
                     label={<FormIconTooltip text={
                         <span className="tooltip-with-example">
                             <header>Thread dimensions. </header>
@@ -157,8 +163,8 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                     } label="Diameter" />}
                     shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "thread_diameter_label", form, updateName )}
                 >
-                    <MeasurementInput
-                        unit={unit}
+                    <Input
+                        // unit={unit}
                         maxLength={6} />
                 </Form.Item>
 
@@ -199,7 +205,6 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                             }
                             label="Length"
                         />}
-                    dependencies={[ 'unit' ]}
                     shouldUpdate={setFieldScrewSizePropertyInShouldUpdate( "embedded_length", form, updateName )}
                     required
                 >

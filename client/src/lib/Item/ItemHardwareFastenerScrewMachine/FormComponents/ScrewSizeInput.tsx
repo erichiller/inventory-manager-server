@@ -197,6 +197,7 @@ function getScrewSizeOptions ( v: ScrewSizeInputOptionData ): ScrewSizeInputOpti
     }
     return [];
 }
+// TODO: merge this with Form's name generation code
 const constructOptionValue = ( optionData: ScrewSizeInputOptionData ): string => {
     console.log( 
         { 
@@ -206,9 +207,16 @@ const constructOptionValue = ( optionData: ScrewSizeInputOptionData ): string =>
     );
     if ( !optionData ) { return null; }
     // const abbrevUnit = getPrefix( optionData.unit );
-    return `${ optionData.prefix ? optionData.prefix.toUpperCase() : getUnitPrefixFromUnitSystem( optionData.unit ) }${ optionData.thread_diameter ?? '' }` +
+    let valueString: string = "";
+    if ( getUnitPrefixFromUnitSystem( optionData.unit) && optionData.thread_diameter ){
+        valueString = `${ optionData.prefix ? optionData.prefix.toUpperCase() : getUnitPrefixFromUnitSystem( optionData.unit ) }${ optionData.thread_diameter ?? '' }`;
+    } else {
+        valueString = `${optionData.thread_diameter_label}`;
+    }
+    valueString +=
         `${ optionData.thread_pitch ? `-${ optionData.thread_pitch }` : '' }` +
         `${ optionData.embedded_length ? `x${ optionData.embedded_length }` : '' }`;
+    return valueString;
 };
 
 

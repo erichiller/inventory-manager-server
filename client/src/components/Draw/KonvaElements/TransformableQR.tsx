@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Konva from "konva";
-import ReactKonva, { KonvaNodeComponent, Transformer } from 'react-konva';
+import { Image, KonvaNodeComponent, Transformer } from 'react-konva';
 import type { KonvaEventObject } from "konva/types/Node";
 import { Item } from '~lib/Item';
 import { LabelQR } from '~lib/LabelConstituent';
@@ -62,7 +62,7 @@ export function TransformableQR ( props: QrImageProps ): React.ReactElement<Konv
 
 
     return <React.Fragment>
-        <ReactKonva.Image
+        <Image
             ref={nodeRef}
             qrObject={labelQR}
             key={labelQR.id}

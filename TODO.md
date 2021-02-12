@@ -25,6 +25,11 @@
 - [ ] remove thread_diameter ? -- replace with thread_diameter_label
 - [ ] remove thread_label
 
+## Label
+
+* [ ] need a way to capitalize fields in the {{}} template strings
+* [ ] filter out `null` in the {{}} template strings
+
 ## Table
 
 - [ ] Filter / search on table

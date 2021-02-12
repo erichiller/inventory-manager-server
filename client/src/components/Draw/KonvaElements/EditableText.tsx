@@ -1,6 +1,6 @@
 import React, { useState }  from 'react';
 import Konva from "konva";
-import ReactKonva, { KonvaNodeComponent, Transformer } from 'react-konva';
+import { Text, KonvaNodeComponent, Transformer } from 'react-konva';
 import type { KonvaEventObject } from "konva/types/Node";
 import { LabelText } from '~lib/LabelConstituent';
 import { Item } from '~lib/Item';
@@ -78,7 +78,7 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
                 newBox.width = Math.max( 30, newBox.width );
                 return newBox;
             }} />
-        <ReactKonva.Text
+        <Text
             ref={textNodeRef}
             textObject={labelText}
             key={labelText.id}
