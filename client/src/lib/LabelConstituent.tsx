@@ -236,15 +236,18 @@ class LabelConstituent extends DrawAttrs {
 
     constructor ( options?: Partial<LabelConstituent> ) {
         super();
-        if ( options && options.id ) {
-            this.id = options.id;
-        }
         this.id = UUIDv4();
         this.x = 0;
         this.y = 0;
         this.scaleX = 1.0;
         this.scaleY = 1.0;
         this.rotation = 0.0;
+
+        if ( options && options.id && options != null ) {
+            for ( const key of Object.keys(options) ) {
+                this[ key ] = options[ key ];
+            }
+        }
     }
 
     get drawAttrs () { return undefined; }
@@ -284,11 +287,21 @@ class LabelConstituent extends DrawAttrs {
 
 export class LabelText extends LabelConstituent {
 
-    text: string = "";
-    _fontSize: Integer = 36; // default is 36
+    _text: string;
+    // text: string = "";
+    // _fontSize: Integer = 36; // default is 36
+    _fontSize: Integer; // default is 36
     bold: boolean;
     italic: boolean;
     underline: boolean;
+
+    @enumerable( true )
+    get text (): string {
+        return this._text;
+    }
+    set text ( value: string ) {
+        this._text = value;
+    }
 
     @enumerable( true )
     get fontSize (): Integer {

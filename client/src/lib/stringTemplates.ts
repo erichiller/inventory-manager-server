@@ -16,25 +16,25 @@ export function stringTemplateRender ( str: string, obj: object ): { renderedStr
             is_template = true;
         } else {
             if ( is_template && part.length > 0 ) {
-                let all_caps: boolean  = false;
+                let all_caps: boolean = false;
                 let first_cap: boolean = false;
-                
-                if ( part === part.toUpperCase() ){
+
+                if ( part === part.toUpperCase() ) {
                     all_caps = true;
-                } else if ( part[0] === part[0].toUpperCase() ) {
+                } else if ( part[ 0 ] === part[ 0 ].toUpperCase() ) {
                     first_cap = true;
                 }
-                
-                part = obj[ part ] ?? "";
-                continue;
-                
-                is_template = false;
-                wasModified = true;
-                
-                if ( all_caps ) {
-                    part = part.toUpperCase();
-                } else if ( first_cap ) {
-                    part[0] = part[0].toUpperCase();
+                if ( obj[ part ] == null ) {
+                    part = "";
+                } else {
+                    is_template = false;
+                    wasModified = true;
+                    part = obj[ part ];
+                    if ( all_caps ) {
+                        part = part.toUpperCase();
+                    } else if ( first_cap ) {
+                        part = part.charAt( 0 ).toUpperCase() + part.slice( 1 );
+                    }
                 }
             }
             // console.log( {cls: 'stringTemplateRender', key, part });

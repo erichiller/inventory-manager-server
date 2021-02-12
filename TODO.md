@@ -25,10 +25,7 @@
 - [ ] remove thread_diameter ? -- replace with thread_diameter_label
 - [ ] remove thread_label
 
-## Label
 
-* [ ] need a way to capitalize fields in the {{}} template strings
-* [ ] filter out `null` in the {{}} template strings
 
 ## Table
 
@@ -180,3 +177,6 @@
 - [x] fix enumerability of property accessors (getters/ setters)
 - [x] Ensure required values
 - [x] fix label send buffer
+- [x] need a way to capitalize fields in the `{{}}` template strings
+- [x] filter out `null` in the `{{}}` template strings
+- [x] fix drag and drop of `LabelText` items that were from imported JSON label

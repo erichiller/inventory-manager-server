@@ -30,7 +30,11 @@ interface EditableTextProps {
 
 
 export function EditableText ( props: EditableTextProps ): React.ReactElement<KonvaNodeComponent<Konva.Text & EditableTextProps, Konva.TextConfig>> {
-    const labelText = props.labelText;
+    let labelText: LabelText = props.labelText;
+    if ( ! ( labelText instanceof LabelText ) ){
+        labelText = new LabelText(labelText);
+    }
+
     const item = props.item;
 
     const [ { renderedString, wasModified }, setRenderedString ] = useState<{ renderedString: string; wasModified: boolean; }>( stringTemplateRender( labelText.text, item ) );
@@ -271,7 +275,7 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
                 props.updateHistory();
             }}
             onDragEnd={( evt: KonvaEventObject<DragEvent> ) => {
-                console.log( "(Text) DragEnd:", evt, "to:", [ evt.currentTarget.attrs.x, evt.currentTarget.attrs.y ] );
+                console.log( "(Text) DragEnd event:\n", evt, "\nTextObject:\n", ( evt.currentTarget.attrs.textObject as LabelText ), "\n captured labelText:\n", labelText, "\nto: ", [ evt.currentTarget.attrs.x, evt.currentTarget.attrs.y ] );
                 ( evt.currentTarget.attrs.textObject as LabelText ).setDrawAttrs( {
                     x: evt.currentTarget.attrs.x,
                     y: evt.currentTarget.attrs.y,

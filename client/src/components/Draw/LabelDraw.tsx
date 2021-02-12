@@ -636,7 +636,7 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
                 {/* < DebugRectangles /> */}
                 {/* TEXT */}
                 {texts.map( labelText => {
-                    console.log( "Drawing EditableText" );
+                    console.log( "Drawing EditableText with labelText:\n", labelText );
                     return <EditableText
                         displayContextMenu={displayContextMenu}
                         setSelectedShapeName={setSelectedShapeName}
