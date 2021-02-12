@@ -15,13 +15,30 @@ export function stringTemplateRender ( str: string, obj: object ): { renderedStr
         if ( part.substr( 0, 2 ) === "{{" ) {
             is_template = true;
         } else {
-            if ( is_template ) {
-                part = obj[ part ];
+            if ( is_template && part.length > 0 ) {
+                let all_caps: boolean  = false;
+                let first_cap: boolean = false;
+                
+                if ( part === part.toUpperCase() ){
+                    all_caps = true;
+                } else if ( part[0] === part[0].toUpperCase() ) {
+                    first_cap = true;
+                }
+                
+                part = obj[ part ] ?? "";
+                continue;
+                
                 is_template = false;
                 wasModified = true;
+                
+                if ( all_caps ) {
+                    part = part.toUpperCase();
+                } else if ( first_cap ) {
+                    part[0] = part[0].toUpperCase();
+                }
             }
             // console.log( {cls: 'stringTemplateRender', key, part });
-            str += part ?? "";
+            str += part;
         }
     } );
     // console.log( { cls: 'stringTemplateRender', str } );
