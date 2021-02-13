@@ -19,7 +19,7 @@
     // "skipLibCheck": true,
     // "esModuleInterop": true,
     // "strict": true,
-    // "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true,
     "module": "commonjs",
     "moduleResolution": "node",
     // "resolveJsonModule": true,

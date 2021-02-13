@@ -1,12 +1,12 @@
-import { Table, Divider } from 'antd';
-import * as React from 'react';
-import { useGetLabelsQuery, LabelSelectColumn, Label, GetLabelsQuery } from '~lib/types/graphql';
+import { Table, Divider, message } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { useGetLabelsQuery, LabelSelectColumn, Label, GetLabelsQuery, useDeleteLabelMutation, GetLabelsDocument } from '~lib/types/graphql';
 import { LabelDrawModal } from '~components/Draw/LabelDrawModal';
 import { toTitleCase, computeDefaultPagination } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
-import { useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { LabelExport } from '~lib/LabelExport';
+import { DeleteOutlined } from '@ant-design/icons';
 
 
 
@@ -31,6 +31,13 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
     let params = useParams<ILabelTableParams>();
     const [ modal, setModal ] = useState<React.ReactElement>();
 
+
+    const [ deleteLabelMutation, {
+        data: deleteLabelMutationData,
+        loading: deleteLabelMutationLoading,
+        error: deleteLabelMutationError
+    } ] = useDeleteLabelMutation();
+
     const { data, loading, error } = useGetLabelsQuery();
 
     const handleModalChange = ( modal: React.ReactElement ) => {
@@ -40,7 +47,7 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
         setModal( modal );
     };
 
-    React.useEffect( () => {
+    useEffect( () => {
         switch ( params.action ) {
             case "edit":
                 if ( params.label_id ) {
@@ -62,6 +69,17 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
         }
     }, [ data, params.label_id, params.action ] );
 
+    useEffect( () => {
+        if ( deleteLabelMutationError ) {
+            message.error( `Failed to delete label: ${ deleteLabelMutationError.message }` );
+        }
+        if ( deleteLabelMutationLoading ) {
+            return;
+        }
+        if ( !deleteLabelMutationLoading && deleteLabelMutationData ) {
+            message.success( `Deletion of label id ${ deleteLabelMutationData.delete_label_by_pk.id } was successful` );
+        }
+    } );
 
     const columns: ColumnProps<Extract<GetLabelsQuery, 'label'>>[] = [
         ...( Object.keys( LabelSelectColumn ).filter(
@@ -106,8 +124,20 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
                         }
                         }> Edit</a>
                         <Divider type="vertical" />
-                        {/* TODO */}
-                        <a>Delete</a>
+                        <a onClick={( obj ) => {
+                            obj.preventDefault();
+                            deleteLabelMutation( {
+                                variables: {
+                                    label_id: record.id
+                                },
+                                refetchQueries: [
+                                    { query: GetLabelsDocument }
+                                ]
+                            } );
+                        }
+                        }>
+                            <DeleteOutlined className="IconButton" />
+                        </a>
                     </span >
                 ),
             }

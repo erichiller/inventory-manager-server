@@ -1,0 +1,6 @@
+mutation DeleteLabel ($label_id: uuid!) {
+  delete_label_by_pk( id: $label_id ){
+    id
+    __typename
+  }
+}

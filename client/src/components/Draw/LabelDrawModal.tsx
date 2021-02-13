@@ -28,30 +28,29 @@ interface LabelDrawModalState {
 }
 
 export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( props: LabelDrawModalProps ) => {
-
-    const [ state, setState ] = useState <LabelDrawModalState> (
+    const [ state, setState ] = useState<LabelDrawModalState>(
         {
             width: props.label && props.label.width ? props.label.width : LabelExport.DEFAULT_WIDTH,
             label: props.label ? new LabelExport( props.label ) : new LabelExport()
         }
     );
     const printContext = useContext( PrintContext );
-    const [ saveLabelMutation, { 
-        data: saveData, 
-        loading: saveLoading, 
-        error: saveError 
+    const [ saveLabelMutation, {
+        data: saveData,
+        loading: saveLoading,
+        error: saveError
     } ] = useSaveLabelMutation();
-    const [ editLabelMutation, { 
-        data: editData, 
-        loading: editLoading, 
-        error: editEerror 
+    const [ editLabelMutation, {
+        data: editData,
+        loading: editLoading,
+        error: editEerror
     } ] = useEditLabelMutation();
 
     useEffect( () => {
-        if(printContext.getCurrentLabel() === null ){
-            printContext.setCurrentLabel(state.label);
+        if ( printContext.getCurrentLabel() === null ) {
+            printContext.setCurrentLabel( state.label );
         }
-    }, [])
+    }, [] );
 
     // determine if label is new (already in DB) so that it can be edited or inserted
     const _labelIsNew: boolean = props.label?.created_at ? false : true;
@@ -74,12 +73,12 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                 },
                 refetchQueries: [
                     { query: GetLabelsDocument },
-                    {
-                        query: GetItemDocument,
-                        variables: {
-                            id: label.item_id
-                        }
-                    },
+                    // {
+                    //     query: GetItemDocument,
+                    //     variables: {
+                    //         id: label.item_id
+                    //     }
+                    // },
                     { query: GetItemsDocument }
                 ]
             } ).then( result => {
@@ -123,18 +122,18 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     };
 
     const updateLabelWidthPixels = ( newPx: number ): void => {
-            console.log( "updateWidthPixels\n", {
-                prior: state.width,
-                __new: newPx 
-            });
-            // canvas.width = newPx;
-            // }
-            setState( {
-                width: newPx ,
-                label: state.label
-            } );
+        console.log( "updateWidthPixels\n", {
+            prior: state.width,
+            __new: newPx
+        } );
+        // canvas.width = newPx;
+        // }
+        setState( {
+            width: newPx,
+            label: state.label
+        } );
 
-        }
+    };
 
     const description = () => {
         const { item, label } = props;
@@ -147,11 +146,11 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                         key = key as string;
                         let value = item[ key ];
                         if ( ![ "__typename" ].includes( key ) && value ) {
-                            let stringValue = ["string", "number"].includes(typeof value) ? value : 
-                                                typeof value === typeof {} ? `${JSON.stringify(value, null, 2)}` :
-                                                'error';
+                            let stringValue = [ "string", "number" ].includes( typeof value ) ? value :
+                                typeof value === typeof {} ? `${ JSON.stringify( value, null, 2 ) }` :
+                                    'error';
                             console.log( `property of item ${ key } = ${ value }` );
-                            return <Descriptions.Item key={key} label={toTitleCase(key)}><pre>{stringValue}</pre></Descriptions.Item>;
+                            return <Descriptions.Item key={key} label={toTitleCase( key )}><pre>{stringValue}</pre></Descriptions.Item>;
                         }
                     } )}
                 </Descriptions>
@@ -170,7 +169,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     // console.log( 'state.item', item );
     return (
         <Modal
-            title={_labelIsNew ? "Create a new label":"Edit Label"}
+            title={_labelIsNew ? "Create a new label" : "Edit Label"}
             visible={true}
             onCancel={handleCancel}
             onOk={handleSave}
@@ -184,13 +183,13 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                 </Tooltip >,
 
                 <Tooltip key="print" placement="top" title="Send to Label Maker">
-                    <SendBufferButton 
+                    <SendBufferButton
                         key="SendBufferButton_Print"
-                        type="primary" 
-                        value="Print" 
+                        type="primary"
+                        value="Print"
                         startSendBuffer={printContext.startSendBuffer}
-                        buffer={printContext.shouldSendBuffer ? [ printContext.currentLabelToBuffer() ] : null} 
-                        />
+                        buffer={printContext.shouldSendBuffer ? [ printContext.currentLabelToBuffer() ] : null}
+                    />
                 </Tooltip>,
 
                 <Tooltip key="addToPrintList" placement="top" title="Add to list for bulk printing later">
@@ -199,11 +198,12 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                         {console.log( "label comparison", label, printContext.getCurrentLabel() )}
                         {/* TODO: fix */}
                         {printContext.getPrintLabels().some( el => {
-                            console.log("some() checking", `
-                            el.id    = ${el.id}
-                            el       = ${console.dir(el)}
-                            getLabel().id   = ${state.label.id}
-                            getLabel()      = ${console.dir(state.label.id)}`); return el.id === state.label.id; } ) ? "Remove from" : "Add to"} Print List
+                            console.log( "some() checking", `
+                            el.id    = ${ el.id }
+                            el       = ${ console.dir( el ) }
+                            getLabel().id   = ${ state.label.id }
+                            getLabel()      = ${ console.dir( state.label.id ) }` ); return el.id === state.label.id;
+                        } ) ? "Remove from" : "Add to"} Print List
                         </Button>
                 </Tooltip>,
 
@@ -217,7 +217,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
         >
             {description()}
             <br />
-            {console.log(`about to redraw 'LabelDraw' with width=${state.width}`)}
+            {console.log( `about to redraw 'LabelDraw' with width=${ state.width }` )}
             <LabelDraw updateWidth={updateLabelWidthPixels} width={state.width} item={item} label={state.label} />
         </Modal>
     );

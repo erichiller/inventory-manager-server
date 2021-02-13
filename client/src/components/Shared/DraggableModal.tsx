@@ -117,7 +117,7 @@ class DraggableModal extends React.PureComponent<DragModalProps, DragModalState>
         this.tLeft = e.clientX - dragDomRect.left; // x coordinate offset of the selected element when the mouse is pressed
         this.tTop = e.clientY - dragDomRect.top; // y coordinate
 
-        this.onMouseMove( this.dragDom.getElementsByClassName('ant-modal')[0] as HTMLElement );
+        this.onMouseMove( this.dragDom.getElementsByClassName( 'ant-modal' )[ 0 ] as HTMLElement );
     };
 
     onMouseUp = ( e: React.MouseEvent<HTMLDivElement, MouseEvent> ) => {
@@ -126,13 +126,13 @@ class DraggableModal extends React.PureComponent<DragModalProps, DragModalState>
         document.onmousemove = null; // Stop mouse movement event
     };
 
-    onMouseMove = (node: HTMLElement) => {
+    onMouseMove = ( node: HTMLElement ) => {
         document.onmousemove = e => {
             e.preventDefault();
             if ( this.dragging ) {
                 node.style.left = `${ e.clientX - this.tLeft }px`;
                 // node.style.top = `${ e.clientY - this.tTop }px`;
-                node.setAttribute( 'style', `${node.getAttribute('style')} ;top: ${ e.clientY - this.tTop }px !important`);
+                node.setAttribute( 'style', `${ node.getAttribute( 'style' ) } ;top: ${ e.clientY - this.tTop }px !important` );
             }
         };
     };
@@ -145,7 +145,7 @@ class DraggableModal extends React.PureComponent<DragModalProps, DragModalState>
                 {...this.props}
                 // mask={false}
                 // wrapClassName={this.props.wrapClassName}
-                style={{top: 0}}
+                style={{ top: 0 }}
                 wrapClassName={`drag_modal d_${ this.id } ${ wrapClassName }`}
                 title={
                     <div
@@ -161,6 +161,7 @@ class DraggableModal extends React.PureComponent<DragModalProps, DragModalState>
             </Modal>
         );
     }
+    
 }
 
 export default DraggableModal;

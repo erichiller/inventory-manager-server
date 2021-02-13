@@ -20,21 +20,20 @@ export class S3ObjectStore implements IStorageDriver {
             secretKey: S3_SECRET_ACCESS_KEY
             
         } );
-        
     }
 
     getObject ( id: string ): Promise<Stream> {
         // Setting up S3 upload parameters
-        console.log(`StorageDriverS3 getting object with id=${id}`);
+        console.log( `StorageDriverS3 getting object with id=${id}` );
         return this.client.getObject( S3_BUCKET, id );
     }
-    setFromFile(id: string, filePath: string){
+    setFromFile( id: string, filePath: string ){
         // Read content from the file
         const fileContent = fs.readFileSync( filePath );
-        return this.setObject(id, fileContent);
+        return this.setObject( id, fileContent );
     }
 
-    setObject ( id: string, fileContent: string | Stream | Buffer | Uint8Array, callback?: ( err: Error | null, etag: string ) => void ){
+    setObject ( id: string, fileContent: string | ReadableStream | Buffer | Uint8Array, callback?: ( err: Error | null, etag: string ) => void ){
         // Setting up S3 upload parameters
         if ( ! callback ){
             callback = function ( err, etag ) {
@@ -43,6 +42,9 @@ export class S3ObjectStore implements IStorageDriver {
                 }
                 console.log( `File uploaded successfully. ${etag}` );
             };
+        }
+        if ( fileContent instanceof ReadableStream ){
+            this.client.putObject( S3_BUCKET, id, fileContent, callback );
         }
         // Uploading files to the bucket
         this.client.putObject( S3_BUCKET, id, Buffer.from( fileContent ), callback );

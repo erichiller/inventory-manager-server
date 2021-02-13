@@ -24,7 +24,7 @@ export function stringTemplateRender ( str: string, obj: object ): { renderedStr
                 } else if ( part[ 0 ] === part[ 0 ].toUpperCase() ) {
                     first_cap = true;
                 }
-                if ( obj[ part ] == null ) {
+                if ( obj == null || obj[ part ] == null ) {
                     part = "";
                 } else {
                     is_template = false;

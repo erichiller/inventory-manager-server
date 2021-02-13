@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "0.0.1",
+  "version": "0.1.0-20210213001",
   "description": "Server for web resources and print handler via IPP",
   "main": "bundle.js",
   "scripts": {

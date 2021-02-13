@@ -96,6 +96,14 @@ query ItemSearch($search_text: String!) {
     }
 }
 
+mutation DeleteItem($id: Int!) {
+  delete_item_by_pk( id: $id ){
+    id
+    class
+  }
+}
+
+
 # query SearchItems {
 #     item(
 #         where: {

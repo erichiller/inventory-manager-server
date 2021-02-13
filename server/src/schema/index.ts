@@ -5,7 +5,8 @@
  * - https://github.com/apollographql/graphql-tools/issues/1033
  * - https://github.com/graphql/graphql-js/issues/1997
  */
-import { makeRemoteExecutableSchema, makeExecutableSchema, introspectSchema, mergeSchemas, ITypedef, addResolveFunctionsToSchema } from 'graphql-tools-fork';
+import { makeRemoteExecutableSchema, makeExecutableSchema, introspectSchema, mergeSchemas, ITypedef } from 'graphql-tools';
+import { addResolveFunctionsToSchema } from 'apollo-server';
 
 import { GQL_ENUMS as EpsonEnum } from '../schema/type/enum/epson';
 import { GraphQLSchema, GraphQLObjectType, GraphQLScalarType, GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLFloat } from 'graphql/type';

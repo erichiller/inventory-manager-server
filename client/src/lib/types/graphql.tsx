@@ -26450,6 +26450,19 @@ export type SearchItemsQuery = (
   )> }
 );
 
+export type DeleteLabelMutationVariables = Exact<{
+  label_id: Scalars['uuid'];
+}>;
+
+
+export type DeleteLabelMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_label_by_pk?: Maybe<(
+    { __typename: 'label' }
+    & Pick<Label, 'id'>
+  )> }
+);
+
 export type LabelFieldsFragment = (
   { __typename?: 'label' }
   & Pick<Label, 'id' | 'created_at' | 'content' | 'title' | 'width' | 'height' | 'updated_at'>
@@ -27441,6 +27454,19 @@ export type ItemSearchQuery = (
   )> }
 );
 
+export type DeleteItemMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteItemMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_item_by_pk?: Maybe<(
+    { __typename?: 'item' }
+    & Pick<Item, 'id' | 'class'>
+  )> }
+);
+
 export type BasicItemBundleFieldsFragment = (
   { __typename?: 'item_bundle' }
   & Pick<ItemBundle, 'id' | 'name' | 'description'>
@@ -28114,6 +28140,39 @@ export function useSearchItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type SearchItemsQueryHookResult = ReturnType<typeof useSearchItemsQuery>;
 export type SearchItemsLazyQueryHookResult = ReturnType<typeof useSearchItemsLazyQuery>;
 export type SearchItemsQueryResult = Apollo.QueryResult<SearchItemsQuery, SearchItemsQueryVariables>;
+export const DeleteLabelDocument = gql`
+    mutation DeleteLabel($label_id: uuid!) {
+  delete_label_by_pk(id: $label_id) {
+    id
+    __typename
+  }
+}
+    `;
+export type DeleteLabelMutationFn = Apollo.MutationFunction<DeleteLabelMutation, DeleteLabelMutationVariables>;
+
+/**
+ * __useDeleteLabelMutation__
+ *
+ * To run a mutation, you first call `useDeleteLabelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteLabelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteLabelMutation, { data, loading, error }] = useDeleteLabelMutation({
+ *   variables: {
+ *      label_id: // value for 'label_id'
+ *   },
+ * });
+ */
+export function useDeleteLabelMutation(baseOptions?: Apollo.MutationHookOptions<DeleteLabelMutation, DeleteLabelMutationVariables>) {
+        return Apollo.useMutation<DeleteLabelMutation, DeleteLabelMutationVariables>(DeleteLabelDocument, baseOptions);
+      }
+export type DeleteLabelMutationHookResult = ReturnType<typeof useDeleteLabelMutation>;
+export type DeleteLabelMutationResult = Apollo.MutationResult<DeleteLabelMutation>;
+export type DeleteLabelMutationOptions = Apollo.BaseMutationOptions<DeleteLabelMutation, DeleteLabelMutationVariables>;
 export const GetLabelsDocument = gql`
     query GetLabels {
   label(order_by: {created_at: asc}) {
@@ -30143,6 +30202,39 @@ export function useItemSearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type ItemSearchQueryHookResult = ReturnType<typeof useItemSearchQuery>;
 export type ItemSearchLazyQueryHookResult = ReturnType<typeof useItemSearchLazyQuery>;
 export type ItemSearchQueryResult = Apollo.QueryResult<ItemSearchQuery, ItemSearchQueryVariables>;
+export const DeleteItemDocument = gql`
+    mutation DeleteItem($id: Int!) {
+  delete_item_by_pk(id: $id) {
+    id
+    class
+  }
+}
+    `;
+export type DeleteItemMutationFn = Apollo.MutationFunction<DeleteItemMutation, DeleteItemMutationVariables>;
+
+/**
+ * __useDeleteItemMutation__
+ *
+ * To run a mutation, you first call `useDeleteItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteItemMutation, { data, loading, error }] = useDeleteItemMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteItemMutation(baseOptions?: Apollo.MutationHookOptions<DeleteItemMutation, DeleteItemMutationVariables>) {
+        return Apollo.useMutation<DeleteItemMutation, DeleteItemMutationVariables>(DeleteItemDocument, baseOptions);
+      }
+export type DeleteItemMutationHookResult = ReturnType<typeof useDeleteItemMutation>;
+export type DeleteItemMutationResult = Apollo.MutationResult<DeleteItemMutation>;
+export type DeleteItemMutationOptions = Apollo.BaseMutationOptions<DeleteItemMutation, DeleteItemMutationVariables>;
 export const GetItemBundlesDocument = gql`
     query GetItemBundles {
   item_bundle {
@@ -30587,4 +30679,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2021-02-12T18:15:26-07:00
+// graphql typescript defs generated on 2021-02-13T05:44:28-07:00

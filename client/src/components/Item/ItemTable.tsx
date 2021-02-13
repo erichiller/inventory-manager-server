@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import {
     // withItemHardwareFastenerScrewMachine, ItemHardwareFastenerScrewMachineProps, ItemHardwareFastenerScrewMachineSelectColumn, useItemHardwareFastenerScrewMachineQuery, useGetIconQuery, 
-    useGetItemsQuery, GetItemsQueryVariables, GetItemsQuery, GetItemsDocument, GetItemsLazyQueryHookResult,
+    useGetItemsQuery, GetItemsQueryVariables, GetItemsQuery, GetItemsDocument, GetItemsLazyQueryHookResult, useDeleteItemMutation,
     // ItemSelectColumn 
 } from '~lib/types/graphql';
 import { LabelDrawModal } from '../Draw/LabelDrawModal';
@@ -47,10 +47,10 @@ export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument
     // let result: QueryResult<GetItemsQuery, GetItemsQueryVariables>;
 
     // let location = useLocation();
-    let params = useParams < IItemTableParams >();
+    let params = useParams<IItemTableParams>();
 
     // console.log( { location, cls: 'ItemTable', params});
-    
+
     // return <ItemSearch />;
 
     const [ data, setData ] = useState( props.data );
@@ -58,22 +58,28 @@ export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument
     const [ currentRecord, setCurrentRecord ] = useState<T>();
     let currentRecordRef = React.useRef<T>();
     const history = useHistory();
-    
+
 
     const [ mouseOverVisible, setMouseOverVisible ] = useState<boolean>( false );
     const mouseOverRef = React.useRef<HTMLDivElement>();
     const [ modal, setModal ] = useState<React.ReactElement>();
+
+    const [ deleteItemMutation, {
+        data: deleteItemMutationData,
+        loading: deleteItemMutationLoading,
+        error: deleteItemMutationError
+    } ] = useDeleteItemMutation();
 
     const [ getItemsQuery, result ] = useLazyQuery<GetItemsQuery, GetItemsQueryVariables>(
         props.query,
         {
             variables: props.variables
         }
-    )
+    );
     let loading = result?.loading ?? false;
 
     useEffect( () => {
-        switch ( params.action ){
+        switch ( params.action ) {
             case "edit":
                 if ( params.item_id && !currentRecord ) {
                     Item.ItemFactory( { id: parseInt( params.item_id ) } )
@@ -95,6 +101,18 @@ export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument
     }, [ params.item_id, params.action ] );
 
     useEffect( () => {
+        if ( deleteItemMutationError ) {
+            message.error( `Failed to delete item: ${ deleteItemMutationError.message }` );
+        }
+        if ( deleteItemMutationLoading ){
+            return;
+        }
+        if ( !deleteItemMutationLoading && deleteItemMutationData ) {
+            message.success( `Deletion of item # ${ deleteItemMutationData.delete_item_by_pk.id } was successful` );
+        }
+    } );
+
+    useEffect( () => {
         if ( !props.data ) {
             let variables = props.variables;
             if ( !variables.categories || variables.categories.length === 0 ) {
@@ -105,14 +123,14 @@ export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument
         } else {
             console.debug( `data received in props ${ props.data } not running GraphQL` );
         }
-    }, [ ] );
+    }, [] );
 
     useEffect( () => {
         console.log( { cls: 'ItemTable', action: "!props.data useEffect", result }, "\ndata:", result?.data );
         if ( result === undefined ) {
             return;
         }
-        if ( result.loading ){
+        if ( result.loading ) {
             loading = true;
             return;
         }
@@ -141,13 +159,13 @@ export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument
     };
 
     const getLabelDrawModal = ( record: T ): React.ReactElement => {
-        return <LabelDrawModal 
-                    item={record} 
-                    label={record.labelTemplate.label}
-                    visibleHandler={ ( x ) => {
-                        getItemsQuery( { variables: props.variables } );
-                        setModal( x );
-                    }} />;
+        return <LabelDrawModal
+            item={record}
+            label={record.labelTemplate.label}
+            visibleHandler={( x ) => {
+                getItemsQuery( { variables: props.variables } );
+                setModal( x );
+            }} />;
     };
 
     const getColumns = (): ColumnProps<T>[] => {
@@ -162,10 +180,10 @@ export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument
             {
                 key: 'icon',
                 title: '',
-                responsive: ['xl'],
-                render: ( _, record: T ) => { 
+                responsive: [ 'xl' ],
+                render: ( _, record: T ) => {
                     // console.log( { q: 'render icon ?', record, icon: record.icon } ); 
-                    return ( record.icon === null ? null : < record.icon /> ); 
+                    return ( record.icon === null ? null : < record.icon /> );
                 }
             },
             ...Object.values( columns ?? Item.Columns ),
@@ -179,7 +197,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument
 
                     render: ( _: string, record: T ) => (
                         <span onMouseOver={event => event.preventDefault()}>
-                            <Link to={`/item/${record.id}/edit`} 
+                            <Link to={`/item/${ record.id }/edit`}
                             // onClick={( obj ) => {
                             //     // obj.preventDefault();
                             //     setCurrentRecord( record );
@@ -191,7 +209,6 @@ export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument
 
                             <a onClick={( obj ) => {
                                 obj.preventDefault();
-                                // currentRecord = { current: record };
                                 setCurrentRecord( record );
                                 setModal( getLabelDrawModal( record ) );
                             }
@@ -207,8 +224,20 @@ export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument
                             }><PrinterOutlined className="IconButton" /></a>
 
                             <Divider type="vertical" />
-                            {/* TODO */}
-                            <a><DeleteOutlined className="IconButton" /></a>
+                            <a onClick={( obj ) => {
+                                obj.preventDefault();
+                                deleteItemMutation( {
+                                    variables: {
+                                        id: record.id
+                                    },
+                                    refetchQueries: [
+                                        { query: GetItemsDocument }
+                                    ]
+                                } );
+                            }
+                            }>
+                                <DeleteOutlined className="IconButton" />
+                            </a>
                         </span >
                     ),
                 }
@@ -225,7 +254,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument
     // };
 
     const onChange = ( pagination: TablePaginationConfig, filters: Record<string, React.ReactText[]>, sorter: SorterResult<T> | SorterResult<T>[], extra: TableCurrentDataSource<T> ) => {
-        console.log( {action: 'onChange params', pagination, filters, sorter, extra } );
+        console.log( { action: 'onChange params', pagination, filters, sorter, extra } );
     };
     // const setMouseOverRef: React.LegacyRef<HTMLDivElement> = ( ref ) => {
     //     console.log({method: 'setMouseOverRef'})
@@ -282,11 +311,11 @@ export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument
                     if ( mouseOverRef && mouseOverRef.current ) {
                         let newX: number = event.pageX + 3;
                         let newY: number = event.pageY + 3;
-                        if ( newX > mouseOverRef.current.offsetWidth - 3 ){
-                            newX = newX - mouseOverRef.current.offsetWidth - 3; 
+                        if ( newX > mouseOverRef.current.offsetWidth - 3 ) {
+                            newX = newX - mouseOverRef.current.offsetWidth - 3;
                         }
                         if ( newY > mouseOverRef.current.offsetHeight - 3 ) {
-                            newY = newY - mouseOverRef.current.offsetHeight - 3; 
+                            newY = newY - mouseOverRef.current.offsetHeight - 3;
                         }
                         mouseOverRef.current.style.left = `${ newX.toString() }px`;
                         mouseOverRef.current.style.top = `${ newY.toString() }px`;
@@ -337,7 +366,7 @@ export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument
                                 // setMouseOver( { visible: mouseOver.visible, position: [ event.pageX, event.pageY ] } );
 
                                 // console.log( currentRecordRef.current );
-                                if ( currentRecordRef.current != record ){
+                                if ( currentRecordRef.current != record ) {
                                     setCurrentRecord( record );
                                     // console.log( "setting currentRecordRef" );
                                     // currentRecordRef = {current: record};
