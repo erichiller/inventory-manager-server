@@ -13,7 +13,8 @@ import { LabelAddImageModal } from './Image/LabelAddImageModal';
 
 import { QREditModal } from './QREditModal';
 import { Integer } from '~lib/types/uint8';
-import { LabelText, LabelImage, LabelQR, FormatOptionsT, LabelExport } from '~lib/LabelConstituent';
+import { LabelText, LabelImage, LabelQR, FormatOptionsT } from '~lib/LabelConstituent';
+import { LabelExport } from "~lib/LabelExport";
 
 import { NewImageUploadModal } from './Image/NewImageUploadModal';
 import { PrintContext } from '~components/Print/PrintContextHandler';

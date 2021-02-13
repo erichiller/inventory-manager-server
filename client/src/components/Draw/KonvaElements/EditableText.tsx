@@ -32,7 +32,7 @@ interface EditableTextProps {
 export function EditableText ( props: EditableTextProps ): React.ReactElement<KonvaNodeComponent<Konva.Text & EditableTextProps, Konva.TextConfig>> {
     let labelText: LabelText = props.labelText;
     if ( ! ( labelText instanceof LabelText ) ){
-        labelText = new LabelText(labelText);
+        throw new Error("Invalid LabelText");
     }
 
     const item = props.item;

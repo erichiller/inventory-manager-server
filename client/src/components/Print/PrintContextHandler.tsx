@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LabelExport } from '~lib/LabelConstituent';
+import { LabelExport } from "~lib/LabelExport";
 import { PixelMap, canvasToBuffer } from '~lib/canvasToBuffer';
 
 

@@ -20,7 +20,7 @@ import { toTitleCase, Intersection, enumerable, StringKeys } from "~lib/UtilityF
 import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { IconComponentT } from "~lib/types/common";
-import { LabelExportConstituents } from "~lib/LabelConstituent";
+import { LabelExport, LabelExportConstituents } from "~lib/LabelExport";
 
 export type GenericItem = Pick<ItemGql, 'id'>
     & Partial<Pick<ItemGql, 'object'>
@@ -38,7 +38,7 @@ export interface Label extends Omit<LabelGql, 'parent_of' | 'parent_of_aggregate
     content: LabelExportConstituents;
 }
 
-export type LabelTemplate = Pick<LabelTemplateFieldsFragment, "sequence" | "criteria"> & {
+export interface LabelTemplate extends Pick<LabelTemplateFieldsFragment, "sequence" | "criteria"> {
     label: Label;
     // label: ( {
     //     __typename?: 'label';
@@ -93,7 +93,16 @@ export class Item<T extends GenericItem> {
         this._name = props.name;
         this._class = props.class;
         this._object = props.object;
-        this._labelTemplates = props.labelTemplates;
+        // this._labelTemplates = props.labelTemplates;
+        let labelTemplates: LabelTemplate[] = [];
+        if ( 'labelTemplates' in props ){
+            props.labelTemplates.forEach( labelTemplate => {
+                let lt = Object.assign( {}, labelTemplate, { label: new LabelExport( labelTemplate.label ) } );
+                labelTemplates.push( lt );
+            });
+            console.log(`Item#${this.id} - labelTemplates assigned`, labelTemplates);
+        }
+        this._labelTemplates = labelTemplates;
         // console.log( "Item class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
     }
 

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { EnumItemClassEnum, useGetItemsQuery } from '~lib/types/graphql';
+import { EnumItemClassEnum, GetItemsDocument, useGetItemsQuery } from '~lib/types/graphql';
 import { Item } from '~lib/Item';
 import { ItemSearch } from './ItemSearch';
 import {
@@ -111,7 +111,7 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
                         />
                     </div>
                 </div>
-                <ItemTable query={useGetItemsQuery} variables={{categories: state.categoryFilters}} />
+                <ItemTable query={GetItemsDocument} variables={{categories: state.categoryFilters}} />
             </div>
         </div>
 

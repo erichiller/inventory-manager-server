@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument } from "~lib/types/graphql";
+import { useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument, GetItemDocument, GetItemsDocument } from "~lib/types/graphql";
 import { Modal, Descriptions, Button, Tooltip, message, Input } from "antd";
 import React from "react";
 import { LabelDraw } from "./LabelDraw";
 import { PrintContext } from "~components/Print/PrintContextHandler";
-import { LabelExport } from "~lib/LabelConstituent";
+import { LabelExport } from "~lib/LabelExport";
 import { SendBufferButton } from "~components/Print/SendBufferButton";
 import { visibleHandler } from "../Item/ItemTable";
 import { Item } from "~lib/Item";
@@ -73,7 +73,14 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                     width: label.width
                 },
                 refetchQueries: [
-                    { query: GetLabelsDocument }
+                    { query: GetLabelsDocument },
+                    {
+                        query: GetItemDocument,
+                        variables: {
+                            id: label.item_id
+                        }
+                    },
+                    { query: GetItemsDocument }
                 ]
             } ).then( result => {
                 message.info( `Saved Successfully` );
@@ -94,7 +101,14 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                     width: label.width
                 },
                 refetchQueries: [
-                    { query: GetLabelsDocument }
+                    { query: GetLabelsDocument },
+                    {
+                        query: GetItemDocument,
+                        variables: {
+                            id: label.item_id
+                        }
+                    },
+                    { query: GetItemsDocument }
                 ]
             } ).then( result => {
                 message.info( `Saved Successfully` );

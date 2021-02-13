@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import {
     // withItemHardwareFastenerScrewMachine, ItemHardwareFastenerScrewMachineProps, ItemHardwareFastenerScrewMachineSelectColumn, useItemHardwareFastenerScrewMachineQuery, useGetIconQuery, 
-    useGetItemsQuery, GetItemsQueryVariables, GetItemsQuery,
+    useGetItemsQuery, GetItemsQueryVariables, GetItemsQuery, GetItemsDocument, GetItemsLazyQueryHookResult,
     // ItemSelectColumn 
 } from '~lib/types/graphql';
 import { LabelDrawModal } from '../Draw/LabelDrawModal';
 import { Item } from '~lib/Item';
 
-import { QueryResult } from '@apollo/client/react';
+import { QueryResult, useLazyQuery } from '@apollo/client/react';
 import { EditOutlined, PrinterOutlined, DeleteOutlined, TagOutlined } from '@ant-design/icons';
 import { ItemTableMouseOver } from './ItemTableMouseOver';
 import { ItemFormModal } from './ItemFormModal';
@@ -18,7 +18,7 @@ import { SorterResult, TableCurrentDataSource } from 'antd/lib/table/interface';
 import { computeDefaultPagination } from '~lib/UtilityFunctions';
 
 
-type ItemTableProps<T, Q extends typeof useGetItemsQuery> = {
+type ItemTableProps<T, Q extends typeof GetItemsDocument> = {
     data?: T[];
     query: Q; // QueryResultTypePlus
     variables: GetItemsQueryVariables;
@@ -43,9 +43,8 @@ export type visibleHandler = ( c?: React.ReactElement ) => void;
 
 
 
-export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery> ( props: ItemTableProps<T, Q> & { children?: React.ReactNode; } ) => {
-    let loading = true;
-    let result: QueryResult<GetItemsQuery, GetItemsQueryVariables>;
+export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument> ( props: ItemTableProps<T, Q> & { children?: React.ReactNode; } ) => {
+    // let result: QueryResult<GetItemsQuery, GetItemsQueryVariables>;
 
     // let location = useLocation();
     let params = useParams < IItemTableParams >();
@@ -64,6 +63,14 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     const [ mouseOverVisible, setMouseOverVisible ] = useState<boolean>( false );
     const mouseOverRef = React.useRef<HTMLDivElement>();
     const [ modal, setModal ] = useState<React.ReactElement>();
+
+    const [ getItemsQuery, result ] = useLazyQuery<GetItemsQuery, GetItemsQueryVariables>(
+        props.query,
+        {
+            variables: props.variables
+        }
+    )
+    let loading = result?.loading ?? false;
 
     useEffect( () => {
         switch ( params.action ){
@@ -87,37 +94,41 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
         }
     }, [ params.item_id, params.action ] );
 
-    if ( !props.data ) {
-        let variables = props.variables;
-        if ( !variables.categories || variables.categories.length === 0 ) {
-            variables.categories = null;
+    useEffect( () => {
+        if ( !props.data ) {
+            let variables = props.variables;
+            if ( !variables.categories || variables.categories.length === 0 ) {
+                variables.categories = null;
+            }
+            console.log( { cls: 'ItemTable', action: "!props.data", result }, '\ndata:', result?.data );
+            getItemsQuery( { variables: props.variables } );
+        } else {
+            console.debug( `data received in props ${ props.data } not running GraphQL` );
         }
-        console.log( {cls: 'ItemTable', action: "!props.data", result},'\ndata:', result?.data );
-        result = props.query( {
-            variables: props.variables
-        } );
-        loading = result.loading;
+    }, [ ] );
 
-        useEffect( () => {
-            console.log( { cls: 'ItemTable', action: "!props.data useEffect", result }, "\ndata:", result?.data );
-            if ( data ){
-                return;
+    useEffect( () => {
+        console.log( { cls: 'ItemTable', action: "!props.data useEffect", result }, "\ndata:", result?.data );
+        if ( result === undefined ) {
+            return;
+        }
+        if ( result.loading ){
+            loading = true;
+            return;
+        }
+        if ( result.error ) {
+            message.error( result.error );
+            return;
+        }
+        if ( result.data ) {
+            setData( Item.ItemsFactory( result.data.items ) as T[] );
+            if ( result.data.items.length > 0 ) {
+                message.info( `loaded data, found ${ result.data.items.length } items` );
+            } else {
+                message.warning( `No Items found matching your filters` );
             }
-            if ( result.error ) {
-                message.error( result.error );
-            }
-            if ( result.data ) {
-                setData( Item.ItemsFactory( result.data.items ) as T[] );
-                if ( result.data.items.length > 0 ) {
-                    message.info( `loaded data, found ${ result.data.items.length } items` );
-                } else {
-                    message.warning( `No Items found matching your filters` );
-                }
-            }
-        }, [ result.data, result.error ] );
-    } else {
-        console.debug( `data received in props ${ props.data } not running GraphQL` );
-    }
+        }
+    }, [ result ] );
 
     const getRecordEditModal = ( record: Item<any> ): React.ReactElement => {
         return <ItemFormModal
@@ -130,7 +141,13 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
     };
 
     const getLabelDrawModal = ( record: T ): React.ReactElement => {
-        return <LabelDrawModal item={record} visibleHandler={setModal} label={record.labelTemplate.label} />;
+        return <LabelDrawModal 
+                    item={record} 
+                    label={record.labelTemplate.label}
+                    visibleHandler={ ( x ) => {
+                        getItemsQuery( { variables: props.variables } );
+                        setModal( x );
+                    }} />;
     };
 
     const getColumns = (): ColumnProps<T>[] => {
@@ -319,10 +336,10 @@ export const ItemTable = <T extends Item<any>, Q extends typeof useGetItemsQuery
                                 // if ( event.target.class === "antd-table-cell" )
                                 // setMouseOver( { visible: mouseOver.visible, position: [ event.pageX, event.pageY ] } );
 
-                                console.log( currentRecordRef.current );
+                                // console.log( currentRecordRef.current );
                                 if ( currentRecordRef.current != record ){
                                     setCurrentRecord( record );
-                                    console.log( "setting currentRecordRef" );
+                                    // console.log( "setting currentRecordRef" );
                                     // currentRecordRef = {current: record};
                                 }
                             }
