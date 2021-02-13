@@ -134,9 +134,9 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
                     textarea.style.position = 'absolute';
                     textarea.style.top = areaPosition.y + 'px';
                     textarea.style.left = areaPosition.x + 'px';
-                    textarea.style.width = textNodeRef.current.width() - textNodeRef.current.padding() * 2 + 'px';
+                    textarea.style.width = ( ( textNodeRef.current.width() - textNodeRef.current.padding() ) * 2 ) + 'px';
                     textarea.style.height =
-                        textNodeRef.current.height() - textNodeRef.current.padding() * 2 + 5 + 'px';
+                        ( ( textNodeRef.current.height() - textNodeRef.current.padding() ) * 2 ) + 5 + 'px';
                     textarea.style.fontSize = textNodeRef.current.fontSize() + 'px';
                     textarea.style.border = 'none';
                     // start temp
