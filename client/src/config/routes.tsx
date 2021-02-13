@@ -52,7 +52,7 @@ export const routes: RouteEntry[] = [
         title: "Labels",
         subtitle: "Create generic labels or reprint past ones",
         breadcrumbName: "Labels",
-        path: [ "/label", "/label/:label_id" ],
+        path: [ "/label", "/label/:label_id", "/label/:label_id/:action" ],
         exact: true,
         // AppMenuIcon: () => <Icon component={DiggingIcon as any} />,
         // AppMenuEntry: () => <ProjectSubMenu key="ProjectsubMenu" />,

@@ -14,7 +14,18 @@ export const MainMenu: React.FC<{}> = ( props ) => {
         {/* <Menu.Item key="/network"><Link to="/network"><ShareAltOutlined />Network</Link></Menu.Item> */}
         <Menu.Item key="/object"><Link to="/object">
             <span role="img" aria-label="container" className="anticon anticon-container IconButton"><CurlyBracesIcon /></span>Objects</Link></Menu.Item>
-        <Menu.Item key="/label"><Link to="/label"><TagOutlined />Labels</Link></Menu.Item>
+        <Menu.SubMenu key="/label" title={<Link to="/label"><TagOutlined />Labels</Link>} >
+            <Menu.Item key="/label">
+                <Menu className="MainMenuInItem" mode="horizontal"
+                    selectedKeys={[ location.pathname ]}
+                >
+                    <Menu.Item key="/label">
+                        <Link to="/label"><TagOutlined />Labels</Link>
+                    </Menu.Item>
+                    <Menu.Item key="/label/_/create"><Link to="/label/_/create"><PlusSquareOutlined /></Link></Menu.Item>
+                </Menu>
+            </Menu.Item>
+        </Menu.SubMenu>
         <Menu.SubMenu key="/order" title={<Link to="/order"><ShoppingCartOutlined />Orders</Link>} >
             <Menu.Item key="/order">
                 <Menu className="MainMenuInItem" mode="horizontal"

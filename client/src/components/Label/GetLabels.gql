@@ -9,6 +9,7 @@ fragment labelFields on label {
         id
         class
     }
+    updated_at
 }
 
 query GetLabels {

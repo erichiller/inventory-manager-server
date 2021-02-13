@@ -2,6 +2,8 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -696,8 +698,8 @@ export enum EnumItemHandednessUpdateColumn {
 
 /**
  * Drive type for fastener, such as Hex, Torx, Phillips, etc
- * 
- * 
+ *
+ *
  * columns and relationships of "enum_item_hardware_fastener.drive"
  */
 export type EnumItemHardwareFastenerDrive = {
@@ -905,8 +907,8 @@ export enum EnumItemHardwareFastenerDriveUpdateColumn {
  * Relevant Information:
  * - https://www.sppusa.com/stainlesssteel_overview.php
  * - https://www.boltdepot.com/fastener-information/Materials-and-Grades/Materials.aspx
- * 
- * 
+ *
+ *
  * columns and relationships of "enum_item_hardware_fastener.material"
  */
 export type EnumItemHardwareFastenerMaterial = {
@@ -1434,8 +1436,8 @@ export enum EnumItemHardwareFastenerNutStrengthUpdateColumn {
 
 /**
  * metric internal (nut) thread fits are defined by capital G or H ; UTS internal (nut) threads are specified by a appended B
- * 
- * 
+ *
+ *
  * columns and relationships of "enum_item_hardware_fastener_nut.thread_fit"
  */
 export type EnumItemHardwareFastenerNutThreadFit = {
@@ -1839,13 +1841,13 @@ export enum EnumItemHardwareFastenerScrewHeadEnum {
   cap = 'cap',
   carriage = 'carriage',
   /**
-   * A countersunk head with a flat top. 
+   * A countersunk head with a flat top.
    * Abbreviated FH.
    */
   flat = 'flat',
   flat_undercut = 'flat_undercut',
   /**
-   * hexagonal, same as external hex drive. 
+   * hexagonal, same as external hex drive.
    * Abbreviated HH or HX
    */
   hex = 'hex',
@@ -2122,8 +2124,8 @@ export enum EnumItemHardwareFastenerScrewMachinePointUpdateColumn {
 
 /**
  * Generally a higher number means a stronger, more hardened part, but also more brittle. US units use Grade and Metric uses Class
- * 
- * 
+ *
+ *
  * columns and relationships of "enum_item_hardware_fastener_screw_machine.strength"
  */
 export type EnumItemHardwareFastenerScrewMachineStrength = {
@@ -2301,8 +2303,8 @@ export enum EnumItemHardwareFastenerScrewMachineStrengthUpdateColumn {
 
 /**
  * Thread fit is a combination of allowances and tolerances and a measure of tightness or looseness between them.
- * 
- * 
+ *
+ *
  * columns and relationships of "enum_item_hardware_fastener_screw_machine.thread_fit"
  */
 export type EnumItemHardwareFastenerScrewMachineThreadFit = {
@@ -2640,8 +2642,8 @@ export enum EnumItemHardwareFastenerStandoffShapeUpdateColumn {
 
 /**
  * descriptor of thread
- * 
- * 
+ *
+ *
  * columns and relationships of "enum_item_hardware_fastener.thread_label"
  */
 export type EnumItemHardwareFastenerThreadLabel = {
@@ -2805,8 +2807,8 @@ export enum EnumItemHardwareFastenerThreadLabelUpdateColumn {
 
 /**
  * For more information on thread standards see https://en.wikipedia.org/wiki/Screw_thread#Standardization
- * 
- * 
+ *
+ *
  * columns and relationships of "enum_item_hardware_fastener.thread_standard"
  */
 export type EnumItemHardwareFastenerThreadStandard = {
@@ -2978,8 +2980,8 @@ export enum EnumItemHardwareFastenerThreadStandardUpdateColumn {
 
 /**
  * Shape of the washer
- * 
- * 
+ *
+ *
  * columns and relationships of "enum_item_hardware_fastener_washer.form"
  */
 export type EnumItemHardwareFastenerWasherForm = {
@@ -3312,8 +3314,8 @@ export enum EnumItemHardwareFastenerWasherMechanismUpdateColumn {
 
 /**
  * For Flat washers: Washer patterns define the outer diameter of the washer.
- * 
- * 
+ *
+ *
  * columns and relationships of "enum_item_hardware_fastener_washer.pattern"
  */
 export type EnumItemHardwareFastenerWasherPattern = {
@@ -3481,8 +3483,8 @@ export enum EnumItemHardwareFastenerWasherPatternUpdateColumn {
 
 /**
  * aka coatings
- * 
- * 
+ *
+ *
  * columns and relationships of "enum_item_hardware.finish"
  */
 export type EnumItemHardwareFinish = {
@@ -3559,7 +3561,7 @@ export enum EnumItemHardwareFinishEnum {
   passivated = 'passivated',
   ptfe_coated = 'ptfe_coated',
   /**
-   * electroplated with zinc for moderate corrosion resistance suitable for (dry) indoor use. 
+   * electroplated with zinc for moderate corrosion resistance suitable for (dry) indoor use.
    * Can be either blue or yellow tinted depending on the process.
    */
   zinc_plated = 'zinc_plated'
@@ -3663,8 +3665,8 @@ export enum EnumItemHardwareFinishUpdateColumn {
 
 /**
  * Material which the fastener is to be used in, ie. _Wood_ for _Wood Screws_
- * 
- * 
+ *
+ *
  * columns and relationships of "enum_item_hardware.use_material"
  */
 export type EnumItemHardwareUseMaterial = {
@@ -4693,8 +4695,8 @@ export enum EnumItemToolDrillBitStyleUpdateColumn {
 
 /**
  * possible <schema>_<table> classes that can be used in object_maps
- * 
- * 
+ *
+ *
  * columns and relationships of "enum.mapped_class"
  */
 export type EnumMappedClass = {
@@ -5026,8 +5028,8 @@ export enum EnumPaymentMethodTypeUpdateColumn {
 
 /**
  * Storage space type
- * 
- * 
+ *
+ *
  * columns and relationships of "enum.space_type"
  */
 export type EnumSpaceType = {
@@ -5194,8 +5196,8 @@ export enum EnumSpaceTypeUpdateColumn {
 
 /**
  * Event types that can add or subtract items from stock.
- * 
- * 
+ *
+ *
  * columns and relationships of "enum.stock_event_type"
  */
 export type EnumStockEventType = {
@@ -5522,8 +5524,8 @@ export enum EnumUnitUpdateColumn {
 
 /**
  * Image / icon data for labels
- * 
- * 
+ *
+ *
  * columns and relationships of "icon"
  */
 export type Icon = {
@@ -5551,8 +5553,8 @@ export type Icon = {
 
 /**
  * Image / icon data for labels
- * 
- * 
+ *
+ *
  * columns and relationships of "icon"
  */
 export type IconCategoriesArgs = {
@@ -5566,8 +5568,8 @@ export type IconCategoriesArgs = {
 
 /**
  * Image / icon data for labels
- * 
- * 
+ *
+ *
  * columns and relationships of "icon"
  */
 export type IconCategoriesAggregateArgs = {
@@ -5581,8 +5583,8 @@ export type IconCategoriesAggregateArgs = {
 
 /**
  * Image / icon data for labels
- * 
- * 
+ *
+ *
  * columns and relationships of "icon"
  */
 export type IconItemsArgs = {
@@ -5596,8 +5598,8 @@ export type IconItemsArgs = {
 
 /**
  * Image / icon data for labels
- * 
- * 
+ *
+ *
  * columns and relationships of "icon"
  */
 export type IconItemsAggregateArgs = {
@@ -5611,8 +5613,8 @@ export type IconItemsAggregateArgs = {
 
 /**
  * Image / icon data for labels
- * 
- * 
+ *
+ *
  * columns and relationships of "icon"
  */
 export type IconLabelsArgs = {
@@ -5626,8 +5628,8 @@ export type IconLabelsArgs = {
 
 /**
  * Image / icon data for labels
- * 
- * 
+ *
+ *
  * columns and relationships of "icon"
  */
 export type IconLabelsAggregateArgs = {
@@ -6022,8 +6024,8 @@ export type IconItemCategoryMapVarianceOrderBy = {
 
 /**
  * map icon to specific individual items
- * 
- * 
+ *
+ *
  * columns and relationships of "icon_item_map"
  */
 export type IconItemMap = {
@@ -6821,8 +6823,8 @@ export type ItemBoolExp = {
 
 /**
  * for items purchased as a bundle or kit (a box of screws for example)
- * 
- * 
+ *
+ *
  * columns and relationships of "item.bundle"
  */
 export type ItemBundle = {
@@ -6843,8 +6845,8 @@ export type ItemBundle = {
 
 /**
  * for items purchased as a bundle or kit (a box of screws for example)
- * 
- * 
+ *
+ *
  * columns and relationships of "item.bundle"
  */
 export type ItemBundleItemsArgs = {
@@ -6858,8 +6860,8 @@ export type ItemBundleItemsArgs = {
 
 /**
  * for items purchased as a bundle or kit (a box of screws for example)
- * 
- * 
+ *
+ *
  * columns and relationships of "item.bundle"
  */
 export type ItemBundleItemsAggregateArgs = {
@@ -7472,9 +7474,9 @@ export type ItemBundleVarianceOrderBy = {
 };
 
 /**
- * electrically conductive cables (cables consist of multiple wires) 
- * 
- * 
+ * electrically conductive cables (cables consist of multiple wires)
+ *
+ *
  * columns and relationships of "item.cable_conductive"
  */
 export type ItemCableConductive = {
@@ -7505,9 +7507,9 @@ export type ItemCableConductive = {
 
 
 /**
- * electrically conductive cables (cables consist of multiple wires) 
- * 
- * 
+ * electrically conductive cables (cables consist of multiple wires)
+ *
+ *
  * columns and relationships of "item.cable_conductive"
  */
 export type ItemCableConductiveConnectorExtraArgs = {
@@ -7516,9 +7518,9 @@ export type ItemCableConductiveConnectorExtraArgs = {
 
 
 /**
- * electrically conductive cables (cables consist of multiple wires) 
- * 
- * 
+ * electrically conductive cables (cables consist of multiple wires)
+ *
+ *
  * columns and relationships of "item.cable_conductive"
  */
 export type ItemCableConductiveStandardsMetArgs = {
@@ -9012,8 +9014,8 @@ export type ItemHardwareFastenerInsertVarianceOrderBy = {
 
 /**
  * Nuts are used to fasten machine threaded fasteners in through-hole applications. Lock nuts help prevent loosening.
- * 
- * 
+ *
+ *
  * columns and relationships of "item.hardware_fastener_nut"
  */
 export type ItemHardwareFastenerNut = {
@@ -10980,8 +10982,8 @@ export type ItemHardwareFastenerStandoffVarianceOrderBy = {
 
 /**
  * Washers spread the load over a greater surface area when tightening a bolt, screw, or nut. Lock washers help prevent loosening.
- * 
- * 
+ *
+ *
  * columns and relationships of "item.hardware_fastener_washer"
  */
 export type ItemHardwareFastenerWasher = {
@@ -11615,8 +11617,8 @@ export type ItemVarianceOrderBy = {
 
 /**
  * All existing combinations of vendor and manufacturer for an item, including null for both.
- * 
- * 
+ *
+ *
  * columns and relationships of "item_variant"
  */
 export type ItemVariant = {
@@ -11646,8 +11648,8 @@ export type ItemVariant = {
 
 /**
  * All existing combinations of vendor and manufacturer for an item, including null for both.
- * 
- * 
+ *
+ *
  * columns and relationships of "item_variant"
  */
 export type ItemVariantObjectArgs = {
@@ -12069,8 +12071,8 @@ export type JsonbComparisonExp = {
 
 /**
  * For saved labels, use to reprint or template
- * 
- * 
+ *
+ *
  * columns and relationships of "label"
  */
 export type Label = {
@@ -12101,8 +12103,8 @@ export type Label = {
 
 /**
  * For saved labels, use to reprint or template
- * 
- * 
+ *
+ *
  * columns and relationships of "label"
  */
 export type LabelContentArgs = {
@@ -12112,8 +12114,8 @@ export type LabelContentArgs = {
 
 /**
  * For saved labels, use to reprint or template
- * 
- * 
+ *
+ *
  * columns and relationships of "label"
  */
 export type LabelParentOfArgs = {
@@ -12127,8 +12129,8 @@ export type LabelParentOfArgs = {
 
 /**
  * For saved labels, use to reprint or template
- * 
- * 
+ *
+ *
  * columns and relationships of "label"
  */
 export type LabelParentOfAggregateArgs = {
@@ -12142,8 +12144,8 @@ export type LabelParentOfAggregateArgs = {
 
 /**
  * For saved labels, use to reprint or template
- * 
- * 
+ *
+ *
  * columns and relationships of "label"
  */
 export type LabelTemplateItemsArgs = {
@@ -12157,8 +12159,8 @@ export type LabelTemplateItemsArgs = {
 
 /**
  * For saved labels, use to reprint or template
- * 
- * 
+ *
+ *
  * columns and relationships of "label"
  */
 export type LabelTemplateItemsAggregateArgs = {
@@ -12757,8 +12759,8 @@ export type LabelSumOrderBy = {
 
 /**
  * map label to item use for template
- * 
- * 
+ *
+ *
  * columns and relationships of "label_template_map"
  */
 export type LabelTemplateMap = {
@@ -12780,8 +12782,8 @@ export type LabelTemplateMap = {
 
 /**
  * map label to item use for template
- * 
- * 
+ *
+ *
  * columns and relationships of "label_template_map"
  */
 export type LabelTemplateMapCriteriaArgs = {
@@ -17616,8 +17618,8 @@ export type OrderInsertInput = {
 
 /**
  * represents a single line item on an order
- * 
- * 
+ *
+ *
  * columns and relationships of "order_item"
  */
 export type OrderItem = {
@@ -19110,8 +19112,8 @@ export type PropertyItemHardwareFastenerBoltStrengthVarianceOrderBy = {
 
 /**
  * Lookup table for items with the same diameter, pitch, and fit (+unit) ; to display their common properties, such as tapping drill size, major diameter, etc
- * 
- * 
+ *
+ *
  * columns and relationships of "property_item_hardware_fastener_screw_machine.diameter"
  */
 export type PropertyItemHardwareFastenerScrewMachineDiameter = {
@@ -22001,8 +22003,8 @@ export type SearchItemVariantArgs = {
 
 /**
  * shipment or invoices, multiple allowed per order
- * 
- * 
+ *
+ *
  * columns and relationships of "shipment"
  */
 export type Shipment = {
@@ -22027,8 +22029,8 @@ export type Shipment = {
 
 /**
  * shipment or invoices, multiple allowed per order
- * 
- * 
+ *
+ *
  * columns and relationships of "shipment"
  */
 export type ShipmentOrderItemsArgs = {
@@ -22042,8 +22044,8 @@ export type ShipmentOrderItemsArgs = {
 
 /**
  * shipment or invoices, multiple allowed per order
- * 
- * 
+ *
+ *
  * columns and relationships of "shipment"
  */
 export type ShipmentOrderItemsAggregateArgs = {
@@ -22421,8 +22423,8 @@ export type SmallintComparisonExp = {
 
 /**
  * track acquisition and consumption of inventory items
- * 
- * 
+ *
+ *
  * columns and relationships of "stock"
  */
 export type Stock = {
@@ -26435,7 +26437,7 @@ export type GetIconsQuery = (
 
 export type SearchItemsQueryVariables = Exact<{
   containsFilter?: Maybe<Scalars['jsonb']>;
-  hasAnyKeysFilter?: Maybe<Array<Scalars['String']>>;
+  hasAnyKeysFilter?: Maybe<Array<Scalars['String']> | Scalars['String']>;
 }>;
 
 
@@ -26450,7 +26452,7 @@ export type SearchItemsQuery = (
 
 export type LabelFieldsFragment = (
   { __typename?: 'label' }
-  & Pick<Label, 'id' | 'created_at' | 'content' | 'title' | 'width' | 'height'>
+  & Pick<Label, 'id' | 'created_at' | 'content' | 'title' | 'width' | 'height' | 'updated_at'>
   & { item?: Maybe<(
     { __typename?: 'item' }
     & Pick<Item, 'id' | 'class'>
@@ -26982,10 +26984,10 @@ export type GetItemVariantsQuery = (
 );
 
 export type GetItemVariantByAttachedQueryVariables = Exact<{
-  item_id?: Maybe<Array<Scalars['Int']>>;
-  manufacturer_item_id?: Maybe<Array<Scalars['Int']>>;
-  vendor_item_id?: Maybe<Array<Scalars['Int']>>;
-  vendor_id?: Maybe<Array<Scalars['Int']>>;
+  item_id?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
+  manufacturer_item_id?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
+  vendor_item_id?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
+  vendor_id?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
 }>;
 
@@ -27041,7 +27043,7 @@ export type GetPrinterStatusQuery = (
 );
 
 export type SendBufferMutationVariables = Exact<{
-  buffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>>>>>>;
+  buffer: Array<Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>> | Maybe<Scalars['uint8']>>> | Maybe<Array<Maybe<Scalars['uint8']>> | Maybe<Scalars['uint8']>>>> | Maybe<Array<Maybe<Array<Maybe<Scalars['uint8']>> | Maybe<Scalars['uint8']>>> | Maybe<Array<Maybe<Scalars['uint8']>> | Maybe<Scalars['uint8']>>>;
 }>;
 
 
@@ -27387,7 +27389,7 @@ export type ItemFieldsFragment = (
 );
 
 export type GetItemsQueryVariables = Exact<{
-  categories?: Maybe<Array<EnumItemClassEnum>>;
+  categories?: Maybe<Array<EnumItemClassEnum> | EnumItemClassEnum>;
 }>;
 
 
@@ -27400,7 +27402,7 @@ export type GetItemsQuery = (
 );
 
 export type GetItemsByIdQueryVariables = Exact<{
-  ids?: Maybe<Array<Scalars['Int']>>;
+  ids?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
 }>;
 
 
@@ -27689,6 +27691,7 @@ export const LabelFieldsFragmentDoc = gql`
     id
     class
   }
+  updated_at
 }
     `;
 export const BasicManufacturerFieldsFragmentDoc = gql`
@@ -28019,7 +28022,7 @@ export const GetIconDocument = gql`
  *   },
  * });
  */
-export function useGetIconQuery(baseOptions?: Apollo.QueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
+export function useGetIconQuery(baseOptions: Apollo.QueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
         return Apollo.useQuery<GetIconQuery, GetIconQueryVariables>(GetIconDocument, baseOptions);
       }
 export function useGetIconLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetIconQuery, GetIconQueryVariables>) {
@@ -28167,7 +28170,7 @@ export const GetLabelDocument = gql`
  *   },
  * });
  */
-export function useGetLabelQuery(baseOptions?: Apollo.QueryHookOptions<GetLabelQuery, GetLabelQueryVariables>) {
+export function useGetLabelQuery(baseOptions: Apollo.QueryHookOptions<GetLabelQuery, GetLabelQueryVariables>) {
         return Apollo.useQuery<GetLabelQuery, GetLabelQueryVariables>(GetLabelDocument, baseOptions);
       }
 export function useGetLabelLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLabelQuery, GetLabelQueryVariables>) {
@@ -28417,7 +28420,7 @@ ${ObjectManufacturerFieldsFragmentDoc}`;
  *   },
  * });
  */
-export function useGetManufacturerQuery(baseOptions?: Apollo.QueryHookOptions<GetManufacturerQuery, GetManufacturerQueryVariables>) {
+export function useGetManufacturerQuery(baseOptions: Apollo.QueryHookOptions<GetManufacturerQuery, GetManufacturerQueryVariables>) {
         return Apollo.useQuery<GetManufacturerQuery, GetManufacturerQueryVariables>(GetManufacturerDocument, baseOptions);
       }
 export function useGetManufacturerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetManufacturerQuery, GetManufacturerQueryVariables>) {
@@ -28716,7 +28719,7 @@ export const SearchManufacturerItemsDocument = gql`
  *   },
  * });
  */
-export function useSearchManufacturerItemsQuery(baseOptions?: Apollo.QueryHookOptions<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>) {
+export function useSearchManufacturerItemsQuery(baseOptions: Apollo.QueryHookOptions<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>) {
         return Apollo.useQuery<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>(SearchManufacturerItemsDocument, baseOptions);
       }
 export function useSearchManufacturerItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchManufacturerItemsQuery, SearchManufacturerItemsQueryVariables>) {
@@ -28749,7 +28752,7 @@ export const GetManufacturerItemDocument = gql`
  *   },
  * });
  */
-export function useGetManufacturerItemQuery(baseOptions?: Apollo.QueryHookOptions<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>) {
+export function useGetManufacturerItemQuery(baseOptions: Apollo.QueryHookOptions<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>) {
         return Apollo.useQuery<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>(GetManufacturerItemDocument, baseOptions);
       }
 export function useGetManufacturerItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetManufacturerItemQuery, GetManufacturerItemQueryVariables>) {
@@ -29019,7 +29022,7 @@ export const GetOrderDocument = gql`
  *   },
  * });
  */
-export function useGetOrderQuery(baseOptions?: Apollo.QueryHookOptions<GetOrderQuery, GetOrderQueryVariables>) {
+export function useGetOrderQuery(baseOptions: Apollo.QueryHookOptions<GetOrderQuery, GetOrderQueryVariables>) {
         return Apollo.useQuery<GetOrderQuery, GetOrderQueryVariables>(GetOrderDocument, baseOptions);
       }
 export function useGetOrderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrderQuery, GetOrderQueryVariables>) {
@@ -29185,7 +29188,7 @@ export const GetItemVariantsDocument = gql`
  *   },
  * });
  */
-export function useGetItemVariantsQuery(baseOptions?: Apollo.QueryHookOptions<GetItemVariantsQuery, GetItemVariantsQueryVariables>) {
+export function useGetItemVariantsQuery(baseOptions: Apollo.QueryHookOptions<GetItemVariantsQuery, GetItemVariantsQueryVariables>) {
         return Apollo.useQuery<GetItemVariantsQuery, GetItemVariantsQueryVariables>(GetItemVariantsDocument, baseOptions);
       }
 export function useGetItemVariantsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetItemVariantsQuery, GetItemVariantsQueryVariables>) {
@@ -29416,7 +29419,7 @@ ${ObjectShipmentFieldsFragmentDoc}`;
  *   },
  * });
  */
-export function useGetShipmentQuery(baseOptions?: Apollo.QueryHookOptions<GetShipmentQuery, GetShipmentQueryVariables>) {
+export function useGetShipmentQuery(baseOptions: Apollo.QueryHookOptions<GetShipmentQuery, GetShipmentQueryVariables>) {
         return Apollo.useQuery<GetShipmentQuery, GetShipmentQueryVariables>(GetShipmentDocument, baseOptions);
       }
 export function useGetShipmentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetShipmentQuery, GetShipmentQueryVariables>) {
@@ -29633,7 +29636,7 @@ ${ObjectVendorFieldsFragmentDoc}`;
  *   },
  * });
  */
-export function useGetVendorQuery(baseOptions?: Apollo.QueryHookOptions<GetVendorQuery, GetVendorQueryVariables>) {
+export function useGetVendorQuery(baseOptions: Apollo.QueryHookOptions<GetVendorQuery, GetVendorQueryVariables>) {
         return Apollo.useQuery<GetVendorQuery, GetVendorQueryVariables>(GetVendorDocument, baseOptions);
       }
 export function useGetVendorLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVendorQuery, GetVendorQueryVariables>) {
@@ -29855,7 +29858,7 @@ export const SearchVendorItemsDocument = gql`
  *   },
  * });
  */
-export function useSearchVendorItemsQuery(baseOptions?: Apollo.QueryHookOptions<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>) {
+export function useSearchVendorItemsQuery(baseOptions: Apollo.QueryHookOptions<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>) {
         return Apollo.useQuery<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>(SearchVendorItemsDocument, baseOptions);
       }
 export function useSearchVendorItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchVendorItemsQuery, SearchVendorItemsQueryVariables>) {
@@ -29888,7 +29891,7 @@ export const GetVendorItemDocument = gql`
  *   },
  * });
  */
-export function useGetVendorItemQuery(baseOptions?: Apollo.QueryHookOptions<GetVendorItemQuery, GetVendorItemQueryVariables>) {
+export function useGetVendorItemQuery(baseOptions: Apollo.QueryHookOptions<GetVendorItemQuery, GetVendorItemQueryVariables>) {
         return Apollo.useQuery<GetVendorItemQuery, GetVendorItemQueryVariables>(GetVendorItemDocument, baseOptions);
       }
 export function useGetVendorItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVendorItemQuery, GetVendorItemQueryVariables>) {
@@ -30095,7 +30098,7 @@ export const GetItemDocument = gql`
  *   },
  * });
  */
-export function useGetItemQuery(baseOptions?: Apollo.QueryHookOptions<GetItemQuery, GetItemQueryVariables>) {
+export function useGetItemQuery(baseOptions: Apollo.QueryHookOptions<GetItemQuery, GetItemQueryVariables>) {
         return Apollo.useQuery<GetItemQuery, GetItemQueryVariables>(GetItemDocument, baseOptions);
       }
 export function useGetItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetItemQuery, GetItemQueryVariables>) {
@@ -30131,7 +30134,7 @@ export const ItemSearchDocument = gql`
  *   },
  * });
  */
-export function useItemSearchQuery(baseOptions?: Apollo.QueryHookOptions<ItemSearchQuery, ItemSearchQueryVariables>) {
+export function useItemSearchQuery(baseOptions: Apollo.QueryHookOptions<ItemSearchQuery, ItemSearchQueryVariables>) {
         return Apollo.useQuery<ItemSearchQuery, ItemSearchQueryVariables>(ItemSearchDocument, baseOptions);
       }
 export function useItemSearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ItemSearchQuery, ItemSearchQueryVariables>) {
@@ -30200,7 +30203,7 @@ ${ObjectItemBundleFieldsFragmentDoc}`;
  *   },
  * });
  */
-export function useGetItemBundleQuery(baseOptions?: Apollo.QueryHookOptions<GetItemBundleQuery, GetItemBundleQueryVariables>) {
+export function useGetItemBundleQuery(baseOptions: Apollo.QueryHookOptions<GetItemBundleQuery, GetItemBundleQueryVariables>) {
         return Apollo.useQuery<GetItemBundleQuery, GetItemBundleQueryVariables>(GetItemBundleDocument, baseOptions);
       }
 export function useGetItemBundleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetItemBundleQuery, GetItemBundleQueryVariables>) {
@@ -30584,4 +30587,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2021-01-28T11:44:17-07:00
+// graphql typescript defs generated on 2021-02-12T18:15:26-07:00

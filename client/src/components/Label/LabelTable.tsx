@@ -2,10 +2,11 @@ import { Table, Divider } from 'antd';
 import * as React from 'react';
 import { useGetLabelsQuery, LabelSelectColumn, Label, GetLabelsQuery } from '~lib/types/graphql';
 import { LabelDrawModal } from '~components/Draw/LabelDrawModal';
-import { Item } from '~lib/Item';
 import { toTitleCase, computeDefaultPagination } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { useState } from 'react';
+import { Link, useParams, useHistory } from 'react-router-dom';
+import { LabelExport } from '~lib/LabelExport';
 
 
 
@@ -15,6 +16,10 @@ interface LabelTableProps {
 }
 
 
+interface ILabelTableParams {
+    label_id: string;
+    action: "edit" | 'create';
+}
 
 export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
     const [ pagination, setPagination ] = React.useState < false | TablePaginationConfig>( {
@@ -22,10 +27,40 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
         hideOnSinglePage: true, defaultPageSize: computeDefaultPagination() } );
 
 
+    const history = useHistory();
+    let params = useParams<ILabelTableParams>();
     const [ modal, setModal ] = useState<React.ReactElement>();
 
     const { data, loading, error } = useGetLabelsQuery();
-    // const result = useGetLabelsQuery();
+
+    const handleModalChange = ( modal: React.ReactElement ) => {
+        if ( modal === null ) {
+            history.push( '/label' );
+        }
+        setModal( modal );
+    };
+
+    React.useEffect( () => {
+        switch ( params.action ) {
+            case "edit":
+                if ( params.label_id ) {
+                    setModal( <LabelDrawModal
+                        label={ data.label.find( label => label.id === params.label_id ) }
+                        visibleHandler={handleModalChange} />
+                    );
+                }
+                break;
+            case "create":
+                setModal( <LabelDrawModal
+                    label={ new LabelExport() }
+                    visibleHandler={handleModalChange} />
+                );
+                break;
+            default:
+                setModal( null );
+                break;
+        }
+    }, [ data, params.label_id, params.action ] );
 
 
     const columns: ColumnProps<Extract<GetLabelsQuery, 'label'>>[] = [
@@ -58,8 +93,20 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
                         }
                         }> Print</a>
                         <Divider type="vertical" />
-                        <a>Edit</a>
+                        <a onClick={( obj ) => {
+                            obj.preventDefault();
+                            // setState({
+                            //   clickedItem: record,
+                            //   // printModal: display.VISIBLE
+                            // })
+                            setModal( <LabelDrawModal
+                                label={record}
+                                visibleHandler={setModal} />
+                            );
+                        }
+                        }> Edit</a>
                         <Divider type="vertical" />
+                        {/* TODO */}
                         <a>Delete</a>
                     </span >
                 ),

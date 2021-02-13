@@ -54,7 +54,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     }, [])
 
     // determine if label is new (already in DB) so that it can be edited or inserted
-    const _labelIsNew: boolean = props.label ? false : true;
+    const _labelIsNew: boolean = props.label?.created_at ? false : true;
 
     const handleCancel = () => {
         props.visibleHandler( null );

@@ -376,7 +376,6 @@ enum enum_item_class_constraint {
 }
 
 enum enum_item_class_enum {
-  #
   item_bundle
   item_hardware_fastener_nut
   item_hardware_fastener_screw
@@ -4492,7 +4491,6 @@ enum enum_mapped_class_constraint {
 }
 
 enum enum_mapped_class_enum {
-  #
   item_bundle
   item_hardware_fastener_bolt
   item_hardware_fastener_nut

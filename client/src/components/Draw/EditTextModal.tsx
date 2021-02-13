@@ -113,7 +113,7 @@ export const EditTextModal: React.FC<EditTextModalProps> = ( props ) => {
                     autoFocus
                     onChange={onChange}
                 >
-                    {( props.item.labelProps || []).map( key =>
+                    {( props.item?.labelProps || []).map( key =>
                         <Mentions.Option key={key.toString()} value={
                             '{{'.substring(currentMentionPrefix.length, 2)
                              + key.toString()
