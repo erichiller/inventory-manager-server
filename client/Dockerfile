@@ -1,6 +1,6 @@
 # escape=`
 
-FROM stefanscherer/node-windows:10.16.3-windowsservercore-2019
+FROM stefanscherer/node-windows:12.18.3-windowsservercore-2019
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
