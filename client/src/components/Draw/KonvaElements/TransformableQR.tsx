@@ -3,7 +3,7 @@ import Konva from "konva";
 import { Image, KonvaNodeComponent, Transformer } from 'react-konva';
 import type { KonvaEventObject } from "konva/types/Node";
 import { Item } from '~lib/Item';
-import { LabelQR } from '~lib/LabelConstituent';
+import { LabelQR } from '~lib/Label/LabelConstituent';
 
 
 interface QrImageProps {

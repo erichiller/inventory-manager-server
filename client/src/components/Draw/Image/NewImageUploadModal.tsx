@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { LabelImage } from "~lib/LabelConstituent";
+import { LabelImage } from "~lib/Label/LabelConstituent";
 import { Spin, Select, Input, message, Modal, Form } from "antd";
 import { GetIconDocument, EnumItemClassEnum, useInsertIconMutation } from "~lib/types/graphql";
 import { Item } from "~lib/Item";
-import { DISPLAY } from '~lib/types/enums';
 import { UploadOutlined } from '@ant-design/icons';
 import { useForm } from 'antd/lib/form/Form';
 

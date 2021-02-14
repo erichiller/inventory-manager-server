@@ -53,3 +53,10 @@ mutation EditLabel (
         affected_rows
     }
 }
+
+mutation SetLabelTitle( $id: uuid!, $title: String ) {
+  update_label_by_pk(pk_columns: {id: $id}, _set: {title: $title}) {
+    id
+    title
+  }
+}

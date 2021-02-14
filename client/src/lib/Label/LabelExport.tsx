@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { v4 as UUIDv4 } from 'uuid';
-import { Scalars } from './types/graphql';
-import { Integer } from './types/uint8';
-import { Item } from "./Item";
+import { Scalars } from '../types/graphql';
+import { Integer } from '../types/uint8';
+import { Item } from "../Item";
 import type { Stage as StageT } from 'konva/types/Stage';
-import { Label } from './Item/Item';
+import { Label } from './LabelTemplate';
 import { UUIDStringT, LabelText, LabelImage, LabelQR } from './LabelConstituent';
 
 
@@ -182,6 +182,10 @@ export class LabelExport implements Label {
 
     public isEqual ( comparisonLabel: LabelExport ): boolean {
         return this.content.qrs && this.content.texts === comparisonLabel.content.texts && this.content.qrs === comparisonLabel.content.qrs && this.content.images === comparisonLabel.content.images && this.imgData === comparisonLabel.imgData;
+    }
+
+    public get isCreated (): boolean {
+        return this.created_at ? true : false;
     }
 
 }

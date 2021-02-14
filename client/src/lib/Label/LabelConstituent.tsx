@@ -1,11 +1,11 @@
 
 import { v4 as UUIDv4 } from 'uuid';
 
-import { EnumItemClassEnum, Scalars } from './types/graphql';
-import type { Integer } from './types/uint8';
-import { Item } from "./Item";
+import { EnumItemClassEnum, Scalars } from '../types/graphql';
+import type { Integer } from '../types/uint8';
+import { Item } from "../Item";
 import bwipjs from 'bwip-js';
-import { DrawingSVG } from './BwipJsSvg';
+import { DrawingSVG } from '../types/BwipJsSvg';
 import { message, Alert } from 'antd';
 import { enumerable } from '~lib/UtilityFunctions';
 
@@ -42,7 +42,7 @@ class LabelConstituent extends DrawAttrs {
         this.rotation = 0.0;
 
         if ( options && options.id && options != null ) {
-            for ( const key of Object.keys(options) ) {
+            for ( const key of Object.keys( options ) ) {
                 this[ key ] = options[ key ];
             }
         }

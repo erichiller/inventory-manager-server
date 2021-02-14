@@ -1,25 +1,25 @@
 import { useContext, useEffect, useState } from "react";
-import { useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument, GetItemDocument, GetItemsDocument } from "~lib/types/graphql";
-import { Modal, Descriptions, Button, Tooltip, message, Input } from "antd";
+import { useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument, GetItemsDocument, useSetLabelTitleMutation } from "~lib/types/graphql";
+import { Modal, Descriptions, Button, Tooltip, message, Input, Alert } from "antd";
 import React from "react";
 import { LabelDraw } from "./LabelDraw";
 import { PrintContext } from "~components/Print/PrintContextHandler";
-import { LabelExport } from "~lib/LabelExport";
+import { LabelExport } from "~lib/Label/LabelExport";
 import { SendBufferButton } from "~components/Print/SendBufferButton";
 import { visibleHandler } from "../Item/ItemTable";
 import { Item } from "~lib/Item";
 import { StopOutlined, DatabaseOutlined, SaveOutlined } from "@ant-design/icons";
 import { toTitleCase } from "~lib/UtilityFunctions";
-import { Label } from "~lib/Item/Item";
+import { useHistory } from "react-router-dom";
 
 type LabelDrawModalProps = {
     visibleHandler: visibleHandler;
 } & ( {
     item: Item<any>;
-    label?: undefined | null | Label;
+    label?: undefined | null | LabelExport;
 } | {
     item?: undefined;
-    label: Label;
+    label: LabelExport;
 } );
 
 interface LabelDrawModalState {
@@ -28,6 +28,12 @@ interface LabelDrawModalState {
 }
 
 export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( props: LabelDrawModalProps ) => {
+    if ( props.label && ( !( props.label instanceof LabelExport ) ) ) {
+        console.error( "label is not an instanceof LabelExport", props.label );
+        return <Alert message="label is not an intanceof LabelExport" type="error" />;
+    }
+    useHistory;
+
     const [ state, setState ] = useState<LabelDrawModalState>(
         {
             width: props.label && props.label.width ? props.label.width : LabelExport.DEFAULT_WIDTH,
@@ -46,6 +52,8 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
         error: editEerror
     } ] = useEditLabelMutation();
 
+    const [ setLabelTitleMutation ] = useSetLabelTitleMutation();
+
     useEffect( () => {
         if ( printContext.getCurrentLabel() === null ) {
             printContext.setCurrentLabel( state.label );
@@ -53,7 +61,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     }, [] );
 
     // determine if label is new (already in DB) so that it can be edited or inserted
-    const _labelIsNew: boolean = props.label?.created_at ? false : true;
+    // const _labelIsNew: boolean = props.label?.created_at ? false : true;
 
     const handleCancel = () => {
         props.visibleHandler( null );
@@ -61,12 +69,12 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     const handleSave = () => {
         let label = printContext.getCurrentLabel();
 
-        if ( _labelIsNew ) {
-            saveLabelMutation( {
+        if ( label.isCreated ) {
+            editLabelMutation( {
                 variables: {
-                    id: label.id,
                     content: label.content,
                     height: label.height,
+                    id: label.id,
                     item_id: label.item_id,
                     title: label.title,
                     width: label.width
@@ -90,23 +98,17 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                 props.visibleHandler( null );
             } );
         } else {
-            editLabelMutation( {
+            saveLabelMutation( {
                 variables: {
+                    id: label.id,
                     content: label.content,
                     height: label.height,
-                    id: label.id,
                     item_id: label.item_id,
                     title: label.title,
                     width: label.width
                 },
                 refetchQueries: [
                     { query: GetLabelsDocument },
-                    {
-                        query: GetItemDocument,
-                        variables: {
-                            id: label.item_id
-                        }
-                    },
                     { query: GetItemsDocument }
                 ]
             } ).then( result => {
@@ -117,8 +119,27 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
             } ).finally( () => {
                 props.visibleHandler( null );
             } );
-
         }
+    };
+
+    const setTitle = ( title: string ): void => {
+        console.log( "Input Blur - Label Name", title );
+        let currentLabel = printContext.getCurrentLabel();
+        currentLabel.title = title;
+        if ( currentLabel.isCreated )
+            setLabelTitleMutation( {
+                variables: {
+                    id: currentLabel.id,
+                    title: title
+                }
+            } ).then( result => {
+                message.info( `Saved Successfully title '${ currentLabel.title }' for label ID ${ result.data.update_label_by_pk.id }` );
+            } ).catch( error => {
+                console.error( "MUTATE ERROR", error, "\nOn Label Object: ", currentLabel );
+                message.error( `Failure during save: ${ error }` );
+            } ).finally( () => {
+                // props.visibleHandler( null );
+            } );
     };
 
     const updateLabelWidthPixels = ( newPx: number ): void => {
@@ -132,7 +153,6 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
             width: newPx,
             label: state.label
         } );
-
     };
 
     const description = () => {
@@ -156,9 +176,6 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                 </Descriptions>
             </div>;
         }
-        if ( label ) {
-            return <span>{label.title}</span>;
-        }
     };
 
 
@@ -169,7 +186,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     // console.log( 'state.item', item );
     return (
         <Modal
-            title={_labelIsNew ? "Create a new label" : "Edit Label"}
+            title={ label.isCreated ? "Edit Label" : "Create a new label"}
             visible={true}
             onCancel={handleCancel}
             onOk={handleSave}
@@ -215,6 +232,14 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                 </Tooltip>,
             ]}
         >
+            <Input
+                style={{ textAlign: 'center', fontSize: '1.1em' }}
+                onBlur={ ev => setTitle( ev.currentTarget.value ) }
+                onPressEnter={ev => setTitle( ev.currentTarget.value )}
+                placeholder="Unnamed"
+                defaultValue={printContext.getCurrentLabel()?.title}
+                bordered={false}
+            />
             {description()}
             <br />
             {console.log( `about to redraw 'LabelDraw' with width=${ state.width }` )}

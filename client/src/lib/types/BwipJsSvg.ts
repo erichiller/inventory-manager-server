@@ -25,6 +25,7 @@ type Points = Array<Point>;
 
 
 export class DrawingSVG implements bwipjs.Drawing {
+    
     // Unrolled x,y rotate/translate matrix
     tx0 = 0;
     tx1 = 0;
@@ -37,7 +38,7 @@ export class DrawingSVG implements bwipjs.Drawing {
 
     svg: string = '';
     path: string;
-    lines: {[key: string]: string} = {};
+    lines: Record<string, string> = {};
 
     /**
      * Magic number to approximate an ellipse/circle using 4 cubic beziers.
@@ -334,9 +335,10 @@ export class DrawingSVG implements bwipjs.Drawing {
         // console.debug( { method: 'transform', x, y } );
         x += this.gs_dx;
         y += this.gs_dy;
-        var tx = this.tx0 * x + this.tx1 * y + this.tx2 * ( this.gs_width - 1 ) + this.tx3 * ( this.gs_height - 1 );
-        var ty = this.ty0 * x + this.ty1 * y + this.ty2 * ( this.gs_width - 1 ) + this.ty3 * ( this.gs_height - 1 );
+        var tx = ( this.tx0 * x ) + ( this.tx1 * y ) + ( this.tx2 * ( this.gs_width - 1 ) ) + ( this.tx3 * ( this.gs_height - 1 ) );
+        var ty = ( this.ty0 * x ) + ( this.ty1 * y ) + ( this.ty2 * ( this.gs_width - 1 ) ) + ( this.ty3 * ( this.gs_height - 1 ) );
         return '' + ( ( tx | 0 ) == tx ? tx : tx.toFixed( 2 ) ) + ' ' +
             ( ( ty | 0 ) == ty ? ty : ty.toFixed( 2 ) );
     }
+    
 }

@@ -26575,6 +26575,20 @@ export type EditLabelMutation = (
   )> }
 );
 
+export type SetLabelTitleMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  title?: Maybe<Scalars['String']>;
+}>;
+
+
+export type SetLabelTitleMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_label_by_pk?: Maybe<(
+    { __typename?: 'label' }
+    & Pick<Label, 'id' | 'title'>
+  )> }
+);
+
 export type BasicManufacturerFieldsFragment = (
   { __typename?: 'manufacturer' }
   & Pick<Manufacturer, 'id' | 'name' | 'url' | 'vendor_id'>
@@ -28421,6 +28435,40 @@ export function useEditLabelMutation(baseOptions?: Apollo.MutationHookOptions<Ed
 export type EditLabelMutationHookResult = ReturnType<typeof useEditLabelMutation>;
 export type EditLabelMutationResult = Apollo.MutationResult<EditLabelMutation>;
 export type EditLabelMutationOptions = Apollo.BaseMutationOptions<EditLabelMutation, EditLabelMutationVariables>;
+export const SetLabelTitleDocument = gql`
+    mutation SetLabelTitle($id: uuid!, $title: String) {
+  update_label_by_pk(pk_columns: {id: $id}, _set: {title: $title}) {
+    id
+    title
+  }
+}
+    `;
+export type SetLabelTitleMutationFn = Apollo.MutationFunction<SetLabelTitleMutation, SetLabelTitleMutationVariables>;
+
+/**
+ * __useSetLabelTitleMutation__
+ *
+ * To run a mutation, you first call `useSetLabelTitleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetLabelTitleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setLabelTitleMutation, { data, loading, error }] = useSetLabelTitleMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useSetLabelTitleMutation(baseOptions?: Apollo.MutationHookOptions<SetLabelTitleMutation, SetLabelTitleMutationVariables>) {
+        return Apollo.useMutation<SetLabelTitleMutation, SetLabelTitleMutationVariables>(SetLabelTitleDocument, baseOptions);
+      }
+export type SetLabelTitleMutationHookResult = ReturnType<typeof useSetLabelTitleMutation>;
+export type SetLabelTitleMutationResult = Apollo.MutationResult<SetLabelTitleMutation>;
+export type SetLabelTitleMutationOptions = Apollo.BaseMutationOptions<SetLabelTitleMutation, SetLabelTitleMutationVariables>;
 export const GetManufacturersDocument = gql`
     query GetManufacturers {
   manufacturer(order_by: {id: asc}) {
@@ -30679,4 +30727,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2021-02-13T05:44:28-07:00
+// graphql typescript defs generated on 2021-02-13T18:36:43-07:00

@@ -60,6 +60,16 @@ export type ObjectColumnProperty<T> = Partial<Extract<keyof T, string>> | [ keyo
  */
 export type EnumUnitKeys = keyof typeof EnumUnitEnum;
 
+/**
+ * alias for typeof <T>
+ * This is necessary because TypeScript syntax highlighting feaks out if you return a raw `typeof T`
+ * @example
+ * function ReturnTypeFoo(): typeof Foo { }
+ * // instead make it 
+ * function ReturnTypeFoo(): Type<typeof Foo> { }
+ */
+export type Type<T> = T;
+
 
 /**
  * Type with only certain keys made partial

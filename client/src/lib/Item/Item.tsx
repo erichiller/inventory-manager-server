@@ -6,7 +6,6 @@ import {
     GetItemDocument,
     GetItemQuery,
     Scalars,
-    Label as LabelGql,
     LabelTemplateMap,
     LabelTemplateFieldsFragment
 } from "../types/graphql";
@@ -16,11 +15,12 @@ import { apolloClient } from '~/Apollo';
 import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Intersection, enumerable, StringKeys } from "~lib/UtilityFunctions";
+import { toTitleCase, Intersection, enumerable, StringKeys, ClassType, Type } from "~lib/UtilityFunctions";
 import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { IconComponentT } from "~lib/types/common";
-import { LabelExport, LabelExportConstituents } from "~lib/LabelExport";
+import { LabelExport, LabelExportConstituents } from "~lib/Label/LabelExport";
+import { ILabelTemplate, LabelTemplate } from "~lib/Label/LabelTemplate";
 
 export type GenericItem = Pick<ItemGql, 'id'>
     & Partial<Pick<ItemGql, 'object'>
@@ -28,23 +28,11 @@ export type GenericItem = Pick<ItemGql, 'id'>
             name?: string;
             __typename: ItemGqlTypename;
             class: ItemGqlTypename;
-            labelTemplates: LabelTemplate[];
+            labelTemplates: ILabelTemplate[];
         }
     >;
 
 export type ItemGqlTypename = keyof typeof EnumItemClassEnum | 'item';
-
-export interface Label extends Omit<LabelGql, 'parent_of' | 'parent_of_aggregate' | 'item' | 'content' | 'template_items' | 'template_items_aggregate' > {
-    content: LabelExportConstituents;
-}
-
-export interface LabelTemplate extends Pick<LabelTemplateFieldsFragment, "sequence" | "criteria"> {
-    label: Label;
-    // label: ( {
-    //     __typename?: 'label';
-    // } & Pick<Label, 'width' | 'content' | 'created_at' | 'edit_of_id' | 'height' | 'id' | 'item_id' | 'updated_at' | 'title'> )
-};
-// export type LabelTemplate = LabelTemplateFieldsFragment;
 
 
 export interface ItemFormProps<T> {
@@ -96,13 +84,13 @@ export class Item<T extends GenericItem> {
         // this._labelTemplates = props.labelTemplates;
         let labelTemplates: LabelTemplate[] = [];
         if ( 'labelTemplates' in props ){
-            props.labelTemplates.forEach( labelTemplate => {
-                let lt = Object.assign( {}, labelTemplate, { label: new LabelExport( labelTemplate.label ) } );
-                labelTemplates.push( lt );
-            });
+            // props.labelTemplates.forEach( labelTemplate => {
+            //     let lt = Object.assign( {}, labelTemplate, { label: new LabelExport( labelTemplate.label ) } );
+            //     labelTemplates.push( lt );
+            // });
+            this._labelTemplates = props.labelTemplates.map( labelTemplateGql => new LabelTemplate( labelTemplateGql ) );
             console.log(`Item#${this.id} - labelTemplates assigned`, labelTemplates);
         }
-        this._labelTemplates = labelTemplates;
         // console.log( "Item class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
     }
 
@@ -265,7 +253,7 @@ export class Item<T extends GenericItem> {
      * Return the class for an input GraphQL `__typename`
      * @param itemTypename The GraphQL type for an Item class, this is what is found in `__typename` and is of the form `item_category1_category2_classname`
      */
-    public static getClassForType ( itemTypename: ItemGqlTypename ): typeof Item {
+    public static getClassForType ( itemTypename: ItemGqlTypename ): Type<typeof Item> {
         let itemClassLowerCase = itemTypename.toLowerCase();
         // console.log( { class: 'Item', method: 'getClassForType', classTypes: Item._ClassTypes, lookup_key: itemClass } );
         // if ( itemClassLowerCase === "item" ) {
@@ -408,7 +396,7 @@ export class Item<T extends GenericItem> {
     /**
      * The final template to use, highest sequence and matched via `labelTemplateMatches`
      */
-    get labelTemplate (): LabelTemplateFieldsFragment | null {
+    get labelTemplate (): LabelTemplate | null {
         console.log( "labelTemplate()" );
         if ( this._object && this._object.hasOwnProperty( "labelTemplate" ) ) {
             console.log( "labelTemplate hasOwnProperty" );
@@ -420,11 +408,11 @@ export class Item<T extends GenericItem> {
         console.warn( "labelTemplate ; returning null" );
         return null;
     }
-    get labelTemplateMatches (): LabelTemplateFieldsFragment[] {
+    get labelTemplateMatches (): LabelTemplate[] {
         console.log( "labelTemplateMatches()" );
         return this.labelTemplates;
     }
-    get labelTemplates (): LabelTemplateFieldsFragment[] {
+    get labelTemplates (): LabelTemplate[] {
         console.log( "labelTemplates()" );
         if ( this._labelTemplates != null ) {
             console.log( "this._labelTemplates != null" );

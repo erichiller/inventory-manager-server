@@ -1,10 +1,9 @@
 import type { KonvaEventObject } from 'konva/types/Node';
 import { Component, useContext, useState } from 'react';
-import { DISPLAY } from '~lib/types/enums';
 import React from 'react';
 import { Modal, AutoComplete, Form, Checkbox, Mentions } from 'antd';
 // import CheckboxGroup from 'antd/lib/checkbox/Group';
-import { LabelText, FormatOptionsT } from '~lib/LabelConstituent';
+import { LabelText, FormatOptionsT } from '~lib/Label/LabelConstituent';
 import { Item } from '~lib/Item';
 
 interface EditTextModalProps {

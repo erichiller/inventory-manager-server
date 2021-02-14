@@ -5,7 +5,7 @@ import { Menu, message } from 'antd';
 import Animate from 'rc-animate';
 
 import { IKonvaEventHandler } from "./LabelDraw";
-import { LabelText, LabelImage, LabelQR } from "~lib/LabelConstituent";
+import { LabelText, LabelImage, LabelQR } from "~lib/Label/LabelConstituent";
 
 
 
@@ -54,7 +54,7 @@ interface DrawContextMenuProps {
 
 export const DrawContextMenu: React.FunctionComponent<DrawContextMenuProps> = ( props ) => {
 
-    const onClick = ({ key }) => {
+    const onClick = ( { key } ) => {
         // message.info(`Click detected on item ${key}`);
     };
 

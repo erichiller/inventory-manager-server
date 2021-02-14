@@ -1,12 +1,11 @@
 import type { KonvaEventObject } from 'konva/types/Node';
 import { Component, useState, useEffect } from 'react';
 import { Select, Tooltip, Button } from 'antd';
-import { DISPLAY } from '~lib/types/enums';
 import React from 'react';
 import { Modal } from 'antd';
 import { useGetIconsQuery } from '~lib/types/graphql';
 import { Item } from '~lib/Item';
-import { LabelImage } from '~lib/LabelConstituent';
+import { LabelImage } from '~lib/Label/LabelConstituent';
 import { StopOutlined, UploadOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { QueryResultTypePlus } from '~lib/UtilityFunctions';
 import { NewImageUploadModal } from './NewImageUploadModal';

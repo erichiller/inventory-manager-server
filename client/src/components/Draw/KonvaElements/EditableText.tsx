@@ -2,7 +2,7 @@ import React, { useState }  from 'react';
 import Konva from "konva";
 import { Text, KonvaNodeComponent, Transformer } from 'react-konva';
 import type { KonvaEventObject } from "konva/types/Node";
-import { LabelText } from '~lib/LabelConstituent';
+import { LabelText } from '~lib/Label/LabelConstituent';
 import { Item } from '~lib/Item';
 import { stringTemplateRender } from '~lib/stringTemplates';
 

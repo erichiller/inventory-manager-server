@@ -2,21 +2,19 @@
 import React, { Component, constructor, useContext, useEffect, useState } from "react";
 import type { Stage } from 'konva/types/Stage';
 import type { KonvaEventObject } from 'konva/types/Node';
-import { Button, Tooltip, message } from 'antd';
+import { Button, Tooltip, message, Input } from 'antd';
 import { MedicineBoxOutlined, FontSizeOutlined, QrcodeOutlined, PictureOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 import { Item } from '~lib/Item';
-import { DISPLAY } from '~lib/types/enums';
 import { DrawContextMenu } from './DrawContextMenu';
 import { EditTextModal } from './EditTextModal';
 import { LabelAddImageModal } from './Image/LabelAddImageModal';
 
 import { QREditModal } from './QREditModal';
 import { Integer } from '~lib/types/uint8';
-import { LabelText, LabelImage, LabelQR, FormatOptionsT } from '~lib/LabelConstituent';
-import { LabelExport } from "~lib/LabelExport";
+import { LabelText, LabelImage, LabelQR, FormatOptionsT } from '~lib/Label/LabelConstituent';
+import { LabelExport } from "~lib/Label/LabelExport";
 
-import { NewImageUploadModal } from './Image/NewImageUploadModal';
 import { PrintContext } from '~components/Print/PrintContextHandler';
 import { LabelComponent } from '~components/Label/LabelComponent';
 import { CodeIcon } from '../../styles/icon';
@@ -24,8 +22,6 @@ import { EditableText } from './KonvaElements/EditableText';
 import { TransformableImage } from './KonvaElements/TransformableImage';
 import { TransformableQR } from './KonvaElements/TransformableQR';
 import { JsonModal } from '~components/Shared/JsonModal';
-import { render } from "bwip-js";
-import { get } from "http";
 import { useRef } from "react";
 
 
@@ -68,8 +64,8 @@ export interface LabelDrawProps {
 
 
 export type IKonvaEventHandler = ( d: boolean | KonvaEventObject<PointerEvent | MouseEvent> ) => void;
-type IHtmlEventHandler = ( d: boolean | DISPLAY | React.MouseEvent<HTMLElement, MouseEvent> ) => void;
-type LabelConstituentT = LabelText | LabelImage | LabelQR;
+// type IHtmlEventHandler = ( d: boolean | React.MouseEvent<HTMLElement, MouseEvent> ) => void;
+// type LabelConstituentT = LabelText | LabelImage | LabelQR;
 interface LabelDrawConstituents {
     texts: LabelText[];
     images: LabelImage[];
@@ -166,10 +162,8 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
     const [ selectedShapeName, setSelectedShapeName ] = useState<string>();
 
     const [ uncommittedText, setUncommittedText ] = useState<LabelText>( new LabelText() );
-    const [ uncommittedQR, setUncommittedQR ] = useState<LabelQR>( new LabelQR({item}) );
+    const [ uncommittedQR, setUncommittedQR ] = useState<LabelQR>( new LabelQR( { item } ) );
     const [ uncommittedImage, setUncommittedImage ] = useState<LabelImage>( new LabelImage() );
-
-
 
     const [ historyPosition, setHistoryPosition ] = useState<Integer>( 0 );
     const [ history, setHistory ] = useState<LabelDrawConstituents[]>( [] );
@@ -177,11 +171,12 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
     const stageRef = useRef<Stage>();
 
 
+
     useEffect( () => {
         let currentLabel = printContext.getCurrentLabel();
         let canvas = getCanvas();
-        if ( ! canvas ){
-            console.log("no refreshing exportLabel: no canvas yet!");
+        if ( !canvas ) {
+            console.log( "no refreshing exportLabel: no canvas yet!" );
             return;
         }
         let newValues = {
@@ -195,15 +190,15 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
             // dataURL: dataURL,
             width: canvas.width,
             height: canvas.height
-        }
-        console.log("refreshing exportLabel", {newValues});
+        };
+        console.log( "refreshing exportLabel", { newValues } );
         currentLabel.setValues( {
             ...( currentLabel ? { id: currentLabel.id } : {} ),
             ...newValues
         } );
         // exportLabel();
         // currentLabel.texts
-    }, [texts, qrs, images])
+    }, [ texts, qrs, images ] );
 
     /**
      * Right click menu on Konva canvas
@@ -422,7 +417,7 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
         // }
 
         if ( changedValue.id && changedValue.id != labelImage.id ) {
-            console.log( "uncommitted image is now set to selected id", { "was": labelImage.id, "now": changedValue.id } );
+            console.log( "uncommitted image is now set to selected id", { was: labelImage.id, now: changedValue.id } );
             labelImage = changedValue as LabelImage;
             // labelImage.id = changedValue.id;
         }
@@ -496,12 +491,12 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
             console.log( "adding uncommitted labelQR with id", labelQR.id );
             setQrs( [ ...qrs, labelQR as LabelQR ] );
         }
-        console.log( { "qrs is now": qrs, "pending": [ ...qrs, labelQR ] } );
+        console.log( { "qrs is now": qrs, pending: [ ...qrs, labelQR ] } );
     };
 
 
     const commitLableQR = <T extends {}> ( labelQR: LabelQR ) => {
-        setUncommittedQR( new LabelQR({item}) );
+        setUncommittedQR( new LabelQR( { item } ) );
     };
 
     // function getCanvasWidth (): Integer | null {

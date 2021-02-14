@@ -5,8 +5,8 @@ import { LabelDrawModal } from '~components/Draw/LabelDrawModal';
 import { toTitleCase, computeDefaultPagination } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';
-import { LabelExport } from '~lib/LabelExport';
-import { DeleteOutlined } from '@ant-design/icons';
+import { LabelExport } from '~lib/Label/LabelExport';
+import { DeleteOutlined, EditOutlined, PrinterOutlined } from '@ant-design/icons';
 
 
 
@@ -22,9 +22,10 @@ interface ILabelTableParams {
 }
 
 export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
-    const [ pagination, setPagination ] = React.useState < false | TablePaginationConfig>( {
+    const [ pagination, setPagination ] = React.useState<false | TablePaginationConfig>( {
 
-        hideOnSinglePage: true, defaultPageSize: computeDefaultPagination() } );
+        hideOnSinglePage: true, defaultPageSize: computeDefaultPagination()
+    } );
 
 
     const history = useHistory();
@@ -50,16 +51,16 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
     useEffect( () => {
         switch ( params.action ) {
             case "edit":
-                if ( params.label_id ) {
+                if ( params.label_id && data ) {
                     setModal( <LabelDrawModal
-                        label={ data.label.find( label => label.id === params.label_id ) }
+                        label={new LabelExport( data.label.find( label => label.id === params.label_id ) )}
                         visibleHandler={handleModalChange} />
                     );
                 }
                 break;
             case "create":
                 setModal( <LabelDrawModal
-                    label={ new LabelExport() }
+                    label={new LabelExport()}
                     visibleHandler={handleModalChange} />
                 );
                 break;
@@ -79,7 +80,7 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
         if ( !deleteLabelMutationLoading && deleteLabelMutationData ) {
             message.success( `Deletion of label id ${ deleteLabelMutationData.delete_label_by_pk.id } was successful` );
         }
-    } );
+    }, [ deleteLabelMutationError, deleteLabelMutationData, deleteLabelMutationLoading ] );
 
     const columns: ColumnProps<Extract<GetLabelsQuery, 'label'>>[] = [
         ...( Object.keys( LabelSelectColumn ).filter(
@@ -97,32 +98,17 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
                 key: 'action',
                 // dataIndex: '',
                 render: ( text, record: Label ) => (
-                    <span>
-                        <a onClick={( obj ) => {
-                            obj.preventDefault();
-                            // setState({
-                            //   clickedItem: record,
-                            //   // printModal: display.VISIBLE
-                            // })
-                            setModal( <LabelDrawModal
-                                label={record}
-                                visibleHandler={setModal} />
-                                );
-                        }
-                        }> Print</a>
+                    <span onMouseOver={event => event.preventDefault()}>
+
+                        <Link to={`/label/${ record.id }/edit`}>
+                            <PrinterOutlined className="IconButton" />
+                        </Link>
+
                         <Divider type="vertical" />
-                        <a onClick={( obj ) => {
-                            obj.preventDefault();
-                            // setState({
-                            //   clickedItem: record,
-                            //   // printModal: display.VISIBLE
-                            // })
-                            setModal( <LabelDrawModal
-                                label={record}
-                                visibleHandler={setModal} />
-                            );
-                        }
-                        }> Edit</a>
+
+                        <Link to={`/label/${ record.id }/edit`}>
+                            <EditOutlined className="IconButton" />
+                        </Link>
                         <Divider type="vertical" />
                         <a onClick={( obj ) => {
                             obj.preventDefault();
@@ -133,6 +119,13 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
                                 refetchQueries: [
                                     { query: GetLabelsDocument }
                                 ]
+                            // } ).then( result => {
+                            //     message.info( `Successfully deleted label ID# ${ result.data.delete_label_by_pk.id }` );
+                            // } ).catch( error => {
+                            //     console.error( "MUTATE ERROR", error, "\nOn Label Object: ", record );
+                            //     message.error( `Failure during deletion: ${ error }` );
+                            // } ).finally( () => {
+                            //     // props.visibleHandler( null );
                             } );
                         }
                         }>

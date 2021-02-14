@@ -197,13 +197,9 @@ export const ItemTable = <T extends Item<any>, Q extends typeof GetItemsDocument
 
                     render: ( _: string, record: T ) => (
                         <span onMouseOver={event => event.preventDefault()}>
-                            <Link to={`/item/${ record.id }/edit`}
-                            // onClick={( obj ) => {
-                            //     // obj.preventDefault();
-                            //     setCurrentRecord( record );
-                            //     // setModal( getRecordEditModal( record ) );
-                            // }}
-                            ><EditOutlined className="IconButton" /></Link>
+                            <Link to={`/item/${ record.id }/edit`}>
+                                <EditOutlined className="IconButton" />
+                            </Link>
 
                             <Divider type="vertical" />
 

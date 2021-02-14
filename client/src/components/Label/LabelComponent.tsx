@@ -11,7 +11,7 @@ import type { Stage as StageT } from 'konva/types/Stage';
 import { GetPrinterStatusQuery, GetPrinterStatusDocument } from "~lib/types/graphql";
 import type { KonvaEventObject } from 'konva/types/Node';
 import { TapeColorMap } from '~lib/types/labelCanvasColors';
-import { LabelQR, LabelText, LabelImage } from '~lib/LabelConstituent';
+import { LabelQR, LabelText, LabelImage } from '~lib/Label/LabelConstituent';
 
 // interface LabelComponentState {
 //     selectedShapeName: string;
@@ -27,19 +27,19 @@ interface LabelComponentProps {
 }
 
 export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( props ) => {
-    const { 
-        width, 
-        updateWidth, 
+    const {
+        width,
+        updateWidth,
         children,
         selectedShapeName,
         stageRef,
         deleteLabelConstituent,
         setSelectedShapeName
-    } = props
+    } = props;
     const { data } = useQuery<GetPrinterStatusQuery>( GetPrinterStatusDocument );
     const [ startWidth, setStartWidth ] = useState<number>( width );
     const [ widthInputValue, setWidthInputValue ] = useState<number>( width );
-    const dpi = 360;
+    const DPI = 360;
 
     React.useEffect( () => {
         if ( !stageRef.current ) { console.log( "LabelComponent useEffect ; return nothing" ); return; }
@@ -52,13 +52,13 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( pr
         container.focus();
         container.addEventListener( 'keydown', ( e ) => {
             let activeDrawNode = stageRef.current.getStage().findOne( "." + selectedShapeName );
-            console.log( "keydown ;; ", { activeDrawNode, e, selectedShapeName } )
-            if (!selectedShapeName){ return; }
+            console.log( "keydown ;; ", { activeDrawNode, e, selectedShapeName } );
+            if ( !selectedShapeName ) { return; }
             let activeConstituent: LabelQR | LabelImage | LabelText = activeDrawNode.attrs.textObject || activeDrawNode.attrs.imageObject || activeDrawNode.attrs.qrObject || null;
             console.log( "LabelComponent useEffect keydown ; keyCode event\n", { activeDrawNode, e, selectedShapeName, activeConstituent } );
             // https://keycode.info/
             if ( e.keyCode === 46 ) { // delete
-                deleteLabelConstituent(activeConstituent);
+                deleteLabelConstituent( activeConstituent );
                 console.log( "LabelComponent useEffect keydown ; keyCode 46 <DELETE>" );
             } else if ( e.keyCode === 37 ) {/** LEFT */
                 activeDrawNode.x( activeConstituent.x - 1 );
@@ -98,20 +98,20 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( pr
                 found: /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType ),
                 found0: /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType )[ 0 ],
                 asInt: parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType )[ 0 ] ),
-                asPixels: Math.floor( parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType )[ 0 ] ) * dpi )
+                asPixels: Math.floor( parseFloat( /[0-9]\.[0-9]{1,2}(?=\")/.exec( data.PrinterStatus.labelType )[ 0 ] ) * DPI )
             } );
 
-        let widthInches = width ? ( width / dpi ).toFixed( 2 ) : 0;
+        let widthInches = width ? ( width / DPI ).toFixed( 2 ) : 0;
 
 
-        const checkDeselect = ( e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+        const checkDeselect = ( e: KonvaEventObject<MouseEvent | TouchEvent> ) => {
             // deselect when clicked on empty area
             const clickedOnEmpty = e.target === e.target.getStage();
             if ( clickedOnEmpty ) {
                 setSelectedShapeName( null );
             }
         };
-        console.count("count: LABELCOMPONENT");
+        console.count( "count: LABELCOMPONENT" );
         return <div style={{
             justifyContent: 'center',
             margin: '0 auto',
@@ -124,11 +124,11 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( pr
             }}><Input
                     min={100} max={4000}
                     onChange={( ev ) => {
-                        console.log( { 'in': 'onChange', ev, currentTarget: ev.currentTarget } )
-                        setWidthInputValue( parseInt(ev.currentTarget.value) );
-                    }} 
+                        console.log( { in: 'onChange', ev, currentTarget: ev.currentTarget } );
+                        setWidthInputValue( parseInt( ev.currentTarget.value ) );
+                    }}
                     onPressEnter={( ev ) => {
-                        console.log({ 'in': 'onPressEnter', ev})
+                        console.log( { in: 'onPressEnter', ev } );
                         updateWidth( parseInt( ev.currentTarget.value ) );
                     }}
                     // updateWidth
@@ -162,10 +162,10 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( pr
                             position: RndPosition
                         ) => {
                             console.log( { in: 'onResize - A', ev, dir, elementRef, delta, position } );
-                            if ( delta.width || ev['movementX'] ) {
+                            if ( delta.width || ev[ 'movementX' ] ) {
                                 console.log( { in: 'onResize - B', ev, dir, elementRef, delta, position } );
-                                if ( ev['movementX'] ){
-                                    updateWidth( width + ev['movementX']);
+                                if ( ev[ 'movementX' ] ) {
+                                    updateWidth( width + ev[ 'movementX' ] );
                                     setWidthInputValue( width + ev[ 'movementX' ] );
                                 } else {
                                     updateWidth( startWidth + delta.width );
@@ -174,9 +174,9 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( pr
                             }
                         }
                     }
-                    onResizeStart={() => document.body.requestPointerLock() }
+                    onResizeStart={() => document.body.requestPointerLock()}
                     onResizeStop={() => {
-                        setStartWidth(width);
+                        setStartWidth( width );
                         document.exitPointerLock();
                     }}
                     style={{
@@ -225,7 +225,6 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( pr
                 top: '-13px',
             }}><i>Current Label Maker Tape Width: </i>{labelInchesHeight}"</div>
         </div>;
-
     }
     return <div style={{
         justifyContent: 'center',
@@ -241,5 +240,5 @@ export const LabelComponent: React.FunctionComponent<LabelComponentProps> = ( pr
         }}>
             <Spin spinning={true} />
         </div>
-    </div>
+    </div>;
 };
