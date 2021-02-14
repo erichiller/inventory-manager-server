@@ -147,8 +147,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
             prior: state.width,
             __new: newPx
         } );
-        // canvas.width = newPx;
-        // }
+        printContext.getCurrentLabel().width = newPx;
         setState( {
             width: newPx,
             label: state.label
@@ -216,8 +215,8 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                         {/* TODO: fix */}
                         {printContext.getPrintLabels().some( el => {
                             console.log( "some() checking", `
-                            el.id    = ${ el.id }
-                            el       = ${ console.dir( el ) }
+                            el.id           = ${ el.id }
+                            el              = ${ console.dir( el ) }
                             getLabel().id   = ${ state.label.id }
                             getLabel()      = ${ console.dir( state.label.id ) }` ); return el.id === state.label.id;
                         } ) ? "Remove from" : "Add to"} Print List
@@ -236,7 +235,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                 style={{ textAlign: 'center', fontSize: '1.1em' }}
                 onBlur={ ev => setTitle( ev.currentTarget.value ) }
                 onPressEnter={ev => setTitle( ev.currentTarget.value )}
-                placeholder="Unnamed"
+                placeholder="Unnamed Label"
                 defaultValue={printContext.getCurrentLabel()?.title}
                 bordered={false}
             />
