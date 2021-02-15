@@ -185,11 +185,12 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     // console.log( 'state.item', item );
     return (
         <Modal
-            title={ label.isCreated ? "Edit Label" : "Create a new label"}
+            title={label.isCreated ? "Edit Label" : "Create a new label"}
             visible={true}
             onCancel={handleCancel}
             onOk={handleSave}
             width={state.width > 450 ? state.width + 75 : 525}
+            afterClose={() => printContext.setCurrentLabel( null )}
             footer={[
                 <Tooltip key="cancel" placement="top" title="Return to Items">
                     <Button key="cancel" danger={true} onClick={handleCancel}>
@@ -233,7 +234,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
         >
             <Input
                 style={{ textAlign: 'center', fontSize: '1.1em' }}
-                onBlur={ ev => setTitle( ev.currentTarget.value ) }
+                onBlur={ev => setTitle( ev.currentTarget.value )}
                 onPressEnter={ev => setTitle( ev.currentTarget.value )}
                 placeholder="Unnamed Label"
                 defaultValue={printContext.getCurrentLabel()?.title}
