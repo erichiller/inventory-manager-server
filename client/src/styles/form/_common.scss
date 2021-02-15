@@ -1,4 +1,3 @@
-
 .numberInput {
     width: 110px;
 }
@@ -74,19 +73,24 @@ div[role="tooltip"] {
     & .ant-select .ant-select-selector {
         height: 46px;
         padding-top: 3px;
+        input.ant-select-selection-search-input {
+            margin-left: 42px;
+            top: 50%;
+            transform: translateY(-50%);
+            position: absolute;
+        }
     }
-}
+    .enumIconSelectOption {
+        display: grid;
+        grid-template-columns: 40px auto;
+        grid-template-rows: 40px;
+        align-items: center;
 
-.enumIconSelectOption {
-    display: grid;
-    grid-template-columns: 40px auto;
-    grid-template-rows: 40px;
-    align-items: center;
-
-    & img,
-    svg {
-        width: 35px;
-        align-self: center;
+        & img,
+        svg {
+            width: 35px;
+            align-self: center;
+        }
     }
 }
 

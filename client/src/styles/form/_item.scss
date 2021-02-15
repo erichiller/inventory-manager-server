@@ -1,9 +1,15 @@
 
 .ItemEditFormModal {
-    max-width: 100vw;
+    max-width: 100%;
+    width: 100%;
     @include desktop {
         max-width: 1200px;
     }
+    // @include phone {
+    //     .ant-modal-header, .ant-modal-body, .ant-form, .ant-modal-title {
+    //         font-size: 1.4em;
+    //     }
+    // }
 
     .col {
         @include desktop {
@@ -12,6 +18,9 @@
         flex: 0 0 80%;
         margin: 0.2vh;
         // style={{ flexFlow: 'column wrap;'}}
+    }
+    .ant-modal-content {
+        max-width: 100%;
     }
     & .ant-divider-horizontal {
         margin-top: 0.6vh;
