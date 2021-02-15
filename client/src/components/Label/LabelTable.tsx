@@ -2,7 +2,7 @@ import { Table, Divider, message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { useGetLabelsQuery, LabelSelectColumn, Label, GetLabelsQuery, useDeleteLabelMutation, GetLabelsDocument } from '~lib/types/graphql';
 import { LabelDrawModal } from '~components/Draw/LabelDrawModal';
-import { toTitleCase, computeDefaultPagination } from '~lib/UtilityFunctions';
+import { toTitleCase, computeDefaultPagination, Unpacked, ObjectColumnProperty, sortByCaseInsensitiveText, sortByDate, sortByDateString } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { LabelExport } from '~lib/Label/LabelExport';
@@ -82,43 +82,92 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
         }
     }, [ deleteLabelMutationError, deleteLabelMutationData, deleteLabelMutationLoading ] );
 
-    const columns: ColumnProps<Extract<GetLabelsQuery, 'label'>>[] = [
-        ...( Object.keys( LabelSelectColumn ).filter(
-            key => [ "ID" ].includes( key ) ? false : key ).map(
-                key => {
-                    return {
-                        key: key,
-                        title: toTitleCase( key ),
-                        dataIndex: LabelSelectColumn[ key ],
-                    };
-                } ) ),
-        ...[
-            {
-                title: 'Action',
-                key: 'action',
-                // dataIndex: '',
-                render: ( text, record: Label ) => (
-                    <span onMouseOver={event => event.preventDefault()}>
+    const columnsOrdered: ObjectColumnProperty<Unpacked<GetLabelsQuery[ 'label' ]>>[] = [
+        "id",
+        "title",
+        'created_at',
+        'updated_at',
+        'height',
+        'width',
+        'content',
+        'item'
+    ];
 
-                        <Link to={`/label/${ record.id }/edit`}>
-                            <PrinterOutlined className="IconButton" />
-                        </Link>
+    const columns: ColumnProps<Unpacked<GetLabelsQuery[ 'label' ]>>[] = [
+        {
+            key: 'id',
+            title: 'ID',
+            render: ( text, record ) => <div style={{ 
+                width: '12vw', 
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap'
+             }}>{record.id}</div>,
+        },
+        {
+            key: 'title',
+            title: 'Title',
+            dataIndex: 'title',
+            sorter: sortByCaseInsensitiveText( 'title' )
+        },
+        {
+            key: 'created_at',
+            title: 'Created',
+            render: ( _, record ) => new Date( record.created_at ).toLocaleString( 'en-US' ),
+            sorter: sortByDateString( 'created_at' )
+        },
+        {
+            key: 'updated_at',
+            title: 'Updated',
+            render: ( _, record ) => new Date( record.updated_at ).toLocaleString( 'en-US' ),
+            sorter: sortByDateString( 'updated_at' )
+        },
+        {
+            key: 'height',
+            title: 'Height',
+            render: ( _, record ) => record.height + "px"
+        },
+        {
+            key: 'width',
+            title: 'Width',
+            render: ( _, record ) => record.width + "px"
+        },
+        { // Needs a canvas to render onto
+            key: 'content',
+            title: '',
+            // render: ( _, record ) => new LabelExport(record).thumbnail
+        },
+        { // TODO: must use label_items_map and remove item_id column from label
+            key: 'items',
+            title: 'Items',
+            render: ( _, record ) => record.item ? record.item.class + "/" + record.item.id : ""
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            // dataIndex: '',
+            render: ( text, record: Label ) => (
+                <span onMouseOver={event => event.preventDefault()}>
 
-                        <Divider type="vertical" />
+                    <Link to={`/label/${ record.id }/edit`}>
+                        <PrinterOutlined className="IconButton" />
+                    </Link>
 
-                        <Link to={`/label/${ record.id }/edit`}>
-                            <EditOutlined className="IconButton" />
-                        </Link>
-                        <Divider type="vertical" />
-                        <a onClick={( obj ) => {
-                            obj.preventDefault();
-                            deleteLabelMutation( {
-                                variables: {
-                                    label_id: record.id
-                                },
-                                refetchQueries: [
-                                    { query: GetLabelsDocument }
-                                ]
+                    <Divider type="vertical" />
+
+                    <Link to={`/label/${ record.id }/edit`}>
+                        <EditOutlined className="IconButton" />
+                    </Link>
+                    <Divider type="vertical" />
+                    <a onClick={( obj ) => {
+                        obj.preventDefault();
+                        deleteLabelMutation( {
+                            variables: {
+                                label_id: record.id
+                            },
+                            refetchQueries: [
+                                { query: GetLabelsDocument }
+                            ]
                             // } ).then( result => {
                             //     message.info( `Successfully deleted label ID# ${ result.data.delete_label_by_pk.id }` );
                             // } ).catch( error => {
@@ -126,15 +175,14 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
                             //     message.error( `Failure during deletion: ${ error }` );
                             // } ).finally( () => {
                             //     // props.visibleHandler( null );
-                            } );
-                        }
-                        }>
-                            <DeleteOutlined className="IconButton" />
-                        </a>
-                    </span >
-                ),
-            }
-        ]
+                        } );
+                    }
+                    }>
+                        <DeleteOutlined className="IconButton" />
+                    </a>
+                </span >
+            ),
+        }
     ];
 
     // viewPrintModal = ( change?: DISPLAY, clickedLabel?: Label ) => {

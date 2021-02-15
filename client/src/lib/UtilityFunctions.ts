@@ -366,6 +366,29 @@ export function sortByNumber<T> ( propertyName: Extract<keyof SubType<T, number>
 }
 
 /**
+ * Sort using input strings that can be converted to a `Date`
+ * @param propertyName Name of property that can be converted to a `Date`
+ */
+export function sortByDateString<T> ( propertyName: Extract<keyof SubType<T, string>, string> ) {
+    return ( a: T, b: T ) => {
+        // let nameA: string = a[propertyName.toString()]; // ignore upper and lowercase
+        // let foo: string = a[propertyName].toString();
+        let date_a = new Date( a[propertyName].toString() );
+        let date_b = new Date( b[propertyName].toString() );
+        return date_a < date_b ? -1 : 1;
+    };
+}
+/**
+ * Sort using input `Date` objects
+ * @param propertyName Name of property with type `Date`
+ */
+export function sortByDate<T> ( propertyName: Extract<keyof SubType<T, Date>, string> ) {
+    return ( a: T, b: T ) => {
+        return a[propertyName] < b[propertyName];
+    };
+}
+
+/**
  * Return antd table usable filter options.
  * @param e any object that has keys and values
  */
