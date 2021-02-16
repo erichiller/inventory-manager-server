@@ -80,7 +80,7 @@ export class LabelExport implements Label {
                     this.content = {
                         ...props.content,
                         texts: props.content.texts.map( text => new LabelText( text ) )
-                    }
+                    };
                     console.log( "LabelExport - 'content' in props", this.content ); /*******   HERE !!!!!!!!!!!!!!!!!!! *****/
                 } else if ( props.texts ) {
                     console.log( "LabelExport - 'texts' in props" );

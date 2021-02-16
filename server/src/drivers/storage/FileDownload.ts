@@ -37,7 +37,7 @@ export const s3FileDownload = ( req: express.Request, res: express.Response ) =>
         }
     } )
         .then( result => {
-            console.log(`received graphql result for file with id=${doc_file_id}\n`, result, result["data"]["doc_file"][0])
+            console.log( `received graphql result for file with id=${doc_file_id}\n`, result, result["data"]["doc_file"][0] );
             let filename = result[ "data" ][ "doc_file" ][0][ "original_filename" ] || 'unknown_filename';
             let s3_obj_id = result[ "data" ][ "doc_file" ][0][ "file_id" ];
             res.writeHead( 200, {

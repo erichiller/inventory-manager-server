@@ -254,7 +254,6 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
                 changeHandler={updateLabelQR}
                 item={item}
                 labelQR={uncommittedQR} /> );
-
     };
 
     /** Run when `DrawEditText`'s form changes values */

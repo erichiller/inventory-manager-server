@@ -53,7 +53,6 @@ interface DrawContextMenuProps {
 
 
 export const DrawContextMenu: React.FunctionComponent<DrawContextMenuProps> = ( props ) => {
-
     const onClick = ( { key } ) => {
         // message.info(`Click detected on item ${key}`);
     };

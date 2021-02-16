@@ -89,7 +89,7 @@ export class Item<T extends GenericItem> {
             //     labelTemplates.push( lt );
             // });
             this._labelTemplates = props.labelTemplates.map( labelTemplateGql => new LabelTemplate( labelTemplateGql ) );
-            console.log(`Item#${this.id} - labelTemplates assigned`, labelTemplates);
+            console.log( `Item#${this.id} - labelTemplates assigned`, labelTemplates );
         }
         // console.log( "Item class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
     }
