@@ -1,9 +1,10 @@
 {
   "name": "client",
-  "version": "0.1.0-20210213002",
+  "version": "0.1.0-20210217001",
   "description": "Server for web resources and print handler via IPP",
   "main": "bundle.js",
   "scripts": {
+    "build": "webpack --env NODE_ENV=local --env production --progress",
     "run-dev-server": "webpack serve",
     "serve": "node ./bundle.js",
     "codegen": "graphql-codegen --config codegen.yml",
