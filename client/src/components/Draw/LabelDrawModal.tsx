@@ -63,8 +63,14 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
     // determine if label is new (already in DB) so that it can be edited or inserted
     // const _labelIsNew: boolean = props.label?.created_at ? false : true;
 
-    const handleCancel = () => {
+    const closeModal = () => {
+        console.log( "Closing, setCurrentLabel to null" );
+        printContext.setCurrentLabel( null );
         props.visibleHandler( null );
+    };
+
+    const handleCancel = () => {
+        closeModal();
     };
     const handleSave = () => {
         let label = printContext.getCurrentLabel();
@@ -95,7 +101,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                 console.log( "MUTATE ERROR", error );
                 message.error( `Failure during save: ${ error }` );
             } ).finally( () => {
-                props.visibleHandler( null );
+                closeModal();
             } );
         } else {
             saveLabelMutation( {
@@ -117,7 +123,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                 console.log( "MUTATE ERROR", error );
                 message.error( `Failure during save: ${ error }` );
             } ).finally( () => {
-                props.visibleHandler( null );
+                closeModal();
             } );
         }
     };
@@ -137,8 +143,6 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
             } ).catch( error => {
                 console.error( "MUTATE ERROR", error, "\nOn Label Object: ", currentLabel );
                 message.error( `Failure during save: ${ error }` );
-            } ).finally( () => {
-                // props.visibleHandler( null );
             } );
     };
 
@@ -177,12 +181,8 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
         }
     };
 
+    const { label, item } = props;
 
-    const { visibleHandler, label, item } = props;
-
-    // console.log( 'state.visibleHandler', visibleHandler() );
-    // console.log('state.visible', visibleHandler(), state.visible == display.VISIBLE ? true : false)
-    // console.log( 'state.item', item );
     return (
         <Modal
             title={label.isCreated ? "Edit Label" : "Create a new label"}
@@ -190,7 +190,6 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
             onCancel={handleCancel}
             onOk={handleSave}
             width={state.width > 450 ? state.width + 75 : 525}
-            afterClose={() => printContext.setCurrentLabel( null )}
             footer={[
                 <Tooltip key="cancel" placement="top" title="Return to Items">
                     <Button key="cancel" danger={true} onClick={handleCancel}>
@@ -237,7 +236,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                 onBlur={ev => setTitle( ev.currentTarget.value )}
                 onPressEnter={ev => setTitle( ev.currentTarget.value )}
                 placeholder="Unnamed Label"
-                defaultValue={printContext.getCurrentLabel()?.title}
+                defaultValue={printContext.getCurrentLabel()?.title ?? state.label.title}
                 bordered={false}
             />
             {description()}

@@ -42,19 +42,15 @@ export const PrintContextHandler: React.FC = ( props ) => {
         }
     };
 
-    // private _currentLabel: LabelExport;
-    // get currentLabel(): LabelExport{
-    //     return _currentLabel;
-    // }
     const setCurrentLabel = ( currentLabel: LabelExport ) => {
         if ( !currentLabel ) {
             console.group( "setCurrentLabel" );
             console.warn( "! currentLabel parameter received." );
             console.trace();
             console.groupEnd();
-            return;
+        } else {
+            console.log( `PrintContextHandler printLabels set currentLabel`, currentLabel, { width: currentLabel.width, height: currentLabel.height } );
         }
-        console.log( `PrintContextHandler printLabels set currentLabel`, currentLabel, { width: currentLabel.width, height: currentLabel.height } );
         if ( state.currentLabel === currentLabel ) { return; }
         setState( {
             ...state,

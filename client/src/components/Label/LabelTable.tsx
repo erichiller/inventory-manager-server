@@ -97,7 +97,7 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
         {
             key: 'id',
             title: 'ID',
-            render: ( text, record ) => <div style={{ 
+            render: ( _, record ) => <div style={{ 
                 width: '12vw', 
                 textOverflow: 'ellipsis',
                 overflow: 'hidden',

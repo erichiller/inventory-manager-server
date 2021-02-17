@@ -1,5 +1,5 @@
 
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 // import { Resizable, ResizableBox } from 'react-resizable';
 import { Rnd, ResizableDelta, Position as RndPosition } from 'react-rnd';
 import { ResizeDirection } from 're-resizable';

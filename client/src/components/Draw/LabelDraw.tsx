@@ -154,6 +154,7 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
     const { item } = props;
 
     const printContext = useContext( PrintContext );
+    const currentLabel = printContext.getCurrentLabel();
 
     const [ texts, setTexts ] = useState<LabelText[]>( props.label.content.texts ?? [] );
     const [ qrs, setQrs ] = useState<LabelQR[]>( props.label.content.qrs ?? [] );
@@ -173,14 +174,17 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
 
 
     useEffect( () => {
-        let currentLabel = printContext.getCurrentLabel();
+        if ( !currentLabel ){
+            console.log("no currentlabel yet.");
+            return;
+        }
         let canvas = getCanvas();
         if ( !canvas ) {
             console.log( "no refreshing exportLabel: no canvas yet!" );
             return;
         }
         let newValues = {
-            item_id: props.item ? props.item.id : currentLabel.item ? currentLabel.item.id : null,
+            item_id: props.item ? props.item.id : currentLabel?.item ? currentLabel?.item?.id : null,
             texts: texts,
             images: images,
             qrs: qrs,
@@ -198,7 +202,7 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
         } );
         // exportLabel();
         // currentLabel.texts
-    }, [ texts, qrs, images ] );
+    }, [ texts, qrs, images, currentLabel ] );
 
     /**
      * Right click menu on Konva canvas
