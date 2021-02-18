@@ -1,30 +1,27 @@
-.drag_modal {
-//   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-//   right: auto !important;
-//   bottom: auto !important;
-//   top: 100px;
-//   border: 1px solid red;
-}
-
-.drag_title {
-  cursor: move;
+.drag-title {
+    cursor: move;
 }
 
 .ant-modal {
-  top: auto !important;
-  padding-bottom: 0 !important;
+    top: auto !important;
+
+    padding-bottom: 0 !important;
+
+    @include phone {
+        max-width: initial;
+    }
 }
 
-$grid_size: 100px;
-$border_size: 1px;
-$grid_size_computed: $grid_size - $border_size * 2;
+// $grid_size: 100px;
+// $border_size: 1px;
+// $grid_size_computed: $grid_size - $border_size * 2;
 
 // GRID
 // .drag_title,
 // .ant-modal-mask {
 //     background:
 //         linear-gradient(-90deg, rgba(0,0,0,.05) 1px, transparent 1px),
-//         linear-gradient(rgba(0,0,0,.05) 1px, transparent 1px), 
+//         linear-gradient(rgba(0,0,0,.05) 1px, transparent 1px),
 //         linear-gradient(-90deg, rgba(0, 0, 0, .04) 1px, transparent 1px),
 //         linear-gradient(rgba(0,0,0,.04) 1px, transparent 1px),
 //         linear-gradient(transparent 3px, #f2f2f2 3px, #f2f2f2 $grid_size_computed, transparent $grid_size_computed),

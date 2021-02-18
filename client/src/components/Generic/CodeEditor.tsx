@@ -6,70 +6,31 @@ import {
     keymap
 } from "@codemirror/view";
 import { defaultKeymap } from "@codemirror/commands";
-import { EditorState } from "@codemirror/state";
+import { EditorState, Extension } from "@codemirror/state";
 import { basicSetup } from "@codemirror/basic-setup";
 import { javascript as LangJavascript } from "@codemirror/lang-javascript";
 
-// import * as tsj from "ts-json-schema-generator/factory/generator";
-// import { createGenerator } from "ts-json-schema-generator/factory/generator";
-// import { createGenerator, Config as JsonSchemaGeneratorConfig } from "ts-json-schema-generator";
-// import { Config as JsonSchemaGeneratorConfig } from "ts-json-schema-generator/src/Config";
-// const tsj = require( "ts-json-schema-generator" );
-// const fs = require( "fs" );
-
-// const config = {
-//     path: "path/to/source/file",
-//     tsconfig: "path/to/tsconfig.json",
-//     type: "*", // Or <type-name> if you want to generate schema for that one type only
-// };
-
-// const config: tsj.Config = {
-//     tsconfig: 
-
-// }
-// const config: JsonSchemaGeneratorConfig = {};
-
-// const output_path = "path/to/output/file";
-
-// const generatedSchema = createGenerator( config ).createSchema( config.type );
-// const schemaString = JSON.stringify( schema, null, 2 );
-// fs.writeFile( output_path, schemaString, ( err ) => {
-//     if ( err ) throw err;
-// } );
 
 
+interface CodeEditorBasicProps {
+    onChange?: ( json: Object ) => void; // TODO
+    onCommit?: ( json: Object ) => void; // TODO
+}
 
+interface CodeEditorProps extends CodeEditorBasicProps {
+    extensions?: Extension[];
+    inputDoc?: string;
+    
+}
+export const CodeEditor: React.FunctionComponent<CodeEditorProps> = ( props ) => {
 
-
-// const testSchema = JSON.parse( `
-// {
-
-//   "title": "Person",
-//   "type": "object",
-//   "properties": {
-//     "name": {
-//         "type": "string"
-//     }
-// }
-// }
-// `);
-
-// schema.definitions.EnumItemHardwareFastenerThreadLabelEnum.type;
-
-export const CodeEditor = () => {
+    let extensions = [ basicSetup, keymap.of( defaultKeymap ), ... (props.extensions ?? [] ) ];
 
     useEffect( () => {
         const element = document.getElementById( 'code_editor_container' );
         let startState = EditorState.create( {
-            // doc: "Hello World",
-            // state: EditorState.create( {
-            extensions: [
-                basicSetup, LangJavascript( { typescript: true } )
-                // } )
-                ,
-
-                // extensions: [ 
-                keymap.of( defaultKeymap ) ]
+            doc: props.inputDoc,
+            extensions: extensions
         } );
 
         let view = new EditorView( {
@@ -78,5 +39,32 @@ export const CodeEditor = () => {
         } );
     }, [] );
 
+    console.log( { cls: "CodeEditor", evt: "CodeEditorInit" } );
+
     return <div id='code_editor_container'></div>;
 };
+
+
+
+
+interface JsonCodeEditorProps extends CodeEditorBasicProps {
+    json: Object | string;
+}
+
+
+
+export const JsonCodeEditor: React.FunctionComponent<JsonCodeEditorProps> = ( props ) => {
+    const json: string = typeof props.json !== "string" ? JSON.stringify( props.json ) : props.json;
+    console.log( { cls: "JsonModal", evt: "ModalInit", json } );
+
+    const onChange = ( json: Object ) => {
+        // run something that prepares for `onCommit`
+        if ( props.onChange ) {
+            props.onChange( json );
+        }
+    };
+    return <CodeEditor
+            inputDoc={json}
+            extensions={[LangJavascript( { typescript: true })]}
+            />
+}

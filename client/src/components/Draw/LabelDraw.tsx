@@ -23,7 +23,8 @@ import { TransformableImage } from './KonvaElements/TransformableImage';
 import { TransformableQR } from './KonvaElements/TransformableQR';
 import { JsonModal } from '~components/Shared/JsonModal';
 import { useRef } from "react";
-import { CodeEditorModal } from "~components/Shared/CodeEditorModal";
+import { CodeEditor, JsonCodeEditor } from "~components/Generic/CodeEditor";
+import DraggableModal from "~components/Shared/DraggableModal";
 
 
 
@@ -598,13 +599,24 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
                         position: "relative",
                         top: "2px"
                     }} onClick={() => {
-                        console.log( exportLabel() );
+                        // console.log( exportLabel() );
                         // return;
                         setModal(
-                            <CodeEditorModal
-                                json={'{"this": "that"}'}
-                                visibilityHandler={setModal}
-                            /> );
+                            <DraggableModal
+                                onOk={() => {
+                                    console.log("onOk");
+                                    setModal( null )
+                                }}
+                                onCancel={() => {
+                                    console.log( "onCancel" );
+                                    setModal( null );
+                                }}
+                            >
+                                <JsonCodeEditor
+                                    json={JSON.stringify( exportLabel(), null, 2 )}
+                                    // {...onChange ?? {}}
+                                />
+                            </DraggableModal> );
 
                     }} id="DEBUG" />
                 </Tooltip>
