@@ -27,6 +27,10 @@ interface LabelDrawModalState {
     label: LabelExport;
 }
 
+/**
+ * LabelDrawModal -> LabelDraw -> LabelComponent -> Konva Elements
+ * @param props 
+ */
 export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( props: LabelDrawModalProps ) => {
     if ( props.label && ( !( props.label instanceof LabelExport ) ) ) {
         console.error( "label is not an instanceof LabelExport", props.label );

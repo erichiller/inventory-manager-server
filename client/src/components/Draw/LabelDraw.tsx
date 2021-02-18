@@ -23,6 +23,7 @@ import { TransformableImage } from './KonvaElements/TransformableImage';
 import { TransformableQR } from './KonvaElements/TransformableQR';
 import { JsonModal } from '~components/Shared/JsonModal';
 import { useRef } from "react";
+import { CodeEditorModal } from "~components/Shared/CodeEditorModal";
 
 
 
@@ -598,12 +599,13 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
                         top: "2px"
                     }} onClick={() => {
                         console.log( exportLabel() );
-                        return;
+                        // return;
                         setModal(
-                            <JsonModal
+                            <CodeEditorModal
                                 json={'{"this": "that"}'}
                                 visibilityHandler={setModal}
                             /> );
+
                     }} id="DEBUG" />
                 </Tooltip>
                 <Tooltip key="EXPAND_CANVAS_TOOLTIP" placement="top" title="Enlarge print canvas">
