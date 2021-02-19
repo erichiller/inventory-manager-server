@@ -1,5 +1,5 @@
 
-import React, { Component, constructor, useContext, useEffect, useState } from "react";
+import React, { Component, constructor, Suspense, useContext, useEffect, useState } from "react";
 import type { Stage } from 'konva/types/Stage';
 import type { KonvaEventObject } from 'konva/types/Node';
 import { Button, Tooltip, message, Input } from 'antd';
@@ -21,12 +21,13 @@ import { CodeIcon } from '../../styles/icon';
 import { EditableText } from './KonvaElements/EditableText';
 import { TransformableImage } from './KonvaElements/TransformableImage';
 import { TransformableQR } from './KonvaElements/TransformableQR';
-import { JsonModal } from '~components/Shared/JsonModal';
+// import { JsonModal } from '~components/Shared/JsonModal';
 import { useRef } from "react";
-import { CodeEditor, JsonCodeEditor } from "~components/Generic/CodeEditor";
-import DraggableModal from "~components/Shared/DraggableModal";
+// import { CodeEditor, JsonCodeEditor } from "~components/Generic/CodeEditor";
+// import DraggableModal from "~components/Shared/DraggableModal";
 
-
+const JsonCodeEditor = React.lazy( () => import( "~components/Generic/CodeEditor" ) );
+const DraggableModal = React.lazy( () => import( "~components/Shared/DraggableModal" ) );
 
 
 
@@ -602,6 +603,7 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
                         // console.log( exportLabel() );
                         // return;
                         setModal(
+                            <Suspense fallback={<div>Loading...</div>}>
                             <DraggableModal
                                 onOk={() => {
                                     console.log("onOk");
@@ -616,7 +618,8 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
                                     json={JSON.stringify( exportLabel(), null, 2 )}
                                     // {...onChange ?? {}}
                                 />
-                            </DraggableModal> );
+                            </DraggableModal>
+                            </Suspense> );
 
                     }} id="DEBUG" />
                 </Tooltip>

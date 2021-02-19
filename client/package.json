@@ -4,7 +4,7 @@
   "description": "Server for web resources and print handler via IPP",
   "main": "bundle.js",
   "scripts": {
-    "build": "webpack --env NODE_ENV=local --env production --progress",
+    "build": "webpack --env NODE_ENV=local --env production --config webpack.config.prod.js --progress",
     "run-dev-server": "webpack serve",
     "serve": "node ./bundle.js",
     "codegen": "graphql-codegen --config codegen.yml",

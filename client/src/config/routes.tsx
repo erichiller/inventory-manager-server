@@ -6,7 +6,10 @@ import { ItemIndex } from '../components/Item/Index';
 import { OrderTable } from '../components/Order/OrderTable';
 import { VendorTable } from '../components/Vendor/VendorTable';
 import { ManufacturerTable } from '../components/Manufacturer/ManufacturerTable';
-import { ObjectTable } from '../components/Generic/ObjectTable';
+// import { ObjectTable } from '../components/Generic/ObjectTable';
+
+const ObjectTable = React.lazy( () => import( '../components/Generic/ObjectTable' ) );
+
 
 type ReactFunctionComponent = ( ( route?: RouteEntry, match?: RouterMatch ) => JSX.Element );
 

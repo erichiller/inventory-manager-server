@@ -8,12 +8,20 @@ import { CurlyBracesIcon, FactoryIcon } from "../../styles/icon";
 
 export const MainMenu: React.FC<{}> = ( props ) => {
     const location = useLocation();
-    return <Menu className="MainMenu" mode="horizontal" selectedKeys={[ /\/[A-Za-z0-9_-]*/.exec(location.pathname)[0] ]} >
+    return <Menu className="MainMenu" mode="horizontal" selectedKeys={[ /\/[A-Za-z0-9_-]*/.exec( location.pathname )[ 0 ] ]} >
         <Menu.Item key="/"><Link to="/"><DashboardOutlined />Summary</Link></Menu.Item>
         <Menu.Item key="/item"><Link to="/item"><ContainerOutlined />Items</Link></Menu.Item>
         {/* <Menu.Item key="/network"><Link to="/network"><ShareAltOutlined />Network</Link></Menu.Item> */}
-        <Menu.Item key="/object"><Link to="/object">
-            <span role="img" aria-label="container" className="anticon anticon-container IconButton"><CurlyBracesIcon /></span>Objects</Link></Menu.Item>
+        <Menu.Item key="/object">
+            <Link to="/object">
+                <span role="img"
+                    aria-label="container"
+                    className="anticon anticon-container IconButton">
+                    <CurlyBracesIcon />
+                </span>
+            Objects
+            </Link>
+        </Menu.Item>
         <Menu.SubMenu key="/label" title={<Link to="/label"><TagOutlined />Labels</Link>} >
             <Menu.Item key="/label">
                 <Menu className="MainMenuInItem" mode="horizontal"
@@ -45,7 +53,7 @@ export const MainMenu: React.FC<{}> = ( props ) => {
             </Menu.Item>
             <Menu.Item key="/manufacturer">
                 <Menu className="MainMenuInItem" mode="horizontal"
-                    style={{width: 150}}
+                    style={{ width: 150 }}
                     selectedKeys={[ location.pathname ]}
                 >
                     <Menu.Item key="/manufacturer"><Link to="/manufacturer">

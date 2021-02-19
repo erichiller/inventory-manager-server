@@ -7,7 +7,10 @@ import bwipjs from 'bwip-js';
 import { LabelQR } from '~lib/Label/LabelConstituent';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { AntTreeNode } from 'antd/lib/tree';
-import DraggableModal from '../Shared/DraggableModal';
+// import DraggableModal from '../Shared/DraggableModal';
+
+const DraggableModal = React.lazy( () => import( "~components/Shared/DraggableModal" ) );
+
 
 interface QREditModalProps {
     event?: KonvaEventObject<MouseEvent>;

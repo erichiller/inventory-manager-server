@@ -12,3 +12,4 @@ export const ObjectTable: React.FC<{}> = () => {
         < GenericObjectJsonEditor text="[ 'foo' ]" />
     </>;
 };
+export default ObjectTable;

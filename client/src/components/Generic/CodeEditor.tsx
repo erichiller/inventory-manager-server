@@ -68,3 +68,5 @@ export const JsonCodeEditor: React.FunctionComponent<JsonCodeEditorProps> = ( pr
             extensions={[LangJavascript( { typescript: true })]}
             />
 }
+
+export default JsonCodeEditor;
