@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "0.1.0-20210217001",
+  "version": "0.1.0-20210219001",
   "description": "Server for web resources and print handler via IPP",
   "main": "bundle.js",
   "scripts": {
@@ -24,10 +24,10 @@
     "@ant-design/icons": "*",
     "@apollo/client": "^3.3.11",
     "@codemirror/basic-setup": "0.17.1",
-    "@codemirror/commands": "0.17.2",
-    "@codemirror/lang-javascript": "0.17.1",
-    "@codemirror/state": "0.17.1",
-    "@codemirror/view": "0.17.7",
+    "@codemirror/commands": "0.17.4",
+    "@codemirror/lang-javascript": "0.17.2",
+    "@codemirror/state": "0.17.2",
+    "@codemirror/view": "0.17.9",
     "@json-editor/json-editor": "^2.5.2",
     "antd": "^4.12.3",
     "bwip-js": "2.0.12",

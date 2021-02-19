@@ -3,7 +3,8 @@ import schema from "~lib/Item/ItemHardwareFastenerScrewMachine/config/ScrewSizeO
 
 import {
     EditorView,
-    keymap
+    keymap,
+    // defaultKeyMap
 } from "@codemirror/view";
 import { defaultKeymap } from "@codemirror/commands";
 import { EditorState, Extension } from "@codemirror/state";
@@ -23,8 +24,7 @@ interface CodeEditorProps extends CodeEditorBasicProps {
     
 }
 export const CodeEditor: React.FunctionComponent<CodeEditorProps> = ( props ) => {
-
-    let extensions = [ basicSetup, keymap.of( defaultKeymap ), ... (props.extensions ?? [] ) ];
+    let extensions = [ basicSetup, keymap.of( defaultKeymap ), ... ( props.extensions ?? [] ) ];
 
     useEffect( () => {
         const element = document.getElementById( 'code_editor_container' );
@@ -65,8 +65,8 @@ export const JsonCodeEditor: React.FunctionComponent<JsonCodeEditorProps> = ( pr
     };
     return <CodeEditor
             inputDoc={json}
-            extensions={[LangJavascript( { typescript: true })]}
-            />
-}
+            extensions={[LangJavascript( { typescript: true } )]}
+            />;
+};
 
 export default JsonCodeEditor;

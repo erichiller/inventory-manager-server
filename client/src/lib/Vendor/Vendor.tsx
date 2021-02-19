@@ -2,37 +2,22 @@
 import {
     // Vendor as VendorGql,
     GetVendorsQueryHookResult,
-    Icon,
-    Label,
-    VendorSelectColumn,
     GetVendorQueryVariables,
     GetVendorDocument,
     GetVendorQuery,
-    Scalars,
-    Maybe,
-    VendorItem,
-    VendorItemAggregate,
-    PaymentMethod,
-    Shipment,
-    ShipmentAggregate,
-    useGetVendorItemQuery,
     useGetVendorQuery
 } from "../types/graphql";
 
 import { Integer } from '../types/uint8';
 
 import { apolloClient } from '~/Apollo';
-import { message, Tooltip } from "antd";
+import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Intersection, Unpacked, enumerable, ObjectColumnProperty, sortByCaseInsensitiveText, sortByNumber, makeColumn } from "~lib/UtilityFunctions";
-import { CodeIcon } from "../../styles/icon";
-import { FormInstance } from "antd/lib/form";
-import { resolve } from "url";
-import { rejects } from "assert";
-import { CategoryHierarchyT, FormMutationHandler } from "../Item/Item";
+import { sortByCaseInsensitiveText, makeColumn } from "~lib/UtilityFunctions";
+import { FormMutationHandler } from "../Item/Item";
 import { IconComponentT } from "~lib/types/common";
-import { ShoppingCartOutlined, ShopOutlined, CheckOutlined, WarningOutlined } from "@ant-design/icons";
+import { ShopOutlined, CheckOutlined, WarningOutlined } from "@ant-design/icons";
 import { ApolloQueryResult } from "@apollo/client";
 import { AsyncIcon } from "~components/Shared/AsyncIcon";
 
@@ -99,7 +84,6 @@ export class Vendor implements VendorDataProps {
             }
         } ).then( result => {
             console.log( { _cls: "Vendor", method: 'VendorFactory', msg: "loading Vendor from GraphQL", vendor_data: result } );
-            const data = result.data.vendor;
             let vendor = new Vendor( result.data.vendor );
             // it._name = result.data.object?.main ? result.data.object.name : "";
             // this._class = result.data.object;
@@ -308,7 +292,7 @@ export class Vendor implements VendorDataProps {
      */
     get mouseOverRowComponent (): React.FC {
         // TODO: use for ... in so that enumerable properties are shown
-        return ( props ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key, value ] ) => key !== '_object' ) ), null, 2 )}</pre>;
+        return ( ) => <pre>{JSON.stringify( Object.fromEntries( Object.entries( this ).filter( ( [ key ] ) => key !== '_object' ) ), null, 2 )}</pre>;
     }
 
 }
