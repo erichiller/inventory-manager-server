@@ -1,13 +1,13 @@
 {
   "name": "client",
-  "version": "0.1.0-20210219001",
+  "version": "0.1.0-20210220001",
   "description": "Server for web resources and print handler via IPP",
   "main": "bundle.js",
   "scripts": {
     "build": "webpack --env NODE_ENV=local --env production --config webpack.config.prod.js --progress",
     "run-dev-server": "webpack serve",
     "serve": "node ./bundle.js",
-    "codegen": "graphql-codegen --config codegen.yml",
+    "codegen": "dotenv ../.env graphql-codegen --config codegen.yml",
     "test": "jest",
     "check-outdated": "yarn outdated",
     "example-install": "yarn add --latest --exact apollo-link-http",
@@ -66,6 +66,7 @@
     "@types/webpack-dev-server": "^3.11.1",
     "@types/webpack-env": "^1.16.0",
     "css-loader": "4.3.0",
+    "dotenv-cli": "^4.0.0",
     "fork-ts-checker-webpack-plugin": "^6.1.0",
     "fs": "^0.0.1-security",
     "graphql-tag": "^2.11.0",
