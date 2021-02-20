@@ -5,3 +5,4 @@ server/public
 apollo.config.js
 yarn-error.log
 coverage
+.env
