@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require( 'path' );
 
 /** More info
  * → use prefetching for modals
@@ -8,7 +8,7 @@ const path = require('path');
  */
 
 /** @type {import('webpack').Configuration} */
-const baseConfig = require('./webpack.config');
+const baseConfig = require( './webpack.config' );
 
 /** @type {import('webpack').Configuration} */
 const extendedConfig = {
@@ -24,6 +24,7 @@ const extendedConfig = {
         /**
          * not needed for dynamic imports?
          * https://webpack.js.org/guides/code-splitting/#dynamic-imports
+         */
         splitChunks: {
             chunks: 'all',
             usedExports: true,
@@ -35,14 +36,13 @@ const extendedConfig = {
                 },
             },
         },
-        **/
         // new
         // https://webpack.js.org/guides/caching/
         moduleIds: 'deterministic',
         runtimeChunk: 'single',
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve( __dirname, 'dist' ),
         // path: path.resolve('.', 'dist'),
         publicPath: "/",
         // filename: '[name].[chunkhash:8].js',
@@ -53,7 +53,7 @@ const extendedConfig = {
 };
 
 /** @type {import('webpack').Configuration} */
-module.exports = Object.assign(baseConfig, extendedConfig);
+module.exports = Object.assign( baseConfig, extendedConfig );
 
 
 
