@@ -23,20 +23,20 @@ RUN powershell -Command \
 
 
 # RUN Invoke-WebRequest -Method Get -Uri "https://download.visualstudio.microsoft.com/download/pr/89a3b9df-4a09-492e-8474-8f92c115c51d/B1A32C71A6B7D5978904FB223763263EA5A7EB23B2C44A0D60E90D234AD99178/VC_redist.x64.exe" -OutFile c:\vcredist_x64.exe ; \
-RUN powershell -Command \
-    Invoke-WebRequest \
-        -Method Get \
-        -Uri "https://aka.ms/vs/16/release/VC_redist.x64.exe" \
-        -OutFile c:\vcredist_x64.exe \
-    ; \
-    ;
+# RUN powershell -Command \
+#     Invoke-WebRequest \
+#         -Method Get \
+#         -Uri "https://aka.ms/vs/16/release/VC_redist.x64.exe" \
+#         -OutFile c:\vcredist_x64.exe \
+#     ; \
+#     ;
 
-RUN start c:\vcredist_x64.exe --quiet --wait --norestart --nocache
+# RUN start c:\vcredist_x64.exe --quiet --wait --norestart --nocache
 
-USER ContainerAdministrator
-RUN curl -fSLo vc_redist.x64.exe https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963AEAD48/vc_redist.x64.exe \
-    && start /w vc_redist.x64.exe /install /quiet /norestart
-RUN del vc_redist.x64.exe
+# USER ContainerAdministrator
+# RUN curl -fSLo vc_redist.x64.exe https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963AEAD48/vc_redist.x64.exe \
+#     && start /w vc_redist.x64.exe /install /quiet /norestart
+# RUN del vc_redist.x64.exe
 
 
 # RUN start c:\vcredist_x64.exe \
