@@ -139,7 +139,7 @@ $Do = {
             $env:DOCKER_HOST = $ContainerParams.ContainerHost ; 
             docker container rm -f graphql ; 
             docker run -p 8080:8080 `
-                -e HASURA_GRAPHQL_DATABASE_URL=postgres://hasura:${env:HASURA_GRAPHQL_ENGINE_PASSWORD}@pg.hiller.pro:5432/inventory `
+                -e HASURA_GRAPHQL_DATABASE_URL=postgres://${env:HASURA_GRAPHQL_ENGINE_USERNAME}:${env:HASURA_GRAPHQL_ENGINE_PASSWORD}@pg.hiller.pro:5432/inventory `
                 -e HASURA_GRAPHQL_ENABLE_CONSOLE=true `
                 -e HASURA_GRAPHQL_ADMIN_SECRET=achoo `
                 --name graphql `
