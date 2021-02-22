@@ -1,0 +1,76 @@
+# GraphQL Code Generator docs
+# https://graphql-code-generator.com/docs/plugins/typescript-react-apollo
+
+schema:
+    - ${HASURA_GRAPHQL_ENGINE_URL}:
+          headers:
+              X-HASURA-ACCESS-KEY: ${HASURA_GRAPHQL_ENGINE_PASSWORD}
+config:
+    # gqlImport: "@apollo/client#gql"
+    # apolloReactCommonImportFrom: "@apollo/client"
+    # apolloReactComponentsImportFrom: "@apollo/react-components"
+    # apolloReactHocImportFrom: "@apollo/react-hoc"
+    # apolloReactHooksImportFrom: "@apollo/client"
+    # apolloReactCommonImportFrom: "@apollo/react-common"
+    # apolloReactComponentsImportFrom: "@apollo/react-components"
+    # apolloReactHocImportFrom: "@apollo/react-hoc"
+    # apolloReactHooksImportFrom: "@apollo/react-hooks"
+    AvoidOptionalsConfig: false
+    transformUnderscore: true
+    # https://graphql-code-generator.com/docs/plugins/typescript
+    # Allow to override the type value of Maybe.
+    maybeValue: T | null | undefined
+    namingConvention:
+        typeNames: change-case#pascalCase
+        enumValues: keep
+    # globalNamespace: true
+    # operationResultSuffix: "xxx"
+    # withComponent: true
+    scalars:
+      numeric: number
+      bigint: number # while this should be type `bigint` hasura says its type `String` and the actual JSON is of type `number`
+      smallint: number
+      uint8: number
+      uuid: string
+      # DateTime: Date
+      # JSON: "{ [key: string]: any }"
+    withComponent: false
+    withResultType: true
+    dedupeOperationSuffix: true
+    withHooks: true
+    # withMutationFn: true
+    reactApolloVersion: 3
+# withRefetchFn (boolean, default value: false)
+# https://graphql-code-generator.com/docs/plugins/typescript-react-apollo#documentmode-graphqltag--documentnode--external-default-value-graphqltag
+
+# https://graphql-code-generator.com/docs/plugins/named-operations-object
+
+generates:
+    ./src/lib/types/graphql.tsx:
+        # documents: ./src/**/*.tsx
+        documents:
+            - ./src/types/*.ts
+            - ./src/**/*.graphql
+            - ./src/**/*.gql
+        plugins:
+            - "typescript"
+            - "typescript-operations"
+            - "typescript-react-apollo"
+            # - "typescript-document-nodes"
+            - time:
+                message: "graphql typescript defs generated on "
+                format: YYYY-MM-DDTHH:mm:ssZ
+    # ./src/lib/types/graphql_schema_introspection.json:
+    #   plugins:
+    #     - introspection
+    #   config:
+    #     minify: true
+    ./src/lib/types/schema.graphql:
+      plugins:
+        - schema-ast
+      config:
+        commentDescriptions: true
+        # includeDirectives: true
+
+
+overwrite: true

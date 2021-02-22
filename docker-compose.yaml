@@ -1,0 +1,16 @@
+# docker-compose up --build -d
+
+version: '3.7'
+services:
+  web:
+    image: ehiller/inventory-web
+    mac_address: "4E:00:00:00:04:02"
+    hostname: inventory
+  tika:
+    image: ehiller/tika
+    mac_address: "4E:00:00:00:04:04"
+    hostname: tika
+networks:
+ default:
+  external:
+    name: "Mellanox ConnectX-3 Pro Ethernet Adapter #2 - Virtual Switch"

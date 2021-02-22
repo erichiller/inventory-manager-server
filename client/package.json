@@ -1,7 +1,7 @@
 {
   "name": "client",
-  "version": "0.1.0-20210220001",
-  "description": "Server for web resources and print handler via IPP",
+  "version": "0.1.0-20210221001",
+  "description": "Manage inventory, orders, labels",
   "main": "bundle.js",
   "scripts": {
     "build": "dotenv -e ../.env -- webpack --env NODE_ENV=production --config webpack.config.prod.js --progress",
@@ -31,7 +31,6 @@
     "@json-editor/json-editor": "^2.5.2",
     "antd": "^4.12.3",
     "bwip-js": "2.0.12",
-    "cors": "^2.8.5",
     "graphql": "^15.5.0",
     "jsoneditor": "^9.1.9",
     "konva": "7.2.3",
@@ -53,7 +52,6 @@
     "@graphql-codegen/typescript-operations": "^1.17.8",
     "@graphql-codegen/typescript-react-apollo": "^2.0.7",
     "@svgr/webpack": "^5.5.0",
-    "@types/cors": "^2.8.9",
     "@types/jest": "^26.0.20",
     "@types/jsoneditor": "^8.6.0",
     "@types/node": "^14.14.25",
