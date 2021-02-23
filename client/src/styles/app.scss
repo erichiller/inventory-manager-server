@@ -15,6 +15,7 @@ body {
         "Droid Sans", "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
 }
 
 code {
@@ -23,6 +24,11 @@ code {
 
 * {
     box-sizing: border-box;
+}
+
+.MainContentContainer {
+    width: 98%;
+    margin: 0 auto;
 }
 
 .ant-menu-submenu .ant-menu-sub .ant-menu-item .ant-menu.MainMenuInItem {
@@ -341,12 +347,12 @@ code {
 // }
 
 /** INVENTORY **/
-.ant-spin-nested-loading {
-    display: inline;
-    & .ant-spin-container {
-        display: inline;
-    }
-}
+// .ant-spin-nested-loading {
+//     display: inline;
+//     & .ant-spin-container {
+//         display: inline;
+//     }
+// }
 
 /*
 See
@@ -356,6 +362,10 @@ See
   ant-page-header-heading-sub-title
   ant-page-header-heading-title
 */
+
+/*
+ * Scrollbar
+ */
 
 // https://css-tricks.com/almanac/properties/s/scrollbar/
 $thumbBackground: #cee8ff;

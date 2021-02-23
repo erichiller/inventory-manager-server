@@ -1,19 +1,23 @@
 import React from 'react';
 import { matchPath } from 'react-router-dom';
-import { ItemTable } from '../components/Item/ItemTable';
-import { LabelTable } from '../components/Label/LabelTable';
-import { ItemIndex } from '../components/Item/Index';
-import { OrderTable } from '../components/Order/OrderTable';
-import { VendorTable } from '../components/Vendor/VendorTable';
-import { ManufacturerTable } from '../components/Manufacturer/ManufacturerTable';
+// import { ItemTable } from '../components/Item/ItemTable';
+// import { LabelTable } from '../components/Label/LabelTable';
+// import { ItemIndex } from '../components/Item/Index';
+// import { OrderTable } from '../components/Order/OrderTable';
+// import { VendorTable } from '../components/Vendor/VendorTable';
+// import { ManufacturerTable } from '../components/Manufacturer/ManufacturerTable';
 // import { ObjectTable } from '../components/Generic/ObjectTable';
 
 const ObjectTable = React.lazy( () => import( '../components/Generic/ObjectTable' ) );
-
+const ItemIndex = React.lazy( () => import( '../components/Item/Index' ) );
+const LabelTable = React.lazy( () => import( '../components/Label/LabelTable' ) );
+const OrderTable = React.lazy( () => import( '../components/Order/OrderTable' ) );
+const VendorTable = React.lazy( () => import( '../components/Vendor/VendorTable' ) );
+const ManufacturerTable = React.lazy( () => import( '../components/Manufacturer/ManufacturerTable' ) );
 
 type ReactFunctionComponent = ( ( route?: RouteEntry, match?: RouterMatch ) => JSX.Element );
 
-type ReactElementProvider = ( ( routes?, params?, children?) => React.ReactElement ) | React.ComponentType;
+type ReactElementProvider = ( ( routes?: RouteEntry[], params?: Record<string, string>, children?: React.ReactChildren ) => React.ReactElement ) | React.ComponentType;
 export interface RouteEntry {
     title: string | ReactFunctionComponent;
     subtitle: string | ReactFunctionComponent;
@@ -138,7 +142,6 @@ function forEachRoute ( routesNested: RouteEntry[], path?: string | string[], pa
         if ( route.children !== undefined ) {
             routeArr = routeArr.concat( forEachRoute( route.children, route.path, route ) );
         }
-
     } );
     console.log( "returning routeArr", routeArr );
     return routeArr;

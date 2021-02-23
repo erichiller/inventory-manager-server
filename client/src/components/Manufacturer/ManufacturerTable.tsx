@@ -2,13 +2,14 @@ import { Table, Divider, message } from 'antd';
 import * as React from 'react';
 import { ManufacturerSelectColumn, Manufacturer as ManufacturerGql, useGetManufacturersQuery, GetManufacturersQuery, useDeleteManufacturerMutation, GetManufacturerDocument, GetManufacturersDocument } from '~lib/types/graphql';
 import { Item } from '~lib/Item';
-import { toTitleCase, computeDefaultPagination } from '~lib/UtilityFunctions';
+import { toTitleCase, computeDefaultPagination, Unpacked } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ManufacturerFormModal } from './ManufacturerFormModal';
 import { Manufacturer } from '~lib/Manufacturer/Manufacturer';
 import { useState } from 'react';
+import { SorterResult } from 'antd/lib/table/interface';
 // import { history }
 
 
@@ -30,6 +31,9 @@ interface IManufacturerTableParams {
     action: "edit" | 'add';
 }
 
+type ManufacturerQueryResultT = GetManufacturersQuery['manufacturer'];
+
+
 export const ManufacturerTable: React.FC<ManufacturerTableProps> = ( props ) => {
     const [ state, setState ] = React.useState<ManufacturerTableState>( {
         data: undefined,
@@ -39,7 +43,7 @@ export const ManufacturerTable: React.FC<ManufacturerTableProps> = ( props ) => 
     } );
     let params = useParams<IManufacturerTableParams>();
     const [ manufacturers, setManufacturers ] = useState<Manufacturer[]>( [] );
-    const [ modal, setModal ] = useState<React.ReactElement>( null );
+    const [ modal, setModal ] = useState<React.ReactElement | null>( null );
     const history = useHistory();
 
     const handleModalChange = ( modal: React.ReactElement ) => {
@@ -50,7 +54,7 @@ export const ManufacturerTable: React.FC<ManufacturerTableProps> = ( props ) => 
     }
 
     React.useEffect( () => {
-        console.log({'position': 'React.useEffect', manufacturer_id: params.manufacturer_id, action: params.action});
+        console.log({position: 'React.useEffect', manufacturer_id: params.manufacturer_id, action: params.action});
         switch ( params.action ) {
             case "edit":
                 if ( params.manufacturer_id ) {
@@ -90,7 +94,7 @@ export const ManufacturerTable: React.FC<ManufacturerTableProps> = ( props ) => 
         }
     }, [ deleteManufacturerResult ] );
 
-    const columns: ColumnProps<Extract<GetManufacturersQuery, 'Manufacturer'>>[] = [
+    const columns: ColumnProps<Unpacked<ManufacturerQueryResultT>>[] = [
         ...Manufacturer.Columns,
         ...[
             {
@@ -121,7 +125,7 @@ export const ManufacturerTable: React.FC<ManufacturerTableProps> = ( props ) => 
     //     } );
     // };
 
-    function onChange ( pagination, filters, sorter ) {
+    function onChange ( pagination: TablePaginationConfig, filters: Record<string, (string | number | boolean)[] | null>, sorter: SorterResult<Manufacturer> ): void {
         console.log( 'params', pagination, filters, sorter );
     }
 
@@ -142,3 +146,5 @@ export const ManufacturerTable: React.FC<ManufacturerTableProps> = ( props ) => 
         </div>
     );
 };
+
+export default ManufacturerTable;

@@ -25,7 +25,6 @@ interface QREditModalProps {
 
 export const QREditModal: React.FC<QREditModalProps> = ( props ) => {
 
-
     const [ modalRef, setModalRef ] = useState<any>();
     const onCancel = () => {
         /// REMOVE ELEMENT /// REVERT ///
@@ -155,7 +154,6 @@ type UpdateLabelQR = ( newValue: Partial<LabelQR>, labelQR: LabelQR ) => void;
 
 
 export const QRCanvas: React.FC<QRCanvasProps> = ( props ) => {
-
     // const textToEncode = (): string => {
     //     if ( props.labelQR.properties ) {
     //         return props.labelQR.encodedText;

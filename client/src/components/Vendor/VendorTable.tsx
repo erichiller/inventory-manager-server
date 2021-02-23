@@ -9,7 +9,6 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { VendorFormModal } from './VendorFormModal';
 import { Vendor } from '~lib/Vendor/Vendor';
 import { useState } from 'react';
-// import { history }
 
 
 
@@ -43,14 +42,14 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
     const history = useHistory();
 
     const handleModalChange = ( modal: React.ReactElement ) => {
-        if (modal === null ){
-            history.push('/vendor');
+        if ( modal === null ){
+            history.push( '/vendor' );
         }
-        setModal(modal);
-    }
+        setModal( modal );
+    };
 
     React.useEffect( () => {
-        console.log({'position': 'React.useEffect', vendor_id: params.vendor_id, action: params.action});
+        console.log( {position: 'React.useEffect', vendor_id: params.vendor_id, action: params.action} );
         switch ( params.action ) {
             case "edit":
                 if ( params.vendor_id ) {
@@ -77,16 +76,16 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
     React.useEffect( () => {
         console.log( "updating vendor objects from result.data" );
         if ( result.data ) {
-            console.log("updating vendor objects from result.data");
+            console.log( "updating vendor objects from result.data" );
             setVendors( Vendor.VendorsFactory( result.data.vendor ) );
         }
     }, [ result.data ] );
 
     React.useEffect( () => {
         if ( deleteVendorResult.error ){
-            message.error( `Error deleting vendor: \n${deleteVendorResult.error}`);
+            message.error( `Error deleting vendor: \n${deleteVendorResult.error}` );
         } else if ( deleteVendorResult.data ) {
-            message.info( `Successfully deleted vendor.`);
+            message.info( `Successfully deleted vendor.` );
         }
     }, [ deleteVendorResult ] );
 
@@ -102,7 +101,7 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
                         <Link to={`/vendor/${ record.id }/edit`}><EditOutlined className="IconButton" /></Link>
                         <Divider type="vertical" />
                         <a><DeleteOutlined className="IconButton" onClick={ ( ) => {
-                            deleteVendor({variables: {id: record.id }});
+                            deleteVendor( {variables: {id: record.id }} );
                         }}/></a>
                     </span >
                 ),
@@ -141,3 +140,5 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
         </div>
     );
 };
+
+export default VendorTable;

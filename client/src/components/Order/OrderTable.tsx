@@ -139,3 +139,5 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
         </div>
     );
 };
+
+export default OrderTable;

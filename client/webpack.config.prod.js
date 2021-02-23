@@ -25,21 +25,21 @@ const extendedConfig = {
          * not needed for dynamic imports?
          * https://webpack.js.org/guides/code-splitting/#dynamic-imports
          */
-        splitChunks: {
-            chunks: 'all',
-            usedExports: true,
-            cacheGroups: {
-                vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendor',
-                    chunks: 'all',
-                },
-            },
-        },
-        // new
-        // https://webpack.js.org/guides/caching/
-        moduleIds: 'deterministic',
-        runtimeChunk: 'single',
+        // splitChunks: {
+        //     chunks: 'all',
+        //     usedExports: true,
+        //     cacheGroups: {
+        //         vendor: {
+        //             test: /[\\/]node_modules[\\/]/,
+        //             name: 'vendor',
+        //             chunks: 'all',
+        //         },
+        //     },
+        // },
+        // // new
+        // // https://webpack.js.org/guides/caching/
+        // moduleIds: 'deterministic',
+        // runtimeChunk: 'single',
     },
     output: {
         path: path.resolve( __dirname, 'dist' ),

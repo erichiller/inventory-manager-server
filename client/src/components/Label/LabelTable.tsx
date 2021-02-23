@@ -250,3 +250,5 @@ export const LabelTable: React.FC<LabelTableProps> = ( props ) => {
         </div>
     );
 };
+
+export default LabelTable;

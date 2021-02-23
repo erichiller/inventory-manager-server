@@ -78,7 +78,7 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
             selectedNodes: DataNode[];
             nativeEvent: MouseEvent;
         } ) => {
-        setState( { ...state, categoryFilters: selectedKeys });
+        setState( { ...state, categoryFilters: selectedKeys } );
     };
 
     return <div>
@@ -116,8 +116,6 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
         </div>
 
     </div>;
-
-
 };
 
 
@@ -154,3 +152,5 @@ export const ItemIndex = <T extends Item<any>> ( props: ItemTableProps<T> & { ch
 
 //     : <ItemTable />;
 // }
+
+export default ItemIndex;
