@@ -1,0 +1,2 @@
+# adapt caddyfile with 
+#    `~/caddy adapt -config client/docker/caddyfile`

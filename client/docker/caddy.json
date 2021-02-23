@@ -1,0 +1,85 @@
+{
+    "admin": {
+        "disabled": true
+    },
+    "logging": {
+        "sink": {
+            "writer": {
+                "output":"file"
+            }
+        }
+    },
+    "apps": {
+        "http": {
+            "servers": {
+                "srv0": {
+                    "automatic_https": {
+                        "disable_redirects": true
+                    },
+                    "listen": [
+                        ":7000"
+                    ],
+                    "routes": [
+                        {
+                            "match": [
+                                {
+                                    "host": [
+                                        "{env.WEB_DOMAIN}"
+                                    ]
+                                }
+                            ],
+                            "handle": [
+                                {
+                                    "handler": "subroute",
+                                    "routes": [
+                                        {
+                                            "handle": [
+                                                {
+                                                    "body": "Hello, world!",
+                                                    "handler": "static_response"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "terminal": true
+                        }
+                    ]
+                }
+            }
+        },
+        "tls": {
+            "automation": {
+                "policies": [
+                    {
+                        "subjects": [
+                            "{env.WEB_DOMAIN}"
+                        ],
+                        "issuers": [
+                            {
+                                "challenges": {
+                                    "dns": {
+                                        "resolvers": [
+                                            "8.8.8.8",
+                                            "ns-41-a.gandi.net",
+                                            "ns-103-b.gandi.net",
+                                            "ns-191-c.gandi.net"
+                                        ],
+                                        "provider": {
+                                            "api_token": "{env.GANDI_API_KEY}",
+                                            "name": "gandi"
+                                        }
+                                    }
+                                },
+                                "module": "acme",
+                                "ca": "{env.TLS_CA_URL}",
+                                "email": "{env.TLS_CA_EMAIL}"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

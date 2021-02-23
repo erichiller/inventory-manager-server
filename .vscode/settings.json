@@ -23,11 +23,12 @@
             //     // "./client/src/lib/item/**.json"
             // ],
             // "url": "./client/src/lib/types/schema.json"
+            "fileMatch": ["caddy.json"],
+            "url": "./client/docker/caddy_schema.json"
         }
     ],
     "files.associations": {
         "**/client/src/lib/item/*.json": "jsonc"
     },
     "svg.preview.background": "transparent",
-    "eslint.enable": true
 }

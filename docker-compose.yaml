@@ -6,10 +6,20 @@ services:
     image: ehiller/inventory-web
     mac_address: "4E:00:00:00:04:02"
     hostname: inventory
+    environment:
+      DATA_DIRECTORY: /caddy_data
+      GANDI_API_KEY: $GANDI_API_KEY
+      WEB_DOMAIN: $WEB_DOMAIN
+      TLS_CA_URL: $TLS_CA_URL
+      TLS_CA_EMAIL: $TLS_CA_EMAIL
+    volumes:
+      - inventory-web-caddy-data:/caddy_data
   tika:
     image: ehiller/tika
     mac_address: "4E:00:00:00:04:04"
     hostname: tika
+volumes:
+  inventory-web-caddy-data:
 networks:
  default:
   external:

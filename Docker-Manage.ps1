@@ -84,7 +84,8 @@ $Do = {
             ContainerHost  = $env:DOCKER_HOST_WINDOWS
             Ports          = @( "80:80" )
             Shell          = "powershell"
-            APACHE_VERSION = "2.4.46"
+            XCADDY_VERSION = "0.1.8"
+            GO_VERSION     = "1.16"
         }
         hasura                  = @{
             MAC           = "4E:00:00:00:04:03"
@@ -132,7 +133,9 @@ $Do = {
                 --build-arg INVENTORY_COMMIT_DATE=$arg_INVENTORY_COMMIT_DATE `
                 --build-arg HASURA_GRAPHQL_ENGINE_URL=$env:HASURA_GRAPHQL_ENGINE_URL `
                 --build-arg HASURA_GRAPHQL_ENGINE_PASSWORD=$env:HASURA_GRAPHQL_ENGINE_PASSWORD `
-                --build-arg APACHE_VERSION=$($ContainerParams.APACHE_VERSION.toString()) `
+                --build-arg XCADDY_VERSION=$($ContainerParams.XCADDY_VERSION.toString()) `
+                --build-arg GO_VERSION=$($ContainerParams.GO_VERSION.toString()) `
+                --file $PSScriptRoot\client\docker\Dockerfile `
                 $PSScriptRoot\client\
         }
         if ( $container -eq "hasura") {
