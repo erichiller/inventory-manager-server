@@ -5,47 +5,97 @@
     "logging": {
         "sink": {
             "writer": {
-                "output":"file"
+                "output":"stderr"
+            }
+        },
+        "logs": {
+            "default": {
+                //"writer": {
+	            //    "output": "file",
+	            //    "filename": "",
+	            //    "roll": false,
+	            //    "roll_size_mb": 0,
+	            //    "roll_gzip": false,
+	            //    "roll_local_time": false,
+	            //    "roll_keep": 0,
+	            //    "roll_keep_days": 0
+                //},
+                "writer": "stdout",
+                
+                "encoder": {
+                    "format": "console"
+                },
+                
+                // DEBUG, INFO, WARN, ERROR, PANIC, and FATAL
+                "level": "INFO",
             }
         }
     },
+    "storage": {
+        "module": "file_system",
+        "root": "{env.DATA_DIRECTORY}"
+    },
     "apps": {
         "http": {
+	        //"http_port": 80,
+	        //"https_port": 443,
             "servers": {
-                "srv0": {
+                "web": {
                     "automatic_https": {
-                        "disable_redirects": true
+                        // "disable_redirects": true
                     },
                     "listen": [
-                        ":7000"
+                        ":80",
+                        ":443"
                     ],
+                    
                     "routes": [
+                        {
+                            "handle": [
+                                {
+                                    "handler": "vars",
+                                    "root": "C:\app"
+                                }
+                            ]
+                        },
                         {
                             "match": [
                                 {
                                     "host": [
                                         "{env.WEB_DOMAIN}"
-                                    ]
+                                    ],
+                                    "file": {
+                                        "try_files": [
+                                            "{http.request.uri.path}",
+                                            "/index.html"
+                                        ]
+                                    }
                                 }
                             ],
                             "handle": [
                                 {
-                                    "handler": "subroute",
-                                    "routes": [
-                                        {
-                                            "handle": [
-                                                {
-                                                    "body": "Hello, world!",
-                                                    "handler": "static_response"
-                                                }
-                                            ]
-                                        }
-                                    ]
+                                    "handler": "rewrite",
+                                    "uri": "{http.matchers.file.relative}"
                                 }
-                            ],
-                            "terminal": true
+                            ]
+                        },
+                        {
+                            "handle": [
+                                {
+                                    "handler": "file_server"
+                                }
+                            ]
                         }
-                    ]
+                    ],
+                    
+			        "logs": {
+				        "default_logger_name": "default",
+				        //"logger_names": {
+					    //    "": ""
+				        //},
+				        //"skip_hosts": [""],
+				        //"skip_unmapped_hosts": false
+			        },
                 }
             }
         },
