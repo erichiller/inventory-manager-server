@@ -1,13 +1,7 @@
 
-install go
-
-git clone "https://github.com/caddyserver/caddy.git"
-
-
-xcaddy build v2.0.0 `
-    # https://github.com/abiosoft/caddy-json-schema
-    --with github.com/abiosoft/caddy-json-schema --no-cache \
-    --with github.com/caddy-dns/gandi \
+xcaddy build `
+    --with github.com/abiosoft/caddy-json-schema `
+    --with github.com/caddy-dns/gandi `
     --with github.com/greenpau/caddy-auth-portal
     # any other module you want to include in the generated schema
 
