@@ -27,7 +27,7 @@
     "@codemirror/commands": "0.17.4",
     "@codemirror/lang-javascript": "0.17.2",
     "@codemirror/state": "0.17.2",
-    "@codemirror/view": "0.17.9",
+    "@codemirror/view": "0.17.10",
     "@json-editor/json-editor": "^2.5.2",
     "antd": "^4.12.3",
     "bwip-js": "2.0.12",
