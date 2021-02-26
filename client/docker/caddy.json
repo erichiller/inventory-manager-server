@@ -109,7 +109,7 @@
                                             "ns-41-a.gandi.net",
                                             "ns-103-b.gandi.net",
                                             "ns-191-c.gandi.net",
-                                            "{env.LOCAL_DNS}"
+                                            "{env.AUX_DNS}"
                                         ],
                                         "provider": {
                                             "api_token": "{env.GANDI_API_KEY}",
