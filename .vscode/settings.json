@@ -28,7 +28,8 @@
         }
     ],
     "files.associations": {
-        "**/client/src/lib/item/*.json": "jsonc"
+        "**/client/src/lib/item/*.json": "jsonc",
+        "**/client/docker/caddy.json": "jsonc"
     },
     "svg.preview.background": "transparent",
 }

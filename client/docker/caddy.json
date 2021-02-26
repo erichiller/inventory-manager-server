@@ -48,13 +48,12 @@
                         ":80",
                         ":443"
                     ],
-                    
                     "routes": [
                         {
                             "handle": [
                                 {
                                     "handler": "vars",
-                                    "root": "C:\\app"
+                                    "root": "{env.APP_DIRECTORY}"
                                 }
                             ]
                         },
@@ -109,7 +108,8 @@
                                             "8.8.8.8",
                                             "ns-41-a.gandi.net",
                                             "ns-103-b.gandi.net",
-                                            "ns-191-c.gandi.net"
+                                            "ns-191-c.gandi.net",
+                                            "{env.LOCAL_DNS}"
                                         ],
                                         "provider": {
                                             "api_token": "{env.GANDI_API_KEY}",

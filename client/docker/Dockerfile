@@ -11,14 +11,12 @@ WORKDIR /go
 
 RUN Invoke-WebRequest -Uri ( 'https://golang.org/dl/go{0}.windows-amd64.zip' -f ( $env:GO_VERSION ) ) -OutFile /go.zip; `
     Expand-Archive /go.zip -Force -DestinationPath / ; `
-    Get-ChildItem /go ; `
     Write-Host "Adding Go to Path" ; `
     setx /M PATH ( '{0};{1}' -f ( 'C:\go\bin', $env:PATH ) ) ;
 
 
 RUN Invoke-WebRequest -Uri https://github.com/ghostwheel42/caddy-json-schema/archive/nullable.zip -OutFile /patchedSchemaGenerator.zip; `
-    Expand-Archive /patchedSchemaGenerator.zip -Force -DestinationPath / ; `
-    Get-ChildItem /caddy-json-schema-nullable ;
+    Expand-Archive /patchedSchemaGenerator.zip -Force -DestinationPath / ;
 
 
 RUN Invoke-WebRequest -Uri ( 'https://github.com/caddyserver/xcaddy/releases/download/v{0}/xcaddy_{0}_windows_amd64.zip' -f ( $env:XCADDY_VERSION ) ) -OutFile /xcaddy.zip ; `
@@ -26,7 +24,7 @@ RUN Invoke-WebRequest -Uri ( 'https://github.com/caddyserver/xcaddy/releases/dow
 
 WORKDIR /caddy
 
-RUN /xcaddy/xcaddy build --with github.com/abiosoft/caddy-json-schema=/caddy-json-schema-nullable --with github.com/caddy-dns/gandi --with github.com/greenpau/caddy-auth-portal
+RUN /xcaddy/xcaddy build --with github.com/abiosoft/caddy-json-schema=/caddy-json-schema-nullable --with github.com/caddy-dns/gandi --with github.com/greenpau/caddy-auth-portal --with github.com/caddyserver/jsonc-adapter
 
 
 ############################
@@ -51,9 +49,7 @@ WORKDIR /
 RUN powershell -Command `
     Invoke-WebRequest $('https://nodejs.org/dist/v{0}/node-v{0}-win-x64.zip' -f $env:NODE_VERSION) -OutFile C:\node.zip -UseBasicParsing ; `
     Expand-Archive 'C:\node.zip' -DestinationPath 'C:\\' ; `
-    Get-ChildItem C:\ ; `
     Rename-Item -Path $('C:\node-v{0}-win-x64' -f $env:NODE_VERSION) -NewName 'C:\nodejs' ; `
-    Get-ChildItem C:\nodejs ; `
     Remove-Item -Force C:\node.zip ;
 
 
@@ -75,8 +71,6 @@ RUN powershell -Command `
 ENV NPM_CONFIG_LOGLEVEL info
 
 RUN powershell -Command `
-    Write-Host "PATH:" ; `
-    Write-Host $env:PATH ; `
     $env:PATH = ( 'C:\nodejs;C:\yarn\bin;C:\git\cmd;C:\git\mingw64\bin;C:\git\usr\bin;{0}' -f $env:PATH ) ; `
     [Environment]::SetEnvironmentVariable('PATH', $env:PATH, [EnvironmentVariableTarget]::Machine)
 
@@ -87,11 +81,11 @@ COPY tsconfig.json /app/
 COPY webpack.config.js /app/
 COPY webpack.config.prod.js /app/
 COPY src /app/src
+
 ENV INVENTORY_COMMIT_DATE=${INVENTORY_COMMIT_DATE}
 ENV INVENTORY_COMMIT_SHA=${INVENTORY_COMMIT_SHA}
+
 RUN powershell -Command `
-# $env:INVENTORY_COMMIT_DATE=${INVENTORY_COMMIT_DATE} ; `
-# $env:INVENTORY_COMMIT_SHA=${INVENTORY_COMMIT_SHA} ; `
     Write-Host ( 'Building with Date={0} and SHA={1}' -f $env:INVENTORY_COMMIT_DATE , $env:INVENTORY_COMMIT_SHA ) ; `
     yarn build
 
@@ -106,6 +100,7 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 ENV GANDI_API_KEY "ENTER_GANDI_API_KEY_HERE"
 ENV WEB_DOMAIN "ENTER_DOMAIN_HERE"
 ENV DATA_DIRECTORY C:/data
+ENV APP_DIRECTORY C:/app
 ENV TLS_CA_EMAIL "ENTER_LETS_ENCRYPT_EMAIL_HERE"
 # testing Let's Encrypt URL
 ENV TLS_CA_URL https://acme-staging-v02.api.letsencrypt.org/directory
@@ -115,7 +110,7 @@ COPY --from=CaddyBuilder /caddy/caddy.exe /caddy.exe
 # COPY --from=CaddyBuilder /windows/system32/msvcp140.dll /windows/system32
 # COPY --from=builder /windows/system32/vcruntime140.dll /windows/system32
 
-COPY --from=AppBuilder /app/dist /app
+COPY --from=AppBuilder /app/dist ${APP_DIRECTORY}}
 
 WORKDIR /
 

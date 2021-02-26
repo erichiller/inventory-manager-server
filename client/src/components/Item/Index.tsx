@@ -9,7 +9,6 @@ import {
 import { ItemTable } from './ItemTable';
 import { ItemCategoryTree } from './ItemCategoryTree';
 import { EventDataNode, DataNode } from 'rc-tree/lib/interface';
-// import DocumentNode from 'graphql-tag';
 
 
 interface ItemTableState {
