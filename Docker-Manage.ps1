@@ -108,7 +108,7 @@ $Do = {
 
     if ( $Build ) {
         Write-Output "Building $container";
-        $arg_INVENTORY_COMMIT_SHA = git describe --always;
+        $arg_INVENTORY_COMMIT_SHA  = git describe --always;
         $arg_INVENTORY_COMMIT_DATE = git log -1 --format=%aI;
     
         Write-Output "Building $container with SHA=${arg_INVENTORY_COMMIT_SHA} DATE=${arg_INVENTORY_COMMIT_DATE}";
@@ -135,8 +135,8 @@ $Do = {
                 --build-arg HASURA_GRAPHQL_ENGINE_PASSWORD=$env:HASURA_GRAPHQL_ENGINE_PASSWORD `
                 --build-arg XCADDY_VERSION=$($ContainerParams.XCADDY_VERSION.toString()) `
                 --build-arg GO_VERSION=$($ContainerParams.GO_VERSION.toString()) `
-                --file $PSScriptRoot\client\docker\Dockerfile `
-                $PSScriptRoot\client\
+                --file ( Join-Path $PSScriptRoot client docker Dockerfile ) `
+                ( Join-Path $PSScriptRoot client )
         }
         if ( $container -eq "hasura") {
             $env:DOCKER_HOST = $ContainerParams.ContainerHost ; 
@@ -144,7 +144,7 @@ $Do = {
             docker run -p 8080:8080 `
                 -e HASURA_GRAPHQL_DATABASE_URL=postgres://${env:HASURA_GRAPHQL_ENGINE_USERNAME}:${env:HASURA_GRAPHQL_ENGINE_PASSWORD}@pg.hiller.pro:5432/inventory `
                 -e HASURA_GRAPHQL_ENABLE_CONSOLE=true `
-                -e HASURA_GRAPHQL_ADMIN_SECRET=achoo `
+                -e HASURA_GRAPHQL_ADMIN_SECRET=$env:HASURA_GRAPHQL_ENGINE_PASSWORD `
                 --name graphql `
                 --hostname graphql `
                 --dns 192.168.10.1 `

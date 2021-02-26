@@ -20,14 +20,14 @@
 	            //    "roll_keep": 0,
 	            //    "roll_keep_days": 0
                 //},
-                "writer": "stdout",
-                
+                "writer": {
+                    "output": "stdout"
+                },
                 "encoder": {
                     "format": "console"
                 },
-                
                 // DEBUG, INFO, WARN, ERROR, PANIC, and FATAL
-                "level": "INFO",
+                "level": "INFO"
             }
         }
     },
@@ -54,7 +54,7 @@
                             "handle": [
                                 {
                                     "handler": "vars",
-                                    "root": "C:\app"
+                                    "root": "C:\\app"
                                 }
                             ]
                         },
@@ -89,13 +89,8 @@
                     ],
                     
 			        "logs": {
-				        "default_logger_name": "default",
-				        //"logger_names": {
-					    //    "": ""
-				        //},
-				        //"skip_hosts": [""],
-				        //"skip_unmapped_hosts": false
-			        },
+				        "default_logger_name": "default"
+			        }
                 }
             }
         },
