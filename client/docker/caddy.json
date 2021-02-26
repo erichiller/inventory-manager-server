@@ -63,6 +63,8 @@
                                     "host": [
                                         "{env.WEB_DOMAIN}"
                                     ],
+                                },
+                                {
                                     "file": {
                                         "try_files": [
                                             "{http.request.uri.path}",
