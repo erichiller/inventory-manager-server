@@ -62,7 +62,7 @@
                                 {
                                     "host": [
                                         "{env.WEB_DOMAIN}"
-                                    ],
+                                    ]
                                 },
                                 {
                                     "file": {
