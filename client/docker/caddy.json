@@ -5,20 +5,20 @@
     "logging": {
         "sink": {
             "writer": {
-                "output":"stderr"
+                "output": "stderr"
             }
         },
         "logs": {
             "default": {
                 //"writer": {
-	            //    "output": "file",
-	            //    "filename": "",
-	            //    "roll": false,
-	            //    "roll_size_mb": 0,
-	            //    "roll_gzip": false,
-	            //    "roll_local_time": false,
-	            //    "roll_keep": 0,
-	            //    "roll_keep_days": 0
+                //    "output": "file",
+                //    "filename": "",
+                //    "roll": false,
+                //    "roll_size_mb": 0,
+                //    "roll_gzip": false,
+                //    "roll_local_time": false,
+                //    "roll_keep": 0,
+                //    "roll_keep_days": 0
                 //},
                 "writer": {
                     "output": "stdout"
@@ -37,61 +37,101 @@
     },
     "apps": {
         "http": {
-	        //"http_port": 80,
-	        //"https_port": 443,
+            //"http_port": 80,
+            //"https_port": 443,
             "servers": {
                 "web": {
                     "automatic_https": {
                         // "disable_redirects": true
                     },
                     "listen": [
-                        ":80",
+                        // ":80",
                         ":443"
                     ],
                     "routes": [
-                        {
-                            "handle": [
-                                {
-                                    "handler": "vars",
-                                    "root": "{env.APP_DIRECTORY}"
-                                }
-                            ]
-                        },
                         {
                             "match": [
                                 {
                                     "host": [
                                         "{env.WEB_DOMAIN}"
                                     ]
-                                },
-                                {
-                                    "file": {
-                                        "try_files": [
-                                            "{http.request.uri.path}",
-                                            "/index.html"
-                                        ]
-                                    }
                                 }
                             ],
                             "handle": [
                                 {
-                                    "handler": "rewrite",
-                                    "uri": "{http.matchers.file.relative}"
+                                    "handler": "subroute",
+                                    "routes": [
+                                        {
+                                            "handle": [
+                                                {
+                                                    "handler": "vars",
+                                                    "root": "{env.APP_DIRECTORY}"
+                                                },
+                                                {
+                                                    "handler": "rewrite",
+                                                    "uri": "{http.matchers.file.relative}"
+                                                }
+                                            ],
+                                            "match": [
+                                                {
+                                                    "file": {
+                                                        "try_files": [
+                                                            "{http.request.uri.path}",
+                                                            "/index.html"
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 }
-                            ]
-                        },
-                        {
-                            "handle": [
-                                {
-                                    "handler": "file_server"
-                                }
-                            ]
+                            ],
+                            "terminal": true
                         }
                     ],
-                    
-			        "logs": {
-				        "default_logger_name": "default"
-			        }
+                    // "routes": [
+                    //     {
+                    //         "handle": [
+                    //             {
+                    //                 "handler": "vars",
+                    //                 "root": "{env.APP_DIRECTORY}"
+                    //             }
+                    //         ]
+                    //     },
+                    //     {
+                    //         "match": [
+                    //             {
+                    //                 "host": [
+                    //                     "{env.WEB_DOMAIN}"
+                    //                 ]
+                    //             },
+                    //             {
+                    //                 "file": {
+                    //                     "try_files": [
+                    //                         "{http.request.uri.path}",
+                    //                         "/index.html"
+                    //                     ]
+                    //                 }
+                    //             }
+                    //         ],
+                    //         "handle": [
+                    //             {
+                    //                 "handler": "rewrite",
+                    //                 "uri": "{http.matchers.file.relative}"
+                    //             }
+                    //         ]
+                    //     },
+                    //     {
+                    //         "handle": [
+                    //             {
+                    //                 "handler": "file_server"
+                    //             }
+                    //         ]
+                    //     }
+                    // ],
+                    "logs": {
+                        "default_logger_name": "default"
+                    }
                 }
             }
         },
@@ -104,6 +144,9 @@
                         ],
                         "issuers": [
                             {
+                                "module": "acme",
+                                "ca": "{env.TLS_CA_URL}",
+                                "email": "{env.TLS_CA_EMAIL}",
                                 "challenges": {
                                     "dns": {
                                         "resolvers": [
@@ -118,10 +161,7 @@
                                             "name": "gandi"
                                         }
                                     }
-                                },
-                                "module": "acme",
-                                "ca": "{env.TLS_CA_URL}",
-                                "email": "{env.TLS_CA_EMAIL}"
+                                }
                             }
                         ]
                     }

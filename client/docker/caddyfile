@@ -1,2 +1,9 @@
 # adapt caddyfile with 
 #    `~/caddy adapt -config client/docker/caddyfile`
+#
+
+ubntv.hiller.pro
+
+tls {
+	dns gandi {env.GANDI_API_TOKEN}
+}
