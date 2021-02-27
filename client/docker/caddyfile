@@ -1,9 +1,78 @@
+# Caddyfile
+# Directives
+# https://caddyserver.com/docs/caddyfile/directives
+# 
 # adapt caddyfile with 
-#    `~/caddy adapt -config client/docker/caddyfile`
+#    `~/caddy adapt -verify -pretty -config client/docker/caddyfile`
 #
 
-ubntv.hiller.pro
-
-tls {
-	dns gandi {env.GANDI_API_TOKEN}
+# Globals
+# https://caddyserver.com/docs/caddyfile/options#storage
+{
+    # debug
+    storage file_system {
+        root {$DATA_DIRECTORY}
+    }
+    admin off
 }
+
+{$WEB_DOMAIN}
+
+# https://caddyserver.com/docs/caddyfile/directives/metrics
+metrics /metrics
+respond /health-check 200
+
+# https://caddyserver.com/docs/caddyfile/directives/handle
+#handle /graphql/* {
+# https://caddyserver.com/docs/caddyfile/directives/reverse_proxy
+reverse_proxy /graphql/* {$HASURA_GRAPHQL_ENGINE_URL}
+    # https://hasura.io/docs/latest/graphql/core/api-reference/health.html
+    health_path /healthz
+#}
+
+# https://caddyserver.com/docs/caddyfile/matchers
+@websockets {
+    header Connection *Upgrade*
+    header Upgrade    websocket
+    path /api/
+}
+reverse_proxy @websockets localhost:600
+
+# https://caddyserver.com/docs/caddyfile/directives/root
+root * {$APP_DIRECTORY}
+
+# https://caddyserver.com/docs/caddyfile/directives/file_server
+# https://caddyserver.com/docs/caddyfile/directives/try_files
+try_files {path} index.html
+
+# https://caddyserver.com/docs/caddyfile/directives/push
+push
+
+tls {$TLS_CA_EMAIL} {
+    # Let's Encrypt staging
+    # https://letsencrypt.org/docs/staging-environment/
+    # see also: client certificates (see tls directive docs)
+    # https://caddyserver.com/docs/caddyfile/directives/tls
+    ca {$TLS_CA_URL}
+	dns gandi {$GANDI_API_TOKEN}
+}
+
+# request logging
+# https://caddyserver.com/docs/caddyfile/directives/log
+log {
+    output stdout
+	# output file /var/log/access.log {
+    #     roll_size 10mb
+    #     roll_keep 10
+    #     roll_keep_for 720h
+	# }
+	
+    format console
+    # format json
+
+    # DEBUG, INFO, WARN, ERROR, PANIC, and FATAL
+    level DEBUG
+}
+
+# ACME server ?
+# https://caddyserver.com/docs/caddyfile/directives/acme_server
