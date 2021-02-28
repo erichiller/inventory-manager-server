@@ -101,15 +101,13 @@ ENV GANDI_API_KEY "ENTER_GANDI_API_KEY_HERE"
 ENV WEB_DOMAIN "ENTER_DOMAIN_HERE"
 ENV DATA_DIRECTORY C:/data
 ENV APP_DIRECTORY C:/app
-ENV AUX_DNS 1.1.1.1
+# ENV AUX_DNS 1.1.1.1
 ENV TLS_CA_EMAIL "ENTER_LETS_ENCRYPT_EMAIL_HERE"
 # testing Let's Encrypt URL
 ENV TLS_CA_URL https://acme-staging-v02.api.letsencrypt.org/directory
 
 
 COPY --from=CaddyBuilder /caddy/caddy.exe /caddy.exe
-# COPY --from=CaddyBuilder /windows/system32/msvcp140.dll /windows/system32
-# COPY --from=builder /windows/system32/vcruntime140.dll /windows/system32
 
 COPY --from=AppBuilder /app/dist ${APP_DIRECTORY}}
 

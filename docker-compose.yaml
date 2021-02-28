@@ -12,7 +12,7 @@ services:
       WEB_DOMAIN: $WEB_DOMAIN
       TLS_CA_URL: $TLS_CA_URL
       TLS_CA_EMAIL: $TLS_CA_EMAIL
-      AUX_DNS: $AUX_DNS
+      # AUX_DNS: $AUX_DNS
     volumes:
       - inventory-web-caddy-data:/caddy_data
   tika:

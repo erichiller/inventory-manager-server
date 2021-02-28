@@ -10,31 +10,51 @@ Path to .env file
 param (
     # [Parameter(Mandatory = $true)]
     # [Alias("CN", "MachineName")]
+    [Parameter(ParameterSetName = "Containers")]
     [Alias("b")]
     [switch]
     $Build
     ,
+    [Parameter(ParameterSetName = "Containers")]
     [Alias("r", "Start")]
     [switch]
     $Run
     ,
+    [Parameter(ParameterSetName = "Containers")]
     [Alias("rm")]
     [switch]
     $Remove
     ,
+    [Parameter(ParameterSetName = "Containers")]
     [Alias("c")]
     [switch]
     $Console
     ,
+    [Parameter(ParameterSetName = "Containers")]
     [Alias("l", "Log")]
     [switch]
     $Logs
     ,
+    [Parameter(ParameterSetName = "Caddy")]
+    [Alias("w", "web")]
+    [switch]
+    $RunWebServer
+    ,
+    [Parameter(ParameterSetName = "Caddy")]
+    [switch]
+    $BuildWebServer
+    ,
+    [Parameter(ParameterSetName = "Caddy")]
+    [switch]
+    $AdaptCaddyfile
+    ,
     # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions_advanced_parameters?view=powershell-6
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $true, ParameterSetName = "Containers")]
     [ValidateSet('hasura', 'inventory-web', 'inventory-manager-api')]
     $container
     ,
+    [Parameter(ParameterSetName = "Containers")]
+    [Parameter(ParameterSetName = "Caddy")]
     [ValidateScript( {
             if (-Not ($_ | Test-Path) ) {
                 throw "File or folder does not exist"
@@ -45,11 +65,11 @@ param (
             if ($_ -notmatch "(\.env)") {
                 throw "The file specified in the path argument must be either of type env"
             }
-            return $true 
+            return $true
         })]
     [Alias("e")]
     [System.IO.FileInfo]$DotEnv = ".env"
-    
+
     # [Parameter(Mandatory=$true)]
     # [ArgumentCompleter( {
     #         param ( $commandName,
@@ -65,35 +85,7 @@ param (
 # https://stackoverflow.com/questions/5237723/how-do-i-get-help-messages-to-appear-for-my-powershell-script-parameters
 
 
-$Do = {
-    Set-PsEnv -DotEnv $DotEnv
-
-    $Containers = @{
-        "inventory-manager-api" = @{
-            MAC           = "4E:00:00:00:04:01"
-            Hostname      = "inventory-api"
-            # Stack         = "inventory"             # docker-compose stack name
-            ContainerHost = $env:DOCKER_HOST_WINDOWS
-            Ports         = @( "3000:3000" )
-            Shell         = "powershell"
-        }
-        "inventory-web"         = @{
-            MAC            = "4E:00:00:00:04:02"
-            Hostname       = "inventory-web"
-            Stack          = "inventory"             # docker-compose stack name
-            ContainerHost  = $env:DOCKER_HOST_WINDOWS
-            Ports          = @( "80:80" )
-            Shell          = "powershell"
-            XCADDY_VERSION = "0.1.8"
-            GO_VERSION     = "1.16"
-        }
-        hasura                  = @{
-            MAC           = "4E:00:00:00:04:03"
-            Hostname      = "hasura"
-            ContainerHost = $env:DOCKER_HOST_LINUX
-            Shell         = "/bin.bash"
-        }
-    }
+$DoContainers = {
 
     $ContainerParams = $Containers[$container];
 
@@ -108,9 +100,9 @@ $Do = {
 
     if ( $Build ) {
         Write-Output "Building $container";
-        $arg_INVENTORY_COMMIT_SHA  = git describe --always;
+        $arg_INVENTORY_COMMIT_SHA = git describe --always;
         $arg_INVENTORY_COMMIT_DATE = git log -1 --format=%aI;
-    
+
         Write-Output "Building $container with SHA=${arg_INVENTORY_COMMIT_SHA} DATE=${arg_INVENTORY_COMMIT_DATE}";
         if ( $container -eq "inventory-manager-api" ) {
             docker image build $PSScriptRoot\server\ `
@@ -136,11 +128,11 @@ $Do = {
                 --build-arg XCADDY_VERSION=$($ContainerParams.XCADDY_VERSION.toString()) `
                 --build-arg GO_VERSION=$($ContainerParams.GO_VERSION.toString()) `
                 --file ( Join-Path $PSScriptRoot client docker Dockerfile ) `
-                ( Join-Path $PSScriptRoot client )
+            ( Join-Path $PSScriptRoot client )
         }
         if ( $container -eq "hasura") {
-            $env:DOCKER_HOST = $ContainerParams.ContainerHost ; 
-            docker container rm -f graphql ; 
+            $env:DOCKER_HOST = $ContainerParams.ContainerHost ;
+            docker container rm -f graphql ;
             docker run -p 8080:8080 `
                 -e HASURA_GRAPHQL_DATABASE_URL=postgres://${env:HASURA_GRAPHQL_ENGINE_USERNAME}:${env:HASURA_GRAPHQL_ENGINE_PASSWORD}@pg.hiller.pro:5432/inventory `
                 -e HASURA_GRAPHQL_ENABLE_CONSOLE=true `
@@ -185,6 +177,78 @@ $Do = {
         Write-Output "docker -H $($ContainerParams.ContainerHost) exec -it $fullContainerName $($ContainerParams.Shell)"
         docker -H $ContainerParams.ContainerHost exec -it $fullContainerName $ContainerParams.Shell
     }
+}
+
+$DoCaddy = {
+    $caddyPath = Join-Path $PSScriptRoot ".caddy" ;
+    $xcaddyPath = Join-Path $caddyPath "xcaddy" ;
+    if ( $BuildWebServer  ) {
+
+        Invoke-WebRequest `
+            -Uri "https://github.com/ghostwheel42/caddy-json-schema/archive/nullable.zip" `
+            -OutFile $( Join-Path $caddyPath "patchedSchemaGenerator.zip" );
+        Expand-Archive $( Join-Path $caddyPath "patchedSchemaGenerator.zip" ) -Force -DestinationPath $caddyPath ;
+
+
+        Invoke-WebRequest `
+            -Uri ( 'https://github.com/caddyserver/xcaddy/releases/download/v{0}/xcaddy_{0}_windows_amd64.zip' -f ( $Containers["inventory-web"].XCADDY_VERSION.toString() ) ) `
+            -OutFile $( Join-Path $caddyPath "xcaddy.zip" ) ;
+        Expand-Archive `
+            $( Join-Path $caddyPath "xcaddy.zip" ) `
+            -Force `
+            -DestinationPath $xcaddyPath ;
+
+        Push-Location -Path $caddyPath
+
+        & $( Join-Path $xcaddyPath "xcaddy.exe" ) `
+            build `
+            --with github.com/abiosoft/caddy-json-schema=$( Join-Path $caddyPath "caddy-json-schema-nullable" ) `
+            --with github.com/caddy-dns/gandi `
+            --with github.com/greenpau/caddy-auth-portal `
+            --with github.com/caddyserver/jsonc-adapter ;
+        Pop-Location
+    }
+    
+    if ( $AdaptCaddyfile ) {
+        Write-Information "Caddyfile"
+        $caddyExePath = Join-Path $caddyPath "caddy.exe" ;
+        $env:DATA_DIRECTORY = Join-Path $caddyPath "data";
+        New-Item -ItemType Directory -Path $env:DATA_DIRECTORY -Force ;
+        # Copy-Item `
+        #     -Force `
+        #     -Path $( Join-Path $PSScriptRoot "client" "docker" "caddyfile" ) `
+        #     -Destination $( Join-Path $env:DATA_DIRECTORY "caddy.json" ) ;
+
+        if ( -not $(Test-Path $caddyExePath ) ) {
+            Write-Error "caddy was not found at $caddyExePath";
+        }
+        # Show-Env | Format-Table
+        if ( $Verbose -eq $True ) {
+            & $caddyExePath environ
+        }
+        & $caddyExePath adapt -validate -pretty `
+            -config $( Join-Path $PSScriptRoot "client" "docker" "caddyfile" )
+    }
+
+    if ( $RunWebServer ) {
+        $caddyExePath = Join-Path $caddyPath "caddy.exe" ;
+        $env:DATA_DIRECTORY = Join-Path $caddyPath "data";
+        $env:APP_DIRECTORY = Join-Path $PSScriptRoot "client" "dist";
+        New-Item -ItemType Directory -Path $env:DATA_DIRECTORY -Force ;
+        # Copy-Item `
+        #     -Force `
+        #     -Path $( Join-Path $PSScriptRoot "client" "docker" "caddy.old_mod.json" ) `
+        #     -Destination $( Join-Path $env:DATA_DIRECTORY "caddy.json" ) ;
+
+        if ( -not $(Test-Path $caddyExePath ) ) {
+            Write-Error "caddy was not found at $caddyExePath";
+        }
+        # Show-Env | Format-Table
+        if ( $Verbose -eq $True ){
+            & $caddyExePath environ
+        }
+        & $caddyExePath run -config $( Join-Path $PSScriptRoot "client" "docker" "caddyfile" ) -adapter caddyfile
+    }
 
 }
 
@@ -197,7 +261,7 @@ This function looks for .env file in the current directoty, if present
 it loads the environment variable mentioned in the file to the current process.
 .Example
  Set-PsEnv
- 
+
  .Example
  #.env file format
  #To Assign value, use "=" operator
@@ -230,18 +294,18 @@ function Set-PsEnv {
                 if ($_ -notmatch "(\.env)") {
                     throw "The file specified in the path argument must be either of type env"
                 }
-                return $true 
+                return $true
             })]
         [Alias("e")]
         [System.IO.FileInfo]$DotEnv = ".env"
     )
 
-    if ($Global:PreviousDir -eq (Get-Location).Path) {
-        Write-Verbose "Set-PsEnv:Skipping same dir"
-        return
-    } else {
-        $Global:PreviousDir = (Get-Location).Path
-    }
+    # if ($Global:PreviousDir -eq (Get-Location).Path) {
+    #     Write-Verbose "Set-PsEnv:Skipping same dir"
+    #     return
+    # } else {
+    #     $Global:PreviousDir = (Get-Location).Path
+    # }
 
     #read the local env file
     $content = Get-Content $DotEnv -ErrorAction Stop
@@ -264,12 +328,12 @@ function Set-PsEnv {
         #get the operator
         if ($line -like "*:=*") {
             Write-Verbose "Prefix"
-            $kvp = $line -split ":=", 2            
+            $kvp = $line -split ":=", 2
             $key = $kvp[0].Trim()
             $value = "{0};{1}" -f $kvp[1].Trim(), [System.Environment]::GetEnvironmentVariable($key)
         } elseif ($line -like "*=:*") {
             Write-Verbose "Suffix"
-            $kvp = $line -split "=:", 2            
+            $kvp = $line -split "=:", 2
             $key = $kvp[0].Trim()
             $value = "{1};{0}" -f $kvp[1].Trim(), [System.Environment]::GetEnvironmentVariable($key)
         } else {
@@ -280,11 +344,47 @@ function Set-PsEnv {
         }
 
         Write-Verbose "$key=$value"
-        
-        if ($PSCmdlet.ShouldProcess("environment variable $key", "set value $value")) {            
+
+        if ($PSCmdlet.ShouldProcess("environment variable $key", "set value $value")) {
             [Environment]::SetEnvironmentVariable($key, $value, "Process") | Out-Null
         }
     }
 }
 
-&$Do
+Set-PsEnv -DotEnv $DotEnv -ErrorAction Stop # -Verbose
+
+Write-Information "Loaded environment variables."
+
+$Containers = @{
+    "inventory-manager-api" = @{
+        MAC           = "4E:00:00:00:04:01"
+        Hostname      = "inventory-api"
+        # Stack         = "inventory"             # docker-compose stack name
+        ContainerHost = $env:DOCKER_HOST_WINDOWS
+        Ports         = @( "3000:3000" )
+        Shell         = "powershell"
+    }
+    "inventory-web"         = @{
+        MAC            = "4E:00:00:00:04:02"
+        Hostname       = "inventory-web"
+        Stack          = "inventory"             # docker-compose stack name
+        ContainerHost  = $env:DOCKER_HOST_WINDOWS
+        Ports          = @( "80:80" )
+        Shell          = "powershell"
+        XCADDY_VERSION = "0.1.8"
+        GO_VERSION     = "1.16"
+    }
+    hasura                  = @{
+        MAC           = "4E:00:00:00:04:03"
+        Hostname      = "hasura"
+        ContainerHost = $env:DOCKER_HOST_LINUX
+        Shell         = "/bin.bash"
+    }
+}
+
+if ( $container ) {
+    &$DoContainers
+}
+if ( $BuildWebServer -or $RunWebServer -or $AdaptCaddyfile ) {
+    &$DoCaddy
+}

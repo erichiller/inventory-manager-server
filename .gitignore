@@ -6,3 +6,4 @@ apollo.config.js
 yarn-error.log
 coverage
 .env
+.caddy

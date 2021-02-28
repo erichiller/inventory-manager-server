@@ -8,42 +8,54 @@
 
 # Globals
 # https://caddyserver.com/docs/caddyfile/options#storage
+
 {
-    # debug
-    storage file_system {
+	debug
+	http_port  80
+	https_port 443
+	storage file_system {
         root {$DATA_DIRECTORY}
     }
-    admin off
+	# admin off
 }
 
 {$WEB_DOMAIN}
 
+encode zstd gzip
+
 # https://caddyserver.com/docs/caddyfile/directives/metrics
 metrics /metrics
-respond /health-check 200
+respond /health-check "Ok" 200
 
 # https://caddyserver.com/docs/caddyfile/directives/handle
-#handle /graphql/* {
+# handle /graphql/* {
 # https://caddyserver.com/docs/caddyfile/directives/reverse_proxy
-reverse_proxy /graphql/* {$HASURA_GRAPHQL_ENGINE_URL}
-    # https://hasura.io/docs/latest/graphql/core/api-reference/health.html
-    health_path /healthz
-#}
+
+# rewrite /graphql/ /v1/graphql/
+# reverse_proxy /graphql/* {$HASURA_GRAPHQL_ENGINE_HOST} {
+#     # https://hasura.io/docs/latest/graphql/core/api-reference/health.html
+#     health_path /healthz
+# }
+reverse_proxy /graphql/* {$API_HOST}
 
 # https://caddyserver.com/docs/caddyfile/matchers
 @websockets {
     header Connection *Upgrade*
     header Upgrade    websocket
-    path /api/
+    path  /api/
 }
-reverse_proxy @websockets localhost:600
+reverse_proxy @websockets {$API_HOST}
 
 # https://caddyserver.com/docs/caddyfile/directives/root
-root * {$APP_DIRECTORY}
+# root * {$APP_DIRECTORY}
 
-# https://caddyserver.com/docs/caddyfile/directives/file_server
-# https://caddyserver.com/docs/caddyfile/directives/try_files
-try_files {path} index.html
+# # https://caddyserver.com/docs/caddyfile/directives/file_server
+# # https://caddyserver.com/docs/caddyfile/directives/try_files
+try_files {APP_DIRECTORY}{path} {APP_DIRECTORY}index.html
+
+handle_errors {
+	respond "{http.error.status_code} {http.error.status_text}"
+}
 
 # https://caddyserver.com/docs/caddyfile/directives/push
 push
@@ -54,7 +66,7 @@ tls {$TLS_CA_EMAIL} {
     # see also: client certificates (see tls directive docs)
     # https://caddyserver.com/docs/caddyfile/directives/tls
     ca {$TLS_CA_URL}
-	dns gandi {$GANDI_API_TOKEN}
+	dns gandi {$GANDI_API_KEY}
 }
 
 # request logging
