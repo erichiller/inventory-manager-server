@@ -19,72 +19,122 @@
 	# admin off
 }
 
-{$WEB_DOMAIN}
+(tls-config) {
+	tls {$TLS_CA_EMAIL} {
+		# Let's Encrypt staging
+		# https://letsencrypt.org/docs/staging-environment/
+		# see also: client certificates (see tls directive docs)
+		# https://caddyserver.com/docs/caddyfile/directives/tls
+		ca {$TLS_CA_URL}
+		dns gandi {$GANDI_API_KEY}
+	}
+}
 
-encode zstd gzip
+
+{$WEB_DOMAIN}/health-check {
+	import tls-config
+	respond "ok" 200
+}
 
 # https://caddyserver.com/docs/caddyfile/directives/metrics
-metrics /metrics
-respond /health-check "Ok" 200
-
-# https://caddyserver.com/docs/caddyfile/directives/handle
-# handle /graphql/* {
-# https://caddyserver.com/docs/caddyfile/directives/reverse_proxy
-
-# rewrite /graphql/ /v1/graphql/
-# reverse_proxy /graphql/* {$HASURA_GRAPHQL_ENGINE_HOST} {
-#     # https://hasura.io/docs/latest/graphql/core/api-reference/health.html
-#     health_path /healthz
-# }
-reverse_proxy /graphql/* {$API_HOST}
-
-# https://caddyserver.com/docs/caddyfile/matchers
-@websockets {
-    header Connection *Upgrade*
-    header Upgrade    websocket
-    path  /api/
-}
-reverse_proxy @websockets {$API_HOST}
-
-# https://caddyserver.com/docs/caddyfile/directives/root
-# root * {$APP_DIRECTORY}
-
-# # https://caddyserver.com/docs/caddyfile/directives/file_server
-# # https://caddyserver.com/docs/caddyfile/directives/try_files
-try_files {APP_DIRECTORY}{path} {APP_DIRECTORY}index.html
-
-handle_errors {
-	respond "{http.error.status_code} {http.error.status_text}"
+{$WEB_DOMAIN}/metrics {
+	import tls-config
+	metrics
 }
 
-# https://caddyserver.com/docs/caddyfile/directives/push
-push
-
-tls {$TLS_CA_EMAIL} {
-    # Let's Encrypt staging
-    # https://letsencrypt.org/docs/staging-environment/
-    # see also: client certificates (see tls directive docs)
-    # https://caddyserver.com/docs/caddyfile/directives/tls
-    ca {$TLS_CA_URL}
-	dns gandi {$GANDI_API_KEY}
+{$WEB_DOMAIN}/console/* {
+	import tls-config
+	uri replace /console/ /graphql/ 1
+	reverse_proxy {$API_HOST}
 }
 
-# request logging
-# https://caddyserver.com/docs/caddyfile/directives/log
-log {
-    output stdout
-	# output file /var/log/access.log {
-    #     roll_size 10mb
-    #     roll_keep 10
-    #     roll_keep_for 720h
-	# }
+{$WEB_DOMAIN}/graphql/* {
+	import tls-config
+	uri replace /graphql/ /v1/graphql/ 1
+	# rewrite /graphql/ /v1/graphql/
+	reverse_proxy {$HASURA_GRAPHQL_ENGINE_HOST} {
+	    # https://hasura.io/docs/latest/graphql/core/api-reference/health.html
+	    health_path /healthz
+	}
+}
+
+
+{$WEB_DOMAIN} {
+	import tls-config
 	
-    format console
-    # format json
+	encode zstd gzip
+	# respond "main" 200
 
-    # DEBUG, INFO, WARN, ERROR, PANIC, and FATAL
-    level DEBUG
-}
+	# https://caddyserver.com/docs/caddyfile/directives/metrics
+	# metrics /metrics
+	# respond /health-check "Ok" 200
+
+	# https://caddyserver.com/docs/caddyfile/directives/handle
+	# handle /graphql/* {
+	# https://caddyserver.com/docs/caddyfile/directives/reverse_proxy
+
+	# rewrite /graphql/ /v1/graphql/
+	# reverse_proxy /graphql/* {$HASURA_GRAPHQL_ENGINE_HOST} {
+	#     # https://hasura.io/docs/latest/graphql/core/api-reference/health.html
+	#     health_path /healthz
+	# }
+
+	# https://caddyserver.com/docs/caddyfile/matchers
+	@websockets {
+	    header Connection *Upgrade*
+	    header Upgrade    websocket
+	    path  /api/
+	}
+	reverse_proxy @websockets {$API_HOST}
+
+	# https://caddyserver.com/docs/caddyfile/directives/root
+
+	# # respond {path}{root}
+	# # # # https://caddyserver.com/docs/caddyfile/directives/file_server
+	# # # # https://caddyserver.com/docs/caddyfile/directives/try_files
+	handle {
+		root * {$APP_DIRECTORY}
+		try_files {path} index.html
+	}
+	
+    # @notAPI {
+    #     not {
+    #         path /api*
+    #     }
+    #     file {
+    #         try_files {path} {path}/ /index.html?{query}
+    #     }
+    # }
+    # rewrite @notAPI {http.matchers.file.relative}
+	# # respond @notAPI {http.matchers.file.relative}
+	file_server
+
+
+	handle_errors {
+		respond "{http.error.status_code} {http.error.status_text}"
+	}
+
+	# https://caddyserver.com/docs/caddyfile/directives/push
+	push
+
+
+	# request logging
+	# https://caddyserver.com/docs/caddyfile/directives/log
+	log {
+		output stdout
+		# output file /var/log/access.log {
+		#     roll_size 10mb
+		#     roll_keep 10
+		#     roll_keep_for 720h
+		# }
+		
+		format console
+		# format json
+
+		# DEBUG, INFO, WARN, ERROR, PANIC, and FATAL
+		level DEBUG
+	}
 
 # ACME server ?
 # https://caddyserver.com/docs/caddyfile/directives/acme_server
+}

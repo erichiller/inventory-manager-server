@@ -247,7 +247,7 @@ $DoCaddy = {
         if ( $Verbose -eq $True ){
             & $caddyExePath environ
         }
-        & $caddyExePath run -config $( Join-Path $PSScriptRoot "client" "docker" "caddyfile" ) -adapter caddyfile
+        & $caddyExePath run -watch -config $( Join-Path $PSScriptRoot "client" "docker" "caddyfile" ) -adapter caddyfile
     }
 
 }
