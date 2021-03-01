@@ -147,7 +147,7 @@ module.exports = {
         } ),
         new webpack.EnvironmentPlugin( {
             NODE_ENV: 'development', // use 'development' unless process.env.NODE_ENV is defined
-            DEBUG: true, // Not currently used,
+            // DEBUG: true, // Not currently used,
             HASURA_GRAPHQL_API_URL: process.env.HASURA_GRAPHQL_ENGINE_URL,
             HASURA_ACCESS_KEY: process.env.HASURA_GRAPHQL_ENGINE_PASSWORD,
             // GIT_VERSION: gitVersion,

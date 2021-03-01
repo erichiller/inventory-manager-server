@@ -5,6 +5,7 @@
   "main": "bundle.js",
   "scripts": {
     "build": "dotenv -e ../.env -- webpack --env NODE_ENV=production --config webpack.config.prod.js --progress",
+    "build-clean": "remove-item -force -recurse ./dist/* && yarn build",
     "run-dev-server": "dotenv -e ../.env -- webpack serve",
     "serve": "node ./bundle.js",
     "codegen": "dotenv -e ../.env -- graphql-codegen --config codegen.yml",
@@ -29,7 +30,7 @@
     "@codemirror/state": "0.17.2",
     "@codemirror/view": "0.17.11",
     "@json-editor/json-editor": "^2.5.2",
-    "antd": "^4.12.3",
+    "antd": "^4.13.0",
     "bwip-js": "2.1.1",
     "graphql": "^15.5.0",
     "jsoneditor": "^9.2.0",

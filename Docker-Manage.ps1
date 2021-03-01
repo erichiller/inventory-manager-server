@@ -210,19 +210,14 @@ $DoCaddy = {
     }
     
     if ( $AdaptCaddyfile ) {
-        Write-Information "Caddyfile"
+        Write-Information "Converting Caddyfile..."
         $caddyExePath = Join-Path $caddyPath "caddy.exe" ;
         $env:DATA_DIRECTORY = Join-Path $caddyPath "data";
         New-Item -ItemType Directory -Path $env:DATA_DIRECTORY -Force ;
-        # Copy-Item `
-        #     -Force `
-        #     -Path $( Join-Path $PSScriptRoot "client" "docker" "caddyfile" ) `
-        #     -Destination $( Join-Path $env:DATA_DIRECTORY "caddy.json" ) ;
 
         if ( -not $(Test-Path $caddyExePath ) ) {
             Write-Error "caddy was not found at $caddyExePath";
         }
-        # Show-Env | Format-Table
         if ( $Verbose -eq $True ) {
             & $caddyExePath environ
         }
@@ -231,14 +226,13 @@ $DoCaddy = {
     }
 
     if ( $RunWebServer ) {
+        # $domainName = [String]::Join( '.', ( [System.Net.Dns]::GetHostByName(($env:computerName)).HostName -split "\." | Select-Object -skip 1 ) );
+        $hostnameFQDN = [System.Net.Dns]::GetHostByName(($env:computerName)).HostName;
         $caddyExePath = Join-Path $caddyPath "caddy.exe" ;
         $env:DATA_DIRECTORY = Join-Path $caddyPath "data";
         $env:APP_DIRECTORY = Join-Path $PSScriptRoot "client" "dist";
+        $env:WEB_DOMAIN = $hostnameFQDN;
         New-Item -ItemType Directory -Path $env:DATA_DIRECTORY -Force ;
-        # Copy-Item `
-        #     -Force `
-        #     -Path $( Join-Path $PSScriptRoot "client" "docker" "caddy.old_mod.json" ) `
-        #     -Destination $( Join-Path $env:DATA_DIRECTORY "caddy.json" ) ;
 
         if ( -not $(Test-Path $caddyExePath ) ) {
             Write-Error "caddy was not found at $caddyExePath";

@@ -102,7 +102,6 @@ ENV WEB_DOMAIN "ENTER_DOMAIN_HERE"
 ENV DATA_DIRECTORY C:/data
 ENV XDG_CONFIG_HOME C:/data
 ENV APP_DIRECTORY C:/app
-# ENV AUX_DNS 1.1.1.1
 ENV TLS_CA_EMAIL "ENTER_LETS_ENCRYPT_EMAIL_HERE"
 # testing Let's Encrypt URL
 ENV TLS_CA_URL https://acme-staging-v02.api.letsencrypt.org/directory
@@ -119,10 +118,15 @@ RUN mkdir $env:DATA_DIRECTORY
 VOLUME ${DATA_DIRECTORY}
 
 
-COPY ./docker/caddy.json $DATA_DIRECTORY/caddy.json
+COPY ./docker/caddyfile $DATA_DIRECTORY/caddyfile
 
 
-CMD ./caddy run -config $DATA_DIRECTORY/caddy.json
+CMD ./caddy run -config $DATA_DIRECTORY/caddyfile
 
-# Generate schema and serve at /configSchema
-# build site
+HEALTHCHECK --start-period=30s --interval=10s --retries=5 `
+    CMD powershell -command `
+    try { `
+    $response = iwr -useb https://${WEB_DOMAIN}/health-check; `
+    if ($response.StatusCode -eq 200) { return 0 } `
+    else {return 1}; `
+    } catch { return 1 }

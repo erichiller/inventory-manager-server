@@ -12,13 +12,19 @@ services:
       WEB_DOMAIN: $WEB_DOMAIN
       TLS_CA_URL: $TLS_CA_URL
       TLS_CA_EMAIL: $TLS_CA_EMAIL
-      # AUX_DNS: $AUX_DNS
     volumes:
       - inventory-web-caddy-data:/caddy_data
-  tika:
-    image: ehiller/tika
-    mac_address: "4E:00:00:00:04:04"
-    hostname: tika
+  # tika:
+  #   image: ehiller/tika
+  #   mac_address: "4E:00:00:00:04:04"
+  #   hostname: tika
+  api:
+    image: ehiller/inventory-api
+    mac_address: "4E:00:00:00:04:05"
+    hostname: inventory-api
+    # environment:
+    # volumes:
+
 volumes:
   inventory-web-caddy-data:
 networks:

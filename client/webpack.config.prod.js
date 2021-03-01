@@ -1,3 +1,4 @@
+const webpack = require( 'webpack' );
 const path = require( 'path' );
 
 /** More info
@@ -6,6 +7,9 @@ const path = require( 'path' );
  * https://webpack.js.org/guides/code-splitting/#prefetchingpreloading-modules
  *
  */
+
+process.env.HASURA_GRAPHQL_ENGINE_URL = "/graphql/";
+process.env.NODE_ENV = "production";
 
 /** @type {import('webpack').Configuration} */
 const baseConfig = require( './webpack.config' );
