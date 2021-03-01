@@ -121,7 +121,7 @@ CMD ./caddy run -config caddyfile -adapter caddyfile
 HEALTHCHECK --start-period=30s --interval=10s --retries=5 `
     CMD powershell -command `
     try { `
-    $response = iwr -useb https://${WEB_DOMAIN}/health-check; `
+    $response = iwr -useb ( 'https://{0}/health-check' -f $env:WEB_DOMAIN ); `
     if ($response.StatusCode -eq 200) { return 0 } `
     else {return 1}; `
     } catch { return 1 }
