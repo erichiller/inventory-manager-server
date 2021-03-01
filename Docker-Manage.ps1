@@ -115,6 +115,11 @@ $DoContainers = {
                 INVENTORY_COMMIT_DATE=$arg_INVENTORY_COMMIT_DATE
         }
         if ( $container -eq "inventory-web" ) {
+            
+            # --env GANDI_API_KEY=$env:GANDI_API_KEY `
+            #     --env WEB_DOMAIN=$env:WEB_DOMAIN `
+            #     --env TLS_CA_EMAIL=$env:TLS_CA_EMAIL `
+            #     --env TLS_CA_URL=$env:TLS_CA_EMAIL `
             docker `
                 --host $ContainerParams.ContainerHost `
                 image build `

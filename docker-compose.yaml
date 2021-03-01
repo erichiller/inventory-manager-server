@@ -6,27 +6,29 @@ services:
     image: ehiller/inventory-web
     mac_address: "4E:00:00:00:04:02"
     hostname: inventory
-    environment:
-      DATA_DIRECTORY: /caddy_data
-      GANDI_API_KEY: $GANDI_API_KEY
-      WEB_DOMAIN: $WEB_DOMAIN
-      TLS_CA_URL: $TLS_CA_URL
-      TLS_CA_EMAIL: $TLS_CA_EMAIL
+    env_file:
+      - .env
+    # environment:
+    #   DATA_DIRECTORY: /caddy_data
+    #   GANDI_API_KEY: $GANDI_API_KEY
+    #   WEB_DOMAIN: $WEB_DOMAIN
+    #   TLS_CA_URL: $TLS_CA_URL
+    #   TLS_CA_EMAIL: $TLS_CA_EMAIL
     volumes:
-      - inventory-web-caddy-data:/caddy_data
+      - inventory_web_caddy_data:C:\data
   # tika:
   #   image: ehiller/tika
   #   mac_address: "4E:00:00:00:04:04"
   #   hostname: tika
-  api:
-    image: ehiller/inventory-api
-    mac_address: "4E:00:00:00:04:05"
-    hostname: inventory-api
-    # environment:
-    # volumes:
+  # api:
+  #   image: ehiller/inventory-api
+  #   mac_address: "4E:00:00:00:04:05"
+  #   hostname: inventory-api
+  #   # environment:
+  #   # volumes:
 
 volumes:
-  inventory-web-caddy-data:
+  inventory_web_caddy_data:
 networks:
  default:
   external:

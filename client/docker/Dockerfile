@@ -46,22 +46,19 @@ ARG HASURA_GRAPHQL_ENGINE_PASSWORD
 
 WORKDIR /
 
-RUN powershell -Command `
-    Invoke-WebRequest $('https://nodejs.org/dist/v{0}/node-v{0}-win-x64.zip' -f $env:NODE_VERSION) -OutFile C:\node.zip -UseBasicParsing ; `
+RUN Invoke-WebRequest $('https://nodejs.org/dist/v{0}/node-v{0}-win-x64.zip' -f $env:NODE_VERSION) -OutFile C:\node.zip -UseBasicParsing ; `
     Expand-Archive 'C:\node.zip' -DestinationPath 'C:\\' ; `
     Rename-Item -Path $('C:\node-v{0}-win-x64' -f $env:NODE_VERSION) -NewName 'C:\nodejs' ; `
     Remove-Item -Force C:\node.zip ;
 
 
-RUN powershell -Command `
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 ; `
+RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 ; `
     Invoke-WebRequest $('https://yarnpkg.com/downloads/{0}/yarn-{0}.msi' -f $env:YARN_VERSION) -OutFile C:\yarn.msi -UseBasicParsing ; `
     Start-Process msiexec.exe -ArgumentList '/i', 'C:\yarn.msi', '/quiet', '/norestart' -NoNewWindow -Wait; `
     Remove-Item C:\yarn.msi ;
 
 
-RUN powershell -Command `
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 ; `
+RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 ; `
     Invoke-WebRequest -UseBasicParsing $env:GIT_DOWNLOAD_URL -OutFile git.zip; `
     if ((Get-FileHash git.zip -Algorithm sha256).Hash -ne $env:GIT_SHA256) { Write-Output 'Error: Hash is not valid'; exit 1; } ; `
     Expand-Archive git.zip -DestinationPath C:\git; `
@@ -70,8 +67,7 @@ RUN powershell -Command `
 
 ENV NPM_CONFIG_LOGLEVEL info
 
-RUN powershell -Command `
-    $env:PATH = ( 'C:\nodejs;C:\yarn\bin;C:\git\cmd;C:\git\mingw64\bin;C:\git\usr\bin;{0}' -f $env:PATH ) ; `
+RUN $env:PATH = ( 'C:\nodejs;C:\yarn\bin;C:\git\cmd;C:\git\mingw64\bin;C:\git\usr\bin;{0}' -f $env:PATH ) ; `
     [Environment]::SetEnvironmentVariable('PATH', $env:PATH, [EnvironmentVariableTarget]::Machine)
 
 WORKDIR /app
@@ -85,8 +81,7 @@ COPY src /app/src
 ENV INVENTORY_COMMIT_DATE=${INVENTORY_COMMIT_DATE}
 ENV INVENTORY_COMMIT_SHA=${INVENTORY_COMMIT_SHA}
 
-RUN powershell -Command `
-    Write-Host ( 'Building with Date={0} and SHA={1}' -f $env:INVENTORY_COMMIT_DATE , $env:INVENTORY_COMMIT_SHA ) ; `
+RUN Write-Host ( 'Building with Date={0} and SHA={1}' -f $env:INVENTORY_COMMIT_DATE , $env:INVENTORY_COMMIT_SHA ) ; `
     yarn build
 
 
@@ -109,7 +104,7 @@ ENV TLS_CA_URL https://acme-staging-v02.api.letsencrypt.org/directory
 
 COPY --from=CaddyBuilder /caddy/caddy.exe /caddy.exe
 
-COPY --from=AppBuilder /app/dist ${APP_DIRECTORY}}
+COPY --from=AppBuilder /app/dist ${APP_DIRECTORY}
 
 WORKDIR /
 
@@ -118,10 +113,10 @@ RUN mkdir $env:DATA_DIRECTORY
 VOLUME ${DATA_DIRECTORY}
 
 
-COPY ./docker/caddyfile $DATA_DIRECTORY/caddyfile
+COPY ./docker/caddyfile /caddyfile
 
 
-CMD ./caddy run -config $DATA_DIRECTORY/caddyfile
+CMD ./caddy run -config caddyfile -adapter caddyfile
 
 HEALTHCHECK --start-period=30s --interval=10s --retries=5 `
     CMD powershell -command `
