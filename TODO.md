@@ -2,7 +2,6 @@
 
 ## General
 
-- [ ] Add `LICENSE.md`
 - [ ] Create templates for labels based on category / type #URGENT
 - [ ] Try [animations](http://react-component.github.io/tween-one/) ; or <https://reacttraining.com/react-router/web/example/animated-transitions>
 - [ ] Make use of additional linter: [tslint-react-hooks](https://www.npmjs.com/package/tslint-react-hooks) or `eslint-plugin-react-hooks`
@@ -20,10 +19,9 @@
 - [ ] #FIXME - JSON editor modal - be able to show label debug
 - [ ] #FIXME - initial exportLabel() is not running
 - [ ] #FIXME - refresh item table after adding a bolt
-- [x] ! All the icons are broken in the itemhardwrefastenermachine form
 - [ ] increase width slightly of the tensile strength field
-- [ ] remove thread_diameter ? -- replace with thread_diameter_label
-- [ ] remove thread_label
+- [ ] remove `thread_diameter` ? -- replace with thread_diameter_label
+- [ ] remove `thread_label`
 
 
 
@@ -89,6 +87,7 @@
 
 ### Performance
 
+**done?**
 - [ ] Speed / Performance issues in `LabelDraw` modal ( see below )
   - [ ] Async GraphQL ? - do not block Konva drawing
 - [ ] try `shape.draw` (not `layer.draw`) ; [Shape Redraw](https://konvajs.org/docs/performance/Shape_Redraw.html) ; side effects? OR seperate objects with layers, only the moved redraw (prefer shape.draw ) [Layer Management](https://konvajs.org/docs/performance/Layer_Management.html)
@@ -180,3 +179,7 @@
 - [x] need a way to capitalize fields in the `{{}}` template strings
 - [x] filter out `null` in the `{{}}` template strings
 - [x] fix drag and drop of `LabelText` items that were from imported JSON label
+- [x] Add `LICENSE.md`
+- [x] ! All the icons are broken in the itemhardwrefastenermachine form
+
+
