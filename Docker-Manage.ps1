@@ -187,8 +187,8 @@ $DoContainers = {
 $DoCaddy = {
     $caddyPath = Join-Path $PSScriptRoot ".caddy" ;
     $xcaddyPath = Join-Path $caddyPath "xcaddy" ;
+    $caddyExePath = Join-Path $caddyPath "caddy.exe" ;
     if ( $BuildWebServer  ) {
-
         Invoke-WebRequest `
             -Uri "https://github.com/ghostwheel42/caddy-json-schema/archive/nullable.zip" `
             -OutFile $( Join-Path $caddyPath "patchedSchemaGenerator.zip" );
@@ -199,7 +199,7 @@ $DoCaddy = {
             -Uri ( 'https://github.com/caddyserver/xcaddy/releases/download/v{0}/xcaddy_{0}_windows_amd64.zip' -f ( $Containers["inventory-web"].XCADDY_VERSION.toString() ) ) `
             -OutFile $( Join-Path $caddyPath "xcaddy.zip" ) ;
         Expand-Archive `
-            $( Join-Path $caddyPath "xcaddy.zip" ) `
+        $( Join-Path $caddyPath "xcaddy.zip" ) `
             -Force `
             -DestinationPath $xcaddyPath ;
 
@@ -214,15 +214,21 @@ $DoCaddy = {
         Pop-Location
     }
     
+    if ( -not $(Test-Path $caddyExePath ) ) {
+        Write-Error "caddy.exe was not found at $caddyExePath";
+    }
+
+    if ( $GenerateCaddyJsonSchema ) {
+        Write-Information "Converting Caddyfile..."
+        $schemaPath = $( Join-Path $PSScriptRoot "client" "docker" "caddy_schema.json" ) ;
+        & $caddyExePath json-schema --output $schemaPath --no-cache
+        Write-Information "Ensure .vscode/settings.json includes reference to caddy schema" ;
+    }
+    
     if ( $AdaptCaddyfile ) {
         Write-Information "Converting Caddyfile..."
-        $caddyExePath = Join-Path $caddyPath "caddy.exe" ;
         $env:DATA_DIRECTORY = Join-Path $caddyPath "data";
         New-Item -ItemType Directory -Path $env:DATA_DIRECTORY -Force ;
-
-        if ( -not $(Test-Path $caddyExePath ) ) {
-            Write-Error "caddy was not found at $caddyExePath";
-        }
         if ( $Verbose -eq $True ) {
             & $caddyExePath environ
         }
@@ -238,12 +244,8 @@ $DoCaddy = {
         $env:APP_DIRECTORY = Join-Path $PSScriptRoot "client" "dist";
         $env:WEB_DOMAIN = $hostnameFQDN;
         New-Item -ItemType Directory -Path $env:DATA_DIRECTORY -Force ;
-
-        if ( -not $(Test-Path $caddyExePath ) ) {
-            Write-Error "caddy was not found at $caddyExePath";
-        }
         # Show-Env | Format-Table
-        if ( $Verbose -eq $True ){
+        if ( $Verbose -eq $True ) {
             & $caddyExePath environ
         }
         & $caddyExePath run -watch -config $( Join-Path $PSScriptRoot "client" "docker" "caddyfile" ) -adapter caddyfile

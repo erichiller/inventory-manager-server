@@ -109,19 +109,16 @@ COPY --from=AppBuilder /app/dist ${APP_DIRECTORY}
 WORKDIR /
 
 EXPOSE 80
+EXPOSE 443
 RUN mkdir $env:DATA_DIRECTORY
 VOLUME ${DATA_DIRECTORY}
 
 
 COPY ./docker/caddyfile /caddyfile
 
+COPY ./docker/Test-Health.ps1 /Test-Health.ps1
 
 CMD ./caddy run -config caddyfile -adapter caddyfile
 
 HEALTHCHECK --start-period=30s --interval=10s --retries=5 `
-    CMD powershell -command `
-    try { `
-    $response = iwr -useb ( 'https://{0}/health-check' -f $env:WEB_DOMAIN ); `
-    if ($response.StatusCode -eq 200) { return 0 } `
-    else {return 1}; `
-    } catch { return 1 }
+    CMD powershell C:/Test-Health.ps1

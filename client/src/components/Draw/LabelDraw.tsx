@@ -606,8 +606,8 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
                             <Suspense fallback={<div>Loading...</div>}>
                             <DraggableModal
                                 onOk={() => {
-                                    console.log("onOk");
-                                    setModal( null )
+                                    console.log( "onOk" );
+                                    setModal( null );
                                 }}
                                 onCancel={() => {
                                     console.log( "onCancel" );
@@ -620,7 +620,6 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
                                 />
                             </DraggableModal>
                             </Suspense> );
-
                     }} id="DEBUG" />
                 </Tooltip>
                 <Tooltip key="EXPAND_CANVAS_TOOLTIP" placement="top" title="Enlarge print canvas">

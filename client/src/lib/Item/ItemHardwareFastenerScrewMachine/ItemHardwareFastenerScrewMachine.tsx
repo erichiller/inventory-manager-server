@@ -216,7 +216,7 @@ export class ItemHardwareFastenerScrewMachine extends Item<ItemPlusClassT<ItemHa
                     render: ( value, record, index ) => {
                         if ( !( value in ItemHardwareFastenerScrewMachineDriveTypeIconMap ) ) { return ''; }
                         const Icon = ItemHardwareFastenerScrewMachineDriveTypeIconMap[ value ];
-                        console.log( 'drive_type render', { value, record, index, icon: ItemHardwareFastenerScrewMachineDriveTypeIconMap[ value ] } );
+                        // console.log( 'drive_type render', { value, record, index, icon: ItemHardwareFastenerScrewMachineDriveTypeIconMap[ value ] } );
                         return < Icon />;
                     }
                 },
