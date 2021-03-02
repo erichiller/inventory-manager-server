@@ -4,8 +4,8 @@
     "main": "",
     "repository": "git@github.com:erichiller/inventory-manager-server.git",
     "author": "Eric D Hiller",
-    "license": "ISC",
-    "private": true,
+    "license": "MIT",
+    "private": false,
     "workspaces": [
         "client",
         "server"
