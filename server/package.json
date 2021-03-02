@@ -10,7 +10,7 @@
     "codegen": "ts-node ./node_modules/@graphql-codegen/cli/bin.js --config codegen.yml"
   },
   "author": "Eric D Hiller",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "apollo-cache": "^1.3.5",
     "apollo-cache-inmemory": "^1.6.6",
