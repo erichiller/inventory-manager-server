@@ -20,7 +20,7 @@
     "generate-json-schema": ".\\node_modules\\.bin\\ts-json-schema-generator --path .\\src\\lib\\item\\ItemHardwareFastenerScrewMachine\\*d.ts --tsconfig .\\tsconfig.json --type ScrewSizeSchema -o .\\src\\lib\\item\\ItemHardwareFastenerScrewMachine\\config\\ScrewSizeOptions.schema.json"
   },
   "author": "Eric D Hiller",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@ant-design/icons": "*",
     "@apollo/client": "^3.3.11",
