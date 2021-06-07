@@ -3,7 +3,7 @@
     "compilerOptions": {
         "noImplicitAny": true,
         "strictNullChecks": true,
-        "strictPropertyInitialization ": true,
+        "strictPropertyInitialization": true,
         "strictFunctionTypes": true
     },
 }
