@@ -23,11 +23,14 @@ export const UnitSelect: React.FC<SelectProps<EnumUnitKeys>> = ( props ) => {
     //     }
     // }, [value, props.value])
     useEffect( () => {
+        onChange( value, null );
+    }, [] );
+    useEffect( () => {
         console.log( "UnitSelect useEffect", { props, value } )
         if ( value !== props.value ) {
             console.log( "UnitSelect useEffect triggered", { props, value } );
             // triggerChange( props.value, null );
-            setValue(props.value)
+            setValue( props.value );
         }
     }, [value, props.value])
 

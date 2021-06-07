@@ -15,6 +15,7 @@ console.log( { ScrewSizeConfig} );
 
 /** string form is <Unit>?<Diameter>-<pitch>x<Length> */
 export class ScrewSizeInputOptionData {
+
     unit: EnumUnitEnum;
     prefix: UnitPrefixT;
     thread_diameter: number;
@@ -25,6 +26,7 @@ export class ScrewSizeInputOptionData {
     denominator?: number;
     thread_standard?: EnumItemHardwareFastenerThreadStandardEnum;
     thread_label?: EnumItemHardwareFastenerThreadLabelEnum;
+
 }
 
 /**
@@ -265,14 +267,16 @@ export const ScrewSizeInput: React.FC<ScrewSizeInputProps> = ( props ) => {
             <AutoComplete
                 options={options}
                 onChange={( str, opt ) => handleSearch( str )}
-                {...( value ? { defaultValue: constructOptionValue( props.value )} : {}) }
+                {...( value ? { defaultValue: constructOptionValue( props.value )} : {} ) }
                 // defaultValue={'monkeys'}
                 // defaultValue={constructOptionValue( props.value )}
                 >
                 <Input
                     ref={props.forwardRef} 
                     spellCheck={false} 
-                    onChange={e => handleSearch(e.target.value) } 
+                    onChange={e => {
+                        return handleSearch( e.target.value );
+                    } } 
                     />
             </AutoComplete>
         </React.Fragment>

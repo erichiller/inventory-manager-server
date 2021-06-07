@@ -432,7 +432,7 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                 <Form.Item name="specifications_met" label="Specifications Met">
                     <EnumSelect
                         mode='multiple'
-                        enumKeys={Object.keys( EnumItemHardwareFastenerSpecificationsEnum )}
+                        enumKeys={Object.keys( EnumItemHardwareFastenerSpecificationsEnum ) ?? [] }
                     />
                 </Form.Item>
 
