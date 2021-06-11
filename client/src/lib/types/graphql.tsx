@@ -5531,9 +5531,9 @@ export enum EnumUnitUpdateColumn {
 export type Icon = {
   __typename?: 'icon';
   /** An array relationship */
-  categories: Array<IconItemCategoryMap>;
+  categories: Array<IconItemClassMap>;
   /** An aggregated array relationship */
-  categories_aggregate: IconItemCategoryMapAggregate;
+  categories_aggregate: IconItemClassMapAggregate;
   created_at: Scalars['timestamptz'];
   /** Store image data in Base64 */
   data: Scalars['String'];
@@ -5558,11 +5558,11 @@ export type Icon = {
  * columns and relationships of "icon"
  */
 export type IconCategoriesArgs = {
-  distinct_on?: Maybe<Array<IconItemCategoryMapSelectColumn>>;
+  distinct_on?: Maybe<Array<IconItemClassMapSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<IconItemCategoryMapOrderBy>>;
-  where?: Maybe<IconItemCategoryMapBoolExp>;
+  order_by?: Maybe<Array<IconItemClassMapOrderBy>>;
+  where?: Maybe<IconItemClassMapBoolExp>;
 };
 
 
@@ -5573,11 +5573,11 @@ export type IconCategoriesArgs = {
  * columns and relationships of "icon"
  */
 export type IconCategoriesAggregateArgs = {
-  distinct_on?: Maybe<Array<IconItemCategoryMapSelectColumn>>;
+  distinct_on?: Maybe<Array<IconItemClassMapSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<IconItemCategoryMapOrderBy>>;
-  where?: Maybe<IconItemCategoryMapBoolExp>;
+  order_by?: Maybe<Array<IconItemClassMapOrderBy>>;
+  where?: Maybe<IconItemClassMapBoolExp>;
 };
 
 
@@ -5680,7 +5680,7 @@ export type IconBoolExp = {
   _and?: Maybe<Array<Maybe<IconBoolExp>>>;
   _not?: Maybe<IconBoolExp>;
   _or?: Maybe<Array<Maybe<IconBoolExp>>>;
-  categories?: Maybe<IconItemCategoryMapBoolExp>;
+  categories?: Maybe<IconItemClassMapBoolExp>;
   created_at?: Maybe<TimestamptzComparisonExp>;
   data?: Maybe<StringComparisonExp>;
   description?: Maybe<StringComparisonExp>;
@@ -5700,7 +5700,7 @@ export enum IconConstraint {
 
 /** input type for inserting data into table "icon" */
 export type IconInsertInput = {
-  categories?: Maybe<IconItemCategoryMapArrRelInsertInput>;
+  categories?: Maybe<IconItemClassMapArrRelInsertInput>;
   created_at?: Maybe<Scalars['timestamptz']>;
   data?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
@@ -5710,10 +5710,10 @@ export type IconInsertInput = {
   title?: Maybe<Scalars['String']>;
 };
 
-/** columns and relationships of "icon_item_category_map" */
-export type IconItemCategoryMap = {
-  __typename?: 'icon_item_category_map';
-  category: EnumItemClassEnum;
+/** columns and relationships of "icon_item_class_map" */
+export type IconItemClassMap = {
+  __typename?: 'icon_item_class_map';
+  class: EnumItemClassEnum;
   /**
    * json rules in the form of:
    *     { [propKey: keyof item_class]: regex }
@@ -5726,91 +5726,91 @@ export type IconItemCategoryMap = {
 };
 
 
-/** columns and relationships of "icon_item_category_map" */
-export type IconItemCategoryMapCriteriaArgs = {
+/** columns and relationships of "icon_item_class_map" */
+export type IconItemClassMapCriteriaArgs = {
   path?: Maybe<Scalars['String']>;
 };
 
-/** aggregated selection of "icon_item_category_map" */
-export type IconItemCategoryMapAggregate = {
-  __typename?: 'icon_item_category_map_aggregate';
-  aggregate?: Maybe<IconItemCategoryMapAggregateFields>;
-  nodes: Array<IconItemCategoryMap>;
+/** aggregated selection of "icon_item_class_map" */
+export type IconItemClassMapAggregate = {
+  __typename?: 'icon_item_class_map_aggregate';
+  aggregate?: Maybe<IconItemClassMapAggregateFields>;
+  nodes: Array<IconItemClassMap>;
 };
 
-/** aggregate fields of "icon_item_category_map" */
-export type IconItemCategoryMapAggregateFields = {
-  __typename?: 'icon_item_category_map_aggregate_fields';
-  avg?: Maybe<IconItemCategoryMapAvgFields>;
+/** aggregate fields of "icon_item_class_map" */
+export type IconItemClassMapAggregateFields = {
+  __typename?: 'icon_item_class_map_aggregate_fields';
+  avg?: Maybe<IconItemClassMapAvgFields>;
   count?: Maybe<Scalars['Int']>;
-  max?: Maybe<IconItemCategoryMapMaxFields>;
-  min?: Maybe<IconItemCategoryMapMinFields>;
-  stddev?: Maybe<IconItemCategoryMapStddevFields>;
-  stddev_pop?: Maybe<IconItemCategoryMapStddevPopFields>;
-  stddev_samp?: Maybe<IconItemCategoryMapStddevSampFields>;
-  sum?: Maybe<IconItemCategoryMapSumFields>;
-  var_pop?: Maybe<IconItemCategoryMapVarPopFields>;
-  var_samp?: Maybe<IconItemCategoryMapVarSampFields>;
-  variance?: Maybe<IconItemCategoryMapVarianceFields>;
+  max?: Maybe<IconItemClassMapMaxFields>;
+  min?: Maybe<IconItemClassMapMinFields>;
+  stddev?: Maybe<IconItemClassMapStddevFields>;
+  stddev_pop?: Maybe<IconItemClassMapStddevPopFields>;
+  stddev_samp?: Maybe<IconItemClassMapStddevSampFields>;
+  sum?: Maybe<IconItemClassMapSumFields>;
+  var_pop?: Maybe<IconItemClassMapVarPopFields>;
+  var_samp?: Maybe<IconItemClassMapVarSampFields>;
+  variance?: Maybe<IconItemClassMapVarianceFields>;
 };
 
 
-/** aggregate fields of "icon_item_category_map" */
-export type IconItemCategoryMapAggregateFieldsCountArgs = {
-  columns?: Maybe<Array<IconItemCategoryMapSelectColumn>>;
+/** aggregate fields of "icon_item_class_map" */
+export type IconItemClassMapAggregateFieldsCountArgs = {
+  columns?: Maybe<Array<IconItemClassMapSelectColumn>>;
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "icon_item_category_map" */
-export type IconItemCategoryMapAggregateOrderBy = {
-  avg?: Maybe<IconItemCategoryMapAvgOrderBy>;
+/** order by aggregate values of table "icon_item_class_map" */
+export type IconItemClassMapAggregateOrderBy = {
+  avg?: Maybe<IconItemClassMapAvgOrderBy>;
   count?: Maybe<OrderBy>;
-  max?: Maybe<IconItemCategoryMapMaxOrderBy>;
-  min?: Maybe<IconItemCategoryMapMinOrderBy>;
-  stddev?: Maybe<IconItemCategoryMapStddevOrderBy>;
-  stddev_pop?: Maybe<IconItemCategoryMapStddevPopOrderBy>;
-  stddev_samp?: Maybe<IconItemCategoryMapStddevSampOrderBy>;
-  sum?: Maybe<IconItemCategoryMapSumOrderBy>;
-  var_pop?: Maybe<IconItemCategoryMapVarPopOrderBy>;
-  var_samp?: Maybe<IconItemCategoryMapVarSampOrderBy>;
-  variance?: Maybe<IconItemCategoryMapVarianceOrderBy>;
+  max?: Maybe<IconItemClassMapMaxOrderBy>;
+  min?: Maybe<IconItemClassMapMinOrderBy>;
+  stddev?: Maybe<IconItemClassMapStddevOrderBy>;
+  stddev_pop?: Maybe<IconItemClassMapStddevPopOrderBy>;
+  stddev_samp?: Maybe<IconItemClassMapStddevSampOrderBy>;
+  sum?: Maybe<IconItemClassMapSumOrderBy>;
+  var_pop?: Maybe<IconItemClassMapVarPopOrderBy>;
+  var_samp?: Maybe<IconItemClassMapVarSampOrderBy>;
+  variance?: Maybe<IconItemClassMapVarianceOrderBy>;
 };
 
 /** append existing jsonb value of filtered columns with new jsonb value */
-export type IconItemCategoryMapAppendInput = {
+export type IconItemClassMapAppendInput = {
   criteria?: Maybe<Scalars['jsonb']>;
 };
 
-/** input type for inserting array relation for remote table "icon_item_category_map" */
-export type IconItemCategoryMapArrRelInsertInput = {
-  data: Array<IconItemCategoryMapInsertInput>;
-  on_conflict?: Maybe<IconItemCategoryMapOnConflict>;
+/** input type for inserting array relation for remote table "icon_item_class_map" */
+export type IconItemClassMapArrRelInsertInput = {
+  data: Array<IconItemClassMapInsertInput>;
+  on_conflict?: Maybe<IconItemClassMapOnConflict>;
 };
 
 /** aggregate avg on columns */
-export type IconItemCategoryMapAvgFields = {
-  __typename?: 'icon_item_category_map_avg_fields';
+export type IconItemClassMapAvgFields = {
+  __typename?: 'icon_item_class_map_avg_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
-/** order by avg() on columns of table "icon_item_category_map" */
-export type IconItemCategoryMapAvgOrderBy = {
+/** order by avg() on columns of table "icon_item_class_map" */
+export type IconItemClassMapAvgOrderBy = {
   sequence?: Maybe<OrderBy>;
 };
 
-/** Boolean expression to filter rows from the table "icon_item_category_map". All fields are combined with a logical 'AND'. */
-export type IconItemCategoryMapBoolExp = {
-  _and?: Maybe<Array<Maybe<IconItemCategoryMapBoolExp>>>;
-  _not?: Maybe<IconItemCategoryMapBoolExp>;
-  _or?: Maybe<Array<Maybe<IconItemCategoryMapBoolExp>>>;
-  category?: Maybe<EnumItemClassEnumComparisonExp>;
+/** Boolean expression to filter rows from the table "icon_item_class_map". All fields are combined with a logical 'AND'. */
+export type IconItemClassMapBoolExp = {
+  _and?: Maybe<Array<Maybe<IconItemClassMapBoolExp>>>;
+  _not?: Maybe<IconItemClassMapBoolExp>;
+  _or?: Maybe<Array<Maybe<IconItemClassMapBoolExp>>>;
+  class?: Maybe<EnumItemClassEnumComparisonExp>;
   criteria?: Maybe<JsonbComparisonExp>;
   icon_id?: Maybe<UuidComparisonExp>;
   sequence?: Maybe<SmallintComparisonExp>;
 };
 
-/** unique or primary key constraints on table "icon_item_category_map" */
-export enum IconItemCategoryMapConstraint {
+/** unique or primary key constraints on table "icon_item_class_map" */
+export enum IconItemClassMapConstraint {
   /** unique or primary key constraint */
   icon_item_category_map_category_sequence_key = 'icon_item_category_map_category_sequence_key',
   /** unique or primary key constraint */
@@ -5818,105 +5818,105 @@ export enum IconItemCategoryMapConstraint {
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type IconItemCategoryMapDeleteAtPathInput = {
+export type IconItemClassMapDeleteAtPathInput = {
   criteria?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type IconItemCategoryMapDeleteElemInput = {
+export type IconItemClassMapDeleteElemInput = {
   criteria?: Maybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type IconItemCategoryMapDeleteKeyInput = {
+export type IconItemClassMapDeleteKeyInput = {
   criteria?: Maybe<Scalars['String']>;
 };
 
-/** input type for incrementing integer column in table "icon_item_category_map" */
-export type IconItemCategoryMapIncInput = {
+/** input type for incrementing integer column in table "icon_item_class_map" */
+export type IconItemClassMapIncInput = {
   sequence?: Maybe<Scalars['smallint']>;
 };
 
-/** input type for inserting data into table "icon_item_category_map" */
-export type IconItemCategoryMapInsertInput = {
-  category?: Maybe<EnumItemClassEnum>;
+/** input type for inserting data into table "icon_item_class_map" */
+export type IconItemClassMapInsertInput = {
+  class?: Maybe<EnumItemClassEnum>;
   criteria?: Maybe<Scalars['jsonb']>;
   icon_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
 
 /** aggregate max on columns */
-export type IconItemCategoryMapMaxFields = {
-  __typename?: 'icon_item_category_map_max_fields';
+export type IconItemClassMapMaxFields = {
+  __typename?: 'icon_item_class_map_max_fields';
   icon_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
 
-/** order by max() on columns of table "icon_item_category_map" */
-export type IconItemCategoryMapMaxOrderBy = {
+/** order by max() on columns of table "icon_item_class_map" */
+export type IconItemClassMapMaxOrderBy = {
   icon_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
-export type IconItemCategoryMapMinFields = {
-  __typename?: 'icon_item_category_map_min_fields';
+export type IconItemClassMapMinFields = {
+  __typename?: 'icon_item_class_map_min_fields';
   icon_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
 
-/** order by min() on columns of table "icon_item_category_map" */
-export type IconItemCategoryMapMinOrderBy = {
+/** order by min() on columns of table "icon_item_class_map" */
+export type IconItemClassMapMinOrderBy = {
   icon_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
-/** response of any mutation on the table "icon_item_category_map" */
-export type IconItemCategoryMapMutationResponse = {
-  __typename?: 'icon_item_category_map_mutation_response';
+/** response of any mutation on the table "icon_item_class_map" */
+export type IconItemClassMapMutationResponse = {
+  __typename?: 'icon_item_class_map_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
-  returning: Array<IconItemCategoryMap>;
+  returning: Array<IconItemClassMap>;
 };
 
-/** input type for inserting object relation for remote table "icon_item_category_map" */
-export type IconItemCategoryMapObjRelInsertInput = {
-  data: IconItemCategoryMapInsertInput;
-  on_conflict?: Maybe<IconItemCategoryMapOnConflict>;
+/** input type for inserting object relation for remote table "icon_item_class_map" */
+export type IconItemClassMapObjRelInsertInput = {
+  data: IconItemClassMapInsertInput;
+  on_conflict?: Maybe<IconItemClassMapOnConflict>;
 };
 
-/** on conflict condition type for table "icon_item_category_map" */
-export type IconItemCategoryMapOnConflict = {
-  constraint: IconItemCategoryMapConstraint;
-  update_columns: Array<IconItemCategoryMapUpdateColumn>;
-  where?: Maybe<IconItemCategoryMapBoolExp>;
+/** on conflict condition type for table "icon_item_class_map" */
+export type IconItemClassMapOnConflict = {
+  constraint: IconItemClassMapConstraint;
+  update_columns: Array<IconItemClassMapUpdateColumn>;
+  where?: Maybe<IconItemClassMapBoolExp>;
 };
 
-/** ordering options when selecting data from "icon_item_category_map" */
-export type IconItemCategoryMapOrderBy = {
-  category?: Maybe<OrderBy>;
+/** ordering options when selecting data from "icon_item_class_map" */
+export type IconItemClassMapOrderBy = {
+  class?: Maybe<OrderBy>;
   criteria?: Maybe<OrderBy>;
   icon_id?: Maybe<OrderBy>;
   sequence?: Maybe<OrderBy>;
 };
 
-/** primary key columns input for table: "icon_item_category_map" */
-export type IconItemCategoryMapPkColumnsInput = {
-  category: EnumItemClassEnum;
+/** primary key columns input for table: "icon_item_class_map" */
+export type IconItemClassMapPkColumnsInput = {
+  class: EnumItemClassEnum;
   icon_id: Scalars['uuid'];
   sequence: Scalars['smallint'];
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
-export type IconItemCategoryMapPrependInput = {
+export type IconItemClassMapPrependInput = {
   criteria?: Maybe<Scalars['jsonb']>;
 };
 
-/** select columns of table "icon_item_category_map" */
-export enum IconItemCategoryMapSelectColumn {
+/** select columns of table "icon_item_class_map" */
+export enum IconItemClassMapSelectColumn {
   /** column name */
-  category = 'category',
+  class = 'class',
   /** column name */
   criteria = 'criteria',
   /** column name */
@@ -5925,62 +5925,62 @@ export enum IconItemCategoryMapSelectColumn {
   sequence = 'sequence'
 }
 
-/** input type for updating data in table "icon_item_category_map" */
-export type IconItemCategoryMapSetInput = {
-  category?: Maybe<EnumItemClassEnum>;
+/** input type for updating data in table "icon_item_class_map" */
+export type IconItemClassMapSetInput = {
+  class?: Maybe<EnumItemClassEnum>;
   criteria?: Maybe<Scalars['jsonb']>;
   icon_id?: Maybe<Scalars['uuid']>;
   sequence?: Maybe<Scalars['smallint']>;
 };
 
 /** aggregate stddev on columns */
-export type IconItemCategoryMapStddevFields = {
-  __typename?: 'icon_item_category_map_stddev_fields';
+export type IconItemClassMapStddevFields = {
+  __typename?: 'icon_item_class_map_stddev_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev() on columns of table "icon_item_category_map" */
-export type IconItemCategoryMapStddevOrderBy = {
+/** order by stddev() on columns of table "icon_item_class_map" */
+export type IconItemClassMapStddevOrderBy = {
   sequence?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_pop on columns */
-export type IconItemCategoryMapStddevPopFields = {
-  __typename?: 'icon_item_category_map_stddev_pop_fields';
+export type IconItemClassMapStddevPopFields = {
+  __typename?: 'icon_item_class_map_stddev_pop_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_pop() on columns of table "icon_item_category_map" */
-export type IconItemCategoryMapStddevPopOrderBy = {
+/** order by stddev_pop() on columns of table "icon_item_class_map" */
+export type IconItemClassMapStddevPopOrderBy = {
   sequence?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_samp on columns */
-export type IconItemCategoryMapStddevSampFields = {
-  __typename?: 'icon_item_category_map_stddev_samp_fields';
+export type IconItemClassMapStddevSampFields = {
+  __typename?: 'icon_item_class_map_stddev_samp_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_samp() on columns of table "icon_item_category_map" */
-export type IconItemCategoryMapStddevSampOrderBy = {
+/** order by stddev_samp() on columns of table "icon_item_class_map" */
+export type IconItemClassMapStddevSampOrderBy = {
   sequence?: Maybe<OrderBy>;
 };
 
 /** aggregate sum on columns */
-export type IconItemCategoryMapSumFields = {
-  __typename?: 'icon_item_category_map_sum_fields';
+export type IconItemClassMapSumFields = {
+  __typename?: 'icon_item_class_map_sum_fields';
   sequence?: Maybe<Scalars['smallint']>;
 };
 
-/** order by sum() on columns of table "icon_item_category_map" */
-export type IconItemCategoryMapSumOrderBy = {
+/** order by sum() on columns of table "icon_item_class_map" */
+export type IconItemClassMapSumOrderBy = {
   sequence?: Maybe<OrderBy>;
 };
 
-/** update columns of table "icon_item_category_map" */
-export enum IconItemCategoryMapUpdateColumn {
+/** update columns of table "icon_item_class_map" */
+export enum IconItemClassMapUpdateColumn {
   /** column name */
-  category = 'category',
+  class = 'class',
   /** column name */
   criteria = 'criteria',
   /** column name */
@@ -5990,35 +5990,35 @@ export enum IconItemCategoryMapUpdateColumn {
 }
 
 /** aggregate var_pop on columns */
-export type IconItemCategoryMapVarPopFields = {
-  __typename?: 'icon_item_category_map_var_pop_fields';
+export type IconItemClassMapVarPopFields = {
+  __typename?: 'icon_item_class_map_var_pop_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_pop() on columns of table "icon_item_category_map" */
-export type IconItemCategoryMapVarPopOrderBy = {
+/** order by var_pop() on columns of table "icon_item_class_map" */
+export type IconItemClassMapVarPopOrderBy = {
   sequence?: Maybe<OrderBy>;
 };
 
 /** aggregate var_samp on columns */
-export type IconItemCategoryMapVarSampFields = {
-  __typename?: 'icon_item_category_map_var_samp_fields';
+export type IconItemClassMapVarSampFields = {
+  __typename?: 'icon_item_class_map_var_samp_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_samp() on columns of table "icon_item_category_map" */
-export type IconItemCategoryMapVarSampOrderBy = {
+/** order by var_samp() on columns of table "icon_item_class_map" */
+export type IconItemClassMapVarSampOrderBy = {
   sequence?: Maybe<OrderBy>;
 };
 
 /** aggregate variance on columns */
-export type IconItemCategoryMapVarianceFields = {
-  __typename?: 'icon_item_category_map_variance_fields';
+export type IconItemClassMapVarianceFields = {
+  __typename?: 'icon_item_class_map_variance_fields';
   sequence?: Maybe<Scalars['Float']>;
 };
 
-/** order by variance() on columns of table "icon_item_category_map" */
-export type IconItemCategoryMapVarianceOrderBy = {
+/** order by variance() on columns of table "icon_item_class_map" */
+export type IconItemClassMapVarianceOrderBy = {
   sequence?: Maybe<OrderBy>;
 };
 
@@ -6503,7 +6503,7 @@ export type IconOnConflict = {
 
 /** ordering options when selecting data from "icon" */
 export type IconOrderBy = {
-  categories_aggregate?: Maybe<IconItemCategoryMapAggregateOrderBy>;
+  categories_aggregate?: Maybe<IconItemClassMapAggregateOrderBy>;
   created_at?: Maybe<OrderBy>;
   data?: Maybe<OrderBy>;
   description?: Maybe<OrderBy>;
@@ -14021,10 +14021,10 @@ export type MutationRoot = {
   delete_icon?: Maybe<IconMutationResponse>;
   /** delete single row from the table: "icon" */
   delete_icon_by_pk?: Maybe<Icon>;
-  /** delete data from the table: "icon_item_category_map" */
-  delete_icon_item_category_map?: Maybe<IconItemCategoryMapMutationResponse>;
-  /** delete single row from the table: "icon_item_category_map" */
-  delete_icon_item_category_map_by_pk?: Maybe<IconItemCategoryMap>;
+  /** delete data from the table: "icon_item_class_map" */
+  delete_icon_item_class_map?: Maybe<IconItemClassMapMutationResponse>;
+  /** delete single row from the table: "icon_item_class_map" */
+  delete_icon_item_class_map_by_pk?: Maybe<IconItemClassMap>;
   /** delete data from the table: "icon_item_map" */
   delete_icon_item_map?: Maybe<IconItemMapMutationResponse>;
   /** delete single row from the table: "icon_item_map" */
@@ -14275,10 +14275,10 @@ export type MutationRoot = {
   insert_enum_unit_one?: Maybe<EnumUnit>;
   /** insert data into the table: "icon" */
   insert_icon?: Maybe<IconMutationResponse>;
-  /** insert data into the table: "icon_item_category_map" */
-  insert_icon_item_category_map?: Maybe<IconItemCategoryMapMutationResponse>;
-  /** insert a single row into the table: "icon_item_category_map" */
-  insert_icon_item_category_map_one?: Maybe<IconItemCategoryMap>;
+  /** insert data into the table: "icon_item_class_map" */
+  insert_icon_item_class_map?: Maybe<IconItemClassMapMutationResponse>;
+  /** insert a single row into the table: "icon_item_class_map" */
+  insert_icon_item_class_map_one?: Maybe<IconItemClassMap>;
   /** insert data into the table: "icon_item_map" */
   insert_icon_item_map?: Maybe<IconItemMapMutationResponse>;
   /** insert a single row into the table: "icon_item_map" */
@@ -14538,10 +14538,10 @@ export type MutationRoot = {
   update_icon?: Maybe<IconMutationResponse>;
   /** update single row of the table: "icon" */
   update_icon_by_pk?: Maybe<Icon>;
-  /** update data of the table: "icon_item_category_map" */
-  update_icon_item_category_map?: Maybe<IconItemCategoryMapMutationResponse>;
-  /** update single row of the table: "icon_item_category_map" */
-  update_icon_item_category_map_by_pk?: Maybe<IconItemCategoryMap>;
+  /** update data of the table: "icon_item_class_map" */
+  update_icon_item_class_map?: Maybe<IconItemClassMapMutationResponse>;
+  /** update single row of the table: "icon_item_class_map" */
+  update_icon_item_class_map_by_pk?: Maybe<IconItemClassMap>;
   /** update data of the table: "icon_item_map" */
   update_icon_item_map?: Maybe<IconItemMapMutationResponse>;
   /** update single row of the table: "icon_item_map" */
@@ -15063,14 +15063,14 @@ export type MutationRootDeleteIconByPkArgs = {
 
 
 /** mutation root */
-export type MutationRootDeleteIconItemCategoryMapArgs = {
-  where: IconItemCategoryMapBoolExp;
+export type MutationRootDeleteIconItemClassMapArgs = {
+  where: IconItemClassMapBoolExp;
 };
 
 
 /** mutation root */
-export type MutationRootDeleteIconItemCategoryMapByPkArgs = {
-  category: EnumItemClassEnum;
+export type MutationRootDeleteIconItemClassMapByPkArgs = {
+  class: EnumItemClassEnum;
   icon_id: Scalars['uuid'];
   sequence: Scalars['smallint'];
 };
@@ -15902,16 +15902,16 @@ export type MutationRootInsertIconArgs = {
 
 
 /** mutation root */
-export type MutationRootInsertIconItemCategoryMapArgs = {
-  objects: Array<IconItemCategoryMapInsertInput>;
-  on_conflict?: Maybe<IconItemCategoryMapOnConflict>;
+export type MutationRootInsertIconItemClassMapArgs = {
+  objects: Array<IconItemClassMapInsertInput>;
+  on_conflict?: Maybe<IconItemClassMapOnConflict>;
 };
 
 
 /** mutation root */
-export type MutationRootInsertIconItemCategoryMapOneArgs = {
-  object: IconItemCategoryMapInsertInput;
-  on_conflict?: Maybe<IconItemCategoryMapOnConflict>;
+export type MutationRootInsertIconItemClassMapOneArgs = {
+  object: IconItemClassMapInsertInput;
+  on_conflict?: Maybe<IconItemClassMapOnConflict>;
 };
 
 
@@ -16811,28 +16811,28 @@ export type MutationRootUpdateIconByPkArgs = {
 
 
 /** mutation root */
-export type MutationRootUpdateIconItemCategoryMapArgs = {
-  _append?: Maybe<IconItemCategoryMapAppendInput>;
-  _delete_at_path?: Maybe<IconItemCategoryMapDeleteAtPathInput>;
-  _delete_elem?: Maybe<IconItemCategoryMapDeleteElemInput>;
-  _delete_key?: Maybe<IconItemCategoryMapDeleteKeyInput>;
-  _inc?: Maybe<IconItemCategoryMapIncInput>;
-  _prepend?: Maybe<IconItemCategoryMapPrependInput>;
-  _set?: Maybe<IconItemCategoryMapSetInput>;
-  where: IconItemCategoryMapBoolExp;
+export type MutationRootUpdateIconItemClassMapArgs = {
+  _append?: Maybe<IconItemClassMapAppendInput>;
+  _delete_at_path?: Maybe<IconItemClassMapDeleteAtPathInput>;
+  _delete_elem?: Maybe<IconItemClassMapDeleteElemInput>;
+  _delete_key?: Maybe<IconItemClassMapDeleteKeyInput>;
+  _inc?: Maybe<IconItemClassMapIncInput>;
+  _prepend?: Maybe<IconItemClassMapPrependInput>;
+  _set?: Maybe<IconItemClassMapSetInput>;
+  where: IconItemClassMapBoolExp;
 };
 
 
 /** mutation root */
-export type MutationRootUpdateIconItemCategoryMapByPkArgs = {
-  _append?: Maybe<IconItemCategoryMapAppendInput>;
-  _delete_at_path?: Maybe<IconItemCategoryMapDeleteAtPathInput>;
-  _delete_elem?: Maybe<IconItemCategoryMapDeleteElemInput>;
-  _delete_key?: Maybe<IconItemCategoryMapDeleteKeyInput>;
-  _inc?: Maybe<IconItemCategoryMapIncInput>;
-  _prepend?: Maybe<IconItemCategoryMapPrependInput>;
-  _set?: Maybe<IconItemCategoryMapSetInput>;
-  pk_columns: IconItemCategoryMapPkColumnsInput;
+export type MutationRootUpdateIconItemClassMapByPkArgs = {
+  _append?: Maybe<IconItemClassMapAppendInput>;
+  _delete_at_path?: Maybe<IconItemClassMapDeleteAtPathInput>;
+  _delete_elem?: Maybe<IconItemClassMapDeleteElemInput>;
+  _delete_key?: Maybe<IconItemClassMapDeleteKeyInput>;
+  _inc?: Maybe<IconItemClassMapIncInput>;
+  _prepend?: Maybe<IconItemClassMapPrependInput>;
+  _set?: Maybe<IconItemClassMapSetInput>;
+  pk_columns: IconItemClassMapPkColumnsInput;
 };
 
 
@@ -17760,6 +17760,8 @@ export enum OrderItemConstraint {
   order_item_id_key = 'order_item_id_key',
   /** unique or primary key constraint */
   order_item_id_quantity_key = 'order_item_id_quantity_key',
+  /** unique or primary key constraint */
+  order_item_id_vendor_item_id_key = 'order_item_id_vendor_item_id_key',
   /** unique or primary key constraint */
   order_item_item_id_vendor_item_id_serial_no_key = 'order_item_item_id_vendor_item_id_serial_no_key',
   /** unique or primary key constraint */
@@ -19123,7 +19125,7 @@ export type PropertyItemHardwareFastenerScrewMachineDiameter = {
   /** major diameter normalized to mm */
   diameter_major: Scalars['numeric'];
   fit: EnumItemHardwareFastenerScrewMachineThreadFitEnum;
-  /** The pitch normalized to mm */
+  /** The pitch normalized to mm. If USC, it is 1/TPI -> mm */
   pitch: Scalars['numeric'];
   /** The pitch in the given unit's native format. TPI for inch, mm for metric */
   pitch_label: Scalars['numeric'];
@@ -19708,12 +19710,12 @@ export type QueryRoot = {
   icon_aggregate: IconAggregate;
   /** fetch data from the table: "icon" using primary key columns */
   icon_by_pk?: Maybe<Icon>;
-  /** fetch data from the table: "icon_item_category_map" */
-  icon_item_category_map: Array<IconItemCategoryMap>;
-  /** fetch aggregated fields from the table: "icon_item_category_map" */
-  icon_item_category_map_aggregate: IconItemCategoryMapAggregate;
-  /** fetch data from the table: "icon_item_category_map" using primary key columns */
-  icon_item_category_map_by_pk?: Maybe<IconItemCategoryMap>;
+  /** fetch data from the table: "icon_item_class_map" */
+  icon_item_class_map: Array<IconItemClassMap>;
+  /** fetch aggregated fields from the table: "icon_item_class_map" */
+  icon_item_class_map_aggregate: IconItemClassMapAggregate;
+  /** fetch data from the table: "icon_item_class_map" using primary key columns */
+  icon_item_class_map_by_pk?: Maybe<IconItemClassMap>;
   /** fetch data from the table: "icon_item_map" */
   icon_item_map: Array<IconItemMap>;
   /** fetch aggregated fields from the table: "icon_item_map" */
@@ -20772,28 +20774,28 @@ export type QueryRootIconByPkArgs = {
 
 
 /** query root */
-export type QueryRootIconItemCategoryMapArgs = {
-  distinct_on?: Maybe<Array<IconItemCategoryMapSelectColumn>>;
+export type QueryRootIconItemClassMapArgs = {
+  distinct_on?: Maybe<Array<IconItemClassMapSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<IconItemCategoryMapOrderBy>>;
-  where?: Maybe<IconItemCategoryMapBoolExp>;
+  order_by?: Maybe<Array<IconItemClassMapOrderBy>>;
+  where?: Maybe<IconItemClassMapBoolExp>;
 };
 
 
 /** query root */
-export type QueryRootIconItemCategoryMapAggregateArgs = {
-  distinct_on?: Maybe<Array<IconItemCategoryMapSelectColumn>>;
+export type QueryRootIconItemClassMapAggregateArgs = {
+  distinct_on?: Maybe<Array<IconItemClassMapSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<IconItemCategoryMapOrderBy>>;
-  where?: Maybe<IconItemCategoryMapBoolExp>;
+  order_by?: Maybe<Array<IconItemClassMapOrderBy>>;
+  where?: Maybe<IconItemClassMapBoolExp>;
 };
 
 
 /** query root */
-export type QueryRootIconItemCategoryMapByPkArgs = {
-  category: EnumItemClassEnum;
+export type QueryRootIconItemClassMapByPkArgs = {
+  class: EnumItemClassEnum;
   icon_id: Scalars['uuid'];
   sequence: Scalars['smallint'];
 };
@@ -23389,12 +23391,12 @@ export type SubscriptionRoot = {
   icon_aggregate: IconAggregate;
   /** fetch data from the table: "icon" using primary key columns */
   icon_by_pk?: Maybe<Icon>;
-  /** fetch data from the table: "icon_item_category_map" */
-  icon_item_category_map: Array<IconItemCategoryMap>;
-  /** fetch aggregated fields from the table: "icon_item_category_map" */
-  icon_item_category_map_aggregate: IconItemCategoryMapAggregate;
-  /** fetch data from the table: "icon_item_category_map" using primary key columns */
-  icon_item_category_map_by_pk?: Maybe<IconItemCategoryMap>;
+  /** fetch data from the table: "icon_item_class_map" */
+  icon_item_class_map: Array<IconItemClassMap>;
+  /** fetch aggregated fields from the table: "icon_item_class_map" */
+  icon_item_class_map_aggregate: IconItemClassMapAggregate;
+  /** fetch data from the table: "icon_item_class_map" using primary key columns */
+  icon_item_class_map_by_pk?: Maybe<IconItemClassMap>;
   /** fetch data from the table: "icon_item_map" */
   icon_item_map: Array<IconItemMap>;
   /** fetch aggregated fields from the table: "icon_item_map" */
@@ -24453,28 +24455,28 @@ export type SubscriptionRootIconByPkArgs = {
 
 
 /** subscription root */
-export type SubscriptionRootIconItemCategoryMapArgs = {
-  distinct_on?: Maybe<Array<IconItemCategoryMapSelectColumn>>;
+export type SubscriptionRootIconItemClassMapArgs = {
+  distinct_on?: Maybe<Array<IconItemClassMapSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<IconItemCategoryMapOrderBy>>;
-  where?: Maybe<IconItemCategoryMapBoolExp>;
+  order_by?: Maybe<Array<IconItemClassMapOrderBy>>;
+  where?: Maybe<IconItemClassMapBoolExp>;
 };
 
 
 /** subscription root */
-export type SubscriptionRootIconItemCategoryMapAggregateArgs = {
-  distinct_on?: Maybe<Array<IconItemCategoryMapSelectColumn>>;
+export type SubscriptionRootIconItemClassMapAggregateArgs = {
+  distinct_on?: Maybe<Array<IconItemClassMapSelectColumn>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<IconItemCategoryMapOrderBy>>;
-  where?: Maybe<IconItemCategoryMapBoolExp>;
+  order_by?: Maybe<Array<IconItemClassMapOrderBy>>;
+  where?: Maybe<IconItemClassMapBoolExp>;
 };
 
 
 /** subscription root */
-export type SubscriptionRootIconItemCategoryMapByPkArgs = {
-  category: EnumItemClassEnum;
+export type SubscriptionRootIconItemClassMapByPkArgs = {
+  class: EnumItemClassEnum;
   icon_id: Scalars['uuid'];
   sequence: Scalars['smallint'];
 };
@@ -26384,7 +26386,7 @@ export type InsertIconMutationVariables = Exact<{
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   title?: Maybe<Scalars['String']>;
-  categories?: Maybe<IconItemCategoryMapArrRelInsertInput>;
+  categories?: Maybe<IconItemClassMapArrRelInsertInput>;
   labels?: Maybe<IconLabelMapArrRelInsertInput>;
 }>;
 
@@ -26408,8 +26410,8 @@ export type GetIconQuery = (
     { __typename?: 'icon' }
     & Pick<Icon, 'data' | 'description' | 'id' | 'title'>
     & { categories: Array<(
-      { __typename?: 'icon_item_category_map' }
-      & Pick<IconItemCategoryMap, 'category' | 'criteria' | 'sequence'>
+      { __typename?: 'icon_item_class_map' }
+      & Pick<IconItemClassMap, 'class' | 'criteria' | 'sequence'>
     )>, labels: Array<(
       { __typename?: 'icon_label_map' }
       & Pick<IconLabelMap, 'label_id'>
@@ -26426,8 +26428,8 @@ export type GetIconsQuery = (
     { __typename?: 'icon' }
     & Pick<Icon, 'data' | 'description' | 'id' | 'title'>
     & { categories: Array<(
-      { __typename?: 'icon_item_category_map' }
-      & Pick<IconItemCategoryMap, 'category' | 'criteria' | 'sequence'>
+      { __typename?: 'icon_item_class_map' }
+      & Pick<IconItemClassMap, 'class' | 'criteria' | 'sequence'>
     )>, labels: Array<(
       { __typename?: 'icon_label_map' }
       & Pick<IconLabelMap, 'label_id'>
@@ -26829,6 +26831,13 @@ export type DeleteManufacturerItemMutation = (
 export type BasicOrderFieldsFragment = (
   { __typename?: 'order' }
   & Pick<Order, 'id' | 'vendor_order_id' | 'url' | 'total_cost' | 'tax_cost' | 'pon' | 'placed_date' | 'payment_method_id' | 'items_cost' | 'fulfilled_date'>
+  & { order_items_aggregate: (
+    { __typename?: 'order_item_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'order_item_aggregate_fields' }
+      & Pick<OrderItemAggregateFields, 'count'>
+    )> }
+  ) }
 );
 
 export type ObjectOrderFieldsFragment = (
@@ -27839,6 +27848,11 @@ export const BasicOrderFieldsFragmentDoc = gql`
   payment_method_id
   items_cost
   fulfilled_date
+  order_items_aggregate {
+    aggregate {
+      count
+    }
+  }
 }
     `;
 export const BasicOrderItemFieldsFragmentDoc = gql`
@@ -27989,7 +28003,7 @@ export const ItemHardwareFastenerScrewMachineFieldsFragmentDoc = gql`
 }
     ${ItemHardwareFastenerScrewMachineDiameterFieldsFragmentDoc}`;
 export const InsertIconDocument = gql`
-    mutation InsertIcon($mimeData: String, $description: String, $id: uuid, $title: String, $categories: icon_item_category_map_arr_rel_insert_input, $labels: icon_label_map_arr_rel_insert_input) {
+    mutation InsertIcon($mimeData: String, $description: String, $id: uuid, $title: String, $categories: icon_item_class_map_arr_rel_insert_input, $labels: icon_label_map_arr_rel_insert_input) {
   insert_icon(
     objects: {data: $mimeData, description: $description, id: $id, title: $title, categories: $categories, labels: $labels}
   ) {
@@ -28035,7 +28049,7 @@ export const GetIconDocument = gql`
     id
     title
     categories {
-      category
+      class
       criteria
       sequence
     }
@@ -28079,7 +28093,7 @@ export const GetIconsDocument = gql`
     id
     title
     categories {
-      category
+      class
       criteria
       sequence
     }
@@ -30727,4 +30741,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2021-02-13T18:36:43-07:00
+// graphql typescript defs generated on 2021-06-11T12:06:28-06:00
