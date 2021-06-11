@@ -5,21 +5,21 @@ mutation InsertIcon (
     $description: String, 
     $id: uuid, 
     $title: String,
-    $categories: icon_item_category_map_arr_rel_insert_input
+    $categories: icon_item_class_map_arr_rel_insert_input,
     $labels: icon_label_map_arr_rel_insert_input
     ) {
-  insert_icon(
-      objects: {
-          data: $mimeData, 
-          description: $description, 
-          id: $id, 
-          title: $title, 
-          categories: $categories,
-          labels: $labels
+    insert_icon(
+        objects: {
+            data: $mimeData, 
+            description: $description, 
+            id: $id, 
+            title: $title, 
+            categories: $categories,
+            labels: $labels
         }
     ){
         affected_rows 
-  }
+    }
 }
 
 # mutation UploadImageFile (
@@ -41,7 +41,7 @@ query GetIcon($id: uuid!) {
     id
     title
     categories {
-        category
+        class
         criteria
         sequence
     }
@@ -57,7 +57,7 @@ query GetIcons {
     id
     title
     categories {
-        category
+        class
         criteria
         sequence
     }

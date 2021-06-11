@@ -9,6 +9,11 @@ fragment basicOrderFields on order {
     payment_method_id
     items_cost
     fulfilled_date
+    order_items_aggregate {
+        aggregate {
+            count
+        }
+    }
 }
 fragment objectOrderFields on order {
     vendor {
@@ -364,6 +369,18 @@ query GetItemVariantByAttached(
         ...objectItemVariantFields
     }
 }
+
+# TODO
+# mutation InsertOrderItem {
+#     insert_order_item_one(
+#         on_conflict: {
+#             update_columns: vendor_item_id, 
+#             constraint: order_item_id_vendor_item_id_key
+#         }, object: {cost_item: $cost_item, cost_tax: $cost_tax, cost_total: $cost_total, item_id: $item_id, manufacturer_item_id: $manufacturer_item_id, quantity: $quantity, serial_no: $serial_no, vendor_item: {data: {description: $description, id: $id, vendor_id: $vendor_id, vendor_sku: $vendor_sku, item_id: $item_id}, on_conflict: {constraint: vendor_item_pkey}}}) {
+#     id
+#   }
+# }
+
 
 mutation UpdateOrderItem(
     $id: Int!
