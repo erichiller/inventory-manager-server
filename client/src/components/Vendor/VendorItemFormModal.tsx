@@ -123,7 +123,7 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
         console.log( { class: 'VendorItemEditModal', method: 'onFinish', values, vendorItem, formFieldValues: form.getFieldsValue() } );
         if ( props.onFinish ){
             console.log( { class: 'VendorItemEditModal', method: 'onFinish', event: 'calling props supplied onFinish()' } );
-            return props.onFinish(values);
+            return props.onFinish( values );
         }
         if ( vendorItemId ) {
             let formFieldValues = form.getFieldsValue() as Exclude<UpdateVendorItemMutationVariables, 'id'>;

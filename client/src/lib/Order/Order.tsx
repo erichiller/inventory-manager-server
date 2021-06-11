@@ -160,6 +160,7 @@ export class Order implements OrderDataProps {
             'vendor_order_id',
             'placed_date',
             'fulfilled_date',
+            // [ 'order_items', 'length' ],
             'total_cost',
         ];
         const cols: ColumnProps<ObjectColumnProperty<Order>>[] = keys.map( key => {
@@ -172,6 +173,9 @@ export class Order implements OrderDataProps {
             }
 
             if ( Array.isArray( key ) ) {
+                // if ( key[1] === 'length' ){
+                //     keyname = `# ${key[0]}`;
+                // }
                 return {
                     key: `${key[0]}_${key[1]}`,
                     title: toTitleCase( `${ key[ 0 ] }_${ key[ 1 ] }` ),
@@ -182,6 +186,16 @@ export class Order implements OrderDataProps {
                 return key as ColumnProps<ObjectColumnProperty<Order>>;
             }
         } );
+        // TODO: add number of items on order column
+        // cols.push( {
+        //     key: `order_items_length`,
+        //     title: '# Items',
+        //     render: x => {
+        //         console.log(x);
+        //         return Array.isArray( x ) ? x.length : null
+        //     },
+        //     dataIndex: 'order_items'
+        // } );
         return cols;
     }
     get Columns (): ColumnProps<ObjectColumnProperty<Order>>[] {

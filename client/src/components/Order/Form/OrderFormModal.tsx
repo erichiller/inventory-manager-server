@@ -66,6 +66,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
     //edit
     const [ updateOrder, updateOrderResult ] = useUpdateOrderMutation();
     const [ updateOrderItem ] = useUpdateOrderItemMutation();
+    const [ insertOrderItem ] = useInsertOrderItemMutation();
     // add new
     const [ insertOrder, insertOrderResult ] = useInsertOrderMutation( {
         refetchQueries: [
@@ -168,13 +169,24 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             } );
             formFieldValues.order_items.forEach( order_item => {
                 let existingOrderItem: Unpacked<typeof order[ 'order_items' ]> = order.order_items.find( el => el.id === order_item.id );
+                console.log( { class: 'OrderEditModal', method: 'onFinish', order: order, order_item: order_item, existingOrderItem: existingOrderItem, valuesEqual_: propValuesEqual( existingOrderItem, order_item ) } );
                 if ( !propValuesEqual( existingOrderItem, order_item ) ) {
+                    if ( order_item.id === undefined ){
+                    console.log( `update order_item with id=${ order_item.id }` );
+                    insertOrderI
+                    updateOrderItem( {
+                        variables: {
+                            ...filterObject( order_item, null, [ '__typename' ] )
+                        }
+                    } );
+                } else {
                     console.log( `update order_item with id=${ order_item.id }` );
                     updateOrderItem( {
                         variables: {
                             ...filterObject( order_item, null, [ '__typename' ] )
                         }
                     } );
+                    }
                 }
             } );
         } else {
@@ -242,7 +254,6 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
     };
     if ( order ) {
         for ( let key in order ) {
-            console.log( key );
             if ( key !== null && [
                 'fulfilled_date',
                 'placed_date'

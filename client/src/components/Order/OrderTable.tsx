@@ -24,7 +24,7 @@ interface IOrderTableParams {
 }
 
 export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
-    const [pagination, setPagination] = useState < false | TablePaginationConfig>({ hideOnSinglePage: true, defaultPageSize: computeDefaultPagination() });
+    const [pagination, setPagination] = useState < false | TablePaginationConfig>( { hideOnSinglePage: true, defaultPageSize: computeDefaultPagination() } );
     let params = useParams<IOrderTableParams>();
     const [ modal, setModal ] = useState<React.ReactElement>( null );
     const history = useHistory();
