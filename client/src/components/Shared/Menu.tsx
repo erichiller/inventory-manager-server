@@ -23,11 +23,11 @@ export const MainMenu: React.FC<{}> = ( props ) => {
             </Link>
         </Menu.Item>
         <Menu.SubMenu key="/label" title={<Link to="/label"><TagOutlined />Labels</Link>} >
-            <Menu.Item key="/label">
+            <Menu.Item key="/label__1">
                 <Menu className="MainMenuInItem" mode="horizontal"
                     selectedKeys={[ location.pathname ]}
                 >
-                    <Menu.Item key="/label">
+                    <Menu.Item key="/label__2">
                         <Link to="/label"><TagOutlined />Labels</Link>
                     </Menu.Item>
                     <Menu.Item key="/label/_/create"><Link to="/label/_/create"><PlusSquareOutlined /></Link></Menu.Item>
@@ -35,11 +35,11 @@ export const MainMenu: React.FC<{}> = ( props ) => {
             </Menu.Item>
         </Menu.SubMenu>
         <Menu.SubMenu key="/order" title={<Link to="/order"><ShoppingCartOutlined />Orders</Link>} >
-            <Menu.Item key="/order">
+            <Menu.Item key="/order__1">
                 <Menu className="MainMenuInItem" mode="horizontal"
                     selectedKeys={[ location.pathname ]}
                 >
-                    <Menu.Item key="/order"><Link to="/order"><UnorderedListOutlined />Orders</Link></Menu.Item>
+                    <Menu.Item key="/order__2"><Link to="/order"><UnorderedListOutlined />Orders</Link></Menu.Item>
                     <Menu.Item key="/order/_/add"><Link to="/order/_/add"><PlusSquareOutlined /></Link></Menu.Item>
                 </Menu>
             </Menu.Item>

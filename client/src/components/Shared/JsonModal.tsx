@@ -4,24 +4,24 @@ import { Intersection, deepCopy, deepEqual } from "~lib/UtilityFunctions";
 import { Button, Modal } from "antd";
 
 interface JsonModalProps {
-    json: Object | string;
-    onChange?: (json: Object) => void;
-    onCommit?: (json: Object) => void;
+    json: object | string;
+    onChange?: ( json: Object ) => void;
+    onCommit?: ( json: Object ) => void;
     visibilityHandler: ( modal: React.ReactElement ) => void;
 }
 
 export const JsonModal: React.FC<JsonModalProps> = ( props ) => {
     const { visibilityHandler, onCommit } = props;
-    const json = typeof props.json === "string" ? JSON.stringify( props.json ) : props.json;
+    const json = typeof props.json === "string" ? JSON.parse( props.json ) : props.json;
 
-    const onChange = (json: Object) => {
+    const onChange = ( json: Object ) => {
         // run something that prepares for `onCommit`
         if ( props.onChange ){
-            props.onChange(json);
+            props.onChange( json );
         }
-    }
+    };
 
-    console.log({cls: "JsonModal", evt: "ModalInit", json});
+    console.log( {cls: "JsonModal", evt: "ModalInit", json} );
     return <Modal
         title="JSON"
         visible={true}
@@ -50,7 +50,7 @@ type JsonEditorProps = Intersection<{
     json?: object;
     text: string;
 }, {
-    className?: string
+    className?: string;
 },
 JSONEditorOptions >;
 

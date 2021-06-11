@@ -542,8 +542,22 @@ export function flatArrayObjectProperty<T extends SubType<T, string>, K extends 
     return ret;
 }
 
-/** check if the values in a equal the values in b */
+/**
+ * Simulate xor which JavaScript does not have
+ * @param a 
+ * @param b 
+ */
+export function xor ( a: boolean, b: boolean ): boolean {
+    return ( a ? 1 : 0 ) ^ ( b ? 1 : 0 ) ? true : false;
+}
+
+// export function eitherOfTypes<T>( inputs: [a: any, b: any] )
+
+/** check if the values in `a` equal the values in `b` */
 export function propValuesEqual ( a: object | Array<any>, b: object | Array<any> ): boolean {
+    if ( xor( a === undefined, b === undefined ) || xor( a=== null, b===null ) ){
+        return false;
+    }
     for ( let i in a ){
         if( a[i] !== b[i] ){
             return false;
