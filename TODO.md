@@ -23,6 +23,8 @@
 - [ ] remove `thread_diameter` ? -- replace with thread_diameter_label
 - [ ] remove `thread_label`
 
+- [ ] Waiting on `graphql-codegen` #FIXME before I can upgrade the version again. <https://github.com/dotansimha/graphql-code-generator/issues/5758>
+
 
 
 ## Table
