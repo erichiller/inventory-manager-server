@@ -10,7 +10,7 @@ import TextArea from 'antd/lib/input/TextArea';
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, useUpdateOrderItemMutation, InsertOrderMutationVariables, ShipmentConstraint, ShipmentUpdateColumn } from '~lib/types/graphql';
+import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, useUpdateOrderItemMutation, InsertOrderMutationVariables, ShipmentConstraint, ShipmentUpdateColumn, useInsertOrderItemMutation } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject, transparentLog, Unpacked, propValuesEqual, deepCopy } from '~lib/UtilityFunctions';
 import { VendorSelect } from '../../Vendor/VendorSelect';
@@ -173,8 +173,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                 if ( !propValuesEqual( existingOrderItem, order_item ) ) {
                     if ( order_item.id === undefined ){
                     console.log( `update order_item with id=${ order_item.id }` );
-                    insertOrderI
-                    updateOrderItem( {
+                    insertOrderItem( {
                         variables: {
                             ...filterObject( order_item, null, [ '__typename' ] )
                         }
