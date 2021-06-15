@@ -375,10 +375,10 @@ mutation InsertOrderItem(
     $cost_item: numeric
     $cost_tax: numeric
     $cost_total: numeric
-    $item_id: Int
+    $item_id: Int!
     $manufacturer_item_id: Int
-    $order_id: Int
-    $quantity: numeric
+    $order_id: Int!
+    $quantity: numeric!
     $serial_no: String
     $shipment_id: Int
     $vendor_item_id: Int
