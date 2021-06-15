@@ -376,6 +376,7 @@ enum enum_item_class_constraint {
 }
 
 enum enum_item_class_enum {
+  #
   item_bundle
   item_hardware_fastener_nut
   item_hardware_fastener_screw
@@ -637,7 +638,6 @@ enum enum_item_handedness_update_column {
 #
 #
 # columns and relationships of "enum_item_hardware_fastener.drive"
-#
 type enum_item_hardware_fastener_drive {
   description: String
   id: String!
@@ -857,7 +857,6 @@ enum enum_item_hardware_fastener_drive_update_column {
 #
 #
 # columns and relationships of "enum_item_hardware_fastener.material"
-#
 type enum_item_hardware_fastener_material {
   description: String
   id: String!
@@ -1379,7 +1378,6 @@ enum enum_item_hardware_fastener_nut_strength_update_column {
 #
 #
 # columns and relationships of "enum_item_hardware_fastener_nut.thread_fit"
-#
 type enum_item_hardware_fastener_nut_thread_fit {
   description: String
   id: String!
@@ -2029,7 +2027,6 @@ enum enum_item_hardware_fastener_screw_machine_point_update_column {
 #
 #
 # columns and relationships of "enum_item_hardware_fastener_screw_machine.strength"
-#
 type enum_item_hardware_fastener_screw_machine_strength {
   description: String
   id: String!
@@ -2205,7 +2202,6 @@ enum enum_item_hardware_fastener_screw_machine_strength_update_column {
 #
 #
 # columns and relationships of "enum_item_hardware_fastener_screw_machine.thread_fit"
-#
 type enum_item_hardware_fastener_screw_machine_thread_fit {
   description: String
   id: String!
@@ -2523,7 +2519,6 @@ enum enum_item_hardware_fastener_standoff_shape_update_column {
 #
 #
 # columns and relationships of "enum_item_hardware_fastener.thread_label"
-#
 type enum_item_hardware_fastener_thread_label {
   description: String
   id: String!
@@ -2677,7 +2672,6 @@ enum enum_item_hardware_fastener_thread_label_update_column {
 #
 #
 # columns and relationships of "enum_item_hardware_fastener.thread_standard"
-#
 type enum_item_hardware_fastener_thread_standard {
   description: String
   id: String!
@@ -2844,7 +2838,6 @@ enum enum_item_hardware_fastener_thread_standard_update_column {
 #
 #
 # columns and relationships of "enum_item_hardware_fastener_washer.form"
-#
 type enum_item_hardware_fastener_washer_form {
   description: String
   id: String!
@@ -3163,7 +3156,6 @@ enum enum_item_hardware_fastener_washer_mechanism_update_column {
 #
 #
 # columns and relationships of "enum_item_hardware_fastener_washer.pattern"
-#
 type enum_item_hardware_fastener_washer_pattern {
   description: String
   id: String!
@@ -3324,7 +3316,6 @@ enum enum_item_hardware_fastener_washer_pattern_update_column {
 #
 #
 # columns and relationships of "enum_item_hardware.finish"
-#
 type enum_item_hardware_finish {
   description: String
   id: String!
@@ -3495,7 +3486,6 @@ enum enum_item_hardware_finish_update_column {
 #
 #
 # columns and relationships of "enum_item_hardware.use_material"
-#
 type enum_item_hardware_use_material {
   description: String
   id: String!
@@ -4455,7 +4445,6 @@ enum enum_item_tool_drill_bit_style_update_column {
 #
 #
 # columns and relationships of "enum.mapped_class"
-#
 type enum_mapped_class {
   description: String
   id: String!
@@ -4503,6 +4492,7 @@ enum enum_mapped_class_constraint {
 }
 
 enum enum_mapped_class_enum {
+  #
   item_bundle
   item_hardware_fastener_bolt
   item_hardware_fastener_nut
@@ -4771,7 +4761,6 @@ enum enum_payment_method_type_update_column {
 #
 #
 # columns and relationships of "enum.space_type"
-#
 type enum_space_type {
   description: String
   id: String!
@@ -4928,7 +4917,6 @@ enum enum_space_type_update_column {
 #
 #
 # columns and relationships of "enum.stock_event_type"
-#
 type enum_stock_event_type {
   description: String
   id: String!
@@ -5239,7 +5227,6 @@ enum enum_unit_update_column {
 #
 #
 # columns and relationships of "icon"
-#
 type icon {
   # An array relationship
   categories(
@@ -5718,7 +5705,6 @@ input icon_item_class_map_variance_order_by {
 #
 #
 # columns and relationships of "icon_item_map"
-#
 type icon_item_map {
   # An object relationship
   icon: icon!
@@ -6564,7 +6550,6 @@ input item_bool_exp {
 #
 #
 # columns and relationships of "item.bundle"
-#
 type item_bundle {
   created_at: timestamptz!
   description: String
@@ -7192,7 +7177,6 @@ input item_bundle_variance_order_by {
 #
 #
 # columns and relationships of "item.cable_conductive"
-#
 type item_cable_conductive {
   cable_diameter: numeric
   cable_sheath_material: String
@@ -8731,7 +8715,6 @@ input item_hardware_fastener_insert_variance_order_by {
 #
 #
 # columns and relationships of "item.hardware_fastener_nut"
-#
 type item_hardware_fastener_nut {
   description: String!
   form: enum_item_hardware_fastener_nut_form_enum!
@@ -10739,7 +10722,6 @@ input item_hardware_fastener_standoff_variance_order_by {
 #
 #
 # columns and relationships of "item.hardware_fastener_washer"
-#
 type item_hardware_fastener_washer {
   description: String
   diameter_inner: numeric
@@ -11372,7 +11354,6 @@ input item_variance_order_by {
 #
 #
 # columns and relationships of "item_variant"
-#
 type item_variant {
   class: String
   id: Int
@@ -11816,7 +11797,6 @@ input jsonb_comparison_exp {
 #
 #
 # columns and relationships of "label"
-#
 type label {
   content(
     # JSON select path
@@ -12475,7 +12455,6 @@ input label_sum_order_by {
 #
 #
 # columns and relationships of "label_template_map"
-#
 type label_template_map {
   # json rules in the form of:
   #             { [propKey: keyof item_class]: regex }
@@ -17032,7 +17011,6 @@ input order_insert_input {
 #
 #
 # columns and relationships of "order_item"
-#
 type order_item {
   cost_item: numeric
   cost_tax: numeric
@@ -18523,7 +18501,6 @@ input property_item_hardware_fastener_bolt_strength_variance_order_by {
 #
 #
 # columns and relationships of "property_item_hardware_fastener_screw_machine.diameter"
-#
 type property_item_hardware_fastener_screw_machine_diameter {
   # String description of diameter in the format native to the given unit.
   diameter_label: String!
@@ -21903,7 +21880,6 @@ input search_item_variant_args {
 #
 #
 # columns and relationships of "shipment"
-#
 type shipment {
   # An object relationship
   carrier: vendor!
@@ -22319,7 +22295,6 @@ input smallint_comparison_exp {
 #
 #
 # columns and relationships of "stock"
-#
 type stock {
   date: timestamptz!
   event_type: enum_stock_event_type_enum!
