@@ -91,7 +91,6 @@ export const NewImageUploadModal: React.FC<NewImageUploadModalProps> = ( { label
     };
 
     const onFinish = ( values ) => {
-
         sendData(
             {
                 variables:
@@ -99,7 +98,7 @@ export const NewImageUploadModal: React.FC<NewImageUploadModalProps> = ( { label
                     id: labelImage.id,
                     categories: {
                         data: [ {
-                            category: labelImage.category
+                            class: labelImage.class
                         } ]
                     },
                     description: labelImage.description,
@@ -118,7 +117,6 @@ export const NewImageUploadModal: React.FC<NewImageUploadModalProps> = ( { label
         //     values: undefined
         // })
         // console.log({ loading, data, error, called, mutate});
-
     };
 
 

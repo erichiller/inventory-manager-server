@@ -167,7 +167,7 @@ export class LabelImage extends LabelConstituent {
     width: Integer;
     height: Integer;
     label?: string;
-    category?: EnumItemClassEnum;
+    class?: EnumItemClassEnum;
     description?: string;
 
     constructor ( options?: Partial<LabelImage> ) {
