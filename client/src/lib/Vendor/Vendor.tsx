@@ -38,6 +38,7 @@ type VendorsGql = GetVendorsQueryHookResult[ 'data' ][ 'vendor' ];
 
 
 export class Vendor implements VendorDataProps {
+
     __typename: 'vendor' = 'vendor';
     account_id?: string;
     id: Integer;
@@ -49,7 +50,7 @@ export class Vendor implements VendorDataProps {
     manufacturer?: { id: Integer; }; 
 
     constructor ( props: Partial<ApolloQueryResult<GetVendorQuery>[ 'data' ][ 'vendor' ]> | Partial<ApolloQueryResult<GetVendorQuery>[ 'data' ]> ) {
-        let inputData = ( ! ( 'vendor' in props )) ? props : props.vendor;
+        let inputData = ( ! ( 'vendor' in props ) ) ? props : props.vendor;
         // constructor( props: Partial<T>){
         // if (!props) return;
         // this.Vendor = props;
@@ -76,7 +77,6 @@ export class Vendor implements VendorDataProps {
     }
 
     static async VendorFactory<Q extends typeof GetVendorDocument> ( variables: GetVendorQueryVariables, query: Q = GetVendorDocument as Q ): Promise<Vendor> {
-
         return new Promise( ( resolve, reject ) => apolloClient.query<GetVendorQuery, GetVendorQueryVariables>( {
             query: query,
             variables: {
@@ -105,7 +105,7 @@ export class Vendor implements VendorDataProps {
      * @param results Output from `GetVendor` GraphQL query (`data` property)
      */
     static VendorsFactory ( results: VendorsGql ): Array<Vendor> {
-        return results.map( vendorGql => new Vendor( vendorGql ));
+        return results.map( vendorGql => new Vendor( vendorGql ) );
     }
 
     static useQuery = useGetVendorQuery;
@@ -145,16 +145,19 @@ export class Vendor implements VendorDataProps {
         // return () => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />;
         // console.log( "Vendor: rendering AsyncIcon with `this` of", this );
         if ( ! this.id ){
-            console.warn( "Vendor missing required id in ", this )
-            return () => < WarningOutlined />
+            console.warn( "Vendor missing required id in ", this );
+            return () => < WarningOutlined />;
+        }
+        if ( this.url ){
+            return () => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />;
         }
         return () => {
-            console.log("Vendor Callback: rendering AsyncIcon with this of", this);
+            console.log( "Vendor Callback: rendering AsyncIcon with this of", this );
             return <AsyncIcon cls={Vendor} vars={{ id: this.id }} cb={
                 // ( ) => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />
-                ( props: { obj: Vendor } ) => <img className="vendorIcon" src={`${ props.obj.url }/favicon.ico`} />
-            } />
-        }
+                ( props: { obj: Vendor; } ) => <img className="vendorIcon" src={`${ props.obj.url }/favicon.ico`} />
+            } />;
+        };
     }
 
     /**
@@ -170,7 +173,6 @@ export class Vendor implements VendorDataProps {
      * Optionally defined on subclasses
      */
     static get Columns (): ColumnProps<Vendor>[] {
-
         return makeColumn(
             [
                 {
@@ -203,7 +205,7 @@ export class Vendor implements VendorDataProps {
                     title: 'Manufacturer?',
                     responsive: ['lg'],
                     render: ( text, record: Vendor ) => {
-                        return ( record.manufacturer?.id ? <CheckOutlined /> : null )
+                        return ( record.manufacturer?.id ? <CheckOutlined /> : null );
                     }
                 }
             ]
