@@ -27061,6 +27061,28 @@ export type InsertOrderItemMutation = (
   )> }
 );
 
+export type InsertOrderItemWithExistingVendorItemMutationVariables = Exact<{
+  cost_item?: Maybe<Scalars['numeric']>;
+  cost_tax?: Maybe<Scalars['numeric']>;
+  cost_total?: Maybe<Scalars['numeric']>;
+  item_id: Scalars['Int'];
+  manufacturer_item_id?: Maybe<Scalars['Int']>;
+  order_id: Scalars['Int'];
+  quantity: Scalars['numeric'];
+  serial_no?: Maybe<Scalars['String']>;
+  shipment_id?: Maybe<Scalars['Int']>;
+  vendor_item_id: Scalars['Int'];
+}>;
+
+
+export type InsertOrderItemWithExistingVendorItemMutation = (
+  { __typename?: 'mutation_root' }
+  & { order_item?: Maybe<(
+    { __typename?: 'order_item' }
+    & Pick<OrderItem, 'id'>
+  )> }
+);
+
 export type UpdateOrderItemMutationVariables = Exact<{
   id: Scalars['Int'];
   cost_item?: Maybe<Scalars['numeric']>;
@@ -29483,6 +29505,51 @@ export function useInsertOrderItemMutation(baseOptions?: Apollo.MutationHookOpti
 export type InsertOrderItemMutationHookResult = ReturnType<typeof useInsertOrderItemMutation>;
 export type InsertOrderItemMutationResult = Apollo.MutationResult<InsertOrderItemMutation>;
 export type InsertOrderItemMutationOptions = Apollo.BaseMutationOptions<InsertOrderItemMutation, InsertOrderItemMutationVariables>;
+export const InsertOrderItemWithExistingVendorItemDocument = gql`
+    mutation InsertOrderItemWithExistingVendorItem($cost_item: numeric, $cost_tax: numeric, $cost_total: numeric, $item_id: Int!, $manufacturer_item_id: Int, $order_id: Int!, $quantity: numeric!, $serial_no: String, $shipment_id: Int, $vendor_item_id: Int!) {
+  order_item: insert_order_item_one(
+    object: {cost_item: $cost_item, cost_tax: $cost_tax, cost_total: $cost_total, item_id: $item_id, order_id: $order_id, manufacturer_item_id: $manufacturer_item_id, quantity: $quantity, serial_no: $serial_no, shipment_id: $shipment_id, vendor_item_id: $vendor_item_id}
+    on_conflict: {constraint: order_item_id_vendor_item_id_key, update_columns: id}
+  ) {
+    id
+  }
+}
+    `;
+export type InsertOrderItemWithExistingVendorItemMutationFn = Apollo.MutationFunction<InsertOrderItemWithExistingVendorItemMutation, InsertOrderItemWithExistingVendorItemMutationVariables>;
+
+/**
+ * __useInsertOrderItemWithExistingVendorItemMutation__
+ *
+ * To run a mutation, you first call `useInsertOrderItemWithExistingVendorItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertOrderItemWithExistingVendorItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertOrderItemWithExistingVendorItemMutation, { data, loading, error }] = useInsertOrderItemWithExistingVendorItemMutation({
+ *   variables: {
+ *      cost_item: // value for 'cost_item'
+ *      cost_tax: // value for 'cost_tax'
+ *      cost_total: // value for 'cost_total'
+ *      item_id: // value for 'item_id'
+ *      manufacturer_item_id: // value for 'manufacturer_item_id'
+ *      order_id: // value for 'order_id'
+ *      quantity: // value for 'quantity'
+ *      serial_no: // value for 'serial_no'
+ *      shipment_id: // value for 'shipment_id'
+ *      vendor_item_id: // value for 'vendor_item_id'
+ *   },
+ * });
+ */
+export function useInsertOrderItemWithExistingVendorItemMutation(baseOptions?: Apollo.MutationHookOptions<InsertOrderItemWithExistingVendorItemMutation, InsertOrderItemWithExistingVendorItemMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertOrderItemWithExistingVendorItemMutation, InsertOrderItemWithExistingVendorItemMutationVariables>(InsertOrderItemWithExistingVendorItemDocument, options);
+      }
+export type InsertOrderItemWithExistingVendorItemMutationHookResult = ReturnType<typeof useInsertOrderItemWithExistingVendorItemMutation>;
+export type InsertOrderItemWithExistingVendorItemMutationResult = Apollo.MutationResult<InsertOrderItemWithExistingVendorItemMutation>;
+export type InsertOrderItemWithExistingVendorItemMutationOptions = Apollo.BaseMutationOptions<InsertOrderItemWithExistingVendorItemMutation, InsertOrderItemWithExistingVendorItemMutationVariables>;
 export const UpdateOrderItemDocument = gql`
     mutation UpdateOrderItem($id: Int!, $cost_item: numeric, $cost_tax: numeric, $cost_total: numeric, $item_id: Int, $manufacturer_item_id: Int, $order_id: Int, $quantity: numeric, $serial_no: String, $shipment_id: Int, $vendor_item_id: Int) {
   order_item: update_order_item_by_pk(
@@ -30920,4 +30987,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2021-06-17T06:10:04-06:00
+// graphql typescript defs generated on 2021-06-17T14:59:22-06:00

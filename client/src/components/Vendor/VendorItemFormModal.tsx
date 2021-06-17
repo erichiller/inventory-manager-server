@@ -102,7 +102,7 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
             // completeCallback( false );
             message.error( `${ error.name }: ${ error.message }` );
         } else if ( data ) {
-            message.success( `successfully ${ insertVendorItemResult.data ? 'created' : 'updated' } ${ data?.vendor_item.__typename } with id ${ data.vendor_item.id }` );
+            message.success( `successfully ${ insertVendorItemResult.data ? 'created' : 'updated' } ${ data?.vendor_item?.__typename } with id ${ data.vendor_item?.id }` );
             // return () => {
             form.resetFields();
             exitModal();
@@ -131,7 +131,7 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
                 variables: {
                     id: vendorItemId,
                     // ...filterObject( formFieldValues, null, [ 'manufacturer' ] )
-                    ...formFieldValues
+                    ...filterObject( formFieldValues, null, ['id'] )
                 }
             } );
         } else {

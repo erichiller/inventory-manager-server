@@ -1,6 +1,6 @@
 import React from 'react';
-import { Input, message } from 'antd';
-import { OrderItem as OrderItemGql, Shipment, Maybe, Scalars } from '~lib/types/graphql';
+import { Input } from 'antd';
+import { OrderItem as OrderItemGql } from '~lib/types/graphql';
 
 import { SubType, toMinimumFixed, PartialNullable, transparentLog } from '~lib/UtilityFunctions';
 import { InputProps } from 'antd/lib/input';
@@ -31,12 +31,13 @@ interface OrderItemCompositeValue extends PartialNullable<SubType<OrderItemGql, 
 // let foo: SubType<fooI, string | undefined>;
 // foo.
 
-interface OrderItemCompositeProps extends Omit<InputProps, 'value' | 'onChange'> {
+interface OrderItemCompositeProps extends Omit<InputProps, 'value' | 'onChange' | 'form' > {
     value?: OrderItemCompositeValue;
     onChange?: ( item: Partial<OrderItemCompositeValue> ) => void;
     vendorId: Integer;
     /** Array of Shipments that have been created locally and not yet posted to GraphQL */
     additionalShipmentOptions?: ShipmentAdditionalOption[];
+    // form?: FormInstance<any>;
 }
 
 /**

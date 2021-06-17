@@ -24,7 +24,7 @@
 - [ ] remove `thread_label`
 
 - [ ] Waiting on `graphql-codegen` #FIXME before I can upgrade the version again. <https://github.com/dotansimha/graphql-code-generator/issues/5758>
-
+- [ ] Waiting on `josdejong/jsoneditor` #FIXME for source map <https://github.com/josdejong/jsoneditor/issues/1208>
 
 
 ## Table

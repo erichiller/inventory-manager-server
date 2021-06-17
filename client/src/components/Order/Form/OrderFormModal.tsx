@@ -10,7 +10,7 @@ import TextArea from 'antd/lib/input/TextArea';
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, useUpdateOrderItemMutation, InsertOrderMutationVariables, ShipmentConstraint, ShipmentUpdateColumn, useInsertOrderItemMutation, OrderInsertInput } from '~lib/types/graphql';
+import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, useUpdateOrderItemMutation, InsertOrderMutationVariables, ShipmentConstraint, ShipmentUpdateColumn, useInsertOrderItemMutation, useInsertOrderItemWithExistingVendorItemMutation } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject, transparentLog, Unpacked, propValuesEqual, deepCopy } from '~lib/UtilityFunctions';
 import { VendorSelect } from '../../Vendor/VendorSelect';
@@ -23,7 +23,9 @@ import { JsonModal } from '~components/Shared/JsonModal';
 import { encapsulateChildObjectsIntoDataProp } from '~lib/FormHelpers';
 
 import { Callbacks } from 'rc-field-form/lib/interface';
+import { Rules, RuleItem } from 'async-validator';
 import { ShipmentSelectValue, ShipmentAdditionalOption } from '~components/Shipment/ShipmentSelect';
+// import { RuleConfig } from '';
 
 
 type OrderFormModalProps = Intersection<{
@@ -64,9 +66,12 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
     } );
 
     //edit
-    const [ updateOrder, updateOrderResult ] = useUpdateOrderMutation();
+    const [ updateOrder, updateOrderResult ] = useUpdateOrderMutation( { refetchQueries: [
+        { query: GetOrderDocument, variables: { id: orderId }}
+    ]} );
     const [ updateOrderItem ] = useUpdateOrderItemMutation();
-    const [ insertOrderItem ] = useInsertOrderItemMutation();
+    const [ insertOrderItem, insertOrderItemResult ] = useInsertOrderItemMutation();
+    const [ insertOrderItemWithExistingVendorItem, insertOrderItemWithExistingVendorItemResult ] = useInsertOrderItemWithExistingVendorItemMutation();
     // add new
     const [ insertOrder, insertOrderResult ] = useInsertOrderMutation( {
         refetchQueries: [
@@ -115,7 +120,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
      * Handle Mutations results
      */
     useEffect( () => {
-        let error = insertOrderResult.error || updateOrderResult.error; // || insertManufacturerResult.error || deleteManufacturerResult.error;
+        let error = insertOrderResult.error || updateOrderResult.error || insertOrderItemResult.error || insertOrderItemWithExistingVendorItemResult.error; // || insertManufacturerResult.error || deleteManufacturerResult.error;
         let data = insertOrderResult.data || updateOrderResult.data; // || insertManufacturerResult.data || deleteManufacturerResult.data;
         if ( error ) {
             // completeCallback( false );
@@ -127,7 +132,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             exitModal();
             // };
         }
-    }, [ insertOrderResult, updateOrderResult ] ); // , insertManufacturerResult, deleteManufacturerResult
+    }, [ insertOrderResult, updateOrderResult, insertOrderItemResult.error, insertOrderItemWithExistingVendorItemResult.error ] ); // , insertManufacturerResult, deleteManufacturerResult
 
     /***************************************************************************/
 
@@ -173,29 +178,35 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                 console.log( { class: 'OrderEditModal', method: 'onFinish', order: order, order_item: order_item, existingOrderItem: existingOrderItem, valuesEqual_: propValuesEqual( existingOrderItem, order_item ) } );
                 if ( !propValuesEqual( existingOrderItem, order_item ) ) {
                     if ( order_item.id === undefined ){
-                    console.log( { 
-                        msg: `insert order_item for order id=${ order_item.order_id } to variables:`, 
-                        insert_variables: {
-                            order_id: orderId,
-                            ...filterObject( order_item, null, [ '__typename', 'item', 'vendor_item' ] ),
-                            vendor_item: filterObject( order_item.vendor_item, null, [ '__typename', 'item', 'vendor', 'orderItems', 'orderItems_aggregate' ] )
-                        },
-                        original_order_item: order_item 
-                    } );
-                    insertOrderItem( {
-                        variables: {
-                            order_id: orderId,
-                            ...filterObject( order_item, null, [ '__typename', 'item', 'vendor_item' ] ),
-                            vendor_item: filterObject( order_item.vendor_item, null, [ '__typename', 'item', 'vendor', 'orderItems', 'orderItems_aggregate' ] )
+                        let filteredOrderItem = filterObject( order_item, null, [ '__typename', 'item', 'vendor_item', 'vendor_item_id' ] );
+                        if ( order_item.vendor_item_id !== null ){
+                            let insertVariables = {
+                                    order_id: orderId,
+                                    ...filteredOrderItem,
+                                    vendor_item_id: order_item.vendor_item_id
+                                };
+                            console.log( { msg: `insert order_item for order id=${ orderId } and existing vendor_item_id to variables:`, insert_variables: insertVariables, original_order_item: order_item } );
+                            insertOrderItemWithExistingVendorItem( {
+                                variables: insertVariables
+                            } );
+                        } else {
+                            let insertVariables = {
+                                    order_id: orderId,
+                                    ...filterObject( order_item, null, [ '__typename', 'item', 'vendor_item' ] ),
+                                    vendor_item: filterObject( order_item.vendor_item, null, [ '__typename', 'item', 'vendor', 'orderItems', 'orderItems_aggregate' ] )
+                                };
+                            console.log( { msg: `insert order_item for order id=${ orderId } to variables:`, insert_variables: insertVariables, original_order_item: order_item } );
+                            insertOrderItem( {
+                                variables: insertVariables
+                            } );
                         }
-                    } );
-                } else {
-                    console.log( `update order_item with id=${ order_item.id }` );
-                    updateOrderItem( {
-                        variables: {
-                            ...filterObject( order_item, null, [ '__typename' ] ),
-                        }
-                    } );
+                    } else {
+                        console.log( `update order_item with id=${ order_item.id }` );
+                        updateOrderItem( {
+                            variables: {
+                                ...filterObject( order_item, null, [ '__typename' ] ),
+                            }
+                        } );
                     }
                 }
             } );
@@ -418,6 +429,25 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                                             }
                                             return args;
                                         }}
+                                        rules={
+                                            [
+                                                {
+                                                    fields: {
+                                                        quantity: { required: true, type: 'number', message: "Quantity is required." }
+                                                    },
+                                                    required: true,
+                                                    type: 'object',
+                                                    // validator: ( rule, value, callback ) => {
+                                                    //     try {
+                                                    //         console.log("Validator", rule, value );
+                                                    //         throw new Error( 'Something wrong!' );
+                                                    //     } catch ( err ) {
+                                                    //         callback( err );
+                                                    //     }
+                                                    // }
+                                                }
+                                            ] as RuleItem[] as any // Currently antd's rule
+                                        }
                                         className="full-width-form-item"
                                     // normalize={ ( value: any, prevValue: any, allValues: Store) => {
                                     //     return { data: value };

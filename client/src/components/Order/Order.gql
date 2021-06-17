@@ -370,7 +370,6 @@ query GetItemVariantByAttached(
     }
 }
 
-# TODO
 mutation InsertOrderItem(
     $cost_item: numeric
     $cost_tax: numeric
@@ -411,6 +410,59 @@ mutation InsertOrderItem(
         id
     }
 }
+
+mutation InsertOrderItemWithExistingVendorItem(
+    $cost_item: numeric
+    $cost_tax: numeric
+    $cost_total: numeric
+    $item_id: Int!
+    $manufacturer_item_id: Int
+    $order_id: Int!
+    $quantity: numeric!
+    $serial_no: String
+    $shipment_id: Int
+    $vendor_item_id: Int!
+) {
+    order_item: insert_order_item_one(
+        object: {
+            cost_item: $cost_item, 
+            cost_tax: $cost_tax, 
+            cost_total: $cost_total, 
+            item_id: $item_id, 
+            order_id: $order_id,
+            manufacturer_item_id: $manufacturer_item_id, 
+            quantity: $quantity, 
+            serial_no: $serial_no, 
+            shipment_id: $shipment_id,
+            vendor_item_id: $vendor_item_id
+        }, 
+        on_conflict: {
+            constraint: order_item_id_vendor_item_id_key, 
+            update_columns: id
+        }
+
+    ) {
+        id
+    }
+}
+
+
+# mutation UpdateOrderItemVendorItemId(
+#     $order_item_id: Int!
+#     $vendor_item_id: Int!
+# ) {
+#     update_order_item_by_pk(
+#         _set: {
+#             vendor_item_id: $vendor_item_id
+#         },
+#         pk_columns: {
+#             id: $order_item_id
+#         }
+#     ) {
+#         id
+#         vendor_item_id
+#     }
+# }
 
 
 mutation UpdateOrderItem(
