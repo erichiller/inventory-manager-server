@@ -26330,6 +26330,9 @@ enum vendor_item_constraint {
   vendor_item_id_item_id_key
 
   # unique or primary key constraint
+  vendor_item_item_id_vendor_id_vendor_sku_key
+
+  # unique or primary key constraint
   vendor_item_pkey
 }
 

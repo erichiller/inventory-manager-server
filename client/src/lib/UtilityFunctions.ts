@@ -34,6 +34,9 @@ export function toTitleCase ( s: string ): string {
 export function filterObject<T, P extends StringKeys<T>> ( o: T, allow: Array<P> ): Pick<T, P>;
 export function filterObject<T, P extends StringKeys<T>> ( o: T, allow: null | undefined, exclude: Array<P> ): Omit<T, P>;
 export function filterObject<T, P extends StringKeys<T>> ( o: object, allow: undefined | null | Array<P>, exclude: undefined | null | Array<P> = null ): object {
+    if ( o === null || o === undefined ){
+        return {};
+    }
     let f: ( key: P ) => boolean = allow
         ? ( key ) => allow.includes( key )
         : exclude

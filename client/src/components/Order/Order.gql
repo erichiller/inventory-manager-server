@@ -381,16 +381,9 @@ mutation InsertOrderItem(
     $quantity: numeric!
     $serial_no: String
     $shipment_id: Int
-    $vendor_item_id: Int
-    $vendor_item_vendor_id: Int
-    $vendor_item_vendor_sku: String
-    $vendor_item_description: String
+    $vendor_item: vendor_item_insert_input!
 ) {
     order_item: insert_order_item_one(
-        on_conflict: {
-            update_columns: vendor_item_id, 
-            constraint: order_item_id_vendor_item_id_key
-        }, 
         object: {
             cost_item: $cost_item, 
             cost_tax: $cost_tax, 
@@ -402,19 +395,18 @@ mutation InsertOrderItem(
             serial_no: $serial_no, 
             shipment_id: $shipment_id,
             vendor_item: {
-                data: {
-                    id: $vendor_item_id, 
-                    description: $vendor_item_description, 
-                    vendor_id: $vendor_item_vendor_id, 
-                    vendor_sku: $vendor_item_vendor_sku, 
-                    item_id: $item_id
-                }, 
+                data: $vendor_item, 
                 on_conflict: {
-                    constraint: vendor_item_pkey,
-                    update_columns: id
+                    constraint: vendor_item_item_id_vendor_id_vendor_sku_key, 
+                    update_columns: [description]
                 }
             }
+        }, 
+        on_conflict: {
+            constraint: order_item_id_vendor_item_id_key, 
+            update_columns: id
         }
+
     ) {
         id
     }

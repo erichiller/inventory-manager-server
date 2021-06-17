@@ -10,7 +10,7 @@ import TextArea from 'antd/lib/input/TextArea';
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, useUpdateOrderItemMutation, InsertOrderMutationVariables, ShipmentConstraint, ShipmentUpdateColumn, useInsertOrderItemMutation } from '~lib/types/graphql';
+import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, useUpdateOrderItemMutation, InsertOrderMutationVariables, ShipmentConstraint, ShipmentUpdateColumn, useInsertOrderItemMutation, OrderInsertInput } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject, transparentLog, Unpacked, propValuesEqual, deepCopy } from '~lib/UtilityFunctions';
 import { VendorSelect } from '../../Vendor/VendorSelect';
@@ -142,6 +142,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         if ( orderId ) {
             // set to InsertOrderMutationVariables rather than UpdateOrderMutationVariables here because thats what the form contains
             let formFieldValues = deepCopy( form.getFieldsValue() as Exclude<OrderGql, 'id'> );
+            // let formFieldValues = deepCopy( form.getFieldsValue() as Exclude<OrderInsertInput, 'id'> );
             // edit
             // if id now, but not before
             // if ( formFieldValues.manufacturer && !order.manufacturer ) {
@@ -172,17 +173,27 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                 console.log( { class: 'OrderEditModal', method: 'onFinish', order: order, order_item: order_item, existingOrderItem: existingOrderItem, valuesEqual_: propValuesEqual( existingOrderItem, order_item ) } );
                 if ( !propValuesEqual( existingOrderItem, order_item ) ) {
                     if ( order_item.id === undefined ){
-                    console.log( `update order_item with id=${ order_item.id }` );
+                    console.log( { 
+                        msg: `insert order_item for order id=${ order_item.order_id } to variables:`, 
+                        insert_variables: {
+                            order_id: orderId,
+                            ...filterObject( order_item, null, [ '__typename', 'item', 'vendor_item' ] ),
+                            vendor_item: filterObject( order_item.vendor_item, null, [ '__typename', 'item', 'vendor', 'orderItems', 'orderItems_aggregate' ] )
+                        },
+                        original_order_item: order_item 
+                    } );
                     insertOrderItem( {
                         variables: {
-                            ...filterObject( order_item, null, [ '__typename' ] )
+                            order_id: orderId,
+                            ...filterObject( order_item, null, [ '__typename', 'item', 'vendor_item' ] ),
+                            vendor_item: filterObject( order_item.vendor_item, null, [ '__typename', 'item', 'vendor', 'orderItems', 'orderItems_aggregate' ] )
                         }
                     } );
                 } else {
                     console.log( `update order_item with id=${ order_item.id }` );
                     updateOrderItem( {
                         variables: {
-                            ...filterObject( order_item, null, [ '__typename' ] )
+                            ...filterObject( order_item, null, [ '__typename' ] ),
                         }
                     } );
                     }

@@ -25960,6 +25960,8 @@ export enum VendorItemConstraint {
   /** unique or primary key constraint */
   vendor_item_id_item_id_key = 'vendor_item_id_item_id_key',
   /** unique or primary key constraint */
+  vendor_item_item_id_vendor_id_vendor_sku_key = 'vendor_item_item_id_vendor_id_vendor_sku_key',
+  /** unique or primary key constraint */
   vendor_item_pkey = 'vendor_item_pkey'
 }
 
@@ -27041,16 +27043,13 @@ export type InsertOrderItemMutationVariables = Exact<{
   cost_item?: Maybe<Scalars['numeric']>;
   cost_tax?: Maybe<Scalars['numeric']>;
   cost_total?: Maybe<Scalars['numeric']>;
-  item_id?: Maybe<Scalars['Int']>;
+  item_id: Scalars['Int'];
   manufacturer_item_id?: Maybe<Scalars['Int']>;
-  order_id?: Maybe<Scalars['Int']>;
-  quantity?: Maybe<Scalars['numeric']>;
+  order_id: Scalars['Int'];
+  quantity: Scalars['numeric'];
   serial_no?: Maybe<Scalars['String']>;
   shipment_id?: Maybe<Scalars['Int']>;
-  vendor_item_id?: Maybe<Scalars['Int']>;
-  vendor_item_vendor_id?: Maybe<Scalars['Int']>;
-  vendor_item_vendor_sku?: Maybe<Scalars['String']>;
-  vendor_item_description?: Maybe<Scalars['String']>;
+  vendor_item: VendorItemInsertInput;
 }>;
 
 
@@ -29440,10 +29439,10 @@ export type GetItemVariantByAttachedQueryHookResult = ReturnType<typeof useGetIt
 export type GetItemVariantByAttachedLazyQueryHookResult = ReturnType<typeof useGetItemVariantByAttachedLazyQuery>;
 export type GetItemVariantByAttachedQueryResult = Apollo.QueryResult<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>;
 export const InsertOrderItemDocument = gql`
-    mutation InsertOrderItem($cost_item: numeric, $cost_tax: numeric, $cost_total: numeric, $item_id: Int, $manufacturer_item_id: Int, $order_id: Int, $quantity: numeric, $serial_no: String, $shipment_id: Int, $vendor_item_id: Int, $vendor_item_vendor_id: Int, $vendor_item_vendor_sku: String, $vendor_item_description: String) {
+    mutation InsertOrderItem($cost_item: numeric, $cost_tax: numeric, $cost_total: numeric, $item_id: Int!, $manufacturer_item_id: Int, $order_id: Int!, $quantity: numeric!, $serial_no: String, $shipment_id: Int, $vendor_item: vendor_item_insert_input!) {
   order_item: insert_order_item_one(
-    on_conflict: {update_columns: vendor_item_id, constraint: order_item_id_vendor_item_id_key}
-    object: {cost_item: $cost_item, cost_tax: $cost_tax, cost_total: $cost_total, item_id: $item_id, order_id: $order_id, manufacturer_item_id: $manufacturer_item_id, quantity: $quantity, serial_no: $serial_no, shipment_id: $shipment_id, vendor_item: {data: {id: $vendor_item_id, description: $vendor_item_description, vendor_id: $vendor_item_vendor_id, vendor_sku: $vendor_item_vendor_sku, item_id: $item_id}, on_conflict: {constraint: vendor_item_pkey, update_columns: id}}}
+    object: {cost_item: $cost_item, cost_tax: $cost_tax, cost_total: $cost_total, item_id: $item_id, order_id: $order_id, manufacturer_item_id: $manufacturer_item_id, quantity: $quantity, serial_no: $serial_no, shipment_id: $shipment_id, vendor_item: {data: $vendor_item, on_conflict: {constraint: vendor_item_item_id_vendor_id_vendor_sku_key, update_columns: [description]}}}
+    on_conflict: {constraint: order_item_id_vendor_item_id_key, update_columns: id}
   ) {
     id
   }
@@ -29473,15 +29472,13 @@ export type InsertOrderItemMutationFn = Apollo.MutationFunction<InsertOrderItemM
  *      quantity: // value for 'quantity'
  *      serial_no: // value for 'serial_no'
  *      shipment_id: // value for 'shipment_id'
- *      vendor_item_id: // value for 'vendor_item_id'
- *      vendor_item_vendor_id: // value for 'vendor_item_vendor_id'
- *      vendor_item_vendor_sku: // value for 'vendor_item_vendor_sku'
- *      vendor_item_description: // value for 'vendor_item_description'
+ *      vendor_item: // value for 'vendor_item'
  *   },
  * });
  */
 export function useInsertOrderItemMutation(baseOptions?: Apollo.MutationHookOptions<InsertOrderItemMutation, InsertOrderItemMutationVariables>) {
-        return Apollo.useMutation<InsertOrderItemMutation, InsertOrderItemMutationVariables>(InsertOrderItemDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertOrderItemMutation, InsertOrderItemMutationVariables>(InsertOrderItemDocument, options);
       }
 export type InsertOrderItemMutationHookResult = ReturnType<typeof useInsertOrderItemMutation>;
 export type InsertOrderItemMutationResult = Apollo.MutationResult<InsertOrderItemMutation>;
@@ -30923,4 +30920,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2021-06-14T21:39:08-06:00
+// graphql typescript defs generated on 2021-06-17T06:10:04-06:00
