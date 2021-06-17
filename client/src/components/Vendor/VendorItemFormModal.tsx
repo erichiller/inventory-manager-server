@@ -10,11 +10,10 @@ import { GetVendorItemQuery, GetVendorItemQueryVariables, useGetVendorItemQuery,
 
 import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
-import { useForm } from 'antd/lib/form/Form';
+import { FormProps, useForm } from 'antd/lib/form/Form';
 import { ItemSelect } from '../Item/ItemSelect';
 import { VendorSelect } from './VendorSelect';
 import { PageSpin } from '../Shared/PageSpin';
-
 
 type VendorItemFormModalProps = Intersection<{
     vendorItem: QueryResultTypePlus<typeof useGetVendorItemQuery>;
@@ -26,7 +25,7 @@ type VendorItemFormModalProps = Intersection<{
     vendorItem?: null;
     vendorItemId?: null;
 }, {
-    visibilityHandler: ( modal: React.ReactElement ) => void;
+    visibilityHandler: ( modal: React.ReactElement | null ) => void;
     onFinish?: ( values: Partial<UpdateVendorItemMutationVariables> ) => void;
 }>;
 // extends Union<VendorFormProps, VendorBundle> { }
@@ -146,11 +145,11 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
     };
 
 
-    const onFinishFailed = ( errorInfo ) => {
+    const onFinishFailed: FormProps['onFinishFailed'] = ( errorInfo ) => {
         console.error( { class: 'VendorItemEditModal', method: 'onFinishFailed', errorInfo } );
     };
 
-    const onFieldsChange = ( changedFields, values ) => {
+    const onFieldsChange: FormProps['onFieldsChange'] = ( changedFields, values ) => {
         console.log( { class: 'VendorItemEditModal', method: 'onFieldsChange', changedFields, values } );
     };
 
@@ -196,6 +195,9 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
                     <ItemSelect mode="single" />
                 </Form.Item>
                 <Form.Item name="vendor_sku" label="Vendor SKU" rules={[ { required: true } ]}>
+                    <Input />
+                </Form.Item>
+                <Form.Item name="product_url" label="Product URL" rules={[ { required: false, type: 'url' } ]}>
                     <Input />
                 </Form.Item>
                 <Form.Item name="description" label="Description">
