@@ -81,7 +81,7 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
     const [ options, setOptions ] = useState<OptionT[]>( [] );
     const { data, loading, error } = useGetItemVariantsQuery( {
         variables: {
-            query_text: `*${ searchText }*`,
+            query_text: '%' + ( searchText ? searchText + '%': '' ),
             prefer_vendor_id: vendorId
         }
     } );

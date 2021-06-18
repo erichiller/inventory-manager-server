@@ -12,6 +12,9 @@
         "**/graphql.tsx": true,
         "**/schema.graphql": true
     },
+    "eslint.format.enable": true,
+    "eslint.alwaysShowStatus": true,
+    "eslint.debug": true,
     // Associate schemas to JSON files in the current project
     "json.schemas": [
         {

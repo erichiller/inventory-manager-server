@@ -28,6 +28,7 @@ interface VendorItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChang
     forwardRef?: React.MutableRefObject<Input>;
     value?: VT;
     item_id?: Integer;
+    vendor_id?: Integer;
     onChange: ( vendor_item: VendorItemSelectValue ) => void;
 }
 /**
@@ -55,7 +56,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
     const [ modal, setModal ] = useState<React.ReactElement | null>( null );
     const history = useHistory();
     const location = useLocation();
-    const handleModalChange = ( modal: React.ReactElement ) => {
+    const handleModalChange = ( modal: React.ReactElement | null ) => {
         if ( modal === null ) {
             history.push( location.pathname );
         }
@@ -76,7 +77,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
             // | Partial<UpdateVendorItemMutationVariables>
             | Intersection<Omit<Partial<UpdateVendorItemMutationVariables>, 'id'>, { id: 'NEW'; }>
         > 
-        ) {
+    ) {
         if ( !Array.isArray( arr ) ) { return null; }
         setOptions( 
             transparentLog( {
@@ -149,6 +150,8 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                             className="VendorItemSelectNewSelectOption"
                             onClick={() => handleModalChange(
                                 <VendorItemFormModal
+                                    vendorId={props.vendor_id}
+                                    itemId={props.item_id}
                                     visibilityHandler={handleModalChange}
                                     onFinish={( args ) => {
                                         setModal( null );

@@ -2,6 +2,14 @@ import { QueryHookOptions, QueryResult, BaseQueryOptions } from '@apollo/client/
 import { EnumUnitEnum, Exact } from './graphql';
 
 //TODO: ideally there is some sort of 'variadic' type declaration where it wouldn't require & {} & {} ...
+/**
+ * Intersection types are the combination of types.
+ * @see {@link https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html#intersection-types Intersection types}
+ * @example
+ * type t1 = Intersection< { prop1: number }, { prop2: string }>;
+ * // is the same as
+ * type t2 = { prop1: number, prop2: string };
+ */
 export type Intersection<A, B, C = {}, D = {}, E = {}, F = {}> = A & B & C & D & E & F;
 
 /**
@@ -34,7 +42,7 @@ export type Unpacked<T> =
 /**
  * Replicate the type definition for a `useQuery...`
  */
-export type IQuery<TQuery, TVariables extends BaseQueryOptions['variables']> = ( baseOptions?: QueryHookOptions<TQuery, TVariables> ) => QueryResult<TQuery, TVariables>;
+export type IQuery<TQuery, TVariables extends BaseQueryOptions['variables']> = ( baseOptions: QueryHookOptions<TQuery, TVariables> ) => QueryResult<TQuery, TVariables>;
 
 export type QueryResultReturnKey<Q extends IQuery<any, any>> = keyof Omit<Exclude<ReturnType<Q>[ 'data' ], undefined>, '__typename'>;
 

@@ -27,7 +27,7 @@ export const DescriptionTableTooltip = ( props: DescriptionTableTooltipProps ) =
     let width: number = props.width ?? 550;
     const [ tableData, setTableData ] = useState<Record<string, string | React.ReactElement>>( props.tableData ? props.tableData : {} );
     if ( props.query ){
-        const { data, error, loading } = props.query();
+        const { data, error, loading } = props.query( {} );
         console.log( data );
         useEffect( () => {
             if ( data ) {

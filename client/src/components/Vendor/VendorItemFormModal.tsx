@@ -18,12 +18,23 @@ import { PageSpin } from '../Shared/PageSpin';
 type VendorItemFormModalProps = Intersection<{
     vendorItem: QueryResultTypePlus<typeof useGetVendorItemQuery>;
     vendorItemId?: null;
+    itemId?: null;
+    vendorId?: null;
 } | {
     vendorItem?: null;
     vendorItemId: number;
+    itemId?: null;
+    vendorId?: null;
 } | {
     vendorItem?: null;
     vendorItemId?: null;
+    itemId?: null;
+    vendorId?: null;
+} | {
+    vendorItem?: null;
+    vendorItemId?: null;
+    vendorId?: number;
+    itemId?: number;
 }, {
     visibilityHandler: ( modal: React.ReactElement | null ) => void;
     onFinish?: ( values: Partial<UpdateVendorItemMutationVariables> ) => void;
@@ -32,7 +43,7 @@ type VendorItemFormModalProps = Intersection<{
 
 
 export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props ) => {
-    let { vendorItemId } = props;
+    let { vendorItemId, vendorId, itemId } = props;
     const [ form ] = useForm();
     const history = useHistory();
 
@@ -158,7 +169,10 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
         console.debug( "no vendor data; awaiting data" );
         return <PageSpin />;
     }
-    let initialValues: Partial<typeof vendorItem> = vendorItem ?? {};
+    let initialValues: Partial<typeof vendorItem> = vendorItem ?? { 
+        ...( vendorId ? {vendor_id: vendorId} : {} ),
+        ...( itemId ? {item_id: itemId} : {} )
+    };
 
     return <Modal
         visible={true}
@@ -197,7 +211,7 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
                 <Form.Item name="vendor_sku" label="Vendor SKU" rules={[ { required: true } ]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="product_url" label="Product URL" rules={[ { required: false, type: 'url' } ]}>
+                <Form.Item name="url" label="Product URL" rules={[ { required: false, type: 'url' } ]}>
                     <Input />
                 </Form.Item>
                 <Form.Item name="description" label="Description">

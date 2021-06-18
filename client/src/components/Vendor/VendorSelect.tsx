@@ -22,9 +22,9 @@ interface VendorSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> 
 /**
  * Form Select Input for Vendors
  */
-export const VendorSelect: React.FC<VendorSelectProps> = React.forwardRef( (props, ref) => {
+export const VendorSelect: React.FC<VendorSelectProps> = React.forwardRef( ( props, ref ) => {
     const { onChange, value } = props;
-    const [ searchText, setSearchText ] = useState<string>("");
+    const [ searchText, setSearchText ] = useState<string>( "" );
     const [ options, setOptions ] = useState<OptionT[]>( [] );
     // const { data, loading, error } = useVendorSearchQuery( {
     //     variables: {
@@ -39,10 +39,10 @@ export const VendorSelect: React.FC<VendorSelectProps> = React.forwardRef( (prop
             search_string: `${ searchText }%`
         }
         // skip: state.loading
-    });
+    } );
     useEffect( () => {
         if ( !loading && !error ) {
-            console.log( { class: "VendorSelect", "action": "useEffect", event: "loading and error ok", data } );
+            console.log( { class: "VendorSelect", action: "useEffect", event: "loading and error ok", data } );
             setOptions( data.vendor.map( v => {
                 console.log( "outputting option", v );
                 return {
@@ -98,4 +98,4 @@ export const VendorSelect: React.FC<VendorSelectProps> = React.forwardRef( (prop
                 {...( value ? { defaultValue: props.value } : {} )}
                 />
     );
-});
+} );

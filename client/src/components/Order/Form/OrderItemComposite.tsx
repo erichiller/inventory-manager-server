@@ -158,10 +158,10 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
 
                 <span id="ItemExtraInfo">
                     <VendorItemSelect
+                        vendor_id={props.vendorId}
                         item_id={props.value?.item_id}
                         defaultValue={props.value?.vendor_item_id || props.value?.vendor_item}
                         onChange={setVendorItem} />
-
 
                     <ManufacturerItemSelect
                         item_id={props.value?.item_id}

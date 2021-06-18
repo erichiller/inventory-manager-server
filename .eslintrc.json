@@ -28,6 +28,14 @@
         // "plugin:react-hooks/recommended"
     ],
     "rules": {
+        // "quotes": [
+        //     "error",
+        //     "double"
+        // ],
+        "indent": [
+            "error",
+            4
+        ],
         // https://eslint.org/docs/rules/semi
         // https: //github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/semi.md
         // note you must disable the base rule as it can report incorrect errors
