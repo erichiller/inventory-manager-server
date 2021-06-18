@@ -60,10 +60,10 @@ export const PrintListButton: React.FC<PrintListButtonProps> = ( props ) => {
                     okText="Yes"
                     cancelText="No"
                 >
+                    <PrinterOutlined />
                     <span>
-                        <PrinterOutlined />
-                                Print
-                        </span>
+                        Print
+                    </span>
                 </Popconfirm>
             }
             // { ...(props.className ? {
