@@ -33,7 +33,7 @@
         //     "double"
         // ],
         "indent": [
-            "error",
+            "warn",
             4
         ],
         // https://eslint.org/docs/rules/semi

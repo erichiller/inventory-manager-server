@@ -79,14 +79,14 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
         ] );
     const [ searchText, setSearchText ] = useState<string>();
     const [ options, setOptions ] = useState<OptionT[]>( [] );
-    const { data, loading, error } = useGetItemVariantsQuery( {
+    const { data: itemVariantsData, loading: itemVariantsLoading, error: itemVariantsError } = useGetItemVariantsQuery( {
         variables: {
             query_text: '%' + ( searchText ? searchText + '%': '' ),
             prefer_vendor_id: vendorId
         }
     } );
     const [ runDefaultItemQuery, defaultItemQueryResult ] = useGetItemVariantByAttachedLazyQuery();
-    console.log( { c: "OrderItemSelect", e: "init", props, data, defaultItemQueryResult, defaultIds, defaultObjects, options } );
+    console.log( { c: "OrderItemSelect", e: "init", props, data: itemVariantsData, defaultItemQueryResult, defaultIds, defaultObjects, options } );
 
     useEffect( () => {
         console.log( "OrderItemSelect: calling initial useEffect", defaultItemQueryResult );
@@ -106,9 +106,9 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                 }
             } );
         }
-        if ( data && ( !options || options.length === 0 ) ) {
-            console.log( 'OrderItemSelect: data is already present', data, options );
-            setOptionsFromVariants( data.item_variant );
+        if ( itemVariantsData && ( !options || options.length === 0 ) ) {
+            console.log( 'OrderItemSelect: data is already present', itemVariantsData, options );
+            setOptionsFromVariants( itemVariantsData.item_variant );
         }
         if ( defaultItemQueryResult.data && ( !options || options.length === 0 ) ) {
             console.log( 'OrderItemSelect: defaultItemQueryResult is already present', defaultItemQueryResult, options );
@@ -117,51 +117,61 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
     }, [] );
 
     useEffect( () => {
-        if ( !loading && !error && data ) {
-            console.log( { c: "OrderItemSelect", f: "useEffect", e: "Variants loading and error ok", data, defaultItemQueryResult: defaultItemQueryResult } );
-            setOptionsFromVariants( data.item_variant );
+        if ( !itemVariantsLoading && !itemVariantsError && itemVariantsData ) {
+            console.log( { c: "OrderItemSelect", f: "useEffect", e: "Variants loading and error ok", data: itemVariantsData, defaultItemQueryResult: defaultItemQueryResult } );
+            setOptionsFromVariants( itemVariantsData.item_variant );
         }
-    }, [ loading, data ] );
+    }, [ itemVariantsLoading, itemVariantsData ] );
 
     useEffect( () => {
-        console.log( { c: "OrderItemSelect", f: "useEffect", e: "defaultItemQueryResult.data change detected", data, defaultItemQueryResult: defaultItemQueryResult } );
-        if ( !defaultItemQueryResult.loading && !defaultItemQueryResult.error && defaultItemQueryResult.data ) {
-            console.log( { c: "OrderItemSelect", f: "useEffect", e: "defaultItem loading and error ok", data, defaultItemQueryResult: defaultItemQueryResult } );
+        console.log( { c: "OrderItemSelect", f: "useEffect", e: "defaultItemQueryResult change detected", itemVariantsData, defaultItemQueryResult } );
+        if ( !defaultItemQueryResult.error && defaultItemQueryResult.data ) {
+            console.log( { c: "OrderItemSelect", f: "useEffect", e: "defaultItem loading and error ok", itemVariantsData, defaultItemQueryResult } );
             setOptionsFromVariants( defaultItemQueryResult.data.item_variant );
         }
     }, [ defaultItemQueryResult.loading, defaultItemQueryResult.data ] );
 
-    const setOptionsFromVariants = ( variants: typeof data.item_variant | typeof defaultItemQueryResult.data.item_variant ) => {
-        setOptions( variants.map( v => {
-            let ManufacturerIcon = v.manufacturer ? new Manufacturer( v.manufacturer ).icon : null;
-            let VendorIcon = v.vendor ? new Vendor( v.vendor ).icon : null;
-            console.log( "adding option object for ", {
-                variant_id: v.id,
-                item_id: v.item.id,
-                manufacturer_id: v.manufacturer?.id,
-                vendor_id: v.vendor?.id
-            } );
-            let item = Item.ItemsFactory( v.item );
-            return {
-                variant_id: v.id,
-                item_id: v.item.id,
-                manufacturer_id: v.manufacturer?.id,
-                vendor_id: v.vendor?.id,
-                manufacturer_item_id: v.manufacturer_item_id,
-                vendor_item_id: v.vendor_item_id,
-                label: <Tooltip title={<pre>{JSON.stringify( filterObject( v, [ 'id', 'item_id', 'vendorItem', 'manufacturerItem' ] ), null, 2 )}</pre>}>
-                    <span className="orderItemOption">
-                        {<item.icon />}
-                        <span>{v.name}</span>
-                        <span>{v.vendorItem?.vendor_sku || v.vendor?.name}</span>
-                        <span>{VendorIcon ? <VendorIcon /> : null}</span>
-                        <span>{v.object?.description || v.item_id}</span>
-                        <span>{v.manufacturerItem?.manufacturer_product_name || v.manufacturerItem?.manufacturer_product_id || v.manufacturer?.name}</span>
-                        <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span>
-                    </span>
-                </Tooltip>
-            };
-        } ) );
+    const setOptionsFromVariants = ( variants: typeof itemVariantsData.item_variant | typeof defaultItemQueryResult.data.item_variant ) => {
+        setOptions( priorOptions => {
+            let filteredOptions = priorOptions.filter( option => !variants.map( variant => variant.id ).includes( option.variant_id ) );
+            let options = [
+                ...filteredOptions,
+                ...variants.map( v => {
+                    let ManufacturerIcon = v.manufacturer ? new Manufacturer( v.manufacturer ).icon : null;
+                    let VendorIcon = v.vendor ? new Vendor( v.vendor ).icon : null;
+                    console.log( "adding option object for ", {
+                        variant_id: v.id,
+                        item_id: v.item.id,
+                        manufacturer_id: v.manufacturer?.id,
+                        vendor_id: v.vendor?.id
+                    } );
+                    let item = Item.ItemsFactory( v.item );
+                    return {
+                        variant_id: v.id,
+                        item_id: v.item.id,
+                        manufacturer_id: v.manufacturer?.id,
+                        vendor_id: v.vendor?.id,
+                        manufacturer_item_id: v.manufacturer_item_id,
+                        vendor_item_id: v.vendor_item_id,
+                        label: <Tooltip title={<pre>{JSON.stringify( filterObject( v, [ 'id', 'item_id', 'vendorItem', 'manufacturerItem' ] ), null, 2 )}</pre>}>
+                            <span className="orderItemOption">
+                                {<item.icon />}
+                                <span>{v.name}</span>
+                                <span>{v.vendorItem?.vendor_sku || v.vendor?.name}</span>
+                                <span>{VendorIcon ? <VendorIcon /> : null}</span>
+                                <span>{v.object?.description || v.item_id}</span>
+                                <span>{v.manufacturerItem?.manufacturer_product_name || v.manufacturerItem?.manufacturer_product_id || v.manufacturer?.name}</span>
+                                <span>{ManufacturerIcon ? <ManufacturerIcon /> : null}</span>
+                            </span>
+                        </Tooltip>
+                    };
+                } ) 
+            ];
+            console.log( { c: "OrderItemSelect", f: "setOptionsFromVariants->setOptions", e: "setting options", priorOptions, filteredOptions, options } );
+            return options;
+        }
+
+        );
     };
 
     const optionsToOptionElements: ( opts: typeof options ) => JSX.Element[] = ( opts ) => {
