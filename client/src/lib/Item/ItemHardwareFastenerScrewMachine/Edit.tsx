@@ -16,15 +16,16 @@ export const ItemHardwareFastenerScrewMachineEditMutationHandler: React.FC<FormM
         if ( submitted === true ) {
             console.log( { c: "ItemHardwareFastenerScrewMachineEditMutationHandler", f: 'useEffect', cond: 'submitted === true' }, form.getFieldsValue() );
             updateItemHardwareFastenerScrewMachineMutation( {
-                variables: {...applyDefaults<ItemHardwareFastenerScrewMachine>( form.getFieldsValue( true, ( meta ) => {
-                    return ! meta.name.includes( 'screw_size' );
-                } ) as ItemHardwareFastenerScrewMachine,
-                // TODO: put defaults in the class ( as a static property )
-                {
-                    thread_direction: EnumItemHandednessEnum.right,
-                    use_material: EnumItemHardwareUseMaterialEnum.machine,
-                    point_type: EnumItemHardwareFastenerScrewMachinePointEnum.flat
-                } ),
+                variables: {
+                    ...applyDefaults<ItemHardwareFastenerScrewMachine>( form.getFieldsValue( true, ( meta ) => {
+                        return ! meta.name.includes( 'screw_size' );
+                    } ) as ItemHardwareFastenerScrewMachine,
+                    // TODO: put defaults in the class ( as a static property )
+                    {
+                        thread_direction: EnumItemHandednessEnum.right,
+                        use_material: EnumItemHardwareUseMaterialEnum.machine,
+                        point_type: EnumItemHardwareFastenerScrewMachinePointEnum.flat
+                    } ),
                     id: originalObject?.id
                 },
                 refetchQueries: [

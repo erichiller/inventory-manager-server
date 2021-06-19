@@ -60,19 +60,19 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
         onChange( {
             ...props.value,
             ...( value == null ?
-                    {} :
-                    typeof value === "number" ?
+                {} :
+                typeof value === "number" ?
+                    {
+                        item_id: value
+                    } :
+                    value.item_id ? 
                         {
-                            item_id: value
-                        } :
-                        value.item_id ? 
-                            {
-                                item_id: value.item_id,
-                                manufacturer_item_id: value.manufacturer_item_id,
-                                vendor_item_id: value.vendor_item_id,
-                            } 
-                            : {}
-                )
+                            item_id: value.item_id,
+                            manufacturer_item_id: value.manufacturer_item_id,
+                            vendor_item_id: value.vendor_item_id,
+                        } 
+                        : {}
+            )
         } );
     };
 
@@ -133,9 +133,9 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
         onChange( {
             ...props.value,
             ...transparentLog( { c: 'OrderItemComposite', f: "setShipment", shipment },
-            ( shipment.id
-                ? { shipment_id: shipment.id, shipment: undefined }
-                : { shipment: shipment, shipment_id: undefined } )
+                ( shipment.id
+                    ? { shipment_id: shipment.id, shipment: undefined }
+                    : { shipment: shipment, shipment_id: undefined } )
             )
         } );
     };

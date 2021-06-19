@@ -25661,6 +25661,8 @@ export type Vendor = {
   __typename?: 'vendor';
   account_id?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  /** use http://domain.tld/{{item_sku}} to autogenerate product urls */
+  item_url_template?: Maybe<Scalars['String']>;
   /** An array relationship */
   manufacturer: Array<Manufacturer>;
   /** An aggregated array relationship */
@@ -25806,6 +25808,7 @@ export type VendorBoolExp = {
   _or?: Maybe<Array<Maybe<VendorBoolExp>>>;
   account_id?: Maybe<StringComparisonExp>;
   id?: Maybe<IntComparisonExp>;
+  item_url_template?: Maybe<StringComparisonExp>;
   manufacturer?: Maybe<ManufacturerBoolExp>;
   name?: Maybe<StringComparisonExp>;
   orders?: Maybe<OrderBoolExp>;
@@ -25828,6 +25831,7 @@ export type VendorIncInput = {
 export type VendorInsertInput = {
   account_id?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  item_url_template?: Maybe<Scalars['String']>;
   manufacturer?: Maybe<ManufacturerArrRelInsertInput>;
   name?: Maybe<Scalars['String']>;
   orders?: Maybe<OrderArrRelInsertInput>;
@@ -25848,6 +25852,8 @@ export type VendorItem = {
   orderItems: Array<OrderItem>;
   /** An aggregated array relationship */
   orderItems_aggregate: OrderItemAggregate;
+  /** Product URL / Product Page */
+  url?: Maybe<Scalars['String']>;
   /** An object relationship */
   vendor: Vendor;
   vendor_id: Scalars['Int'];
@@ -25950,6 +25956,7 @@ export type VendorItemBoolExp = {
   item?: Maybe<ItemBoolExp>;
   item_id?: Maybe<IntComparisonExp>;
   orderItems?: Maybe<OrderItemBoolExp>;
+  url?: Maybe<StringComparisonExp>;
   vendor?: Maybe<VendorBoolExp>;
   vendor_id?: Maybe<IntComparisonExp>;
   vendor_sku?: Maybe<StringComparisonExp>;
@@ -25979,6 +25986,7 @@ export type VendorItemInsertInput = {
   item?: Maybe<ItemObjRelInsertInput>;
   item_id?: Maybe<Scalars['Int']>;
   orderItems?: Maybe<OrderItemArrRelInsertInput>;
+  url?: Maybe<Scalars['String']>;
   vendor?: Maybe<VendorObjRelInsertInput>;
   vendor_id?: Maybe<Scalars['Int']>;
   vendor_sku?: Maybe<Scalars['String']>;
@@ -25990,6 +25998,7 @@ export type VendorItemMaxFields = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
+  url?: Maybe<Scalars['String']>;
   vendor_id?: Maybe<Scalars['Int']>;
   vendor_sku?: Maybe<Scalars['String']>;
 };
@@ -25999,6 +26008,7 @@ export type VendorItemMaxOrderBy = {
   description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
+  url?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
   vendor_sku?: Maybe<OrderBy>;
 };
@@ -26009,6 +26019,7 @@ export type VendorItemMinFields = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
+  url?: Maybe<Scalars['String']>;
   vendor_id?: Maybe<Scalars['Int']>;
   vendor_sku?: Maybe<Scalars['String']>;
 };
@@ -26018,6 +26029,7 @@ export type VendorItemMinOrderBy = {
   description?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   item_id?: Maybe<OrderBy>;
+  url?: Maybe<OrderBy>;
   vendor_id?: Maybe<OrderBy>;
   vendor_sku?: Maybe<OrderBy>;
 };
@@ -26051,6 +26063,7 @@ export type VendorItemOrderBy = {
   item?: Maybe<ItemOrderBy>;
   item_id?: Maybe<OrderBy>;
   orderItems_aggregate?: Maybe<OrderItemAggregateOrderBy>;
+  url?: Maybe<OrderBy>;
   vendor?: Maybe<VendorOrderBy>;
   vendor_id?: Maybe<OrderBy>;
   vendor_sku?: Maybe<OrderBy>;
@@ -26070,6 +26083,8 @@ export enum VendorItemSelectColumn {
   /** column name */
   item_id = 'item_id',
   /** column name */
+  url = 'url',
+  /** column name */
   vendor_id = 'vendor_id',
   /** column name */
   vendor_sku = 'vendor_sku'
@@ -26080,6 +26095,7 @@ export type VendorItemSetInput = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   item_id?: Maybe<Scalars['Int']>;
+  url?: Maybe<Scalars['String']>;
   vendor_id?: Maybe<Scalars['Int']>;
   vendor_sku?: Maybe<Scalars['String']>;
 };
@@ -26153,6 +26169,8 @@ export enum VendorItemUpdateColumn {
   /** column name */
   item_id = 'item_id',
   /** column name */
+  url = 'url',
+  /** column name */
   vendor_id = 'vendor_id',
   /** column name */
   vendor_sku = 'vendor_sku'
@@ -26208,6 +26226,7 @@ export type VendorMaxFields = {
   __typename?: 'vendor_max_fields';
   account_id?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  item_url_template?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
 };
@@ -26216,6 +26235,7 @@ export type VendorMaxFields = {
 export type VendorMaxOrderBy = {
   account_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  item_url_template?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   url?: Maybe<OrderBy>;
 };
@@ -26225,6 +26245,7 @@ export type VendorMinFields = {
   __typename?: 'vendor_min_fields';
   account_id?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  item_url_template?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
 };
@@ -26233,6 +26254,7 @@ export type VendorMinFields = {
 export type VendorMinOrderBy = {
   account_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  item_url_template?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   url?: Maybe<OrderBy>;
 };
@@ -26263,6 +26285,7 @@ export type VendorOnConflict = {
 export type VendorOrderBy = {
   account_id?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
+  item_url_template?: Maybe<OrderBy>;
   manufacturer_aggregate?: Maybe<ManufacturerAggregateOrderBy>;
   name?: Maybe<OrderBy>;
   orders_aggregate?: Maybe<OrderAggregateOrderBy>;
@@ -26282,6 +26305,8 @@ export enum VendorSelectColumn {
   /** column name */
   id = 'id',
   /** column name */
+  item_url_template = 'item_url_template',
+  /** column name */
   name = 'name',
   /** column name */
   url = 'url'
@@ -26291,6 +26316,7 @@ export enum VendorSelectColumn {
 export type VendorSetInput = {
   account_id?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  item_url_template?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
 };
@@ -26345,6 +26371,8 @@ export enum VendorUpdateColumn {
   account_id = 'account_id',
   /** column name */
   id = 'id',
+  /** column name */
+  item_url_template = 'item_url_template',
   /** column name */
   name = 'name',
   /** column name */
@@ -26983,6 +27011,8 @@ export type UpdateOrderMutationVariables = Exact<{
   url?: Maybe<Scalars['String']>;
   vendor_id?: Maybe<Scalars['Int']>;
   vendor_order_id?: Maybe<Scalars['String']>;
+  orderItems: Array<OrderItemInsertInput> | OrderItemInsertInput;
+  deleteOrderItems: Array<Scalars['Int']> | Scalars['Int'];
 }>;
 
 
@@ -26992,6 +27022,16 @@ export type UpdateOrderMutation = (
     { __typename?: 'order' }
     & BasicOrderFieldsFragment
     & ObjectOrderFieldsFragment
+  )>, order_items?: Maybe<(
+    { __typename?: 'order_item_mutation_response' }
+    & Pick<OrderItemMutationResponse, 'affected_rows'>
+    & { returning: Array<(
+      { __typename?: 'order_item' }
+      & Pick<OrderItem, 'id' | 'cost_item' | 'cost_tax' | 'cost_total' | 'item_id' | 'manufacturer_item_id' | 'order_id' | 'quantity' | 'serial_no' | 'shipment_id' | 'vendor_item_id'>
+    )> }
+  )>, deleted_order_items?: Maybe<(
+    { __typename?: 'order_item_mutation_response' }
+    & Pick<OrderItemMutationResponse, 'affected_rows'>
   )> }
 );
 
@@ -27036,73 +27076,6 @@ export type GetItemVariantByAttachedQuery = (
   & { item_variant: Array<(
     { __typename?: 'item_variant' }
     & ObjectItemVariantFieldsFragment
-  )> }
-);
-
-export type InsertOrderItemMutationVariables = Exact<{
-  cost_item?: Maybe<Scalars['numeric']>;
-  cost_tax?: Maybe<Scalars['numeric']>;
-  cost_total?: Maybe<Scalars['numeric']>;
-  item_id: Scalars['Int'];
-  manufacturer_item_id?: Maybe<Scalars['Int']>;
-  order_id: Scalars['Int'];
-  quantity: Scalars['numeric'];
-  serial_no?: Maybe<Scalars['String']>;
-  shipment_id?: Maybe<Scalars['Int']>;
-  vendor_item: VendorItemInsertInput;
-}>;
-
-
-export type InsertOrderItemMutation = (
-  { __typename?: 'mutation_root' }
-  & { order_item?: Maybe<(
-    { __typename?: 'order_item' }
-    & Pick<OrderItem, 'id'>
-  )> }
-);
-
-export type InsertOrderItemWithExistingVendorItemMutationVariables = Exact<{
-  cost_item?: Maybe<Scalars['numeric']>;
-  cost_tax?: Maybe<Scalars['numeric']>;
-  cost_total?: Maybe<Scalars['numeric']>;
-  item_id: Scalars['Int'];
-  manufacturer_item_id?: Maybe<Scalars['Int']>;
-  order_id: Scalars['Int'];
-  quantity: Scalars['numeric'];
-  serial_no?: Maybe<Scalars['String']>;
-  shipment_id?: Maybe<Scalars['Int']>;
-  vendor_item_id: Scalars['Int'];
-}>;
-
-
-export type InsertOrderItemWithExistingVendorItemMutation = (
-  { __typename?: 'mutation_root' }
-  & { order_item?: Maybe<(
-    { __typename?: 'order_item' }
-    & Pick<OrderItem, 'id'>
-  )> }
-);
-
-export type UpdateOrderItemMutationVariables = Exact<{
-  id: Scalars['Int'];
-  cost_item?: Maybe<Scalars['numeric']>;
-  cost_tax?: Maybe<Scalars['numeric']>;
-  cost_total?: Maybe<Scalars['numeric']>;
-  item_id?: Maybe<Scalars['Int']>;
-  manufacturer_item_id?: Maybe<Scalars['Int']>;
-  order_id?: Maybe<Scalars['Int']>;
-  quantity?: Maybe<Scalars['numeric']>;
-  serial_no?: Maybe<Scalars['String']>;
-  shipment_id?: Maybe<Scalars['Int']>;
-  vendor_item_id?: Maybe<Scalars['Int']>;
-}>;
-
-
-export type UpdateOrderItemMutation = (
-  { __typename?: 'mutation_root' }
-  & { order_item?: Maybe<(
-    { __typename?: 'order_item' }
-    & BasicOrderItemFieldsFragment
   )> }
 );
 
@@ -29297,13 +29270,35 @@ export type InsertOrderMutationHookResult = ReturnType<typeof useInsertOrderMuta
 export type InsertOrderMutationResult = Apollo.MutationResult<InsertOrderMutation>;
 export type InsertOrderMutationOptions = Apollo.BaseMutationOptions<InsertOrderMutation, InsertOrderMutationVariables>;
 export const UpdateOrderDocument = gql`
-    mutation UpdateOrder($id: Int!, $fulfilled_date: date, $items_cost: numeric, $payment_method_id: Int, $placed_date: date, $pon: String, $tax_cost: numeric, $total_cost: numeric, $url: String, $vendor_id: Int, $vendor_order_id: String) {
+    mutation UpdateOrder($id: Int!, $fulfilled_date: date, $items_cost: numeric, $payment_method_id: Int, $placed_date: date, $pon: String, $tax_cost: numeric, $total_cost: numeric, $url: String, $vendor_id: Int, $vendor_order_id: String, $orderItems: [order_item_insert_input!]!, $deleteOrderItems: [Int!]!) {
   order: update_order_by_pk(
     pk_columns: {id: $id}
     _set: {fulfilled_date: $fulfilled_date, items_cost: $items_cost, payment_method_id: $payment_method_id, placed_date: $placed_date, pon: $pon, tax_cost: $tax_cost, total_cost: $total_cost, url: $url, vendor_id: $vendor_id, vendor_order_id: $vendor_order_id}
   ) {
     ...basicOrderFields
     ...objectOrderFields
+  }
+  order_items: insert_order_item(
+    objects: $orderItems
+    on_conflict: {constraint: order_item_id_key, update_columns: [cost_item, cost_tax, cost_total, item_id, manufacturer_item_id, order_id, quantity, serial_no, shipment_id, vendor_item_id]}
+  ) {
+    affected_rows
+    returning {
+      id
+      cost_item
+      cost_tax
+      cost_total
+      item_id
+      manufacturer_item_id
+      order_id
+      quantity
+      serial_no
+      shipment_id
+      vendor_item_id
+    }
+  }
+  deleted_order_items: delete_order_item(where: {id: {_in: $deleteOrderItems}}) {
+    affected_rows
   }
 }
     ${BasicOrderFieldsFragmentDoc}
@@ -29334,6 +29329,8 @@ export type UpdateOrderMutationFn = Apollo.MutationFunction<UpdateOrderMutation,
  *      url: // value for 'url'
  *      vendor_id: // value for 'vendor_id'
  *      vendor_order_id: // value for 'vendor_order_id'
+ *      orderItems: // value for 'orderItems'
+ *      deleteOrderItems: // value for 'deleteOrderItems'
  *   },
  * });
  */
@@ -29460,142 +29457,6 @@ export function useGetItemVariantByAttachedLazyQuery(baseOptions?: Apollo.LazyQu
 export type GetItemVariantByAttachedQueryHookResult = ReturnType<typeof useGetItemVariantByAttachedQuery>;
 export type GetItemVariantByAttachedLazyQueryHookResult = ReturnType<typeof useGetItemVariantByAttachedLazyQuery>;
 export type GetItemVariantByAttachedQueryResult = Apollo.QueryResult<GetItemVariantByAttachedQuery, GetItemVariantByAttachedQueryVariables>;
-export const InsertOrderItemDocument = gql`
-    mutation InsertOrderItem($cost_item: numeric, $cost_tax: numeric, $cost_total: numeric, $item_id: Int!, $manufacturer_item_id: Int, $order_id: Int!, $quantity: numeric!, $serial_no: String, $shipment_id: Int, $vendor_item: vendor_item_insert_input!) {
-  order_item: insert_order_item_one(
-    object: {cost_item: $cost_item, cost_tax: $cost_tax, cost_total: $cost_total, item_id: $item_id, order_id: $order_id, manufacturer_item_id: $manufacturer_item_id, quantity: $quantity, serial_no: $serial_no, shipment_id: $shipment_id, vendor_item: {data: $vendor_item, on_conflict: {constraint: vendor_item_item_id_vendor_id_vendor_sku_key, update_columns: [description]}}}
-    on_conflict: {constraint: order_item_id_vendor_item_id_key, update_columns: id}
-  ) {
-    id
-  }
-}
-    `;
-export type InsertOrderItemMutationFn = Apollo.MutationFunction<InsertOrderItemMutation, InsertOrderItemMutationVariables>;
-
-/**
- * __useInsertOrderItemMutation__
- *
- * To run a mutation, you first call `useInsertOrderItemMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertOrderItemMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertOrderItemMutation, { data, loading, error }] = useInsertOrderItemMutation({
- *   variables: {
- *      cost_item: // value for 'cost_item'
- *      cost_tax: // value for 'cost_tax'
- *      cost_total: // value for 'cost_total'
- *      item_id: // value for 'item_id'
- *      manufacturer_item_id: // value for 'manufacturer_item_id'
- *      order_id: // value for 'order_id'
- *      quantity: // value for 'quantity'
- *      serial_no: // value for 'serial_no'
- *      shipment_id: // value for 'shipment_id'
- *      vendor_item: // value for 'vendor_item'
- *   },
- * });
- */
-export function useInsertOrderItemMutation(baseOptions?: Apollo.MutationHookOptions<InsertOrderItemMutation, InsertOrderItemMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertOrderItemMutation, InsertOrderItemMutationVariables>(InsertOrderItemDocument, options);
-      }
-export type InsertOrderItemMutationHookResult = ReturnType<typeof useInsertOrderItemMutation>;
-export type InsertOrderItemMutationResult = Apollo.MutationResult<InsertOrderItemMutation>;
-export type InsertOrderItemMutationOptions = Apollo.BaseMutationOptions<InsertOrderItemMutation, InsertOrderItemMutationVariables>;
-export const InsertOrderItemWithExistingVendorItemDocument = gql`
-    mutation InsertOrderItemWithExistingVendorItem($cost_item: numeric, $cost_tax: numeric, $cost_total: numeric, $item_id: Int!, $manufacturer_item_id: Int, $order_id: Int!, $quantity: numeric!, $serial_no: String, $shipment_id: Int, $vendor_item_id: Int!) {
-  order_item: insert_order_item_one(
-    object: {cost_item: $cost_item, cost_tax: $cost_tax, cost_total: $cost_total, item_id: $item_id, order_id: $order_id, manufacturer_item_id: $manufacturer_item_id, quantity: $quantity, serial_no: $serial_no, shipment_id: $shipment_id, vendor_item_id: $vendor_item_id}
-    on_conflict: {constraint: order_item_id_vendor_item_id_key, update_columns: id}
-  ) {
-    id
-  }
-}
-    `;
-export type InsertOrderItemWithExistingVendorItemMutationFn = Apollo.MutationFunction<InsertOrderItemWithExistingVendorItemMutation, InsertOrderItemWithExistingVendorItemMutationVariables>;
-
-/**
- * __useInsertOrderItemWithExistingVendorItemMutation__
- *
- * To run a mutation, you first call `useInsertOrderItemWithExistingVendorItemMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertOrderItemWithExistingVendorItemMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertOrderItemWithExistingVendorItemMutation, { data, loading, error }] = useInsertOrderItemWithExistingVendorItemMutation({
- *   variables: {
- *      cost_item: // value for 'cost_item'
- *      cost_tax: // value for 'cost_tax'
- *      cost_total: // value for 'cost_total'
- *      item_id: // value for 'item_id'
- *      manufacturer_item_id: // value for 'manufacturer_item_id'
- *      order_id: // value for 'order_id'
- *      quantity: // value for 'quantity'
- *      serial_no: // value for 'serial_no'
- *      shipment_id: // value for 'shipment_id'
- *      vendor_item_id: // value for 'vendor_item_id'
- *   },
- * });
- */
-export function useInsertOrderItemWithExistingVendorItemMutation(baseOptions?: Apollo.MutationHookOptions<InsertOrderItemWithExistingVendorItemMutation, InsertOrderItemWithExistingVendorItemMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InsertOrderItemWithExistingVendorItemMutation, InsertOrderItemWithExistingVendorItemMutationVariables>(InsertOrderItemWithExistingVendorItemDocument, options);
-      }
-export type InsertOrderItemWithExistingVendorItemMutationHookResult = ReturnType<typeof useInsertOrderItemWithExistingVendorItemMutation>;
-export type InsertOrderItemWithExistingVendorItemMutationResult = Apollo.MutationResult<InsertOrderItemWithExistingVendorItemMutation>;
-export type InsertOrderItemWithExistingVendorItemMutationOptions = Apollo.BaseMutationOptions<InsertOrderItemWithExistingVendorItemMutation, InsertOrderItemWithExistingVendorItemMutationVariables>;
-export const UpdateOrderItemDocument = gql`
-    mutation UpdateOrderItem($id: Int!, $cost_item: numeric, $cost_tax: numeric, $cost_total: numeric, $item_id: Int, $manufacturer_item_id: Int, $order_id: Int, $quantity: numeric, $serial_no: String, $shipment_id: Int, $vendor_item_id: Int) {
-  order_item: update_order_item_by_pk(
-    _set: {cost_item: $cost_item, cost_tax: $cost_tax, cost_total: $cost_total, item_id: $item_id, manufacturer_item_id: $manufacturer_item_id, order_id: $order_id, quantity: $quantity, serial_no: $serial_no, shipment_id: $shipment_id, vendor_item_id: $vendor_item_id}
-    pk_columns: {id: $id}
-  ) {
-    ...basicOrderItemFields
-  }
-}
-    ${BasicOrderItemFieldsFragmentDoc}`;
-export type UpdateOrderItemMutationFn = Apollo.MutationFunction<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>;
-
-/**
- * __useUpdateOrderItemMutation__
- *
- * To run a mutation, you first call `useUpdateOrderItemMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateOrderItemMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateOrderItemMutation, { data, loading, error }] = useUpdateOrderItemMutation({
- *   variables: {
- *      id: // value for 'id'
- *      cost_item: // value for 'cost_item'
- *      cost_tax: // value for 'cost_tax'
- *      cost_total: // value for 'cost_total'
- *      item_id: // value for 'item_id'
- *      manufacturer_item_id: // value for 'manufacturer_item_id'
- *      order_id: // value for 'order_id'
- *      quantity: // value for 'quantity'
- *      serial_no: // value for 'serial_no'
- *      shipment_id: // value for 'shipment_id'
- *      vendor_item_id: // value for 'vendor_item_id'
- *   },
- * });
- */
-export function useUpdateOrderItemMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>(UpdateOrderItemDocument, options);
-      }
-export type UpdateOrderItemMutationHookResult = ReturnType<typeof useUpdateOrderItemMutation>;
-export type UpdateOrderItemMutationResult = Apollo.MutationResult<UpdateOrderItemMutation>;
-export type UpdateOrderItemMutationOptions = Apollo.BaseMutationOptions<UpdateOrderItemMutation, UpdateOrderItemMutationVariables>;
 export const GetPrinterStatusDocument = gql`
     query GetPrinterStatus {
   PrinterStatus {
@@ -30987,4 +30848,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2021-06-17T14:59:22-06:00
+// graphql typescript defs generated on 2021-06-19T07:49:17-06:00

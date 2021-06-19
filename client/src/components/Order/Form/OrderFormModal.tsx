@@ -10,7 +10,7 @@ import TextArea from 'antd/lib/input/TextArea';
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, useUpdateOrderItemMutation, InsertOrderMutationVariables, ShipmentConstraint, ShipmentUpdateColumn, useInsertOrderItemMutation, useInsertOrderItemWithExistingVendorItemMutation } from '~lib/types/graphql';
+import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, InsertOrderMutationVariables, ShipmentConstraint, ShipmentUpdateColumn, OrderItemInsertInput } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject, transparentLog, Unpacked, propValuesEqual, deepCopy } from '~lib/UtilityFunctions';
 import { VendorSelect } from '../../Vendor/VendorSelect';
@@ -23,8 +23,9 @@ import { JsonModal } from '~components/Shared/JsonModal';
 import { encapsulateChildObjectsIntoDataProp } from '~lib/FormHelpers';
 
 import { Callbacks } from 'rc-field-form/lib/interface';
-import { Rules, RuleItem } from 'async-validator';
+import { RuleItem } from 'async-validator';
 import { ShipmentSelectValue, ShipmentAdditionalOption } from '~components/Shipment/ShipmentSelect';
+import { Integer } from '~lib/types/uint8';
 // import { RuleConfig } from '';
 
 
@@ -69,15 +70,16 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
     const [ updateOrder, updateOrderResult ] = useUpdateOrderMutation( { refetchQueries: [
         { query: GetOrderDocument, variables: { id: orderId }}
     ]} );
-    const [ updateOrderItem ] = useUpdateOrderItemMutation();
-    const [ insertOrderItem, insertOrderItemResult ] = useInsertOrderItemMutation();
-    const [ insertOrderItemWithExistingVendorItem, insertOrderItemWithExistingVendorItemResult ] = useInsertOrderItemWithExistingVendorItemMutation();
+    // const [ updateOrderItem ] = useUpdateOrderItemMutation();
+    // const [ insertOrderItem, insertOrderItemResult ] = useInsertOrderItemMutation();
+    // const [ insertOrderItemWithExistingVendorItem, insertOrderItemWithExistingVendorItemResult ] = useInsertOrderItemWithExistingVendorItemMutation();
     // add new
     const [ insertOrder, insertOrderResult ] = useInsertOrderMutation( {
         refetchQueries: [
             { query: GetOrderDocument }
         ]
     } );
+    // const [ doDeleteOrderItems, deleteOrderItemsResult ] = useDeleteOrderItemsMutation();
 
     /***************************************** Effects *****************************************/
 
@@ -120,7 +122,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
      * Handle Mutations results
      */
     useEffect( () => {
-        let error = insertOrderResult.error || updateOrderResult.error || insertOrderItemResult.error || insertOrderItemWithExistingVendorItemResult.error; // || insertManufacturerResult.error || deleteManufacturerResult.error;
+        let error = insertOrderResult.error || updateOrderResult.error; // || insertOrderItemResult.error || insertOrderItemWithExistingVendorItemResult.error || insertManufacturerResult.error || deleteManufacturerResult.error;
         let data = insertOrderResult.data || updateOrderResult.data; // || insertManufacturerResult.data || deleteManufacturerResult.data;
         if ( error ) {
             // completeCallback( false );
@@ -132,7 +134,17 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             exitModal();
             // };
         }
-    }, [ insertOrderResult, updateOrderResult, insertOrderItemResult.error, insertOrderItemWithExistingVendorItemResult.error ] ); // , insertManufacturerResult, deleteManufacturerResult
+    }, [ insertOrderResult, updateOrderResult ] ); // , insertOrderItemResult.error, insertOrderItemWithExistingVendorItemResult.error, insertManufacturerResult, deleteManufacturerResult
+    // useEffect( () => {
+    //     if ( deleteOrderItemsResult?.error ) {
+    //         // completeCallback( false );
+    //         message.error( `${ deleteOrderItemsResult.error.name }: ${ deleteOrderItemsResult.error.message }` );
+    //     } else if ( deleteOrderItemsResult?.data ) {
+    //         message.success( `successfully deleted ${ deleteOrderItemsResult.data?.delete_order_item?.affected_rows } order items from order with id ${ orderId }` );
+    //         form.resetFields();
+    //         exitModal();
+    //     }
+    // }, [ deleteOrderItemsResult ] );
 
     /***************************************************************************/
 
@@ -167,49 +179,114 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             //         }
             //     } );
             // }
+            
+            // delete any order items no longer present
+            let currentOrderItems: Integer[] = formFieldValues.order_items.map( orderItem => orderItem.id );
+            let priorOrderItems: Integer[] = order.order_items.map( orderItem => orderItem.id );
+            let deleteOrderItems = priorOrderItems.filter( ( priorOrderItem ) => !currentOrderItems.includes( priorOrderItem ) );
+
+            // update any order items, by inserting with conflict
+            let updateOrderItems: OrderItemInsertInput[] = formFieldValues.order_items
+                .filter( order_item => {
+                    let existingOrderItem: Unpacked<typeof order[ 'order_items' ]> = order.order_items.find( el => el.id === order_item.id );
+                    console.log( { class: 'OrderEditModal', method: 'onFinish', action: 'order_items.filter', order: order, order_item: order_item, existingOrderItem: existingOrderItem, valuesEqual_: propValuesEqual( existingOrderItem, order_item ) } );
+                    if ( !propValuesEqual( existingOrderItem, order_item ) ) {
+                        return true;
+                    }
+                    return false;
+                } )
+                .map( order_item => {
+                    let filteredOrderItem = filterObject( order_item, null, [ 
+                        '__typename', 'item', 'manufacturer_item', 'manufacturer_item_id', 'order', 'order_id', 'shipment', 'shipment_id', 'vendor_item', 'vendor_item_id' 
+                    ] );
+                    return {
+                        order_id: orderId,
+                        ...filteredOrderItem,
+                        // vendor_item_id: order_item.vendor_item_id,
+                        // if pre-existing vendor_item
+                        ...( order_item.vendor_item_id !== null ? { vendor_item_id: order_item.vendor_item_id } : {} ),
+                        // else create new vendor_item
+                        ...( Object.keys( order_item ).includes( 'vendor_item' ) ? {
+                            vendor_item: {
+                                data: filterObject( order_item.vendor_item, null, [ '__typename', 'item', 'vendor', 'orderItems', 'orderItems_aggregate' ] )
+                            }
+                        } : {} ),
+
+                    };
+                } );
+
             updateOrder( {
                 variables: {
                     id: orderId,
-                    ...filterObject( formFieldValues, null, [ 'order_items' ] )
-                }
+                    ...filterObject( formFieldValues, null, [ 'order_items' ] ),
+                    orderItems: updateOrderItems,
+                    deleteOrderItems: deleteOrderItems
+                },
+                // refetchQueries: [
+                //     { 
+                //         query: GetOrderDocument, 
+                //         variables: {
+                //             id: orderId
+                //         }
+                //     }
+                // ]
             } );
-            formFieldValues.order_items.forEach( order_item => {
-                let existingOrderItem: Unpacked<typeof order[ 'order_items' ]> = order.order_items.find( el => el.id === order_item.id );
-                console.log( { class: 'OrderEditModal', method: 'onFinish', order: order, order_item: order_item, existingOrderItem: existingOrderItem, valuesEqual_: propValuesEqual( existingOrderItem, order_item ) } );
-                if ( !propValuesEqual( existingOrderItem, order_item ) ) {
-                    if ( order_item.id === undefined ){
-                        let filteredOrderItem = filterObject( order_item, null, [ '__typename', 'item', 'vendor_item', 'vendor_item_id' ] );
-                        if ( order_item.vendor_item_id !== null ){
-                            let insertVariables = {
-                                    order_id: orderId,
-                                    ...filteredOrderItem,
-                                    vendor_item_id: order_item.vendor_item_id
-                                };
-                            console.log( { msg: `insert order_item for order id=${ orderId } and existing vendor_item_id to variables:`, insert_variables: insertVariables, original_order_item: order_item } );
-                            insertOrderItemWithExistingVendorItem( {
-                                variables: insertVariables
-                            } );
-                        } else {
-                            let insertVariables = {
-                                    order_id: orderId,
-                                    ...filterObject( order_item, null, [ '__typename', 'item', 'vendor_item' ] ),
-                                    vendor_item: filterObject( order_item.vendor_item, null, [ '__typename', 'item', 'vendor', 'orderItems', 'orderItems_aggregate' ] )
-                                };
-                            console.log( { msg: `insert order_item for order id=${ orderId } to variables:`, insert_variables: insertVariables, original_order_item: order_item } );
-                            insertOrderItem( {
-                                variables: insertVariables
-                            } );
-                        }
-                    } else {
-                        console.log( `update order_item with id=${ order_item.id }` );
-                        updateOrderItem( {
-                            variables: {
-                                ...filterObject( order_item, null, [ '__typename' ] ),
-                            }
-                        } );
-                    }
-                }
-            } );
+            // let currentOrderItems: Integer[] = formFieldValues.order_items.map( orderItem => orderItem.id );
+            // let priorOrderItems: Integer[] = order.order_items.map( orderItem => orderItem.id );
+            // let deleteOrderItems = priorOrderItems.filter( ( priorOrderItem ) => !currentOrderItems.includes( priorOrderItem ) );
+            // if ( Array.isArray( deleteOrderItems ) && deleteOrderItems.length > 0 ){
+            //     doDeleteOrderItems( {
+            //         variables: {
+            //             ids: deleteOrderItems
+            //         },
+            //         refetchQueries: [
+            //             { 
+            //                 query: GetOrderDocument, 
+            //                 variables: {
+            //                     id: orderId
+            //                 }
+            //             }
+            //         ]
+            //     } );
+            // }
+            
+            // formFieldValues.order_items.forEach( order_item => {
+            //     let existingOrderItem: Unpacked<typeof order[ 'order_items' ]> = order.order_items.find( el => el.id === order_item.id );
+            //     console.log( { class: 'OrderEditModal', method: 'onFinish', order: order, order_item: order_item, existingOrderItem: existingOrderItem, valuesEqual_: propValuesEqual( existingOrderItem, order_item ) } );
+            //     if ( !propValuesEqual( existingOrderItem, order_item ) ) {
+            //         if ( order_item.id === undefined ){
+            //             let filteredOrderItem = filterObject( order_item, null, [ '__typename', 'item', 'vendor_item', 'vendor_item_id' ] );
+            //             if ( order_item.vendor_item_id !== null ){
+            //                 let insertVariables = {
+            //                     order_id: orderId,
+            //                     ...filteredOrderItem,
+            //                     vendor_item_id: order_item.vendor_item_id
+            //                 };
+            //                 console.log( { msg: `insert order_item for order id=${ orderId } and existing vendor_item_id to variables:`, insert_variables: insertVariables, original_order_item: order_item } );
+            //                 insertOrderItemWithExistingVendorItem( {
+            //                     variables: insertVariables
+            //                 } );
+            //             } else {
+            //                 let insertVariables = {
+            //                     order_id: orderId,
+            //                     ...filterObject( order_item, null, [ '__typename', 'item', 'vendor_item' ] ),
+            //                     vendor_item: filterObject( order_item.vendor_item, null, [ '__typename', 'item', 'vendor', 'orderItems', 'orderItems_aggregate' ] )
+            //                 };
+            //                 console.log( { msg: `insert order_item for order id=${ orderId } to variables:`, insert_variables: insertVariables, original_order_item: order_item } );
+            //                 insertOrderItem( {
+            //                     variables: insertVariables
+            //                 } );
+            //             }
+            //         } else {
+            //             console.log( `update order_item with id=${ order_item.id }` );
+            //             updateOrderItem( {
+            //                 variables: {
+            //                     ...filterObject( order_item, null, [ '__typename' ] ),
+            //                 }
+            //             } );
+            //         }
+            //     }
+            // } );
         } else {
             let formFieldValues: InsertOrderMutationVariables = encapsulateChildObjectsIntoDataProp(
                 deepCopy( form.getFieldsValue() as Exclude<OrderGql, 'id'> )
@@ -217,7 +294,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             // formFieldValue.injectOnConflictGql( formFieldValues[,  );
             console.log( { formFieldValues_encapsulated: JSON.stringify( formFieldValues, null, 2 ) } );
             if ( formFieldValues?.order_items?.data != null && Array.isArray( formFieldValues.order_items.data ) && formFieldValues.order_items.data.length > 0 ) {
-                formFieldValues.order_items.data.map( v => {
+                formFieldValues.order_items.data = formFieldValues.order_items.data.map( v => {
                     if ( v?.shipment != null ) {
                         v.shipment.on_conflict = {
                             constraint: ShipmentConstraint.shipment_tracking_id_key,
@@ -272,7 +349,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             { items: Array<object>; }
         > = {
         // fulfilled_date: undefined
-    };
+        };
     if ( order ) {
         for ( let key in order ) {
             if ( key !== null && [
