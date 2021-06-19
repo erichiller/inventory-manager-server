@@ -26,7 +26,6 @@ import { Callbacks } from 'rc-field-form/lib/interface';
 import { RuleItem } from 'async-validator';
 import { ShipmentSelectValue, ShipmentAdditionalOption } from '~components/Shipment/ShipmentSelect';
 import { Integer } from '~lib/types/uint8';
-// import { RuleConfig } from '';
 
 
 type OrderFormModalProps = Intersection<{
@@ -65,21 +64,16 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         partialRefetch: true,
         returnPartialData: true,
     } );
-
     //edit
     const [ updateOrder, updateOrderResult ] = useUpdateOrderMutation( { refetchQueries: [
         { query: GetOrderDocument, variables: { id: orderId }}
     ]} );
-    // const [ updateOrderItem ] = useUpdateOrderItemMutation();
-    // const [ insertOrderItem, insertOrderItemResult ] = useInsertOrderItemMutation();
-    // const [ insertOrderItemWithExistingVendorItem, insertOrderItemWithExistingVendorItemResult ] = useInsertOrderItemWithExistingVendorItemMutation();
     // add new
     const [ insertOrder, insertOrderResult ] = useInsertOrderMutation( {
         refetchQueries: [
             { query: GetOrderDocument }
         ]
     } );
-    // const [ doDeleteOrderItems, deleteOrderItemsResult ] = useDeleteOrderItemsMutation();
 
     /***************************************** Effects *****************************************/
 
@@ -135,16 +129,6 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             // };
         }
     }, [ insertOrderResult, updateOrderResult ] ); // , insertOrderItemResult.error, insertOrderItemWithExistingVendorItemResult.error, insertManufacturerResult, deleteManufacturerResult
-    // useEffect( () => {
-    //     if ( deleteOrderItemsResult?.error ) {
-    //         // completeCallback( false );
-    //         message.error( `${ deleteOrderItemsResult.error.name }: ${ deleteOrderItemsResult.error.message }` );
-    //     } else if ( deleteOrderItemsResult?.data ) {
-    //         message.success( `successfully deleted ${ deleteOrderItemsResult.data?.delete_order_item?.affected_rows } order items from order with id ${ orderId }` );
-    //         form.resetFields();
-    //         exitModal();
-    //     }
-    // }, [ deleteOrderItemsResult ] );
 
     /***************************************************************************/
 
@@ -202,7 +186,6 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                     return {
                         order_id: orderId,
                         ...filteredOrderItem,
-                        // vendor_item_id: order_item.vendor_item_id,
                         // if pre-existing vendor_item
                         ...( order_item.vendor_item_id !== null ? { vendor_item_id: order_item.vendor_item_id } : {} ),
                         // else create new vendor_item
@@ -222,71 +205,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                     orderItems: updateOrderItems,
                     deleteOrderItems: deleteOrderItems
                 },
-                // refetchQueries: [
-                //     { 
-                //         query: GetOrderDocument, 
-                //         variables: {
-                //             id: orderId
-                //         }
-                //     }
-                // ]
             } );
-            // let currentOrderItems: Integer[] = formFieldValues.order_items.map( orderItem => orderItem.id );
-            // let priorOrderItems: Integer[] = order.order_items.map( orderItem => orderItem.id );
-            // let deleteOrderItems = priorOrderItems.filter( ( priorOrderItem ) => !currentOrderItems.includes( priorOrderItem ) );
-            // if ( Array.isArray( deleteOrderItems ) && deleteOrderItems.length > 0 ){
-            //     doDeleteOrderItems( {
-            //         variables: {
-            //             ids: deleteOrderItems
-            //         },
-            //         refetchQueries: [
-            //             { 
-            //                 query: GetOrderDocument, 
-            //                 variables: {
-            //                     id: orderId
-            //                 }
-            //             }
-            //         ]
-            //     } );
-            // }
-            
-            // formFieldValues.order_items.forEach( order_item => {
-            //     let existingOrderItem: Unpacked<typeof order[ 'order_items' ]> = order.order_items.find( el => el.id === order_item.id );
-            //     console.log( { class: 'OrderEditModal', method: 'onFinish', order: order, order_item: order_item, existingOrderItem: existingOrderItem, valuesEqual_: propValuesEqual( existingOrderItem, order_item ) } );
-            //     if ( !propValuesEqual( existingOrderItem, order_item ) ) {
-            //         if ( order_item.id === undefined ){
-            //             let filteredOrderItem = filterObject( order_item, null, [ '__typename', 'item', 'vendor_item', 'vendor_item_id' ] );
-            //             if ( order_item.vendor_item_id !== null ){
-            //                 let insertVariables = {
-            //                     order_id: orderId,
-            //                     ...filteredOrderItem,
-            //                     vendor_item_id: order_item.vendor_item_id
-            //                 };
-            //                 console.log( { msg: `insert order_item for order id=${ orderId } and existing vendor_item_id to variables:`, insert_variables: insertVariables, original_order_item: order_item } );
-            //                 insertOrderItemWithExistingVendorItem( {
-            //                     variables: insertVariables
-            //                 } );
-            //             } else {
-            //                 let insertVariables = {
-            //                     order_id: orderId,
-            //                     ...filterObject( order_item, null, [ '__typename', 'item', 'vendor_item' ] ),
-            //                     vendor_item: filterObject( order_item.vendor_item, null, [ '__typename', 'item', 'vendor', 'orderItems', 'orderItems_aggregate' ] )
-            //                 };
-            //                 console.log( { msg: `insert order_item for order id=${ orderId } to variables:`, insert_variables: insertVariables, original_order_item: order_item } );
-            //                 insertOrderItem( {
-            //                     variables: insertVariables
-            //                 } );
-            //             }
-            //         } else {
-            //             console.log( `update order_item with id=${ order_item.id }` );
-            //             updateOrderItem( {
-            //                 variables: {
-            //                     ...filterObject( order_item, null, [ '__typename' ] ),
-            //                 }
-            //             } );
-            //         }
-            //     }
-            // } );
         } else {
             let formFieldValues: InsertOrderMutationVariables = encapsulateChildObjectsIntoDataProp(
                 deepCopy( form.getFieldsValue() as Exclude<OrderGql, 'id'> )
