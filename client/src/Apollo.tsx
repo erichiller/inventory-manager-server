@@ -29,6 +29,8 @@ import { createBrowserHistory } from 'history';
 //   _history.push("eric was here");
 // });
 
+// TODO: consider batch requests? https://www.apollographql.com/docs/react/api/link/apollo-link-batch-http/
+
 // Instantiate required constructor fields
 const cache = new InMemoryCache();
 const link = new HttpLink( {

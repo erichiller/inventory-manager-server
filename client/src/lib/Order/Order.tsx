@@ -12,19 +12,19 @@ import {
     PaymentMethod,
     Shipment,
     ShipmentAggregate,
-    Vendor
+    Vendor as VendorGql,
+    GetOrdersQueryHookResult
 } from "../types/graphql";
-
-
 
 import { apolloClient } from '~/Apollo';
 import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, ObjectColumnProperty } from "~lib/UtilityFunctions";
+import { toTitleCase, ObjectColumnProperty, makeColumn, formatCurrency } from "~lib/UtilityFunctions";
 import { FormMutationHandler } from "../Item/Item";
 import { IconComponentT } from "~lib/types/common";
 import { ShoppingCartOutlined } from "@ant-design/icons";
+import { Vendor } from "~lib/Vendor/Vendor";
 
 interface OrderDataProps extends Pick<OrderGql,
     '__typename' |
@@ -47,6 +47,8 @@ interface OrderDataProps extends Pick<OrderGql,
     // nothing to add
 }
 
+type OrdersGql = GetOrdersQueryHookResult[ 'data' ][ 'order' ];
+
 
 export class Order implements OrderDataProps {
 
@@ -66,14 +68,26 @@ export class Order implements OrderDataProps {
     tax_cost: Scalars[ 'numeric' ];
     total_cost: Scalars[ 'numeric' ];
     url?: Maybe<Scalars[ 'String' ]>;
-    vendor: Vendor;
+    vendor: VendorGql;
     vendor_id: Scalars[ 'Int' ];
     vendor_order_id: Scalars[ 'String' ];
+    order_items_aggregate: OrderItemAggregate;
 
     // order: OrderGql;
 
     constructor ( props: Partial<OrderDataProps> ) {
         this.id = props.id;
+        
+        // let inputData = ( ! ( 'order' in props ) ) ? props : props.order;
+        let inputData = props;
+        // constructor( props: Partial<T>){
+        // if (!props) return;
+        // this.Vendor = props;
+        // this.id = props.id;
+        for ( let key in inputData ){
+            // console.log(`constructing vendor, ${key} = `, inputData[key]);
+            this[ key ] = inputData[key];
+        }
         console.log( "Order class created with\n\tprops: \n", props, "\n\tand is currently:\n", this );
     }
 
@@ -109,6 +123,14 @@ export class Order implements OrderDataProps {
             // props.visibleHandler( null );
         } ) );
     }
+    
+    /**
+     * Return an array of `Order`s from input Gql results
+     * @param results Output from `GetOrders` GraphQL query (`data` property)
+     */
+    static OrdersFactory ( results: OrdersGql ): Array<Order> {
+        return results.map( orderGql => new Order( orderGql ) );
+    }
 
     /**
      * The GraphQL `__typename`
@@ -136,7 +158,9 @@ export class Order implements OrderDataProps {
      * returns dataurl ( SVG )
      */
     get icon (): IconComponentT {
-        return Order.icon;
+        let vendorObj = new Vendor( this.vendor );
+        console.debug( {cls: 'Order', f: 'get icon ()', vendorObj } );
+        return vendorObj.icon;
     }
     /**
      * Props which should be included in label (default) 
@@ -150,55 +174,59 @@ export class Order implements OrderDataProps {
      * Ordered
      * Optionally defined on subclasses
      */
-    static get Columns (): ColumnProps<ObjectColumnProperty<Order>>[] {
-        // TODO: order columns sensibly
-        // TODO: use the same logic as within `ItemHardwareFastenerScrewMachine` for `Columns` generation
-        // TODO: `<Link>` for Vendor in table. using `render: () => {}`
-        const keys: ObjectColumnProperty<Order>[] = [
-            'id',
-            [ 'vendor', 'name'],
-            'vendor_order_id',
-            'placed_date',
-            'fulfilled_date',
-            // [ 'order_items', 'length' ],
-            'total_cost',
-        ];
-        const cols: ColumnProps<ObjectColumnProperty<Order>>[] = keys.map( key => {
-            if ( typeof key === 'string' ) {
-                return {
-                    key: key,
-                    title: toTitleCase( key ),
-                    dataIndex: OrderSelectColumn[ key ] ?? key,
-                } as ColumnProps<ObjectColumnProperty<Order>>;
-            }
-
-            if ( Array.isArray( key ) ) {
-                // if ( key[1] === 'length' ){
-                //     keyname = `# ${key[0]}`;
-                // }
-                return {
-                    key: `${key[0]}_${key[1]}`,
-                    title: toTitleCase( `${ key[ 0 ] }_${ key[ 1 ] }` ),
-                    dataIndex: key,
-                } as ColumnProps<ObjectColumnProperty<Order>>;
-            }
-            if ( typeof key === 'object' ) {
-                return key as ColumnProps<ObjectColumnProperty<Order>>;
-            }
-        } );
-        // TODO: add number of items on order column
-        // cols.push( {
-        //     key: `order_items_length`,
-        //     title: '# Items',
-        //     render: x => {
-        //         console.log(x);
-        //         return Array.isArray( x ) ? x.length : null
-        //     },
-        //     dataIndex: 'order_items'
-        // } );
-        return cols;
+    static get Columns (): ColumnProps<Order>[] {
+        return makeColumn(
+            [
+                {
+                    key: 'id',
+                    responsive: [ 'xl' ],
+                    width: 50,
+                },
+                {
+                    key: 'icon',
+                    title: '',
+                    width: 50,
+                    render: ( text, record: Order ) => { 
+                        console.log( { q: 'render icon ?', record, icon: record.icon, iconExists: record.icon ? true : false , 
+                            evald: ( record.icon ? < record.icon /> : null ) } ); 
+                        return ( record.icon ? < record.icon /> : <span>x</span> ); 
+                    }
+                },
+                {
+                    key: [ 'vendor', 'name' ],
+                    title: 'Vendor',
+                    // sorter: sortByCaseInsensitiveText( 'name' ),
+                    render: ( text, record: Order ) => {
+                        return ( record.vendor?.url === null ? record.vendor.name : <a href={record.vendor.url}>{record.vendor.name}</a> );
+                    }
+                },
+                {
+                    key: 'vendor_order_id',
+                    // responsive: [ 'xl' ],
+                    // width: 50,
+                    title: 'Order #',
+                    render: ( text, record: Order ) => {
+                        return ( record.url === null ? record.vendor_order_id : <a href={record.url}>{record.vendor_order_id}</a> );
+                    }
+                },
+                { key: 'pon', title: 'PO #' },
+                { 
+                    key: 'total_cost', 
+                    align: 'right',
+                    width: 120,
+                    render: text => `$${formatCurrency( text ) }` 
+                },
+                { key: 'placed_date' },
+                { key: 'fulfilled_date' },
+                { 
+                    key: [ 'order_items_aggregate', 'aggregate', 'count' ],
+                    title: '# Items'
+                }
+            ]
+        );
     }
-    get Columns (): ColumnProps<ObjectColumnProperty<Order>>[] {
+    
+    get Columns (): ColumnProps<Order>[] {
         return Order.Columns;
     }
     /**

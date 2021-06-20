@@ -20,7 +20,7 @@ interface VendorTableState {
     data?: Item<any>[];
     pagination: false | TablePaginationConfig;
     loading: boolean;
-    clickedRecord: Vendor;
+    clickedRecord?: Vendor;
 }
 
 interface IVendorTableParams {
@@ -38,10 +38,10 @@ export const VendorTable: React.FC<VendorTableProps> = ( props ) => {
     } );
     let params = useParams<IVendorTableParams>();
     const [ vendors, setVendors ] = useState<Vendor[]>( [] );
-    const [ modal, setModal ] = useState<React.ReactElement>( null );
+    const [ modal, setModal ] = useState<React.ReactElement | null >( null );
     const history = useHistory();
 
-    const handleModalChange = ( modal: React.ReactElement ) => {
+    const handleModalChange = ( modal: React.ReactElement | null ) => {
         if ( modal === null ){
             history.push( '/vendor' );
         }

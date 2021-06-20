@@ -34,7 +34,10 @@
         // ],
         "indent": [
             "warn",
-            4
+            4,
+            {
+                "SwitchCase": 1
+            }
         ],
         // https://eslint.org/docs/rules/semi
         // https: //github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/semi.md

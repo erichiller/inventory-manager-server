@@ -445,7 +445,8 @@ export function deepEqual( objA: any, objB: any ): objA is typeof objB {
 
 
 export interface TypedColumnProps< T > extends Omit<ColumnProps<T>, 'dataIndex' | 'key'> {
-    key: keyof T | [ keyof T, keyof T[keyof T] ];
+    key: keyof T | [ keyof T, keyof T[keyof T] ] | 
+        [ keyof T, keyof T[keyof T], keyof ( T[ keyof T][keyof T[keyof T]] ) ];
     dataIndex?: keyof T;
 }
 
@@ -568,6 +569,26 @@ export function propValuesEqual ( a: object | Array<any>, b: object | Array<any>
     }
     return true;
 }
+
+export function formatCurrency( number: number, decPlaces: Integer = 2, decSep: string = ".", thouSep: string = "," ) {
+    decPlaces = isNaN( decPlaces = Math.abs( decPlaces ) ) ? 2 : decPlaces,
+    decSep = typeof decSep === "undefined" ? "." : decSep;
+    thouSep = typeof thouSep === "undefined" ? "," : thouSep;
+    let numberString: string;
+    let sign = number < 0 ? "-" : "";
+    let i = parseInt( numberString = Math.abs( Number( number ) || 0 ).toFixed( decPlaces ) );
+    let iString: string = String( i );
+    let j: number = 0;
+    j = ( j = iString.length ) > 3 ? j % 3 : 0;
+
+    return sign +
+        ( j ? iString.substr( 0, j ) + thouSep : "" ) +
+        iString.substr( j ).replace( /(\decSep{3})(?=\decSep)/g, "$1" + thouSep ) +
+        ( decPlaces ? decSep + Math.abs( number - i ).toFixed( decPlaces ).slice( 2 ) : "" );
+}
+
+
+
 
 // export type WithOnConflict<T extends object, CONSTRAINT extends string, UPDATE extends string> = T & { 
 //     on_conflict: {
