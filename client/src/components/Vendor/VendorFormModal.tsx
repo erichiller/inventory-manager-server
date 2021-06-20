@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from 'antd';
+import { Form, Modal, message, Input, Switch } from 'antd';
 /**
  * // TODO: consider removing momentjs for a (SMALLER) alternative
  * antd - remove momentjs
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetVendorQuery, GetVendorQueryVariables, useGetVendorQuery, useInsertVendorMutation, InsertVendorMutationVariables, useGetVendorLazyQuery, useUpdateVendorMutation, useInsertManufacturerMutation, UpdateVendorMutationVariables, useDeleteManufacturerMutation, GetVendorDocument, GetVendorsDocument } from '~lib/types/graphql';
+import { useGetVendorQuery, useInsertVendorMutation, InsertVendorMutationVariables, useGetVendorLazyQuery, useUpdateVendorMutation, useInsertManufacturerMutation, UpdateVendorMutationVariables, useDeleteManufacturerMutation, GetVendorDocument, GetVendorsDocument } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
 import { PageSpin } from '../Shared/PageSpin';
 import { Vendor } from '~lib/Vendor/Vendor';
 import { UrlSelect } from '../Shared/UrlInput';
+import { Callbacks } from 'rc-field-form/lib/interface';
 
 
 type VendorFormModalProps = Intersection<{
@@ -27,14 +27,14 @@ type VendorFormModalProps = Intersection<{
     vendor?: null;
     vendorId?: null;
 }, {
-    visibilityHandler: ( modal: React.ReactElement ) => void;
+    visibilityHandler: ( modal: React.ReactElement | null ) => void;
 }>;
 // extends Union<VendorFormProps, VendorBundle> { }
 
 
 export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
     let { vendorId } = props;
-    const [ form ] = useForm();
+    const [ form ] = useForm<UpdateVendorMutationVariables>();
     const history = useHistory();
 
 
@@ -104,7 +104,7 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
             // completeCallback( false );
             message.error( `${ error.name }: ${ error.message }` );
         } else if ( data ) {
-            message.success( `successfully ${ insertVendorResult.data ? 'created' : 'updated' } ${ data?.vendor.__typename } with id ${ data.vendor.id }` );
+            message.success( `successfully ${ insertVendorResult.data ? 'created' : 'updated' } ${ data.vendor?.__typename } with id ${ data.vendor?.id }` );
             // return () => {
             form.resetFields();
             exitModal();
@@ -129,7 +129,7 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
             };
             // edit
             // if id now, but not before
-            if ( formFieldValues.manufacturer && !vendor.manufacturer ) {
+            if ( formFieldValues.manufacturer && !vendor?.manufacturer ) {
                 insertManufacturer( {
                     variables: {
                         name: formFieldValues.name,
@@ -137,19 +137,22 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                         vendor_id: vendorId
                     }
                 } );
-            } else if ( !formFieldValues.manufacturer && vendor.manufacturer ) {
-                console.log( `deleting manufacturer, value was ${ vendor.manufacturer }, value is: ${ formFieldValues.manufacturer }\n`, { vendor, values, formFieldValues: form.getFieldsValue() } );
+            } else if ( !formFieldValues.manufacturer && Array.isArray( vendor?.manufacturer ) && vendor?.manufacturer.length == 1 
+            // TODO: need to fix weird manufacturer treatment by hasura. See TODO in client\src\lib\Vendor\Vendor.tsx
+            // this should be: vendor?.manufacturer === true 
+            ) {
+                console.log( `deleting manufacturer, value was ${ vendor?.manufacturer }, value is: ${ formFieldValues.manufacturer }\n`, { vendor, values, formFieldValues: form.getFieldsValue() } );
                 // remove manufacturer record
                 deleteManufacturer( {
                     variables: {
-                        id: vendor.manufacturer[ 0 ].id
+                        id: vendor?.manufacturer[ 0 ].id
                     }
                 } );
             }
             updateVendor( {
                 variables: {
                     id: vendorId,
-                    ...filterObject( formFieldValues, null, [ 'manufacturer' ] )
+                    ...filterObject( formFieldValues, null, [ 'id', 'manufacturer' ] )
                 }
             } );
         } else {
@@ -175,11 +178,11 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
     };
 
 
-    const onFinishFailed = ( errorInfo ) => {
+    const onFinishFailed: Callbacks['onFinishFailed'] = ( errorInfo ) => {
         console.error( { class: 'VendorEditModal', method: 'onFinishFailed', errorInfo } );
     };
 
-    const onFieldsChange = ( changedFields, values ) => {
+    const onFieldsChange: Callbacks['onFieldsChange']  = ( changedFields, values ) => {
         console.log( { class: 'VendorEditModal', method: 'onFieldsChange', changedFields, values } );
     };
 
@@ -218,8 +221,8 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
             name="VendorForm"
             form={form}
             layout="horizontal"
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 16 }}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 18 }}
             onKeyPress={( event ) => {
                 console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode } );
                 if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
@@ -248,7 +251,26 @@ export const VendorFormModal: React.FC<VendorFormModalProps> = ( props ) => {
                     <Switch />
                 </Form.Item>
 
-                <UrlSelect name="product_url" label="URL" validationMessage="Please enter a valid website for this Vendor." required />
+                <UrlSelect name="url" label="URL" validationMessage="Please enter a valid website for this Vendor." required />
+                {/* <UrlSelect name="item_url_template" label="Item URL Template" 
+                    tooltip="String template for Vendor Item specific URL. eg. http://vendor.tld/product/{{sku}}"
+                    validationMessage="Please enter a valid item URL template for this Vendor" /> */}
+
+                <Form.Item name="item_url_template" label="Item URL Template" 
+                    tooltip="String template for Vendor Item specific URL. eg. http://vendor.tld/product/{{sku}}"
+                    rules={[
+                        {
+                            type: 'url',
+                            message: '"Please enter a valid item URL template for this Vendor"'
+                        },
+                        {
+                            pattern: /.*{{sku}}/, // /.*{{(sku|fun)}}/ if there was two options
+                            message: "Please enter a valid item URL template for this Vendor which includes a template {{variable}}"
+                        }
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
             </div>
 
         </Form>

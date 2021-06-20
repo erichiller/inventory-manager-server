@@ -27222,7 +27222,7 @@ export type DeleteShipmentMutation = (
 
 export type BasicVendorFieldsFragment = (
   { __typename?: 'vendor' }
-  & Pick<Vendor, 'id' | 'name' | 'url' | 'account_id'>
+  & Pick<Vendor, 'id' | 'name' | 'url' | 'account_id' | 'item_url_template'>
 );
 
 export type ObjectVendorFieldsFragment = (
@@ -27290,7 +27290,8 @@ export type InsertVendorMutationVariables = Exact<{
   account_id?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   manufacturer?: Maybe<ManufacturerArrRelInsertInput>;
-  url: Scalars['String'];
+  url?: Maybe<Scalars['String']>;
+  item_url_template?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -27306,7 +27307,8 @@ export type UpdateVendorMutationVariables = Exact<{
   id: Scalars['Int'];
   account_id?: Maybe<Scalars['String']>;
   name: Scalars['String'];
-  url: Scalars['String'];
+  url?: Maybe<Scalars['String']>;
+  item_url_template?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -27777,6 +27779,7 @@ export const BasicVendorFieldsFragmentDoc = gql`
   name
   url
   account_id
+  item_url_template
 }
     `;
 export const BasicManufacturerItemFieldsFragmentDoc = gql`
@@ -29871,9 +29874,9 @@ export type SearchVendorsQueryHookResult = ReturnType<typeof useSearchVendorsQue
 export type SearchVendorsLazyQueryHookResult = ReturnType<typeof useSearchVendorsLazyQuery>;
 export type SearchVendorsQueryResult = Apollo.QueryResult<SearchVendorsQuery, SearchVendorsQueryVariables>;
 export const InsertVendorDocument = gql`
-    mutation InsertVendor($account_id: String, $name: String!, $manufacturer: manufacturer_arr_rel_insert_input, $url: String!) {
+    mutation InsertVendor($account_id: String, $name: String!, $manufacturer: manufacturer_arr_rel_insert_input, $url: String, $item_url_template: String) {
   vendor: insert_vendor_one(
-    object: {account_id: $account_id, name: $name, manufacturer: $manufacturer, url: $url}
+    object: {account_id: $account_id, name: $name, manufacturer: $manufacturer, url: $url, item_url_template: $item_url_template}
   ) {
     ...basicVendorFields
   }
@@ -29898,6 +29901,7 @@ export type InsertVendorMutationFn = Apollo.MutationFunction<InsertVendorMutatio
  *      name: // value for 'name'
  *      manufacturer: // value for 'manufacturer'
  *      url: // value for 'url'
+ *      item_url_template: // value for 'item_url_template'
  *   },
  * });
  */
@@ -29909,10 +29913,10 @@ export type InsertVendorMutationHookResult = ReturnType<typeof useInsertVendorMu
 export type InsertVendorMutationResult = Apollo.MutationResult<InsertVendorMutation>;
 export type InsertVendorMutationOptions = Apollo.BaseMutationOptions<InsertVendorMutation, InsertVendorMutationVariables>;
 export const UpdateVendorDocument = gql`
-    mutation UpdateVendor($id: Int!, $account_id: String, $name: String!, $url: String!) {
+    mutation UpdateVendor($id: Int!, $account_id: String, $name: String!, $url: String, $item_url_template: String) {
   vendor: update_vendor_by_pk(
     pk_columns: {id: $id}
-    _set: {account_id: $account_id, name: $name, url: $url}
+    _set: {account_id: $account_id, name: $name, url: $url, item_url_template: $item_url_template}
   ) {
     ...basicVendorFields
     ...objectVendorFields
@@ -29939,6 +29943,7 @@ export type UpdateVendorMutationFn = Apollo.MutationFunction<UpdateVendorMutatio
  *      account_id: // value for 'account_id'
  *      name: // value for 'name'
  *      url: // value for 'url'
+ *      item_url_template: // value for 'item_url_template'
  *   },
  * });
  */
@@ -30848,4 +30853,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2021-06-19T07:49:17-06:00
+// graphql typescript defs generated on 2021-06-20T05:12:25-06:00

@@ -6,11 +6,12 @@ import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from
  *  https://ant.design/docs/react/replace-moment
  *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
  **/
-import { GetVendorItemQuery, GetVendorItemQueryVariables, useGetVendorItemQuery, useInsertVendorItemMutation, InsertVendorItemMutationVariables, useGetVendorItemLazyQuery, useUpdateVendorItemMutation, UpdateVendorItemMutationVariables, GetVendorItemDocument, VendorItem as VendorItemGql } from '~lib/types/graphql';
+import { GetVendorItemQuery, GetVendorItemQueryVariables, useGetVendorItemQuery, useInsertVendorItemMutation, InsertVendorItemMutationVariables, useGetVendorItemLazyQuery, useUpdateVendorItemMutation, UpdateVendorItemMutationVariables, GetVendorItemDocument, VendorItem as VendorItemGql, useGetVendorLazyQuery, useGetVendorQuery, VendorItemInsertInput, Scalars } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
 import { FormProps, useForm } from 'antd/lib/form/Form';
+import { FieldData } from 'rc-field-form/lib/interface';
 import { ItemSelect } from '../Item/ItemSelect';
 import { VendorSelect } from './VendorSelect';
 import { PageSpin } from '../Shared/PageSpin';
@@ -43,15 +44,34 @@ type VendorItemFormModalProps = Intersection<{
 
 
 export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props ) => {
-    let { vendorItemId, vendorId, itemId } = props;
-    const [ form ] = useForm();
+    let { vendorItemId, itemId } = props;
+    const [ form ] = useForm<Pick<VendorItemInsertInput, 'description' | 'item_id' | 'url' | 'vendor_id' | 'vendor_sku'>>();
     const history = useHistory();
 
+    const [ vendorId, setVendorId ] = useState<number | undefined>( props.vendorId || undefined );
 
     const [ runGet, lookupResult ] = useGetVendorItemLazyQuery( {
         partialRefetch: true,
         returnPartialData: true,
     } );
+    const [ getVendor, getVendorResult] = useGetVendorLazyQuery( {
+        partialRefetch: true,
+        returnPartialData: true,
+        onCompleted: ( responseData ) => {
+            console.debug( `loaded data, found vendor with id ${responseData.vendor?.id}`, responseData.vendor );
+            setVendorId( responseData?.vendor?.id ),
+            setUrlFromVendorTemplate();
+        },
+        onError: ( error ) => {
+            console.error( error );
+            message.error( `Error requesting vendorId ${error.name}: ${error.message}` );
+        }
+    } );
+    useEffect( () => { if ( vendorId ) { getVendor( { variables: { id: vendorId }} );} }, [] );
+    // useEffect( () => {
+    //     console.error( getVendorError );
+    //     message.error( getVendorError );
+    // }, [ getVendorError ] );
 
     const [ vendorItem, setVendorItem ] = useState<QueryResultTypePlus<typeof useGetVendorItemQuery>>( props.vendorItem ?? lookupResult.data?.vendor_item );
 
@@ -78,13 +98,14 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
         if ( !vendorItem && lookupResult.data?.vendor_item ) {
             setVendorItem( lookupResult.data.vendor_item );
         } else if ( !vendorItem && vendorItemId ) {
+            console.debug( `VendorItemId received in props, but not VendorItem obj, running GraphQL`, props );
             runGet( {
                 variables: {
                     id: vendorItemId
                 }
             } );
         } else {
-            console.debug( `Vendor received in props not running GraphQL`, { vendor: props.vendorItem } );
+            console.debug( `Neither VendorItemId nor VendorItem object received in props not running GraphQL`, props );
         }
         if ( lookupResult.error ) {
             message.error( lookupResult.error );
@@ -162,6 +183,53 @@ export const VendorItemFormModal: React.FC<VendorItemFormModalProps> = ( props )
 
     const onFieldsChange: FormProps['onFieldsChange'] = ( changedFields, values ) => {
         console.log( { class: 'VendorItemEditModal', method: 'onFieldsChange', changedFields, values } );
+        changedFields.forEach( changedField => {
+            console.log( { class: 'VendorItemEditModal', method: 'onFieldsChange--changedField', changedField, name: changedField.name } );
+            if ( ( changedField.name as string[] )[0] === "vendor_id" && typeof changedField.value === "number" ){
+                setVendorId( changedField.value );
+                // getVendor(  { 
+                //     variables: { id: changedField.value },
+                // } );
+            }
+            if ( ( changedField.name as string[] )[0] === "vendor_sku" ){
+                console.log( { class: 'VendorItemEditModal', method: 'onFieldsChange--changedField--found', changedField, name: changedField.name, f: form.getFieldsValue() } );
+                setUrlFromVendorTemplate( );
+            }
+        } );
+    };
+    const skuIntoUrlTemplate = ( url_template: string, sku: string ) => url_template.replace( "{{sku}}", sku );
+    const setUrlFromVendorTemplate = ( ) => {
+        let sku = form.getFieldValue( ['vendor_sku'] );
+        let urlFieldIsTouched: boolean = form.isFieldTouched( ['url'] ) ;
+        if ( ! urlFieldIsTouched && sku && getVendorResult.data?.vendor?.item_url_template ){
+            let newValue: string = skuIntoUrlTemplate( getVendorResult.data?.vendor?.item_url_template, sku );
+            form.setFields( [ { 
+                name: 'url',
+                touched: false,
+                value: newValue ,
+
+            }] );
+            console.debug( { 
+                c: "VendorItemFormModal", f: "setUrlFromVendorTemplate", msg: "values received", 
+                value: sku,
+                newValue,
+                urlFieldIsTouched,
+                url_template: getVendorResult.data?.vendor?.item_url_template,
+                fieldsUrlValue: form.getFieldsValue( ['url'] ) 
+            } );
+        }
+        // values ??= form.getFieldsValue();
+        // console.debug( { c: "VendorItemFormModal", f: "setUrlFromVendorTemplate", msg: "values received--post lookup", values } );
+        // values = values?.map( value => {
+        //     if ( ( value.name as string[] )[0] === "url" && value.touched === false ){
+        //         return {
+        //             ...filterObject( value, null, ['value'] ),
+        //             value: getVendorResult?.data?.vendor?.item_url_template
+        //         };
+        //     }
+        //     return value;
+        // } );
+        // form.setFields( values ?? [] );
     };
 
     /** halt waiting for incoming vendor data. */
