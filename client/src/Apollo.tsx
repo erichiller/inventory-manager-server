@@ -46,10 +46,12 @@ export const apolloClient = new ApolloClient( {
     // Provide some optional constructor fields
     name: 'react-web-client',
     version: '1.3',
-    queryDeduplication: false,
+    // queryDeduplication: false,
+    queryDeduplication: true, // this alone took it from 25 requests to 12 for a single order/329/edit edit
     defaultOptions: {
         watchQuery: {
-            fetchPolicy: 'cache-and-network',
+            // fetchPolicy: 'cache-and-network',
+            fetchPolicy: 'cache-first', // took pageload from 12 -> 11
         },
     },
 } );
