@@ -1,30 +1,29 @@
 import { Table, Divider, message } from 'antd';
 import * as React from 'react';
 import { useGetOrdersQuery, GetOrdersQuery, useDeleteOrderMutation, GetOrdersDocument } from '~lib/types/graphql';
-import { Item } from '~lib/Item';
 import { computeDefaultPagination } from '~lib/UtilityFunctions';
-import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
+import { ColumnProps, TablePaginationConfig, TableProps } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { OrderFormModal } from './Form/OrderFormModal';
 import { Order } from '~lib/Order/Order';
 import { useState } from 'react';
 
-
-
 interface OrderTableProps {
-    // data: any
     class?: string;
 }
-
 
 interface IOrderTableParams {
     order_id: string;
     action: "edit" | 'add';
 }
 
+
 export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
-    const [pagination, setPagination] = useState < false | TablePaginationConfig>( { hideOnSinglePage: true, defaultPageSize: computeDefaultPagination() } );
+    const [pagination, setPagination] = useState < false | TablePaginationConfig>( { 
+        hideOnSinglePage: true, 
+        defaultPageSize: computeDefaultPagination() 
+    } );
     let params = useParams<IOrderTableParams>();
     const [ orders, setOrders ] = useState<Order[]>( [] );
     const [ modal, setModal ] = useState<React.ReactElement | null>( null );
@@ -55,26 +54,19 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
         }
     }, [ params.order_id, params.action ] );
 
-    const result = useGetOrdersQuery();
-    React.useEffect( () => {
-        if ( result?.data?.order ){
-            setOrders( Order.OrdersFactory( result.data.order ) );
-        }
-    }, [ result ] );
+    const result = useGetOrdersQuery( {
+        onCompleted: ( orders ) => setOrders( Order.OrdersFactory( orders.order ) ),
+        onError: ( error ) => message.error( `Error while retrieving orders: \n${error.name}: ${ error.message }` )
+    } );
 
     /** delete */
-    const [ deleteVendor, deleteVendorResult ] = useDeleteOrderMutation( {
+    const [ deleteOrder, _ ] = useDeleteOrderMutation( {
         refetchQueries: [
             { query: GetOrdersDocument }
-        ]
+        ],
+        onCompleted: () => message.success( "Successfully Deleted Order" ),
+        onError: ( error ) => message.error( `Error deleting vendor: \n${error.name}: ${ error.message }` )
     } );
-    React.useEffect( () => {
-        if ( deleteVendorResult.error ) {
-            message.error( `Error deleting vendor: \n${ deleteVendorResult.error }` );
-        } else if ( deleteVendorResult.data ) {
-            message.info( `Successfully deleted vendor.` );
-        }
-    }, [ deleteVendorResult ] );
 
     const columns: ColumnProps<Extract<GetOrdersQuery, 'order'>>[] = [
         ...Order.Columns,
@@ -82,13 +74,12 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
             {
                 title: 'Action',
                 key: 'action',
-                // dataIndex: '',
                 render: ( text, record ) => (
                     <span>
                         <Link to={`/order/${ record.id }/edit`}><EditOutlined className="IconButton" /></Link>
                         <Divider type="vertical" />
                         <a><DeleteOutlined className="IconButton" onClick={() => {
-                            deleteVendor( { variables: { id: record.id } } );
+                            deleteOrder( { variables: { id: record.id } } );
                         }} /></a>
                     </span >
                 ),
@@ -96,28 +87,9 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
         ]
     ];
 
-    // const setModal = ( modal: React.ReactElement, clickedRecord?: Order ) => {
-    //     console.log( "viewPrintModal () ? received", modal, clickedRecord );
-    //     if ( !modal ) {
-    //         setState( {
-    //             ...state,
-    //             clickedRecord: clickedRecord,
-    //             modal: null
-    //         } );
-    //         console.log( "viewPrintModal(null) removing modal" );
-    //         return;
-    //     }
-    //     setState( {
-    //         ...state,
-    //         modal: modal,
-    //         clickedRecord: clickedRecord
-    //     } );
-    //     console.log( "viewPrintModal () ? provided new modal" );
-    //     return;
-    // };
-
-
-    const handleTableChange = ( pagination: TablePaginationConfig, filters, sorter ) => {
+    const onChange: TableProps<Order>['onChange'] = ( pagination, filters, sorter ) => {
+        console.log( 'params', pagination, filters, sorter );
+        
         const pager = pagination;
         if ( pager ) {
             pager.current = pagination.current;
@@ -125,12 +97,6 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
         setPagination( pager ? pager : pagination );
     };
 
-    function onChange ( pagination, filters, sorter ) {
-        console.log( 'params', pagination, filters, sorter );
-    };
-
-    if ( result.error ) return <span>Error</span>;
-    console.log( "data is", result.data, '\ncolumns are', columns );
     return (
         <div>
             {modal}

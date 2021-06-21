@@ -183,21 +183,11 @@ export class Order implements OrderDataProps {
                     width: 50,
                 },
                 {
-                    key: 'icon',
-                    title: '',
-                    width: 50,
-                    render: ( text, record: Order ) => { 
-                        console.log( { q: 'render icon ?', record, icon: record.icon, iconExists: record.icon ? true : false , 
-                            evald: ( record.icon ? < record.icon /> : null ) } ); 
-                        return ( record.icon ? < record.icon /> : <span>x</span> ); 
-                    }
-                },
-                {
                     key: [ 'vendor', 'name' ],
                     title: 'Vendor',
                     // sorter: sortByCaseInsensitiveText( 'name' ),
                     render: ( text, record: Order ) => {
-                        return ( record.vendor?.url === null ? record.vendor.name : <a href={record.vendor.url}>{record.vendor.name}</a> );
+                        return ( record.vendor?.url === null ? record.vendor.name : <a href={record.vendor.url}>{( record.icon ? < record.icon /> : null )}&nbsp;{record.vendor.name}</a> );
                     }
                 },
                 {
@@ -211,17 +201,17 @@ export class Order implements OrderDataProps {
                 },
                 { key: 'pon', title: 'PO #' },
                 { 
+                    key: [ 'order_items_aggregate', 'aggregate', 'count' ],
+                    title: '# Items'
+                },
+                { key: 'placed_date' },
+                { key: 'fulfilled_date' },
+                { 
                     key: 'total_cost', 
                     align: 'right',
                     width: 120,
                     render: text => `$${formatCurrency( text ) }` 
                 },
-                { key: 'placed_date' },
-                { key: 'fulfilled_date' },
-                { 
-                    key: [ 'order_items_aggregate', 'aggregate', 'count' ],
-                    title: '# Items'
-                }
             ]
         );
     }

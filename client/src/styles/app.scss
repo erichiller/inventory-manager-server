@@ -1,3 +1,4 @@
+@import "colors.scss";
 @import "antd.scss";
 @import "media.scss";
 @import "content.scss";
@@ -83,7 +84,7 @@ code {
     }
     .ant-menu-submenu.ant-menu-submenu-selected {
         a {
-            color: #1890ff;
+            color: $linkColor;
             margin-top: 0;
         }
     }
@@ -93,6 +94,9 @@ code {
         font-size: 14px;
         fill: currentColor;
     }
+}
+a:hover {
+    color: lighten($linkColor, 20%);
 }
 
 // %ContentText {
