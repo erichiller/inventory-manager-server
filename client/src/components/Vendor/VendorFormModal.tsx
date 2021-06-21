@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Modal, message, Input, Switch } from 'antd';
-/**
- * // TODO: consider removing momentjs for a (SMALLER) alternative
- * antd - remove momentjs
- *  https://ant.design/docs/react/replace-moment
- *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
- **/
 import { useGetVendorQuery, useInsertVendorMutation, InsertVendorMutationVariables, useGetVendorLazyQuery, useUpdateVendorMutation, useInsertManufacturerMutation, UpdateVendorMutationVariables, useDeleteManufacturerMutation, GetVendorDocument, GetVendorsDocument } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';

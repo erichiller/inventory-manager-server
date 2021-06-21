@@ -25,6 +25,12 @@
 
 - [ ] Waiting on `graphql-codegen` #FIXME before I can upgrade the version again. <https://github.com/dotansimha/graphql-code-generator/issues/5758>
 - [ ] Waiting on `josdejong/jsoneditor` #FIXME for source map <https://github.com/josdejong/jsoneditor/issues/1208>
+- [ ] consider removing momentjs for a (SMALLER) alternative
+  - antd - remove momentjs
+    *  https://ant.design/docs/react/replace-moment
+    *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
+- [ ] trigger function to restrict `shipment.order_id` to be the same as any `order_item.order_id`
+- [ ] break shipment `carrier` out into own object, not as `vendor` similar to how `manufacturer` works
 
 
 ## Table

@@ -4,12 +4,7 @@ import { PlusOutlined, MinusCircleOutlined, StopOutlined, CheckCircleOutlined } 
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
 import TextArea from 'antd/lib/input/TextArea';
-/**
- * // TODO: consider removing momentjs for a (SMALLER) alternative
- * antd - remove momentjs
- *  https://ant.design/docs/react/replace-moment
- *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
- **/
+
 import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, InsertOrderMutationVariables, ShipmentConstraint, ShipmentUpdateColumn, OrderItemInsertInput } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject, transparentLog, Unpacked, propValuesEqual, deepCopy } from '~lib/UtilityFunctions';
@@ -186,12 +181,34 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                     return {
                         order_id: orderId,
                         ...filteredOrderItem,
+                        /** Vendor Items */
                         // if pre-existing vendor_item
                         ...( order_item.vendor_item_id !== null ? { vendor_item_id: order_item.vendor_item_id } : {} ),
                         // else create new vendor_item
                         ...( Object.keys( order_item ).includes( 'vendor_item' ) ? {
                             vendor_item: {
                                 data: filterObject( order_item.vendor_item, null, [ '__typename', 'item', 'vendor', 'orderItems', 'orderItems_aggregate' ] )
+                            }
+                        } : {} ),
+                        /** Shipments */
+                        // if pre-existing shipment
+                        ...( order_item.shipment_id !== null ? { shipment_id: order_item.shipment_id } : {} ),
+                        // else create new shipment
+                        ...( Object.keys( order_item ).includes( 'shipment' ) ? {
+                            shipment: {
+                                data: {
+                                    ...filterObject( order_item.shipment, null, [ '__typename', 'carrier', 'orderItems', 'order', 'orderItems_aggregate' ] ),
+                                    order_id: orderId
+                                }
+                            }
+                        } : {} ),
+                        /** Manufacturer Items */
+                        // if pre-existing manufacturer item
+                        ...( order_item.manufacturer_item_id !== null ? { manufacturer_item_id: order_item.manufacturer_item_id } : {} ),
+                        // else create new manufacturer item
+                        ...( Object.keys( order_item ).includes( 'manufacturer_item' ) ? {
+                            manufacturer_item: {
+                                data: filterObject( order_item.manufacturer_item, null, [ '__typename', 'item', 'manufacturer', 'orderItems', 'orderItems_aggregate' ] )
                             }
                         } : {} ),
 

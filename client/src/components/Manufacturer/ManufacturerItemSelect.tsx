@@ -10,7 +10,7 @@ import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { ManufacturerItemFormModal } from "./ManufacturerItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
 import { Manufacturer } from "~lib/Manufacturer/Manufacturer";
-import { Intersection, Unpacked, QueryResultTypePlus, transparentLog, flatArrayObjectProperty } from "~lib/UtilityFunctions";
+import { Intersection, Unpacked, QueryResultTypePlus, transparentLog, flatArrayObjectProperty, KeysOfType, PartialRequired } from "~lib/UtilityFunctions";
 import { IconComponentT } from "~lib/types/common";
 import { Integer } from "~lib/types/uint8";
 
@@ -19,16 +19,22 @@ interface OptionT extends OptionData {
     label?: string | ReactElement;
     id: number | 'NEW';
 }
-type VT = number | Partial<UpdateManufacturerItemMutationVariables>;
+// type VT = number | Pick<UpdateManufacturerItemMutationVariables, KeysOfType<UpdateManufacturerItemMutationVariables, number | string>>;
+type VT = number | ManufacturerItemSelectValue;
 
-export interface ManufacturerItemSelectValue extends Partial<Pick<ManufacturerItemGql, 'id' | 'description' | 'item_id' | 'manufacturer_id' | 'manufacturer_product_id'>> { }
+export interface ManufacturerItemSelectValue extends Pick<ManufacturerItemGql, 'id' | 'description' | 'item_id' | 'manufacturer_id' | 'manufacturer_product_id'> { }
 
-interface ManufacturerItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
-    forwardRef?: React.MutableRefObject<typeof Select>;
-    value?: VT;
-    item_id?: Integer;
-    onChange: ( manufacturer_item: ManufacturerItemSelectValue ) => void;
-}
+type ManufacturerItemSelectProps = Intersection<
+    Omit<SelectProps<VT>, 'value' | 'onChange' | 'defaultValue'>,
+    {
+        forwardRef?: React.MutableRefObject<typeof Select>;
+        value?: VT;
+        onChange: ( manufacturer_item: ManufacturerItemSelectValue | Pick<ManufacturerItemSelectValue, 'id'> ) => void;
+    },
+    { defaultValue: VT; defaultItemId?: null; }
+    |
+    { defaultValue?: null; defaultItemId?: Integer; }
+    >;
 /**
  * Form Select Input for ManufacturerItems
  */
@@ -55,7 +61,7 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
     const [ modal, setModal ] = useState<React.ReactElement | null>( null );
     const history = useHistory();
     const location = useLocation();
-    const handleModalChange = ( modal: React.ReactElement ) => {
+    const handleModalChange = ( modal: React.ReactElement | null ) => {
         if ( modal === null ) {
             history.push( location.pathname );
         }
@@ -67,7 +73,7 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
         returnPartialData: true,
         variables: {
             query_text: `${ searchText }%`,
-            item_id: props.item_id
+            item_id: props.defaultItemId
         }
         // skip: state.loading
     } );
@@ -85,37 +91,37 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
                 c: 'ManufacturerItemSelect',
                 e: 'optionsGenerated'
             },
-                arr.map( ( v ) => {
-                    let ManufacturerIcon: IconComponentT;
-                    if ( v && 'manufacturer' in v ) {
-                        // console.log( "ManufacturerItemSelect: rendering AsyncIcon with this of", v.manufacturer );
-                        ManufacturerIcon = new Manufacturer( v.manufacturer ).icon;
-                    } else if ( v && 'manufacturer_id' in v && typeof v.manufacturer_id === 'number' ) {
-                        ManufacturerIcon = new Manufacturer( { id: v.manufacturer_id } ).icon;
-                    } else {
-                        console.warn( "ManufacturerItemSelect: not rendering AsyncIcon with this of", v );
-                        ManufacturerIcon = () => <FileUnknownOutlined className="manufacturerIcon" />;
-                    }
-                    return {
-                        id: v.id,
-                        value: v.id,
-                        label: <span className="manufacturerItemOption">
-                            <ManufacturerIcon />
-                            {/* <span>{v.manufacturer.name}</span> */}
-                            <span>{v.manufacturer_product_id}</span>
-                            <span>{v.manufacturer_product_name}</span>
-                            <span>{v.manufacturer_product_series}</span>
-                        </span>
-                    };
-                } ) )
+            arr.map( ( v ) => {
+                let ManufacturerIcon: IconComponentT;
+                if ( v && 'manufacturer' in v ) {
+                    // console.log( "ManufacturerItemSelect: rendering AsyncIcon with this of", v.manufacturer );
+                    ManufacturerIcon = new Manufacturer( v.manufacturer ).icon;
+                } else if ( v && 'manufacturer_id' in v && typeof v.manufacturer_id === 'number' ) {
+                    ManufacturerIcon = new Manufacturer( { id: v.manufacturer_id } ).icon;
+                } else {
+                    console.warn( "ManufacturerItemSelect: not rendering AsyncIcon with this of", v );
+                    ManufacturerIcon = () => <FileUnknownOutlined className="manufacturerIcon" />;
+                }
+                return {
+                    id: v.id,
+                    value: v.id,
+                    label: <span className="manufacturerItemOption">
+                        <ManufacturerIcon />
+                        {/* <span>{v.manufacturer.name}</span> */}
+                        <span>{v.manufacturer_product_id}</span>
+                        <span>{v.manufacturer_product_name}</span>
+                        <span>{v.manufacturer_product_series}</span>
+                    </span>
+                };
+            } ) )
         );
     }
 
     useEffect( () => {
-        if (error) {
-            message.error(error);
+        if ( error ) {
+            message.error( error );
         }
-    }, [error]);
+    }, [error] );
     useEffect( () => {
         console.log( { c: "ManufacturerItemSelect", m: "useEffect", ev: "loaded ManufacturerItems from Gql", data } );
         updateOptionsFromManufacturerItem( [
@@ -157,10 +163,22 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
                             className="ManufacturerItemSelectNewSelectOption"
                             onClick={() => handleModalChange( 
                                 <ManufacturerItemFormModal 
+                                    { ...( props.defaultValue ? 
+                                        ( typeof props.defaultValue === 'number' ?
+                                            { manufacturerItemId: props.defaultValue } :
+                                            { manufacturerItem: props.defaultValue }
+                                        ) :
+                                        { itemId: props.defaultItemId } ) }
+                                    // manufacturerItem={ props.defaultValue && typeof props.defaultValue !== "number" ? props.defaultValue : null}
                                     visibilityHandler={handleModalChange}
-                                    onFinish={(args) => {
-                                        setModal(null);
-                                        onChange(transparentLog({c: 'ManufacturerItemSelect', e: 'new created, onchange'}, args));
+                                    onFinish={( args ) => {
+                                        if ( "id" in args && typeof args.id === "number" ){
+                                            setModal( null );
+                                            onChange( transparentLog( {c: 'ManufacturerItemSelect', e: 'new created, onchange'}, 
+                                            args as PartialRequired<typeof args, 'id'> ) );
+                                        } else {
+                                            message.warning( "no id for Manufacturer Item provided in form finish" );
+                                        }
                                     }} 
                                 /> )}
                         >

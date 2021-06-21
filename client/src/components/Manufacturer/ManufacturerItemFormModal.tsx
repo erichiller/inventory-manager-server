@@ -1,34 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from 'antd';
-/**
- * // TODO: consider removing momentjs for a (SMALLER) alternative
- * antd - remove momentjs
- *  https://ant.design/docs/react/replace-moment
- *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
- **/
 import { GetManufacturerItemQuery, GetManufacturerItemQueryVariables, useGetManufacturerItemQuery, useInsertManufacturerItemMutation, InsertManufacturerItemMutationVariables, useGetManufacturerItemLazyQuery, useUpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables, GetManufacturerItemDocument, ManufacturerItem as ManufacturerItemGql } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';
+import { QueryResultTypePlus, Intersection, filterObject } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
-import { useForm } from 'antd/lib/form/Form';
+import { FormProps, useForm } from 'antd/lib/form/Form';
 import { ItemSelect } from '../Item/ItemSelect';
 import { ManufacturerSelect } from './ManufacturerSelect';
 import { PageSpin } from '~components/Shared/PageSpin';
 import { UrlSelect } from '~components/Shared/UrlInput';
 import TextArea from 'antd/lib/input/TextArea';
+import { ManufacturerItemSelectValue } from './ManufacturerItemSelect';
 
 
 type ManufacturerItemFormModalProps = Intersection<{
-    manufacturerItem: QueryResultTypePlus<typeof useGetManufacturerItemQuery>;
+    // manufacturerItem: QueryResultTypePlus<typeof useGetManufacturerItemQuery>;
+    manufacturerItem: ManufacturerItemSelectValue;
     manufacturerItemId?: null;
+    itemId?: null;
 } | {
     manufacturerItem?: null;
     manufacturerItemId: number;
+    itemId?: null;
 } | {
     manufacturerItem?: null;
     manufacturerItemId?: null;
+    /** For initial value on form if provided */
+    itemId?: number | null;
 }, {
-    visibilityHandler: ( modal: React.ReactElement ) => void;
+    visibilityHandler: ( modal: React.ReactElement | null ) => void;
     onFinish?: ( values: Partial<UpdateManufacturerItemMutationVariables> ) => void;
 }>;
 
@@ -103,7 +103,7 @@ export const ManufacturerItemFormModal: React.FC<ManufacturerItemFormModalProps>
             // completeCallback( false );
             message.error( `${ error.name }: ${ error.message }` );
         } else if ( data ) {
-            message.success( `successfully ${ insertManufacturerItemResult.data ? 'created' : 'updated' } ${ data?.manufacturer_item.__typename } with id ${ data.manufacturer_item.id }` );
+            message.success( `successfully ${ insertManufacturerItemResult.data ? 'created' : 'updated' } ${ data?.manufacturer_item?.__typename } with id ${ data.manufacturer_item?.id }` );
             // return () => {
             form.resetFields();
             exitModal();
@@ -147,11 +147,11 @@ export const ManufacturerItemFormModal: React.FC<ManufacturerItemFormModalProps>
     };
 
 
-    const onFinishFailed = ( errorInfo ) => {
+    const onFinishFailed: FormProps['onFinishFailed'] = ( errorInfo ) => {
         console.error( { class: 'ManufacturerItemEditModal', method: 'onFinishFailed', errorInfo } );
     };
 
-    const onFieldsChange = ( changedFields, values ) => {
+    const onFieldsChange: FormProps['onFieldsChange'] = ( changedFields, values ) => {
         console.log( { class: 'ManufacturerItemEditModal', method: 'onFieldsChange', changedFields, values } );
     };
 
@@ -160,7 +160,9 @@ export const ManufacturerItemFormModal: React.FC<ManufacturerItemFormModalProps>
         console.debug( "no manufacturer data; awaiting data" );
         return <PageSpin />;
     }
-    let initialValues: Partial<ManufacturerItemGql> = manufacturerItem ?? {};
+    let initialValues: Partial<ManufacturerItemGql> = manufacturerItem ?? {
+        ...( props.itemId ? { item_id: props.itemId } : {} )
+    };
 
     return <Modal
         visible={true}
@@ -194,7 +196,7 @@ export const ManufacturerItemFormModal: React.FC<ManufacturerItemFormModalProps>
                     <ManufacturerSelect />
                 </Form.Item>
                 <Form.Item name="item_id" label="Item" rules={[ { required: true } ]}>
-                    <ItemSelect mode="single" />
+                    <ItemSelect  mode="single" />
                 </Form.Item>
                 <Form.Item name="manufacturer_product_id" label="Product ID" rules={[ { required: true } ]}>
                     <Input />

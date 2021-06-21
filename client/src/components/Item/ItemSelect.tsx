@@ -1,10 +1,10 @@
-import { RefSelectProps, SelectProps, SelectValue } from "antd/lib/select";
-import React, { useState, useEffect, ReactElement, useRef } from "react";
+import { SelectProps, SelectValue } from "antd/lib/select";
+import React, { useState, useEffect, ReactElement } from "react";
 import { Input, Select } from "antd";
 
 
 import { Intersection, is, parseIntSafe } from "~lib/UtilityFunctions";
-import { useGetItemLazyQuery, useGetItemQuery, useItemSearchLazyQuery, useItemSearchQuery } from "~lib/types/graphql";
+import { useGetItemLazyQuery, useItemSearchLazyQuery } from "~lib/types/graphql";
 
 
 interface OptionT {
@@ -14,29 +14,6 @@ interface OptionT {
 type VT = SelectValue;
 
 export type ItemSelectMultipleProvidesValue = Array<{ item_id: number; }>;
-
-// interface ItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange' | 'mode'> {
-//     forwardRef?: React.MutableRefObject<Input>;
-//     value?: VT;
-//     onChange?: ( items: ItemSelectProvidesValue) => void;
-//     mode?: 'multiple' | 'tags' | 'single';
-// }
-
-
-
-// type VendorItemFormModalProps = Union<{
-//     vendorItem: QueryResultTypePlus<typeof useGetVendorItemQuery>;
-//     vendorItemId?: null;
-// } | {
-//     vendorItem?: null;
-//     vendorItemId: number;
-// } | {
-//     vendorItem?: null;
-//     vendorItemId?: null;
-// }, {
-//     visibilityHandler: ( modal: React.ReactElement ) => void;
-//     onFinish?: ( values: Partial<UpdateVendorItemMutationVariables> ) => void;
-// }>;
 
 type ItemSelectProps = Intersection<
     Omit<SelectProps<VT>, "value" | "onChange" | "mode">,
@@ -61,10 +38,7 @@ type ItemSelectProps = Intersection<
  * Set `props.mode=null` or `single` for single input, else defaults to multiple
  */
 export const ItemSelect: React.FC<ItemSelectProps> = ( props ) => {
-    const { onChange, 
-        //value, 
-        // ...remainingProps 
-    } = props;
+    const { onChange } = props;
     const [ searchText, setSearchText ] = useState<string>();
     const [ options, setOptions ] = useState<OptionT[]>( [] );
     const [ itemSearchQuery, itemSearchQueryResult ] = useItemSearchLazyQuery( );
@@ -147,7 +121,7 @@ export const ItemSelect: React.FC<ItemSelectProps> = ( props ) => {
                 onSearch={value => { console.log( { event: "onSearch", setSearchText: value } ); setSearchText( value ); }}
                 suffixIcon={props.suffixIcon}
                 placeholder={props.placeholder}
-                value={props.value.toString() as SelectValue}
+                value={props.value?.toString() as SelectValue}
                 onChange={( value, opt ) => {
                     console.log( "onChange", { value, opt } );
                     if ( is < ( input: number ) => void >( onChange, props.mode === null || props.mode === "single" ) ) {
@@ -169,7 +143,11 @@ export const ItemSelect: React.FC<ItemSelectProps> = ( props ) => {
             >
                 {...options.map( v => {
                     console.log( "select with options", v );
-                    return <Select.Option key={v.item_id} value={v.item_id.toString()}>{v.label}</Select.Option>;
+                    if ( !v || !v.item_id ){
+                        console.warn( "error in ItemSelect options" );
+                        return <Select.Option value="ERROR">ERROR</Select.Option>;
+                    }
+                    return <Select.Option key={v.item_id} value={v.item_id?.toString()}>{v.label}</Select.Option>;
                 } )}
             </Select>
         </div>

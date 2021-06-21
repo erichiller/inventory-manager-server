@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from 'antd';
-/**
- * // TODO: consider removing momentjs for a (SMALLER) alternative
- * antd - remove momentjs
- *  https://ant.design/docs/react/replace-moment
- *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
- **/
-import { GetManufacturerQuery, GetManufacturerQueryVariables, useGetManufacturerQuery, useInsertManufacturerWithVendorMutation, InsertManufacturerWithVendorMutationVariables, useGetManufacturerLazyQuery, useUpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables, useDeleteManufacturerMutation, GetManufacturerDocument, GetManufacturersDocument, useDeleteVendorMutation, useInsertVendorMutation, useInsertVendorWithExistingManufacturerMutation } from '~lib/types/graphql';
+import { Form, Modal, message, Input, Switch } from 'antd';
+import { useGetManufacturerQuery, useInsertManufacturerWithVendorMutation, useGetManufacturerLazyQuery, useUpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables, useDeleteManufacturerMutation, GetManufacturerDocument, GetManufacturersDocument, useDeleteVendorMutation, useInsertVendorWithExistingManufacturerMutation } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
-import { Store } from 'antd/lib/form/interface';
 import { PageSpin } from '~components/Shared/PageSpin';
 import { Manufacturer } from '~lib/Manufacturer/Manufacturer';
 import { UrlSelect } from '~components/Shared/UrlInput';

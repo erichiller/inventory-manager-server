@@ -1,5 +1,5 @@
 import { QueryHookOptions, QueryResult, BaseQueryOptions } from '@apollo/client/react';
-import { EnumUnitEnum, Exact } from './graphql';
+import { EnumUnitEnum } from './graphql';
 
 //TODO: ideally there is some sort of 'variadic' type declaration where it wouldn't require & {} & {} ...
 /**
@@ -100,6 +100,13 @@ export type PartialPartial<T, K extends keyof T> = Intersection<
     Omit<T, K>,
     Partial<Pick<T, K>>
 >;
+/**
+ * Make only properties K required within T
+ */
+export type PartialRequired<T, K extends keyof T> = Intersection<
+    Omit<T, K>,
+    Required<Pick<T, K>>
+>;
 
 
 
@@ -193,4 +200,4 @@ export type KeysOfType<T, U> = { [k in keyof T]-?: T[k] extends U ? k : never }[
  * Just like `Partial` but also could be `null`
  * complements `Maybe` of graphql codegen well as an "every property on object" version
  */
- export type PartialNullable<T> = { [P in keyof T]?: T[P] | undefined | null; };
+export type PartialNullable<T> = { [P in keyof T]?: T[P] | undefined | null; };

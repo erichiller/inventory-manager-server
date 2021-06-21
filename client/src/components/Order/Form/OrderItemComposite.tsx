@@ -120,7 +120,7 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
                 : { vendor_item: vendor_item, vendor_item_id: undefined } )
         } );
     };
-    const setManufacturerItem = ( manufacturer_item: Partial<ManufacturerItemSelectValue> ) => {
+    const setManufacturerItem = ( manufacturer_item: ManufacturerItemSelectValue ) => {
         console.log( { c: 'OrderItemComposite', f: "setManufacturerItem", manufacturer_item } );
         onChange( {
             ...props.value,
@@ -164,8 +164,12 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
                         onChange={setVendorItem} />
 
                     <ManufacturerItemSelect
-                        item_id={props.value?.item_id}
-                        defaultValue={props.value?.manufacturer_item_id || props.value?.manufacturer_item}
+                        { ...( props.value?.item_id ?
+                            {defaultItemId: props.value?.item_id } :
+                            { defaultValue: props.value?.manufacturer_item_id || props.value?.manufacturer_item }
+                        )}
+                        // defaultItemId={props.value?.item_id}
+                        // defaultValue={props.value?.manufacturer_item_id || props.value?.manufacturer_item}
                         onChange={setManufacturerItem} />
 
                     <Input name="serial_no"

@@ -3,13 +3,7 @@ import { Form, Modal, message, Input, DatePicker } from 'antd';
 import { Callbacks } from 'rc-field-form/lib/interface';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
-/**
- * // TODO: consider removing momentjs for a (SMALLER) alternative
- * antd - remove momentjs
- *  https://ant.design/docs/react/replace-moment
- *  https://github.com/ant-design/antd-dayjs-webpack-plugin/blob/master/README.md
- **/
-import { useGetShipmentQuery, useInsertShipmentMutation, InsertShipmentMutationVariables, useGetShipmentLazyQuery, useUpdateShipmentMutation, UpdateShipmentMutationVariables, GetShipmentDocument, ShipmentInsertInput } from '~lib/types/graphql';
+import { useGetShipmentQuery, useInsertShipmentMutation, InsertShipmentMutationVariables, useGetShipmentLazyQuery, useUpdateShipmentMutation, UpdateShipmentMutationVariables, GetShipmentDocument } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, PartialPartial } from '~lib/UtilityFunctions';
 
