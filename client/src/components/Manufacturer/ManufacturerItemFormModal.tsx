@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Divider, Button, Modal, message, Input, DatePicker, Switch } from 'antd';
-import { GetManufacturerItemQuery, GetManufacturerItemQueryVariables, useGetManufacturerItemQuery, useInsertManufacturerItemMutation, InsertManufacturerItemMutationVariables, useGetManufacturerItemLazyQuery, useUpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables, GetManufacturerItemDocument, ManufacturerItem as ManufacturerItemGql } from '~lib/types/graphql';
+import { Form, Modal, message, Input } from 'antd';
+import { useGetManufacturerItemQuery, useInsertManufacturerItemMutation, InsertManufacturerItemMutationVariables, useGetManufacturerItemLazyQuery, useUpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables, GetManufacturerItemDocument, ManufacturerItem as ManufacturerItemGql } from '~lib/types/graphql';
 
 import { QueryResultTypePlus, Intersection, filterObject } from '~lib/UtilityFunctions';
+import { KeyboardEventKey } from '~lib/types/KeyboardEventKey';
 import { useHistory } from 'react-router-dom';
 import { FormProps, useForm } from 'antd/lib/form/Form';
 import { ItemSelect } from '../Item/ItemSelect';
@@ -10,12 +11,11 @@ import { ManufacturerSelect } from './ManufacturerSelect';
 import { PageSpin } from '~components/Shared/PageSpin';
 import { UrlSelect } from '~components/Shared/UrlInput';
 import TextArea from 'antd/lib/input/TextArea';
-import { ManufacturerItemSelectValue } from './ManufacturerItemSelect';
 
 
 type ManufacturerItemFormModalProps = Intersection<{
     // manufacturerItem: QueryResultTypePlus<typeof useGetManufacturerItemQuery>;
-    manufacturerItem: ManufacturerItemSelectValue;
+    manufacturerItem: ManufacturerItemFormT;
     manufacturerItemId?: null;
     itemId?: null;
 } | {
@@ -29,13 +29,15 @@ type ManufacturerItemFormModalProps = Intersection<{
     itemId?: number | null;
 }, {
     visibilityHandler: ( modal: React.ReactElement | null ) => void;
-    onFinish?: ( values: Partial<UpdateManufacturerItemMutationVariables> ) => void;
+    onFinish?: ( values: ManufacturerItemFormT ) => void;
 }>;
+
+export type ManufacturerItemFormT = UpdateManufacturerItemMutationVariables;
 
 
 export const ManufacturerItemFormModal: React.FC<ManufacturerItemFormModalProps> = ( props ) => {
     let { manufacturerItemId } = props;
-    const [ form ] = useForm();
+    const [ form ] = useForm<ManufacturerItemFormT>();
     const history = useHistory();
 
 
@@ -44,7 +46,7 @@ export const ManufacturerItemFormModal: React.FC<ManufacturerItemFormModalProps>
         returnPartialData: true,
     } );
 
-    const [ manufacturerItem, setManufacturerItem ] = useState<QueryResultTypePlus<typeof useGetManufacturerItemQuery>>( props.manufacturerItem ?? lookupResult.data?.manufacturer_item );
+    const [ manufacturerItem, setManufacturerItem ] = useState<ManufacturerItemFormT | null | undefined>( props.manufacturerItem ?? lookupResult.data?.manufacturer_item );
 
 
     console.log( "ManufacturerItemFormModal init", { props, lookupResult, manufacturerItem } );
@@ -118,13 +120,11 @@ export const ManufacturerItemFormModal: React.FC<ManufacturerItemFormModalProps>
         props.visibilityHandler( null );
     };
 
-    const onFinish = ( values: {
-        [ name: string ]: any;
-    } ) => {
+    const onFinish = ( values: ManufacturerItemFormT ) => {
         console.log( { class: 'ManufacturerItemEditModal', method: 'onFinish', values, manufacturerItem, formFieldValues: form.getFieldsValue() } );
         if ( props.onFinish ){
             console.log( { class: 'ManufacturerItemEditModal', method: 'onFinish', event: 'calling props supplied onFinish()' } );
-            return props.onFinish(values);
+            return props.onFinish( values );
         }
         if ( manufacturerItemId ) {
             let formFieldValues = form.getFieldsValue() as Exclude<UpdateManufacturerItemMutationVariables, 'id'>;
@@ -132,7 +132,7 @@ export const ManufacturerItemFormModal: React.FC<ManufacturerItemFormModalProps>
                 variables: {
                     id: manufacturerItemId,
                     // ...filterObject( formFieldValues, null, [ 'manufacturer' ] )
-                    ...formFieldValues
+                    ...filterObject( formFieldValues, null, [ 'id' ] )
                 }
             } );
         } else {
@@ -183,8 +183,9 @@ export const ManufacturerItemFormModal: React.FC<ManufacturerItemFormModalProps>
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 16 }}
             onKeyPress={( event ) => {
-                console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode } );
-                if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
+                console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.key, native: event.nativeEvent.key } );
+                // console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode } );
+                if ( event.nativeEvent.key === KeyboardEventKey.Enter ) { form.submit(); }
             }}
             initialValues={initialValues}
             onFieldsChange={onFieldsChange}

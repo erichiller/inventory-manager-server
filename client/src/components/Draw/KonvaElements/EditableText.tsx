@@ -11,7 +11,7 @@ interface EditableTextProps {
     labelText: LabelText;
     item: Item<any>;
     selectedShapeName: string;
-    setSelectedShapeName: (shapeName: string) => void;
+    setSelectedShapeName: ( shapeName: string ) => void;
     displayContextMenu: ( display: KonvaEventObject<PointerEvent | MouseEvent> ) => void;
     updateHistory: () => void;
     // stage: Konva.Stage;
@@ -32,7 +32,7 @@ interface EditableTextProps {
 export function EditableText ( props: EditableTextProps ): React.ReactElement<KonvaNodeComponent<Konva.Text & EditableTextProps, Konva.TextConfig>> {
     let labelText: LabelText = props.labelText;
     if ( ! ( labelText instanceof LabelText ) ){
-        throw new Error("Invalid LabelText");
+        throw new Error( "Invalid LabelText" );
     }
 
     const item = props.item;
@@ -62,14 +62,14 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
 
     React.useEffect( () => {
         console.log( { cls: 'EditableText', method: 'useEffect', op: 'setRenderedString', labelText } );
-        setRenderedString(stringTemplateRender( labelText.text, item ));
+        setRenderedString( stringTemplateRender( labelText.text, item ) );
     }, [labelText.text] );
 
     function onSelect ( e: KonvaEventObject<MouseEvent> ) {
         console.log( "EditableText onSelect setSelectedShapeName", {e, name: e.target.name()} );
         props.setSelectedShapeName( e.target.name() );
     }
-    console.log( { class: 'EditableText', text: labelText.text, item, renderedString});
+    console.log( { class: 'EditableText', text: labelText.text, item, renderedString} );
 
     return <React.Fragment>
         <Transformer
@@ -102,11 +102,10 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
             onTap={onSelect}
             onDblClick={( evt ) => {
                 {
-                    console.group("EditableText.onDblClick");
+                    console.group( "EditableText.onDblClick" );
                     // hide text node and transformer:
                     textNodeRef.current.hide();
                     trRef.current.hide();
-                    // evt.currentTarget.getLayer().draw();
                     evt.currentTarget.getLayer().batchDraw();
 
                     // create textarea over canvas with absolute position
@@ -121,7 +120,7 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
                         x: stageBox.left + textPosition.x,
                         y: stageBox.top + textPosition.y
                     };
-                    console.log( "EditableText.onDblClick", { textPosition, stageBox, areaPosition, trRef, textNodeRef,evt});
+                    console.log( "EditableText.onDblClick", { textPosition, stageBox, areaPosition, trRef, textNodeRef,evt} );
 
                     // create textarea and style it
                     let textarea = document.createElement( 'textarea' );
@@ -181,18 +180,17 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
                     textarea.style.height = textarea.scrollHeight + 3 + 'px';
 
                     textarea.focus();
-                    console.log( "EditableText .onDblClick textarea\n", {textarea});
+                    console.log( "EditableText .onDblClick textarea\n", {textarea} );
 
                     function removeTextarea () {
-                        console.log("EditableText .onDblClick .removeTextarea");
+                        console.log( "EditableText .onDblClick .removeTextarea" );
                         textarea.parentNode.removeChild( textarea );
                         window.removeEventListener( 'click', handleOutsideClick );
                         textNodeRef.current.show();
                         trRef.current.show();
                         trRef.current.forceUpdate();
                         // evt.currentTarget.getLayer().draw();
-                        evt.currentTarget.getLayer().batchDraw();
-                        
+                        evt.currentTarget.getLayer().batchDraw(); // TODO: remove after upgrading Konva
                     }
 
                     function setTextareaWidth ( newWidth ) {
@@ -253,7 +251,7 @@ export function EditableText ( props: EditableTextProps ): React.ReactElement<Ko
                         console.log( "EditableText .onDblClick .setTimeout" );
                         window.addEventListener( 'click', handleOutsideClick );
                     } );
-                    console.groupEnd()
+                    console.groupEnd();
                 }
             }}
             onTransform={() => {

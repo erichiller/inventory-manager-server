@@ -12,18 +12,9 @@ export class LabelExport implements Label {
 
     static DEFAULT_WIDTH = 300;
     id: UUIDStringT;
-
-    // texts: LabelText[];
-    // images: LabelImage[];
-    // qrs: LabelQR[];
-    // buffer: PixelMap;
-    // imgData: ImageData;
-    // canvas: HTMLCanvasElement;
-    // dataURL: string;
     stageRef: React.MutableRefObject<StageT>;
     width: Integer = LabelExport.DEFAULT_WIDTH;
     height: Integer;
-
     created_at: Scalars[ 'timestamptz' ];
     updated_at: Scalars[ 'timestamptz' ];
     edit_of_id?: Scalars[ 'uuid' ];
@@ -90,14 +81,6 @@ export class LabelExport implements Label {
                         qrs: props.qrs
                     };
                 }
-                // if ( 'imgData' in props ) {
-                //     console.log( "LabelExport - 'imgData' in props" );
-                //     this.imgData = props.imgData;
-                // }
-                // if ( 'canvas' in props ) {
-                //     console.log( "LabelExport - 'canvas' in props" );
-                //     this.canvas = props.canvas;
-                // }
                 if ( 'stageRef' in props ) {
                     console.log( "LabelExport - 'stageRef' in props" );
                     this.stageRef = props.stageRef;
@@ -121,8 +104,6 @@ export class LabelExport implements Label {
             images: values.images,
             qrs: values.qrs
         };
-        // this.imgData = values.imgData;
-        // this.canvas = values.canvas;
         this.stageRef = values.stageRef;
         this.width = values.width;
         this.height = values.height;
@@ -134,28 +115,6 @@ export class LabelExport implements Label {
      * see HTMLCanvasElement
      *  https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas
      */
-    // get canvas (): HTMLCanvasElement {
-    //     let canvas = document.createElement( 'canvas' );
-    //     console.log( `LabelConstituent.canvas (getter) initial canvas create ( #LabelComponent )\n********************\n`,
-    //         `\t imgData_width:     ${ this.imgData.width }\n`,
-    //         `\t imgData_height:    ${ this.imgData.height }\n`,
-    //         `\t canvas_width:      ${ canvas.width }\n`,
-    //         `\t canvas_height:     ${ canvas.height }\n`,
-    //         `********************\n` );
-    //     let ctx = canvas.getContext( '2d' );
-    //     if ( this.imgData instanceof ImageData ) {
-    //         canvas.width = this.imgData.width;
-    //         canvas.height = this.imgData.height;
-    //         ctx.putImageData( this.imgData, 0, 0 );
-    //     } else { console.warn( "can not create canvas without image data" ); console.trace(); }
-    //     console.log( `LabelConstituent.canvas (getter) after fill canvas create ( #LabelComponent )\n********************\n`,
-    //         `\t imgData_width:     ${ this.imgData.width }\n`,
-    //         `\t imgData_height:    ${ this.imgData.height }\n`,
-    //         `\t canvas_width:      ${ canvas.width }\n`,
-    //         `\t canvas_height:     ${ canvas.height }\n`,
-    //         `********************\n` );
-    //     return canvas;
-    // }
     get canvas (): HTMLCanvasElement | null {
         if ( this.stageRef.current ) {
             return this.stageRef.current.getStage().toCanvas( {} );
@@ -172,7 +131,6 @@ export class LabelExport implements Label {
         image.width = 50;
         // image.
         image.src = this.canvas.toDataURL();
-        // return <img width={ 50; } src = { icon.data } />;
         return <img width={50} style={{
             border: '1px solid #cacaca',
             marginRight: '16px',
@@ -202,8 +160,6 @@ export class LabelExportConstituents {
 
 }
 interface LabelExportConstructorProps extends LabelExportConstituents {
-    // imgData: ImageData;
-    // canvas: HTMLCanvasElement;
     stageRef: React.MutableRefObject<StageT>;
     width: Integer;
     height: Integer;

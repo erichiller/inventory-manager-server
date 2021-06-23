@@ -30,6 +30,11 @@ fragment basicManufacturerItemFields on manufacturer_item {
       product_url
       description
 }
+fragment objectManufacturerItemFields on manufacturer_item {
+      manufacturer {
+          ...basicManufacturerFields
+      }
+}
 
 query GetManufacturers {
 	manufacturer(order_by: { id: asc }) {
@@ -195,6 +200,7 @@ query SearchManufacturerItems (
 query GetManufacturerItem( $id: Int! ) {
     manufacturer_item: manufacturer_item_by_pk(id: $id) {
         ...basicManufacturerItemFields
+		...objectManufacturerItemFields
     }
 }
 

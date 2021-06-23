@@ -1,16 +1,16 @@
-import { SelectProps } from "antd/lib/select";
+import { SelectProps, SelectValue } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
 import { Select, Divider, message } from "antd";
 
 
 
 import { OptionData } from 'rc-select/lib/interface';
-import { useSearchManufacturerItemsQuery, ManufacturerItem as ManufacturerItemGql, UpdateManufacturerItemMutationVariables } from "~lib/types/graphql";
+import { useSearchManufacturerItemsQuery, ManufacturerItem as ManufacturerItemGql, UpdateManufacturerItemMutationVariables, useGetManufacturerItemQuery, useGetManufacturerItemLazyQuery, GetManufacturerItemLazyQueryHookResult } from "~lib/types/graphql";
 import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
-import { ManufacturerItemFormModal } from "./ManufacturerItemFormModal";
+import { ManufacturerItemFormModal, ManufacturerItemFormT } from "./ManufacturerItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
 import { Manufacturer } from "~lib/Manufacturer/Manufacturer";
-import { Intersection, Unpacked, QueryResultTypePlus, transparentLog, flatArrayObjectProperty, KeysOfType, PartialRequired } from "~lib/UtilityFunctions";
+import { Intersection, Unpacked, QueryResultTypePlus, transparentLog, flatArrayObjectProperty } from "~lib/UtilityFunctions";
 import { IconComponentT } from "~lib/types/common";
 import { Integer } from "~lib/types/uint8";
 
@@ -19,22 +19,20 @@ interface OptionT extends OptionData {
     label?: string | ReactElement;
     id: number | 'NEW';
 }
-// type VT = number | Pick<UpdateManufacturerItemMutationVariables, KeysOfType<UpdateManufacturerItemMutationVariables, number | string>>;
-type VT = number | ManufacturerItemSelectValue;
+type VT = number | ManufacturerItemFormT;
+// type VT = SelectValue;
 
-export interface ManufacturerItemSelectValue extends Pick<ManufacturerItemGql, 'id' | 'description' | 'item_id' | 'manufacturer_id' | 'manufacturer_product_id'> { }
+// export type BaseManufacturerItemT = Pick<ManufacturerItemGql, 'id' | 'description' | 'item_id' | 'manufacturer_id' | 'manufacturer_product_id'>;
 
-type ManufacturerItemSelectProps = Intersection<
-    Omit<SelectProps<VT>, 'value' | 'onChange' | 'defaultValue'>,
-    {
-        forwardRef?: React.MutableRefObject<typeof Select>;
-        value?: VT;
-        onChange: ( manufacturer_item: ManufacturerItemSelectValue | Pick<ManufacturerItemSelectValue, 'id'> ) => void;
-    },
-    { defaultValue: VT; defaultItemId?: null; }
-    |
-    { defaultValue?: null; defaultItemId?: Integer; }
-    >;
+// export type ManufacturerItemSelectValue = Pick<ManufacturerItemGql, 'id'> | ManufacturerItemFormT;
+export type ManufacturerItemSelectValue = VT;
+
+interface ManufacturerItemSelectProps extends Omit<SelectProps<VT>, 'value' | 'onChange'> {
+    forwardRef?: React.MutableRefObject<typeof Select>;
+    value?: VT;
+    defaultItemId?: Integer;
+    onChange: ( manufacturer_item: ManufacturerItemSelectValue ) => void;
+}
 /**
  * Form Select Input for ManufacturerItems
  */
@@ -74,24 +72,64 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
         variables: {
             query_text: `${ searchText }%`,
             item_id: props.defaultItemId
-        }
+        },
+        onError: ( error ) => message.error( `Error searching for manufacturer items related to item id #${props.defaultItemId} [${error.name}]: ${error.message}` )
         // skip: state.loading
     } );
+    const [ getManufacturerItem, getManufacturerItemResult ] = useGetManufacturerItemLazyQuery( {
+        partialRefetch: true,
+        returnPartialData: true,
+        onError: ( error ) => message.error( `Error retrieving data for existing manufacturer item id #${props.defaultValue} [${error.name}]: ${error.message}` )
+    } );
+    useEffect( () => {
+        console.debug( "checking whether a number was passed in as defaultValue", props );
+        if ( typeof props.defaultValue === "number" ) {
+            console.debug( `Loading data for initial value manufacturer item id ${props.defaultValue}` );
+            getManufacturerItem( {
+                variables: {
+                    id: props.defaultValue
+                }} );
+        }
+    }, [] );
+
+    useEffect( () => {
+        console.log( { c: "ManufacturerItemSelect", m: "useEffect", ev: "loaded ManufacturerItems from Gql", data } );
+        updateOptionsFromManufacturerItem( [
+            ...( props.defaultValue && typeof props.defaultValue !== "number" && !props.defaultValue.id
+                ? [ { ...props.defaultValue, id: 'NEW' as 'NEW' } ]
+                : [] ),
+            ...( props.defaultValue && typeof props.defaultValue === "number" && getManufacturerItemResult.data?.manufacturer_item
+                ? [ { ...getManufacturerItemResult.data.manufacturer_item } ]
+                : [] ),
+            ...( data && data.item ? 
+                flatArrayObjectProperty( data.item, 'manufacturerItems' ) 
+                : [] )
+        ] );
+    }, [ loading, data, props.defaultValue, getManufacturerItemResult.data ] );
+
     console.log( { c: "ManufacturerItemSelect", ev: "init", props, defaultIds, defaultValue: props.defaultValue } );
 
     function updateOptionsFromManufacturerItem ( arr:
+        QueryResultTypePlus<typeof useGetManufacturerItemQuery> |
         Array<Unpacked<QueryResultTypePlus<typeof useSearchManufacturerItemsQuery>[ 'manufacturerItems' ]>
             | Intersection<Omit<Partial<UpdateManufacturerItemMutationVariables>, 'id'>, { id: 'NEW'; }>
         >
     ) {
         console.log( "ManufacturerItemSelect.updateOptionsFromManufacturerItem", arr );
         if ( !Array.isArray( arr ) ) { return null; }
+        let foundIds: Unpacked<typeof arr>['id'][] = [];
         setOptions(
             transparentLog( {
                 c: 'ManufacturerItemSelect',
                 e: 'optionsGenerated'
             },
-            arr.map( ( v ) => {
+            arr.filter( ( v ) => {
+                if ( foundIds.includes( v.id ) ){
+                    return false;
+                }
+                foundIds.push( v.id );
+                return true;
+            } ).map( ( v ) => {
                 let ManufacturerIcon: IconComponentT;
                 if ( v && 'manufacturer' in v ) {
                     // console.log( "ManufacturerItemSelect: rendering AsyncIcon with this of", v.manufacturer );
@@ -116,23 +154,6 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
             } ) )
         );
     }
-
-    useEffect( () => {
-        if ( error ) {
-            message.error( error );
-        }
-    }, [error] );
-    useEffect( () => {
-        console.log( { c: "ManufacturerItemSelect", m: "useEffect", ev: "loaded ManufacturerItems from Gql", data } );
-        updateOptionsFromManufacturerItem( [
-            ...( props.defaultValue && typeof props.defaultValue !== "number" && !props.defaultValue.id
-                ? [ { ...props.defaultValue, id: 'NEW' as 'NEW' } ]
-                : [] ),
-            ...( data && data.item ? 
-                flatArrayObjectProperty( data.item, 'manufacturerItems' ) 
-                : [] )
-        ] );
-    }, [ loading, data, props.defaultValue ] );
     return (
         <React.Fragment>
             {modal}
@@ -163,22 +184,17 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
                             className="ManufacturerItemSelectNewSelectOption"
                             onClick={() => handleModalChange( 
                                 <ManufacturerItemFormModal 
-                                    { ...( props.defaultValue ? 
-                                        ( typeof props.defaultValue === 'number' ?
-                                            { manufacturerItemId: props.defaultValue } :
-                                            { manufacturerItem: props.defaultValue }
-                                        ) :
-                                        { itemId: props.defaultItemId } ) }
-                                    // manufacturerItem={ props.defaultValue && typeof props.defaultValue !== "number" ? props.defaultValue : null}
+                                    itemId={props.defaultItemId}
+                                    // { ...( props.defaultValue ? 
+                                    //     ( typeof props.defaultValue === 'number' ?
+                                    //         { manufacturerItemId: props.defaultValue } :
+                                    //         { manufacturerItem: props.defaultValue }
+                                    //     ) :
+                                    //     { itemId: props.defaultItemId } ) }
                                     visibilityHandler={handleModalChange}
                                     onFinish={( args ) => {
-                                        if ( "id" in args && typeof args.id === "number" ){
-                                            setModal( null );
-                                            onChange( transparentLog( {c: 'ManufacturerItemSelect', e: 'new created, onchange'}, 
-                                            args as PartialRequired<typeof args, 'id'> ) );
-                                        } else {
-                                            message.warning( "no id for Manufacturer Item provided in form finish" );
-                                        }
+                                        setModal( null );
+                                        onChange( transparentLog( {c: 'ManufacturerItemSelect', e: 'new created, onchange'}, args ) );
                                     }} 
                                 /> )}
                         >
@@ -197,13 +213,7 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
                     //     manufacturerItem_id = typeof value.value === "number" ? value.value : parseInt( value.value );
                     }
                     if ( manufacturerItem_id ) {
-                        onChange( {
-                            id: manufacturerItem_id,
-                            // item_id: 1111,
-                            // manufacturer_id: 2222,
-                            // manufacturer_sku: "3333",
-                            // description: "4444"
-                        } );
+                        onChange( manufacturerItem_id );
                     }
                 }}
                 options={options}

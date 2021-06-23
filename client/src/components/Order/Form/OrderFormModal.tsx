@@ -178,6 +178,10 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                     let filteredOrderItem = filterObject( order_item, null, [ 
                         '__typename', 'item', 'manufacturer_item', 'manufacturer_item_id', 'order', 'order_id', 'shipment', 'shipment_id', 'vendor_item', 'vendor_item_id' 
                     ] );
+                    let createNewManufacturerItem: boolean = Object.keys( order_item ).includes( 'manufacturer_item' );
+                    if ( createNewManufacturerItem ) {
+                        
+                    }
                     return {
                         order_id: orderId,
                         ...filteredOrderItem,
@@ -206,7 +210,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
                         // if pre-existing manufacturer item
                         ...( order_item.manufacturer_item_id !== null ? { manufacturer_item_id: order_item.manufacturer_item_id } : {} ),
                         // else create new manufacturer item
-                        ...( Object.keys( order_item ).includes( 'manufacturer_item' ) ? {
+                        ...( createNewManufacturerItem ? {
                             manufacturer_item: {
                                 data: filterObject( order_item.manufacturer_item, null, [ '__typename', 'item', 'manufacturer', 'orderItems', 'orderItems_aggregate' ] )
                             }

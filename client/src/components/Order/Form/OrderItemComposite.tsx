@@ -9,11 +9,12 @@ import { Integer } from '~lib/types/uint8';
 import { VendorItemSelect, VendorItemSelectValue } from '~components/Vendor/VendorItemSelect';
 import { ManufacturerItemSelect, ManufacturerItemSelectValue } from '~components/Manufacturer/ManufacturerItemSelect';
 import { ShipmentSelect, ShipmentSelectValue, ShipmentAdditionalOption } from '~components/Shipment/ShipmentSelect';
+import { ManufacturerItemFormT } from '~components/Manufacturer/ManufacturerItemFormModal';
 
 
 interface OrderItemCompositeValue extends PartialNullable<SubType<OrderItemGql, string | undefined | null | number>> {
     vendor_item: VendorItemSelectValue;
-    manufacturer_item: ManufacturerItemSelectValue;
+    manufacturer_item: ManufacturerItemFormT;
     shipment: ShipmentSelectValue;
     item_id: number;
 }
@@ -37,6 +38,7 @@ interface OrderItemCompositeProps extends Omit<InputProps, 'value' | 'onChange' 
     vendorId: Integer;
     /** Array of Shipments that have been created locally and not yet posted to GraphQL */
     additionalShipmentOptions?: ShipmentAdditionalOption[];
+
     // form?: FormInstance<any>;
 }
 
@@ -124,8 +126,8 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
         console.log( { c: 'OrderItemComposite', f: "setManufacturerItem", manufacturer_item } );
         onChange( {
             ...props.value,
-            ...( manufacturer_item.id
-                ? { manufacturer_item_id: manufacturer_item.id, manufacturer_item: undefined }
+            ...( typeof manufacturer_item === "number"
+                ? { manufacturer_item_id: manufacturer_item, manufacturer_item: undefined }
                 : { manufacturer_item: manufacturer_item, manufacturer_item_id: undefined } )
         } );
     };
@@ -164,10 +166,8 @@ export const OrderItemComposite: React.FC<OrderItemCompositeProps> = React.forwa
                         onChange={setVendorItem} />
 
                     <ManufacturerItemSelect
-                        { ...( props.value?.item_id ?
-                            {defaultItemId: props.value?.item_id } :
-                            { defaultValue: props.value?.manufacturer_item_id || props.value?.manufacturer_item }
-                        )}
+                        defaultItemId={props.value?.item_id}
+                        defaultValue={props.value?.manufacturer_item_id || props.value?.manufacturer_item }
                         // defaultItemId={props.value?.item_id}
                         // defaultValue={props.value?.manufacturer_item_id || props.value?.manufacturer_item}
                         onChange={setManufacturerItem} />

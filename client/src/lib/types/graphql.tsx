@@ -26643,6 +26643,14 @@ export type BasicManufacturerItemFieldsFragment = (
   & Pick<ManufacturerItem, 'id' | 'item_id' | 'manufacturer_id' | 'manufacturer_product_id' | 'manufacturer_product_name' | 'manufacturer_product_series' | 'product_url' | 'description'>
 );
 
+export type ObjectManufacturerItemFieldsFragment = (
+  { __typename?: 'manufacturer_item' }
+  & { manufacturer: (
+    { __typename?: 'manufacturer' }
+    & BasicManufacturerFieldsFragment
+  ) }
+);
+
 export type GetManufacturersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -26804,6 +26812,7 @@ export type GetManufacturerItemQuery = (
   & { manufacturer_item?: Maybe<(
     { __typename?: 'manufacturer_item' }
     & BasicManufacturerItemFieldsFragment
+    & ObjectManufacturerItemFieldsFragment
   )> }
 );
 
@@ -27765,14 +27774,6 @@ export const LabelFieldsFragmentDoc = gql`
   updated_at
 }
     `;
-export const BasicManufacturerFieldsFragmentDoc = gql`
-    fragment basicManufacturerFields on manufacturer {
-  id
-  name
-  url
-  vendor_id
-}
-    `;
 export const BasicVendorFieldsFragmentDoc = gql`
     fragment basicVendorFields on vendor {
   id
@@ -27805,6 +27806,21 @@ export const ObjectManufacturerFieldsFragmentDoc = gql`
 }
     ${BasicVendorFieldsFragmentDoc}
 ${BasicManufacturerItemFieldsFragmentDoc}`;
+export const BasicManufacturerFieldsFragmentDoc = gql`
+    fragment basicManufacturerFields on manufacturer {
+  id
+  name
+  url
+  vendor_id
+}
+    `;
+export const ObjectManufacturerItemFieldsFragmentDoc = gql`
+    fragment objectManufacturerItemFields on manufacturer_item {
+  manufacturer {
+    ...basicManufacturerFields
+  }
+}
+    ${BasicManufacturerFieldsFragmentDoc}`;
 export const ObjectOrderFieldsFragmentDoc = gql`
     fragment objectOrderFields on order {
   vendor {
@@ -28912,9 +28928,11 @@ export const GetManufacturerItemDocument = gql`
     query GetManufacturerItem($id: Int!) {
   manufacturer_item: manufacturer_item_by_pk(id: $id) {
     ...basicManufacturerItemFields
+    ...objectManufacturerItemFields
   }
 }
-    ${BasicManufacturerItemFieldsFragmentDoc}`;
+    ${BasicManufacturerItemFieldsFragmentDoc}
+${ObjectManufacturerItemFieldsFragmentDoc}`;
 
 /**
  * __useGetManufacturerItemQuery__
@@ -30853,4 +30871,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2021-06-20T05:12:25-06:00
+// graphql typescript defs generated on 2021-06-22T07:00:13-06:00
