@@ -8,6 +8,7 @@ import { QtyInput } from '~lib/Item/Common/QtyInput';
 import { useHistory } from 'react-router-dom';
 import { Callbacks } from 'rc-field-form/lib/interface';
 import { VisibilityHandlerCallback } from '~lib/types/common';
+import { submitFormWithEnterKey } from '~lib/UtilityFunctions';
 
 
 type ItemFormModalProps = {
@@ -83,10 +84,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
             labelCol={{span: 8 }}
             // wrapperCol={{span: 9 }}
             // name="item-add-edit-delete"
-            onKeyPress={( event ) => {
-                console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode } );
-                if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
-            }}
+            onKeyPress={submitFormWithEnterKey( form )}
             initialValues={props.item?.editFormInitialValues}
             onFieldsChange={onFieldsChange}
             onFinish={onFinish}

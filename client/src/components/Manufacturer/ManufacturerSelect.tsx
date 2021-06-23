@@ -7,6 +7,7 @@ import { AutoComplete, Input, DatePicker, Select } from "antd";
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
 import { InputProps } from "antd/lib/input";
 import { useGetManufacturersLazyQuery, useSearchManufacturersLazyQuery, useSearchManufacturersQuery } from "~lib/types/graphql";
+import { preventEnterKeyDefault } from "~lib/UtilityFunctions";
 
 
 interface OptionT extends OptionData {
@@ -76,11 +77,7 @@ export const ManufacturerSelect: React.FC<ManufacturerSelectProps> = ( props ) =
                     //     }
                     // } );
                 }}
-                onKeyDown={( e ) => {
-                    if ( e.nativeEvent.keyCode === 13 ) {
-                        e.preventDefault(); // keep Enter from submitting form within Selects so that autofill options can be triggered and selected.
-                    }
-                }}
+                onKeyDown={preventEnterKeyDefault}
                 onChange={( value, opt ) => {
                     console.log( "onChange", { value, opt } );
                     let manufacturer_id: number | null = null;
@@ -99,7 +96,7 @@ export const ManufacturerSelect: React.FC<ManufacturerSelectProps> = ( props ) =
                 }}
                 options={options}
                 {...( value ? { defaultValue: props.value } : {} )}
-                />
+            />
             {/* >
                 {...options.map( v => {
                     console.log( "select with options", v );

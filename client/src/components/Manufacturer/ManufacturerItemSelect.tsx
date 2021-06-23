@@ -10,7 +10,7 @@ import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { ManufacturerItemFormModal, ManufacturerItemFormT } from "./ManufacturerItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
 import { Manufacturer } from "~lib/Manufacturer/Manufacturer";
-import { Intersection, Unpacked, QueryResultTypePlus, transparentLog, flatArrayObjectProperty } from "~lib/UtilityFunctions";
+import { Intersection, Unpacked, QueryResultTypePlus, transparentLog, flatArrayObjectProperty, preventEnterKeyDefault } from "~lib/UtilityFunctions";
 import { IconComponentT } from "~lib/types/common";
 import { Integer } from "~lib/types/uint8";
 
@@ -171,11 +171,7 @@ export const ManufacturerItemSelect: React.FC<ManufacturerItemSelectProps> = ( p
                     console.log( { event: "onSearch", setSearchText: value } );
                     setSearchText( value );
                 }}
-                onKeyDown={( e ) => {
-                    if ( e.nativeEvent.keyCode === 13 ) {
-                        e.preventDefault(); // keep Enter from submitting form within Selects so that autofill options can be triggered and selected.
-                    }
-                }}
+                onKeyDown={preventEnterKeyDefault}
                 dropdownRender={menu => (
                     <div>
                         {menu}

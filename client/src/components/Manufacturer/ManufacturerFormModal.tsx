@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Modal, message, Input, Switch } from 'antd';
 import { useGetManufacturerQuery, useInsertManufacturerWithVendorMutation, useGetManufacturerLazyQuery, useUpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables, useDeleteManufacturerMutation, GetManufacturerDocument, GetManufacturersDocument, useDeleteVendorMutation, useInsertVendorWithExistingManufacturerMutation } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';
+import { QueryResultTypePlus, Intersection, filterObject, deepCopy, submitFormWithEnterKey } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
 import { Callbacks } from 'rc-field-form/lib/interface';
@@ -217,10 +217,7 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
             layout="horizontal"
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 16 }}
-            onKeyPress={( event ) => {
-                console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode } );
-                if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
-            }}
+            onKeyPress={submitFormWithEnterKey( form )}
             initialValues={initialValues}
             onFieldsChange={onFieldsChange}
             onFinish={onFinish}

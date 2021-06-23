@@ -4,7 +4,7 @@ import { Select } from "antd";
 
 
 import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
-import { toTitleCase } from "~lib/UtilityFunctions";
+import { preventEnterKeyDefault, toTitleCase } from "~lib/UtilityFunctions";
 import { IconMapT } from "../Icon/Index";
 import { SVGReactFC, PNGReactFC } from "~/styles/icon";
 
@@ -26,20 +26,16 @@ export const EnumSelect = ( props: EnumSelectProps<string | string[]> ) => {
     };
     let carriedOverProps = remainingProps;
     if( carriedOverProps.value === null && carriedOverProps.mode === "multiple"  ){
-        console.log("EnumSelect empty");
+        console.log( "EnumSelect empty" );
 
         carriedOverProps.value = [];
     }
-    console.log("EnumSelect", remainingProps );
+    console.log( "EnumSelect", remainingProps );
     return (
         <div className={iconMap ? "enumIconSelect" : ""}>
             <Select
                 showSearch
-                onKeyDown={( e ) => {
-                    if ( e.nativeEvent.keyCode === 13 ) {
-                        e.preventDefault(); // keep Enter from submitting form within Selects so that autofill options can be triggered and selected.
-                    }
-                }}
+                onKeyDown={preventEnterKeyDefault}
                 onChange={triggerChange}
                 options={enumKeys.map( k => {
                     let Icon = iconMap ? iconMap[ k ] : null;

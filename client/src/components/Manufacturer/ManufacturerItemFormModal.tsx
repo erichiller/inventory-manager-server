@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Modal, message, Input } from 'antd';
-import { useGetManufacturerItemQuery, useInsertManufacturerItemMutation, InsertManufacturerItemMutationVariables, useGetManufacturerItemLazyQuery, useUpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables, GetManufacturerItemDocument, ManufacturerItem as ManufacturerItemGql } from '~lib/types/graphql';
+import { useInsertManufacturerItemMutation, InsertManufacturerItemMutationVariables, useGetManufacturerItemLazyQuery, useUpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables, GetManufacturerItemDocument, ManufacturerItem as ManufacturerItemGql } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Intersection, filterObject } from '~lib/UtilityFunctions';
+import { Intersection, filterObject, submitFormWithEnterKey } from '~lib/UtilityFunctions';
 import { KeyboardEventKey } from '~lib/types/KeyboardEventKey';
 import { useHistory } from 'react-router-dom';
 import { FormProps, useForm } from 'antd/lib/form/Form';
@@ -182,11 +182,7 @@ export const ManufacturerItemFormModal: React.FC<ManufacturerItemFormModalProps>
             layout="horizontal"
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 16 }}
-            onKeyPress={( event ) => {
-                console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.key, native: event.nativeEvent.key } );
-                // console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode } );
-                if ( event.nativeEvent.key === KeyboardEventKey.Enter ) { form.submit(); }
-            }}
+            onKeyPress={submitFormWithEnterKey( form )}
             initialValues={initialValues}
             onFieldsChange={onFieldsChange}
             onFinish={onFinish}

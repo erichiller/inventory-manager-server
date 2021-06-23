@@ -3,6 +3,9 @@ import { EnumUnitKeys, SubType, Unpacked, StringKeys } from './types/UtilityType
 import { EnumUnitEnum } from './types/graphql';
 import { ColumnProps } from 'antd/lib/table';
 import { LabeledValue } from 'antd/lib/select';
+import { KeyboardEvent } from 'react';
+import { KeyboardEventKey } from './types/KeyboardEventKey';
+import { FormInstance } from 'antd/lib/form/hooks/useForm';
 
 export * from './types/UtilityTypes';
 
@@ -585,6 +588,25 @@ export function formatCurrency( number: number, decPlaces: Integer = 2, decSep: 
         ( j ? iString.substr( 0, j ) + thouSep : "" ) +
         iString.substr( j ).replace( /(\decSep{3})(?=\decSep)/g, "$1" + thouSep ) +
         ( decPlaces ? decSep + Math.abs( number - i ).toFixed( decPlaces ).slice( 2 ) : "" );
+}
+
+/**
+ * Prevent form submission when user presses `Enter` key. Especially for use to keep `Enter` from submitting form within `<Select>`s so that autofill options can be triggered and selected.
+ * For use within `onKeyPress` of `<Form>` element
+ */
+export function preventEnterKeyDefault ( event: KeyboardEvent ): void {
+    if ( event.nativeEvent.key === KeyboardEventKey.Enter ) { event.preventDefault(); }
+}
+/**
+ * Submit form when user presses enter key. For use within `onKeyPress` of `<Form>` element
+ * @param form from `useForm`
+ * @returns a function to submit the form with an enter key
+ */
+export function submitFormWithEnterKey ( form: FormInstance ): ( event: KeyboardEvent ) => void {
+    return ( event: KeyboardEvent ) => {
+        console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, key: event.key, native: event.nativeEvent.key } );
+        if ( event.nativeEvent.key === KeyboardEventKey.Enter ) { form.submit(); }
+    };
 }
 
 

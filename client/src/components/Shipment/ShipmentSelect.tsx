@@ -7,7 +7,7 @@ import { useSearchShipmentsQuery, Shipment as ShipmentGql, UpdateShipmentMutatio
 import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { ShipmentFormModal } from "./ShipmentFormModal";
 import { useHistory, useLocation } from "react-router-dom";
-import { Intersection, QueryResultTypePlus, Unpacked, transparentLog, PartialPartial, filterObject } from "~lib/UtilityFunctions";
+import { Intersection, QueryResultTypePlus, Unpacked, transparentLog, PartialPartial, filterObject, preventEnterKeyDefault } from "~lib/UtilityFunctions";
 import { IconComponentT } from "~lib/types/common";
 import { Vendor } from "~lib/Vendor/Vendor";
 
@@ -121,40 +121,40 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                 c: 'ShipmentSelect',
                 e: 'optionsGenerated'
             },
-                [
-                    ...additionalShipmentOptions,
-                    // ...normalizeAdditionalShipmentOptions( additionalShipmentOptions ),
-                    ...arr
-                ].filter( v => {
-                    let id = 'id' in v ? v.id : v.tracking_id;
-                    let found = shipmentOptionIds.includes( id );
-                    shipmentOptionIds.push( id );
-                    return ! found;
-                } ).map( ( v ) => {
-                    let CarrierIcon: IconComponentT;
-                    let carrier: Vendor;
-                    let id = 'id' in v ? v.id : v.tracking_id;
-                    if ( v && 'carrier' in v ) {
-                        carrier = new Vendor( v.carrier );
-                        CarrierIcon = carrier.icon;
-                    } else if ( v && 'carrier_vendor_id' in v && typeof v.carrier_vendor_id === 'number' ) {
-                        carrier = new Vendor( { id: v.carrier_vendor_id } );
-                        CarrierIcon = carrier.icon;
-                    } else {
-                        console.warn( "ShipmentSelect: not rendering AsyncIcon with this of", v );
-                        CarrierIcon = () => <FileUnknownOutlined className="CarrierIcon" />;
-                    }
-                    return {
-                        id: id,
-                        value: id,
-                        label: <span className="ShipmentOption">
-                            <CarrierIcon />
-                            {/* <span>{v.shipment.name}</span> */}
-                            <span>{carrier?.name}</span>
-                            <span>#{v.tracking_id}</span>
-                        </span>
-                    };
-                } )
+            [
+                ...additionalShipmentOptions,
+                // ...normalizeAdditionalShipmentOptions( additionalShipmentOptions ),
+                ...arr
+            ].filter( v => {
+                let id = 'id' in v ? v.id : v.tracking_id;
+                let found = shipmentOptionIds.includes( id );
+                shipmentOptionIds.push( id );
+                return ! found;
+            } ).map( ( v ) => {
+                let CarrierIcon: IconComponentT;
+                let carrier: Vendor;
+                let id = 'id' in v ? v.id : v.tracking_id;
+                if ( v && 'carrier' in v ) {
+                    carrier = new Vendor( v.carrier );
+                    CarrierIcon = carrier.icon;
+                } else if ( v && 'carrier_vendor_id' in v && typeof v.carrier_vendor_id === 'number' ) {
+                    carrier = new Vendor( { id: v.carrier_vendor_id } );
+                    CarrierIcon = carrier.icon;
+                } else {
+                    console.warn( "ShipmentSelect: not rendering AsyncIcon with this of", v );
+                    CarrierIcon = () => <FileUnknownOutlined className="CarrierIcon" />;
+                }
+                return {
+                    id: id,
+                    value: id,
+                    label: <span className="ShipmentOption">
+                        <CarrierIcon />
+                        {/* <span>{v.shipment.name}</span> */}
+                        <span>{carrier?.name}</span>
+                        <span>#{v.tracking_id}</span>
+                    </span>
+                };
+            } )
             )
         );
     }
@@ -190,12 +190,7 @@ export const ShipmentSelect: React.FC<ShipmentSelectProps> = ( props ) => {
                     console.log( { event: "onSearch", setSearchText: value } );
                     setSearchText( value );
                 }}
-                onKeyDown={( e ) => {
-                    if ( e.nativeEvent.keyCode === 13 ) {
-                        // keep Enter from submitting form within Selects so that autofill options can be triggered and selected.
-                        e.preventDefault(); 
-                    }
-                }}
+                onKeyDown={preventEnterKeyDefault}
                 dropdownRender={menu => (
                     <div>
                         {menu}

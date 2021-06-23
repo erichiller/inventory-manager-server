@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
 import { useGetShipmentQuery, useInsertShipmentMutation, InsertShipmentMutationVariables, useGetShipmentLazyQuery, useUpdateShipmentMutation, UpdateShipmentMutationVariables, GetShipmentDocument } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Intersection, PartialPartial } from '~lib/UtilityFunctions';
+import { QueryResultTypePlus, Intersection, PartialPartial, submitFormWithEnterKey } from '~lib/UtilityFunctions';
 
 import { PageSpin } from '~components/Shared/PageSpin';
 import { VendorSelect } from '~components/Vendor/VendorSelect';
@@ -179,10 +179,7 @@ export const ShipmentFormModal: React.FC<ShipmentFormModalProps> = ( props ) => 
             layout="horizontal"
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 16 }}
-            onKeyPress={( event ) => {
-                console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode } );
-                if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
-            }}
+            onKeyPress={submitFormWithEnterKey( form )}
             initialValues={initialValues}
             onFieldsChange={onFieldsChange}
             onFinish={( fields ) => onFinish( fields as PartialPartial<UpdateShipmentMutationVariables, 'id'> )}

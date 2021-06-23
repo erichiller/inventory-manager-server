@@ -4,7 +4,7 @@ import { Input, Select, Spin, Tooltip } from "antd";
 
 
 
-import { Intersection, is, parseIntSafe, flatArrayObjectProperty, QueryResultTypePlus, filterObject, transparentLog, lengthZeroArrayToNull, PartialNullable } from "~lib/UtilityFunctions";
+import { Intersection, is, parseIntSafe, flatArrayObjectProperty, QueryResultTypePlus, filterObject, transparentLog, lengthZeroArrayToNull, PartialNullable, preventEnterKeyDefault } from "~lib/UtilityFunctions";
 import {
     useGetItemVariantsQuery, ItemInsertInput, useGetItemsByIdLazyQuery, useGetItemVariantByAttachedLazyQuery,
     useGetItemVariantByAttachedQuery
@@ -246,26 +246,11 @@ export const OrderItemSelect: React.FC<OrderItemSelectProps> = ( props ) => {
                 suffixIcon={props.suffixIcon}
                 placeholder={props.placeholder}
                 dropdownClassName="OrderItemSelectDropdown"
-                onKeyDown={( e ) => {
-                    if ( e.nativeEvent.keyCode === 13 ) {
-                        e.preventDefault(); // keep Enter from submitting form within Selects so that autofill options can be triggered and selected.
-                    }
-                }}
+                onKeyDown={preventEnterKeyDefault}
                 defaultValue={defaultIds}
                 onChange={( value, opt ) => {
                     console.log( { cls: 'orderItemSelect', evt: "onChange", value, opt } );
                     selectedOptionsOnChange( value );
-                    // if ( is<( input: number ) => void>( onChange, props.mode === null || props.mode === "single" ) ) {
-                    //     onChange( parseIntSafe( value ) );
-                    // } else {
-                    //     let arrayOfItemProps: TOrderItemSelectValue[] = [];
-                    //     if ( typeof value === "number" ) {
-                    //         arrayOfItemProps = [ { id: value } ];
-                    //     } else if ( typeof value === "string" ) {
-                    //         arrayOfItemProps = [ { id: parseInt( value ) } ];
-                    //     }
-                    //     onChange( arrayOfItemProps );
-                    // }
                 }}
             >
                 {...optionsToOptionElements( options )}

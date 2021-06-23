@@ -5,6 +5,7 @@ import { GetIconDocument, EnumItemClassEnum, useInsertIconMutation } from "~lib/
 import { Item } from "~lib/Item";
 import { UploadOutlined } from '@ant-design/icons';
 import { useForm } from 'antd/lib/form/Form';
+import { submitFormWithEnterKey } from '~lib/UtilityFunctions';
 
 
 
@@ -135,10 +136,7 @@ export const NewImageUploadModal: React.FC<NewImageUploadModalProps> = ( { label
             layout="horizontal"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 9 }}
-            onKeyPress={( event ) => {
-                // console.log({ log: "onKeyPress", event, keyCode: event.keyCode, native: event.nativeEvent.keyCode });
-                if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
-            }}
+            onKeyPress={submitFormWithEnterKey( form )}
             onFieldsChange={onFieldsChange}
             onFinish={onFinish}
         // onFinishFailed={onFinishFailed}

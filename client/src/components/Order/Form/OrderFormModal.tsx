@@ -7,7 +7,7 @@ import TextArea from 'antd/lib/input/TextArea';
 
 import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, InsertOrderMutationVariables, ShipmentConstraint, ShipmentUpdateColumn, OrderItemInsertInput } from '~lib/types/graphql';
 
-import { QueryResultTypePlus, Intersection, filterObject, transparentLog, Unpacked, propValuesEqual, deepCopy } from '~lib/UtilityFunctions';
+import { QueryResultTypePlus, Intersection, filterObject, transparentLog, Unpacked, propValuesEqual, deepCopy, submitFormWithEnterKey } from '~lib/UtilityFunctions';
 import { VendorSelect } from '../../Vendor/VendorSelect';
 import moment from 'moment';
 import { OrderItemComposite } from './OrderItemComposite';
@@ -329,10 +329,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 16 }}
             // name="Order-add-edit-delete"
-            onKeyPress={( event ) => {
-                console.log( { log: "onKeyPress", target: event.target, currentTarget: event.currentTarget, event, keyCode: event.keyCode, native: event.nativeEvent.keyCode } );
-                if ( event.nativeEvent.keyCode === 13 ) { form.submit(); }
-            }}
+            onKeyPress={submitFormWithEnterKey( form )}
             initialValues={initialValues}
             onFieldsChange={onFieldsChange}
             onFinish={onFinish}

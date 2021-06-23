@@ -10,7 +10,7 @@ import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { VendorItemFormModal } from "./VendorItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";
 import { Vendor } from "~lib/Vendor/Vendor";
-import { QueryResultTypePlus, Unpacked, flatArrayObjectProperty, Intersection, transparentLog } from "~lib/UtilityFunctions";
+import { QueryResultTypePlus, Unpacked, flatArrayObjectProperty, Intersection, transparentLog, preventEnterKeyDefault } from "~lib/UtilityFunctions";
 import { IconComponentT } from "~lib/types/common";
 import { Integer } from "~lib/types/uint8";
 
@@ -136,12 +136,7 @@ export const VendorItemSelect: React.FC<VendorItemSelectProps> = ( props ) => {
                     console.log( { event: "onSearch", setSearchText: value } );
                     setSearchText( value );
                 }}
-                onKeyDown={( e ) => {
-                    if ( e.nativeEvent.keyCode === 13 ) {
-                        // keep Enter from submitting form within Selects so that autofill options can be triggered and selected.
-                        e.preventDefault(); 
-                    }
-                }}
+                onKeyDown={preventEnterKeyDefault}
                 dropdownRender={menu => (
                     <div>
                         {menu}
