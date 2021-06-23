@@ -13153,6 +13153,7 @@ export type LabelVarianceOrderBy = {
 /** columns and relationships of "manufacturer" */
 export type Manufacturer = {
   __typename?: 'manufacturer';
+  icon_url?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   /** An array relationship */
   manufacturer_items: Array<ManufacturerItem>;
@@ -13254,6 +13255,7 @@ export type ManufacturerBoolExp = {
   _and?: Maybe<Array<Maybe<ManufacturerBoolExp>>>;
   _not?: Maybe<ManufacturerBoolExp>;
   _or?: Maybe<Array<Maybe<ManufacturerBoolExp>>>;
+  icon_url?: Maybe<StringComparisonExp>;
   id?: Maybe<IntComparisonExp>;
   manufacturer_items?: Maybe<ManufacturerItemBoolExp>;
   name?: Maybe<StringComparisonExp>;
@@ -13278,6 +13280,7 @@ export type ManufacturerIncInput = {
 
 /** input type for inserting data into table "manufacturer" */
 export type ManufacturerInsertInput = {
+  icon_url?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   manufacturer_items?: Maybe<ManufacturerItemArrRelInsertInput>;
   name?: Maybe<Scalars['String']>;
@@ -13696,6 +13699,7 @@ export type ManufacturerItemVarianceOrderBy = {
 /** aggregate max on columns */
 export type ManufacturerMaxFields = {
   __typename?: 'manufacturer_max_fields';
+  icon_url?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
@@ -13704,6 +13708,7 @@ export type ManufacturerMaxFields = {
 
 /** order by max() on columns of table "manufacturer" */
 export type ManufacturerMaxOrderBy = {
+  icon_url?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   url?: Maybe<OrderBy>;
@@ -13713,6 +13718,7 @@ export type ManufacturerMaxOrderBy = {
 /** aggregate min on columns */
 export type ManufacturerMinFields = {
   __typename?: 'manufacturer_min_fields';
+  icon_url?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
@@ -13721,6 +13727,7 @@ export type ManufacturerMinFields = {
 
 /** order by min() on columns of table "manufacturer" */
 export type ManufacturerMinOrderBy = {
+  icon_url?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   url?: Maybe<OrderBy>;
@@ -13751,6 +13758,7 @@ export type ManufacturerOnConflict = {
 
 /** ordering options when selecting data from "manufacturer" */
 export type ManufacturerOrderBy = {
+  icon_url?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   manufacturer_items_aggregate?: Maybe<ManufacturerItemAggregateOrderBy>;
   name?: Maybe<OrderBy>;
@@ -13767,6 +13775,8 @@ export type ManufacturerPkColumnsInput = {
 /** select columns of table "manufacturer" */
 export enum ManufacturerSelectColumn {
   /** column name */
+  icon_url = 'icon_url',
+  /** column name */
   id = 'id',
   /** column name */
   name = 'name',
@@ -13778,6 +13788,7 @@ export enum ManufacturerSelectColumn {
 
 /** input type for updating data in table "manufacturer" */
 export type ManufacturerSetInput = {
+  icon_url?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
@@ -13838,6 +13849,8 @@ export type ManufacturerSumOrderBy = {
 
 /** update columns of table "manufacturer" */
 export enum ManufacturerUpdateColumn {
+  /** column name */
+  icon_url = 'icon_url',
   /** column name */
   id = 'id',
   /** column name */
@@ -26624,7 +26637,7 @@ export type SetLabelTitleMutation = (
 
 export type BasicManufacturerFieldsFragment = (
   { __typename?: 'manufacturer' }
-  & Pick<Manufacturer, 'id' | 'name' | 'url' | 'vendor_id'>
+  & Pick<Manufacturer, 'id' | 'name' | 'url' | 'vendor_id' | 'icon_url'>
 );
 
 export type ObjectManufacturerFieldsFragment = (
@@ -27812,6 +27825,7 @@ export const BasicManufacturerFieldsFragmentDoc = gql`
   name
   url
   vendor_id
+  icon_url
 }
     `;
 export const ObjectManufacturerItemFieldsFragmentDoc = gql`
@@ -30871,4 +30885,4 @@ export function useUpdateItemHardwareFastenerScrewMachineMutation(baseOptions?: 
 export type UpdateItemHardwareFastenerScrewMachineMutationHookResult = ReturnType<typeof useUpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationResult = Apollo.MutationResult<UpdateItemHardwareFastenerScrewMachineMutation>;
 export type UpdateItemHardwareFastenerScrewMachineMutationOptions = Apollo.BaseMutationOptions<UpdateItemHardwareFastenerScrewMachineMutation, UpdateItemHardwareFastenerScrewMachineMutationVariables>;
-// graphql typescript defs generated on 2021-06-22T07:00:13-06:00
+// graphql typescript defs generated on 2021-06-23T06:08:12-06:00

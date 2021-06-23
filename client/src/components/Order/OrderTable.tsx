@@ -1,7 +1,7 @@
 import { Table, Divider, message } from 'antd';
 import * as React from 'react';
 import { useGetOrdersQuery, GetOrdersQuery, useDeleteOrderMutation, GetOrdersDocument } from '~lib/types/graphql';
-import { computeDefaultPagination } from '~lib/UtilityFunctions';
+import { computeDefaultPagination, Unpacked } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig, TableProps } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -68,7 +68,7 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
         onError: ( error ) => message.error( `Error deleting vendor: \n${error.name}: ${ error.message }` )
     } );
 
-    const columns: ColumnProps<Extract<GetOrdersQuery, 'order'>>[] = [
+    const columns: ColumnProps<Unpacked<GetOrdersQuery['order']>>[] = [
         ...Order.Columns,
         ...[
             {
@@ -83,7 +83,7 @@ export const OrderTable: React.FC<OrderTableProps> = ( props ) => {
                         }} /></a>
                     </span >
                 ),
-            }
+            } as ColumnProps<Unpacked<GetOrdersQuery['order']>>
         ]
     ];
 

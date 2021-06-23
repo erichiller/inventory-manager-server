@@ -39,25 +39,25 @@ export class ItemBundle extends Item<ItemPlusClassT<ItemBundleGql, 'item_bundle'
         if ( is<ItemGql>( props, Object.keys( props ).includes( 'object' ) && ( props as ItemGql ).object ) ){
             const object: ItemBundleItemObjectI = props.object;
             // if ( props.object != null && is<ItemBundleItemObjectI>( props.object, Object.keys( props.object ).includes( '__typename' ) && props.object.__typename === 'item_bundle' ) ) {
-                Object.keys( object ).forEach( key => {
-                    // URGENT: why does KeysOfType work and not `StringKeys`
-                    // URGENT: fixup ItemHardwareFastenerScrewMachine
-                    if ( is<KeysOfType<ItemBundleItemObjectI, string>>( key, Object.keys( ItemBundle ).includes( key ) ) ) {
-                        // let foo2: keyof ItemBundleItemObjectI   = key;
-                        // foo2 = 'id';
-                        // this.id = props.object.id;
-                        // let key: keyof ItemBundleItemObjectI = 'id';
-                        // let foo = object;
-                        // let v: ItemBundleItemObjectI = ( object[ key ] );
+            Object.keys( object ).forEach( key => {
+                // URGENT: why does KeysOfType work and not `StringKeys`
+                // URGENT: fixup ItemHardwareFastenerScrewMachine
+                if ( is<KeysOfType<ItemBundleItemObjectI, string>>( key, Object.keys( ItemBundle ).includes( key ) ) ) {
+                    // let foo2: keyof ItemBundleItemObjectI   = key;
+                    // foo2 = 'id';
+                    // this.id = props.object.id;
+                    // let key: keyof ItemBundleItemObjectI = 'id';
+                    // let foo = object;
+                    // let v: ItemBundleItemObjectI = ( object[ key ] );
 
-                            this[ key ] = object[ key ];
-                        // if ( StringKeys )
-                            // ( this as any )[ key as StringKeys<ItemBundleItemObjectI> ] = object[ key as StringKeys<ItemBundleItemObjectI> ];
-                        // let key: keyof ItemBundleItemObjectI = 'id';
-                        // let keyValue = ( props.object as ItemBundle )[ key ];
-                        // let foo = ( props.object as ItemBundleItemObjectI )[ key ];
-                    }
-                } );
+                    this[ key ] = object[ key ];
+                    // if ( StringKeys )
+                    // ( this as any )[ key as StringKeys<ItemBundleItemObjectI> ] = object[ key as StringKeys<ItemBundleItemObjectI> ];
+                    // let key: keyof ItemBundleItemObjectI = 'id';
+                    // let keyValue = ( props.object as ItemBundle )[ key ];
+                    // let foo = ( props.object as ItemBundleItemObjectI )[ key ];
+                }
+            } );
 
             // }
         }

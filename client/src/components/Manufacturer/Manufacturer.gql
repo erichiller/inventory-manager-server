@@ -4,6 +4,7 @@ fragment basicManufacturerFields on manufacturer {
     name # String
     url # String
     vendor_id # Int
+    icon_url # String
 }
 
 fragment objectManufacturerFields on manufacturer {
@@ -93,13 +94,13 @@ $name: String!
 $url: String
 ) {
     manufacturer: update_manufacturer_by_pk(
-    pk_columns: {
-        id: $id, 
-    }
-    _set: {
-        name: $name, 
-        url: $url
-    }
+        pk_columns: {
+            id: $id, 
+        }
+        _set: {
+            name: $name, 
+            url: $url
+        }
     ) {
         ...basicManufacturerFields
         ...objectManufacturerFields

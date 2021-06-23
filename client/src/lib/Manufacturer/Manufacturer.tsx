@@ -5,6 +5,7 @@ import {
     GetManufacturerDocument,
     GetManufacturerQuery,
     useGetManufacturerQuery,
+    Manufacturer as ManufacturerGql
 } from "../types/graphql";
 
 import { Integer } from '../types/uint8';
@@ -29,7 +30,8 @@ interface ManufacturerDataProps extends Pick<ApolloQueryResult<GetManufacturerQu
     'id' |
     'name' |
     'url' |
-    'vendor_id'
+    'vendor_id' | 
+    'icon_url'
     > {
     // nothing to add
 }
@@ -47,6 +49,7 @@ export class Manufacturer implements ManufacturerDataProps {
     // orders_aggregate: OrderAggregate;
     url: string;
     vendor_id?: Integer;
+    icon_url?: string;
 
     constructor ( props: Partial<ApolloQueryResult<GetManufacturerQuery>[ 'data' ][ 'manufacturer' ]> | Partial<ApolloQueryResult<GetManufacturerQuery>[ 'data' ]> ) {
         let inputData = ( !( 'manufacturer' in props ) ) ? props : props.manufacturer;
@@ -146,7 +149,10 @@ export class Manufacturer implements ManufacturerDataProps {
             console.log( "Vendor Callback: rendering AsyncIcon with this of", this );
             return <AsyncIcon cls={Manufacturer} vars={{ id: this.id }} cb={
                 // ( ) => <img className="vendorIcon" src={`${ this.url }/favicon.ico`} />
-                ( props: { obj: Manufacturer; } ) => <img className="vendorIcon" src={`${ props.obj.url }/favicon.ico`} />
+                ( props: { obj: Manufacturer; } ) => {
+                    let icon_url = this.icon_url ?? `${ props.obj.url }/favicon.ico`;
+                    return <img className="vendorIcon" src={icon_url} />;
+                }
             } />;
         };
     }
@@ -173,7 +179,7 @@ export class Manufacturer implements ManufacturerDataProps {
                 {
                     key: 'icon',
                     title: '',
-                    render: ( text, record: Manufacturer ) => { 
+                    render: ( text, record ) => { 
                         console.log( { q: 'render icon ?', record, icon: record.icon } ); 
                         return ( record.icon === null ? null : < record.icon /> ); 
                     }
@@ -194,7 +200,7 @@ export class Manufacturer implements ManufacturerDataProps {
                     key: 'vendor_id',
                     title: 'Vendor?',
                     responsive: ['lg'],
-                    render: ( text, record: Manufacturer ) => {
+                    render: ( text, record ) => {
                         return ( record.vendor_id ? <CheckOutlined /> : null );
                     }
                 }

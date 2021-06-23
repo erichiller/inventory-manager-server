@@ -5,6 +5,7 @@ import { useGetManufacturerQuery, useInsertManufacturerWithVendorMutation, useGe
 import { QueryResultTypePlus, Intersection, filterObject, deepCopy } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
+import { Callbacks } from 'rc-field-form/lib/interface';
 import { PageSpin } from '~components/Shared/PageSpin';
 import { Manufacturer } from '~lib/Manufacturer/Manufacturer';
 import { UrlSelect } from '~components/Shared/UrlInput';
@@ -20,14 +21,18 @@ type ManufacturerFormModalProps = Intersection<{
     manufacturer?: null;
     manufacturerId?: null;
 }, {
-    visibilityHandler: ( modal: React.ReactElement ) => void;
+    visibilityHandler: ( modal: React.ReactElement | null ) => void;
 }>;
-// extends Union<ManufacturerFormProps, ManufacturerBundle> { }
 
+interface ManufacturerForm {
+    name: string;
+    url: string;
+    vendor?: boolean;
+}
 
 export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( props ) => {
     let { manufacturerId } = props;
-    const [ form ] = useForm();
+    const [ form ] = useForm<ManufacturerForm>();
     const history = useHistory();
 
 
@@ -43,7 +48,6 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
 
     //edit
     const [ updateManufacturer, updateManufacturerResult ] = useUpdateManufacturerUnchangedVendorMutation();
-    const [ deleteManufacturer, deleteManufacturerResult ] = useDeleteManufacturerMutation();
     const [ deleteVendor, deleteVendorResult ] = useDeleteVendorMutation();
     const [ insertVendor, insertVendorResult ] = useInsertVendorWithExistingManufacturerMutation();
     // add new
@@ -98,14 +102,14 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
         if ( error ) {
             // completeCallback( false );
             message.error( `${ error.name }: ${ error.message }` );
-        } else if ( manufacturerData ) {
+        } else if ( manufacturerData && manufacturerData.manufacturer ) {
             message.success( `successfully ${ insertManufacturerResult.data ? 'created' : 'updated' } ${ manufacturerData?.manufacturer.__typename } with id ${ manufacturerData.manufacturer.id }` );
             // return () => {
             form.resetFields();
             exitModal();
             // };
         }
-    }, [ insertManufacturerResult, updateManufacturerResult, insertManufacturerResult, deleteManufacturerResult ] );
+    }, [ insertManufacturerResult, updateManufacturerResult, insertManufacturerResult ] );
 
     /***************************************************************************/
 
@@ -118,9 +122,7 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
         [ name: string ]: any;
     } ) => {
         console.log( { class: 'ManufacturerEditModal', method: 'onFinish', values, manufacturer, formFieldValues: form.getFieldsValue() } );
-        let formFieldValues = form.getFieldsValue() as Exclude<UpdateManufacturerUnchangedVendorMutationVariables, 'id'> & {
-            vendor: boolean;
-        };
+        let formFieldValues = form.getFieldsValue();
         if ( manufacturerId ) {
             // edit
             // if id now, but not before
@@ -129,10 +131,11 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
                     variables: {
                         name: formFieldValues.name,
                         url: formFieldValues.url,
+                        // ...( formFieldValues.url ? { url: formFieldValues.url } : { } ),
                         manufacturer_id: manufacturerId
                     }
                 } );
-            } else if ( !formFieldValues.vendor && manufacturer.vendor ) {
+            } else if ( !formFieldValues.vendor && manufacturer && manufacturer.vendor && manufacturer.vendor_id ) {
                 console.log( `deleting manufacturer, value was ${ manufacturer.vendor }, value is: ${ formFieldValues.vendor }\n`, { manufacturer, values, formFieldValues: form.getFieldsValue() } );
                 // remove manufacturer record
                 deleteVendor( {
@@ -171,11 +174,11 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
     };
 
 
-    const onFinishFailed = ( errorInfo ) => {
+    const onFinishFailed: Callbacks[ 'onFinishFailed' ] = ( errorInfo ) => {
         console.error( { class: 'ManufacturerEditModal', method: 'onFinishFailed', errorInfo } );
     };
 
-    const onFieldsChange = ( changedFields, values ) => {
+    const onFieldsChange: Callbacks[ 'onFieldsChange' ] = ( changedFields, values ) => {
         console.log( { class: 'ManufacturerEditModal', method: 'onFieldsChange', changedFields, values } );
     };
 
@@ -187,10 +190,7 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
         return <PageSpin />;
     }
 
-    let initialValues: Partial<Intersection<
-        Omit<Manufacturer, 'vendor'>,
-        { vendor: boolean; }
-    >> = {};
+    let initialValues: Partial<ManufacturerForm> = {};
     if ( manufacturer ) {
         initialValues = {
             // ...deepCopy( manufacturer )
@@ -231,7 +231,10 @@ export const ManufacturerFormModal: React.FC<ManufacturerFormModalProps> = ( pro
                     <Input />
                 </Form.Item>
 
-                <UrlSelect name="url" label="URL" validationMessage='Please enter a valid website for this Manufacturer.' />
+                <UrlSelect name="url" label="URL" 
+                    validationMessage='Please enter a valid website for this Manufacturer.' 
+                    rules={[ { required: true } ]}
+                />
                 
                 <Form.Item
                     name={'vendor'}

@@ -138,26 +138,6 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ( props ) => {
         if ( orderId ) {
             // set to InsertOrderMutationVariables rather than UpdateOrderMutationVariables here because thats what the form contains
             let formFieldValues = deepCopy( form.getFieldsValue() as Exclude<OrderGql, 'id'> );
-            // let formFieldValues = deepCopy( form.getFieldsValue() as Exclude<OrderInsertInput, 'id'> );
-            // edit
-            // if id now, but not before
-            // if ( formFieldValues.manufacturer && !order.manufacturer ) {
-            //     insertManufacturer( {
-            //         variables: {
-            //             name: formFieldValues.name,
-            //             url: formFieldValues.url,
-            //             order_id: orderId
-            //         }
-            //     } );
-            // } else if ( !formFieldValues.manufacturer && order.manufacturer ) {
-            //     console.log( `deleting manufacturer, value was ${ order.manufacturer }, value is: ${ formFieldValues.manufacturer }\n`, { order, values, formFieldValues: form.getFieldsValue() } );
-            //     // remove manufacturer record
-            //     deleteManufacturer( {
-            //         variables: {
-            //             id: order.manufacturer[ 0 ].id
-            //         }
-            //     } );
-            // }
             
             // delete any order items no longer present
             let currentOrderItems: Integer[] = formFieldValues.order_items.map( orderItem => orderItem.id );

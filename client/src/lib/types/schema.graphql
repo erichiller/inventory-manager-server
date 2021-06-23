@@ -12825,6 +12825,7 @@ input label_variance_order_by {
 
 # columns and relationships of "manufacturer"
 type manufacturer {
+  icon_url: String
   id: Int!
 
   # An array relationship
@@ -12929,6 +12930,7 @@ input manufacturer_bool_exp {
   _and: [manufacturer_bool_exp]
   _not: manufacturer_bool_exp
   _or: [manufacturer_bool_exp]
+  icon_url: String_comparison_exp
   id: Int_comparison_exp
   manufacturer_items: manufacturer_item_bool_exp
   name: String_comparison_exp
@@ -12954,6 +12956,7 @@ input manufacturer_inc_input {
 
 # input type for inserting data into table "manufacturer"
 input manufacturer_insert_input {
+  icon_url: String
   id: Int
   manufacturer_items: manufacturer_item_arr_rel_insert_input
   name: String
@@ -13383,6 +13386,7 @@ input manufacturer_item_variance_order_by {
 
 # aggregate max on columns
 type manufacturer_max_fields {
+  icon_url: String
   id: Int
   name: String
   url: String
@@ -13391,6 +13395,7 @@ type manufacturer_max_fields {
 
 # order by max() on columns of table "manufacturer"
 input manufacturer_max_order_by {
+  icon_url: order_by
   id: order_by
   name: order_by
   url: order_by
@@ -13399,6 +13404,7 @@ input manufacturer_max_order_by {
 
 # aggregate min on columns
 type manufacturer_min_fields {
+  icon_url: String
   id: Int
   name: String
   url: String
@@ -13407,6 +13413,7 @@ type manufacturer_min_fields {
 
 # order by min() on columns of table "manufacturer"
 input manufacturer_min_order_by {
+  icon_url: order_by
   id: order_by
   name: order_by
   url: order_by
@@ -13437,6 +13444,7 @@ input manufacturer_on_conflict {
 
 # ordering options when selecting data from "manufacturer"
 input manufacturer_order_by {
+  icon_url: order_by
   id: order_by
   manufacturer_items_aggregate: manufacturer_item_aggregate_order_by
   name: order_by
@@ -13453,6 +13461,9 @@ input manufacturer_pk_columns_input {
 # select columns of table "manufacturer"
 enum manufacturer_select_column {
   # column name
+  icon_url
+
+  # column name
   id
 
   # column name
@@ -13467,6 +13478,7 @@ enum manufacturer_select_column {
 
 # input type for updating data in table "manufacturer"
 input manufacturer_set_input {
+  icon_url: String
   id: Int
   name: String
   url: String
@@ -13523,6 +13535,9 @@ input manufacturer_sum_order_by {
 
 # update columns of table "manufacturer"
 enum manufacturer_update_column {
+  # column name
+  icon_url
+
   # column name
   id
 
