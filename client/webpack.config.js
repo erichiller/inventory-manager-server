@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 const ForkTsCheckerWebpackPlugin = require( 'fork-ts-checker-webpack-plugin' );
 const TsconfigPathsPlugin = require( 'tsconfig-paths-webpack-plugin' );
 const child_process = require( 'child_process' );
+const glob = require( 'glob' );
+const StatoscopeWebpackPlugin = require( '@statoscope/webpack-plugin' );
 
 let gitValid = false;
 try {
@@ -83,7 +85,7 @@ module.exports = {
             {
                 enforce: "pre",
                 test: /\.js$/,
-                loader: "source-map-loader"
+                loader: "source-map-loader",
             },
         ]
     },
@@ -126,7 +128,6 @@ module.exports = {
         // stats: 'errors-only'
     },
     plugins: [
-
         new ForkTsCheckerWebpackPlugin( {
             // eslint: {
             //     files: './src/**/*.{ts,tsx,js,jsx}' // required - same as command `eslint ./src/**/*.{ts,tsx,js,jsx} --ext .ts,.tsx,.js,.jsx`
@@ -152,7 +153,12 @@ module.exports = {
             HASURA_ACCESS_KEY: process.env.HASURA_GRAPHQL_ENGINE_PASSWORD,
             // GIT_VERSION: gitVersion,
             // GIT_AUTHOR_DATE: gitDate
-        } )
+        } ),
+        // BUG! FIXME
+        // new StatoscopeWebpackPlugin( {
+        //     saveStatsTo: 'stats/stats-[name]-[hash].json',
+        //     additionalStats: glob.sync( 'stats/*.json' ),
+        // } )
     ],
     // externals: {
     //     react: "React",

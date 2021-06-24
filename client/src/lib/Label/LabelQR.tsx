@@ -37,7 +37,7 @@ export class LabelQR extends LabelConstituent {
      * `itemProperties` are the full set of possible properties of the item that can be in the QR Image
      */
     get itemProperties (): string[] {
-        return this.item.labelProps;
+        return this.item?.labelProps ?? [];
     }
 
 
@@ -73,7 +73,7 @@ export class LabelQR extends LabelConstituent {
         // get svg(): HTMLImageElement {
         // console.group( 'DrawingSVG' );
         if ( !this.encodedText ) {
-            message.error( 'nothing is being encoded within the QR' );
+            message.error( 'Nothing is being encoded within the QR' );
             return;
         }
         let opts: DrawingOptions = {

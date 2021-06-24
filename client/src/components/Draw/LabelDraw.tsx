@@ -258,6 +258,7 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
     };
     const displayQREditModal = ( display: boolean ) => {
         setModal(
+            // BUG: QREditModal does not refresh when uncommitedQR is
             <QREditModal
                 visibleHandler={setModal}
                 changeHandler={updateLabelQR}
@@ -677,12 +678,16 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
                 {/* QR */}
                 {qrs.map( labelQR => {
                     console.log( "drawing LabelQR", labelQR );
-                    return <TransformableQR
-                        displayContextMenu={displayContextMenu}
-                        setSelectedShapeName={setSelectedShapeName}
-                        updateHistory={updateHistory}
-                        selectedShapeName={selectedShapeName}
-                        key={`transformable_qr_${ labelQR.id }`} labelQR={labelQR} item={item} />;
+                    return (
+                        <Suspense key={`transformable_qr_${ labelQR.id }`} fallback={null}>
+                            <TransformableQR
+                                displayContextMenu={displayContextMenu}
+                                setSelectedShapeName={setSelectedShapeName}
+                                updateHistory={updateHistory}
+                                selectedShapeName={selectedShapeName}
+                                key={`transformable_qr_${ labelQR.id }`} labelQR={labelQR} item={item} />
+                        </Suspense>
+                    );
                 } )}
             </LabelComponent>
             <br />

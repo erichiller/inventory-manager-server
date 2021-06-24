@@ -89,7 +89,7 @@ export const ItemFormModal: React.FC<ItemFormModalProps> = ( props ) => {
             onFieldsChange={onFieldsChange}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            >
+        >
 
             {/********************************************************************************
               ** GENERAL ITEMS 

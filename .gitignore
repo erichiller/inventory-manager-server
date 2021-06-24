@@ -1,6 +1,7 @@
 node_modules
 dist
 server/public
+client/stats
 .DS_STORE
 apollo.config.js
 yarn-error.log
