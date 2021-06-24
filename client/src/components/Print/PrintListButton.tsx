@@ -2,9 +2,8 @@ import { Menu, Popconfirm, message } from "antd";
 import React, { CSSProperties, useContext } from "react";
 import { PrintContext } from "./PrintContextHandler";
 import { useSendBufferMutation } from "~lib/types/graphql";
-import { filterObject } from "~lib/UtilityFunctions";
 import { PrinterOutlined } from "@ant-design/icons";
-import { render } from "bwip-js";
+// import { render } from "bwip-js";
 
 
 
@@ -21,10 +20,10 @@ export interface PrintListButtonProps {
 export const PrintListButton: React.FC<PrintListButtonProps> = ( props ) => {
     const context = useContext( PrintContext );
     const [ mutate, {data, loading, error } ] = useSendBufferMutation( {
-            variables: {
-                buffer: context.printLabelsToBuffer()
-            }
-        } );
+        variables: {
+            buffer: context.printLabelsToBuffer()
+        }
+    } );
 
     const sendPrintList = () => {
         mutate().then( result => {
@@ -44,7 +43,7 @@ export const PrintListButton: React.FC<PrintListButtonProps> = ( props ) => {
                 <span>
                     <PrinterOutlined />
                             Print
-                        </span>
+                </span>
             </Menu.Item>
         );
     }

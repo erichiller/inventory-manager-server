@@ -11,7 +11,8 @@ import type { Stage as StageT } from 'konva/types/Stage';
 import { GetPrinterStatusQuery, GetPrinterStatusDocument } from "~lib/types/graphql";
 import type { KonvaEventObject } from 'konva/types/Node';
 import { TapeColorMap } from '~lib/types/labelCanvasColors';
-import { LabelQR, LabelText, LabelImage } from '~lib/Label/LabelConstituent';
+import { LabelText, LabelImage } from '~lib/Label/LabelConstituent';
+import type { LabelQR } from "~lib/Label/LabelQR";
 
 // interface LabelComponentState {
 //     selectedShapeName: string;

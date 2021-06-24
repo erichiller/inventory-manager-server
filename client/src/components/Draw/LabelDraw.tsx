@@ -12,7 +12,8 @@ import { LabelAddImageModal } from './Image/LabelAddImageModal';
 
 import { QREditModal } from './QREditModal';
 import { Integer } from '~lib/types/uint8';
-import { LabelText, LabelImage, LabelQR, FormatOptionsT } from '~lib/Label/LabelConstituent';
+import { LabelText, LabelImage, FormatOptionsT } from '~lib/Label/LabelConstituent';
+import { LabelQR } from "~lib/Label/LabelQR";
 import { LabelExport } from "~lib/Label/LabelExport";
 
 import { PrintContext } from '~components/Print/PrintContextHandler';
@@ -20,7 +21,7 @@ import { LabelComponent } from '~components/Label/LabelComponent';
 import { CodeIcon } from '../../styles/icon';
 import { EditableText } from './KonvaElements/EditableText';
 import { TransformableImage } from './KonvaElements/TransformableImage';
-import { TransformableQR } from './KonvaElements/TransformableQR';
+// import { TransformableQR } from './KonvaElements/TransformableQR';
 // import { JsonModal } from '~components/Shared/JsonModal';
 import { useRef } from "react";
 // import { CodeEditor, JsonCodeEditor } from "~components/Generic/CodeEditor";
@@ -28,6 +29,7 @@ import { useRef } from "react";
 
 const JsonCodeEditor = React.lazy( () => import( "~components/Generic/CodeEditor" ) );
 const DraggableModal = React.lazy( () => import( "~components/Shared/DraggableModal" ) );
+const TransformableQR = React.lazy( () => import( "~components/Draw/KonvaElements/TransformableQR" ) );
 
 
 
@@ -37,15 +39,15 @@ interface ChangedValueTextI {
     fontSize?: number;
 }
 
-interface ChangedValueImageI {
-    id?: ChangedValueI;
-    data?: ChangedValueI;
-    width?: ChangedValueI;
-    height?: ChangedValueI;
-    label?: ChangedValueI;
-    description?: ChangedValueI;
-    category?: ChangedValueI;
-}
+// interface ChangedValueImageI {
+//     id?: ChangedValueI;
+//     data?: ChangedValueI;
+//     width?: ChangedValueI;
+//     height?: ChangedValueI;
+//     label?: ChangedValueI;
+//     description?: ChangedValueI;
+//     category?: ChangedValueI;
+// }
 
 type ChangedValueI = string;
 // interface ChangedValueI {
@@ -178,7 +180,7 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
 
     useEffect( () => {
         if ( !currentLabel ){
-            console.log("no currentlabel yet.");
+            console.log( "no currentlabel yet." );
             return;
         }
         let canvas = getCanvas();
@@ -331,11 +333,11 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
     const updateHistory = () => {
         setHistoryPosition( historyPosition + 1 );
         setHistory( [ ...history,
-        {
-            texts: texts,
-            images: images,
-            qrs: qrs,
-        }
+            {
+                texts: texts,
+                images: images,
+                qrs: qrs,
+            }
         ] );
     };
 
@@ -604,21 +606,21 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
                         // return;
                         setModal(
                             <Suspense fallback={<div>Loading...</div>}>
-                            <DraggableModal
-                                onOk={() => {
-                                    console.log( "onOk" );
-                                    setModal( null );
-                                }}
-                                onCancel={() => {
-                                    console.log( "onCancel" );
-                                    setModal( null );
-                                }}
-                            >
-                                <JsonCodeEditor
-                                    json={JSON.stringify( exportLabel(), null, 2 )}
+                                <DraggableModal
+                                    onOk={() => {
+                                        console.log( "onOk" );
+                                        setModal( null );
+                                    }}
+                                    onCancel={() => {
+                                        console.log( "onCancel" );
+                                        setModal( null );
+                                    }}
+                                >
+                                    <JsonCodeEditor
+                                        json={JSON.stringify( exportLabel(), null, 2 )}
                                     // {...onChange ?? {}}
-                                />
-                            </DraggableModal>
+                                    />
+                                </DraggableModal>
                             </Suspense> );
                     }} id="DEBUG" />
                 </Tooltip>
@@ -695,6 +697,8 @@ export const LabelDraw: React.FC<LabelDrawProps> = ( props ) => {
         </div>
     );
 };
+
+export default LabelDraw;
 
 /** EDITORS                                         Stars       Last Update             Live Preview        Drag & Drop Text ?
  *

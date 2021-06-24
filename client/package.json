@@ -31,7 +31,7 @@
     "@codemirror/view": "0.18.17",
     "@json-editor/json-editor": "^2.5.4",
     "antd": "4.16.3",
-    "bwip-js": "2.1.1",
+    "bwip-js": "3.0.1",
     "graphql": "^15.0.0",
     "jsoneditor": "^9.5.0",
     "konva": "7.2.4",

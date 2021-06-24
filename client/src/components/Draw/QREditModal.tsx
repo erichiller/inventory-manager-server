@@ -1,15 +1,13 @@
 import type { KonvaEventObject } from 'konva/types/Node';
-import { Component, useEffect, useContext, useState, Ref, MouseEvent } from 'react';
+import { useEffect, useState, MouseEvent } from 'react';
 import React from 'react';
-import { Modal, message, Checkbox, Button } from 'antd';
+import { Checkbox } from 'antd';
 import { Item } from '~lib/Item';
-import bwipjs from 'bwip-js';
-import { LabelQR } from '~lib/Label/LabelConstituent';
+import type { LabelQR } from '~lib/Label/LabelQR';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
-import { AntTreeNode } from 'antd/lib/tree';
-// import DraggableModal from '../Shared/DraggableModal';
 
 const DraggableModal = React.lazy( () => import( "~components/Shared/DraggableModal" ) );
+// const LabelQR = React.lazy( () => import( '~lib/Label/LabelConstituent' ) );
 
 
 interface QREditModalProps {
@@ -24,7 +22,6 @@ interface QREditModalProps {
 
 
 export const QREditModal: React.FC<QREditModalProps> = ( props ) => {
-
     const [ modalRef, setModalRef ] = useState<any>();
     const onCancel = () => {
         /// REMOVE ELEMENT /// REVERT ///
@@ -109,9 +106,9 @@ export const QREditModal: React.FC<QREditModalProps> = ( props ) => {
     //     window.removeEventListener( 'mouseup', mouseUp );
     // }
 
-        // console.log( "labelQR properties map", props.labelQR.properties.map( key => {
-        //     return { label: key, value: props.labelQR.item[ key ], defaultChecked: true };
-        // } ).filter( n => n.value !== null ) );
+    // console.log( "labelQR properties map", props.labelQR.properties.map( key => {
+    //     return { label: key, value: props.labelQR.item[ key ], defaultChecked: true };
+    // } ).filter( n => n.value !== null ) );
     return (
 
         <DraggableModal

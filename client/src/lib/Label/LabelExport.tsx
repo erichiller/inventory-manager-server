@@ -5,7 +5,8 @@ import { Integer } from '../types/uint8';
 import { Item } from "../Item";
 import type { Stage as StageT } from 'konva/types/Stage';
 import { Label } from './LabelTemplate';
-import { UUIDStringT, LabelText, LabelImage, LabelQR } from './LabelConstituent';
+import { UUIDStringT, LabelText, LabelImage } from './LabelConstituent';
+import type { LabelQR } from "./LabelQR";
 
 
 export class LabelExport implements Label {

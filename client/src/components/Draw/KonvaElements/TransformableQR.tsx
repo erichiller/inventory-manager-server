@@ -3,7 +3,7 @@ import Konva from "konva";
 import { Image, KonvaNodeComponent, Transformer } from 'react-konva';
 import type { KonvaEventObject } from "konva/types/Node";
 import { Item } from '~lib/Item';
-import { LabelQR } from '~lib/Label/LabelConstituent';
+import type { LabelQR } from "~lib/Label/LabelQR";
 
 
 interface QrImageProps {
@@ -29,7 +29,7 @@ interface QrImageProps {
 // type TransformableQRComponent = Konva.Text & Konva.TextConfig;
 
 
-export function TransformableQR ( props: QrImageProps ): React.ReactElement<KonvaNodeComponent<Konva.Image & QrImageProps, Konva.ImageConfig>> {
+export default function TransformableQR ( props: QrImageProps ): React.ReactElement<KonvaNodeComponent<Konva.Image & QrImageProps, Konva.ImageConfig>> {
     const labelQR = props.labelQR;
     const item = props.item;
 

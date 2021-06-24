@@ -5,7 +5,8 @@ import { Menu, message } from 'antd';
 import Animate from 'rc-animate';
 
 import { IKonvaEventHandler } from "./LabelDraw";
-import { LabelText, LabelImage, LabelQR } from "~lib/Label/LabelConstituent";
+import { LabelText, LabelImage } from "~lib/Label/LabelConstituent";
+import type { LabelQR } from "~lib/Label/LabelQR";
 
 
 

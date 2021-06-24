@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument, GetItemsDocument, useSetLabelTitleMutation } from "~lib/types/graphql";
 import { Modal, Descriptions, Button, Tooltip, message, Input, Alert } from "antd";
 import React from "react";
-import { LabelDraw } from "./LabelDraw";
+// import { LabelDraw } from "./LabelDraw";
 import { PrintContext } from "~components/Print/PrintContextHandler";
 import { LabelExport } from "~lib/Label/LabelExport";
 import { SendBufferButton } from "~components/Print/SendBufferButton";
@@ -11,6 +11,9 @@ import { Item } from "~lib/Item";
 import { StopOutlined, DatabaseOutlined, SaveOutlined } from "@ant-design/icons";
 import { toTitleCase } from "~lib/UtilityFunctions";
 import { useHistory } from "react-router-dom";
+
+
+const LabelDraw = React.lazy( () => import( "~components/Draw/LabelDraw" ) );
 
 type LabelDrawModalProps = {
     visibleHandler: visibleHandler;
@@ -199,7 +202,7 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                     <Button key="cancel" danger={true} onClick={handleCancel}>
                         <StopOutlined />
                         Cancel
-                        </Button>
+                    </Button>
                 </Tooltip >,
 
                 <Tooltip key="print" placement="top" title="Send to Label Maker">
@@ -224,14 +227,14 @@ export const LabelDrawModal: React.FunctionComponent<LabelDrawModalProps> = ( pr
                             getLabel().id   = ${ state.label.id }
                             getLabel()      = ${ console.dir( state.label.id ) }` ); return el.id === state.label.id;
                         } ) ? "Remove from" : "Add to"} Print List
-                        </Button>
+                    </Button>
                 </Tooltip>,
 
                 <Tooltip key="save" placement="top" title="Save label for future printing">
                     <Button key="save" type="primary" onClick={handleSave}>
                         <SaveOutlined />
                         Save
-                        </Button>
+                    </Button>
                 </Tooltip>,
             ]}
         >

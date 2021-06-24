@@ -15,7 +15,7 @@
 //
 // This code can run in the browser and in nodejs.
 
-import bwipjs from 'bwip-js';
+import bwipjs, { CanvasOptions, DrawingOptions, Font, Measurement } from 'bwip-js';
 
 const FontLib = bwipjs.FontLib;
 
@@ -24,7 +24,7 @@ type Point = [ number, number];
 type Points = Array<Point>;
 
 
-export class DrawingSVG implements bwipjs.Drawing {
+export class DrawingSVG implements bwipjs.DrawingBuiltin {
     
     // Unrolled x,y rotate/translate matrix
     tx0 = 0;
@@ -61,9 +61,9 @@ export class DrawingSVG implements bwipjs.Drawing {
     /** y translate (padding) */
     gs_dy: number;
 
-    opts: bwipjs.CanvasOptions;
+    opts: CanvasOptions;
 
-    constructor ( opts: bwipjs.DrawingOptions, fontLib: typeof FontLib ) {
+    constructor ( opts: DrawingOptions, fontLib: typeof FontLib ) {
         // console.debug( { method: 'constructor', opts } );
         this.opts = opts;
     }
@@ -81,7 +81,7 @@ export class DrawingSVG implements bwipjs.Drawing {
      * * `fwidth` and `fheight` are the requested font cell size.  They will
      *     usually be the same, except when the scaling is not symetric.
      */
-    measure ( str: string, font: string, fwidth: number, fheight: number ): bwipjs.Measurement {
+    measure ( str: string, font: string, fwidth: number, fheight: number ): Measurement {
         // console.debug( { method: 'measure', str, font, fwidth, fheight } );
         fwidth = fwidth | 0;
         fheight = fheight | 0;
@@ -267,7 +267,7 @@ export class DrawingSVG implements bwipjs.Drawing {
      * `width` and `height` are the font cell size.
      * `dx` is extra space requested between characters (usually zero).
      */
-    text ( x: number, y: number, str: string, rgb: string, font: bwipjs.Font ): void {
+    text ( x: number, y: number, str: string, rgb: string, font: Font ): void {
         // console.debug( { method: 'text', x, y, str, rgb, font } );
         var fontid = FontLib.lookup( font.name );
         var fwidth = font.width | 0;

@@ -1,22 +1,15 @@
-// // Type definitions for bwip-js 2.0.6
-// // Project: bwip-js <https://github.com/metafloor/bwip-js>
-// // Definitions by: Eric D Hiller <https://github.com/erichiller
-
-// /// <reference types="node" />
-
-// import { IncomingMessage as Request, ServerResponse as Response } from 'http';
-
-// // declare module 'bwip-js';
-
-// declare namespace BwipJs {
-//     export function loadFont ( fontName: string, sizeMulti: number, fontFile: string ): void;
-//     export function toBuffer ( opts: ToBufferOptions, callback: ( err: string | Error, png: Buffer ) => void ): void;
-
+// Type definitions for bwip-js 3.0.1
+// Project: bwip-js <https://github.com/metafloor/bwip-js>
+// Definitions by: Eric D Hiller <https://github.com/erichiller
 
 declare module 'bwip-js' {
-    export interface DrawingOptions {
+
+
+    // Region Begin Utility Types //
+    ////////////////////////////////
+    interface DrawingOptions {
         /** Barcode symbol name/type. */
-        bcid: string;
+        bcid: BCID;
         /** The text to encode. */
         text: string;
 
@@ -186,13 +179,13 @@ declare module 'bwip-js' {
          **/
     }
 
-    export interface CanvasOptions extends DrawingOptions {
+    interface CanvasOptions extends DrawingOptions {
         /**
          * Most of the public methods of the bwip - js export use an options object.Only two values are required:
         **/
 
         /** The name of the barcode type / symbol. */
-        bcid: string;
+        bcid: BCID;
         /** The text to encode */
         text: string;
 
@@ -263,10 +256,10 @@ declare module 'bwip-js' {
      * - `L` : Rotated left 90 degrees
      * - `I` : Inverted, rotated 180 degrees
      */
-    export type RotateT = 'N' | 'R' | 'L' | 'I';
+    type RotateT = 'N' | 'R' | 'L' | 'I';
 
 
-    export type PathVertex = {
+    type PathVertex = {
         x: number;
         y: number;
     } & (
@@ -283,19 +276,19 @@ declare module 'bwip-js' {
                 cx2: number;
                 cy2: number;
             } );
-    export type Paths = Array<PathVertex> & {
+    type Paths = Array<PathVertex> & {
         ascent: number;
         descent: number;
         advance: number;
     };
 
-    export interface Measurement {
+    interface Measurement {
         ascent: number;
         descent: number;
         width: number;
     }
 
-    export type Point = [ number, number ];
+    type Point = [ number, number ];
 
     /** Integer */
     type int = number;
@@ -306,7 +299,8 @@ declare module 'bwip-js' {
     /** Dimension in points, expressed as a float */
     type pointsFloat = float;
 
-    export class Drawing {
+    class Drawing {
+
         constructor ( opts, ...args );
         /**
          * Adjust scale.  The return value is a two-element array with the
@@ -331,19 +325,28 @@ declare module 'bwip-js' {
         text ( x: number, y: number, str: string, rgb: string, font: Font ): void;
         end (): void;
         transform ( x: number, y: number ): string;
+
     }
+
+    type BCID = 'auspost' | 'azteccode' | 'azteccodecompact' | 'aztecrune' | 'bc412' | 'channelcode' | 'codablockf' | 'code11' | 'code128' | 'code16k' | 'code2of5' | 'code32' | 'code39' | 'code39ext' | 'code49' | 'code93' | 'code93ext' | 'codeone' | 'coop2of5' | 'daft' | 'databarexpanded' | 'databarexpandedcomposite' | 'databarexpandedstacked' | 'databarexpandedstackedcomposite' | 'databarlimited' | 'databarlimitedcomposite' | 'databaromni' | 'databaromnicomposite' | 'databarstacked' | 'databarstackedcomposite' | 'databarstackedomni' | 'databarstackedomnicomposite' | 'databartruncated' | 'databartruncatedcomposite' | 'datalogic2of5' | 'datamatrix' | 'datamatrixrectangular' | 'datamatrixrectangularextension' | 'default' | 'dotcode' | 'ean13' | 'ean13composite' | 'ean14' | 'ean2' | 'ean5' | 'ean8' | 'ean8composite' | 'flattermarken' | 'gs1_128' | 'gs1_128composite' | 'gs1_cc' | 'gs1datamatrix' | 'gs1datamatrixrectangular' | 'gs1dotcode' | 'gs1northamericancoupon' | 'gs1qrcode' | 'hanxin' | 'hibcazteccode' | 'hibccodablockf' | 'hibccode128' | 'hibccode39' | 'hibcdatamatrix' | 'hibcdatamatrixrectangular' | 'hibcmicropdf417' | 'hibcpdf417' | 'hibcqrcode' | 'iata2of5' | 'identcode' | 'industrial2of5' | 'interleaved2of5' | 'isbn' | 'ismn' | 'issn' | 'itf14' | 'jabcode' | 'japanpost' | 'kix' | 'leitcode' | 'mailmark' | 'matrix2of5' | 'maxicode' | 'micropdf417' | 'microqrcode' | 'msi' | 'onecode' | 'pdf417' | 'pdf417compact' | 'pharmacode' | 'pharmacode2' | 'planet' | 'plessey' | 'posicode' | 'postnet' | 'pzn' | 'qrcode' | 'rationalizedCodabar' | 'raw' | 'rectangularmicroqrcode' | 'royalmail' | 'sscc18' | 'swissqrcode' | 'symbol' | 'telepen' | 'telepennumeric' | 'ultracode' | 'upca' | 'upcacomposite' | 'upce' | 'upcecomposite';
+
+    ////////////////////////////////
+    //// endregion Utility Types ///
+
 
     /**
      * src: `src/drawing-builtin.js`
      */
-    export class DrawingBuiltin extends Drawing {
+    class DrawingBuiltin extends Drawing {
         // TODO: theres a ton here, I'm only doing what's necessary
     }
 
-    export class DrawingCanvas extends Drawing {
+    class DrawingCanvas extends Drawing {
+
         constructor ( options: CanvasOptions, canvas: HTMLCanvasElement );
-        image ( width: number, height: number ): { buffer: ImageData, ispng: false; };
+        image ( width: number, height: number ): { buffer: ImageData; ispng: false; };
         end (): void;
+
     }
 
     /**
@@ -352,24 +355,24 @@ declare module 'bwip-js' {
      * Modifies `opts` inline.
      * @param opts Options input to be transformed for BWIP operations
      */
-    export function fixupOptions ( opts: DrawingOptions ): void;
-    export namespace fixupOptions {
+    function FixupOptions ( opts: DrawingOptions ): void;
+    namespace FixupOptions {
         function padding ( a: number, b: number, c: number, s: number ): number;
     }
 
-    export interface GlyphPoint {
+    interface GlyphPoint {
         next;
         prev;
     }
 
-    namespace stbtt {
+    namespace STBTT {
         function stbtt_GetGlyphHMetrics ( info: any, glyph_index: any ): {
             advanceWidth: any;
             leftSideBearing: any;
         };
     }
 
-    export interface Glpyh {
+    interface Glpyh {
         prev: GlyphPoint;
         next: GlyphPoint;
         pixels: Uint8Array;
@@ -386,14 +389,14 @@ declare module 'bwip-js' {
         advance: number;
     }
 
-    export interface Font {
+    interface Font {
         name: string;
         width: number;
         height: number;
         dx: number;
     }
 
-    export namespace FontLib {
+    namespace FontLib {
 
         /**
          * Always returns a valid font-id  
@@ -462,24 +465,47 @@ declare module 'bwip-js' {
 
 
     /** in `exports.js` it's `Render` */
-    function Render ( params: DrawingOptions, drawing: Drawing ): string;
+    // function Render ( params: DrawingOptions, drawing: Drawing ): string;
 
 
-    export class BWIPJS {
-        constructor ( drawing: Drawing );
-        /** BWIPJS version */
-        static VERSION: string;
-    }
-    export class BWIPP {
-        /** Underlying BWIPP version */
-        static VERSION: string;
-    }
+    // export class BWIPJS {
+
+    //     constructor ( drawing: Drawing );
+    //     /** BWIPJS version */
+    //     static BWIPJS_VERSION: string;
+
+    // }
+    // export class BWIPP {
+
+    //     /** Underlying BWIPP version */
+    //     static BWIPP_VERSION: string;
+
+    // }
 
 
     /** must be the ID of an HTML Element that is present in the DOM */
     type HTMLElementID = string;
 
     // export namespace BwipJs {
+    // namespace bwipjs {
+
+    // export const DrawingOptions: DrawingOptions;
+
+    class BWIPJS {
+
+        constructor ( drawing: Drawing );
+
+    }
+
+
+
+    /** BWIPJS version */
+    const BWIPJS_VERSION: string;
+    /** Underlying BWIPP version */
+    const BWIPP_VERSION: string;
+
+
+
     /**
      * `bwipjs.toCanvas(canvas, options)`  
      * `bwipjs.toCanvas(options, canvas)`
@@ -495,25 +521,165 @@ declare module 'bwip-js' {
      * @param opts are a bwip-js/BWIPP options object.
      * Returns the HTMLCanvasElement.
     **/
-    export function toCanvas (
+    function ToCanvas (
         canvas: HTMLCanvasElement | string,
         opts: CanvasOptions
     ): HTMLCanvasElement;
-    export function toCanvas (
+    function ToCanvas (
         opts: CanvasOptions,
         canvas: HTMLCanvasElement | string
     ): HTMLCanvasElement;
 
-    // type render = Render;
-    // }
+    /**
+     * Invokes the low level BWIPP code and returns the raw encoding data.
+     * 
+     * This function is synchronous and throws on error.
+     * 
+     * Browser and nodejs usage.
+     * @see {@link https://github.com/metafloor/bwip-js/wiki/Notes-on-the-Raw-BWIPP-Data}
+     */
+    function ToRaw ( options: DrawingOptions ): Uint8Array;
+    function ToRaw ( bcid: BCID, text: string, options: string ): Uint8Array;
 
-    // export = BwipJs;
+
+    function Render ( params: DrawingOptions, drawing: Drawing ): string;
+
+
+    const loadFont: typeof FontLib.loadFont;
+    type bwipjs = typeof Render;
+    /** bwipjs default export */
+    namespace bwipjs {
+        export {
+            // The public interface
+            ToCanvas as toCanvas,
+            Render as render,
+            ToRaw as raw,
+            FixupOptions as fixupOptions,
+            loadFont,
+            BWIPJS_VERSION,
+            BWIPP_VERSION,
+            // Internals
+            BWIPJS,
+            STBTT,
+            FontLib,
+            DrawingBuiltin,
+            DrawingCanvas
+        };
+    }
     export {
-        Render as render,
-        // * as bwipjs
+        DrawingOptions,
+        CanvasOptions,
+        Measurement,
+        Font,
+        Render as auspost,
+        Render as azteccode,
+        Render as azteccodecompact,
+        Render as aztecrune,
+        Render as bc412,
+        Render as channelcode,
+        Render as codablockf,
+        Render as code11,
+        Render as code128,
+        Render as code16k,
+        Render as code2of5,
+        Render as code32,
+        Render as code39,
+        Render as code39ext,
+        Render as code49,
+        Render as code93,
+        Render as code93ext,
+        Render as codeone,
+        Render as coop2of5,
+        Render as daft,
+        Render as databarexpanded,
+        Render as databarexpandedcomposite,
+        Render as databarexpandedstacked,
+        Render as databarexpandedstackedcomposite,
+        Render as databarlimited,
+        Render as databarlimitedcomposite,
+        Render as databaromni,
+        Render as databaromnicomposite,
+        Render as databarstacked,
+        Render as databarstackedcomposite,
+        Render as databarstackedomni,
+        Render as databarstackedomnicomposite,
+        Render as databartruncated,
+        Render as databartruncatedcomposite,
+        Render as datalogic2of5,
+        Render as datamatrix,
+        Render as datamatrixrectangular,
+        Render as datamatrixrectangularextension,
+        Render as dotcode,
+        Render as ean13,
+        Render as ean13composite,
+        Render as ean14,
+        Render as ean2,
+        Render as ean5,
+        Render as ean8,
+        Render as ean8composite,
+        Render as flattermarken,
+        Render as gs1_128,
+        Render as gs1_128composite,
+        Render as gs1_cc,
+        Render as gs1datamatrix,
+        Render as gs1datamatrixrectangular,
+        Render as gs1dotcode,
+        Render as gs1northamericancoupon,
+        Render as gs1qrcode,
+        Render as hanxin,
+        Render as hibcazteccode,
+        Render as hibccodablockf,
+        Render as hibccode128,
+        Render as hibccode39,
+        Render as hibcdatamatrix,
+        Render as hibcdatamatrixrectangular,
+        Render as hibcmicropdf417,
+        Render as hibcpdf417,
+        Render as hibcqrcode,
+        Render as iata2of5,
+        Render as identcode,
+        Render as industrial2of5,
+        Render as interleaved2of5,
+        Render as isbn,
+        Render as ismn,
+        Render as issn,
+        Render as itf14,
+        Render as jabcode,
+        Render as japanpost,
+        Render as kix,
+        Render as leitcode,
+        Render as mailmark,
+        Render as matrix2of5,
+        Render as maxicode,
+        Render as micropdf417,
+        Render as microqrcode,
+        Render as msi,
+        Render as onecode,
+        Render as pdf417,
+        Render as pdf417compact,
+        Render as pharmacode,
+        Render as pharmacode2,
+        Render as planet,
+        Render as plessey,
+        Render as posicode,
+        Render as postnet,
+        Render as pzn,
+        Render as qrcode,
+        Render as rationalizedCodabar,
+        Render as raw,
+        Render as rectangularmicroqrcode,
+        Render as royalmail,
+        Render as sscc18,
+        Render as swissqrcode,
+        Render as symbol,
+        Render as telepen,
+        Render as telepennumeric,
+        Render as ultracode,
+        Render as upca,
+        Render as upcacomposite,
+        Render as upce,
+        Render as upcecomposite
     };
 
+    export default bwipjs;
 }
-
-
-// export = BwipJs;
