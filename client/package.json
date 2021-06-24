@@ -4,7 +4,8 @@
   "description": "Manage inventory, orders, labels",
   "main": "bundle.js",
   "scripts": {
-    "build": "dotenv -e ../.env -- webpack --env NODE_ENV=production --config webpack.config.prod.js --progress --color --json \"stats/$(Get-Date -UFormat '%Y-%m-%d_%H%M%S')_stats.json\"",
+    "build": "dotenv -e ../.env -- webpack --env NODE_ENV=production --config webpack.config.prod.js --progress --color",
+    "buildo": "dotenv -e ../.env -- webpack --env NODE_ENV=production --config webpack.config.prod.js --progress --color --json \"stats/$(Get-Date -UFormat '%Y-%m-%d_%H%M%S')_stats.json\"",
     "build-clean": "remove-item -force -recurse ./dist/* && yarn build",
     "run-dev-server": "dotenv -e ../.env -- webpack serve",
     "serve": "node ./bundle.js",

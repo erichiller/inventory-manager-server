@@ -5,7 +5,8 @@ const ForkTsCheckerWebpackPlugin = require( 'fork-ts-checker-webpack-plugin' );
 const TsconfigPathsPlugin = require( 'tsconfig-paths-webpack-plugin' );
 const child_process = require( 'child_process' );
 const glob = require( 'glob' );
-const StatoscopeWebpackPlugin = require( '@statoscope/webpack-plugin' );
+const StatoscopeWebpackPlugin = require( '@statoscope/webpack-plugin' ).default;
+
 
 let gitValid = false;
 try {
@@ -22,6 +23,12 @@ const gitDate = gitValid ? git( 'log -1 --format=%aI' ) : process.env['INVENTORY
 console.log( `gitValid=${gitValid} ; gitVersion=${gitVersion} ; gitDate=${gitDate}` );
 if ( gitVersion.length != 7 ) { console.error( "invalid git commit sha" ); throw new Error(); }
 if ( gitDate.length != 25 ) { console.error( "invalid git commit date" ); throw new Error(); }
+
+
+let timepart = Date.now.toISOString().split( "T" );
+let date = timepart[0];
+timepart = timepart[1].split( ':' );
+let fileDateString = date + "_" + timepart[0] + "_" + timepart[1] ;
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
@@ -154,11 +161,11 @@ module.exports = {
             // GIT_VERSION: gitVersion,
             // GIT_AUTHOR_DATE: gitDate
         } ),
-        // BUG! FIXME
-        // new StatoscopeWebpackPlugin( {
-        //     saveStatsTo: 'stats/stats-[name]-[hash].json',
-        //     additionalStats: glob.sync( 'stats/*.json' ),
-        // } )
+        new StatoscopeWebpackPlugin( {
+            saveStatsTo: `./stats/${fileDateString}-[hash].json`,
+            saveTo: `./stats/${fileDateString}-[hash].html`,
+            additionalStats: glob.sync( './stats/*.json' ),
+        } )
     ],
     // externals: {
     //     react: "React",
