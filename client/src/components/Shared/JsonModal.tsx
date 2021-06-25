@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
-import JSONEditor, { JSONEditorMode, JSONEditorOptions } from 'jsoneditor';
 import { Intersection, deepCopy, deepEqual } from "~lib/UtilityFunctions";
 import { Button, Modal } from "antd";
+import JSONEditor, { JSONEditorMode, JSONEditorOptions } from 'jsoneditor';
+import '~/styles/app.scss';
 
 interface JsonModalProps {
     json: object | string;
@@ -36,7 +37,7 @@ export const JsonModal: React.FC<JsonModalProps> = ( props ) => {
     >
         <JsonEditor json={json}
             {...onChange ?? {}}
-         />
+        />
     </Modal>;
 };
 

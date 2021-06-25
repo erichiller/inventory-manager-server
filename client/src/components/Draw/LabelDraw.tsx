@@ -1,7 +1,7 @@
 
 import React, { Suspense, useContext, useEffect, useState } from "react";
-import type { Stage } from 'konva/types/Stage';
-import type { KonvaEventObject } from 'konva/types/Node';
+import type { Stage } from 'konva/lib/Stage';
+import type { KonvaEventObject } from 'konva/lib/Node';
 import { Button, Tooltip, message } from 'antd';
 import { MedicineBoxOutlined, FontSizeOutlined, QrcodeOutlined, PictureOutlined, PlusCircleOutlined } from '@ant-design/icons';
 

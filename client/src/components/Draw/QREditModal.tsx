@@ -1,4 +1,4 @@
-import type { KonvaEventObject } from 'konva/types/Node';
+import type { KonvaEventObject } from 'konva/lib/Node';
 import { useEffect, useState, MouseEvent } from 'react';
 import React from 'react';
 import { Checkbox } from 'antd';

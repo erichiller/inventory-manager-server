@@ -3,7 +3,7 @@ import { v4 as UUIDv4 } from 'uuid';
 import { Scalars } from '../types/graphql';
 import { Integer } from '../types/uint8';
 import { Item } from "../Item";
-import type { Stage as StageT } from 'konva/types/Stage';
+import type { Stage as StageT } from 'konva/lib/Stage';
 import { Label } from './LabelTemplate';
 import { UUIDStringT, LabelText, LabelImage } from './LabelConstituent';
 import type { LabelQR } from "./LabelQR";

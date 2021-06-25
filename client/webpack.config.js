@@ -6,6 +6,8 @@ const TsconfigPathsPlugin = require( 'tsconfig-paths-webpack-plugin' );
 const child_process = require( 'child_process' );
 const glob = require( 'glob' );
 const StatoscopeWebpackPlugin = require( '@statoscope/webpack-plugin' ).default;
+const MiniCssExtractPlugin = require( "mini-css-extract-plugin" );
+const CssMinimizerPlugin = require( 'css-minimizer-webpack-plugin' );
 
 
 let gitValid = false;
@@ -20,12 +22,12 @@ function git( command ) {
 
 const gitVersion = gitValid ? git( 'describe --always' ) : process.env['INVENTORY_COMMIT_SHA'];
 const gitDate = gitValid ? git( 'log -1 --format=%aI' ) : process.env['INVENTORY_COMMIT_DATE'];
-console.log( `gitValid=${gitValid} ; gitVersion=${gitVersion} ; gitDate=${gitDate}` );
+console.log( `gitValid=${gitValid} ; gitVersion=${gitVersion} ; gitDate=${gitDate} ; NODE_ENV=${process.env.NODE_ENV}` );
 if ( gitVersion.length != 7 ) { console.error( "invalid git commit sha" ); throw new Error(); }
 if ( gitDate.length != 25 ) { console.error( "invalid git commit date" ); throw new Error(); }
 
 
-let timepart = Date.now.toISOString().split( "T" );
+let timepart = ( new Date() ).toISOString().split( "T" );
 let date = timepart[0];
 timepart = timepart[1].split( ':' );
 let fileDateString = date + "_" + timepart[0] + "_" + timepart[1] ;
@@ -52,8 +54,15 @@ module.exports = {
             },
 
             {
-                test: /\.s?(a|c)ss$/,
-                use: ['style-loader', 'css-loader', 'sass-loader'],
+                test: /\.s?[ac]ss$/,
+                use: [
+                    // "style-loader"
+                    // fallback to style-loader in development
+                    process.env.NODE_ENV !== "production"
+                        ? "style-loader"
+                        : MiniCssExtractPlugin.loader,
+                    'css-loader', 
+                    'sass-loader'],
             },
             {
                 // test: /\.svg$/,
@@ -93,6 +102,7 @@ module.exports = {
                 enforce: "pre",
                 test: /\.js$/,
                 loader: "source-map-loader",
+
             },
         ]
     },
@@ -112,7 +122,7 @@ module.exports = {
     },
     output: {
         filename: 'bundle.js',
-        path: path.resolve( '.', 'dist' ),
+        path: path.resolve( __dirname, 'dist' ),
         publicPath: "/"
     },
     // https://webpack.js.org/configuration/dev-server/
@@ -165,7 +175,15 @@ module.exports = {
             saveStatsTo: `./stats/${fileDateString}-[hash].json`,
             saveTo: `./stats/${fileDateString}-[hash].html`,
             additionalStats: glob.sync( './stats/*.json' ),
-        } )
+        } ),
+        new MiniCssExtractPlugin( {
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: '[name].[contenthash:8].css',
+            // filename: "[name].css",
+            // chunkFilename: "[id].css",
+        } ),
+        new CssMinimizerPlugin(),
     ],
     // externals: {
     //     react: "React",

@@ -29,9 +29,11 @@
 // }; 
 
 import React, { useEffect, useRef } from "react";
-import JSONEditor, { JSONEditorMode, JSONEditorOptions } from 'jsoneditor';
 import { Intersection, deepCopy, deepEqual } from "~lib/UtilityFunctions";
 import { Button, Modal } from "antd";
+
+import JSONEditor, { JSONEditorMode, JSONEditorOptions } from 'jsoneditor';
+import '~/styles/jsoneditor.scss';
 
 
 type JsonEditorProps = Intersection<{

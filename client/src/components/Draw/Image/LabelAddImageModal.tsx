@@ -1,4 +1,4 @@
-import type { KonvaEventObject } from 'konva/types/Node';
+import type { KonvaEventObject } from 'konva/lib/Node';
 import { Component, useState, useEffect } from 'react';
 import { Select, Tooltip, Button } from 'antd';
 import React from 'react';
@@ -17,7 +17,7 @@ interface LabelAddImageProps {
     labelImage: LabelImage;
     visibleHandler: ( display: null ) => void;
     changeHandler: ( newValue: any, labelImage: LabelImage ) => void;
-    commitLabelImage: (labelImage: LabelImage) => void;
+    commitLabelImage: ( labelImage: LabelImage ) => void;
 }
 
 
@@ -50,8 +50,7 @@ interface LabelAddImageProps {
 
 // export default withGetIcons<LabelAddImageProps, LabelAddImageState>()(
 export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
-
-    const [ icons, setIcons ] = useState < QueryResultTypePlus<typeof useGetIconsQuery>[]>([]);
+    const [ icons, setIcons ] = useState < QueryResultTypePlus<typeof useGetIconsQuery>[]>( [] );
     
 
     const handleCancel = () => {
@@ -63,15 +62,15 @@ export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
         props.visibleHandler( null );
     };
 
-    const [ displayImageUploadModal, setDisplayImageUploadModal ] = useState<boolean>(false);
+    const [ displayImageUploadModal, setDisplayImageUploadModal ] = useState<boolean>( false );
 
     let { data, loading, error} = useGetIconsQuery( { } );
 
     useEffect( () => {
         if ( data ){
-            setIcons(data.icon);
+            setIcons( data.icon );
         }
-    }, [ data, loading, error ]);
+    }, [ data, loading, error ] );
 
     const getLabelImageSelectedObj: ( id: string ) => LabelImage = ( id ) => {
         if ( data.icon ) {
@@ -101,11 +100,9 @@ export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
         }
         console.log( "!! RETURNING NULL !!" );
         return null;
-
     };
 
     const onChange = ( value: string ) => {
-
         console.log( "looking up labelImage by value: ", value );
         props.changeHandler(
             getLabelImageSelectedObj( value ),
@@ -136,75 +133,75 @@ export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
             {displayImageUploadModal ?
                 <NewImageUploadModal commitLabelImage={props.commitLabelImage} visibleHandler={setDisplayImageUploadModal} changeHandler={changeHandler} item={item} labelImage={labelImage} />
                 : null}
-                    <Modal
-                        visible
-                        title={"Image"}
-                        onCancel={handleCancel}
-                        onOk={() => { props.commitLabelImage( labelImage ); onClose(); }}
-                        footer={[
-                            <Tooltip placement="top" title="Return to Items">
-                                <Button key="cancel" danger={true} onClick={handleCancel}>
-                                    <StopOutlined />
+            <Modal
+                visible
+                title={"Image"}
+                onCancel={handleCancel}
+                onOk={() => { props.commitLabelImage( labelImage ); onClose(); }}
+                footer={[
+                    <Tooltip placement="top" title="Return to Items">
+                        <Button key="cancel" danger={true} onClick={handleCancel}>
+                            <StopOutlined />
                                             Cancel
-                                        </Button>
-                            </Tooltip >,
-                            <Tooltip placement="top" title="Add to list for bulk printing later">
-                                <Button key="Upload Image" type="primary" onClick={() => {
-                                    setDisplayImageUploadModal( true );
-                                    visibleHandler( null );
-                                }} >
-                                    {/* <Icon type="plus-circle" /> */}
-                                    <UploadOutlined />
+                        </Button>
+                    </Tooltip >,
+                    <Tooltip placement="top" title="Add to list for bulk printing later">
+                        <Button key="Upload Image" type="primary" onClick={() => {
+                            setDisplayImageUploadModal( true );
+                            visibleHandler( null );
+                        }} >
+                            {/* <Icon type="plus-circle" /> */}
+                            <UploadOutlined />
                                             Upload New Image
-                                        </Button>
-                            </Tooltip>,
-                            <Tooltip placement="top" title="Add image to label">
-                                <Button key="add" type="primary" onClick={() => { props.commitLabelImage( labelImage ); onClose(); }}>
-                                    <PlusCircleOutlined />
+                        </Button>
+                    </Tooltip>,
+                    <Tooltip placement="top" title="Add image to label">
+                        <Button key="add" type="primary" onClick={() => { props.commitLabelImage( labelImage ); onClose(); }}>
+                            <PlusCircleOutlined />
                                             Add
-                                        </Button>
-                            </Tooltip>
-                        ]}
-                        width={420}
-                    >
-                        <Select
-                            style={{ width: 370, height: 50 }}
-                            placeholder="Select an Existing Image"
-                            loading={loading}
-                            onChange={onChange}
-                            id="image-select"
-                        //                     dropdownRender={menu => (
-                        //                         <div>
-                        //                             {menu}
-                        //                             <Divider style={{ margin: '4px 0' }} />
-                        //                             <div
-                        //                                 style={{ padding: '4px 8px', cursor: 'pointer' }}
-                        //                                 onMouseDown={e => e.preventDefault()}
-                        //                                 onClick={commitLabelImage}
+                        </Button>
+                    </Tooltip>
+                ]}
+                width={420}
+            >
+                <Select
+                    style={{ width: 370, height: 50 }}
+                    placeholder="Select an Existing Image"
+                    loading={loading}
+                    onChange={onChange}
+                    id="image-select"
+                    //                     dropdownRender={menu => (
+                    //                         <div>
+                    //                             {menu}
+                    //                             <Divider style={{ margin: '4px 0' }} />
+                    //                             <div
+                    //                                 style={{ padding: '4px 8px', cursor: 'pointer' }}
+                    //                                 onMouseDown={e => e.preventDefault()}
+                    //                                 onClick={commitLabelImage}
 
-                        //                             >
-                        //                                 <Icon type="plus" /> Add item
-                        // </div>
-                        //                         </div>
-                        //                     )}
+                    //                             >
+                    //                                 <Icon type="plus" /> Add item
+                    // </div>
+                    //                         </div>
+                    //                     )}
+                >
+                    {console.log( "DrawAddImage", data )}
+                    {icons.map( icon => (
+                        <Select.Option
+                            value={icon.id}
+                            key={icon.id}
+                            // value={`${ icon.id }.${icon.category }.${ icon.label } ${ icon.description }`}
                         >
-                            {console.log( "DrawAddImage", data )}
-                            {icons.map( icon => (
-                                <Select.Option
-                                    value={icon.id}
-                                    key={icon.id}
-                                // value={`${ icon.id }.${icon.category }.${ icon.label } ${ icon.description }`}
-                                >
-                                    {/* <Icon type="file-image" /> */}
-                                    {/* <Icon component={icon.data as any} /> */}
-                                    {/* <Icon component={makeSvgElement( icon ) as any} /> */}
-                                    {makeSvgElement( icon )}
-                                    {icon.title || icon.description ? `${ icon.title } ${ icon.description }` : icon.id}
-                                </Select.Option>
-                            ) ) }
-                        </Select>
+                            {/* <Icon type="file-image" /> */}
+                            {/* <Icon component={icon.data as any} /> */}
+                            {/* <Icon component={makeSvgElement( icon ) as any} /> */}
+                            {makeSvgElement( icon )}
+                            {icon.title || icon.description ? `${ icon.title } ${ icon.description }` : icon.id}
+                        </Select.Option>
+                    ) ) }
+                </Select>
 
-                        {/* <Divider />
+                {/* <Divider />
                                 <i><Typography.Text type="secondary">Or create a new image</Typography.Text></i><br />
                                 <NewImageUploadModal
                                     changeHandler={changeHandler}
@@ -212,7 +209,7 @@ export const LabelAddImageModal: React.FC<LabelAddImageProps> = ( props ) => {
                                     buttonLabel="Upload Image"
                                     labelImage={labelImage}
                                 /> */}
-                    </Modal>
-                    </>
-                );
+            </Modal>
+        </>
+    );
 };

@@ -1,4 +1,4 @@
-import type { KonvaEventObject } from 'konva/types/Node';
+import type { KonvaEventObject } from 'konva/lib/Node';
 import { Component, useContext, useState } from 'react';
 import React from 'react';
 import { Modal, AutoComplete, Form, Checkbox, Mentions } from 'antd';

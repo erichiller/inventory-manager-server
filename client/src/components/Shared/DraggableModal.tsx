@@ -1,8 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-// import JSONEditor, { JSONEditorMode, JSONEditorOptions } from 'jsoneditor';
-import { Intersection, deepCopy, deepEqual } from "~lib/UtilityFunctions";
-import { Button, Modal, ModalProps } from "antd";
-import { CodeEditor } from "~components/Generic/CodeEditor";
+import React, { useRef, useState } from "react";
+import { Modal, ModalProps } from "antd";
 import Draggable, { DraggableEventHandler, DraggableBounds } from 'react-draggable';
 
 

@@ -18,7 +18,10 @@ const baseConfig = require( './webpack.config' );
 const extendedConfig = {
     devtool: false,
     mode: 'production',
-    devServer: undefined,
+    // devServer: undefined,
+    devServer: {
+        contentBase: path.resolve( __dirname, 'dist' ),
+    },
     optimization: {
         usedExports: true,
         concatenateModules: true,
