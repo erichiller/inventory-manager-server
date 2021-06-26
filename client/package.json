@@ -3,11 +3,13 @@
     "version": "0.1.0-20210221001",
     "description": "Manage inventory, orders, labels",
     "main": "bundle.js",
+    "sideEffects": false,
     "scripts": {
         "build": "yarn build-clean",
         "build-dirty": "dotenv -e ../.env -- webpack --env NODE_ENV=production --config webpack.config.prod.js --progress --color",
         "build-clean": "remove-item -force -recurse ./dist/* && yarn build-dirty",
         "run-dev-server": "dotenv -e ../.env -- webpack serve",
+        "run-prod-server": "dotenv -e ../.env -- webpack serve --env NODE_ENV=production --config webpack.config.prod.js --progress --color",
         "serve": "node ./bundle.js",
         "codegen": "dotenv -e ../.env -- graphql-codegen --config codegen.yml",
         "test": "jest",

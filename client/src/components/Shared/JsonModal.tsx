@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Intersection, deepCopy, deepEqual } from "~lib/UtilityFunctions";
 import { Button, Modal } from "antd";
 import JSONEditor, { JSONEditorMode, JSONEditorOptions } from 'jsoneditor';
-import '~/styles/app.scss';
+// import '~/styles/app.scss';
 
 interface JsonModalProps {
     json: object | string;

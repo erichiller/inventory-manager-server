@@ -21,6 +21,10 @@ const extendedConfig = {
     // devServer: undefined,
     devServer: {
         contentBase: path.resolve( __dirname, 'dist' ),
+        port: 80,
+        host: '0.0.0.0',
+        disableHostCheck: true,   // insecure , should use `public: 'sub.domain.tld`
+        watch: false
     },
     optimization: {
         usedExports: true,
