@@ -7,7 +7,6 @@ const child_process = require( 'child_process' );
 const glob = require( 'glob' );
 const StatoscopeWebpackPlugin = require( '@statoscope/webpack-plugin' ).default;
 const MiniCssExtractPlugin = require( "mini-css-extract-plugin" );
-const CssMinimizerPlugin = require( 'css-minimizer-webpack-plugin' );
 
 
 let gitValid = false;
@@ -182,8 +181,7 @@ module.exports = {
             filename: '[name].[contenthash:8].css',
             // filename: "[name].css",
             // chunkFilename: "[id].css",
-        } ),
-        new CssMinimizerPlugin(),
+        } )
     ],
     // externals: {
     //     react: "React",

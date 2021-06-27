@@ -3,7 +3,10 @@
     "version": "0.1.0-20210221001",
     "description": "Manage inventory, orders, labels",
     "main": "bundle.js",
-    "sideEffects": false,
+    "sideEffects": [
+        "**/*.css",
+        "**/*.scss"
+    ],
     "scripts": {
         "build": "yarn build-clean",
         "build-dirty": "dotenv -e ../.env -- webpack --env NODE_ENV=production --config webpack.config.prod.js --progress --color",

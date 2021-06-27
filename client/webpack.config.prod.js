@@ -1,5 +1,6 @@
 const webpack = require( 'webpack' );
 const path = require( 'path' );
+const CssMinimizerPlugin = require( 'css-minimizer-webpack-plugin' );
 
 /** More info
  * → use prefetching for modals
@@ -32,6 +33,19 @@ const extendedConfig = {
         removeAvailableModules: true,
         sideEffects: true,
         providedExports: true,
+        minimizer: [
+            `...`,
+            new CssMinimizerPlugin( {
+                minimizerOptions: {
+                    preset: [
+                        'default',
+                        {
+                            discardComments: { removeAll: true },
+                        },
+                    ],
+                },
+            } ),
+        ],
         /**
          * not needed for dynamic imports?
          * https://webpack.js.org/guides/code-splitting/#dynamic-imports
@@ -62,6 +76,8 @@ const extendedConfig = {
         // chunkFilename: '[id].[chunkhash:8].js'
     }
 };
+
+// baseConfig.plugins.push( new CssMinimizerPlugin() );
 
 /** @type {import('webpack').Configuration} */
 module.exports = Object.assign( baseConfig, extendedConfig );
