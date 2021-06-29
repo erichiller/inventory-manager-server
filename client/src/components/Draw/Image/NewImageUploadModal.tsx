@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { LabelImage } from "~lib/Label/LabelConstituent";
 import { Spin, Select, Input, message, Modal, Form } from "antd";
-import { GetIconDocument, EnumItemClassEnum, useInsertIconMutation } from "~lib/types/graphql";
+import { EnumItemClassEnum } from "~lib/types/graphql";
+import { useInsertIconMutation } from "./DrawAddImage.ops";
 import { Item } from "~lib/Item";
 import { UploadOutlined } from '@ant-design/icons';
 import { useForm } from 'antd/lib/form/Form';
@@ -47,7 +48,6 @@ interface NewImageUploadModalState {
                 )} */}
 
 export const NewImageUploadModal: React.FC<NewImageUploadModalProps> = ( { labelImage, width, commitLabelImage, ...props } ) => {
-
     const [ state, setState ] = useState<NewImageUploadModalState>( {
         imageUrl: undefined
     } );
@@ -185,7 +185,7 @@ export const NewImageUploadModal: React.FC<NewImageUploadModalProps> = ( { label
                 <label htmlFor="file" className="ant-btn ant-btn-primary" style={{ paddingTop: '3px' }}>
                     <UploadOutlined style={{ margin: '2px', fontSize: '18px', marginRight: '3px' }} />
                         Upload
-                    </label>
+                </label>
             </Spin>
         </Form>
     </Modal>;

@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument, GetItemsDocument, useSetLabelTitleMutation } from "~lib/types/graphql";
+import { useSaveLabelMutation, useEditLabelMutation, GetLabelsDocument, useSetLabelTitleMutation } from "~components/Label/Label.ops";
+import { GetItemsDocument } from "~item/Item.ops";
 import { Modal, Descriptions, Button, Tooltip, message, Input, Alert } from "antd";
 import React from "react";
 // import { LabelDraw } from "./LabelDraw";

@@ -5,7 +5,9 @@ import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
 import TextArea from 'antd/lib/input/TextArea';
 
-import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, Order as OrderGql, InsertOrderMutationVariables, ShipmentConstraint, ShipmentUpdateColumn, OrderItemInsertInput } from '~lib/types/graphql';
+import type {Order as OrderGql, OrderItemInsertInput } from '~lib/types/graphql';
+import { ShipmentConstraint, ShipmentUpdateColumn } from '~lib/types/graphql';
+import { useGetOrderQuery, useInsertOrderMutation, useGetOrderLazyQuery, useUpdateOrderMutation, GetOrderDocument, GetOrdersDocument, InsertOrderMutationVariables } from "../Order.ops";
 
 import { QueryResultTypePlus, Intersection, filterObject, transparentLog, Unpacked, propValuesEqual, deepCopy, submitFormWithEnterKey } from '~lib/UtilityFunctions';
 import { VendorSelect } from '../../Vendor/VendorSelect';

@@ -1,5 +1,7 @@
 import { FormMutationHandler } from "../Item";
-import { useUpdateItemHardwareFastenerScrewMachineMutation, EnumItemHandednessEnum, EnumItemHardwareUseMaterialEnum, EnumItemHardwareFastenerScrewMachinePointEnum, GetItemDocument } from "../../types/graphql";
+import { EnumItemHandednessEnum, EnumItemHardwareUseMaterialEnum, EnumItemHardwareFastenerScrewMachinePointEnum } from "../../types/graphql";
+import { useUpdateItemHardwareFastenerScrewMachineMutation } from "./ItemHardwareFastenerScrewMachine.ops";
+import { GetItemDocument } from "../Item.ops";
 import { useEffect } from "react";
 import { message } from "antd";
 import { ItemHardwareFastenerScrewMachine } from "..";

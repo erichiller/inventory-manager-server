@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Modal, message, Input, Switch } from 'antd';
-import { useGetVendorQuery, useInsertVendorMutation, InsertVendorMutationVariables, useGetVendorLazyQuery, useUpdateVendorMutation, useInsertManufacturerMutation, UpdateVendorMutationVariables, useDeleteManufacturerMutation, GetVendorDocument, GetVendorsDocument } from '~lib/types/graphql';
+import { useGetVendorQuery, useInsertVendorMutation, InsertVendorMutationVariables, useGetVendorLazyQuery, useUpdateVendorMutation, UpdateVendorMutationVariables, GetVendorDocument, GetVendorsDocument } from './Vendor.ops';
+import { useInsertManufacturerMutation, useDeleteManufacturerMutation } from '~components/Manufacturer/Manufacturer.ops';
 
 import { QueryResultTypePlus, Intersection, filterObject, deepCopy, submitFormWithEnterKey } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';

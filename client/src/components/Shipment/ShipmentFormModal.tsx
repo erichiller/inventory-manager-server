@@ -3,7 +3,7 @@ import { Form, Modal, message, Input, DatePicker } from 'antd';
 import { Callbacks } from 'rc-field-form/lib/interface';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
-import { useGetShipmentQuery, useInsertShipmentMutation, InsertShipmentMutationVariables, useGetShipmentLazyQuery, useUpdateShipmentMutation, UpdateShipmentMutationVariables, GetShipmentDocument } from '~lib/types/graphql';
+import { useGetShipmentQuery, useInsertShipmentMutation, InsertShipmentMutationVariables, useGetShipmentLazyQuery, useUpdateShipmentMutation, UpdateShipmentMutationVariables, GetShipmentDocument } from './Shipment.ops';
 
 import { QueryResultTypePlus, Intersection, PartialPartial, submitFormWithEnterKey } from '~lib/UtilityFunctions';
 

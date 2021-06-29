@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Modal, message, Input } from 'antd';
-import { useGetVendorItemQuery, useInsertVendorItemMutation, InsertVendorItemMutationVariables, useGetVendorItemLazyQuery, useUpdateVendorItemMutation, UpdateVendorItemMutationVariables, GetVendorItemDocument, useGetVendorLazyQuery, VendorItemInsertInput } from '~lib/types/graphql';
+import { useGetVendorItemQuery, useInsertVendorItemMutation, InsertVendorItemMutationVariables, useGetVendorItemLazyQuery, useUpdateVendorItemMutation, UpdateVendorItemMutationVariables, GetVendorItemDocument, useGetVendorLazyQuery } from './Vendor.ops';
+import type { VendorItemInsertInput } from "~types/graphql";
 
 import { QueryResultTypePlus, Intersection, filterObject, submitFormWithEnterKey } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';

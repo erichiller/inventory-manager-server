@@ -1,7 +1,7 @@
 
 import { v4 as UUIDv4 } from 'uuid';
 
-import { EnumItemClassEnum, Scalars } from '../types/graphql';
+import type { EnumItemClassEnum, Scalars } from '../types/graphql';
 import type { Integer } from '../types/uint8';
 import { enumerable } from '~lib/UtilityFunctions';
 

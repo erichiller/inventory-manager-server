@@ -1,13 +1,15 @@
 
+import type {
+    Scalars,
+    Vendor as VendorGql,
+} from "../types/graphql";
 import {
     GetShipmentsQueryHookResult,
     GetShipmentQueryVariables,
     GetShipmentDocument,
     GetShipmentQuery,
-    Scalars,
-    Vendor as VendorGql,
     useGetShipmentQuery,
-} from "../types/graphql";
+} from "~components/Shipment/Shipment.ops";
 
 import { Integer } from '../types/uint8';
 

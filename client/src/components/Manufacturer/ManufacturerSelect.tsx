@@ -1,12 +1,11 @@
-import { SelectProps, SelectValue, LabeledValue } from "antd/lib/select";
+import { SelectProps, SelectValue } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
-import { AutoComplete, Input, DatePicker, Select } from "antd";
+import { Input, Select } from "antd";
 
 
 
-import { OptionsType, OptionData, OptionGroupData } from 'rc-select/lib/interface';
-import { InputProps } from "antd/lib/input";
-import { useGetManufacturersLazyQuery, useSearchManufacturersLazyQuery, useSearchManufacturersQuery } from "~lib/types/graphql";
+import { OptionData } from 'rc-select/lib/interface';
+import { useSearchManufacturersQuery } from "./Manufacturer.ops";
 import { preventEnterKeyDefault } from "~lib/UtilityFunctions";
 
 

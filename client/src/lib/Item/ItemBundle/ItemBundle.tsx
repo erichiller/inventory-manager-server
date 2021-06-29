@@ -1,11 +1,12 @@
 import { Item, CategoryHierarchyT, ItemGqlTypename, GenericItem, FormMutationHandler } from '~lib/Item/Item';
 import { IconComponentT } from "~lib/types/common";
-import { 
+import type { 
     Item as ItemGql, 
     ItemBundle as ItemBundleGql, 
-    ItemBundleSelectColumn, Maybe, Scalars, ItemBundleMember,
+    Maybe, Scalars, ItemBundleMember,
     ItemBundleMemberAggregate 
-} from "../../types/graphql";
+} from "~types/graphql";
+import { ItemBundleSelectColumn } from "~types/graphql";
 import React from 'react';
 import { ColumnProps } from 'antd/lib/table';
 import { toTitleCase, is, SubType, StringKeys, KeysOfType, makeColumn } from "~lib/UtilityFunctions";

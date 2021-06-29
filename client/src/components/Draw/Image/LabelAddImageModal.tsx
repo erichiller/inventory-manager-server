@@ -3,7 +3,7 @@ import { Component, useState, useEffect } from 'react';
 import { Select, Tooltip, Button } from 'antd';
 import React from 'react';
 import { Modal } from 'antd';
-import { useGetIconsQuery } from '~lib/types/graphql';
+import { useGetIconsQuery } from './DrawAddImage.ops';
 import { Item } from '~lib/Item';
 import { LabelImage } from '~lib/Label/LabelConstituent';
 import { StopOutlined, UploadOutlined, PlusCircleOutlined } from '@ant-design/icons';

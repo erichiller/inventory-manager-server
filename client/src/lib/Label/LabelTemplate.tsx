@@ -1,4 +1,5 @@
-import { Label as LabelGql, LabelTemplateFieldsFragment } from "../types/graphql";
+import type { Label as LabelGql } from "../types/graphql";
+import { LabelTemplateFieldsFragment } from "~lib/Item/Item.ops";
 import { LabelExport, LabelExportConstituents } from "./LabelExport";
 
 

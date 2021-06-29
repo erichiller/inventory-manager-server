@@ -6,7 +6,7 @@ import {
     GetVendorDocument,
     GetVendorQuery,
     useGetVendorQuery
-} from "../types/graphql";
+} from "~components/Vendor/Vendor.ops";
 
 import { Integer } from '../types/uint8';
 

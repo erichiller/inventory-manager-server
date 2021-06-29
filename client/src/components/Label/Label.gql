@@ -1,0 +1,134 @@
+fragment labelFields on label {
+    id
+    created_at
+    content
+    title
+    width
+    height
+    item {
+        id
+        class
+    }
+    updated_at
+}
+
+query GetLabels {
+    label(order_by: { created_at: asc }) {
+        ...labelFields
+    }
+}
+
+query GetLabel($label_id: uuid!) {
+    label: label_by_pk(
+        id: $label_id
+    ) {
+        ...labelFields
+    }
+}
+
+query GetLabelByItemId($item_id: Int) {
+    label (
+        order_by: { created_at: asc }
+        where: { item_id: { _eq: $item_id } }
+    ) {
+        ...labelFields
+    }
+}
+
+query GetTemplates {
+    label(
+        order_by: { created_at: asc }, 
+        where: { template_items: {} }
+    ) {
+        ...labelFields
+    }
+}
+
+# Get non-template labels
+query GetSingleLabels {
+    label(
+        order_by: { created_at: asc }, 
+        where: { _not: { template_items: {} } }
+        ) {
+        id
+    }
+}
+
+###############################################################################
+#################################### EDIT #####################################
+###############################################################################
+
+mutation SaveLabel (
+    $content: jsonb,
+    $height: Int,
+    $id: uuid,
+    $item_id: Int,
+    $title: String,
+    $width: Int
+) {
+    insert_label(
+      objects: {
+            content: $content, 
+            height: $height, 
+            id: $id, 
+            item_id: $item_id, 
+            title: $title, 
+            width: $width
+        }
+    ) {
+        affected_rows
+        returning {
+            id
+        }
+  }
+}
+
+mutation EditLabel (
+    $content: jsonb,
+    $height: Int,
+    $id: uuid,
+    $item_id: Int,
+    $title: String,
+    $width: Int
+){
+  __typename
+  update_label(
+        where: {
+            id: {
+                _eq: $id
+            }
+        }, 
+        _set: {
+            content: $content, 
+            height: $height, 
+            item_id: $item_id, 
+            title: $title, 
+            width: $width
+            # edit_of_id: "", 
+        }
+    ){
+        returning {
+            id
+        }
+        affected_rows
+    }
+}
+
+mutation SetLabelTitle( $id: uuid!, $title: String ) {
+  update_label_by_pk(pk_columns: {id: $id}, _set: {title: $title}) {
+    id
+    title
+  }
+}
+
+
+
+###############################################################################
+################################### DELETE ####################################
+###############################################################################
+mutation DeleteLabel ($label_id: uuid!) {
+  delete_label_by_pk( id: $label_id ){
+    id
+    __typename
+  }
+}

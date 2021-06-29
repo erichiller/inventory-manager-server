@@ -5,7 +5,7 @@ import { Input, Select, Divider } from "antd";
 
 
 import { OptionData } from 'rc-select/lib/interface';
-import { useSearchVendorItemsQuery, UpdateVendorItemMutationVariables } from "~lib/types/graphql";
+import { useSearchVendorItemsQuery, UpdateVendorItemMutationVariables } from "./Vendor.ops";
 import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { VendorItemFormModal } from "./VendorItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";

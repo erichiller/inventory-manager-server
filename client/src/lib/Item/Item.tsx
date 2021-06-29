@@ -1,25 +1,30 @@
 
-import {
-    Item as ItemGql, Icon, EnumItemClassEnum,
+import type {
+    Item as ItemGql, 
+    Icon,
+    Scalars
+} from "~types/graphql";
+import { 
     ItemSelectColumn,
+    EnumItemClassEnum 
+} from "~types/graphql";
+import { 
     GetItemQueryVariables,
     GetItemDocument,
-    GetItemQuery,
-    Scalars,
-    LabelTemplateMap,
-    LabelTemplateFieldsFragment
-} from "../types/graphql";
+    GetItemQuery 
+} from "./Item.ops";
+
+
 
 
 import { apolloClient } from '~/Apollo';
 import { message } from "antd";
 import React from "react";
 import { ColumnProps } from "antd/lib/table";
-import { toTitleCase, Intersection, enumerable, StringKeys, ClassType, Type } from "~lib/UtilityFunctions";
+import { toTitleCase, Intersection, enumerable, StringKeys, Type } from "~lib/UtilityFunctions";
 import { CodeIcon } from "../../styles/icon";
 import { FormInstance } from "antd/lib/form";
 import { IconComponentT } from "~lib/types/common";
-import { LabelExport, LabelExportConstituents } from "~lib/Label/LabelExport";
 import { ILabelTemplate, LabelTemplate } from "~lib/Label/LabelTemplate";
 
 export type GenericItem = Pick<ItemGql, 'id'>

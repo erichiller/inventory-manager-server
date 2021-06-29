@@ -1,8 +1,8 @@
 import { Table, Divider, message } from 'antd';
-import * as React from 'react';
-import { VendorSelectColumn, Vendor as VendorGql, useGetVendorsQuery, GetVendorsQuery, useDeleteVendorMutation, GetVendorDocument, GetVendorsDocument } from '~lib/types/graphql';
+import React from 'react';
+import { useGetVendorsQuery, GetVendorsQuery, useDeleteVendorMutation, GetVendorsDocument } from "./Vendor.ops";
 import { Item } from '~lib/Item';
-import { toTitleCase, computeDefaultPagination } from '~lib/UtilityFunctions';
+import { computeDefaultPagination } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';

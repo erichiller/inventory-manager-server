@@ -26482,4 +26482,4 @@ export type VendorVarianceOrderBy = {
   id?: Maybe<OrderBy>;
 };
 
-// graphql typescript defs generated on 2021-06-29T07:28:15-06:00
+// graphql typescript defs generated on 2021-06-27T07:12:08-06:00

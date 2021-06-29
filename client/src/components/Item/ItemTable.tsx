@@ -2,14 +2,12 @@ import { Table, Divider, message, Spin } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import {
-    // withItemHardwareFastenerScrewMachine, ItemHardwareFastenerScrewMachineProps, ItemHardwareFastenerScrewMachineSelectColumn, useItemHardwareFastenerScrewMachineQuery, useGetIconQuery, 
-    useGetItemsQuery, GetItemsQueryVariables, GetItemsQuery, GetItemsDocument, GetItemsLazyQueryHookResult, useDeleteItemMutation,
-    // ItemSelectColumn 
-} from '~lib/types/graphql';
+    GetItemsQueryVariables, GetItemsQuery, GetItemsDocument, useDeleteItemMutation,
+} from '~item/Item.ops';
 import { LabelDrawModal } from '../Draw/LabelDrawModal';
 import { Item } from '~lib/Item';
 
-import { QueryResult, useLazyQuery } from '@apollo/client/react';
+import { useLazyQuery } from '@apollo/client/react';
 import { EditOutlined, PrinterOutlined, DeleteOutlined, TagOutlined } from '@ant-design/icons';
 import { ItemTableMouseOver } from './ItemTableMouseOver';
 import { ItemFormModal } from './ItemFormModal';

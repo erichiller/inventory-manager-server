@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Modal, message, Input, Switch } from 'antd';
-import { useGetManufacturerQuery, useInsertManufacturerWithVendorMutation, useGetManufacturerLazyQuery, useUpdateManufacturerUnchangedVendorMutation, UpdateManufacturerUnchangedVendorMutationVariables, useDeleteManufacturerMutation, GetManufacturerDocument, GetManufacturersDocument, useDeleteVendorMutation, useInsertVendorWithExistingManufacturerMutation } from '~lib/types/graphql';
+import { useGetManufacturerQuery, useInsertManufacturerWithVendorMutation, useGetManufacturerLazyQuery, useUpdateManufacturerUnchangedVendorMutation, GetManufacturerDocument, GetManufacturersDocument, useInsertVendorWithExistingManufacturerMutation } from './Manufacturer.ops';
+import { useDeleteVendorMutation } from "~components/Vendor/Vendor.ops";
 
 import { QueryResultTypePlus, Intersection, filterObject, deepCopy, submitFormWithEnterKey } from '~lib/UtilityFunctions';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'antd/lib/form/Form';
 import { Callbacks } from 'rc-field-form/lib/interface';
 import { PageSpin } from '~components/Shared/PageSpin';
-import { Manufacturer } from '~lib/Manufacturer/Manufacturer';
 import { UrlSelect } from '~components/Shared/UrlInput';
 
 

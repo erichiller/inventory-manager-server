@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { v4 as UUIDv4 } from 'uuid';
-import { Scalars } from '../types/graphql';
+import type { Scalars } from '../types/graphql';
 import { Integer } from '../types/uint8';
 import { Item } from "../Item";
 import type { Stage as StageT } from 'konva/lib/Stage';

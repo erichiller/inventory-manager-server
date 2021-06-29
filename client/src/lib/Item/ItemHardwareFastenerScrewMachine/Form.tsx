@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Form, Input, Divider } from 'antd';
 import { ItemFormProps } from '../Item';
-import { EnumItemHardwareFastenerScrewHeadEnum, EnumItemHardwareFastenerDriveEnum, EnumItemHardwareFinishEnum, EnumItemHardwareFastenerMaterialEnum, EnumItemHandednessEnum, EnumItemHardwareFastenerThreadStandardEnum, EnumItemHardwareFastenerScrewMachineThreadFitEnum, EnumItemHardwareFastenerScrewMachinePointEnum, EnumItemHardwareFastenerScrewHardnessEnum, EnumItemHardwareFastenerScrewMachineStrengthEnum, useGetEnumItemHardwareFastenerThreadStandardQuery, EnumItemHardwareUseMaterialEnum, EnumItemHardwareFastenerThreadLabelEnum } from '../../types/graphql';
+import { useGetEnumItemHardwareFastenerThreadStandardQuery } from "./ItemHardwareFastenerScrewMachine.ops";
+import { EnumItemHardwareFastenerMaterialEnum, EnumItemHardwareFinishEnum, EnumItemHardwareFastenerDriveEnum, EnumItemHardwareFastenerScrewHeadEnum, EnumItemHardwareFastenerThreadStandardEnum, EnumItemHardwareFastenerScrewMachineStrengthEnum, EnumItemHardwareFastenerScrewHardnessEnum, EnumItemHardwareFastenerScrewMachinePointEnum, EnumItemHardwareUseMaterialEnum, EnumItemHardwareFastenerScrewMachineThreadFitEnum, EnumItemHandednessEnum } from "~types/graphql";
 
 import { EnumItemHardwareFastenerSpecificationsEnum } from './types/types';
 import { UnitSelect } from './FormComponents/UnitSelect';
@@ -155,7 +156,7 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                         <span className="tooltip-with-example">
                             <header>Thread dimensions. </header>
                         TPI if US unit, Pitch if metric.
-                        <b>US Customary Unit:</b>
+                            <b>US Customary Unit:</b>
                             <pre><span className="highlight">#6</span>-32x1</pre>
                             <b>Metric:</b>
                             <pre><span className="highlight">M3</span>-0.5x5</pre>
@@ -175,7 +176,7 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                             <span className="tooltip-with-example">
                                 <header>Thread dimensions. </header>
                             TPI if US unit, Pitch if metric.
-                            <b>US Customary Unit:</b>
+                                <b>US Customary Unit:</b>
                                 <pre>#6-<span className="highlight">32</span>x1</pre>
                                 <b>Metric:</b>
                                 <pre>M3-<span className="highlight">0.5</span>x5</pre>
@@ -278,9 +279,9 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
 
                 <Form.Item name="thread_length" dependencies={[ 'unit' ]}
                     label={<FormIconTooltip 
-                            icon={<ScrewThreadIcon />} 
-                            text="The length of the screw that is threaded" 
-                            label="Thread Length" />}
+                        icon={<ScrewThreadIcon />} 
+                        text="The length of the screw that is threaded" 
+                        label="Thread Length" />}
                 >
                     <MeasurementInput
                         unit={unit}
@@ -293,7 +294,7 @@ export const ItemHardwareFastenerScrewMachineForm: React.FC<ItemHardwareFastener
                             icon={<ThreadDirection_RightHandRuleIcon />}
                             text={<span>
                                 <p>The threads of a screw are a helix and therefore screws can be right- or left-handed. The rule is this: if a screw is right-handed (most screws are) point your right thumb in the direction you want the screw to go and turn the screw in the direction of your curled right fingers.
-                                    </p>
+                                </p>
                                 <p>If in doubt, assume it is Right-handed.</p>
                             </span>}
                             label="Handedness"

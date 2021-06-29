@@ -4,7 +4,7 @@ import { Input, Select } from "antd";
 
 
 import { Intersection, is, parseIntSafe } from "~lib/UtilityFunctions";
-import { useGetItemLazyQuery, useItemSearchLazyQuery } from "~lib/types/graphql";
+import { useGetItemLazyQuery, useItemSearchLazyQuery } from "~item/Item.ops";
 
 
 interface OptionT {

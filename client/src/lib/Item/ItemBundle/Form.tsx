@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Divider, Button, Input, Space, InputNumber } from 'antd';
+import { Form, Divider, Button, InputNumber } from 'antd';
 import { ItemFormProps } from '../Item';
 
 import { Intersection } from '~lib/UtilityFunctions';

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Modal, message, Input } from 'antd';
-import { useInsertManufacturerItemMutation, InsertManufacturerItemMutationVariables, useGetManufacturerItemLazyQuery, useUpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables, GetManufacturerItemDocument, ManufacturerItem as ManufacturerItemGql } from '~lib/types/graphql';
+import { useInsertManufacturerItemMutation, InsertManufacturerItemMutationVariables, useGetManufacturerItemLazyQuery, useUpdateManufacturerItemMutation, UpdateManufacturerItemMutationVariables, GetManufacturerItemDocument } from "./Manufacturer.ops";
+import { ManufacturerItem as ManufacturerItemGql } from '~lib/types/graphql';
 
 import { Intersection, filterObject, submitFormWithEnterKey } from '~lib/UtilityFunctions';
 import { KeyboardEventKey } from '~lib/types/KeyboardEventKey';

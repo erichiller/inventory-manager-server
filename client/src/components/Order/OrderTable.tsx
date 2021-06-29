@@ -1,6 +1,6 @@
 import { Table, Divider, message } from 'antd';
-import * as React from 'react';
-import { useGetOrdersQuery, GetOrdersQuery, useDeleteOrderMutation, GetOrdersDocument } from '~lib/types/graphql';
+import React from 'react';
+import { useGetOrdersQuery, GetOrdersQuery, useDeleteOrderMutation, GetOrdersDocument } from './Order.ops';
 import { computeDefaultPagination, Unpacked } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig, TableProps } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';

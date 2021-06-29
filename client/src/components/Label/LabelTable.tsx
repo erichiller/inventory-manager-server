@@ -1,8 +1,9 @@
 import { Table, Divider, message } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { useGetLabelsQuery, LabelSelectColumn, Label, GetLabelsQuery, useDeleteLabelMutation, GetLabelsDocument } from '~lib/types/graphql';
+import { useGetLabelsQuery, GetLabelsQuery, useDeleteLabelMutation, GetLabelsDocument } from './Label.ops';
+import type { Label } from "~types/graphql";
 import { LabelDrawModal } from '~components/Draw/LabelDrawModal';
-import { toTitleCase, computeDefaultPagination, Unpacked, ObjectColumnProperty, sortByCaseInsensitiveText, sortByDate, sortByDateString } from '~lib/UtilityFunctions';
+import { computeDefaultPagination, Unpacked, ObjectColumnProperty, sortByCaseInsensitiveText, sortByDateString } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { LabelExport } from '~lib/Label/LabelExport';

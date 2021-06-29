@@ -11,7 +11,8 @@
         "**/yarn.lock": true,
         "**/graphql.tsx": true,
         "**/schema.graphql": true, 
-        "**/client/stats/**": true
+        "**/client/stats/**": true,
+        "**/*.ops.*": true
     },
     "eslint.format.enable": true,
     "eslint.alwaysShowStatus": true,

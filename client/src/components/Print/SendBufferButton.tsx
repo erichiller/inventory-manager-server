@@ -4,7 +4,7 @@ import { PixelMap } from "~lib/canvasToBuffer";
 import { ButtonProps } from "antd/lib/button/button";
 import { PageSpin } from "../Shared/PageSpin";
 import { PrinterOutlined } from "@ant-design/icons";
-import { useSendBufferMutation } from "~lib/types/graphql";
+import { useSendBufferMutation } from "./SendBuffer.ops";
 import Group from "antd/lib/input/Group";
 
 

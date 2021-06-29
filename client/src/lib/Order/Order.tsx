@@ -1,10 +1,6 @@
 
-import {
+import type {
     Order as OrderGql,
-    OrderSelectColumn,
-    GetOrderQueryVariables,
-    GetOrderDocument,
-    GetOrderQuery,
     Scalars,
     Maybe,
     OrderItem,
@@ -13,8 +9,14 @@ import {
     Shipment,
     ShipmentAggregate,
     Vendor as VendorGql,
-    GetOrdersQueryHookResult
 } from "../types/graphql";
+
+import {
+    GetOrderQueryVariables,
+    GetOrderDocument,
+    GetOrderQuery,
+    GetOrdersQueryHookResult
+} from "~/components/Order/Order.ops";
 
 import { apolloClient } from '~/Apollo';
 import { message } from "antd";

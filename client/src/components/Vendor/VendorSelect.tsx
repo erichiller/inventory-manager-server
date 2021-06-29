@@ -4,7 +4,7 @@ import { Select } from "antd";
 
 
 import { OptionData } from 'rc-select/lib/interface';
-import { useSearchVendorsQuery } from "~lib/types/graphql";
+import { useSearchVendorsQuery } from "./Vendor.ops";
 import { preventEnterKeyDefault } from "~lib/UtilityFunctions";
 
 

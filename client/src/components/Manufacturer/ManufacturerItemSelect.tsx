@@ -1,11 +1,11 @@
-import { SelectProps, SelectValue } from "antd/lib/select";
+import { SelectProps } from "antd/lib/select";
 import React, { useState, useEffect, ReactElement } from "react";
 import { Select, Divider, message } from "antd";
 
 
 
 import { OptionData } from 'rc-select/lib/interface';
-import { useSearchManufacturerItemsQuery, ManufacturerItem as ManufacturerItemGql, UpdateManufacturerItemMutationVariables, useGetManufacturerItemQuery, useGetManufacturerItemLazyQuery, GetManufacturerItemLazyQueryHookResult } from "~lib/types/graphql";
+import { useSearchManufacturerItemsQuery, UpdateManufacturerItemMutationVariables, useGetManufacturerItemQuery, useGetManufacturerItemLazyQuery } from "./Manufacturer.ops";
 import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { ManufacturerItemFormModal, ManufacturerItemFormT } from "./ManufacturerItemFormModal";
 import { useHistory, useLocation } from "react-router-dom";

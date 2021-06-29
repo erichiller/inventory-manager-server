@@ -11,7 +11,7 @@
         "server"
     ],
     "scripts": {
-        "clean": "Remove-Item -Force -Recurse .\\node_modules\\ ; Remove-Item -Force -Recurse .\\yarn.lock ; Remove-Item -Force -Recurse .\\client\\node_modules\\ ; Remove-Item -Force -Recurse .\\server\\node_modules\\ ; ",
+        "clean": "Remove-Item -Force -Recurse .\\node_modules\\ ; Remove-Item -Force -Recurse .\\yarn.lock ; Remove-Item -Force -Recurse .\\client\\node_modules\\ ; Remove-Item -Force -Recurse .\\server\\node_modules\\ ; Get-ChildItem -Recurse -Include *.ops.tsx * | Remove-Item ; ",
         "set-shell-to-powershell": "pwsh -Command \"yarn config set script-shell (Get-Command pwsh).Definition\""
     },
     "devDependencies": {

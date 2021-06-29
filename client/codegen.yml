@@ -19,18 +19,13 @@ config:
     # DateTime: Date
     # JSON: "{ [key: string]: any }"
 
+documents: 
+  - src/**/*.gql
+
 generates:
-  ./src/lib/types/graphql.tsx:
-    # documents: ./src/**/*.tsx
-    documents:
-      - ./src/types/*.ts
-      - ./src/**/*.graphql
-      - ./src/**/*.gql
+  src/lib/types/graphql.tsx:
     plugins:
       - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
-      # - "typescript-document-nodes"
       - time:
           message: "graphql typescript defs generated on "
           format: YYYY-MM-DDTHH:mm:ssZ
@@ -39,16 +34,24 @@ generates:
       # https://graphql-code-generator.com/docs/plugins/typescript
       # Allow to override the type value of Maybe.
       maybeValue: T | null | undefined
+  src/:
+    preset: near-operation-file
+    presetConfig:
+      baseTypesPath: lib/types/graphql.tsx
+      extension: .ops.tsx
+    plugins:
+      - "typescript-operations"
+      - "typescript-react-apollo"
+      - time:
+          message: "graphql typescript defs generated on "
+          format: YYYY-MM-DDTHH:mm:ssZ
+    config:
+      # avoidOptionals: false
       reactApolloVersion: 3
       withComponent: false
       withResultType: true
       dedupeOperationSuffix: true
       withHooks: true
-  # ./src/lib/types/graphql_schema_introspection.json:
-  #   plugins:
-  #     - introspection
-  #   config:
-  #     minify: true
   ./src/lib/types/schema.graphql:
     plugins:
       - schema-ast

@@ -1,5 +1,4 @@
 import React from 'react';
-import * as AntD from 'antd';
 import Spin, { SpinProps } from 'antd/lib/spin';
 
 // ------------------------------------------------------------------------

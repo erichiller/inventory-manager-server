@@ -6,7 +6,8 @@ import schema from "~lib/Item/ItemHardwareFastenerScrewMachine/config/ScrewSizeO
 
 // const JSONEditor = JSONEditorM.JSONEditor;
 
-import * as JSONEditorModule from "@json-editor/json-editor";
+import JSONEditorModule from "@json-editor/json-editor";
+// import * as JSONEditorModule from "@json-editor/json-editor";
 // import * as JSONEditor from "@json-editor/json-editor";
 
 // import JSONEditorModule from '@json-editor/json-editor';

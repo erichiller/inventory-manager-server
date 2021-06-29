@@ -1,8 +1,9 @@
-import { ItemFormProps, FormMutationHandler } from "../Item";
-import { useInsertItemHardwareFastenerScrewMachineMutation, EnumItemHandednessEnum, EnumItemHardwareFastenerScrewMachinePointEnum, EnumItemHardwareUseMaterialEnum, GetItemsDocument } from "../../types/graphql";
+import { FormMutationHandler } from "../Item";
+import { EnumItemHandednessEnum, EnumItemHardwareUseMaterialEnum, EnumItemHardwareFastenerScrewMachinePointEnum } from "../../types/graphql";
+import { useInsertItemHardwareFastenerScrewMachineMutation } from "./ItemHardwareFastenerScrewMachine.ops";
+import { GetItemsDocument } from "../Item.ops";
 import { useEffect } from "react";
 import { message } from "antd";
-import { Store } from "antd/lib/form/interface";
 import { applyDefaults } from "~item/Common/FormLib";
 import { ItemHardwareFastenerScrewMachine } from "..";
 
@@ -25,17 +26,17 @@ export const ItemHardwareFastenerScrewMachineAddMutationHandler: React.FC<FormMu
                     // console.log( { c: "ItemHardwareFastenerScrewMachineEditMutationHandler", f: 'meta'}, meta.name );
                     return !meta.name.includes( 'screw_size' );
                 } ) as ItemHardwareFastenerScrewMachine,
-                    // TODO: put defaults in the class
-                    {
-                        thread_direction: EnumItemHandednessEnum.right,
-                        use_material: EnumItemHardwareUseMaterialEnum.machine,
-                        point_type: EnumItemHardwareFastenerScrewMachinePointEnum.flat
-                    },
-                    {
-                        thread_diameter_label: props.form.getFieldValue("")
-                    }
+                // TODO: put defaults in the class
+                {
+                    thread_direction: EnumItemHandednessEnum.right,
+                    use_material: EnumItemHardwareUseMaterialEnum.machine,
+                    point_type: EnumItemHardwareFastenerScrewMachinePointEnum.flat
+                },
+                {
+                    thread_diameter_label: props.form.getFieldValue( "" )
+                }
                 ),
-                    // TODO: make this more exact, rather than refetch EVERY Item.
+                // TODO: make this more exact, rather than refetch EVERY Item.
                 refetchQueries: [
                     { query: GetItemsDocument }
                 ]

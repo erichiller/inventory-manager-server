@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { EnumItemClassEnum, GetItemsDocument, useGetItemsQuery } from '~lib/types/graphql';
+import type { EnumItemClassEnum } from '~lib/types/graphql';
+import { GetItemsDocument } from "~item/Item.ops";
 import { Item } from '~lib/Item';
 import { ItemSearch } from './ItemSearch';
 import {

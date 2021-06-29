@@ -5,10 +5,10 @@ import { Rnd, ResizableDelta, Position as RndPosition } from 'react-rnd';
 import { ResizeDirection } from 're-resizable';
 import { useQuery } from '@apollo/client/react';
 import { Stage, Layer } from 'react-konva';
-import { Spin, InputNumber, Input } from "antd";
+import { Spin, Input } from "antd";
 import type { Stage as StageT } from 'konva/lib/Stage';
 
-import { GetPrinterStatusQuery, GetPrinterStatusDocument } from "~lib/types/graphql";
+import { GetPrinterStatusQuery, GetPrinterStatusDocument } from "~components/Print/GetPrinterStatus.ops";
 import type { KonvaEventObject } from 'konva/lib/Node';
 import { TapeColorMap } from '~lib/types/labelCanvasColors';
 import { LabelText, LabelImage } from '~lib/Label/LabelConstituent';

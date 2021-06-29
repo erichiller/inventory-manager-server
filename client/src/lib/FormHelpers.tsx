@@ -1,7 +1,6 @@
 import React, { ReactText, ReactElement } from "react";
 import { Tooltip } from "antd";
-import { EnumUnitEnum, InsertIconMutation } from "./types/graphql";
-import { EnumUnitKeys, TRecursiveDataWrap } from "./types/UtilityTypes";
+import { TRecursiveDataWrap } from "./types/UtilityTypes";
 import moment from "moment";
 import { transparentLog } from "~lib/UtilityFunctions";
 

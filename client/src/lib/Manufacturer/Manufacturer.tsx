@@ -1,12 +1,14 @@
 
+// import type {
+//     Manufacturer as ManufacturerGql
+// } from "../types/graphql";
 import {
     GetManufacturersQueryHookResult,
     GetManufacturerQueryVariables,
     GetManufacturerDocument,
     GetManufacturerQuery,
     useGetManufacturerQuery,
-    Manufacturer as ManufacturerGql
-} from "../types/graphql";
+} from "~components/Manufacturer/Manufacturer.ops";
 
 import { Integer } from '../types/uint8';
 

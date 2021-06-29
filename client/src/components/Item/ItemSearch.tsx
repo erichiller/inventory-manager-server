@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 
-import { Item, ItemHardwareFastenerScrewMachine } from '~lib/Item';
+import { Item } from '~lib/Item';
 // import Search from "antd/lib/input/Search";
-import { Select, Row, Col, Button } from "antd";
+import { Select } from "antd";
 
 
 // import * as ReactRouter from 'react-router';
-import { SelectValue, LabeledValue } from 'antd/lib/select';
+import { LabeledValue } from 'antd/lib/select';
 import { SearchOutlined, TagOutlined, FontSizeOutlined } from '@ant-design/icons';
-import { useSearchItemsQuery, EnumItemClassEnum, useSearchItemsLazyQuery } from "~lib/types/graphql";
+import type { EnumItemClassEnum } from "~lib/types/graphql";
+import { useSearchItemsLazyQuery } from "./ItemSearch.ops";
 
 const { Option } = Select;
 

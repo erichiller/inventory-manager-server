@@ -170,10 +170,27 @@ module.exports = {
             // GIT_VERSION: gitVersion,
             // GIT_AUTHOR_DATE: gitDate
         } ),
+        // TODO: nothing is being saved to the .json files (no stats, 0KB file size)
         new StatoscopeWebpackPlugin( {
-            saveStatsTo: `./stats/${fileDateString}-[hash].json`,
             saveTo: `./stats/${fileDateString}-[hash].html`,
+            saveStatsTo: `./stats/${fileDateString}-[hash].json`,
             additionalStats: glob.sync( './stats/*.json' ),
+            stats: {
+                all: false, // disable all the stats
+                hash: true, // add compilation hash
+                entrypoints: true, // add entrypoints stats
+                chunks: true, // add chunks stats
+                chunkModules: true, // add modules stats
+                reasons: true, // add modules reasons stats
+
+                assets: true, // add assets stats
+                chunkOrigins: true, // add chunks origins stats (to find out which modules require a chunk)
+                version: true, // add webpack version
+                builtAt: true, // add build at time
+                timings: true, // add build at time
+                performance: true, // add info about oversized assets
+                source: true, // add module sources (uses to find modules duplicates)
+            },
         } ),
         new MiniCssExtractPlugin( {
             // Options similar to the same options in webpackOptions.output

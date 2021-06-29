@@ -1,15 +1,14 @@
 import { Table, Divider, message } from 'antd';
-import * as React from 'react';
-import { useGetManufacturersQuery, GetManufacturersQuery, useDeleteManufacturerMutation, GetManufacturersDocument } from '~lib/types/graphql';
+import React from 'react';
+import { useGetManufacturersQuery, useDeleteManufacturerMutation, GetManufacturersDocument } from './Manufacturer.ops';
 import { Item } from '~lib/Item';
-import { computeDefaultPagination, QueryResultTypePlus, Unpacked } from '~lib/UtilityFunctions';
+import { computeDefaultPagination } from '~lib/UtilityFunctions';
 import { ColumnProps, TablePaginationConfig, TableProps } from 'antd/lib/table';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { ManufacturerFormModal } from './ManufacturerFormModal';
 import { Manufacturer } from '~lib/Manufacturer/Manufacturer';
 import { useState } from 'react';
-import { SorterResult } from 'antd/lib/table/interface';
 
 
 

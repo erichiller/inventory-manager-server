@@ -3,7 +3,8 @@ import React, { useState, useEffect, ReactElement } from "react";
 import { Input, Select, Divider, message } from "antd";
 
 import { OptionData } from 'rc-select/lib/interface';
-import { useSearchShipmentsQuery, Shipment as ShipmentGql, UpdateShipmentMutationVariables } from "~lib/types/graphql";
+import type { Shipment as ShipmentGql } from "~lib/types/graphql";
+import { useSearchShipmentsQuery, UpdateShipmentMutationVariables } from "./Shipment.ops";
 import { PlusOutlined, FileUnknownOutlined } from "@ant-design/icons";
 import { ShipmentFormModal } from "./ShipmentFormModal";
 import { useHistory, useLocation } from "react-router-dom";

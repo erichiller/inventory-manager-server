@@ -13023,6 +13023,7 @@ type manufacturer_item {
     where: order_item_bool_exp
   ): order_item_aggregate!
   product_url: String
+  quantity: Int!
 }
 
 # aggregated selection of "manufacturer_item"
@@ -13072,6 +13073,7 @@ type manufacturer_item_avg_fields {
   id: Float
   item_id: Float
   manufacturer_id: Float
+  quantity: Float
 }
 
 # order by avg() on columns of table "manufacturer_item"
@@ -13079,6 +13081,7 @@ input manufacturer_item_avg_order_by {
   id: order_by
   item_id: order_by
   manufacturer_id: order_by
+  quantity: order_by
 }
 
 # Boolean expression to filter rows from the table "manufacturer_item". All fields are combined with a logical 'AND'.
@@ -13097,6 +13100,7 @@ input manufacturer_item_bool_exp {
   manufacturer_product_series: String_comparison_exp
   orderItems: order_item_bool_exp
   product_url: String_comparison_exp
+  quantity: Int_comparison_exp
 }
 
 # unique or primary key constraints on table "manufacturer_item"
@@ -13113,6 +13117,7 @@ input manufacturer_item_inc_input {
   id: Int
   item_id: Int
   manufacturer_id: Int
+  quantity: Int
 }
 
 # input type for inserting data into table "manufacturer_item"
@@ -13128,6 +13133,7 @@ input manufacturer_item_insert_input {
   manufacturer_product_series: String
   orderItems: order_item_arr_rel_insert_input
   product_url: String
+  quantity: Int
 }
 
 # aggregate max on columns
@@ -13140,6 +13146,7 @@ type manufacturer_item_max_fields {
   manufacturer_product_name: String
   manufacturer_product_series: String
   product_url: String
+  quantity: Int
 }
 
 # order by max() on columns of table "manufacturer_item"
@@ -13152,6 +13159,7 @@ input manufacturer_item_max_order_by {
   manufacturer_product_name: order_by
   manufacturer_product_series: order_by
   product_url: order_by
+  quantity: order_by
 }
 
 # aggregate min on columns
@@ -13164,6 +13172,7 @@ type manufacturer_item_min_fields {
   manufacturer_product_name: String
   manufacturer_product_series: String
   product_url: String
+  quantity: Int
 }
 
 # order by min() on columns of table "manufacturer_item"
@@ -13176,6 +13185,7 @@ input manufacturer_item_min_order_by {
   manufacturer_product_name: order_by
   manufacturer_product_series: order_by
   product_url: order_by
+  quantity: order_by
 }
 
 # response of any mutation on the table "manufacturer_item"
@@ -13213,6 +13223,7 @@ input manufacturer_item_order_by {
   manufacturer_product_series: order_by
   orderItems_aggregate: order_item_aggregate_order_by
   product_url: order_by
+  quantity: order_by
 }
 
 # primary key columns input for table: "manufacturer_item"
@@ -13245,6 +13256,9 @@ enum manufacturer_item_select_column {
 
   # column name
   product_url
+
+  # column name
+  quantity
 }
 
 # input type for updating data in table "manufacturer_item"
@@ -13257,6 +13271,7 @@ input manufacturer_item_set_input {
   manufacturer_product_name: String
   manufacturer_product_series: String
   product_url: String
+  quantity: Int
 }
 
 # aggregate stddev on columns
@@ -13264,6 +13279,7 @@ type manufacturer_item_stddev_fields {
   id: Float
   item_id: Float
   manufacturer_id: Float
+  quantity: Float
 }
 
 # order by stddev() on columns of table "manufacturer_item"
@@ -13271,6 +13287,7 @@ input manufacturer_item_stddev_order_by {
   id: order_by
   item_id: order_by
   manufacturer_id: order_by
+  quantity: order_by
 }
 
 # aggregate stddev_pop on columns
@@ -13278,6 +13295,7 @@ type manufacturer_item_stddev_pop_fields {
   id: Float
   item_id: Float
   manufacturer_id: Float
+  quantity: Float
 }
 
 # order by stddev_pop() on columns of table "manufacturer_item"
@@ -13285,6 +13303,7 @@ input manufacturer_item_stddev_pop_order_by {
   id: order_by
   item_id: order_by
   manufacturer_id: order_by
+  quantity: order_by
 }
 
 # aggregate stddev_samp on columns
@@ -13292,6 +13311,7 @@ type manufacturer_item_stddev_samp_fields {
   id: Float
   item_id: Float
   manufacturer_id: Float
+  quantity: Float
 }
 
 # order by stddev_samp() on columns of table "manufacturer_item"
@@ -13299,6 +13319,7 @@ input manufacturer_item_stddev_samp_order_by {
   id: order_by
   item_id: order_by
   manufacturer_id: order_by
+  quantity: order_by
 }
 
 # aggregate sum on columns
@@ -13306,6 +13327,7 @@ type manufacturer_item_sum_fields {
   id: Int
   item_id: Int
   manufacturer_id: Int
+  quantity: Int
 }
 
 # order by sum() on columns of table "manufacturer_item"
@@ -13313,6 +13335,7 @@ input manufacturer_item_sum_order_by {
   id: order_by
   item_id: order_by
   manufacturer_id: order_by
+  quantity: order_by
 }
 
 # update columns of table "manufacturer_item"
@@ -13340,6 +13363,9 @@ enum manufacturer_item_update_column {
 
   # column name
   product_url
+
+  # column name
+  quantity
 }
 
 # aggregate var_pop on columns
@@ -13347,6 +13373,7 @@ type manufacturer_item_var_pop_fields {
   id: Float
   item_id: Float
   manufacturer_id: Float
+  quantity: Float
 }
 
 # order by var_pop() on columns of table "manufacturer_item"
@@ -13354,6 +13381,7 @@ input manufacturer_item_var_pop_order_by {
   id: order_by
   item_id: order_by
   manufacturer_id: order_by
+  quantity: order_by
 }
 
 # aggregate var_samp on columns
@@ -13361,6 +13389,7 @@ type manufacturer_item_var_samp_fields {
   id: Float
   item_id: Float
   manufacturer_id: Float
+  quantity: Float
 }
 
 # order by var_samp() on columns of table "manufacturer_item"
@@ -13368,6 +13397,7 @@ input manufacturer_item_var_samp_order_by {
   id: order_by
   item_id: order_by
   manufacturer_id: order_by
+  quantity: order_by
 }
 
 # aggregate variance on columns
@@ -13375,6 +13405,7 @@ type manufacturer_item_variance_fields {
   id: Float
   item_id: Float
   manufacturer_id: Float
+  quantity: Float
 }
 
 # order by variance() on columns of table "manufacturer_item"
@@ -13382,6 +13413,7 @@ input manufacturer_item_variance_order_by {
   id: order_by
   item_id: order_by
   manufacturer_id: order_by
+  quantity: order_by
 }
 
 # aggregate max on columns
@@ -26266,6 +26298,7 @@ type vendor_item {
     # filter the rows returned
     where: order_item_bool_exp
   ): order_item_aggregate!
+  quantity: Int!
 
   # Product URL / Product Page
   url: String
@@ -26322,6 +26355,7 @@ input vendor_item_arr_rel_insert_input {
 type vendor_item_avg_fields {
   id: Float
   item_id: Float
+  quantity: Float
   vendor_id: Float
 }
 
@@ -26329,6 +26363,7 @@ type vendor_item_avg_fields {
 input vendor_item_avg_order_by {
   id: order_by
   item_id: order_by
+  quantity: order_by
   vendor_id: order_by
 }
 
@@ -26342,6 +26377,7 @@ input vendor_item_bool_exp {
   item: item_bool_exp
   item_id: Int_comparison_exp
   orderItems: order_item_bool_exp
+  quantity: Int_comparison_exp
   url: String_comparison_exp
   vendor: vendor_bool_exp
   vendor_id: Int_comparison_exp
@@ -26364,6 +26400,7 @@ enum vendor_item_constraint {
 input vendor_item_inc_input {
   id: Int
   item_id: Int
+  quantity: Int
   vendor_id: Int
 }
 
@@ -26374,6 +26411,7 @@ input vendor_item_insert_input {
   item: item_obj_rel_insert_input
   item_id: Int
   orderItems: order_item_arr_rel_insert_input
+  quantity: Int
   url: String
   vendor: vendor_obj_rel_insert_input
   vendor_id: Int
@@ -26385,6 +26423,7 @@ type vendor_item_max_fields {
   description: String
   id: Int
   item_id: Int
+  quantity: Int
   url: String
   vendor_id: Int
   vendor_sku: String
@@ -26395,6 +26434,7 @@ input vendor_item_max_order_by {
   description: order_by
   id: order_by
   item_id: order_by
+  quantity: order_by
   url: order_by
   vendor_id: order_by
   vendor_sku: order_by
@@ -26405,6 +26445,7 @@ type vendor_item_min_fields {
   description: String
   id: Int
   item_id: Int
+  quantity: Int
   url: String
   vendor_id: Int
   vendor_sku: String
@@ -26415,6 +26456,7 @@ input vendor_item_min_order_by {
   description: order_by
   id: order_by
   item_id: order_by
+  quantity: order_by
   url: order_by
   vendor_id: order_by
   vendor_sku: order_by
@@ -26449,6 +26491,7 @@ input vendor_item_order_by {
   item: item_order_by
   item_id: order_by
   orderItems_aggregate: order_item_aggregate_order_by
+  quantity: order_by
   url: order_by
   vendor: vendor_order_by
   vendor_id: order_by
@@ -26472,6 +26515,9 @@ enum vendor_item_select_column {
   item_id
 
   # column name
+  quantity
+
+  # column name
   url
 
   # column name
@@ -26486,6 +26532,7 @@ input vendor_item_set_input {
   description: String
   id: Int
   item_id: Int
+  quantity: Int
   url: String
   vendor_id: Int
   vendor_sku: String
@@ -26495,6 +26542,7 @@ input vendor_item_set_input {
 type vendor_item_stddev_fields {
   id: Float
   item_id: Float
+  quantity: Float
   vendor_id: Float
 }
 
@@ -26502,6 +26550,7 @@ type vendor_item_stddev_fields {
 input vendor_item_stddev_order_by {
   id: order_by
   item_id: order_by
+  quantity: order_by
   vendor_id: order_by
 }
 
@@ -26509,6 +26558,7 @@ input vendor_item_stddev_order_by {
 type vendor_item_stddev_pop_fields {
   id: Float
   item_id: Float
+  quantity: Float
   vendor_id: Float
 }
 
@@ -26516,6 +26566,7 @@ type vendor_item_stddev_pop_fields {
 input vendor_item_stddev_pop_order_by {
   id: order_by
   item_id: order_by
+  quantity: order_by
   vendor_id: order_by
 }
 
@@ -26523,6 +26574,7 @@ input vendor_item_stddev_pop_order_by {
 type vendor_item_stddev_samp_fields {
   id: Float
   item_id: Float
+  quantity: Float
   vendor_id: Float
 }
 
@@ -26530,6 +26582,7 @@ type vendor_item_stddev_samp_fields {
 input vendor_item_stddev_samp_order_by {
   id: order_by
   item_id: order_by
+  quantity: order_by
   vendor_id: order_by
 }
 
@@ -26537,6 +26590,7 @@ input vendor_item_stddev_samp_order_by {
 type vendor_item_sum_fields {
   id: Int
   item_id: Int
+  quantity: Int
   vendor_id: Int
 }
 
@@ -26544,6 +26598,7 @@ type vendor_item_sum_fields {
 input vendor_item_sum_order_by {
   id: order_by
   item_id: order_by
+  quantity: order_by
   vendor_id: order_by
 }
 
@@ -26559,6 +26614,9 @@ enum vendor_item_update_column {
   item_id
 
   # column name
+  quantity
+
+  # column name
   url
 
   # column name
@@ -26572,6 +26630,7 @@ enum vendor_item_update_column {
 type vendor_item_var_pop_fields {
   id: Float
   item_id: Float
+  quantity: Float
   vendor_id: Float
 }
 
@@ -26579,6 +26638,7 @@ type vendor_item_var_pop_fields {
 input vendor_item_var_pop_order_by {
   id: order_by
   item_id: order_by
+  quantity: order_by
   vendor_id: order_by
 }
 
@@ -26586,6 +26646,7 @@ input vendor_item_var_pop_order_by {
 type vendor_item_var_samp_fields {
   id: Float
   item_id: Float
+  quantity: Float
   vendor_id: Float
 }
 
@@ -26593,6 +26654,7 @@ type vendor_item_var_samp_fields {
 input vendor_item_var_samp_order_by {
   id: order_by
   item_id: order_by
+  quantity: order_by
   vendor_id: order_by
 }
 
@@ -26600,6 +26662,7 @@ input vendor_item_var_samp_order_by {
 type vendor_item_variance_fields {
   id: Float
   item_id: Float
+  quantity: Float
   vendor_id: Float
 }
 
@@ -26607,6 +26670,7 @@ type vendor_item_variance_fields {
 input vendor_item_variance_order_by {
   id: order_by
   item_id: order_by
+  quantity: order_by
   vendor_id: order_by
 }
 
