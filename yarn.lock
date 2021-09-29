@@ -9662,17 +9662,17 @@ json5@^1.0.1:
   dependencies:
     minimist "^1.2.0"
 
-jsoneditor@^9.5.0:
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/jsoneditor/-/jsoneditor-9.5.0.tgz#61ee83e479495f42d8dca807f9ccc72607620705"
-  integrity sha512-iKeBlLwP6WgUZjJhJk2kVORmqtnrK0EZI2uvIO4E49kj97gEnjE+oKBjvzr1I0W9Nac1jw3iOvVHpLsPkHK5kg==
+jsoneditor@^9.5.6:
+  version "9.5.6"
+  resolved "https://registry.yarnpkg.com/jsoneditor/-/jsoneditor-9.5.6.tgz#b2abca2aeb34bb5291025d0eeddcb2845e0d90a9"
+  integrity sha512-smu4CKCOeJiizGGGYQ7ZAvCclnuJP7gX/wcoHw/DWiJMUZq+3KjJNDhYnVTRgi+Zk0UlPngA4egmuJre/H2mXg==
   dependencies:
     ace-builds "^1.4.12"
     ajv "^6.12.6"
     javascript-natural-sort "^0.7.1"
     jmespath "^0.15.0"
     json-source-map "^0.6.1"
-    jsonrepair "^2.2.0"
+    jsonrepair "^2.2.1"
     mobius1-selectr "^2.4.13"
     picomodal "^3.0.0"
     vanilla-picker "^2.11.2"
@@ -9698,7 +9698,7 @@ jsonify@~0.0.0:
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
 
-jsonrepair@^2.2.0:
+jsonrepair@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/jsonrepair/-/jsonrepair-2.2.1.tgz#7c6257c36550a310150c41ab7d5d4cab71828456"
   integrity sha512-o9Je8TceILo872uQC9fIBJm957j1Io7z8Ca1iWIqY6S5S65HGE9XN7XEEw7+tUviB9Vq4sygV89MVTxl+rhZyg==
